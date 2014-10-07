@@ -1,0 +1,33 @@
+<{if $data}>
+  <{assign var="i" value=0}>
+  <{assign var="total" value=0}>
+
+  <{foreach item=class from=$data}>
+    <{if $i==0}>
+    <div class="row-fluid">
+    <{/if}>
+    
+      <!--<{$class.WebName}> start-->
+      <div class="span3 well well-small" style="background-image:url(<{$class.WebOwnerPic}>);background-size:cover;background-position:center center;">
+
+        <h4><a href="index.php?WebID=<{$class.WebID}>" style="text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;"><{$class.WebName}></a></h4>
+        <div class="row-fluid">
+          <div class="span8"><a href="index.php?WebID=<{$class.WebID}>" style="text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;"><{$class.WebTitle}></a></div>
+          <div class="span4" style="text-align:right;">
+            <span class="label <{if $WebID==$class.WebID}>label-important<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
+          </div>
+        </div>
+
+      </div>
+      <!--<{$class.WebName}> end-->
+      
+    <{assign var="i" value=$i+1}>
+    <{assign var="total" value=$total+1}>
+    <{if $i == 4 || $total==$count}>
+      </div>
+      <{assign var="i" value=0}>
+    <{/if}>
+  <{/foreach}>
+
+  <div class="clearfix"></div>
+<{/if}>

@@ -1,0 +1,103 @@
+<{includeq file="db:tad_web_header.html"}>
+
+<{if $op=="tad_web_video_form"}>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#Youtube').change(function() {
+      $('#VideoName').val($('#Youtube').val());
+      $.post("link_ajax.php", { url: $('#Youtube').val()},
+       function(data) {
+        var obj = $.parseJSON(data);
+         $('#VideoName').val(obj.title);
+         $('#VideoDesc').val(obj.description);
+       });
+    });
+
+
+    $('#LinkGet').click(function() {
+      $.post("link_ajax.php", { url: $('#Youtube').val()},
+       function(data) {
+        var obj = $.parseJSON(data);
+         $('#VideoName').val(obj.title);
+         $('#VideoDesc').val(obj.description);
+       });
+    });
+  });
+
+
+</script>
+
+
+
+	<{$formValidator_code}>
+  <div class="row-fluid">
+	<form video="video.php" method="post" id="myForm" enctype="multipart/form-data">
+	  <!--影片網址-->
+    <div class="controls controls-row">
+      <input type="text" name="Youtube" value="<{$Youtube}>" id="Youtube" class="validate[required] span10" placeholder="<{$smarty.const._MD_TCW_VIDEOYOUTUBE}>">
+    	<button type="button" class="btn" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
+    </div>
+
+	  <!--影片名稱-->
+    <div class="controls controls-row">
+      <input type="text" name="VideoName" value="<{$VideoName}>" id="VideoName" class="validate[required] span12" placeholder="<{$smarty.const._MD_TCW_VIDEONAME}>">
+    </div>
+
+	  <!--影片說明-->
+    <div class="controls controls-row">
+      <textarea name="VideoDesc" rows=4 id="VideoDesc"  class="span12" placeholder="<{$smarty.const._MD_TCW_VIDEODESC}>"><{$VideoDesc}></textarea>
+    </div>
+
+    <div class="controls controls-row text-right">
+
+    	<!--影片編號-->
+    	<input type="hidden" name="VideoID" value="<{$VideoID}>">
+
+    	<!--所屬團隊-->
+    	<input type="hidden" name="WebID" value="<{$WebID}>">
+    	<input type="hidden" name="op" value="<{$next_op}>">
+    	<button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+    </div>
+    
+
+	</form>
+  </div>
+<{elseif $op=="show_one_tad_web_video"}>
+
+  <{if $isMineVideo}>
+  <script>
+	function delete_tad_web_video_func(VideoID){
+		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+		if (!sure)	return;
+		location.href="video.php?op=delete_tad_web_video&VideoID=" + VideoID;
+	}
+	</script>
+  <{/if}>
+
+  <h1><{$VideoName}></h1>
+
+
+
+	<div class="well">
+    <div class="row-fluid">
+      <{$player}>
+    </div>
+
+    <div class="row-fluid">
+      <{$VideoDesc}>
+    </div>
+  </div>
+
+	<div style="text-align:right;color:#669900;font-size:11pt;"><{$VideoInfo}></div>
+
+	<{if $isMineVideo}>
+    <div style="text-align:right;">
+  	<a href="javascript:delete_tad_web_video_func(<{$VideoID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+  	<a href="video.php?op=tad_web_video_form&VideoID=<{$VideoID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+  	</div>
+  <{/if}>
+<{else}>
+  <{$FooTableJS}>
+  <{includeq file="db:tad_web_common_video.html"}>
+
+<{/if}>

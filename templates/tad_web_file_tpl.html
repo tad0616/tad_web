@@ -1,0 +1,34 @@
+<{includeq file="db:tad_web_header.html"}>
+
+<{if $op=="tad_web_files_form"}>
+
+  <script src="<{$xoops_url}>/modules/tadtools/multiple-file-upload/jquery.MultiFile.js"></script>
+	<form action="files.php" method="post" id="myForm" enctype="multipart/form-data">
+
+	<div class="controls controls-row">
+    <div class="span2"><{$smarty.const._MD_TCW_FILES_UPLOAD}></div>
+    <div class="span8"><input type="file" name="upfile[]" class="multi"></div>
+
+    <div class="span2">
+    	<!--所屬領域-->
+    	<input type="hidden" name="WebID" value="<{$WebID}>">
+    	<!--檔案流水號-->
+    	<input type="hidden" name="fsn" value="<{$fsn}>">
+    	<input type="hidden" name="op" value="<{$next_op}>">
+    	<button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+  	</div>
+  </div>
+
+	<div class="controls controls-row">
+    <div class="span12"><{$list_del_file}></div>
+  </div>
+
+	</form>
+
+<{else}>
+  <{$FooTableJS}>
+  <{includeq file="db:tad_web_common_files.html"}>
+
+  <{if $isMine}><a href="files.php?op=tad_web_files_form&WebID=<{$WebID}>" class="btn btn mini btn-warning pull-right"><{$smarty.const._MD_TCW_FILES_UPLOAD}></a><{/if}>
+<{/if}>
+

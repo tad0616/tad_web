@@ -1,0 +1,23 @@
+<{if $MyWebs==""}>
+  <{if $LoginMemID==""}>
+    <div class="controls controls-row">
+      <form action="discuss.php" method="post" enctype="multipart/form-data">
+      <label class="span2" style="text-align:right;"><{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_UNAME}><{$smarty.const._TAD_FOR}></label>
+      <input class="span3" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_MEM_UNAME}>">
+      <label class="span2" style="text-align:right;"><{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_PASSWD}><{$smarty.const._TAD_FOR}></label>
+      <input class="span3" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_MEM_PASSWD}>">
+      <div class="span2">
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="op" value="mem_login">
+        <button type="submit" class="btn btn-primary pull-right"><{$smarty.const._MD_TCW_LOGIN}></button>
+      </div>
+      </form>
+    </div>
+  <{else}>
+    <div class="well well-small">
+    <a href="discuss.php?op=logout" class="btn btn-mini btn-warning"><{$smarty.const._MD_TCW_EXIT}></a>
+    <a href="discuss.php?op=tad_web_discuss_form&WebID=<{$LoginWebID}>" class="btn btn-mini btn-info pull-right"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+    <{$LoginMemName}><{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}><{$smarty.const._MD_TCW_HELLO}>
+    </div>
+  <{/if}>
+<{/if}>

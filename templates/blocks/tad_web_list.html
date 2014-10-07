@@ -1,0 +1,9 @@
+<{if $block.webs}>
+  <div class="row-fluid">
+    <select size=5 onChange="location.href=this.value" class="span12">
+    <{foreach item=web from=$block.webs}>
+      <option value="<{$web.url}>"><{$web.title}> (<{$web.name}>)</option>
+    <{/foreach}>
+    </select>
+  </div>
+<{/if}>

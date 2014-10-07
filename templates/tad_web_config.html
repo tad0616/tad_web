@@ -1,0 +1,96 @@
+<div class="row-fluid">
+
+<{if $isMine}>
+  <div id="setupClass" class="span5">
+    <script src="<{$xoops_url}>/modules/tadtools/multiple-file-upload/jquery.MultiFile.js"></script>
+
+  	<form action="aboutus.php" method="post" enctype="multipart/form-data">
+      <fieldset>
+        <legend><{$smarty.const._MD_TCW_CLASS_SETUP}></legend>
+
+        <label><{$smarty.const._MD_TCW_CLASS_WEB_NAME}></label>
+        <input type="text" name="WebName" value="<{$WebName}>" id="WebName" class="validate[required] span12" placeholder="<{$smarty.const._MD_TCW_CLASS_WEB_NAME}>">
+
+        <label><{$smarty.const._MD_TCW_UPLOAD_MY_PHOTO}></label>
+        <input type="file" name="upfile[]" class="multi" maxlength='1' accept='gif|jpg|png|GIF|JPG|PNG'>
+        <{$list_del_file}>
+
+      	<input type="hidden" name="WebID" value="<{$WebID}>">
+      	<input type="hidden" name="op" value="<{$next_op}>">
+      	<button type="submit" class="btn btn-primary pull-right"><{$smarty.const._TAD_SAVE}></button>
+      </fieldset>
+  	</form>
+    <script src="<{$xoops_url}>/modules/tadtools/multiple-file-upload/jquery.MultiFile.js"></script>
+
+  	<form action="aboutus.php" method="post" enctype="multipart/form-data">
+      <fieldset>
+        <legend><{$smarty.const._MD_TCW_FCNCTION_SETUP}></legend>
+        <span class="help-block"><{$smarty.const._MD_TCW_SELECT_TO_CANCEL}></span>
+        <div class="controls controls-row">
+        <{$all_functions}>
+        </div>
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+      	<input type="hidden" name="op" value="save_hide_function">
+      	<button type="submit" class="btn btn-primary pull-right"><{$smarty.const._TAD_SAVE}></button>
+      </fieldset>
+  	</form>
+  </div>
+  
+  <div id="setupClass" class="span7">
+
+    <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_web/class/jquery.thumbs/jquery.thumbs.css" />
+    <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/jquery.thumbs/jquery.thumbs.js"></script>
+
+    <script language="JavaScript">
+      $().ready(function(){
+        $(".thumb").thumbs();
+        $(".thumb").click(function(){
+          var bg=$(this).attr("id");
+          $("#WebBackground").css("background-image","url(images/background/"+bg+")");
+
+          $.post("aboutus.php", {op: "save_background" , filename: bg});
+        
+        });
+
+        $("#rand_bg").click(function(){
+          $.post("aboutus.php", {op: "remove_background"},function(){
+            location.href="aboutus.php?WebID=<{$WebID}>&op=tad_web_config";
+          });
+        });
+        
+        $("#submit_bg").click(function(){
+          location.href="index.php?WebID=<{$WebID}>";
+        });
+        
+
+        $("#background_position").change(function(){
+          var position_val=$('#background_position').val();
+          //alert(position_val);
+          $("#WebBackground").css("background-position",position_val);
+          $.post("aboutus.php", {op: "save_background_position" , position: position_val});
+
+        });
+      });
+
+    </script>
+      <fieldset>
+        <legend><{$smarty.const._MD_TCW_HEADER_SETUP}></legend>
+        <label><{$smarty.const._MD_TCW_BG_POSITION}></label>
+        <select class="span2" id="background_position">
+          <option value="center top" <{$background_position_top}>><{$smarty.const._MD_TCW_BG_TOP}></option>
+          <option value="center center" <{$background_position_center}>><{$smarty.const._MD_TCW_BG_CENTER}></option>
+          <option value="center bottom" <{$background_position_bottom}>><{$smarty.const._MD_TCW_BG_BOTTOM}></option>
+        </select>
+        <span class="help-block"><{$smarty.const._MD_TCW_CLICK_TO_CHANG}></span>
+        <{foreach item="bg" from="$bg_files"}>
+        <img src="images/background/thumbs/<{$bg.background}>" alt="<{$bg.background}>" class="thumb" id="<{$bg.background}>">
+        <{/foreach}>
+        <div style="text-align:right;">
+      	<button type="button" class="btn btn-warning" id="rand_bg"><{$smarty.const._MD_TCW_RAND_IMAGE}></button>
+      	<button type="button" class="btn btn-primary" id="submit_bg"><{$smarty.const._TAD_SAVE}></button>
+      	</div>
+      </fieldset>
+
+  </div>
+<{/if}>
+</div>

@@ -1,0 +1,36 @@
+<{foreach item=block from=$block.web}>
+  <fieldset>
+    <legend><{$block.WebTitle}><{$smarty.const._MB_TCW_MENU}></legend>
+    <div class="row-fluid">
+      <div class="span12"><{$block.my_web}></div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span6"><{$block.class_setup}></div>
+      <div class="span6"><{$block.web_config}></div>
+    </div>
+
+
+    <hr>
+
+
+    <div class="row-fluid">
+      <div class="span6"><{$block.news_add}></div>
+      <div class="span6"><{$block.homework_add}></div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span6"><{$block.action_add}></div>
+      <div class="span6"><{$block.video_add}></div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span6"><{$block.files_add}></div>
+      <div class="span6"><{$block.link_add}></div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span12"><{$block.logout}></div>
+    </div>
+  </fieldset>
+<{/foreach}>

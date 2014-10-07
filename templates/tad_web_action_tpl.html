@@ -1,0 +1,83 @@
+<{includeq file="db:tad_web_header.html"}>
+
+<{if $op=="tad_web_action_form"}>
+
+	<{$formValidator_code}>
+
+  <script src="<{$xoops_url}>/modules/tadtools/multiple-file-upload/jquery.MultiFile.js"></script>
+	<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+  <div class="row-fluid">
+	<form action="action.php" method="post" id="myForm" enctype="multipart/form-data">
+    <!--活動名稱-->
+    <div class="controls controls-row">
+      <input type="text" name="ActionName" value="<{$ActionName}>" id="ActionName" class="validate[required , length[1,255]] span12" placeholder="<{$smarty.const._MD_TCW_ACTIONNAME}>">
+    </div>
+
+    <!--活動說明-->
+    <div class="controls controls-row">
+      <textarea name="ActionDesc"  rows=4 id="ActionDesc"  class="span12" placeholder="<{$smarty.const._MD_TCW_ACTIONDESC}>"><{$ActionDesc}></textarea>
+    </div>
+
+    <!--活動日期-->
+    <div class="controls controls-row">
+      <div class="span2"><{$smarty.const._MD_TCW_ACTIONDATE}></div>
+      <input type="text" name="ActionDate" class="span4" value="<{$ActionDate}>" id="ActionDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
+      
+      <!--活動地點-->
+      <div class="span2 text-right"><{$smarty.const._MD_TCW_ACTIONPLACE}></div>
+      <input type="text" name="ActionPlace" class="span4" value="<{$ActionPlace}>" id="ActionPlace" >
+    </div>
+
+    <!--上傳圖檔-->
+    <div class="controls controls-row">
+      <div class="span2"><{$smarty.const._MD_TCW_ACTION_UPLOAD}></div>
+      <{$upform}>
+    </div>
+    
+
+    <div class="controls controls-row pull-right">
+    	<!--活動編號-->
+    	<input type="hidden" name="ActionID" value="<{$ActionID}>">
+    	<!--所屬團隊-->
+    	<input type="hidden" name="WebID" value="<{$WebID}>">
+    	<input type="hidden" name="op" value="<{$next_op}>">
+    	<button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+    </div>
+
+	</form>
+	</div>
+<{elseif $op=="show_one_tad_web_action"}>
+
+  <{if $isMineAction}>
+  <script>
+  	function delete_tad_web_action_func(ActionID){
+  		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+  		if (!sure)	return;
+  		location.href="action.php?op=delete_tad_web_action&ActionID=" + ActionID;
+  	}
+	</script>
+  <{/if}>
+  
+  <h1><{$ActionName}></h1>
+  <div class="row-fluid">
+    <div class="span4"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
+    <div class="span4"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
+    <div class="span4"><{$ActionInfo}></div>
+  </div>
+  <div class="well"><{$ActionDesc}></div>
+
+  <div class="row-fluid">
+    <{$pics}>
+  </div>
+
+  <{if $isMineAction}>
+    <div style="text-align:right;">
+  	<a href="javascript:delete_tad_web_action_func(<{$ActionID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+  	<a href="action.php?op=tad_web_action_form&ActionID=<{$ActionID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+  	</div>
+  <{/if}>
+<{else}>
+  <{$FooTableJS}>
+  <{includeq file="db:tad_web_common_action.html"}>
+
+<{/if}>

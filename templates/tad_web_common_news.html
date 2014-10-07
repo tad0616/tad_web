@@ -1,0 +1,58 @@
+<{if $isMineNews}>
+  <script>
+    function delete_tad_web_news_func(NewsID){
+    	var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+    	if (!sure)	return;
+    	location.href="news.php?op=delete_tad_web_news&NewsID=" + NewsID;
+    }
+    </script>
+<{/if}>
+
+
+
+<h1><{$smarty.const._MD_TCW_NEWS}></h1>
+<table class="footable">
+<thead>
+  <tr>
+    <th data-hide="phone" style="width:100px;text-align:center;"><{$smarty.const._MD_TCW_NEWSDATE}></th>
+    <th data-class="expand"><{$smarty.const._MD_TCW_NEWS}></th>
+    <th data-hide="phone" style="width:50px;text-align:center;"><{$smarty.const._MD_TCW_NEWSCOUNTER}></th>
+    <{if $showWebTitleNews}><th data-hide="phone" style="width:100px;text-align:center;"><{$smarty.const._MD_TCW_TEAMID}></th><{/if}>
+    <{if !$showWebTitleNews && $isMineNews}><th data-hide="phone" style="width:100px;text-align:center;"><{$smarty.const._TAD_FUNCTION}></th><{/if}>
+  </tr>
+</thead>
+
+<{if $news_data}>
+  <{foreach item=news from=$news_data}>
+  <tr>
+    <td style="text-align:center;"><{$news.Date}></td>
+    <td><a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
+    <td style="text-align:center;"><{$news.NewsCounter}></td>
+    <{if $showWebTitleNews}><td style="text-align:center;"><{$news.WebTitle}></td><{/if}>
+    <{if !$showWebTitleNews && $isMineNews}>
+		<td style="text-align:center;">
+      <a href="javascript:delete_tad_web_news_func(<{$news.NewsID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+  		<a href="news.php?op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
+    </td>
+		<{/if}>
+  </tr>
+  <{/foreach}>
+<{else}>
+  <tr><td colspan=4 style="text-align:center;"><{$smarty.const._MD_TCW_EMPTY}></td></tr>
+<{/if}>
+</table>
+
+<{if $news_data}>
+  <{$bar}>
+<{/if}>
+
+<div style="text-align:right">
+  <{if $bar==""}>
+    <{if $WebID==""}>
+      <a href="index.php?op=list_tad_web_news" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+    <{else}>
+      <a href="news.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+    <{/if}>
+  <{/if}>
+  <{if $isMineNews}><a href="news.php?op=tad_web_news_form&WebID=<{$WebID}>" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
+</div>
