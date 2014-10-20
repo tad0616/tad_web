@@ -2,32 +2,32 @@
   <{assign var="i" value=0}>
   <{assign var="total" value=0}>
 
-  <{foreach item=class from=$data}>
-    <{if $i==0}>
-    <div class="row-fluid">
-    <{/if}>
-    
-      <!--<{$class.WebName}> start-->
-      <div class="span3 well well-small" style="background-image:url(<{$class.WebOwnerPic}>);background-size:cover;background-position:center center;">
+  <table class="table">
+    <tr>
+      <th><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
+      <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
+      <th><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
+      <th><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
+    </tr>
+    <{foreach item=class from=$data}>
+      <tr>
+        <td>
+          <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebTitle}></a>
+        </td>
+        <td>
 
-        <h4><a href="index.php?WebID=<{$class.WebID}>" style="text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;"><{$class.WebName}></a></h4>
-        <div class="row-fluid">
-          <div class="span8"><a href="index.php?WebID=<{$class.WebID}>" style="text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;"><{$class.WebTitle}></a></div>
-          <div class="span4" style="text-align:right;">
-            <span class="label <{if $WebID==$class.WebID}>label-important<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
-          </div>
-        </div>
+          <span class="label <{if $class.WebID|in_array:$MyWebs}>label-important<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
+        </td>
+        <td>
+          <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebName}></a>
+        </td>
+        <td>
+          <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebCounter}></a>
+        </td>
+      </tr>
 
-      </div>
-      <!--<{$class.WebName}> end-->
-      
-    <{assign var="i" value=$i+1}>
-    <{assign var="total" value=$total+1}>
-    <{if $i == 4 || $total==$count}>
-      </div>
-      <{assign var="i" value=0}>
-    <{/if}>
-  <{/foreach}>
+    <{/foreach}>
+  </table>
 
   <div class="clearfix"></div>
 <{/if}>

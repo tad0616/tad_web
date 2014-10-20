@@ -2,7 +2,7 @@
 
 //所有網站列表
 function list_all_tad_webs(){
-	global $xoopsDB,$xoopsUser,$MyWebs,$xoopsModuleConfig,$xoopsTpl,$upfile;
+	global $xoopsDB,$xoopsUser,$MyWebs,$xoopsModuleConfig,$xoopsTpl,$TadUpFiles;
 
 	$sql = "select * from ".$xoopsDB->prefix("tad_web")." where `WebEnable`='1' order by WebSort";
 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -16,7 +16,8 @@ function list_all_tad_webs(){
       $data[$i][$k]=$v;
     }
 //echo "<p>$WebID</p>";
-    $data[$i]['WebOwnerPic']=$upfile->get_pic_file("WebOwner",$WebID,1,"images");
+    $TadUpFiles->set_col("WebOwner",$WebID,1);
+    $data[$i]['WebOwnerPic']=$TadUpFiles->get_pic_file();
     //echo "<p>{$data[$i]['WebOwnerPic']}</p>";
 //echo "<p>{$data[$i]['WebOwnerPic']}</p>";
     //if($WebID==9)die($data[$i]['WebOwnerPic']);
@@ -160,7 +161,7 @@ function list_tad_web_files($WebID=null,$limit=""){
     $Class=getWebInfo($WebID);
     $file_date=substr($file_date,0,10);
 
-    $showurl=($enable_link)?"<a href='".XOOPS_URL."/modules/tad_web/dl.php?files_sn=$files_sn&WebID={$WebID}'>{$description}</a>":$description;
+    $showurl=($enable_link)?"<a href='".XOOPS_URL."/modules/tad_web/files.php?op=tufdl&files_sn=$files_sn&WebID={$WebID}'>{$description}</a>":$description;
 
 		$all_data[$i]['showurl']=$showurl;
 		$all_data[$i]['uid_name']=$uid_name;

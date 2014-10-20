@@ -25,7 +25,7 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 //tad_web_news編輯表單
 function tad_web_news_form($NewsID=""){
-  global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$isMyWeb,$xoopsTpl;
+  global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$isMyWeb,$xoopsTpl,$TadUpFiles;
 
   if(!$isMyWeb and $MyWebs){
     redirect_header($_SERVER['PHP_SELF']."?op=tad_web_news_form&WebID={$MyWebs[0]}",3, _MD_TCW_AUTO_TO_HOME);
@@ -56,7 +56,7 @@ function tad_web_news_form($NewsID=""){
 
 	//設定「NewsContent」欄位預設值
   if(isset($DBV['NewsContent'])){
-    $NewsContent=(_NEWS_KIND=="homework")?_MD_TCW_HOMEWORK_DEFAULT:$DBV['NewsContent'];
+    $NewsContent=$DBV['NewsContent'];
   }else{
     $NewsContent=(_NEWS_KIND=="homework")?_MD_TCW_HOMEWORK_DEFAULT:"";
   }
@@ -115,7 +115,6 @@ function tad_web_news_form($NewsID=""){
 	$xoopsTpl->assign('NewsID',$NewsID);
 	$xoopsTpl->assign('NewsContent_editor',$editor);
 	$xoopsTpl->assign('SHOW_NEWS_UPLOAD',_SHOW_NEWS_UPLOAD);
-	$xoopsTpl->assign('list_del_file',upfile::list_del_file("NewsID",$NewsID));
 	$xoopsTpl->assign('SHOW_NEWS_TOCAL',_SHOW_NEWS_TOCAL);
 	$xoopsTpl->assign('toCal',$toCal);
 	$xoopsTpl->assign('USE_NEWS_FORM_DATETIME',_USE_NEWS_FORM_DATETIME);
@@ -127,13 +126,17 @@ function tad_web_news_form($NewsID=""){
 	$xoopsTpl->assign('SHOW_NEWS_PLACE',_SHOW_NEWS_PLACE);
 	$xoopsTpl->assign('NewsPlace',$NewsPlace);
 	$xoopsTpl->assign('NewsTitle',$NewsTitle);
+
+  $TadUpFiles->set_col("NewsID",$NewsID);
+  $upform=$TadUpFiles->upform();
+  $xoopsTpl->assign('upform',$upform);
 }
 
 
 
 //新增資料到tad_web_news中
 function insert_tad_web_news(){
-	global $xoopsDB,$xoopsUser,$upfile;
+	global $xoopsDB,$xoopsUser,$TadUpFiles;
 
   $uid=$xoopsUser->getVar('uid');
 
@@ -147,6 +150,7 @@ function insert_tad_web_news(){
   $newstime=(_USE_NEWS_FORM_DATETIME)?$_POST['NewsDate']:date("Y-m-d H:i:s");
 
   //if($_POST['NewsKind']=="law")$WebID=0;
+  if(empty($_POST['toCal']))$_POST['toCal']="0000-00-00 00:00:00";
 
 	$sql = "insert into ".$xoopsDB->prefix("tad_web_news")."
 	(`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsPlace` , `NewsMaster` , `NewsUrl` , `WebID` , `NewsKind` , `NewsCounter` , `uid`)
@@ -157,14 +161,15 @@ function insert_tad_web_news(){
 	//取得最後新增資料的流水編號
 	$NewsID=$xoopsDB->getInsertId();
 
-	$upfile->upload_file('upfile',"NewsID",$NewsID,640);
+  $TadUpFiles->set_col("NewsID",$NewsID);
+	$TadUpFiles->upload_file('upfile',640,NULL,NULL,NULL,true);
 
 	return $NewsID;
 }
 
 //更新tad_web_news某一筆資料
 function update_tad_web_news($NewsID=""){
-	global $xoopsDB,$xoopsUser,$upfile;
+	global $xoopsDB,$xoopsUser,$TadUpFiles;
 
 	$myts =& MyTextSanitizer::getInstance();
 	$_POST['NewsTitle']=$myts->addSlashes($_POST['NewsTitle']);
@@ -179,6 +184,8 @@ function update_tad_web_news($NewsID=""){
 
   if($_POST['NewsKind']=="law")$WebID=0;
 
+  if(empty($_POST['toCal']))$_POST['toCal']="0000-00-00 00:00:00";
+
 	$sql = "update ".$xoopsDB->prefix("tad_web_news")." set
 	 `NewsTitle` = '{$_POST['NewsTitle']}' ,
 	 `NewsContent` = '{$_POST['NewsContent']}' ,
@@ -190,7 +197,8 @@ function update_tad_web_news($NewsID=""){
 	where NewsID='$NewsID' $anduid";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-	$upfile->upload_file('upfile',"NewsID",$NewsID,640);
+  $TadUpFiles->set_col("NewsID",$NewsID);
+  $TadUpFiles->upload_file('upfile',640,NULL,NULL,NULL,true);
 
 	return $NewsID;
 }
@@ -200,7 +208,7 @@ function update_tad_web_news($NewsID=""){
 
 //以流水號秀出某筆tad_web_news資料內容
 function show_one_tad_web_news($NewsID="",$show_place=false,$nl2br=false){
-	global $xoopsDB,$WebID,$isAdmin,$xoopsTpl,$upfile;
+	global $xoopsDB,$WebID,$isAdmin,$xoopsTpl,$TadUpFiles;
 	if(empty($NewsID)){
 		return;
 	}else{
@@ -234,8 +242,8 @@ function show_one_tad_web_news($NewsID="",$show_place=false,$nl2br=false){
     $learn_info="<table><tr><td>"._MD_TCW_NEWSPLACE._TAD_FOR."<u>{$NewsPlace}</u></td><td>$showNewsMaster</td></tr></table>";
   }
 
-  //是否縮圖,顯示模式 filename、num,顯示描述,顯示下載次數
-  $NewsFiles=$upfile->show_files('upfile',"NewsID",$NewsID,true,false,true,false);
+  $TadUpFiles->set_col("NewsID",$NewsID);
+  $NewsFiles=$TadUpFiles->show_files('upfile',true,NULL,true);
 
 
 
@@ -266,11 +274,12 @@ function add_tad_web_news_counter($NewsID=''){
 
 //刪除tad_web_news某筆資料資料
 function delete_tad_web_news($NewsID=""){
-	global $xoopsDB,$xoopsUser,$upfile;
+	global $xoopsDB,$xoopsUser,$TadUpFiles;
   $anduid=onlyMine();
 	$sql = "delete from ".$xoopsDB->prefix("tad_web_news")." where NewsID='$NewsID' $anduid";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  $upfile->del_files("","NewsID",$NewsID);
+  $TadUpFiles->set_col("NewsID",$NewsID);
+  $TadUpFiles->del_files();
 }
 
 

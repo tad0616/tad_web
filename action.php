@@ -19,7 +19,7 @@ function tad_web_action_form($ActionID=""){
   }elseif(empty($MyWebs)){
     redirect_header("index.php",3, _MD_TCW_NOT_OWNER);
   }
-  
+
 	//抓取預設值
 	if(!empty($ActionID)){
 		$DBV=get_tad_web_action($ActionID);
@@ -75,8 +75,7 @@ function tad_web_action_form($ActionID=""){
   $xoopsTpl->assign('WebID',$WebID);
   $xoopsTpl->assign('next_op',$op);
   $xoopsTpl->assign('op','tad_web_action_form');
-  
-  $TadUpFiles->set_dir('subdir',"/{$WebID}");
+
   $TadUpFiles->set_col('ActionID',$ActionID); //若 $show_list_del_file ==true 時一定要有
   $upform=$TadUpFiles->upform(true,'upfile');
   $xoopsTpl->assign('upform',$upform);
@@ -97,6 +96,7 @@ function insert_tad_web_action(){
 	$_POST['ActionDesc']=$myts->addSlashes($_POST['ActionDesc']);
 	$_POST['ActionPlace']=$myts->addSlashes($_POST['ActionPlace']);
 
+  $_POST['ActionCount']=intval($_POST['ActionCount']);
 
 	$sql = "insert into ".$xoopsDB->prefix("tad_web_action")."
 	(`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
@@ -104,10 +104,10 @@ function insert_tad_web_action(){
 	$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
 	//取得最後新增資料的流水編號
-	$ActionID=$xoopsDB->getInsertId();  
-  $TadUpFiles->set_dir('subdir',"/{$_POST['WebID']}");
+	$ActionID=$xoopsDB->getInsertId();
+
   $TadUpFiles->set_col('ActionID',$ActionID);
-  $TadUpFiles->upload_file('upfile',800);
+  $TadUpFiles->upload_file('upfile',800,NULL,NULL,NULL,true);
 
 	return $ActionID;
 }
@@ -123,6 +123,8 @@ function update_tad_web_action($ActionID=""){
 
   $anduid=onlyMine();
 
+  $_POST['ActionCount']=intval($_POST['ActionCount']);
+
 	$sql = "update ".$xoopsDB->prefix("tad_web_action")." set
 	 `ActionName` = '{$_POST['ActionName']}' ,
 	 `ActionDesc` = '{$_POST['ActionDesc']}' ,
@@ -131,9 +133,9 @@ function update_tad_web_action($ActionID=""){
 	where ActionID='$ActionID' $anduid";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-  $TadUpFiles->set_dir('subdir',"/{$_POST['WebID']}");
   $TadUpFiles->set_col('ActionID',$ActionID);
-  $TadUpFiles->upload_file('upfile',800);
+  $TadUpFiles->upload_file('upfile',800,NULL,NULL,NULL,true);
+
 	return $ActionID;
 }
 
@@ -172,9 +174,9 @@ function show_one_tad_web_action($ActionID=""){
 	}else{
 		$ActionID=intval($ActionID);
 	}
-	
+
 	add_tad_web_action_counter($ActionID);
-	
+
 	$sql = "select * from ".$xoopsDB->prefix("tad_web_action")." where ActionID='{$ActionID}'";
 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	$all=$xoopsDB->fetchArray($result);
@@ -183,14 +185,10 @@ function show_one_tad_web_action($ActionID=""){
 	foreach($all as $k=>$v){
 		$$k=$v;
 	}
-		
-		
-  //$pics=$upfile->show_files('upfile',"ActionID",$ActionID,true,false,false,false);
-  
-  $TadUpFiles->set_dir('subdir',"/{$WebID}");
+
   $TadUpFiles->set_col("ActionID",$ActionID);
-  $pics=$TadUpFiles->show_files('upfile',true,NULL,false,false);  //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-  
+  $pics=$TadUpFiles->show_files('upfile');  //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+
   $uid_name=XoopsUser::getUnameFromId($uid,1);
 
 

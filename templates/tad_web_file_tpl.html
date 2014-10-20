@@ -7,7 +7,7 @@
 
 	<div class="controls controls-row">
     <div class="span2"><{$smarty.const._MD_TCW_FILES_UPLOAD}></div>
-    <div class="span8"><input type="file" name="upfile[]" class="multi"></div>
+    <div class="span8"><{$upform}></div>
 
     <div class="span2">
     	<!--所屬領域-->
@@ -28,7 +28,5 @@
 <{else}>
   <{$FooTableJS}>
   <{includeq file="db:tad_web_common_files.html"}>
-
-  <{if $isMine}><a href="files.php?op=tad_web_files_form&WebID=<{$WebID}>" class="btn btn mini btn-warning pull-right"><{$smarty.const._MD_TCW_FILES_UPLOAD}></a><{/if}>
 <{/if}>
 

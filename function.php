@@ -10,13 +10,12 @@ define("TADTOOLS_URL",XOOPS_URL."/modules/tadtools");
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php")){
  redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50",3, _TAD_NEED_TADTOOLS);
 }
+
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-
+$TadUpFiles=new TadUpFiles("tad_web");
 $subdir=isset($WebID)?"/{$WebID}":"";
-$TadUpFiles=new TadUpFiles("tad_web",$subdir);
+$TadUpFiles->set_dir('subdir',"/{$subdir}");
 
-include_once "upfile.php";
-$upfile=new upfile();
 
 //引入TadTools的函式庫
 include_once TADTOOLS_PATH."/tad_function.php";
@@ -38,13 +37,13 @@ function get_web_config($ConfigName="",$WebID=""){
 
 //共同樣板部份
 function common_template($interface_menu,$WebID){
-  global $xoopsTpl,$upfile;
+  global $xoopsTpl,$TadUpFiles;
   $xoopsTpl->assign( "toolbar" , supser_fish($interface_menu,null,"class='sf-menu'","class='current'","tad_web")) ;
   $xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
   $xoopsTpl->assign( "jquery" , get_jquery(true)) ;
-  
+
   //if(empty($WebID))$WebID=$_SESSION['LoginWebID'];
-  
+
   if($WebID){
     $xoopsTpl->assign('WebID',$WebID);
     $bg_name=get_web_config("web_background",$WebID);
@@ -54,16 +53,16 @@ function common_template($interface_menu,$WebID){
     }else{
       $xoopsTpl->assign('WebBackground',rand (1 , 32 ).".jpg");
     }
-    
+
     if($background_position){
       $xoopsTpl->assign('WebBackground_position',$background_position);
     }else{
       $xoopsTpl->assign('WebBackground_position',"center top");
     }
   }
-  
-  
-  
+
+
+
   if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/FooTable.php")){
     include_once XOOPS_ROOT_PATH."/modules/tadtools/FooTable.php";
 
@@ -71,8 +70,8 @@ function common_template($interface_menu,$WebID){
     $FooTableJS=$FooTable->render();
   }
   $xoopsTpl->assign('FooTableJS',$FooTableJS);
-
-  $teacher_pic=$upfile->get_pic_file("WebOwner",$WebID,1,'thumb');
+  $TadUpFiles->set_col("WebOwner",$WebID,1);
+  $teacher_pic=$TadUpFiles->get_pic_file('thumb');
   $xoopsTpl->assign('teacher_thumb_pic',$teacher_pic);
 }
 
@@ -177,15 +176,15 @@ function supser_fish($interface_menu=array(),$interface_logo=array(),$id="id='me
   }else{
     return;
   }
-  
+
   if(!empty($id)){
     $jid=substr($id,0,-1);
     $jid=str_replace("id='","#",$jid);
     $jid=str_replace("class='",".",$jid);
   }
-  
+
   $jquery=get_jquery();
-  
+
   $main="
   $jquery
   <link rel='stylesheet' type='text/css' href='class/superfish/css/superfish.css' media='screen'>
@@ -229,7 +228,7 @@ function get_seme(){
 function isMine($uid=null){
   global $xoopsUser,$isAdmin,$MyWebs,$WebID;
   if(empty($xoopsUser))return false;
-  
+
   $uid=empty($uid)?$xoopsUser->uid():$uid;
   /*
   if($isAdmin){
@@ -300,7 +299,7 @@ function getLevelName($WebID=""){
 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	list($WebTitle)=$xoopsDB->fetchRow($result);
 
- 
+
 
 	return $main;
 }
@@ -321,7 +320,7 @@ function mc2arr($name="",$def="",$type='option',$other=""){
         $v_as_k=true;
       }
     }
-    
+
     if($type=="checkbox"){
         $opt=arr2chk($name,$new_arr,$def,$def,$v_as_k,$other);
     }elseif($type=="radio"){
@@ -404,7 +403,7 @@ function mklogoPic($WebID=""){
   $Class=getWebInfo($WebID);
   $WebName=$Class['WebName'];
   $WebTitle=$Class['WebTitle'];
-  
+
   if(function_exists('mb_strwidth')){
     $n=mb_strwidth($WebName)/2;
   }else{
@@ -451,7 +450,7 @@ function mklogoPic($WebID=""){
   $insert_y = imagesy($insert);
   imagecopymerge($im,$insert,0,0,0,0,$insert_x,$insert_y,100);
   */
-  
+
 
   imagettftext($im, $size, 0 , 0, $x, $text_color,XOOPS_ROOT_PATH."/modules/tad_web/class/font.ttf",$WebName);
   imagettftextoutline(
@@ -467,7 +466,7 @@ function mklogoPic($WebID=""){
           2              // outline width
   );
 
-  
+
   imagettftext($im, $size2, 0 , 0, $y, $text_color,XOOPS_ROOT_PATH."/modules/tad_web/class/font.ttf",$WebTitle);
   imagettftextoutline(
           $im,           // image location ( you should use a variable )

@@ -6,11 +6,7 @@ CREATE TABLE `tad_web` (
   `WebEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
   `WebCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
   `WebOwner` varchar(255) NOT NULL default '' COMMENT '擁有者',
-<<<<<<< HEAD
   `WebOwnerUid` mediumint(8) unsigned NOT NULL default 0 COMMENT '擁有者uid',
-=======
-  `WebOwnerUid` smallint(5) unsigned NOT NULL default 0 COMMENT '擁有者uid',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
   `WebTitle` varchar(255) NOT NULL default '' COMMENT '全銜',
   `CreatDate` datetime NOT NULL default '0000-00-00 00:00:00',
   `WebYear` year(4) NOT NULL default '0000',
@@ -22,11 +18,7 @@ CREATE TABLE `tad_web_cate` (
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
   `CateName` tinyint(3) unsigned NOT NULL default 0 COMMENT '名稱',
   `ColName` varchar(255) NOT NULL default '' COMMENT '擁有者',
-<<<<<<< HEAD
   `ColSN` mediumint(8) unsigned NOT NULL default 0 COMMENT '擁有者uid',
-=======
-  `ColSN` smallint(5) unsigned NOT NULL default 0 COMMENT '擁有者uid',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
   `CateSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
   `CateEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
   `CateCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
@@ -64,11 +56,7 @@ CREATE TABLE `tad_web_mems` (
   `MemUrl` varchar(255) NOT NULL DEFAULT '' COMMENT '網址',
   `MemClassOrgan` varchar(255) NOT NULL DEFAULT '' COMMENT '職稱',
   `MemExpertises` varchar(255) NOT NULL DEFAULT '' COMMENT '專長',
-<<<<<<< HEAD
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT 'uid',
-=======
-  `uid` smallint(6) unsigned NOT NULL default 0 COMMENT 'uid',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
   `MemUname` varchar(255) NOT NULL DEFAULT '' COMMENT '帳號',
   `MemPasswd` varchar(255) NOT NULL DEFAULT '' COMMENT '密碼',
   PRIMARY KEY `uid` (`MemID`)
@@ -84,11 +72,7 @@ CREATE TABLE `tad_web_link` (
   `LinkUrl` varchar(255) NOT NULL default '' COMMENT '網站連結',
   `LinkCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
   `LinkSort` tinyint(3) unsigned NOT NULL default 0 COMMENT '排序',
-<<<<<<< HEAD
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-=======
-  `uid` smallint(6) unsigned NOT NULL default 0 COMMENT '發布者',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
 PRIMARY KEY (`LinkID`)
 ) ENGINE=MyISAM;
 
@@ -106,11 +90,7 @@ CREATE TABLE `tad_web_news` (
   `NewsUrl` varchar(255) NOT NULL default '' COMMENT '相關連結',
   `NewsCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
   `NewsKind` varchar(255) NOT NULL default '' COMMENT '文章種類',
-<<<<<<< HEAD
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-=======
-  `uid` smallint(6) unsigned NOT NULL default 0 COMMENT '發布者',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
 PRIMARY KEY (`NewsID`)
 ) ENGINE=MyISAM;
 
@@ -123,11 +103,7 @@ CREATE TABLE `tad_web_action` (
   `ActionDesc` text NOT NULL COMMENT '活動說明',
   `ActionDate` date NOT NULL default '0000-00-00' COMMENT '活動日期',
   `ActionPlace` varchar(255) NOT NULL default '' COMMENT '活動地點',
-<<<<<<< HEAD
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-=======
-  `uid` smallint(6) unsigned NOT NULL default 0 COMMENT '發布者',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
   `ActionCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
 PRIMARY KEY (`ActionID`)
 ) ENGINE=MyISAM;
@@ -137,11 +113,7 @@ CREATE TABLE `tad_web_discuss` (
   `ReDiscussID` smallint(6) unsigned NOT NULL default 0 COMMENT '回覆編號',
   `CateID` smallint(6) unsigned NOT NULL default 0,
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-<<<<<<< HEAD
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT 'uid',
-=======
-  `uid` smallint(6) unsigned NOT NULL default 0 COMMENT 'uid',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
   `MemID` smallint(6) unsigned NOT NULL default 0 COMMENT '發布者',
   `MemName` varchar(255) NOT NULL default '' COMMENT '發布者姓名',
   `DiscussTitle` varchar(255) NOT NULL default '' COMMENT '標題',
@@ -157,11 +129,7 @@ CREATE TABLE `tad_web_files` (
   `fsn` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
   `CateID` smallint(6) unsigned NOT NULL default 0,
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-<<<<<<< HEAD
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
-=======
-  `uid` smallint(5) unsigned NOT NULL default 0 COMMENT '上傳者',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
   `file_date` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '日期',
 PRIMARY KEY (`fsn`)
 ) ENGINE=MyISAM;
@@ -194,11 +162,7 @@ CREATE TABLE `tad_web_video` (
   `VideoDesc` text NOT NULL COMMENT '影片說明',
   `VideoDate` date NOT NULL default '0000-00-00' COMMENT '影片日期',
   `VideoPlace` varchar(255) NOT NULL default '' COMMENT '影片地點',
-<<<<<<< HEAD
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-=======
-  `uid` smallint(6) unsigned NOT NULL default 0 COMMENT '發布者',
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
   `VideoCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
   `Youtube` varchar(255) NOT NULL default '' COMMENT 'Youtube 位址',
   PRIMARY KEY (`VideoID`)

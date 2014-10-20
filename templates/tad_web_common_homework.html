@@ -51,5 +51,7 @@
       <a href="homework.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineHomework}><a href="homework.php?op=tad_web_news_form&WebID=<{$WebID}>" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
+  <{if $isMineHomework}>
+    <a href="homework.php?op=tad_web_news_form&WebID=<{$WebID}>" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
+  <{/if}>
 </div>

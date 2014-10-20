@@ -7,8 +7,8 @@
 	}
 	</script>
 <{/if}>
-  
-  
+
+
 <h1><{$smarty.const._MD_TCW_VIDEO}></h1>
 
 <table class="footable">
@@ -25,9 +25,11 @@
 
   <tr>
 		<td style="width:130px;">
-    <a href="video.php?VideoID=<{$video.VideoID}>&WebID=<{$video.WebID}>"><img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/1.jpg" class="pull-left img-polaroid" style="margin-right:10px;"></a>
+    <a href="video.php?VideoID=<{$video.VideoID}>&WebID=<{$video.WebID}>">
+      <img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/1.jpg" class="pull-left img-polaroid" style="margin-right:10px;" alt="<{$video.VideoName}>">
+    </a>
     </td>
-    
+
     <td>
     <{$video.VideoDate}>
     <p><a href="video.php?VideoID=<{$video.VideoID}>&WebID=<{$video.WebID}>"><{$video.VideoName}></a></p>

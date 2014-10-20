@@ -18,6 +18,10 @@ define("_MD_TCW_PEOPLE", "人");
 define("_MD_TCW_ALL_CLASS","班級列表");
 define("_MD_TCW_MY_CLASS","本班成員");
 define("_MD_TCW_ALL_WEB","網頁列表");
+define("_MD_TCW_ALL_WEB_TITLE","正式名稱");
+define("_MD_TCW_ALL_WEB_NAME","網頁名稱");
+define("_MD_TCW_ALL_WEB_COUNTER","人氣");
+define("_MD_TCW_ALL_WEB_OWNER","擁有者");
 
 //common
 define("_MD_TCW_TEAMID","所屬網頁");

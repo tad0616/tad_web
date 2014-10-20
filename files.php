@@ -15,7 +15,7 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 //tad_web_files編輯表單
 function tad_web_files_form($fsn="",$WebID=""){
-  global $xoopsDB,$xoopsUser,$xoopsModuleConfig,$isAdmin,$MyWebs,$xoopsTpl,$isMyWeb;
+  global $xoopsDB,$xoopsUser,$xoopsModuleConfig,$isAdmin,$MyWebs,$xoopsTpl,$isMyWeb,$TadUpFiles;
 
   if(!$isMyWeb and $MyWebs){
     redirect_header($_SERVER['PHP_SELF']."?op=tad_web_files_form&WebID={$MyWebs[0]}",3, _MD_TCW_AUTO_TO_HOME);
@@ -55,9 +55,14 @@ function tad_web_files_form($fsn="",$WebID=""){
 
   $xoopsTpl->assign('WebID',$WebID);
   $xoopsTpl->assign('fsn',$fsn);
-  $xoopsTpl->assign('list_del_file',upfile::list_del_file("fsn",$fsn,true));
+
   $xoopsTpl->assign('next_op',$op);
   $xoopsTpl->assign('op','tad_web_files_form');
+
+
+  $TadUpFiles->set_col("fsn",$fsn);
+  $upform=$TadUpFiles->upform();
+  $xoopsTpl->assign('upform',$upform);
 }
 
 
@@ -65,13 +70,15 @@ function tad_web_files_form($fsn="",$WebID=""){
 
 //新增資料到tad_web_files中
 function insert_tad_web_files(){
-  global $xoopsDB,$xoopsUser,$upfile;
+  global $xoopsDB,$xoopsUser,$TadUpFiles;
 
   //取得使用者編號
   $uid=($xoopsUser)?$xoopsUser->getVar('uid'):"";
 
   $myts =& MyTextSanitizer::getInstance();
 
+  $_POST['CateID']=intval($_POST['CateID']);
+  $_POST['WebID']=intval($_POST['WebID']);
 
   $sql = "insert into ".$xoopsDB->prefix("tad_web_files")."
   (`uid` , `CateID` , `file_date`  , `WebID`)
@@ -82,26 +89,31 @@ function insert_tad_web_files(){
   //取得最後新增資料的流水編號
   $fsn=$xoopsDB->getInsertId();
 
-  $upfile->upload_file('upfile','fsn',$fsn,640);
+  $TadUpFiles->set_col('fsn',$fsn);
+  $TadUpFiles->upload_file('upfile',640,NULL,NULL,NULL,true);
   return $fsn;
 }
 
 //更新tad_web_files某一筆資料
 function update_tad_web_files($fsn=""){
-  global $xoopsDB,$xoopsUser,$upfile;
+  global $xoopsDB,$xoopsUser,$TadUpFiles;
 
 
   $myts =& MyTextSanitizer::getInstance();
 
   $anduid=onlyMine();
 
+  $_POST['CateID']=intval($_POST['CateID']);
+  $_POST['WebID']=intval($_POST['WebID']);
   $sql = "update ".$xoopsDB->prefix("tad_web_files")." set
    `CateID` = '{$_POST['CateID']}' ,
    `file_date` = now() ,
    `WebID` = '{$_POST['WebID']}'
   where fsn='$fsn' $anduid";
   $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  $upfile->upload_file('upfile','fsn',$fsn,640);
+
+  $TadUpFiles->set_col('fsn',$fsn);
+  $TadUpFiles->upload_file('upfile',640,NULL,NULL,NULL,true);
   return $fsn;
 }
 
@@ -121,11 +133,12 @@ function get_tad_web_files($fsn=""){
 
 //刪除tad_web_files某筆資料資料
 function delete_tad_web_files($fsn=""){
-  global $xoopsDB,$xoopsUser,$upfile;
+  global $xoopsDB,$xoopsUser,$TadUpFiles;
   $anduid=onlyMine();
   $sql = "delete from ".$xoopsDB->prefix("tad_web_files")." where fsn='$fsn' $anduid";
   $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  $upfile->del_files("","fsn",$fsn);
+  $TadUpFiles->set_col("fsn",$fsn);
+  $TadUpFiles->del_files();
 }
 
 
@@ -159,6 +172,13 @@ switch($op){
   case "delete_tad_web_files":
   delete_tad_web_files($fsn);
   header("location: {$_SERVER['PHP_SELF']}");
+  break;
+
+  //下載檔案
+  case "tufdl":
+  $files_sn=isset($_GET['files_sn'])?intval($_GET['files_sn']):"";
+  $TadUpFiles->add_file_counter($files_sn);
+  exit;
   break;
 
   //預設動作

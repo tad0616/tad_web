@@ -4,7 +4,11 @@
 
 <{if $WebID}>
   <div class="well" id="WebBackground" style="background-image:url(images/background/<{$WebBackground}>);background-size:cover;background-position:<{$WebBackground_position}>">
-    <{if $teacher_thumb_pic}><a href="index.php?WebID=<{$WebID}>"><img src="<{$teacher_thumb_pic}>" class="img-polaroid img-rounded" style="float:left;margin-right:20px;"></a><{/if}>
-    <a href="index.php?WebID=<{$WebID}>"><img src="<{$xoops_url}>/uploads/tad_web_logos/<{$WebID}>.png"></a>
+    <{if $teacher_thumb_pic}>
+      <a href="index.php?WebID=<{$WebID}>">
+        <img src="<{$teacher_thumb_pic}>" class="img-polaroid img-rounded" style="float:left;margin-right:20px;" alt="teacher thumb">
+      </a>
+    <{/if}>
+    <a href="index.php?WebID=<{$WebID}>"><img src="<{$xoops_url}>/uploads/tad_web_logos/<{$WebID}>.png" alt="web log"></a>
   </div>
 <{/if}>

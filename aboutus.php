@@ -6,7 +6,6 @@
 // ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-include_once "upfile.php";
 $xoopsOption['template_main'] = "tad_web_aboutus_tpl.html";
 include_once XOOPS_ROOT_PATH."/header.php";
 /*-----------function區--------------*/
@@ -14,7 +13,7 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 //以流水號秀出某筆tad_web_mems資料內容
 function show_one_tad_web($WebID=""){
-  global $xoopsDB,$xoopsTpl,$MyWebs,$op,$upfile;
+  global $xoopsDB,$xoopsTpl,$MyWebs,$op,$TadUpFiles;
 
   $Web=get_tad_web($WebID);
 
@@ -34,7 +33,8 @@ function show_one_tad_web($WebID=""){
     }
 
 
-    $pic_url=$upfile->get_pic_file("MemID",$MemID,1,'thumb');
+    $TadUpFiles->set_col("MemID",$MemID,1);
+    $pic_url=$TadUpFiles->get_pic_file('thumb');
 
     if(empty($pic_url) or !$MyWebs){
       $pic=($MemSex=='1')?"images/boy.gif":"images/girl.gif";
@@ -70,8 +70,8 @@ function show_one_tad_web($WebID=""){
 
     $i++;
   }
-
-  $teacher_pic=$upfile->get_pic_file("WebOwner",$WebID,1);
+  $TadUpFiles->set_col("WebOwner",$WebID,1);
+  $teacher_pic=$TadUpFiles->get_pic_file();
 
   //$teacher_pic=empty($pic_url)?"":"<div style='background:transparent url($pic_url) no-repeat center center;width:325px;height:249px;'><img src='images/photo.png'></div>";
 
@@ -103,7 +103,7 @@ function show_one_tad_web($WebID=""){
 
 //網站設定
 function tad_web_config($WebID){
-  global $xoopsDB,$xoopsTpl,$MyWebs,$op;
+  global $xoopsDB,$xoopsTpl,$MyWebs,$op,$TadUpFiles;
 
   $ConfigValue=get_web_config("hide_function",$WebID);
   $hide_function=explode(';',$ConfigValue);
@@ -133,7 +133,11 @@ function tad_web_config($WebID){
   $xoopsTpl->assign('next_op' , "update_tad_web");
   $xoopsTpl->assign('isMine' , isMine());
   $xoopsTpl->assign('WebName' , $Web['WebName']);
-  $xoopsTpl->assign('list_del_file' , upfile::list_del_file("WebOwner",$WebID,false));
+
+  $TadUpFiles->set_col("WebOwner",$WebID);
+  $list_del_file=$TadUpFiles->list_del_file();
+
+  $xoopsTpl->assign('list_del_file' , $list_del_file);
 
   if($dh = opendir(XOOPS_ROOT_PATH."/modules/tad_web/images/background/thumbs")){
     $i=0;
@@ -173,7 +177,7 @@ function tad_web_config($WebID){
 
 //更新網頁資訊
 function update_tad_web(){
-  global $xoopsDB,$xoopsUser,$WebID,$upfile;
+  global $xoopsDB,$xoopsUser,$WebID,$TadUpFiles;
 
   $myts =& MyTextSanitizer::getInstance();
   $_POST['WebName']=$myts->addSlashes($_POST['WebName']);
@@ -183,7 +187,8 @@ function update_tad_web(){
    `WebName` = '{$_POST['WebName']}'
   where WebID ='{$WebID}'";
   $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  $upfile->upload_file('upfile',"WebOwner",$WebID);
+  $TadUpFiles->set_col("WebOwner",$WebID);
+  $TadUpFiles->upload_file('upfile',NULL,NULL,NULL,NULL,true);
   mklogoPic($WebID);
 }
 
@@ -279,7 +284,7 @@ global $xoopsDB;
 
 //儲存位置
 function save_seat($MemID){
-  global $xoopsDB,$xoopsUser,$upfile;
+  global $xoopsDB,$xoopsUser,$TadUpFiles;
 
   $sql = "update ".$xoopsDB->prefix("tad_web_link_mems")." set
    `top` = '{$_POST['top']}' ,
@@ -293,7 +298,7 @@ function save_seat($MemID){
 
 //tad_students編輯表單
 function tad_web_mems_form($WebID="0",$MemID="0"){
-  global $xoopsDB,$xoopsUser,$upfile;
+  global $xoopsDB,$xoopsUser,$TadUpFiles;
 
   //抓取預設值
   if(!empty($MemID)){
@@ -356,7 +361,8 @@ function tad_web_mems_form($WebID="0",$MemID="0"){
 
   $op=(empty($MemID))?"insert_tad_web_mems":"update_tad_web_mems";
 
-  $pic_url=$upfile->get_pic_file("MemID",$MemID,1,'thumb');
+  $TadUpFiles->set_col("MemID",$MemID,1);
+  $pic_url=$TadUpFiles->get_pic_file('thumb');
 
   if(empty($pic_url)){
     $pic=($MemSex=='1')?XOOPS_URL."/modules/tad_web/images/boy.gif":XOOPS_URL."/modules/tad_web/images/girl.gif";
@@ -512,7 +518,7 @@ function delete_tad_web_mems($MemID=""){
 
 //更新tad_web_mems某一筆資料
 function update_tad_web_mems($MemID=""){
-  global $xoopsDB,$xoopsUser,$upfile;
+  global $xoopsDB,$xoopsUser,$TadUpFiles;
 //tad_web_link_mems:`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
 //tad_web_mems:`MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`
 
@@ -545,15 +551,15 @@ function update_tad_web_mems($MemID=""){
   where MemID ='$MemID'";
   $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-
-  $upfile->upload_file("upfile","MemID",$MemID,180,1);
+  $TadUpFiles->set_col("MemID",$MemID);
+  $TadUpFiles->upload_file("upfile",180,NULL,NULL,NULL,true);
   return $uid;
 }
 
 
 //新增資料到tad_web_mems中
 function insert_tad_web_mems(){
-  global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$upfile;
+  global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$TadUpFiles;
 
   //tad_web_link_mems:`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
   //tad_web_mems:`MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`
@@ -577,7 +583,8 @@ function insert_tad_web_mems(){
   //取得最後新增資料的流水編號
   $MemID=$xoopsDB->getInsertId();
 
-  $upfile->upload_file("upfile","MemID",$MemID ,180,1);
+  $TadUpFiles->set_col("MemID",$MemID,1);
+  $TadUpFiles->upload_file("upfile" ,180,NULL,NULL,NULL,true);
 
   $sql = "insert into ".$xoopsDB->prefix("tad_web_link_mems")."
   (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`)

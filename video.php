@@ -94,7 +94,7 @@ function insert_tad_web_video(){
 	$_POST['VideoDesc']=$myts->addSlashes($_POST['VideoDesc']);
 
   $VideoPlace = tad_web_getYTid($_POST['Youtube']);
-
+  $_POST['VideoCount']=intval($_POST['VideoCount']);
 	$sql = "insert into ".$xoopsDB->prefix("tad_web_video")."
 	(`VideoName` , `VideoDesc` , `VideoDate` , `VideoPlace` , `uid` , `WebID` , `VideoCount` , `Youtube`)
 	values('{$_POST['VideoName']}' , '{$_POST['VideoDesc']}' , now() , '{$VideoPlace}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['VideoCount']}' , '{$_POST['Youtube']}')";
@@ -128,6 +128,7 @@ function update_tad_web_video($VideoID=""){
 
   $anduid=onlyMine();
 
+  $_POST['VideoCount']=intval($_POST['VideoCount']);
 	$sql = "update ".$xoopsDB->prefix("tad_web_video")." set
 	 `VideoName` = '{$_POST['VideoName']}' ,
 	 `VideoDesc` = '{$_POST['VideoDesc']}' ,

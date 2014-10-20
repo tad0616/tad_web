@@ -7,50 +7,19 @@
   <{else}>
     <{includeq file="db:tad_web_common_news.html"}>
   <{/if}>
-<<<<<<< HEAD
 
-  <{if $isMyWeb}>
-    <a href="<{$smarty.const._NEWS_KIND}>.php?op=tad_web_news_form&WebID=<{$WebID}>" class="btn btn mini btn-warning pull-right"><{$smarty.const._TAD_EDIT}></a>
-  <{/if}>
-
-
-  <div class="clearfix"></div>
-
-  <{if $show_fullcalendar}>
-    <link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.css">
-    <script src="class/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-=======
-  
-  <{if $isMyWeb}><a href="<{$smarty.const._NEWS_KIND}>.php?op=tad_web_news_form&WebID=<{$WebID}>" class="btn btn mini btn-warning pull-right"><{$smarty.const._TAD_EDIT}></a><{/if}>
   <{$page}>
-  
+
   <div class="clearfix"></div>
-  
+
   <{if $show_fullcalendar}>
     <link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.css">
   	<script src="class/fullcalendar/fullcalendar.js" type="text/javascript"></script>
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
     <script type="text/javascript">
     $(function() {
         $("#calendar").fullCalendar({
           buttonText:{today:"<{$smarty.const._MD_TCW_NEWS_TODAY}>",prev:"<{$smarty.const._MD_TCW_NEWS_PREV_MONTH}>",next:"<{$smarty.const._MD_TCW_NEWS_NEXT_MONTH}>"},
           header: {
-<<<<<<< HEAD
-            left: 'prev,next today',
-            center: 'title',
-            right: ''
-          },
-          events: function(start, end, callback) {
-            $.getJSON("get_event.php",
-            {
-              start: start.getTime(),
-              NewsKind: "<{$smarty.const._NEWS_KIND}>" ,
-              WebID: "<{$WebID}>"
-            },
-            function(result) {
-              callback(result);
-            });
-=======
         		left: 'prev,next today',
         		center: 'title',
         		right: ''
@@ -65,7 +34,6 @@
     				function(result) {
     					callback(result);
     				});
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
 
           },
           eventClick: function(event) {
@@ -79,26 +47,16 @@
     </script>
     <div id="calendar"></div>
   <{/if}>
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
 
 <{elseif $mode=="one_news"}>
 
   <{if $isMine}>
     <script>
     function delete_tad_web_news_func(NewsID){
-<<<<<<< HEAD
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="<{$smarty.const._NEWS_KIND}>.php?op=delete_tad_web_news&NewsID=" + NewsID;
-=======
     	var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
     	if (!sure)	return;
     	location.href="<{$smarty.const._NEWS_KIND}>.php?op=delete_tad_web_news&NewsID=" + NewsID;
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
     }
     </script>
   <{/if}>
@@ -109,38 +67,21 @@
 
     <{$learn_info}>
     <{$ShowCal}>
-<<<<<<< HEAD
-    <div class="well">
-     <{$NewsContent}>
-    </div>
-    <{$NewsUrlTxt}>
-
-  <{$NewsFiles}>
-
-  <{if $isMine}>
-    <div style="text-align:right;">
-      <a href="javascript:delete_tad_web_news_func(<{$NewsID}>);" class='btn btn-danger'><{$smarty.const._TAD_DEL}></a>
-=======
   	<div class="well">
   	 <{$NewsContent}>
   	</div>
   	<{$NewsUrlTxt}>
 
   <{$NewsFiles}>
-  
+
   <{if $isMine}>
     <div style="text-align:right;">
     	<a href="javascript:delete_tad_web_news_func(<{$NewsID}>);" class='btn btn-danger'><{$smarty.const._TAD_DEL}></a>
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
       <a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&op=tad_web_news_form"  class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
       <a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&op=tad_web_news_form&NewsID=<{$NewsID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
 <{else}>
 
   <{$formValidator_code}>
@@ -149,41 +90,11 @@
   <script src="<{$xoops_url}>/modules/tadtools/multiple-file-upload/jquery.MultiFile.js"></script>
   <div class="row-fluid">
   <form action="<{$smarty.const._NEWS_KIND}>.php" method="post" id="myForm" enctype="multipart/form-data">
-<<<<<<< HEAD
-    <!--標題-->
-=======
   	<!--標題-->
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
     <div class="controls controls-row">
       <input name="NewsTitle" id="NewsTitle" class="validate[required , length[1,255]] span12" type="text" value="<{$NewsTitle}>" placeholder="<{$smarty.const._MD_TCW_NEWSTITLE}>">
     </div>
 
-<<<<<<< HEAD
-    <!--內容-->
-    <div class="controls controls-row">
-       <{$NewsContent_editor}>
-    </div>
-    <br>
-    <!--地點-->
-    <{if $SHOW_NEWS_PLACE || SHOW_NEWS_MASTER}>
-      <div class="controls controls-row">
-        <{if $SHOW_NEWS_PLACE}>
-          <div class="span2"><{$smarty.const._MD_TCW_NEWSPLACE}></div>
-          <input type="text" name="NewsPlace"  value="<{$NewsPlace}>" id="NewsPlace" class="span4">
-
-        <{/if}>
-
-        <!--主持人-->
-        <{if $SHOW_NEWS_MASTER}>
-          <div class="span2"><{$smarty.const._MD_TCW_NEWSMASTER}></div>
-          <input type="text" name="NewsMaster" value="<{$NewsMaster}>" id="NewsMaster" class="span4">
-        <{/if}>
-      </div>
-    <{/if}>
-
-    <!--相關連結-->
-    <{if $SHOW_NEWS_URL}>
-=======
   	<!--內容-->
     <div class="controls controls-row">
     	 <{$NewsContent_editor}>
@@ -205,39 +116,16 @@
       	<{/if}>
       </div>
     <{/if}>
-    
+
   	<!--相關連結-->
   	<{if $SHOW_NEWS_URL}>
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
     <div class="controls controls-row">
       <div class="span2"><{$smarty.const._MD_TCW_NEWSURL}></div>
       <input type="text" name="NewsUrl" value="<{$NewsUrl}>" id="NewsUrl" class="span10">
     </div>
-<<<<<<< HEAD
-    <{/if}>
-
-
-    <!--發布時間-->
-    <{if $USE_NEWS_FORM_DATETIME || SHOW_NEWS_TOCAL}>
-      <div class="controls controls-row">
-        <{if $USE_NEWS_FORM_DATETIME}>
-          <div class="span2"><{$smarty.const._MD_TCW_NEWSDATE}></div>
-          <input type="text" name="NewsDate" value="<{$NewsDate}>" id="NewsDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m}'})" class="span4">
-        <{/if}>
-
-        <!--加到行事曆-->
-        <{if $SHOW_NEWS_TOCAL}>
-          <div class="span2"><{$smarty.const._MD_TCW_TOCAL}></div>
-          <input type="text" name="toCal" value="<{$toCal}>" id="toCal" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}'})" class="span4" placeholder="<{$smarty.const._NEWS_TOCAL_DESC}>">
-        <{/if}>
-      </div>
-    <{/if}>
-
-    <!--相關附件-->
-=======
   	<{/if}>
-  	
-  	
+
+
     <!--發布時間-->
   	<{if $USE_NEWS_FORM_DATETIME || SHOW_NEWS_TOCAL}>
       <div class="controls controls-row">
@@ -255,28 +143,11 @@
   	<{/if}>
 
   	<!--相關附件-->
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
     <{if $SHOW_NEWS_UPLOAD}>
     <div class="controls controls-row">
       <div class="span2"><{$smarty.const._MD_TCW_NEWS_FILES}></div>
-      <input type="file" name="upfile[]" class="multi span4">
-      <div class="span4"><{$list_del_file}></div>
+      <div class="span8"><{$upform}></div>
     </div>
-<<<<<<< HEAD
-    <{/if}>
-
-
-    <div style="text-align:right;">
-      <!--文章種類-->
-      <input type="hidden" name="NewsKind" value="<{$smarty.const._NEWS_KIND}>">
-      <!--編號-->
-      <input type="hidden" name="NewsID" value="<{$NewsID}>">
-      <input type="hidden" name="WebID" value="<{$WebID}>">
-
-      <input type="hidden" name="op" value="<{$op}>">
-      <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-    </div>
-=======
   	<{/if}>
 
 
@@ -290,7 +161,6 @@
     	<input type="hidden" name="op" value="<{$op}>">
     	<button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
   	</div>
->>>>>>> 92b005c8e45495e772daa96fb67faed2bcdd7024
 
   </form>
   </div>

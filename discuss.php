@@ -137,6 +137,8 @@ function insert_tad_web_discuss(){
     $WebID=$_SESSION['LoginWebID'];
   }
 
+  $_POST['ReDiscussID']=intval($_POST['ReDiscussID']);
+
 	$sql = "insert into ".$xoopsDB->prefix("tad_web_discuss")." 	(`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
 	values('{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
 	$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -179,6 +181,7 @@ function update_tad_web_discuss($DiscussID=""){
 	$_POST['DiscussContent']=$myts->addSlashes($_POST['DiscussContent']);
 
 
+  $_POST['ReDiscussID']=intval($_POST['ReDiscussID']);
 
 	$sql = "update ".$xoopsDB->prefix("tad_web_discuss")." set
 	 `ReDiscussID` = '{$_POST['ReDiscussID']}' ,
@@ -293,7 +296,7 @@ function isMineDiscuss($DiscussMemID=null,$DiscussWebID=null){
 
 //回覆的留言
 function get_re($DiscussID=""){
-	global $xoopsDB,$MyWebs,$upfile;
+	global $xoopsDB,$MyWebs,$TadUpFiles;
   if(empty($DiscussID))return;
 	$sql = "select * from ".$xoopsDB->prefix("tad_web_discuss")." where ReDiscussID='$DiscussID' order by DiscussDate";
 	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -307,10 +310,12 @@ function get_re($DiscussID=""){
     }
 
     if(!empty($uid)){
-      $pic=$upfile->get_pic_file("WebOwner",$WebID,"1","thumb");
+      $TadUpFiles->set_col("WebOwner",$WebID,"1");
+      $pic=$TadUpFiles->get_pic_file("thumb");
       if(empty($pic))$pic="images/nobody.png";
     }else{
-      $pic=$upfile->get_pic_file("MemID",$MemID,"1","thumb");
+      $TadUpFiles->set_col("MemID",$MemID,"1");
+      $pic=$TadUpFiles->get_pic_file("thumb");
       $M=get_tad_web_mems($MemID);
       if(empty($pic))$pic=($M['MemSex']=='1')?XOOPS_URL."/modules/tad_web/images/boy.gif":XOOPS_URL."/modules/tad_web/images/girl.gif";
     }

@@ -5,7 +5,6 @@
 // $Id:$
 // ------------------------------------------------------------------------- //
 include_once "../../mainfile.php";
-include_once "function.php";
 
 //判斷是否對該模組有管理權限
 $isAdmin=false;
@@ -21,6 +20,9 @@ if(!empty($_REQUEST['WebID'])){
 }else{
   $WebID=$_SESSION['WebID'];
 }
+
+include_once "function.php";
+
 
 
 if($WebID){
@@ -70,7 +72,8 @@ if($isAdmin){
 $module_menu=supser_fish($interface_menu,null,"class='sf-menu'","class='current'","tad_web");
 
 //圖案
-$web_logo=$upfile->get_pic_file("WebLogo",$WebID,"1","images");
+$TadUpFiles->set_col("WebLogo",$WebID,"1");
+$web_logo=$TadUpFiles->get_pic_file();
 
 //我的班級ID（陣列）
 $MyWebs=MyWebID();

@@ -14,10 +14,10 @@ $modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname'] = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2014/01/27';
+$modversion['release_date'] = '2014/09/25';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
-$modversion['module_status'] = 'rc4';
+$modversion['module_status'] = 'rc5';
 $modversion['author_website_url'] = 'http://tad0616.net/';
 $modversion['author_website_name'] = _MI_TAD_WEB;
 $modversion['min_php']=5.2;

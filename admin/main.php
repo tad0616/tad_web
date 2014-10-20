@@ -8,7 +8,6 @@
 /*-----------引入檔案區--------------*/
 include_once 'header.php';
 include_once "../function.php";
-include_once "../upfile.php";
 $xoopsOption['template_main'] = "tad_web_adm_main.html";
 /*-----------function區--------------*/
 
@@ -216,13 +215,14 @@ function chk_tad_web_group($name=""){
 
 //tad_web編輯表單
 function tad_web_form($WebID=null){
-	global $xoopsDB,$xoopsUser,$xoopsTpl,$upfile;
+	global $xoopsDB,$xoopsUser,$xoopsTpl,$TadUpFiles;
   $pic="";
 	//抓取預設值
 	if(!empty($WebID)){
 		$DBV=get_tad_web($WebID);
     //圖案
-    $web_logo=$upfile->get_pic_file("WebLogo",$WebID,"1","thumb");
+    $TadUpFiles->set_col("WebLogo",$WebID,"1");
+    $web_logo=$TadUpFiles->get_pic_file("thumb");
     $pic=empty($web_logo)?"":"background-image:url($web_logo);background-repeat: no-repeat;	background-position: top right;";
 	}else{
 		$DBV=array();
@@ -323,6 +323,7 @@ function insert_tad_web($CateID="",$WebName="",$WebSort="",$WebEnable="",$WebOwn
   $WebOwner=$myts->addSlashes($WebOwner);
 
   if(empty($WebYear))$WebYear=date('Y');
+  $WebSort=intval($$WebSort);
 
 	$sql = "insert into ".$xoopsDB->prefix("tad_web")."
 	(`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`)
@@ -442,7 +443,7 @@ function delete_tad_web_chk($WebID=""){
 
 //刪除tad_web某筆資料資料
 function delete_tad_web($WebID=""){
-	global $xoopsDB,$upfile;
+	global $xoopsDB,$TadUpFiles;
 
   //刪除影片
 	$sql = "delete from ".$xoopsDB->prefix("tad_web_video")." where WebID='$WebID'";
@@ -463,7 +464,8 @@ function delete_tad_web($WebID=""){
 	while(list($MemID)=$xoopsDB->fetchRow($result)){
   	$sql = "delete from ".$xoopsDB->prefix("tad_web_mems")." where MemID='$MemID'";
   	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-    $upfile->del_files(null,"MemID",$MemID);
+    $TadUpFiles->set_col("MemID",$MemID);
+    $TadUpFiles->del_files();
   }
 	$sql = "delete from ".$xoopsDB->prefix("tad_web_link_mems")." where WebID='$WebID'";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -473,7 +475,8 @@ function delete_tad_web($WebID=""){
 	$sql = "select NewsID from ".$xoopsDB->prefix("tad_web_news")." where WebID='$WebID'";
 	$result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	while(list($NewsID)=$xoopsDB->fetchRow($result)){
-  	$upfile->del_files(null,"NewsID",$NewsID);
+    $TadUpFiles->set_col("NewsID",$NewsID);
+  	$TadUpFiles->del_files();
   }
 	$sql = "delete from ".$xoopsDB->prefix("tad_web_news")." where WebID='$WebID'";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -483,7 +486,9 @@ function delete_tad_web($WebID=""){
 	$sql = "select ActionID from ".$xoopsDB->prefix("tad_web_action")." where WebID='$WebID'";
 	$result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	while(list($ActionID)=$xoopsDB->fetchRow($result)){
-  	$upfile->del_files(null,"ActionID",$ActionID);
+
+    $TadUpFiles->set_col("ActionID",$ActionID);
+  	$TadUpFiles->del_files();
   }
 	$sql = "delete from ".$xoopsDB->prefix("tad_web_action")." where WebID='$WebID'";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -493,7 +498,9 @@ function delete_tad_web($WebID=""){
 	$sql = "select fsn from ".$xoopsDB->prefix("tad_web_files")." where WebID='$WebID'";
 	$result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	while(list($fsn)=$xoopsDB->fetchRow($result)){
-  	$upfile->del_files(null,"fsn",$fsn);
+
+    $TadUpFiles->set_col("fsn",$fsn);
+  	$TadUpFiles->del_files();
 
   	$sql = "delete from ".$xoopsDB->prefix("tad_web_files")." where fsn='$fsn'";
   	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -506,12 +513,14 @@ function delete_tad_web($WebID=""){
 
 	$sql = "delete from ".$xoopsDB->prefix("tad_web")." where WebID='$WebID'";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$upfile->del_files(null,"WebOwner",$WebOwnerUid);
+
+  $TadUpFiles->set_col("WebOwner",$WebOwnerUid);
+	$TadUpFiles->del_files();
 }
 
 
 function save_webs_title($webTitles=array()){
-	global $xoopsDB,$upfile;
+	global $xoopsDB,$TadUpFiles;
 
 
 	$myts =& MyTextSanitizer::getInstance();
@@ -521,7 +530,9 @@ function save_webs_title($webTitles=array()){
 
   	$sql = "update ".$xoopsDB->prefix("tad_web")." set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
   	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-    $upfile->upload_file('upfile',"WebLogo",$WebID,246,1);
+
+    $TadUpFiles->set_col("WebLogo",$WebID);
+    $TadUpFiles->upload_file('upfile',246,NULL,NULL,NULL,true);
   	mklogoPic($WebID);
 	}
 	return $WebID;

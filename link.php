@@ -100,6 +100,8 @@ function insert_tad_web_link(){
   $_POST['LinkDesc']=$myts->addSlashes($_POST['LinkDesc']);
   $_POST['LinkUrl']=$myts->addSlashes($_POST['LinkUrl']);
 
+  $_POST['LinkCounter']=intval($_POST['LinkCounter']);
+  $_POST['LinkSort']=intval($_POST['LinkSort']);
 
   $sql = "insert into ".$xoopsDB->prefix("tad_web_link")."
   (`LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
@@ -125,6 +127,8 @@ function update_tad_web_link($LinkID=""){
   $_POST['LinkDesc']=$myts->addSlashes($_POST['LinkDesc']);
   $_POST['LinkUrl']=$myts->addSlashes($_POST['LinkUrl']);
 
+  $_POST['LinkCounter']=intval($_POST['LinkCounter']);
+  $_POST['LinkSort']=intval($_POST['LinkSort']);
 
   $sql = "update ".$xoopsDB->prefix("tad_web_link")." set
    `LinkTitle` = '{$_POST['LinkTitle']}' ,

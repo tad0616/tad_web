@@ -18,8 +18,8 @@ function tad_web_image(){
 
   include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
   $tad_web_action_image=new TadUpFiles("tad_web");
-
-  $tad_web_action_image->set_dir('subdir',"/{$WebID}");
+  $subdir=isset($WebID)?"/{$WebID}":"";
+  $tad_web_action_image->set_dir('subdir',"/{$subdir}");
   $tad_web_action_image->set_col("ActionID",$ActionID);
   $block['photos']=$tad_web_action_image->show_files('upfile',true,NULL,false,false);  //是否縮圖,顯示模式
   return $block;
