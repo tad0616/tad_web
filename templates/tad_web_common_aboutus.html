@@ -2,13 +2,15 @@
   <{assign var="i" value=0}>
   <{assign var="total" value=0}>
 
-  <table class="table">
-    <tr>
-      <th><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
-      <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
-      <th><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
-      <th><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
-    </tr>
+  <table class="table footable">
+    <thead>
+      <tr>
+        <th data-class="expand"><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
+        <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
+        <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
+        <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
+      </tr>
+    </thead>
     <{foreach item=class from=$data}>
       <tr>
         <td>
