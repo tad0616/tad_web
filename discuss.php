@@ -407,7 +407,7 @@ switch($op){
   //新增資料
   case "insert_tad_web_discuss":
   $DiscussID=insert_tad_web_discuss();
-  header("location: {$_SERVER['PHP_SELF']}?DiscussID=$DiscussID&WebID=$WebID");
+  header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&DiscussID=$DiscussID");
   break;
 
   //更新資料

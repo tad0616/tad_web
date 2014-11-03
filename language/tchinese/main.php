@@ -8,11 +8,13 @@
 //需加入模組語系
 define("_TAD_NEED_TADTOOLS"," 需要 tadtools 模組，可至<a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad教材網</a>下載。");
 
-define("_MD_TCW_HOME", "首頁");
+define("_MD_TCW_HOME", "回總覽");
+define("_MD_TCW_CLASS_HOME", "本班首頁");
 define("_MD_TCW_ADMIN", "管理");
 define("_MD_TCW_CLEAR", "清除");
 define("_MD_TCW_TOTAL", "共");
 define("_MD_TCW_PEOPLE", "人");
+define("_MD_TCW_TOOLS", "工具箱");
 
 //header.php
 define("_MD_TCW_ALL_CLASS","班級列表");

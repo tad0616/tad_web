@@ -161,7 +161,7 @@ function list_tad_web_files($WebID=null,$limit=""){
     $Class=getWebInfo($WebID);
     $file_date=substr($file_date,0,10);
 
-    $showurl=($enable_link)?"<a href='".XOOPS_URL."/modules/tad_web/files.php?op=tufdl&files_sn=$files_sn&WebID={$WebID}'>{$description}</a>":$description;
+    $showurl=($enable_link)?"<a href='".XOOPS_URL."/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn'>{$description}</a>":$description;
 
 		$all_data[$i]['showurl']=$showurl;
 		$all_data[$i]['uid_name']=$uid_name;

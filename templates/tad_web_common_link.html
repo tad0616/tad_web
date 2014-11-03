@@ -21,7 +21,7 @@
 </thead>
 <{if $link_data}>
   <{foreach item=link from=$link_data}>
-  
+
   <tr>
 		<td><img src="images/web.png" alt="<{$link.LinkUrl}>" hspace=4 align="absmiddle"><a href="<{$link.LinkUrl}>" target="_blank"><{$link.LinkTitle}></a>
     <div style="font-size:12px;color:#666699"><{$link.LinkDesc}></div></td>
@@ -53,5 +53,5 @@
       <a href="link.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineLink}><a href="link.php?op=tad_web_link_form&WebID=<{$WebID}>" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
+  <{if $isMineLink}><a href="link.php?WebID=<{$WebID}>&op=tad_web_link_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
 </div>

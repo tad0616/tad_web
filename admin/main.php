@@ -380,7 +380,7 @@ function delete_tad_web_chk($WebID=""){
 	$result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	$allLinkTitle="<ol>";
 	while(list($LinkID,$LinkTitle)=$xoopsDB->fetchRow($result)){
-    $allLinkTitle.="<li><a href='../link.php?LinkID=$LinkID&WebID=$WebID'>$LinkTitle</a></li>";
+    $allLinkTitle.="<li><a href='../link.php?WebID=$WebID&LinkID=$LinkID'>$LinkTitle</a></li>";
   }
   $allLinkTitle.="</ol>";
   $xoopsTpl->assign('allLinkTitle',$allLinkTitle);
@@ -390,7 +390,7 @@ function delete_tad_web_chk($WebID=""){
 	$result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	$allNewsTitle="<ol>";
 	while(list($NewsID,$NewsTitle)=$xoopsDB->fetchRow($result)){
-    $allNewsTitle.="<li><a href='../news.php?NewsID=$NewsID&WebID=$WebID'>$NewsTitle</a></li>";
+    $allNewsTitle.="<li><a href='../news.php?WebID=$WebID&NewsID=$NewsID'>$NewsTitle</a></li>";
   }
   $allNewsTitle.="</ol>";
   $xoopsTpl->assign('allNewsTitle',$allNewsTitle);
@@ -400,7 +400,7 @@ function delete_tad_web_chk($WebID=""){
 	$result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	$allActionName="<ol>";
 	while(list($ActionID,$ActionName)=$xoopsDB->fetchRow($result)){
-    $allActionName.="<li><a href='../action.php?ActionID=$ActionID&WebID=$WebID'>$ActionName</a></li>";
+    $allActionName.="<li><a href='../action.php?WebID=$WebID&ActionID=$ActionID'>$ActionName</a></li>";
   }
   $allActionName.="</ol>";
   $xoopsTpl->assign('allActionName',$allActionName);
@@ -410,7 +410,7 @@ function delete_tad_web_chk($WebID=""){
 	$result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	$allFileName="<ol>";
 	while(list($files_sn,$file_name)=$xoopsDB->fetchRow($result)){
-    $allFileName.="<li><a href='../files.php?fop=dl&files_sn={$files_sn}&WebID=$WebID'>$file_name</a></li>";
+    $allFileName.="<li><a href='../files.php?WebID=$WebID&fop=dl&files_sn={$files_sn}'>$file_name</a></li>";
   }
   $allFileName.="</ol>";
   $xoopsTpl->assign('allFileName',$allFileName);
@@ -420,7 +420,7 @@ function delete_tad_web_chk($WebID=""){
 	$result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	$allVideoName="<ol>";
 	while(list($VideoID,$VideoName)=$xoopsDB->fetchRow($result)){
-    $allVideoName.="<li><a href='../video.php?VideoID=$VideoID&WebID=$WebID'>$VideoName</a></li>";
+    $allVideoName.="<li><a href='../video.php?WebID=$WebID&VideoID=$VideoID'>$VideoName</a></li>";
   }
   $allLinkTitle.="</ol>";
   $xoopsTpl->assign('allVideoName',$allVideoName);
@@ -430,7 +430,7 @@ function delete_tad_web_chk($WebID=""){
 	$result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 	$allDiscussTitle="<ol>";
 	while(list($DiscussID,$DiscussTitle)=$xoopsDB->fetchRow($result)){
-    $allDiscussTitle.="<li><a href='../discuss.php?DiscussID=$DiscussID&WebID=$WebID'>$DiscussTitle</a></li>";
+    $allDiscussTitle.="<li><a href='../discuss.php?WebID=$WebID&DiscussID=$DiscussID'>$DiscussTitle</a></li>";
   }
   $allDiscussTitle.="</ol>";
   $xoopsTpl->assign('allDiscussTitle',$allDiscussTitle);

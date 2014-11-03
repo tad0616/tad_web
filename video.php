@@ -15,7 +15,7 @@ function tad_web_video_form($VideoID=""){
 	global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$isMyWeb,$xoopsTpl;
 
   if(!$isMyWeb and $MyWebs){
-    redirect_header($_SERVER['PHP_SELF']."?op=tad_web_video_form&WebID={$MyWebs[0]}",3, _MD_TCW_AUTO_TO_HOME);
+    redirect_header($_SERVER['PHP_SELF']."?WebID={$MyWebs[0]}&op=tad_web_video_form",3, _MD_TCW_AUTO_TO_HOME);
   }elseif(empty($MyWebs)){
     redirect_header("index.php",3, _MD_TCW_NOT_OWNER);
   }
@@ -201,10 +201,10 @@ function show_one_tad_web_video($VideoID=""){
   $rate=round($height/$width,2);
   //die("$rate=$height/$width");
 
-	if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/jwplayer.php")){
+	if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/jwplayer_new.php")){
     redirect_header("index.php",3, _MD_NEED_TADTOOLS);
   }
-  include_once XOOPS_ROOT_PATH."/modules/tadtools/jwplayer.php";
+  include_once XOOPS_ROOT_PATH."/modules/tadtools/jwplayer_new.php";
   $jw=new JwPlayer("video{$VideoID}" , $Youtube , "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg"  , '100%',$rate);
   $player=$jw->render();
 

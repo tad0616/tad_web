@@ -25,14 +25,14 @@
 
   <tr>
 		<td style="width:130px;">
-    <a href="video.php?VideoID=<{$video.VideoID}>&WebID=<{$video.WebID}>">
+    <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>">
       <img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/1.jpg" class="pull-left img-polaroid" style="margin-right:10px;" alt="<{$video.VideoName}>">
     </a>
     </td>
 
     <td>
     <{$video.VideoDate}>
-    <p><a href="video.php?VideoID=<{$video.VideoID}>&WebID=<{$video.WebID}>"><{$video.VideoName}></a></p>
+    <p><a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>"><{$video.VideoName}></a></p>
     <p style="font-size:12px;"><{$video.VideoCountInfo}></p>
 	 </td>
 
@@ -62,5 +62,5 @@
       <a href="video.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineVideo}><a href="video.php?op=tad_web_video_form&WebID=<{$WebID}>" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
+  <{if $isMineVideo}><a href="video.php?WebID=<{$WebID}>&op=tad_web_video_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
 </div>

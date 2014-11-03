@@ -39,6 +39,9 @@ if($WebID){
 
 
 $interface_menu[_MD_TCW_HOME]="home.php";
+if($WebID){
+  $interface_menu[_MD_TCW_CLASS_HOME]="index.php?WebID={$WebID}";
+}
 
 if($xoopsModuleConfig['web_mode']=="class"){
   $_MD_TCW_ABOUTUS=empty($WebID)?_MD_TCW_ALL_CLASS:_MD_TCW_MY_CLASS;
@@ -64,9 +67,6 @@ if(!in_array('link',$hide_function))$interface_menu[_MD_TCW_LINK]="link.php?WebI
 if(!in_array('discuss',$hide_function))$interface_menu[_MD_TCW_DISCUSS]="discuss.php?WebID={$WebID}";
 $interface_menu[_MD_TCW_CALENDA]="calenda.php?WebID={$WebID}";
 
-if($isAdmin){
-  $interface_menu[_MD_TCW_ADMIN]="admin/index.php";
-}
 
 //模組前台選單
 $module_menu=supser_fish($interface_menu,null,"class='sf-menu'","class='current'","tad_web");
@@ -80,5 +80,11 @@ $MyWebs=MyWebID();
 //目前瀏覽的是否是我的班級？
 $isMyWeb=in_array($WebID,$MyWebs);
 
+if($isMyWeb){
+  $interface_menu[_MD_TCW_TOOLS]="admin/setup.php";
+}
 
+if($isAdmin){
+  $interface_menu[_MD_TCW_ADMIN]="admin/index.php";
+}
 ?>

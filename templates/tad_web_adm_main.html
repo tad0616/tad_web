@@ -48,7 +48,7 @@
   	<input type="hidden" name="op" value="batch_add_class">
   	<input type="submit" value="<{$smarty.const._TAD_SAVE}>">
 	</form>
-	
+
 <{elseif $op=="create_web"}>
   <a href="main.php?op=create_by_user" class="btn btn-large btn-info"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
 <{elseif $op=="create_by_user"}>
@@ -90,7 +90,7 @@
   function delete_tad_web_func(WebID){
   	var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
   	if (!sure)	return;
-  	location.href="main.php?op=delete_tad_web_chk&WebID=" + WebID;
+  	location.href="main.php?WebID=" + WebID + "op=delete_tad_web_chk";
   }
   </script>
 
@@ -100,7 +100,7 @@
   <a href="main.php?op=tad_web_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
   <a href="main.php?op=create_by_user" class="btn btn-primary"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
   </div>
-  
+
   <h2><{$WebYear}><{$smarty.const._MA_TCW_MAIN_TITLE}></h2>
 	<form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
 	<div id="save_msg"></div>
@@ -118,16 +118,16 @@
   	<{foreach item=class from=$data}>
   	<tr id="tr_<{$class.WebID}>">
       <td>
-        <a href="main.php?op=delete_tad_web_chk&WebID=<{$class.WebID}>" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+        <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
       </td>
   		<td>
 
   		<{if $class.WebEnable=='1'}>
-  		  <a href="main.php?op=save_webs_able&able=0&WebID=<{$class.WebID}>"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
+  		  <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=0"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
       <{else}>
-        <a href="main.php?op=save_webs_able&able=1&WebID=<{$class.WebID}>"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
+        <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=1"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
       <{/if}>
-      
+
         <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
       </td>
   		<td>
@@ -143,7 +143,7 @@
     		<{$class.WebCounter}>
       </td>
   		<td>
-    		<a href="main.php?op=tad_web_form&WebID=<{$class.WebID}>" class="btn btn-mini btn-info"><{$smarty.const._TAD_EDIT}></a>
+    		<a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_EDIT}></a>
 
       </td>
   	</tr>
@@ -152,7 +152,7 @@
 
     </tbody>
   </table>
-  
+
 	<input type="hidden" name="op" value="save_webs_title">
 	<div class="text-center">
 	<button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>

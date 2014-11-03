@@ -14,7 +14,7 @@ if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php")){
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("tad_web");
 $subdir=isset($WebID)?"/{$WebID}":"";
-$TadUpFiles->set_dir('subdir',"/{$subdir}");
+$TadUpFiles->set_dir('subdir',$subdir);
 
 
 //引入TadTools的函式庫
@@ -26,10 +26,10 @@ include_once "function_list.php";
 
 //取得網站設定值
 function get_web_config($ConfigName="",$WebID=""){
-	global $xoopsDB,$WebID;
+  global $xoopsDB,$WebID;
   if(empty($WebID))return;
-	$sql = "select `ConfigValue` from ".$xoopsDB->prefix("tad_web_config")." where `WebID`='$WebID' and `ConfigName`='{$ConfigName}'";
-	$result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $sql = "select `ConfigValue` from ".$xoopsDB->prefix("tad_web_config")." where `WebID`='$WebID' and `ConfigName`='{$ConfigName}'";
+  $result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
   list($ConfigValue)=$xoopsDB->fetchRow($result);
   return $ConfigValue;
 }
@@ -78,10 +78,10 @@ function common_template($interface_menu,$WebID){
 
 //取得回覆數量
 function get_re_num($DiscussID=""){
-	global $xoopsDB,$xoopsUser;
+  global $xoopsDB,$xoopsUser;
   if(empty($DiscussID)) return 0;
-	$sql = "select count(*) from ".$xoopsDB->prefix("tad_web_discuss")." where ReDiscussID='$DiscussID'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $sql = "select count(*) from ".$xoopsDB->prefix("tad_web_discuss")." where ReDiscussID='$DiscussID'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
   list($counter)=$xoopsDB->fetchRow($result);
   return $counter;
 }
@@ -90,30 +90,30 @@ function get_re_num($DiscussID=""){
 function get_tad_web_mems($MemID){
   global $xoopsDB;
 
-	$sql = "select * from ".$xoopsDB->prefix("tad_web_mems")." where MemID='{$MemID}'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$all=$xoopsDB->fetchArray($result);
-	return $all;
+  $sql = "select * from ".$xoopsDB->prefix("tad_web_mems")." where MemID='{$MemID}'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $all=$xoopsDB->fetchArray($result);
+  return $all;
 }
 
 function get_tad_web_link_mems($MemID){
   global $xoopsDB;
 
-	$sql = "select * from ".$xoopsDB->prefix("tad_web_link_mems")." where MemID='{$MemID}'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$all=$xoopsDB->fetchArray($result);
-	return $all;
+  $sql = "select * from ".$xoopsDB->prefix("tad_web_link_mems")." where MemID='{$MemID}'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $all=$xoopsDB->fetchArray($result);
+  return $all;
 }
 
 
 //以流水號取得某筆tad_web資料
 function get_tad_web($WebID=""){
-	global $xoopsDB;
-	if(empty($WebID))return;
-	$sql = "select * from ".$xoopsDB->prefix("tad_web")." where WebID='$WebID'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$data=$xoopsDB->fetchArray($result);
-	return $data;
+  global $xoopsDB;
+  if(empty($WebID))return;
+  $sql = "select * from ".$xoopsDB->prefix("tad_web")." where WebID='$WebID'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $data=$xoopsDB->fetchArray($result);
+  return $data;
 }
 
 
@@ -121,10 +121,10 @@ function get_tad_web($WebID=""){
 function memAmount($WebID=""){
   global $xoopsDB;
 
-	$sql = "select count(*) from ".$xoopsDB->prefix("tad_web_link_mems")." where WebID='{$WebID}'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	list($count)=$xoopsDB->fetchRow($result);
-	return $count;
+  $sql = "select count(*) from ".$xoopsDB->prefix("tad_web_link_mems")." where WebID='{$WebID}'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  list($count)=$xoopsDB->fetchRow($result);
+  return $count;
 }
 
 
@@ -188,14 +188,40 @@ function supser_fish($interface_menu=array(),$interface_logo=array(),$id="id='me
   $main="
   $jquery
   <link rel='stylesheet' type='text/css' href='class/superfish/css/superfish.css' media='screen'>
-	<script type='text/javascript' src='class/superfish/js/superfish.js'></script>
-	<script type='text/javascript' src='class/superfish/js/supersubs.js'></script>
-	<script type='text/javascript'>
-	    $(document).ready(function() {
-	        $('ul{$jid}').supersubs({minWidth:8, maxWidth:27,extraWidth:1}).superfish({pathClass:  'current'});
-			});
-	</script>
-	<ul $id>
+  <style type='text/css'>
+  .sf-menu a {
+    color: white;
+  }
+  .sf-menu li {
+    background: #7F9EA3;
+  }
+  .sf-menu ul li {
+    background: #7F9EA3;
+  }
+  .sf-menu ul ul li {
+    background: #7F9EA3;
+  }
+  .sf-menu li:hover,
+  .sf-menu li.sfHover {
+    background: #8FBBC1;
+  }
+  </style>
+  <script type='text/javascript' src='class/superfish/js/hoverIntent.js'></script>
+  <script type='text/javascript' src='class/superfish/js/superfish.js'></script>
+  <script type='text/javascript'>
+
+    $(document).ready(function(){
+      $('ul{$jid}').superfish({
+          delay:       500,                            // one second delay on mouseout
+          animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation
+          speed:       'fast',                          // faster animation speed
+          disableHI:   true,
+          autoArrows:  true,                           // disable generation of arrow mark-up
+          dropShadows: true                            // disable drop shadows
+      });
+    });
+  </script>
+  <ul $id>
     $options
   </ul>
   <div class='clearfix'></div>
@@ -206,7 +232,7 @@ function supser_fish($interface_menu=array(),$interface_logo=array(),$id="id='me
 
 //取得目前的學年學期陣列
 function get_seme(){
-	global $xoopsDB;
+  global $xoopsDB;
   $y=date("Y");
   $m=date("n");
   if($m >= 8){
@@ -265,9 +291,9 @@ function onlyMine(){
 //是否為網站擁有者
 function MyWebID(){
   global $xoopsUser,$xoopsDB;
-	if($xoopsUser){
+  if($xoopsUser){
     $uid=$xoopsUser->uid();
-  	$sql="select WebID from ".$xoopsDB->prefix("tad_web")." where WebOwnerUid='$uid'";
+    $sql="select WebID from ".$xoopsDB->prefix("tad_web")." where WebOwnerUid='$uid'";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
     $total=$xoopsDB->getRowsNum($result);
     if(empty($total))return;
@@ -284,24 +310,24 @@ function getWebInfo($WebID=null){
   global $xoopsDB;
   $WebID=intval($WebID);
 
-	$sql = "select * from ".$xoopsDB->prefix("tad_web")." where WebID='{$WebID}'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $sql = "select * from ".$xoopsDB->prefix("tad_web")." where WebID='{$WebID}'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-	$Web=$xoopsDB->fetchArray($result);
+  $Web=$xoopsDB->fetchArray($result);
   return $Web;
 }
 
 
 //取得分類名稱
 function getLevelName($WebID=""){
-	global $xoopsDB;
-	$sql = "select `WebTitle` from ".$xoopsDB->prefix("tad_web")." where WebID='$WebID'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	list($WebTitle)=$xoopsDB->fetchRow($result);
+  global $xoopsDB;
+  $sql = "select `WebTitle` from ".$xoopsDB->prefix("tad_web")." where WebID='$WebID'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  list($WebTitle)=$xoopsDB->fetchRow($result);
 
 
 
-	return $main;
+  return $main;
 }
 
 //把模組設定項目轉為選項

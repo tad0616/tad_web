@@ -28,7 +28,7 @@ function tad_web_discuss($options){
 
 
 		$main_data.="<tr>
-		<td><img src='images/right_icon4.png' width='6' height='10' hspace=4  /><a href='discuss.php?DiscussID=$DiscussID&WebID=$WebID'>{$DiscussTitle}</a>{$show_re_num}</td>
+		<td><img src='images/right_icon4.png' width='6' height='10' hspace=4  /><a href='discuss.php?WebID=$WebID&DiscussID=$DiscussID'>{$DiscussTitle}</a>{$show_re_num}</td>
 		</tr>";
 	}
 	if(empty($main_data))$main_data="<tr><td colspan=4 class='c'>尚無任何討論主題</td></tr>";

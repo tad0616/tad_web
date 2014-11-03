@@ -30,7 +30,7 @@ function tad_web_menu($options){
   	$block['web'][$i]['homework_add']=mkMenuOpt(_MB_TCW_HOMEWORK_ADD,"homework.php?WebID={$WebID}&op=tad_web_news_form","icon-pencil");
   	$block['web'][$i]['files_add']=mkMenuOpt(_MB_TCW_FILES_ADD,"files.php?WebID={$WebID}&op=tad_web_files_form","icon-arrow-up");
   	$block['web'][$i]['action_add']=mkMenuOpt(_MB_TCW_ACTION_ADD,"action.php?WebID={$WebID}&op=tad_web_action_form","icon-picture");
-  	$block['web'][$i]['class_setup']=mkMenuOpt(_MB_TCW_WEB_SETUP,"aboutus.php?op=tad_web_adm&WebID={$WebID}","icon-wrench");
+  	$block['web'][$i]['class_setup']=mkMenuOpt(_MB_TCW_WEB_SETUP,"aboutus.php?WebID={$WebID}&op=tad_web_adm","icon-wrench");
   	$block['web'][$i]['video_add']=mkMenuOpt(_MB_TCW_VIDEO_ADD,"video.php?WebID={$WebID}&op=tad_web_video_form","icon-film");
   	$block['web'][$i]['link_add']=mkMenuOpt(_MB_TCW_LINK_ADD,"link.php?WebID={$WebID}&op=tad_web_link_form","icon-globe");
   	$block['web'][$i]['logout']=mkMenuOpt(_MB_TCW_LOGOUT,"/user.php?op=logout","icon-ban-circle");

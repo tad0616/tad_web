@@ -24,7 +24,7 @@
     <tr>
     	<td><div style="word-wrap:break-word;width:<{$file.widht}>px;"><{$file.showurl}></div></td>
     	<td style="text-align:center;" nowrap><{$file.uid_name}></td>
-    	
+
       <{if $showWebTitleFiles}>
         <td style="width:100px;text-align:center;"><{$file.WebTitle}></td>
       <{/if}>
@@ -54,5 +54,5 @@
       <a href="files.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineFiles}><a href="files.php?op=tad_web_files_form&WebID=<{$WebID}>" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
+  <{if $isMineFiles}><a href="files.php?WebID=<{$WebID}>&op=tad_web_files_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
 </div>

@@ -686,7 +686,7 @@ switch($op){
   //更新團員資料
   case "update_tad_web_mems":
   update_tad_web_mems($MemID);
-  header("location: {$_SERVER['PHP_SELF']}?op=tad_web_adm&WebID={$WebID}");
+  header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=tad_web_adm");
   break;
 
 

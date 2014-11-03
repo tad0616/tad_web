@@ -10,6 +10,7 @@ function xoops_module_update_tad_web(&$module, $old_version) {
     if(!chk_chk3()) go_update3();
     if(!chk_chk4()) go_update4();
     if(!chk_chk5()) go_update5();
+    go_update6();
 
     return true;
 }
@@ -100,6 +101,135 @@ function go_update5(){
   $sql="update ".$xoopsDB->prefix("tad_web_files_center")." set
   `original_filename`=`description`";
   $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL."/modules/system/admin.php?fct=modulesadmin",30,  mysql_error());
+}
+
+
+
+function go_update6(){
+  global $xoopsDB;
+
+  $updir=XOOPS_ROOT_PATH."/uploads/tad_web";
+  $os=(PATH_SEPARATOR==':')?"linux":"win";
+
+
+  //修正子目錄，並找出實體檔案沒有真的在子目錄下的
+  $sql="select `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` from ".$xoopsDB->prefix("tad_web_files_center")." where `sub_dir` like '//%'";
+  $result=$xoopsDB->queryF($sql) or die($sql);
+  while(list($files_sn,$col_name,$col_sn,$kind,$file_name,$sub_dir)=$xoopsDB->fetchRow($result)){
+    $sub_dir=str_replace("//", "/", $sub_dir);
+    $typedir=$kind=='img'?"image":"file";
+
+    $sql="update  ".$xoopsDB->prefix("tad_web_files_center")." set `sub_dir`='{$sub_dir}'  where `files_sn`='{$files_sn}'";
+    $xoopsDB->queryF($sql) or die($sql);
+
+    if(!file_exists("{$updir}{$sub_dir}/{$typedir}/{$file_name}")){
+      mk_dir("{$updir}{$sub_dir}");
+      mk_dir("{$updir}{$sub_dir}/{$typedir}");
+
+      $from="{$updir}/{$typedir}/{$file_name}";
+      $to="{$updir}{$sub_dir}/{$typedir}/{$file_name}";
+
+      if($os=="win" and _CHARSET=="UTF-8"){
+        $from=iconv(_CHARSET,"Big5",$from);
+        $to=iconv(_CHARSET,"Big5",$to);
+      }elseif($os=="linux" and _CHARSET=="Big5"){
+        $from=iconv(_CHARSET,"UTF-8",$from);
+        $to=iconv(_CHARSET,"UTF-8",$to);
+      }
+
+      rename($from,$to);
+      if($typedir=="image"){
+        mk_dir("{$updir}{$sub_dir}");
+        mk_dir("{$updir}{$sub_dir}/{$typedir}");
+        mk_dir("{$updir}{$sub_dir}/{$typedir}/.thumbs");
+        $from="{$updir}/{$typedir}/.thumbs/{$file_name}";
+        $to="{$updir}{$sub_dir}/{$typedir}/.thumbs/{$file_name}";
+
+        if($os=="win" and _CHARSET=="UTF-8"){
+          $from=iconv(_CHARSET,"Big5",$from);
+          $to=iconv(_CHARSET,"Big5",$to);
+        }elseif($os=="linux" and _CHARSET=="Big5"){
+          $from=iconv(_CHARSET,"UTF-8",$from);
+          $to=iconv(_CHARSET,"UTF-8",$to);
+        }
+
+        rename($from,$to);
+      }
+    }
+  }
+
+  //找出沒有放到子目錄的
+  $sql="select `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` from ".$xoopsDB->prefix("tad_web_files_center")."";
+  $result=$xoopsDB->queryF($sql) or die($sql);
+  while(list($files_sn,$col_name,$col_sn,$kind,$file_name,$sub_dir)=$xoopsDB->fetchRow($result)){
+
+    $typedir=$kind=='img'?"image":"file";
+    $WebID=intval(substr($sub_dir, 1));
+    if(empty($WebID)){
+      if($col_name=="WebOwner" or $col_name=="WebLogo"){
+        $WebID=$col_sn;
+      }elseif($col_name=="MemID"){
+        $sql="select `WebID` from ".$xoopsDB->prefix("tad_web_link_mems")." where `MemID` = '{$col_sn}'";
+        $result2=$xoopsDB->queryF($sql) or die($sql);
+        list($WebID)=$xoopsDB->fetchRow($result2);
+      }elseif($col_name=="ActionID"){
+        $sql="select `WebID` from ".$xoopsDB->prefix("tad_web_action")." where `ActionID` = '{$col_sn}'";
+        $result2=$xoopsDB->queryF($sql) or die($sql);
+        list($WebID)=$xoopsDB->fetchRow($result2);
+      }elseif($col_name=="fsn"){
+        $sql="select `WebID` from ".$xoopsDB->prefix("tad_web_files")." where `fsn` = '{$col_sn}'";
+        $result2=$xoopsDB->queryF($sql) or die($sql);
+        list($WebID)=$xoopsDB->fetchRow($result2);
+      }elseif($col_name=="NewsID"){
+        $sql="select `WebID` from ".$xoopsDB->prefix("tad_web_news")." where `NewsID` = '{$col_sn}'";
+        $result2=$xoopsDB->queryF($sql) or die($sql);
+        list($WebID)=$xoopsDB->fetchRow($result2);
+      }
+    }
+
+    $sql="update ".$xoopsDB->prefix("tad_web_files_center")." set `sub_dir`='/{$WebID}'  where `files_sn`='{$files_sn}'";
+    $xoopsDB->queryF($sql) or die($sql);
+
+    mk_dir("{$updir}/{$WebID}");
+    mk_dir("{$updir}/{$WebID}/{$typedir}");
+    if($typedir=="image"){
+      mk_dir("{$updir}/{$WebID}/{$typedir}");
+      mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
+    }
+
+    $from="{$updir}/{$typedir}/{$file_name}";
+    $to="{$updir}/{$WebID}/{$typedir}/{$file_name}";
+
+    if($os=="win" and _CHARSET=="UTF-8"){
+      $from=iconv(_CHARSET,"Big5",$from);
+      $to=iconv(_CHARSET,"Big5",$to);
+    }elseif($os=="linux" and _CHARSET=="Big5"){
+      $from=iconv(_CHARSET,"UTF-8",$from);
+      $to=iconv(_CHARSET,"UTF-8",$to);
+    }
+
+    rename($from,$to);
+    if($typedir=="image"){
+      mk_dir("{$updir}/{$WebID}");
+      mk_dir("{$updir}/{$WebID}/{$typedir}");
+      mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
+
+      $from="{$updir}/{$typedir}/.thumbs/{$file_name}";
+      $to="{$updir}/{$WebID}/{$typedir}/.thumbs/{$file_name}";
+
+      if($os=="win" and _CHARSET=="UTF-8"){
+        $from=iconv(_CHARSET,"Big5",$from);
+        $to=iconv(_CHARSET,"Big5",$to);
+      }elseif($os=="linux" and _CHARSET=="Big5"){
+        $from=iconv(_CHARSET,"UTF-8",$from);
+        $to=iconv(_CHARSET,"UTF-8",$to);
+      }
+      rename($from,$to);
+
+    }
+
+  }
+
 }
 
 //建立目錄

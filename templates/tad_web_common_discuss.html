@@ -28,7 +28,7 @@
     <{foreach item=discuss from=$discuss_data}>
       <tr>
         <td style="text-align:center;"><{$discuss.LastTime}></td>
-        <td><a href="discuss.php?DiscussID=<{$discuss.DiscussID}>&WebID=<{$discuss.WebID}>"><{$discuss.DiscussTitle}></a><{$discuss.show_re_num}></td>
+        <td><a href="discuss.php?WebID=<{$discuss.WebID}>&DiscussID=<{$discuss.DiscussID}>"><{$discuss.DiscussTitle}></a><{$discuss.show_re_num}></td>
         <td style="text-align:center;"><{$discuss.MemName}></td>
         <td style="text-align:center;"><{$discuss.DiscussCounter}></td>
         <{if $showWebTitleDiscuss}><td style="text-align:center;"><{$discuss.WebTitle}></td><{/if}>

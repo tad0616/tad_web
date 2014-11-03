@@ -28,7 +28,7 @@ function tad_web_news_form($NewsID=""){
   global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$isMyWeb,$xoopsTpl,$TadUpFiles;
 
   if(!$isMyWeb and $MyWebs){
-    redirect_header($_SERVER['PHP_SELF']."?op=tad_web_news_form&WebID={$MyWebs[0]}",3, _MD_TCW_AUTO_TO_HOME);
+    redirect_header($_SERVER['PHP_SELF']."?WebID={$MyWebs[0]}&op=tad_web_news_form",3, _MD_TCW_AUTO_TO_HOME);
   }elseif(empty($MyWebs)){
     redirect_header("index.php",3, _MD_TCW_NOT_OWNER);
   }
