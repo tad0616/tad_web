@@ -550,6 +550,20 @@ function save_webs_able($WebID="",$able=""){
 }
 
 
+function order_by_teamtitle(){
+    global $xoopsDB;
+
+    $sql = "select WebID from ".$xoopsDB->prefix("tad_web")." order by WebTitle";
+    $result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $i=1;
+    while(list($WebID)=$xoopsDB->fetchRow($result)){
+      $sql = "update ".$xoopsDB->prefix("tad_web")." set `WebSort` = '{$i}' where WebID='$WebID'";
+      $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+      $i++;
+    }
+
+}
+
 /*-----------執行動作判斷區----------*/
 $op = (!isset($_REQUEST['op']))? "":$_REQUEST['op'];
 $WebID=(empty($_REQUEST['WebID']))?"":intval($_REQUEST['WebID']);
@@ -616,6 +630,12 @@ switch($op){
   //刪除資料
   case "save_webs_able":
   save_webs_able($WebID,$_GET['able']);
+  header("location: {$_SERVER['PHP_SELF']}");
+  break;
+
+  //以正式名稱排序
+  case "order_by_teamtitle":
+  order_by_teamtitle();
   header("location: {$_SERVER['PHP_SELF']}");
   break;
 

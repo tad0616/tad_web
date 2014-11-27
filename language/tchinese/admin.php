@@ -33,6 +33,7 @@ define("_MA_TCW_DEL_VIDEOS","線上影片資料");
 define("_MA_TCW_DEL_DISCUSS","留言討論資料");
 define("_MA_TCW_DELETE","確定刪除（不刪就按別的連結離開即可）");
 define("_MA_TCW_UPLOAD_OWNER_PIC","上傳首頁圖檔");
+define("_MA_TCW_ORDER_BY_TEAMTITLE","依正式名稱排序");
 
 //save_sort.php save.php
 define("_MA_TCW_UPDATE_FAIL","更新失敗！");
