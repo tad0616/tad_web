@@ -1,0 +1,43 @@
+Tad Web version 1.0 RC6 (2014-10-23 release)
+================================================== ==
+ 1. Fixed contact book can not be edited problem of old data
+ 2. Modify the home page list for the table
+ 3. Fix file subdirectory is not the right questions, and join the program update fixes
+
+
+Tad Web 1.0 RC5 Edition (2014-09-25 release)
+================================================== ==
+ 1. Modify the program so that it conforms with WCAG
+ 2. For MySQL strict mode is corrected
+ 3. Fix any upload problem
+
+
+Tad Web 1.0 RC4 version (2014-01-27)
+================================================== ==
+ 1. Import new upload mechanism
+ 2. For MySQL strict mode is corrected
+ 3. Adjust the screen for setting students
+
+Tad Web 1.0 RC3 version (2013-07-30)
+================================================== ==
+ 1. Fixed video playback function and tad_player duplicate bug
+ 2. Amendments to the same teacher can not have two or more sites of bug
+ 3. You can download the file has been uploaded document name (including news attached file)
+ _MA_TCW_CLICK_TO_EDIT Messages while 4. Modify the background Add Website
+ 5. Fixed bug fixes guestbook can not hide block photo albums and album did not come out of the bug
+ 6. Fixed an album you can not edit or upload a second (or can not store photos specified) bug
+ 7. Message restrictions only teachers and students (or website members) can see.
+
+
+Tad Web 1.0 RC2 version (2013-07-29)
+================================================== ==
+ 1. Increase the message function
+ 2. Increase the site members related functions
+ 3. Add Big5 Chinese language
+ The package hills sea of ​​small bug fixes
+
+
+Tad Web 1.0 RC1 version (2013-07-01)
+================================================== ==
+ 1. The user can set up a simple personal page
+ 2. Each user can have multiple pages
