@@ -4,7 +4,7 @@
 // 製作日期：2011-04-15
 // $Id:$
 // ------------------------------------------------------------------------- //
-include_once "../../tadtools/language/{$xoopsConfig['language']}/admin_common.php";
+include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
 
 //需加入模組語系
 define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
