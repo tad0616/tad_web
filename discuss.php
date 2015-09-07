@@ -1,18 +1,17 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-04-15
-// $Id:$
-// ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$xoopsOption['template_main'] = "tad_web_discuss_tpl.html";
-include_once XOOPS_ROOT_PATH."/header.php";
+if (!empty($_GET['WebID'])) {
+    $xoopsOption['template_main'] = 'tad_web_discuss_b3.html';
+} else {
+    $xoopsOption['template_main'] = set_bootstrap('tad_web_discuss.html');
+}
+include_once XOOPS_ROOT_PATH . "/header.php";
 
-$LoginMemID=isset($_SESSION['LoginMemID'])?$_SESSION['LoginMemID']:NULL;
-$LoginMemName=isset($_SESSION['LoginMemName'])?$_SESSION['LoginMemName']:NULL;
-$LoginMemNickName=isset($_SESSION['LoginMemNickName'])?$_SESSION['LoginMemNickName']:NULL;
-$LoginWebID=isset($_SESSION['LoginWebID'])?$_SESSION['LoginWebID']:NULL;
+$LoginMemID       = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
+$LoginMemName     = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
+$LoginMemNickName = isset($_SESSION['LoginMemNickName']) ? $_SESSION['LoginMemNickName'] : null;
+$LoginWebID       = isset($_SESSION['LoginWebID']) ? $_SESSION['LoginWebID'] : null;
 
 $xoopsTpl->assign("LoginMemID", $LoginMemID);
 $xoopsTpl->assign("LoginMemName", $LoginMemName);
@@ -23,335 +22,341 @@ $xoopsTpl->assign("MyWebs", $MyWebs);
 /*-----------function區--------------*/
 
 //tad_web_discuss編輯表單
-function tad_web_discuss_form($DiscussID=""){
-	global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$isAdmin,$xoopsTpl;
+function tad_web_discuss_form($DiscussID = "")
+{
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin, $xoopsTpl;
 
-  if(!isAdmin and !$MyWebs and empty($_SESSION['LoginMemID'])){
-    redirect_header("index.php",3, _MD_TCW_LOGIN_TO_POST);
-	}
+    if (!isAdmin and !$MyWebs and empty($_SESSION['LoginMemID'])) {
+        redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
+    }
 
-	//抓取預設值
-	if(!empty($DiscussID)){
-		$DBV=get_tad_web_discuss($DiscussID);
-	}else{
-		$DBV=array();
-	}
+    //抓取預設值
+    if (!empty($DiscussID)) {
+        $DBV = get_tad_web_discuss($DiscussID);
+    } else {
+        $DBV = array();
+    }
 
-	//預設值設定
+    //預設值設定
 
-  if($MyWebs){
+    if ($MyWebs) {
 
-    //設定「uid」欄位預設值
-    $uid=(!isset($DBV['uid']))?$xoopsUser->uid():$DBV['uid'];
+        //設定「uid」欄位預設值
+        $uid = (!isset($DBV['uid'])) ? $xoopsUser->uid() : $DBV['uid'];
 
-    //設定「MemID」欄位預設值
-    $MemID=(!isset($DBV['MemID']))?0:$DBV['MemID'];
+        //設定「MemID」欄位預設值
+        $MemID = (!isset($DBV['MemID'])) ? 0 : $DBV['MemID'];
 
-    //設定「LoginMemName」欄位預設值
-    $MemName=(!isset($DBV['MemName']))?$xoopsUser->name():$DBV['MemName'];
+        //設定「LoginMemName」欄位預設值
+        $MemName = (!isset($DBV['MemName'])) ? $xoopsUser->name() : $DBV['MemName'];
 
-    //設定「WebID」欄位預設值
-    $WebID=(!isset($DBV['WebID']))?$WebID:$DBV['WebID'];
-  }else{
+        //設定「WebID」欄位預設值
+        $WebID = (!isset($DBV['WebID'])) ? $WebID : $DBV['WebID'];
+    } else {
 
-    //設定「uid」欄位預設值
-    $uid=(!isset($DBV['uid']))?0:$DBV['uid'];
+        //設定「uid」欄位預設值
+        $uid = (!isset($DBV['uid'])) ? 0 : $DBV['uid'];
 
-    //設定「MemID」欄位預設值
-    $MemID=(!isset($DBV['MemID']))?$LoginMemID:$DBV['MemID'];
+        //設定「MemID」欄位預設值
+        $MemID = (!isset($DBV['MemID'])) ? $LoginMemID : $DBV['MemID'];
 
-    //設定「LoginMemName」欄位預設值
-    $MemName=(!isset($DBV['MemName']))?$LoginMemName:$DBV['MemName'];
+        //設定「LoginMemName」欄位預設值
+        $MemName = (!isset($DBV['MemName'])) ? $LoginMemName : $DBV['MemName'];
 
-    //設定「WebID」欄位預設值
-    $WebID=(!isset($DBV['WebID']))?$_SESSION['LoginWebID']:$DBV['WebID'];
-  }
+        //設定「WebID」欄位預設值
+        $WebID = (!isset($DBV['WebID'])) ? $_SESSION['LoginWebID'] : $DBV['WebID'];
+    }
 
+    //設定「DiscussID」欄位預設值
+    $DiscussID = (!isset($DBV['DiscussID'])) ? "" : $DBV['DiscussID'];
 
-	//設定「DiscussID」欄位預設值
-	$DiscussID=(!isset($DBV['DiscussID']))?"":$DBV['DiscussID'];
+    //設定「ReDiscussID」欄位預設值
+    $ReDiscussID = (!isset($DBV['ReDiscussID'])) ? "" : $DBV['ReDiscussID'];
 
-	//設定「ReDiscussID」欄位預設值
-	$ReDiscussID=(!isset($DBV['ReDiscussID']))?"":$DBV['ReDiscussID'];
+    //設定「DiscussTitle」欄位預設值
+    $DiscussTitle = (!isset($DBV['DiscussTitle'])) ? "" : $DBV['DiscussTitle'];
 
+    //設定「DiscussContent」欄位預設值
+    $DiscussContent = (!isset($DBV['DiscussContent'])) ? "" : $DBV['DiscussContent'];
 
-	//設定「DiscussTitle」欄位預設值
-	$DiscussTitle=(!isset($DBV['DiscussTitle']))?"":$DBV['DiscussTitle'];
+    //設定「DiscussDate」欄位預設值
+    $DiscussDate = (!isset($DBV['DiscussDate'])) ? date("Y-m-d H:i:s") : $DBV['DiscussDate'];
 
-	//設定「DiscussContent」欄位預設值
-	$DiscussContent=(!isset($DBV['DiscussContent']))?"":$DBV['DiscussContent'];
+    //設定「LastTime」欄位預設值
+    $LastTime = (!isset($DBV['LastTime'])) ? date("Y-m-d H:i:s") : $DBV['LastTime'];
 
-	//設定「DiscussDate」欄位預設值
-	$DiscussDate=(!isset($DBV['DiscussDate']))?date("Y-m-d H:i:s"):$DBV['DiscussDate'];
+    //設定「DiscussCounter」欄位預設值
+    $DiscussCounter = (!isset($DBV['DiscussCounter'])) ? "" : $DBV['DiscussCounter'];
 
-	//設定「LastTime」欄位預設值
-	$LastTime=(!isset($DBV['LastTime']))?date("Y-m-d H:i:s"):$DBV['LastTime'];
+    $op = (empty($DiscussID)) ? "insert_tad_web_discuss" : "update_tad_web_discuss";
+    //$op="replace_tad_web_discuss";
 
-	//設定「DiscussCounter」欄位預設值
-	$DiscussCounter=(!isset($DBV['DiscussCounter']))?"":$DBV['DiscussCounter'];
+    if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+        redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+    }
+    include_once TADTOOLS_PATH . "/formValidator.php";
+    $formValidator      = new formValidator("#myForm", true);
+    $formValidator_code = $formValidator->render();
 
-	$op=(empty($DiscussID))?"insert_tad_web_discuss":"update_tad_web_discuss";
-	//$op="replace_tad_web_discuss";
-
-	if(!file_exists(TADTOOLS_PATH."/formValidator.php")){
-   redirect_header("index.php",3, _MD_NEED_TADTOOLS);
-  }
-  include_once TADTOOLS_PATH."/formValidator.php";
-  $formValidator= new formValidator("#myForm",true);
-  $formValidator_code=$formValidator->render();
-
-  $xoopsTpl->assign('formValidator_code',$formValidator_code);
-	$xoopsTpl->assign('DiscussTitle',$DiscussTitle);
-	$xoopsTpl->assign('DiscussContent',$DiscussContent);
-	$xoopsTpl->assign('WebID',$WebID);
-	$xoopsTpl->assign('DiscussID',$DiscussID);
-	$xoopsTpl->assign('ReDiscussID',$ReDiscussID);
-	$xoopsTpl->assign('next_op',$op);
-	$xoopsTpl->assign('op','tad_web_discuss_form');
+    $xoopsTpl->assign('formValidator_code', $formValidator_code);
+    $xoopsTpl->assign('DiscussTitle', $DiscussTitle);
+    $xoopsTpl->assign('DiscussContent', $DiscussContent);
+    $xoopsTpl->assign('WebID', $WebID);
+    $xoopsTpl->assign('DiscussID', $DiscussID);
+    $xoopsTpl->assign('ReDiscussID', $ReDiscussID);
+    $xoopsTpl->assign('next_op', $op);
+    $xoopsTpl->assign('op', 'tad_web_discuss_form');
 
 }
 
-
 //新增資料到tad_web_discuss中
-function insert_tad_web_discuss(){
-	global $xoopsDB,$xoopsUser,$WebID,$MyWebs,$isAdmin;
+function insert_tad_web_discuss()
+{
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin;
 
-	if(empty($_SESSION['LoginMemID']) and !MyWebs and $isAdmin){
-    redirect_header("index.php",3, _MD_TCW_LOGIN_TO_POST);
-	}
+    if (empty($_SESSION['LoginMemID']) and !MyWebs and $isAdmin) {
+        redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
+    }
 
-	$myts =MyTextSanitizer::getInstance();
-	$_POST['DiscussTitle']=$myts->addSlashes($_POST['DiscussTitle']);
-	$_POST['DiscussContent']=$myts->addSlashes($_POST['DiscussContent']);
+    $myts                    = MyTextSanitizer::getInstance();
+    $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
+    $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
 
-  if($MyWebs){
-    $uid=$xoopsUser->uid();
-    $MemID=0;
-    $MemName=$xoopsUser->name();
-    $WebID=$WebID;
-  }else{
+    if ($MyWebs) {
+        $uid     = $xoopsUser->uid();
+        $MemID   = 0;
+        $MemName = $xoopsUser->name();
+    } else {
+        $uid     = 0;
+        $MemID   = $_SESSION['LoginMemID'];
+        $MemName = $_SESSION['LoginMemName'];
+        $WebID   = $_SESSION['LoginWebID'];
+    }
 
-    $uid=0;
-    $MemID=$_SESSION['LoginMemID'];
-    $MemName=$_SESSION['LoginMemName'];
-    $WebID=$_SESSION['LoginWebID'];
-  }
+    $_POST['ReDiscussID'] = intval($_POST['ReDiscussID']);
 
-  $_POST['ReDiscussID']=intval($_POST['ReDiscussID']);
-
-	$sql = "insert into ".$xoopsDB->prefix("tad_web_discuss")." 	(`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
+    $sql = "insert into " . $xoopsDB->prefix("tad_web_discuss") . " 	(`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
 	values('{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
-	$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
-	//取得最後新增資料的流水編號
-	$DiscussID=$xoopsDB->getInsertId();
+    //取得最後新增資料的流水編號
+    $DiscussID = $xoopsDB->getInsertId();
 
-	if(!empty($_POST['ReDiscussID'])){
-  	$sql = "update ".$xoopsDB->prefix("tad_web_discuss")." set `LastTime` = now()
+    if (!empty($_POST['ReDiscussID'])) {
+        $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `LastTime` = now()
   	where `DiscussID` = '{$_POST['ReDiscussID']}' or `ReDiscussID` = '{$_POST['ReDiscussID']}'";
-  	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  }
+        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    }
 
-	if(!empty($_POST['ReDiscussID']))return $_POST['ReDiscussID'];
-	return $DiscussID;
+    if (!empty($_POST['ReDiscussID'])) {
+        return $_POST['ReDiscussID'];
+    }
+
+    return $DiscussID;
 }
 
 //更新tad_web_discuss某一筆資料
-function update_tad_web_discuss($DiscussID=""){
-	global $xoopsDB,$xoopsUser,$isAdmin,$WebID,$MyWebs;
+function update_tad_web_discuss($DiscussID = "")
+{
+    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $MyWebs;
 
-  if($MyWebs){
-    $uid=$xoopsUser->uid();
-    $MemID=0;
-    $MemName=$xoopsUser->name();
-    $WebID=$WebID;
-    $anduid=($isAdmin)?"":"and `WebID`='{$WebID}'";
-  }else{
+    if ($MyWebs) {
+        $uid     = $xoopsUser->uid();
+        $MemID   = 0;
+        $MemName = $xoopsUser->name();
+        $anduid  = ($isAdmin) ? "" : "and `WebID`='{$WebID}'";
+    } else {
 
-    $uid=0;
-    $MemID=$_SESSION['LoginMemID'];
-    $MemName=$_SESSION['LoginMemName'];
-    $WebID=$_SESSION['LoginWebID'];
-    $anduid="and `MemID`='{$MemID}'";
-  }
+        $uid     = 0;
+        $MemID   = $_SESSION['LoginMemID'];
+        $MemName = $_SESSION['LoginMemName'];
+        $WebID   = $_SESSION['LoginWebID'];
+        $anduid  = "and `MemID`='{$MemID}'";
+    }
 
+    $myts                    = MyTextSanitizer::getInstance();
+    $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
+    $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
 
-	$myts =MyTextSanitizer::getInstance();
-	$_POST['DiscussTitle']=$myts->addSlashes($_POST['DiscussTitle']);
-	$_POST['DiscussContent']=$myts->addSlashes($_POST['DiscussContent']);
+    $_POST['ReDiscussID'] = intval($_POST['ReDiscussID']);
 
-
-  $_POST['ReDiscussID']=intval($_POST['ReDiscussID']);
-
-	$sql = "update ".$xoopsDB->prefix("tad_web_discuss")." set
+    $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set
 	 `ReDiscussID` = '{$_POST['ReDiscussID']}' ,
 	 `DiscussTitle` = '{$_POST['DiscussTitle']}' ,
 	 `DiscussContent` = '{$_POST['DiscussContent']}' ,
 	 `LastTime` = now()
 	where DiscussID='{$DiscussID}' {$anduid}";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
-	return $DiscussID;
+    return $DiscussID;
 }
 
-
-
-
 //以流水號取得某筆tad_web_discuss資料
-function get_tad_web_discuss($DiscussID=""){
-	global $xoopsDB;
-	if(empty($DiscussID))return;
-	$sql = "select * from ".$xoopsDB->prefix("tad_web_discuss")." where DiscussID='$DiscussID'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$data=$xoopsDB->fetchArray($result);
-	return $data;
+function get_tad_web_discuss($DiscussID = "")
+{
+    global $xoopsDB;
+    if (empty($DiscussID)) {
+        return;
+    }
+
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='$DiscussID'";
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $data   = $xoopsDB->fetchArray($result);
+    return $data;
 }
 
 //刪除tad_web_discuss某筆資料資料
-function delete_tad_web_discuss($DiscussID=""){
-	global $xoopsDB,$xoopsUser,$isAdmin,$WebID,$MyWebs;
+function delete_tad_web_discuss($DiscussID = "")
+{
+    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $MyWebs;
 
-  if($MyWebs){
-    $uid=$xoopsUser->uid();
-    $MemID=0;
-    $MemName=$xoopsUser->name();
-    $WebID=$WebID;
-    $anduid=($isAdmin)?"":"and `WebID`='{$WebID}'";
-  }else{
+    if ($MyWebs) {
+        $uid     = $xoopsUser->uid();
+        $MemID   = 0;
+        $MemName = $xoopsUser->name();
+        $WebID   = $WebID;
+        $anduid  = ($isAdmin) ? "" : "and `WebID`='{$WebID}'";
+    } else {
 
-    $uid=0;
-    $MemID=$_SESSION['LoginMemID'];
-    $MemName=$_SESSION['LoginMemName'];
-    $WebID=$_SESSION['LoginWebID'];
-    $anduid="and `MemID`='{$MemID}'";
-  }
+        $uid     = 0;
+        $MemID   = $_SESSION['LoginMemID'];
+        $MemName = $_SESSION['LoginMemName'];
+        $WebID   = $_SESSION['LoginWebID'];
+        $anduid  = "and `MemID`='{$MemID}'";
+    }
 
-	$sql = "delete from ".$xoopsDB->prefix("tad_web_discuss")." where DiscussID='$DiscussID' $anduid";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='$DiscussID' $anduid";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
-	$sql = "delete from ".$xoopsDB->prefix("tad_web_discuss")." where ReDiscussID='$DiscussID' $anduid";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' $anduid";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 }
 
 //以流水號秀出某筆tad_web_discuss資料內容
-function show_one_tad_web_discuss($DiscussID=""){
-	global $xoopsDB,$xoopsUser,$isAdmin,$xoopsTpl;
-	if(empty($DiscussID)){
-		return;
-	}else{
-		$DiscussID=intval($DiscussID);
-	}
+function show_one_tad_web_discuss($DiscussID = "")
+{
+    global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl;
+    if (empty($DiscussID)) {
+        return;
+    } else {
+        $DiscussID = intval($DiscussID);
+    }
 
-	add_tad_web_discuss_counter($DiscussID);
+    add_tad_web_discuss_counter($DiscussID);
 
-	$sql = "select * from ".$xoopsDB->prefix("tad_web_discuss")." where DiscussID='{$DiscussID}'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$all=$xoopsDB->fetchArray($result);
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}'";
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $all    = $xoopsDB->fetchArray($result);
 
-	//以下會產生這些變數： $DiscussID , $ReDiscussID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
-	foreach($all as $k=>$v){
-		$$k=$v;
-	}
+    //以下會產生這些變數： $DiscussID , $ReDiscussID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
+    foreach ($all as $k => $v) {
+        $$k = $v;
+    }
 
+    //$fun=(isMine($uid))?"
+    //<a href='{$_SERVER['PHP_SELF']}?op=tad_web_discuss_form&DiscussID=$DiscussID' class='link_button_r'>"._TAD_EDIT."</a>
+    //<a href=\"javascript:delete_tad_web_discuss_func($DiscussID);\" class='link_button_r'>"._TAD_DEL."</a>
+    //":"";
 
-	//$fun=(isMine($uid))?"
-	//<a href='{$_SERVER['PHP_SELF']}?op=tad_web_discuss_form&DiscussID=$DiscussID' class='link_button_r'>"._TAD_EDIT."</a>
-	//<a href=\"javascript:delete_tad_web_discuss_func($DiscussID);\" class='link_button_r'>"._TAD_DEL."</a>
-	//":"";
-
-
-
-	$xoopsTpl->assign('op','show_one_tad_web_discuss');
-	$xoopsTpl->assign('isMineDiscuss',isMineDiscuss($MemID,$WebID));
-	$xoopsTpl->assign('DiscussTitle',$DiscussTitle);
-	$xoopsTpl->assign('MemID',$MemID);
-	$xoopsTpl->assign('DiscussContent',nl2br($DiscussContent));
-	$xoopsTpl->assign('DiscussDate',$DiscussDate);
-	$xoopsTpl->assign('LastTime',$LastTime);
-	$xoopsTpl->assign('MemName',$MemName);
-	$xoopsTpl->assign('WebID',$WebID);
-	$xoopsTpl->assign('DiscussCounter',$DiscussCounter);
-	$xoopsTpl->assign('DiscussID',$DiscussID);
-	$xoopsTpl->assign('DiscussInfo',sprintf(_MD_TCW_INFO,$MemName,$DiscussDate,$DiscussCounter));
-	$xoopsTpl->assign('re',get_re($DiscussID));
-	$xoopsTpl->assign('LoginMemID',$_SESSION['LoginMemID']);
+    $xoopsTpl->assign('op', 'show_one_tad_web_discuss');
+    $xoopsTpl->assign('isMineDiscuss', isMineDiscuss($MemID, $WebID));
+    $xoopsTpl->assign('DiscussTitle', $DiscussTitle);
+    $xoopsTpl->assign('MemID', $MemID);
+    $xoopsTpl->assign('DiscussContent', nl2br($DiscussContent));
+    $xoopsTpl->assign('DiscussDate', $DiscussDate);
+    $xoopsTpl->assign('LastTime', $LastTime);
+    $xoopsTpl->assign('MemName', $MemName);
+    $xoopsTpl->assign('WebID', $WebID);
+    $xoopsTpl->assign('DiscussCounter', $DiscussCounter);
+    $xoopsTpl->assign('DiscussID', $DiscussID);
+    $xoopsTpl->assign('DiscussInfo', sprintf(_MD_TCW_INFO, $MemName, $DiscussDate, $DiscussCounter));
+    $xoopsTpl->assign('re', get_re($DiscussID));
+    $xoopsTpl->assign('LoginMemID', $_SESSION['LoginMemID']);
 }
 
 //是否有管理權（或由自己發布的），判斷是否要秀出管理工具
-function isMineDiscuss($DiscussMemID=null,$DiscussWebID=null){
-  global $MyWebs,$isAdmin ,$xoopsUser;
+function isMineDiscuss($DiscussMemID = null, $DiscussWebID = null)
+{
+    global $MyWebs, $isAdmin, $xoopsUser;
 
-  if(!empty($DiscussMemID) and $_SESSION['LoginMemID']==$DiscussMemID){
-     return true;
+    if (!empty($DiscussMemID) and $_SESSION['LoginMemID'] == $DiscussMemID) {
+        return true;
 
-  }elseif(!empty($DiscussWebID) and $MyWebs==$DiscussWebID){
-     return true;
-  }elseif($isAdmin){
-    return true;
-  }
+    } elseif (!empty($DiscussWebID) and $MyWebs == $DiscussWebID) {
+        return true;
+    } elseif ($isAdmin) {
+        return true;
+    }
 
-  return false;
+    return false;
 }
 
-
 //回覆的留言
-function get_re($DiscussID=""){
-	global $xoopsDB,$MyWebs,$TadUpFiles;
-  if(empty($DiscussID))return;
-	$sql = "select * from ".$xoopsDB->prefix("tad_web_discuss")." where ReDiscussID='$DiscussID' order by DiscussDate";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-
-	$re_data="";
-
-	while($all=$xoopsDB->fetchArray($result)){
-	  //以下會產生這些變數： $DiscussID , $ReDiscussID , $MemID , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
-    foreach($all as $k=>$v){
-      $$k=$v;
+function get_re($DiscussID = "")
+{
+    global $xoopsDB, $MyWebs, $TadUpFiles;
+    if (empty($DiscussID)) {
+        return;
     }
 
-    if(!empty($uid)){
-      $TadUpFiles->set_col("WebOwner",$WebID,"1");
-      $pic=$TadUpFiles->get_pic_file("thumb");
-      if(empty($pic))$pic="images/nobody.png";
-    }else{
-      $TadUpFiles->set_col("MemID",$MemID,"1");
-      $pic=$TadUpFiles->get_pic_file("thumb");
-      $M=get_tad_web_mems($MemID);
-      if(empty($pic))$pic=($M['MemSex']=='1')?XOOPS_URL."/modules/tad_web/images/boy.gif":XOOPS_URL."/modules/tad_web/images/girl.gif";
-    }
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' order by DiscussDate";
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
+    $re_data = "";
 
-  	$fun=(isMineDiscuss($MemID))?"<div style='font-size:12px;'>
-  	<a href='{$_SERVER['PHP_SELF']}?op=tad_web_discuss_form&DiscussID=$DiscussID'>"._TAD_EDIT."</a> | <a href=\"javascript:delete_tad_web_discuss_func($DiscussID);\">"._TAD_DEL."</a>
-  	</div>":"";
+    while ($all = $xoopsDB->fetchArray($result)) {
+        //以下會產生這些變數： $DiscussID , $ReDiscussID , $MemID , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
 
-    $DiscussContent=nl2br($DiscussContent);
-    $DiscussContent=bubble($DiscussContent);
-    $re_data.="<tr><td style='line-height:180%;'>
+        if (!empty($uid)) {
+            $TadUpFiles->set_col("WebOwner", $WebID, "1");
+            $pic = $TadUpFiles->get_pic_file("thumb");
+            if (empty($pic)) {
+                $pic = "images/nobody.png";
+            }
+
+        } else {
+            $TadUpFiles->set_col("MemID", $MemID, "1");
+            $pic = $TadUpFiles->get_pic_file("thumb");
+            $M   = get_tad_web_mems($MemID);
+            if (empty($pic)) {
+                $pic = ($M['MemSex'] == '1') ? XOOPS_URL . "/modules/tad_web/images/boy.gif" : XOOPS_URL . "/modules/tad_web/images/girl.gif";
+            }
+
+        }
+
+        $fun = (isMineDiscuss($MemID)) ? "<div style='font-size:12px;'>
+  	<a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=tad_web_discuss_form&DiscussID=$DiscussID'>" . _TAD_EDIT . "</a> | <a href=\"javascript:delete_tad_web_discuss_func($DiscussID);\">" . _TAD_DEL . "</a>
+  	</div>" : "";
+
+        $DiscussContent = nl2br($DiscussContent);
+        $DiscussContent = bubble($DiscussContent);
+        $re_data .= "<tr><td style='line-height:180%;'>
     $DiscussContent
-    <img src='$pic' alt='{$MemName}"._MD_TCW_DISCUSS_REPLY."' style='margin:0px 15px 0px 30px;float:left;' class='img-rounded img-polaroid'>
+    <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='margin:0px 15px 0px 30px;float:left;' class='img-rounded img-polaroid'>
     <div style='line-height:1.5em;'>
       <div>{$MemName}</div><div style='font-size:12px;'>$DiscussDate</div>{$fun}
     </div>
     <div style='clean:both;'></div>
     </td></tr>";
-  }
+    }
 
-  $re="";
-  if(!empty($re_data)){
-    $re="
+    $re = "";
+    if (!empty($re_data)) {
+        $re = "
   	<table>
   	$re_data
   	</table>
     ";
-  }
-  return $re;
+    }
+    return $re;
 }
 
-
-
-function bubble($content=""){
-  $main="<div class='xsnazzy'>
+function bubble($content = "")
+{
+    $main = "<div class='xsnazzy'>
   <b class='xb1'></b><b class='xb2'></b><b class='xb3'></b><b class='xb4'></b><b class='xb5'></b><b class='xb6'></b><b class='xb7'></b>
   <div class='xboxcontent'>
   <p>$content</p>
@@ -359,97 +364,104 @@ function bubble($content=""){
   <b class='xb7'></b><b class='xb6'></b><b class='xb5'></b><b class='xb4'></b><b class='xb3'></b><b class='xb2'></b><b class='xb1'></b>
   <em></em><span></span>
   </div>";
-  return $main;
+    return $main;
 }
 
 //新增tad_web_discuss計數器
-function add_tad_web_discuss_counter($DiscussID=''){
-	global $xoopsDB;
-	$sql = "update ".$xoopsDB->prefix("tad_web_discuss")." set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+function add_tad_web_discuss_counter($DiscussID = '')
+{
+    global $xoopsDB;
+    $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 }
 
 //登入
-function mem_login($MemUname="" , $MemPasswd=""){
-	global $xoopsDB,$xoopsUser;
-  if(empty($MemUname) or empty($MemPasswd)) return false;
+function mem_login($MemUname = "", $MemPasswd = "")
+{
+    global $xoopsDB, $xoopsUser;
+    if (empty($MemUname) or empty($MemPasswd)) {
+        return false;
+    }
 
-	$sql = "select a.`MemID` , a.`MemName` , a.`MemNickName` , b.`WebID` from ".$xoopsDB->prefix("tad_web_mems")." as a left join ".$xoopsDB->prefix("tad_web_link_mems")." as b on a.`MemID`=b.`MemID` where a.`MemUname`='$MemUname' and a.`MemPasswd`='$MemPasswd' and b.`MemEnable`='1'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  list($MemID,$MemName,$MemNickName,$WebID)=$xoopsDB->fetchRow($result);
+    $sql                                         = "select a.`MemID` , a.`MemName` , a.`MemNickName` , b.`WebID` from " . $xoopsDB->prefix("tad_web_mems") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID` where a.`MemUname`='$MemUname' and a.`MemPasswd`='$MemPasswd' and b.`MemEnable`='1'";
+    $result                                      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    list($MemID, $MemName, $MemNickName, $WebID) = $xoopsDB->fetchRow($result);
 
-  if(!empty($MemID)){
-    $_SESSION['LoginMemID']=$MemID;
-    $_SESSION['LoginMemName']=$MemName;
-    $_SESSION['LoginMemNickName']=$MemNickName;
-    $_SESSION['LoginWebID']=$WebID;
-  }
-  return true;
+    if (!empty($MemID)) {
+        $_SESSION['LoginMemID']       = $MemID;
+        $_SESSION['LoginMemName']     = $MemName;
+        $_SESSION['LoginMemNickName'] = $MemNickName;
+        $_SESSION['LoginWebID']       = $WebID;
+    }
+    return true;
 }
 
-
 /*-----------執行動作判斷區----------*/
-$op=(empty($_REQUEST['op']))?"":$_REQUEST['op'];
-$DiscussID=(empty($_REQUEST['DiscussID']))?"":intval($_REQUEST['DiscussID']);
-$WebID=empty($WebID)?$LoginWebID:$WebID;
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op        = system_CleanVars($_REQUEST, 'op', '', 'string');
+$DiscussID = system_CleanVars($_REQUEST, 'DiscussID', 0, 'int');
+$WebID     = system_CleanVars($_REQUEST, 'WebID', $LoginWebID, 'int');
 
-common_template($interface_menu,$WebID);
+common_template($WebID);
 
+switch ($op) {
+    //替換資料
+    case "replace_tad_web_discuss":
+        replace_tad_web_discuss();
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
 
+    //新增資料
+    case "insert_tad_web_discuss":
+        $DiscussID = insert_tad_web_discuss();
+        header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&DiscussID=$DiscussID");
+        exit;
+        break;
 
-switch($op){
-  //替換資料
-  case "replace_tad_web_discuss":
-  replace_tad_web_discuss();
-  header("location: {$_SERVER['PHP_SELF']}");
-  break;
+    //更新資料
+    case "update_tad_web_discuss":
+        update_tad_web_discuss($DiscussID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
 
-  //新增資料
-  case "insert_tad_web_discuss":
-  $DiscussID=insert_tad_web_discuss();
-  header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&DiscussID=$DiscussID");
-  break;
+    //輸入表格
+    case "tad_web_discuss_form":
+        tad_web_discuss_form($DiscussID);
+        break;
 
-  //更新資料
-  case "update_tad_web_discuss":
-  update_tad_web_discuss($DiscussID);
-  header("location: {$_SERVER['PHP_SELF']}");
-  break;
+    //刪除資料
+    case "delete_tad_web_discuss":
+        delete_tad_web_discuss($DiscussID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
 
-  //輸入表格
-  case "tad_web_discuss_form":
-  tad_web_discuss_form($DiscussID);
-  break;
+    //登入
+    case "mem_login":
+        mem_login($_POST['MemUname'], $_POST['MemPasswd']);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
 
-  //刪除資料
-  case "delete_tad_web_discuss":
-  delete_tad_web_discuss($DiscussID);
-  header("location: {$_SERVER['PHP_SELF']}");
-  break;
+    //登出
+    case "logout":
+        $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = "";
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
 
-  //登入
-  case "mem_login":
-  mem_login($_POST['MemUname'],$_POST['MemPasswd']);
-  header("location: {$_SERVER['PHP_SELF']}");
-  break;
-
-  //登出
-  case "logout":
-  $_SESSION['LoginMemID']=$_SESSION['LoginMemName']=$_SESSION['LoginMemNickName']=$_SESSION['LoginWebID']="";
-  header("location: {$_SERVER['PHP_SELF']}");
-  break;
-
-  //預設動作
-  default:
-  if(empty($DiscussID)){
-  	list_tad_web_discuss($WebID);
-  }else{
-  	show_one_tad_web_discuss($DiscussID);
-  }
-  break;
+    //預設動作
+    default:
+        if (empty($DiscussID)) {
+            list_tad_web_discuss($WebID);
+        } else {
+            show_one_tad_web_discuss($DiscussID);
+        }
+        break;
 
 }
 
 /*-----------秀出結果區--------------*/
-include_once XOOPS_ROOT_PATH.'/footer.php';
-?>
+include_once XOOPS_ROOT_PATH . '/footer.php';

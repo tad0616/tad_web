@@ -1,45 +1,67 @@
 <{if $isMineFiles}>
   <script type="text/javascript">
-  	function delete_tad_web_files_func(fsn){
-  		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-  		if (!sure)	return;
-  		location.href="files.php?op=delete_tad_web_files&fsn=" + fsn;
-  	}
+    function delete_tad_web_files_func(fsn){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="files.php?op=delete_tad_web_files&fsn=" + fsn;
+    }
   </script>
 <{/if}>
 
 <h1><{$smarty.const._MD_TCW_FILES}></h1>
 
-<table class="footable">
-<thead>
-	<tr>
-	<th data-class="expand"><{$smarty.const._MD_TCW_FILENAME}></th>
-	<th data-hide="phone" nowrap style="width:60px;"><{$smarty.const._MD_TCW_FILES_UID}></th>
-  <{if $showWebTitleFiles}><th data-hide="phone" style="text-align:center;"><{$smarty.const._MD_TCW_TEAMID}></th><{/if}>
-  <{if !$showWebTitleFiles && $isMineFiles}><th data-hide="phone" style="width:100px;text-align:center;"><{$smarty.const._TAD_FUNCTION}></th><{/if}>
-  </tr>
-</thead>
-<{if $file_data}>
-  <{foreach item=file from=$file_data}>
+<table class="footable table common_table">
+  <thead>
     <tr>
-    	<td><div style="word-wrap:break-word;width:<{$file.widht}>px;"><{$file.showurl}></div></td>
-    	<td style="text-align:center;" nowrap><{$file.uid_name}></td>
-
+      <th data-class="expand">
+        <{$smarty.const._MD_TCW_FILENAME}>
+      </th>
+      <th data-hide="phone" nowrap style="width:60px;">
+        <{$smarty.const._MD_TCW_FILES_UID}>
+      </th>
       <{if $showWebTitleFiles}>
-        <td style="width:100px;text-align:center;"><{$file.WebTitle}></td>
+        <th data-hide="phone" class="text-center">
+          <{$smarty.const._MD_TCW_TEAMID}>
+          </th>
       <{/if}>
-
       <{if !$showWebTitleFiles && $isMineFiles}>
-        <td style="text-align:center;">
-      		<a href="javascript:delete_tad_web_files_func(<{$file.fsn}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
-      		<a href="files.php?op=tad_web_files_form&fsn=<{$file.fsn}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
-        </td>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._TAD_FUNCTION}>
+        </th>
       <{/if}>
     </tr>
-  <{/foreach}>
-<{else}>
-  <tr><td colspan=4><{$smarty.const._MD_TCW_EMPTY}></td></tr>
-<{/if}>
+  </thead>
+  <{if $file_data}>
+    <{foreach item=file from=$file_data}>
+      <tr>
+        <td>
+          <div style="word-wrap:break-word;"><{$file.showurl}></div>
+        </td>
+        <td class="text-center" nowrap>
+          <{$file.uid_name}>
+        </td>
+
+        <{if $showWebTitleFiles}>
+          <td style="width:100px;text-align:center;">
+            <{$file.WebTitle}>
+          </td>
+        <{/if}>
+
+        <{if !$showWebTitleFiles && $isMineFiles}>
+          <td class="text-center">
+            <a href="javascript:delete_tad_web_files_func(<{$file.fsn}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+            <a href="files.php?op=tad_web_files_form&fsn=<{$file.fsn}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
+          </td>
+        <{/if}>
+      </tr>
+    <{/foreach}>
+  <{else}>
+    <tr>
+      <td colspan=4>
+        <{$smarty.const._MD_TCW_EMPTY}>
+      </td>
+    </tr>
+  <{/if}>
 </table>
 
 <{if $file_data}>
@@ -54,5 +76,8 @@
       <a href="files.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineFiles}><a href="files.php?WebID=<{$WebID}>&op=tad_web_files_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
+
+  <{if $isMineFiles}>
+    <a href="files.php?WebID=<{$WebID}>&op=tad_web_files_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a>
+  <{/if}>
 </div>

@@ -1,90 +1,167 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-04-15
-// $Id:$
-// ------------------------------------------------------------------------- //
 include_once "../../mainfile.php";
 
 //判斷是否對該模組有管理權限
-$isAdmin=false;
+$isAdmin = false;
 if ($xoopsUser) {
-  $module_id = $xoopsModule->getVar('mid');
-  $isAdmin=$xoopsUser->isAdmin($module_id);
+    $module_id = $xoopsModule->getVar('mid');
+    $isAdmin   = $xoopsUser->isAdmin($module_id);
 }
 
-  //目前觀看的班級
-if(!empty($_REQUEST['WebID'])){
-  $WebID=intval($_REQUEST['WebID']);
-  $_SESSION['WebID']=$WebID;
-}else{
-  $WebID=$_SESSION['WebID'];
+//目前觀看的班級
+if (!empty($_REQUEST['WebID'])) {
+    $WebID             = intval($_REQUEST['WebID']);
+    $_SESSION['WebID'] = $WebID;
+} else {
+    $WebID = $_SESSION['WebID'];
 }
 
 include_once "function.php";
 
-
-
-if($WebID){
-  $Web=getWebInfo($WebID);
-  $WebName=$Web['WebTitle'];
-  $WebTitle=$Web['WebTitle'];
-  $WebOwner=$Web['WebOwner'];
-}else{
-  $Web="";
-  $WebName="";
-  $WebTitle="";
-  $WebOwner="";
+if ($WebID) {
+    $Web      = getWebInfo($WebID);
+    $WebName  = $Web['WebTitle'];
+    $WebTitle = $Web['WebTitle'];
+    $WebOwner = $Web['WebOwner'];
+} else {
+    $Web      = "";
+    $WebName  = "";
+    $WebTitle = "";
+    $WebOwner = "";
 }
 
+$i = 0;
 
-$interface_menu[_MD_TCW_HOME]="home.php";
-if($WebID){
-  $interface_menu[_MD_TCW_CLASS_HOME]="index.php?WebID={$WebID}";
+if ($WebID) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_CLASS_HOME;
+    $menu_var[$i]['url']    = "index.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-home";
+    $i++;
 }
 
-if($xoopsModuleConfig['web_mode']=="class"){
-  $_MD_TCW_ABOUTUS=empty($WebID)?_MD_TCW_ALL_CLASS:_MD_TCW_MY_CLASS;
-}else{
-  $_MD_TCW_ABOUTUS=empty($WebID)?_MD_TCW_ALL_WEB:_MD_TCW_ABOUTUS;
+if ($xoopsModuleConfig['web_mode'] == "class") {
+    $_MD_TCW_ABOUTUS = empty($WebID) ? _MD_TCW_ALL_CLASS : _MD_TCW_MY_CLASS;
+} else {
+    $_MD_TCW_ABOUTUS = empty($WebID) ? _MD_TCW_ALL_WEB : _MD_TCW_ABOUTUS;
 }
 
-$hide_function=array();
-if(!empty($WebID)){
-	$ConfigValue=get_web_config("hide_function",$WebID);
-	$hide_function=explode(';',$ConfigValue);
+$hide_function = array();
+if (!empty($WebID)) {
+    $ConfigValue   = get_web_config("hide_function", $WebID);
+    $hide_function = explode(';', $ConfigValue);
 }
 
-$interface_menu[$_MD_TCW_ABOUTUS]="aboutus.php?WebID={$WebID}";
-if(!in_array('news',$hide_function))$interface_menu[_MD_TCW_NEWS]="news.php?WebID={$WebID}";
-if($xoopsModuleConfig['web_mode']=="class"){
-  if(!in_array('homework',$hide_function))$interface_menu[_MD_TCW_HOMEWORK]="homework.php?WebID={$WebID}";
+if (!in_array('aboutus', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_ABOUTUS;
+    $menu_var[$i]['url']    = "aboutus.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-smile-o";
+    $i++;
 }
-if(!in_array('files',$hide_function))$interface_menu[_MD_TCW_FILES]="files.php?WebID={$WebID}";
-if(!in_array('action',$hide_function))$interface_menu[_MD_TCW_ACTION]="action.php?WebID={$WebID}";
-if(!in_array('video',$hide_function))$interface_menu[_MD_TCW_VIDEO]="video.php?WebID={$WebID}";
-if(!in_array('link',$hide_function))$interface_menu[_MD_TCW_LINK]="link.php?WebID={$WebID}";
-if(!in_array('discuss',$hide_function))$interface_menu[_MD_TCW_DISCUSS]="discuss.php?WebID={$WebID}";
-$interface_menu[_MD_TCW_CALENDA]="calenda.php?WebID={$WebID}";
 
+if (!in_array('news', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_NEWS;
+    $menu_var[$i]['url']    = "news.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-newspaper-o";
+    $i++;
+}
+
+if ($xoopsModuleConfig['web_mode'] == "class") {
+    if (!in_array('homework', $hide_function)) {
+        $menu_var[$i]['id']     = $i;
+        $menu_var[$i]['title']  = _MD_TCW_HOMEWORK;
+        $menu_var[$i]['url']    = "homework.php?WebID={$WebID}";
+        $menu_var[$i]['target'] = "_self";
+        $menu_var[$i]['icon']   = "fa-pencil-square-o";
+        $i++;
+    }
+
+}
+if (!in_array('files', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_FILES;
+    $menu_var[$i]['url']    = "files.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-upload";
+    $i++;
+}
+
+if (!in_array('action', $hide_function)) {
+
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_ACTION;
+    $menu_var[$i]['url']    = "action.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-camera";
+    $i++;
+}
+
+if (!in_array('video', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_VIDEO;
+    $menu_var[$i]['url']    = "video.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-film";
+    $i++;
+}
+
+if (!in_array('link', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_LINK;
+    $menu_var[$i]['url']    = "link.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-globe";
+    $i++;
+}
+
+if (!in_array('discuss', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_DISCUSS;
+    $menu_var[$i]['url']    = "discuss.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-comments";
+    $i++;
+}
+
+if (!in_array('calendar', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_CALENDAR;
+    $menu_var[$i]['url']    = "calendar.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-calendar";
+    $i++;
+}
 
 //模組前台選單
-$module_menu=supser_fish($interface_menu,null,"class='sf-menu'","class='current'","tad_web");
 
 //圖案
-$TadUpFiles->set_col("WebLogo",$WebID,"1");
-$web_logo=$TadUpFiles->get_pic_file();
+$TadUpFiles->set_col("WebLogo", $WebID, "1");
+$web_logo = $TadUpFiles->get_pic_file();
 
 //我的班級ID（陣列）
-$MyWebs=MyWebID();
+$MyWebs = MyWebID();
 //目前瀏覽的是否是我的班級？
-$isMyWeb=in_array($WebID,$MyWebs);
+$isMyWeb = in_array($WebID, $MyWebs);
 
-if($isMyWeb){
-  $interface_menu[_MD_TCW_TOOLS]="admin/setup.php";
+if ($isMyWeb) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_TOOLS;
+    $menu_var[$i]['url']    = "config.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-check-square-o";
+    $i++;
 }
 
-if($isAdmin){
-  $interface_menu[_MD_TCW_ADMIN]="admin/index.php";
+if ($isAdmin) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_ADMIN;
+    $menu_var[$i]['url']    = "admin/index.php";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-check-square-o";
+    $i++;
 }
-?>

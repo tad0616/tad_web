@@ -1,164 +1,171 @@
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
-<{$jquery}>
+<link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+<div class="container-fluid">
+  <{if $op=="tad_web_form"}>
+    <{$formValidator_code}>
+    <div class="row-fluid">
+      <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
+        <table class="table" style="<{$pic}>">
+
+          <tr>
+            <td nowrap><{$smarty.const._MA_TCW_TEAMNAME}></td>
+            <td><input type="text" name="WebName"  value="<{$WebName}>" id="WebName" class="validate[required] form-control"></td>
+          </tr>
+
+          <tr>
+            <td nowrap><{$smarty.const._MA_TCW_TEAMTITLE}></td>
+            <td><input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required] form-control"></td>
+          </tr>
+
+          <tr>
+            <td nowrap><{$smarty.const._MA_TCW_TEAMLEADER}></td>
+            <td><{$user_menu}></td>
+          </tr>
+
+          <tr>
+            <td nowrap><{$smarty.const._MA_TCW_TEAMENABLE}></td>
+            <td>
+              <label class="radio inline">
+                <input type="radio" name="WebEnable" id="WebEnable" value="1" <{$WebEnable1}>><{$smarty.const._TAD_ENABLE}>
+              </label>
+
+              <label class="radio inline">
+                <input type="radio" name="WebEnable" id="WebEnable" value="0" <{$WebEnable0}>><{$smarty.const._TAD_UNABLE}>
+              </label>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="bar" colspan="2">
+              <input type="hidden" name="WebSort" size="20" value="<{$WebSort}>" id="WebSort">
+
+              <!--編號-->
+              <input type="hidden" name="WebID" value="<{$WebID}>">
+              <input type="hidden" name="op" value="<{$next_op}>">
+              <input type="submit" value="<{$smarty.const._TAD_SAVE}>">
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  <{elseif $op=="batch_creat_class"}>
+    <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
+      <{$content}>
+      <input type="hidden" name="op" value="batch_add_class">
+      <input type="submit" value="<{$smarty.const._TAD_SAVE}>">
+    </form>
+  <{elseif $op=="create_web"}>
+    <a href="main.php?op=create_by_user" class="btn btn-large btn-info"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
+  <{elseif $op=="create_by_user"}>
+    <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
+      <{$form}>
+      <input type="hidden" name="op" value="batch_add_class_by_user">
+      <input type="submit" value="<{$smarty.const._TAD_SAVE}>">
+    </form>
+  <{elseif $op=="delete_tad_web_chk"}>
+    <h2><{$smarty.const._MA_TCW_WILL_DEL}></h2>
+    <form action="main.php" method="post">
+      <table class="table table-striped table-bordered table-hover">
+        <tr><td><{$smarty.const._MA_TCW_DEL_MEM}></td><td><{$allMemName}></td></tr>
+        <tr><td><{$smarty.const._MA_TCW_DEL_LINK}></td><td><{$allLinkTitle}></td></tr>
+        <tr><td><{$smarty.const._MA_TCW_DEL_NEWS}></td><td><{$allNewsTitle}></td></tr>
+        <tr><td><{$smarty.const._MA_TCW_DEL_ACTION}></td><td><{$allActionName}></td></tr>
+        <tr><td><{$smarty.const._MA_TCW_DEL_FILES}></td><td><{$allFileName}></td></tr>
+        <tr><td><{$smarty.const._MA_TCW_DEL_VIDEOS}></td><td><{$allVideoName}></td></tr>
+        <tr><td><{$smarty.const._MA_TCW_DEL_DISCUSS}></td><td><{$allDiscussTitle}></td></tr>
+      </table>
+      <input type="hidden" name="op" value="delete_tad_web">
+      <input type="hidden" name="WebID" value="<{$WebID}>">
+      <button type="submit" class="btn btn-danger"><{$smarty.const._MA_TCW_DELETE}></button>
+    </form>
+  <{elseif $op=="need_tad_web_theme"}>
+    <div class="alert alert-danger">
+      <{$smarty.const._MA_TCW_NEED_TAD_WEB_THEME}>
+    </div>
+  <{else}>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#sort").sortable({ opacity: 0.6, cursor: "move", update: function() {
+            var order = $(this).sortable("serialize");
+            $.post("save_sort.php", order, function(theResponse){
+                $("#save_msg").html(theResponse);
+            });
+        }
+        });
+    });
+
+    function delete_tad_web_func(WebID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="main.php?WebID=" + WebID + "op=delete_tad_web_chk";
+    }
+    </script>
+
+    <!--{$jeditable_set}-->
+
+    <div>
+      <a href="main.php?op=tad_web_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
+      <a href="main.php?op=create_by_user" class="btn btn-primary"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
+      <a href="main.php?op=order_by_teamtitle" class="btn btn-success"><{$smarty.const._MA_TCW_ORDER_BY_TEAMTITLE}></a>
+    </div>
+
+    <h2><{$WebYear}><{$smarty.const._MA_TCW_MAIN_TITLE}></h2>
+    <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
+      <div id="save_msg"></div>
+      <table class="table table-striped table-hover" style="width:auto;">
+        <tr>
+          <th><{$smarty.const._TAD_DEL}></th>
+          <th><{$smarty.const._MA_TCW_TEAMNAME}></th>
+          <th><{$smarty.const._MA_TCW_TEAMTITLE}></th>
+          <th><{$smarty.const._MA_TCW_TEAMLEADER}></th>
+          <th><{$smarty.const._MA_TCW_MEM_AMOUNT}></th>
+          <th><{$smarty.const._MA_TCW_TEAMCOUNTER}></th>
+          <th><{$smarty.const._TAD_FUNCTION}></th>
+        </tr>
+        <tbody id="sort">
+        <{foreach item=class from=$data}>
+        <tr id="tr_<{$class.WebID}>">
+          <td>
+            <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+          </td>
+          <td>
+
+          <{if $class.WebEnable=='1'}>
+            <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=0"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
+          <{else}>
+            <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=1"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
+          <{/if}>
+
+            <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
+          </td>
+          <td>
+            <input type="text" name="webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>" class="form-control">
+          </td>
+          <td>
+             <{$class.WebOwner}> (<{$class.uname}>)
+          </td>
+          <td>
+            <{$class.memAmount}>
+          </td>
+          <td>
+            <{$class.WebCounter}>
+          </td>
+          <td>
+            <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_EDIT}></a>
+
+          </td>
+        </tr>
+        <{/foreach}>
 
 
+        </tbody>
+      </table>
 
-<{if $op=="tad_web_form"}>
-  <{$formValidator_code}>
-  <div class="row-fluid">
-	<form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
-	<table class="table" style="<{$pic}>">
+      <input type="hidden" name="op" value="save_webs_title">
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+      </div>
 
-	<tr><td nowrap><{$smarty.const._MA_TCW_TEAMNAME}></td>
-	<td><input type="text" name="WebName"  value="<{$WebName}>" id="WebName" class="validate[required , length[1,255]]"></td></tr>
-
-	<tr><td nowrap><{$smarty.const._MA_TCW_TEAMTITLE}></td>
-	<td><input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required , length[1,255]]"></td></tr>
-
-	<tr><td nowrap><{$smarty.const._MA_TCW_TEAMLEADER}></td>
-	<td><{$user_menu}></td></tr>
-
-	<tr><td nowrap><{$smarty.const._MA_TCW_TEAMENABLE}></td>
-	<td>
-	<label class="radio inline">
-  <input type="radio" name="WebEnable" id="WebEnable" value="1" <{$WebEnable1}>><{$smarty.const._TAD_ENABLE}>
-  </label>
-
-
-	<label class="radio inline">
-	<input type="radio" name="WebEnable" id="WebEnable" value="0" <{$WebEnable0}>><{$smarty.const._TAD_UNABLE}>
-  </label>
-  </td></tr>
-
-	<tr><td class="bar" colspan="2">
-	<input type="hidden" name="WebSort" size="20" value="<{$WebSort}>" id="WebSort">
-
-	<!--編號-->
-	<input type="hidden" name="WebID" value="<{$WebID}>">
-	<input type="hidden" name="op" value="<{$next_op}>">
-	<input type="submit" value="<{$smarty.const._TAD_SAVE}>"></td></tr>
-	</table>
-	</form>
-  </div>
-<{elseif $op=="batch_creat_class"}>
-	<form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
-    <{$content}>
-  	<input type="hidden" name="op" value="batch_add_class">
-  	<input type="submit" value="<{$smarty.const._TAD_SAVE}>">
-	</form>
-
-<{elseif $op=="create_web"}>
-  <a href="main.php?op=create_by_user" class="btn btn-large btn-info"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
-<{elseif $op=="create_by_user"}>
-	<form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
-    <{$form}>
-  	<input type="hidden" name="op" value="batch_add_class_by_user">
-  	<input type="submit" value="<{$smarty.const._TAD_SAVE}>">
-	</form>
-<{elseif $op=="delete_tad_web_chk"}>
-  <h2><{$smarty.const._MA_TCW_WILL_DEL}></h2>
-  <form action="main.php" method="post">
-  <table class="table table-striped table-bordered table-hover">
-  <tr><td><{$smarty.const._MA_TCW_DEL_MEM}></td><td><{$allMemName}></td></tr>
-  <tr><td><{$smarty.const._MA_TCW_DEL_LINK}></td><td><{$allLinkTitle}></td></tr>
-  <tr><td><{$smarty.const._MA_TCW_DEL_NEWS}></td><td><{$allNewsTitle}></td></tr>
-  <tr><td><{$smarty.const._MA_TCW_DEL_ACTION}></td><td><{$allActionName}></td></tr>
-  <tr><td><{$smarty.const._MA_TCW_DEL_FILES}></td><td><{$allFileName}></td></tr>
-  <tr><td><{$smarty.const._MA_TCW_DEL_VIDEOS}></td><td><{$allVideoName}></td></tr>
-  <tr><td><{$smarty.const._MA_TCW_DEL_DISCUSS}></td><td><{$allDiscussTitle}></td></tr>
-
-  </table>
-  <input type="hidden" name="op" value="delete_tad_web">
-  <input type="hidden" name="WebID" value="<{$WebID}>">
-  <button type="submit" class="btn btn-danger"><{$smarty.const._MA_TCW_DELETE}></button>
-  </form>
-<{else}>
-
-  <script type="text/javascript">
-  $(document).ready(function(){
-      $("#sort").sortable({ opacity: 0.6, cursor: "move", update: function() {
-          var order = $(this).sortable("serialize");
-          $.post("save_sort.php", order, function(theResponse){
-              $("#save_msg").html(theResponse);
-          });
-      }
-      });
-  });
-
-  function delete_tad_web_func(WebID){
-  	var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-  	if (!sure)	return;
-  	location.href="main.php?WebID=" + WebID + "op=delete_tad_web_chk";
-  }
-  </script>
-
-  <!--{$jeditable_set}-->
-
-  <div>
-  <a href="main.php?op=tad_web_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
-  <a href="main.php?op=create_by_user" class="btn btn-primary"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
-  <a href="main.php?op=order_by_teamtitle" class="btn btn-success"><{$smarty.const._MA_TCW_ORDER_BY_TEAMTITLE}></a>
-  </div>
-
-  <h2><{$WebYear}><{$smarty.const._MA_TCW_MAIN_TITLE}></h2>
-	<form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
-	<div id="save_msg"></div>
-  <table class="table table-striped table-hover" style="width:auto;">
-  	<tr>
-    	<th><{$smarty.const._TAD_DEL}></th>
-    	<th><{$smarty.const._MA_TCW_TEAMNAME}></th>
-    	<th><{$smarty.const._MA_TCW_TEAMTITLE}></th>
-    	<th><{$smarty.const._MA_TCW_TEAMLEADER}></th>
-    	<th><{$smarty.const._MA_TCW_MEM_AMOUNT}></th>
-    	<th><{$smarty.const._MA_TCW_TEAMCOUNTER}></th>
-    	<th><{$smarty.const._TAD_FUNCTION}></th>
-    </tr>
-  	<tbody id="sort">
-  	<{foreach item=class from=$data}>
-  	<tr id="tr_<{$class.WebID}>">
-      <td>
-        <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
-      </td>
-  		<td>
-
-  		<{if $class.WebEnable=='1'}>
-  		  <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=0"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
-      <{else}>
-        <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=1"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
-      <{/if}>
-
-        <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
-      </td>
-  		<td>
-        <input type="text" name="webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>" class="span2">
-      </td>
-  		<td>
-         <{$class.WebOwner}> (<{$class.uname}>)
-      </td>
-  		<td>
-    		<{$class.memAmount}>
-      </td>
-  		<td>
-    		<{$class.WebCounter}>
-      </td>
-  		<td>
-    		<a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_EDIT}></a>
-
-      </td>
-  	</tr>
-    <{/foreach}>
-
-
-    </tbody>
-  </table>
-
-	<input type="hidden" name="op" value="save_webs_title">
-	<div class="text-center">
-	<button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-  </div>
-
-	</form>
-
-<{/if}>
+    </form>
+  <{/if}>
+</div>

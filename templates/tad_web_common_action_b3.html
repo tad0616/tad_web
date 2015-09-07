@@ -1,0 +1,92 @@
+<{if $isMineAction}>
+  <script>
+    function delete_tad_web_action_func(ActionID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="action.php?WebID=<{$WebID}>&op=delete_tad_web_action&ActionID=" + ActionID;
+    }
+    </script>
+<{/if}>
+
+
+<h1><{$smarty.const._MD_TCW_ACTION}></h1>
+<table class="footable table common_table">
+  <thead>
+    <tr>
+      <th data-hide="phone" style="width:100px;text-align:center;">
+        <{$smarty.const._MD_TCW_ACTIONDATE}>
+      </th>
+      <th data-class="expand">
+        <{$smarty.const._MD_TCW_ACTIONNAME}>
+      </th>
+      <th data-hide="phone" style="width:100px;text-align:center;">
+        <{$smarty.const._MD_TCW_ACTIONPLACE}>
+      </th>
+      <th data-hide="phone" style="width:50px;text-align:center;">
+        <{$smarty.const._MD_TCW_ACTIONCOUNT}>
+      </th>
+      <{if $showWebTitleAction}>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._MD_TCW_TEAMID}>
+        </th>
+      <{/if}>
+      <{if !$showWebTitleAction && $isMineAction}>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._TAD_FUNCTION}>
+        </th>
+      <{/if}>
+    </tr>
+  </thead>
+  <{if $action_data}>
+    <{foreach item=act from=$action_data}>
+      <tr>
+        <td class="text-center">
+          <{$act.ActionDate}>
+        </td>
+        <td>
+          <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
+        </td>
+        <td class="text-center">
+          <{$act.ActionPlace}>
+        </td>
+        <td class="text-center">
+          <{$act.ActionCount}>
+        </td>
+        <{if $showWebTitleAction}>
+          <td class="text-center">
+            <{$act.WebTitle}>
+          </td>
+        <{/if}>
+        <{if !$showWebTitleAction && $isMineAction}>
+        <td class="text-center">
+          <a href="javascript:delete_tad_web_action_func(<{$act.ActionID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+          <a href="action.php?WebID=<{$WebID}>&op=tad_web_action_form&ActionID=<{$act.ActionID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+        </td>
+        <{/if}>
+      </tr>
+    <{/foreach}>
+  <{else}>
+    <tr>
+      <td colspan=4 class="text-center">
+        <{$smarty.const._MD_TCW_EMPTY}>
+      </td>
+    </tr>
+  <{/if}>
+</table>
+
+<{if $action_data}>
+  <{$bar}>
+<{/if}>
+
+<div style="text-align:right">
+  <{if $bar==""}>
+    <{if $WebID==""}>
+      <a href="index.php?op=list_tad_web_action" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+    <{else}>
+      <a href="action.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+    <{/if}>
+  <{/if}>
+  <{if $isMineAction}>
+    <a href="action.php?WebID=<{$WebID}>&op=tad_web_action_form" class="btn btn-xs btn-info"><{$smarty.const._TAD_ADD}></a>
+  <{/if}>
+</div>

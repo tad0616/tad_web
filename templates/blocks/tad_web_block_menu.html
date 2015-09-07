@@ -1,0 +1,90 @@
+<{if $block.op=="login"}>
+  <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
+    <div class="<{$block.form_group}>">
+      <label class="<{$block.span}>3 control-label">
+        <{$smarty.const.TF_USER_S_ID}>
+      </label>
+      <div class="<{$block.span}>9 contros">
+        <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="<{$block.form_control}>" />
+      </div>
+    </div>
+
+    <div class="<{$block.form_group}>">
+      <label class="<{$block.span}>3 control-label">
+        <{$smarty.const.TF_USER_S_PASS}>
+      </label>
+      <div class="<{$block.span}>9 contros">
+      <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="<{$block.form_control}>" />
+      </div>
+    </div>
+
+    <div class="<{$block.form_group}>">
+      <label class="<{$block.span}>3 control-label">
+      </label>
+      <div class="<{$block.span}>9 contros">
+        <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
+        <input type="hidden" name="rememberme" value="On" />
+        <input type="hidden" name="op" value="login" />
+        <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
+      </div>
+    </div>
+  </form>
+
+<{elseif $block.op=="logout"}>
+  <a href="<{$xoops_url}>/user.php?op=logout" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+<{else}>
+  <select class="span12 form-control" onChange="location.href=this.value">
+    <{foreach from=$block.webs item=web}>
+      <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
+    <{/foreach}>
+  </select>
+
+  <h3><{$block.WebTitle}><small><{$smarty.const._MB_TCW_MENU}></small></h3>
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>12">
+      <{$block.my_web}>
+    </div>
+  </div>
+
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>6">
+      <{$block.class_setup}>
+    </div>
+    <div class="<{$block.span}>6">
+      <{$block.web_config}>
+    </div>
+  </div>
+
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>6">
+      <{$block.news_add}>
+    </div>
+    <div class="<{$block.span}>6">
+      <{$block.homework_add}>
+    </div>
+  </div>
+
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>6">
+      <{$block.action_add}>
+    </div>
+    <div class="<{$block.span}>6">
+      <{$block.video_add}>
+    </div>
+  </div>
+
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>6">
+      <{$block.files_add}>
+    </div>
+    <div class="<{$block.span}>6">
+      <{$block.link_add}>
+    </div>
+  </div>
+
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>12">
+      <{$block.logout}>
+    </div>
+  </div>
+<{/if}>

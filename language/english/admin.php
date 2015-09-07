@@ -1,13 +1,5 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-04-15
-// $Id:$
-// ------------------------------------------------------------------------- //
 include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
-
-//需加入模組語系
-define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
 
 //main.php
 define('_MA_TCW_TEAMID', 'Number');
@@ -37,3 +29,4 @@ define('_MA_TCW_UPLOAD_OWNER_PIC', 'Upload page image file');
 //save_sort.php save.php
 define('_MA_TCW_UPDATE_FAIL', 'Update Failed!');
 define('_MA_TCW_SAVE_SORT_OK', 'The sort is complete!');
+define("_MA_TCW_NEED_TAD_WEB_THEME", "<ul><li style='line-height:2;'>This module need <a href='http://120.115.2.90/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme</a>。</li><li style='line-height:2;'>Just need to download it and unzip it to themes folder.</li><li style='line-height:2;'>You can install from <a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>Tad Adm module</a></li></ul>");

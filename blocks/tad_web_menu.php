@@ -1,59 +1,94 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-04-19
-// $Id:$
-// ------------------------------------------------------------------------- //
-
 //區塊主函式 (班級選單(tad_web_menu))
-function tad_web_menu($options){
-  global $xoopsUser,$xoopsDB,$MyWebs;
+function tad_web_menu($options)
+{
+    global $xoopsUser, $xoopsDB, $MyWebs;
 
-  if($xoopsUser){
-    $uid=$xoopsUser->uid();
-  }else{
-    return;
-  }
+    if ($xoopsUser) {
+        $uid = $xoopsUser->uid();
+    } else {
+        if (!empty($_GET['WebID'])) {
+            $block['row']          = 'row';
+            $block['span']         = 'col-md-';
+            $block['form_group']   = 'form-group';
+            $block['form_control'] = 'form-control';
+        } else {
+            $block['row']          = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
+            $block['span']         = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
+            $block['form_group']   = $_SESSION['web_bootstrap'] == '3' ? 'form-group' : 'control-group';
+            $block['form_control'] = $_SESSION['web_bootstrap'] == '3' ? 'form-control' : 'span12';
+        }
 
-  $sql="select * from ".$xoopsDB->prefix("tad_web")." where WebOwnerUid='$uid' and WebEnable='1'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$i=0;
-	while($all=$xoopsDB->fetchArray($result)){
-
-    foreach($all as $k=>$v){
-      $$k=$v;
-      $block['web'][$i][$k]=$v;
+        $block['op'] = 'login';
+        return $block;
     }
 
-    $block['web'][$i]['my_web']=mkMenuOpt(sprintf(_MB_TCW_TO_MY_WEB,$WebName),"index.php?WebID={$WebID}","icon-home");
-  	$block['web'][$i]['news_add']=mkMenuOpt(_MB_TCW_NEWS_ADD,"news.php?WebID={$WebID}&op=tad_web_news_form","icon-volume-up");
-  	$block['web'][$i]['homework_add']=mkMenuOpt(_MB_TCW_HOMEWORK_ADD,"homework.php?WebID={$WebID}&op=tad_web_news_form","icon-pencil");
-  	$block['web'][$i]['files_add']=mkMenuOpt(_MB_TCW_FILES_ADD,"files.php?WebID={$WebID}&op=tad_web_files_form","icon-arrow-up");
-  	$block['web'][$i]['action_add']=mkMenuOpt(_MB_TCW_ACTION_ADD,"action.php?WebID={$WebID}&op=tad_web_action_form","icon-picture");
-  	$block['web'][$i]['class_setup']=mkMenuOpt(_MB_TCW_WEB_SETUP,"aboutus.php?WebID={$WebID}&op=tad_web_adm","icon-wrench");
-  	$block['web'][$i]['video_add']=mkMenuOpt(_MB_TCW_VIDEO_ADD,"video.php?WebID={$WebID}&op=tad_web_video_form","icon-film");
-  	$block['web'][$i]['link_add']=mkMenuOpt(_MB_TCW_LINK_ADD,"link.php?WebID={$WebID}&op=tad_web_link_form","icon-globe");
-  	$block['web'][$i]['logout']=mkMenuOpt(_MB_TCW_LOGOUT,"/user.php?op=logout","icon-ban-circle");
-  	$block['web'][$i]['web_config']=mkMenuOpt(_MB_TCW_WEB_CONFIG,"aboutus.php?WebID={$WebID}&op=tad_web_config","icon-check");
-  	$i++;
-  }
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' order by WebSort";
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
-  if(empty($block))return "";
+    $i = 0;
 
-	return $block;
+    $oldWebID    = !empty($_GET['WebID']) ? intval($_GET['WebID']) : 0;
+    $defaltWebID = !empty($_GET['WebID']) ? intval($_GET['WebID']) : 0;
+
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+        if (empty($defaltWebID)) {
+            $defaltWebID    = $WebID;
+            $defaltWebTitle = $WebTitle;
+            $defaltWebName  = $WebName;
+        } elseif ($defaltWebID == $WebID) {
+            $defaltWebID    = $WebID;
+            $defaltWebTitle = $WebTitle;
+            $defaltWebName  = $WebName;
+        }
+
+        $block['webs'][$i]['title'] = $WebTitle;
+        $block['webs'][$i]['WebID'] = $WebID;
+        $block['webs'][$i]['name']  = $WebName;
+        $block['webs'][$i]['url']   = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
+        $WebID_Arr[]                = $WebID;
+        $i++;
+    }
+    if (!in_array($oldWebID, $WebID_Arr)) {
+        $block['op'] = "logout";
+        return $block;
+    }
+
+    $block['WebTitle'] = $defaltWebTitle;
+
+    $block['my_web']       = mkMenuOpt(sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName), "index.php?WebID={$defaltWebID}", "fa-home");
+    $block['news_add']     = mkMenuOpt(_MB_TCW_NEWS_ADD, "news.php?WebID={$defaltWebID}&op=tad_web_news_form", "fa-newspaper-o");
+    $block['homework_add'] = mkMenuOpt(_MB_TCW_HOMEWORK_ADD, "homework.php?WebID={$defaltWebID}&op=tad_web_news_form", "fa-pencil-square-o");
+    $block['files_add']    = mkMenuOpt(_MB_TCW_FILES_ADD, "files.php?WebID={$defaltWebID}&op=tad_web_files_form", "fa-upload");
+    $block['action_add']   = mkMenuOpt(_MB_TCW_ACTION_ADD, "action.php?WebID={$defaltWebID}&op=tad_web_action_form", "fa-camera");
+    $block['class_setup']  = mkMenuOpt(_MB_TCW_WEB_SETUP, "aboutus.php?WebID={$defaltWebID}&op=tad_web_adm", "fa-smile-o");
+    $block['video_add']    = mkMenuOpt(_MB_TCW_VIDEO_ADD, "video.php?WebID={$defaltWebID}&op=tad_web_video_form", "fa-film");
+    $block['link_add']     = mkMenuOpt(_MB_TCW_LINK_ADD, "link.php?WebID={$defaltWebID}&op=tad_web_link_form", "fa-globe");
+    $block['logout']       = mkMenuOpt(_MB_TCW_LOGOUT, "/user.php?op=logout", "fa-sign-out");
+    $block['web_config']   = mkMenuOpt(_MB_TCW_WEB_CONFIG, "config.php?WebID={$defaltWebID}", "fa-check-square-o ");
+
+    $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
+    $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
+
+    return $block;
 }
 
-function mkMenuOpt($title="",$url="",$icon="icon-volume-up"){
-  if(substr($url,0,1)=="/"){
-    $path=XOOPS_URL.$url;
-  }else{
-    $path=XOOPS_URL."/modules/tad_web/{$url}";
-  }
+function mkMenuOpt($title = "", $url = "", $icon = "icon-volume-up")
+{
+    if (substr($url, 0, 1) == "/") {
+        $path = XOOPS_URL . $url;
+    } else {
+        $path = XOOPS_URL . "/modules/tad_web/{$url}";
+    }
 
-  $opt="
-		<i class='{$icon}'></i>
-		<a href='{$path}'>$title</a>
-	";
-  return $opt;
+    $opt = "
+        <a href='{$path}' class='btn btn-link'>
+            <i class='fa {$icon}'></i>
+            $title
+        </a>
+    ";
+    return $opt;
 }
-?>

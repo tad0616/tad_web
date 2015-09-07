@@ -1,13 +1,5 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-04-15
-// $Id:$
-// ------------------------------------------------------------------------- //
 include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
-
-//需加入模組語系
-define('_TAD_NEED_TADTOOLS', ' 需要 modules/tadtools，可至<a href="http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50" target="_blank">Tad教材網</a>下載。');
 
 //main.php
 define("_MA_TCW_TEAMID", "編號");
@@ -38,3 +30,4 @@ define("_MA_TCW_ORDER_BY_TEAMTITLE", "依正式名稱排序");
 //save_sort.php save.php
 define("_MA_TCW_UPDATE_FAIL", "更新失敗！");
 define("_MA_TCW_SAVE_SORT_OK", "排序完成！ ");
+define("_MA_TCW_NEED_TAD_WEB_THEME", "<ul><li style='line-height:2;'>本模組需要搭配 <a href='http://120.115.2.90/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme 佈景</a>。</li><li style='line-height:2;'>該佈景只需要解壓縮放到 themes 目錄底下即可，無須至偏好設定選用。</li><li style='line-height:2;'>亦可<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱直接安裝</a></li></ul>");

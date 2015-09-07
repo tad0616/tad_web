@@ -1,18 +1,19 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-04-15
-// $Id:$
-// ------------------------------------------------------------------------- //
-
 //需加入模組語系
 define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
 
 define('_MD_TCW_HOME', 'Home');
 define('_MD_TCW_ADMIN', 'Management');
+define("_MD_TCW_ADMIN_MEM", "Member management");
 define('_MD_TCW_CLEAR', 'Clear');
 define('_MD_TCW_TOTAL', 'Total');
 define('_MD_TCW_PEOPLE', 'People');
+define("_MD_TCW_TOOLS", "Setup");
+define("_MD_TCW_HEAD_TOOLS", "Header");
+define("_MD_TCW_LOGO_TOOLS", "Logo");
+define("_MD_TCW_BG_TOOLS", "Background");
+define("_MD_TCW_COLOR_TOOLS", "Color");
+define("_MD_TCW_BLOCK_TOOLS", "Blocks");
 
 //header.php
 define('_MD_TCW_ALL_CLASS', 'Class List');
@@ -25,7 +26,7 @@ define('_MD_TCW_ALL_WEB_OWNER', 'Owner');
 
 // Common
 define('_MD_TCW_TEAMID', 'Belongs to the page');
-define('_MD_TCW_NOT_OWNER', 'Non-page owner, you can not use the new functions.');
+define('_MD_TCW_NOT_OWNER', 'Non-page owner, you can not use this function.');
 define('_MD_TCW_AUTO_TO_HOME', 'Automatically go to the page to which you belong, to use the new features.');
 define('_MD_TCW_NEED_LOGIN', 'Login to view the full content');
 define('_MD_TCW_EMPTY', 'No data');
@@ -46,7 +47,8 @@ define('_MD_TCW_MEMURL', 'Personal page');
 define('_MD_TCW_MEMTEAMORGAN', 'Team title');
 define('_MD_TCW_MEMORDER', 'Sorting');
 define('_MD_TCW_MEMENABLE', 'State');
-define('_MD_TCW_UPLOAD_MY_PHOTO', 'Photo');
+define('_MD_TCW_UPLOAD_MY_PHOTO', 'Teacher photo');
+define("_MD_TCW_UPLOAD_MEM_PHOTO", "photo");
 define('_MD_TCW_COMMING_SOON', 'Still working ...');
 define('_MD_TCW_CLASS_WEB_NAME', 'Class network name');
 define('_MD_TCW_IMPORT', 'Import');
@@ -90,11 +92,11 @@ define('_MD_TCW_IMPORT_LINK', "
    <li style = 'color: red;' > only supports xls format(csv, xlsx not support) </li >
 </ul > ");
 
-define('_MD_TCW_CLASS_SETUP', 'Class setup');
+define('_MD_TCW_CLASS_SETUP', 'Class title setup');
 define('_MD_TCW_FCNCTION_SETUP', 'Function setting');
-define('_MD_TCW_HEADER_SETUP', 'Set title');
 define('_MD_TCW_SELECT_TO_CANCEL', 'Please select the function you want to hide.');
-define('_MD_TCW_CLICK_TO_CHANG', 'Click on a picture to selected title background image for this page');
+define('_MD_TCW_CLICK_TO_CHANG', 'Click on a picture to change image. You can drag background image and logo to anywhere.');
+define("_MD_TCW_GOOD_LOGO_SITE", "");
 define('_MD_TCW_RAND_IMAGE', 'Select random background');
 define('_MD_TCW_BG_TOP', 'Ton');
 define('_MD_TCW_BG_CENTER', 'Medium');
@@ -199,8 +201,22 @@ define('_MD_TCW_VIDEOCOUNT', 'Popular');
 define('_MD_TCW_VIDEOYOUTUBE', 'Youtube URL');
 define('_MD_TCW_VIDEOCOUNTINFO', 'People watched a total of %s');
 
-//calenda.php
-define('_MD_TCW_CALENDA', 'Calendar');
-define('_MD_TCW_CALENDA_TODAY', 'Today');
-define('_MD_TCW_CALENDA_PREV_MONTH', 'Previous Mmonth');
-define('_MD_TCW_CALENDA_NEXT_MONTH', 'Next Month');
+//calendar.php
+define('_MD_TCW_CALENDAR', 'Calendar');
+define('_MD_TCW_CALENDAR_TODAY', 'Today');
+define('_MD_TCW_CALENDAR_PREV_MONTH', 'Previous Mmonth');
+define('_MD_TCW_CALENDAR_NEXT_MONTH', 'Next Month');
+
+define("_MD_TCW_CONFIG_NONE", "None");
+define("_MD_TCW_CONFIG_HEAD", "Head background image");
+define("_MD_TCW_CONFIG_NONE_BG", "Only background color");
+define("_MD_TCW_CONTAINER_BG_COLOR", "Background color");
+define("_MD_TCW_MAIN_BG_COLOR", "Main content background color");
+define("_MD_TCW_MAIN_DEFAULT_COLOR", "Default color");
+define("_MD_TCW_MAIN_NAV_COLOR", "Navbar text color");
+define("_MD_TCW_MAIN_NAV_TOP_COLOR", "Navbar background color");
+define("_MD_TCW_MAIN_NAV_HOVER_COLOR", "Navbar hover text color ");
+define("_MD_TCW_MAIN_NAV_HOVER_BG_COLOR", "Navbar hover background color");
+
+define("_MD_TCW_BLOCKS_LIST", "All blocks");
+define("_MD_TCW_BLOCKS_SELECTED", "Enabled blocks");

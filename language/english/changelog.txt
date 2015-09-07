@@ -1,3 +1,30 @@
+Tad Web version 1.1 release (2015-09-05 release)
+====================================================
+ 1.Optimization news display
+ 2.Optimization homework display
+ 3.Fixed bug discussion can not be displayed
+ 4.New login block, you can no longer log in from the original site
+ 5.All using BootStrap3, except module index, as the original site bootstrap version is automatically adjusted.
+
+
+Tad Web version 1.0.1 release (2015-09-02 release)
+====================================================
+ 1.Fixed some language
+ 2.Added blocks setup function.
+ 3.Fixed logo bug when web in bootstrap2
+
+
+Tad Web version 1.0 release (2015-09-02 release)
+====================================================
+1. Fixed video playback Block
+2. Admin added "according to the official name of the sort" function
+3. Each page can be opened to independent sets
+4. The page owner can adjust the layout yourself
+5. The "About Us" and "contact book" can already be set to close
+6. Add bootstrap3 support
+7. The album changed to a sliding block way to display pictures
+
+
 Tad Web version 1.0 RC6 (2014-10-23 release)
 ================================================== ==
  1. Fixed contact book can not be edited problem of old data

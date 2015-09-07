@@ -13,6 +13,7 @@ CREATE TABLE `tad_web` (
   PRIMARY KEY (`WebID`)
 ) ENGINE=MyISAM;
 
+
 CREATE TABLE `tad_web_cate` (
   `CateID` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '編號',
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',

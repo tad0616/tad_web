@@ -1,58 +1,120 @@
 <{if $isMineNews}>
   <script>
     function delete_tad_web_news_func(NewsID){
-    	var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-    	if (!sure)	return;
-    	location.href="news.php?op=delete_tad_web_news&NewsID=" + NewsID;
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="news.php?op=delete_tad_web_news&NewsID=" + NewsID;
     }
     </script>
 <{/if}>
 
+<{if $WebID}>
+  <{if $news_data}>
+    <div class="row-fluid">
+      <div class="span12">
+        <h3>
+          <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
+          <{if !$showWebTitleNews && $isMineNews}>
+            <a href="javascript:delete_tad_web_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <a href="news.php?op=tad_web_news_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
+          <{/if}>
+        </h3>
+        <div class="well" style="height: 200px; overflow: auto; line-height: 1.8; background-color: #FCFCFC;">
+          <{$news_data.0.NewsContent}>
+        </div>
+      </div>
+    </div>
 
-<h1><{$smarty.const._MD_TCW_NEWS}></h1>
-<table class="footable">
-<thead>
-  <tr>
-    <th data-hide="phone" style="width:100px;text-align:center;"><{$smarty.const._MD_TCW_NEWSDATE}></th>
-    <th data-class="expand"><{$smarty.const._MD_TCW_NEWS}></th>
-    <th data-hide="phone" style="width:50px;text-align:center;"><{$smarty.const._MD_TCW_NEWSCOUNTER}></th>
-    <{if $showWebTitleNews}><th data-hide="phone" style="width:100px;text-align:center;"><{$smarty.const._MD_TCW_TEAMID}></th><{/if}>
-    <{if !$showWebTitleNews && $isMineNews}><th data-hide="phone" style="width:100px;text-align:center;"><{$smarty.const._TAD_FUNCTION}></th><{/if}>
-  </tr>
-</thead>
+    <div class="row-fluid">
+      <div class="span12">
+        <ul>
+          <{foreach from=$news_data key=i item=news}>
+            <{if $i > 0}>
+              <li>
+              <{$news.Date}>
+              <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a> (<{$news.NewsCounter}>)
 
-<{if $news_data}>
-  <{foreach item=news from=$news_data}>
-  <tr>
-    <td style="text-align:center;"><{$news.Date}></td>
-    <td><a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
-    <td style="text-align:center;"><{$news.NewsCounter}></td>
-    <{if $showWebTitleNews}><td style="text-align:center;"><{$news.WebTitle}></td><{/if}>
-    <{if !$showWebTitleNews && $isMineNews}>
-		<td style="text-align:center;">
-      <a href="javascript:delete_tad_web_news_func(<{$news.NewsID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
-  		<a href="news.php?op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
-    </td>
-		<{/if}>
-  </tr>
-  <{/foreach}>
-<{else}>
-  <tr><td colspan=4 style="text-align:center;"><{$smarty.const._MD_TCW_EMPTY}></td></tr>
-<{/if}>
-</table>
-
-<{if $news_data}>
-  <{$bar}>
-<{/if}>
-
-<div style="text-align:right">
-  <{if $bar==""}>
-    <{if $WebID==""}>
-      <a href="index.php?op=list_tad_web_news" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
-    <{else}>
-      <a href="news.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
-    <{/if}>
+                <{if !$showWebTitleNews && $isMineNews}>
+                  <a href="javascript:delete_tad_web_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="news.php?op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                <{/if}>
+              </li>
+            <{/if}>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
   <{/if}>
-  <{if $isMineNews}><a href="news.php?WebID=<{$WebID}>&op=tad_web_news_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a><{/if}>
-</div>
+<{else}>
+
+  <h1><{$smarty.const._MD_TCW_NEWS}></h1>
+  <table class="footable table common_table">
+    <thead>
+      <tr>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._MD_TCW_NEWSDATE}>
+        </th>
+        <th data-class="expand">
+          <{$smarty.const._MD_TCW_NEWS}>
+        </th>
+        <th data-hide="phone" style="width:50px;text-align:center;">
+          <{$smarty.const._MD_TCW_NEWSCOUNTER}>
+        </th>
+        <{if $showWebTitleNews}>
+          <th data-hide="phone" style="width:100px;text-align:center;">
+            <{$smarty.const._MD_TCW_TEAMID}>
+          </th>
+        <{/if}>
+        <{if !$showWebTitleNews && $isMineNews}>
+          <th data-hide="phone" style="width:100px;text-align:center;">
+            <{$smarty.const._TAD_FUNCTION}>
+          </th>
+        <{/if}>
+      </tr>
+    </thead>
+
+    <{if $news_data}>
+      <{foreach item=news from=$news_data}>
+        <tr>
+          <td class="text-center"><{$news.Date}></td>
+          <td><a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
+          <td class="text-center"><{$news.NewsCounter}></td>
+          <{if $showWebTitleNews}><td class="text-center"><{$news.WebTitle}></td><{/if}>
+          <{if !$showWebTitleNews && $isMineNews}>
+          <td class="text-center">
+            <a href="javascript:delete_tad_web_news_func(<{$news.NewsID}>);" class="btn btn-mini btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
+            <a href="news.php?op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
+          </td>
+          <{/if}>
+        </tr>
+      <{/foreach}>
+    <{else}>
+      <tr>
+        <td colspan=4 class="text-center">
+          <{$smarty.const._MD_TCW_EMPTY}>
+        </td>
+      </tr>
+    <{/if}>
+  </table>
+
+  <{if $news_data}>
+    <{$bar}>
+  <{/if}>
+
+<{/if}>
+
+<{if $news_data}>
+  <div style="text-align:right">
+    <{if $bar==""}>
+      <{if $WebID==""}>
+        <a href="index.php?op=list_tad_web_news" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+      <{else}>
+        <a href="news.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+      <{/if}>
+    <{/if}>
+    <{if $isMineNews}>
+      <a href="news.php?WebID=<{$WebID}>&op=tad_web_news_form" class="btn btn-mini btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_ADD}></a>
+    <{/if}>
+  </div>
+<{/if}>

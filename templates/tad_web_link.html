@@ -1,0 +1,83 @@
+<{if $op=="tad_web_link_form"}>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#LinkUrl').change(function() {
+        $('#LinkTitle').val($('#LinkUrl').val());
+        $.post("link_ajax.php", { url: $('#LinkUrl').val()},
+         function(data) {
+          var obj = $.parseJSON(data);
+           $('#LinkTitle').val(obj.title);
+           $('#LinkDesc').val(obj.description);
+         });
+      });
+
+
+      $('#LinkGet').click(function() {
+        $.post("link_ajax.php", { url: $('#LinkUrl').val()},
+         function(data) {
+          var obj = $.parseJSON(data);
+           $('#LinkTitle').val(obj.title);
+           $('#LinkDesc').val(obj.description);
+         });
+      });
+    });
+
+  </script>
+
+  <{$formValidator_code}>
+  <form action="link.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+    <!--網站連結-->
+    <div class="control-group">
+      <label class="span2 control-label">
+        <{$smarty.const._MD_TCW_LINKURL}>
+      </label>
+      <div class="span8 controls">
+        <input type="text" name="LinkUrl" value="<{$LinkUrl}>" id="LinkUrl" class="span12 validate[required]" placeholder="<{$smarty.const._MD_TCW_LINKURL}>">
+      </div>
+      <div class="span2 controls">
+        <button type="button" class="btn" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
+      </div>
+    </div>
+
+    <!--網站名稱-->
+    <div class="control-group">
+      <label class="span2 control-label">
+        <{$smarty.const._MD_TCW_LINKTITLE}>
+      </label>
+      <div class="span10 controls">
+        <input type="text" name="LinkTitle" value="<{$LinkTitle}>" id="LinkTitle" class="validate[required] span12" placeholder="<{$smarty.const._MD_TCW_LINKTITLE}>">
+      </div>
+    </div>
+
+    <!--說明-->
+    <div class="control-group">
+      <label class="span2 control-label">
+        <{$smarty.const._MD_TCW_LINKDESC}>
+      </label>
+      <div class="span10 controls">
+        <textarea name="LinkDesc" class="span12" rows=3 id="LinkDesc" placehold="<{$smarty.const._MD_TCW_LINKDESC}>"><{$LinkDesc}></textarea>
+      </div>
+    </div>
+
+
+    <div class="control-group">
+      <div class="span12 controls text-center">
+        <!--排序-->
+        <input type="hidden" name="LinkSort" value="<{$LinkSort}>">
+        <!--所屬團隊-->
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+
+        <!--編號-->
+        <input type="hidden" name="LinkID" value="<{$LinkID}>">
+
+        <input type="hidden" name="op" value="<{$next_op}>">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+      </div>
+    </div>
+
+  </form>
+<{else}>
+  <{$FooTableJS}>
+  <{includeq file="db:tad_web_common_link.html"}>
+<{/if}>

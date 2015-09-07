@@ -1,10 +1,4 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-04-15
-// $Id:$
-// ------------------------------------------------------------------------- //
-
 define('_MB_TCW_MY_WEB', 'Even back to my class.');
 define('_MB_TCW_MY_TOOLS', 'Web Management Tools');
 define('_MB_TCW_NEWS_ADD', 'News release');
@@ -19,3 +13,5 @@ define('_MB_TCW_USERMENU', 'User Menu');
 define('_MB_TCW_TO_MY_WEB', 'Even back to my "%s"');
 define('_MB_TCW_WEB_CONFIG', 'Web config');
 define('_MB_TCW_MENU', 'Special menu');
+define("_MB_TCW_ALL_WEBS", "Web List");
+define("_MB_TCW_EMPTY_DISCUSS", "None");

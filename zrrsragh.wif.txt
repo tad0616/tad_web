@@ -1,0 +1,248 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+modified:   aboutus.php
+modified:   action.php
+modified:   admin/about.php
+modified:   admin/footer.php
+modified:   admin/header.php
+#
+# Changes not staged for commit:
+modified:   README
+modified:   admin/index.php
+modified:   admin/main.php
+modified:   admin/menu.php
+modified:   admin/save.php
+modified:   admin/save_sort.php
+modified:   blocks/tad_web_discuss.php
+modified:   blocks/tad_web_image.php
+modified:   blocks/tad_web_list.php
+modified:   blocks/tad_web_menu.php
+deleted:    calenda.php
+modified:   class/font.ttf
+deleted:    class/superfish/css/megafish.css
+deleted:    class/superfish/css/superfish-navbar.css
+deleted:    class/superfish/css/superfish-vertical.css
+deleted:    class/superfish/css/superfish.css
+deleted:    class/superfish/js/hoverIntent.js
+deleted:    class/superfish/js/jquery.js
+deleted:    class/superfish/js/superfish.js
+deleted:    class/superfish/js/superfish.min.js
+deleted:    class/superfish/js/supersubs.js
+deleted:    class/superfish/menu.html
+modified:   discuss.php
+modified:   dl.php
+modified:   files.php
+modified:   function.php
+modified:   function_list.php
+modified:   get_event.php
+modified:   header.php
+modified:   home.php
+modified:   homework.php
+deleted:    images/background/1.jpg
+deleted:    images/background/10.jpg
+deleted:    images/background/11.jpg
+deleted:    images/background/12.jpg
+deleted:    images/background/13.jpg
+deleted:    images/background/14.jpeg
+deleted:    images/background/15.jpg
+deleted:    images/background/16.jpg
+deleted:    images/background/17.jpg
+deleted:    images/background/18.jpg
+deleted:    images/background/19.jpg
+deleted:    images/background/2.jpg
+deleted:    images/background/20.jpg
+deleted:    images/background/21.jpg
+deleted:    images/background/22.jpg
+deleted:    images/background/23.jpg
+deleted:    images/background/24.jpg
+deleted:    images/background/25.jpg
+deleted:    images/background/26.jpg
+deleted:    images/background/27.jpg
+deleted:    images/background/28.jpg
+deleted:    images/background/29.jpg
+deleted:    images/background/3.jpg
+deleted:    images/background/30.jpg
+deleted:    images/background/31.jpg
+deleted:    images/background/32.jpg
+deleted:    images/background/4.jpg
+deleted:    images/background/5.jpg
+deleted:    images/background/6.jpg
+deleted:    images/background/7.jpg
+deleted:    images/background/8.jpg
+deleted:    images/background/9.jpg
+deleted:    images/background/photothumb.db
+deleted:    images/background/thumbs/1.jpg
+deleted:    images/background/thumbs/10.jpg
+deleted:    images/background/thumbs/11.jpg
+deleted:    images/background/thumbs/12.jpg
+deleted:    images/background/thumbs/13.jpg
+deleted:    images/background/thumbs/14.jpeg
+deleted:    images/background/thumbs/15.jpg
+deleted:    images/background/thumbs/16.jpg
+deleted:    images/background/thumbs/17.jpg
+deleted:    images/background/thumbs/18.jpg
+deleted:    images/background/thumbs/19.jpg
+deleted:    images/background/thumbs/2.jpg
+deleted:    images/background/thumbs/20.jpg
+deleted:    images/background/thumbs/21.jpg
+deleted:    images/background/thumbs/22.jpg
+deleted:    images/background/thumbs/23.jpg
+deleted:    images/background/thumbs/24.jpg
+deleted:    images/background/thumbs/25.jpg
+deleted:    images/background/thumbs/26.jpg
+deleted:    images/background/thumbs/27.jpg
+deleted:    images/background/thumbs/28.jpg
+deleted:    images/background/thumbs/29.jpg
+deleted:    images/background/thumbs/3.jpg
+deleted:    images/background/thumbs/30.jpg
+deleted:    images/background/thumbs/31.jpg
+deleted:    images/background/thumbs/32.jpg
+deleted:    images/background/thumbs/4.jpg
+deleted:    images/background/thumbs/5.jpg
+deleted:    images/background/thumbs/6.jpg
+deleted:    images/background/thumbs/7.jpg
+deleted:    images/background/thumbs/8.jpg
+deleted:    images/background/thumbs/9.jpg
+modified:   include/onInstall.php
+modified:   include/onUninstall.php
+modified:   include/onUpdate.php
+modified:   index.php
+modified:   language/english/admin.php
+modified:   language/english/blocks.php
+modified:   language/english/changelog.txt
+modified:   language/english/main.php
+modified:   language/english/modinfo.php
+modified:   language/tchinese/admin.php
+modified:   language/tchinese/blocks.php
+modified:   language/tchinese/changelog.txt
+modified:   language/tchinese/main.php
+modified:   language/tchinese/modinfo.php
+modified:   language/tchinese_utf8/admin.php
+modified:   language/tchinese_utf8/blocks.php
+modified:   language/tchinese_utf8/changelog.txt
+modified:   language/tchinese_utf8/main.php
+modified:   language/tchinese_utf8/modinfo.php
+modified:   link.php
+modified:   link_ajax.php
+modified:   module.css
+modified:   news.php
+modified:   preloads/core.php
+modified:   sql/mysql.sql
+deleted:    templates/blocks/tad_web_discuss.html
+deleted:    templates/blocks/tad_web_image.html
+deleted:    templates/blocks/tad_web_list.html
+deleted:    templates/blocks/tad_web_menu.html
+deleted:    templates/tad_web_aboutus_tpl.html
+deleted:    templates/tad_web_action_tpl.html
+modified:   templates/tad_web_adm.html
+modified:   templates/tad_web_adm_main.html
+deleted:    templates/tad_web_calendar_tpl.html
+modified:   templates/tad_web_common_aboutus.html
+modified:   templates/tad_web_common_action.html
+modified:   templates/tad_web_common_discuss.html
+modified:   templates/tad_web_common_files.html
+modified:   templates/tad_web_common_homework.html
+modified:   templates/tad_web_common_link.html
+modified:   templates/tad_web_common_news.html
+modified:   templates/tad_web_common_video.html
+modified:   templates/tad_web_config.html
+deleted:    templates/tad_web_discuss_login_tpl.html
+deleted:    templates/tad_web_discuss_tpl.html
+deleted:    templates/tad_web_file_tpl.html
+modified:   templates/tad_web_header.html
+deleted:    templates/tad_web_index_tpl.html
+deleted:    templates/tad_web_link_tpl.html
+deleted:    templates/tad_web_news_tpl.html
+deleted:    templates/tad_web_video_tpl.html
+modified:   video.php
+modified:   xoops_version.php
+#
+# Untracked files:
+calendar.php
+config.php
+images/bg/
+images/bring.png
+images/head/
+images/icons/icon_aim.gif
+images/icons/icon_archive.gif
+images/icons/icon_call.gif
+images/icons/icon_chat.gif
+images/icons/icon_css.gif
+images/icons/icon_dmg.gif
+images/icons/icon_doc.gif
+images/icons/icon_exe.gif
+images/icons/icon_external.gif
+images/icons/icon_feed.gif
+images/icons/icon_film.gif
+images/icons/icon_flash.gif
+images/icons/icon_gadugadu.gif
+images/icons/icon_ical.gif
+images/icons/icon_icq.gif
+images/icons/icon_jabber.gif
+images/icons/icon_mailto.gif
+images/icons/icon_msn.gif
+images/icons/icon_music.gif
+images/icons/icon_opml.gif
+images/icons/icon_pdf.gif
+images/icons/icon_phps.gif
+images/icons/icon_pic.gif
+images/icons/icon_plugin.gif
+images/icons/icon_popup.gif
+images/icons/icon_pps.gif
+images/icons/icon_search.gif
+images/icons/icon_skype.gif
+images/icons/icon_torrent.gif
+images/icons/icon_ttf.gif
+images/icons/icon_txt.gif
+images/icons/icon_vcard.gif
+images/icons/icon_xls.gif
+images/icons/icon_yim.gif
+images/icons/ooo_calc.gif
+images/icons/ooo_impress.gif
+images/icons/ooo_writer.gif
+images/news.png
+images/teacher_say.png
+images/today_homework.png
+templates/blocks/tad_web_block_discuss.html
+templates/blocks/tad_web_block_image.html
+templates/blocks/tad_web_block_list.html
+templates/blocks/tad_web_block_menu.html
+templates/tad_web_aboutus.html
+templates/tad_web_aboutus_b3.html
+templates/tad_web_action.html
+templates/tad_web_action_b3.html
+templates/tad_web_adm_b3.html
+templates/tad_web_adm_main_b3.html
+templates/tad_web_calendar.html
+templates/tad_web_calendar_b3.html
+templates/tad_web_common_aboutus_b3.html
+templates/tad_web_common_action_b3.html
+templates/tad_web_common_discuss_b3.html
+templates/tad_web_common_files_b3.html
+templates/tad_web_common_homework_b3.html
+templates/tad_web_common_link_b3.html
+templates/tad_web_common_news_b3.html
+templates/tad_web_common_video_b3.html
+templates/tad_web_config_b3.html
+templates/tad_web_discuss.html
+templates/tad_web_discuss_b3.html
+templates/tad_web_discuss_login.html
+templates/tad_web_discuss_login_b3.html
+templates/tad_web_file.html
+templates/tad_web_file_b3.html
+templates/tad_web_header_b3.html
+templates/tad_web_index.html
+templates/tad_web_index_b3.html
+templates/tad_web_link.html
+templates/tad_web_link_b3.html
+templates/tad_web_news.html
+templates/tad_web_news_b3.html
+templates/tad_web_video.html
+templates/tad_web_video_b3.html
+
+

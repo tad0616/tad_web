@@ -1,0 +1,33 @@
+<link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.css">
+<script src="class/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function() {
+      $("#calendar").fullCalendar({
+        buttonText:{today:"<{$smarty.const._MD_TCW_CALENDAR_TODAY}>",prev:"<{$smarty.const._MD_TCW_CALENDAR_PREV_MONTH}>",next:"<{$smarty.const._MD_TCW_CALENDAR_NEXT_MONTH}>"},
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: ''
+        },
+        events: function(start, end, callback) {
+          $.getJSON("get_event.php",
+          {
+            start: start.getTime(),
+            NewsKind: "<{$NewsKind}>" ,
+            WebID: "<{$WebID}>"
+          },
+          function(result) {
+            callback(result);
+          });
+
+        },
+        eventClick: function(event) {
+            if (event.rel) {
+                location.href=event.rel;
+                return false;
+            }
+        }
+      })
+  });
+</script>
+<div id="calendar"></div>

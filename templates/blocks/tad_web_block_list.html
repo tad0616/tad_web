@@ -1,0 +1,12 @@
+<{if $block.webs}>
+  <h3><{$smarty.const._MB_TCW_ALL_WEBS}></h3>
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>12">
+      <select size=5 onChange="location.href=this.value" class="span12 form-control">
+      <{foreach item=web from=$block.webs}>
+        <option value="<{$web.url}>"><{$web.title}> (<{$web.name}>)</option>
+      <{/foreach}>
+      </select>
+    </div>
+  </div>
+<{/if}>
