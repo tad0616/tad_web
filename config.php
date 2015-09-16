@@ -62,6 +62,7 @@ function tad_web_config($WebID)
 
     $mod_name['aboutus']  = _MD_TCW_ABOUTUS;
     $mod_name['news']     = _MD_TCW_NEWS;
+    $mod_name['works']    = _MD_TCW_WORKS;
     $mod_name['homework'] = _MD_TCW_HOMEWORK;
     $mod_name['files']    = _MD_TCW_FILES;
     $mod_name['action']   = _MD_TCW_ACTION;
@@ -352,4 +353,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign('WebTitle', $WebTitle);
 include_once XOOPS_ROOT_PATH . '/footer.php';

@@ -23,23 +23,20 @@ function tad_web_menu($options)
         return $block;
     }
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' order by WebSort";
+    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' order by WebSort";
+    //die($sql);
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     $i = 0;
 
     $oldWebID    = !empty($_GET['WebID']) ? intval($_GET['WebID']) : 0;
-    $defaltWebID = !empty($_GET['WebID']) ? intval($_GET['WebID']) : 0;
+    $defaltWebID = 0;
 
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
-        if (empty($defaltWebID)) {
-            $defaltWebID    = $WebID;
-            $defaltWebTitle = $WebTitle;
-            $defaltWebName  = $WebName;
-        } elseif ($defaltWebID == $WebID) {
+        if (empty($defaltWebID) or $defaltWebID == $WebID) {
             $defaltWebID    = $WebID;
             $defaltWebTitle = $WebTitle;
             $defaltWebName  = $WebName;
@@ -49,18 +46,21 @@ function tad_web_menu($options)
         $block['webs'][$i]['WebID'] = $WebID;
         $block['webs'][$i]['name']  = $WebName;
         $block['webs'][$i]['url']   = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
-        $WebID_Arr[]                = $WebID;
+
+        $WebID_Arr[] = $WebID;
         $i++;
     }
-    if (!in_array($oldWebID, $WebID_Arr)) {
-        $block['op'] = "logout";
-        return $block;
-    }
+
+    // if (!empty($oldWebID) and !in_array($oldWebID, $WebID_Arr)) {
+    //     $block['op'] = "logout";
+    //     return $block;
+    // }
 
     $block['WebTitle'] = $defaltWebTitle;
 
     $block['my_web']       = mkMenuOpt(sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName), "index.php?WebID={$defaltWebID}", "fa-home");
     $block['news_add']     = mkMenuOpt(_MB_TCW_NEWS_ADD, "news.php?WebID={$defaltWebID}&op=tad_web_news_form", "fa-newspaper-o");
+    $block['works_add']    = mkMenuOpt(_MB_TCW_WORKS_ADD, "works.php?WebID={$defaltWebID}&op=tad_web_works_form", "fa-paint-brush");
     $block['homework_add'] = mkMenuOpt(_MB_TCW_HOMEWORK_ADD, "homework.php?WebID={$defaltWebID}&op=tad_web_news_form", "fa-pencil-square-o");
     $block['files_add']    = mkMenuOpt(_MB_TCW_FILES_ADD, "files.php?WebID={$defaltWebID}&op=tad_web_files_form", "fa-upload");
     $block['action_add']   = mkMenuOpt(_MB_TCW_ACTION_ADD, "action.php?WebID={$defaltWebID}&op=tad_web_action_form", "fa-camera");
@@ -85,7 +85,7 @@ function mkMenuOpt($title = "", $url = "", $icon = "icon-volume-up")
     }
 
     $opt = "
-        <a href='{$path}' class='btn btn-link'>
+        <a href='{$path}' class='btn'>
             <i class='fa {$icon}'></i>
             $title
         </a>

@@ -315,10 +315,6 @@ function tad_web_mems_form($WebID = "0", $MemID = "0")
         $del_btn = "";
     }
 
-    $row          = $_SESSION['bootstrap'] == 3 ? 'row' : 'row-fluid';
-    $span         = $_SESSION['bootstrap'] == 3 ? 'col-md-' : 'span';
-    $form_control = $_SESSION['bootstrap'] == 3 ? 'form-control' : 'span12';
-
     $main = "
       $formValidator_code
       <script type='text/javascript' src='" . TADTOOLS_URL . "/My97DatePicker/WdatePicker.js'></script>
@@ -334,66 +330,66 @@ function tad_web_mems_form($WebID = "0", $MemID = "0")
         <legend>" . _MD_TCW_STUDENT_SETUP . "</legend>
 
         <!--學生姓名-->
-        <div class='{$row}'>
-          <label class='{$span}1'>" . _MD_TCW_MEM_NAME . "</label>
-          <div class='{$span}3'>
-            <input type='text' name='MemName' value='{$MemName}' id='MemName' class='validate[required] {$form_control}' placeholder='" . _MD_TCW_MEM_NAME . "'>
+        <div class='row'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_NAME . "</label>
+          <div class='col-md-3'>
+            <input type='text' name='MemName' value='{$MemName}' id='MemName' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_NAME . "'>
           </div>
 
           <!--學生暱稱-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_NICKNAME . "</label>
-          <div class='{$span}3'>
-            <input type='text' name='MemNickName' value='{$MemNickName}' id='MemNickName' class='{$form_control}' placeholder='" . _MD_TCW_MEM_NICKNAME . "'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_NICKNAME . "</label>
+          <div class='col-md-3'>
+            <input type='text' name='MemNickName' value='{$MemNickName}' id='MemNickName' class='form-control' placeholder='" . _MD_TCW_MEM_NICKNAME . "'>
           </div>
 
-          <div class='{$span}4'>
+          <div class='col-md-4'>
             $pic
           </div>
         </div>
 
 
-        <div class='{$row}'>
+        <div class='row'>
           <!--性別-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_SEX . "</label>
-          <div class='{$span}3'>
-            <select name='MemSex' class='{$form_control}'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_SEX . "</label>
+          <div class='col-md-3'>
+            <select name='MemSex' class='form-control'>
               <option value='1' " . chk($MemSex, '1', '1', 'selected') . ">" . _MD_TCW_BOY . "</option>
               <option value='0' " . chk($MemSex, '0', '0', 'selected') . ">" . _MD_TCW_GIRL . "</option>
             </select>
           </div>
 
           <!--生日-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_BIRTHDAY . "</label>
-          <div class='{$span}3'>
-            <input type='text' name='MemBirthday' value='{$MemBirthday}' id='MemBirthday' class='{$form_control}' onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}'})\" placeholder='" . _MD_TCW_MEM_BIRTHDAY . "'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_BIRTHDAY . "</label>
+          <div class='col-md-3'>
+            <input type='text' name='MemBirthday' value='{$MemBirthday}' id='MemBirthday' class='form-control' onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}'})\" placeholder='" . _MD_TCW_MEM_BIRTHDAY . "'>
           </div>
 
-          <label class='{$span}1'>" . _MD_TCW_UPLOAD_MEM_PHOTO . "</label>
-          <div class='{$span}3'>
-            <input type='file' name='upfile[]' class='{$form_control}' maxlength='1' accept='gif|jpg|png|GIF|JPG|PNG'>
+          <label class='col-md-1'>" . _MD_TCW_UPLOAD_MEM_PHOTO . "</label>
+          <div class='col-md-3'>
+            <input type='file' name='upfile[]' class='form-control' maxlength='1' accept='gif|jpg|png|GIF|JPG|PNG'>
           </div>
         </div>
 
 
-        <div class='{$row}'>
+        <div class='row'>
 
           <!--學號-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_UNICODE . "</label>
-          <div class='{$span}3'>
-            <input type='text' name='MemUnicode' value='{$MemUnicode}' id='MemUnicode' class='validate[required] {$form_control}' placeholder='" . _MD_TCW_MEM_UNICODE . "'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_UNICODE . "</label>
+          <div class='col-md-3'>
+            <input type='text' name='MemUnicode' value='{$MemUnicode}' id='MemUnicode' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_UNICODE . "'>
           </div>
 
           <!--座號-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_NUM . "</label>
-          <div class='{$span}3'>
-            <input type='text' name='MemNum' value='{$MemNum}' id='MemNum' class='validate[required] {$form_control}' placeholder='" . _MD_TCW_MEM_NUM . "'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_NUM . "</label>
+          <div class='col-md-3'>
+            <input type='text' name='MemNum' value='{$MemNum}' id='MemNum' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_NUM . "'>
           </div>
 
 
           <!--是否還在班上-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_STATUS . "</label>
-          <div class='{$span}3'>
-            <select name='MemEnable' id='MemEnable' class='{$form_control}'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_STATUS . "</label>
+          <div class='col-md-3'>
+            <select name='MemEnable' id='MemEnable' class='form-control'>
               <option value='1'  " . chk($MemEnable, '1', '1', 'selected') . ">" . _MD_TCW_MEM_ENABLE . "</option>
               <option value='0'  " . chk($MemEnable, '0', '', 'selected') . ">" . _MD_TCW_MEM_UNABLE . "</option>
             </select>
@@ -402,21 +398,21 @@ function tad_web_mems_form($WebID = "0", $MemID = "0")
         </div>
 
 
-        <div class='{$row}'>
+        <div class='row'>
 
           <!--帳號-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_UNAME . "</label>
-          <div class='{$span}3'>
-            <input type='text' name='MemUname' value='{$MemUname}' id='MemUname' class='validate[required] {$form_control}' placeholder='" . _MD_TCW_MEM_UNAME . "'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_UNAME . "</label>
+          <div class='col-md-3'>
+            <input type='text' name='MemUname' value='{$MemUname}' id='MemUname' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_UNAME . "'>
           </div>
 
           <!--密碼-->
-          <label class='{$span}1'>" . _MD_TCW_MEM_PASSWD . "</label>
-          <div class='{$span}3'>
-            <input type='text' name='MemPasswd' value='{$MemPasswd}' id='MemPasswd' class='validate[required] {$form_control}' placeholder='" . _MD_TCW_MEM_PASSWD . "'>
+          <label class='col-md-1'>" . _MD_TCW_MEM_PASSWD . "</label>
+          <div class='col-md-3'>
+            <input type='text' name='MemPasswd' value='{$MemPasswd}' id='MemPasswd' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_PASSWD . "'>
           </div>
 
-          <div class='{$span}4'>
+          <div class='col-md-4'>
             $del_btn
             <input type='hidden' name='WebID' value='{$WebID}'>
             <input type='hidden' name='MemID' value='{$MemID}'>
@@ -590,4 +586,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign('WebTitle', $WebTitle);
 include_once XOOPS_ROOT_PATH . '/footer.php';

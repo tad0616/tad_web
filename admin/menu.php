@@ -12,7 +12,13 @@ $i++;
 $adminmenu[$i]['title'] = _MI_TCW_ADMENU1;
 $adminmenu[$i]['link']  = "admin/main.php";
 $adminmenu[$i]['desc']  = _MI_TCW_ADMENU1;
-$adminmenu[$i]['icon']  = "{$icon_dir}class.png";
+$adminmenu[$i]['icon']  = "{$icon_dir}sites.png";
+
+$i++;
+$adminmenu[$i]['title'] = _MI_TCW_ADMENU2;
+$adminmenu[$i]['link']  = "admin/cate.php";
+$adminmenu[$i]['desc']  = _MI_TCW_ADMENU2;
+$adminmenu[$i]['icon']  = "{$icon_dir}category.png";
 
 $i++;
 $adminmenu[$i]['title'] = _MI_TAD_ADMIN_ABOUT;

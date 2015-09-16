@@ -30,3 +30,13 @@ define('_MA_TCW_UPLOAD_OWNER_PIC', 'Upload page image file');
 define('_MA_TCW_UPDATE_FAIL', 'Update Failed!');
 define('_MA_TCW_SAVE_SORT_OK', 'The sort is complete!');
 define("_MA_TCW_NEED_TAD_WEB_THEME", "<ul><li style='line-height:2;'>This module need <a href='http://120.115.2.90/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme</a>。</li><li style='line-height:2;'>Just need to download it and unzip it to themes folder.</li><li style='line-height:2;'>You can install from <a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>Tad Adm module</a></li></ul>");
+
+define('_MA_TADWEB_CATEID', 'Category ID');
+define('_MA_TADWEB_WEBID', 'Web ID');
+define('_MA_TADWEB_CATENAME', 'Category Name');
+define('_MA_TADWEB_COLNAME', 'Column Value');
+define('_MA_TADWEB_COLSN', 'Column Value');
+define('_MA_TADWEB_CATESORT', 'Category Sort');
+define('_MA_TADWEB_CATEENABLE', 'Category Status');
+define('_MA_TADWEB_CATECOUNTER', 'Category Counter');
+define('_MA_TCW_SELECT_CATE', 'All Category');

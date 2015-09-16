@@ -74,12 +74,17 @@
   <{/if}>
 
   <h1><{$ActionName}></h1>
-  <div class="row-fluid">
-    <div class="span4"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
-    <div class="span4"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
-    <div class="span4"><{$ActionInfo}></div>
+  <div class="alert alert-info">
+    <div class="row-fluid">
+      <div class="span3"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
+      <div class="span3"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
+      <div class="span6"><{$ActionInfo}></div>
+    </div>
   </div>
-  <div class="well"><{$ActionDesc}></div>
+
+  <{if $ActionDesc}>
+    <div class="well"><{$ActionDesc}></div>
+  <{/if}>
 
   <div class="row-fluid">
     <{$pics}>

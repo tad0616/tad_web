@@ -28,6 +28,13 @@ function xoops_module_update_tad_web(&$module, $old_version)
     go_update6();
     chk_tad_web_block();
 
+    if (!chk_chk7()) {
+        go_update7();
+    }
+
+    if (chk_chk8()) {
+        go_update8();
+    }
     return true;
 }
 
@@ -300,15 +307,61 @@ function go_update6()
     }
 }
 
-$mod_name['aboutus']  = _MD_TCW_MY_CLASS;
-$mod_name['action']   = _MD_TCW_ACTION;
-$mod_name['news']     = _MD_TCW_NEWS;
-$mod_name['files']    = _MD_TCW_FILES;
-$mod_name['homework'] = _MD_TCW_HOMEWORK;
-$mod_name['link']     = _MD_TCW_LINK;
-$mod_name['video']    = _MD_TCW_VIDEO;
-$mod_name['discuss']  = _MD_TCW_DISCUSS;
-$mod_name['calendar'] = _MD_TCW_CALENDAR;
+//修改分類名稱欄位名稱
+function chk_chk7()
+{
+    global $xoopsDB;
+    $sql    = "select count(`ActionKind`) from " . $xoopsDB->prefix("tad_web_action");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+function go_update7()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_action") . "
+      ADD `ActionKind` varchar(255) NOT NULL default 'action'";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` varchar(255) NOT NULL DEFAULT '' NOT NULL";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+
+    return true;
+}
+
+//新增簽收表格
+function chk_chk8()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_works");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update8()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_works") . "` (
+      `WorksID` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
+      `CateID` smallint(6) unsigned NOT NULL default 0,
+      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+      `WorkName` varchar(255) NOT NULL default '' COMMENT '活動名稱',
+      `WorkDesc` text NOT NULL COMMENT '活動說明',
+      `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
+      `WorksDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '日期',
+      `WorksCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
+    PRIMARY KEY (`WorksID`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
+}
 
 //建立目錄
 function mk_dir($dir = "")

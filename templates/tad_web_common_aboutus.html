@@ -1,35 +1,98 @@
 <{if $data}>
   <{assign var="i" value=0}>
   <{assign var="total" value=0}>
+  <{if $tad_web_cate}>
 
-  <table class="table footable">
-    <thead>
-      <tr>
-        <th data-class="expand"><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
-        <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
-        <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
-        <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
-      </tr>
-    </thead>
-    <{foreach item=class from=$data}>
-      <tr>
-        <td>
-          <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebTitle}></a>
-        </td>
-        <td>
+    <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
 
-          <span class="label <{if $class.WebID|in_array:$MyWebs}>label-default<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
-        </td>
-        <td>
-          <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebName}></a>
-        </td>
-        <td>
-          <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebCounter}></a>
-        </td>
-      </tr>
+    <script type="text/javascript">
+      $(function() {
+        $("#tad_web_cate_tabs").tabs({
+          active   : $.cookie('activetab'),
+          activate : function( event, ui ){
+              $.cookie( 'activetab', ui.newTab.index(),{
+                  expires : 30
+              });
+          }
+        });
+      });
+    </script>
 
+    <div id="tad_web_cate_tabs">
+    <ul>
+      <{foreach from=$tad_web_cate key=i item=cate}>
+      <li><a href="#tabs-<{$i}>"><{$cate.CateName}></a></li>
+      <{/foreach}>
+    </ul>
+    <{foreach from=$tad_web_cate key=i item=cate}>
+      <div id="tabs-<{$i}>">
+
+        <table class="table footable">
+          <thead>
+            <tr>
+              <th data-class="expand"><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
+              <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
+              <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
+              <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
+            </tr>
+          </thead>
+
+          <{if $cate.webs}>
+            <{foreach from=$cate.webs item=class}>
+              <{if $class.WebID}>
+                <tr>
+                  <td>
+                    <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebTitle}></a>
+                  </td>
+                  <td>
+
+                    <span class="label <{if $class.WebID|in_array:$MyWebs}>label-info<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
+                  </td>
+                  <td>
+                    <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebName}></a>
+                  </td>
+                  <td>
+                    <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebCounter}></a>
+                  </td>
+                </tr>
+              <{/if}>
+            <{/foreach}>
+          <{/if}>
+        </table>
+      </div>
     <{/foreach}>
-  </table>
+  </div>
+  <{else}>
 
+    <table class="table footable">
+      <thead>
+        <tr>
+          <th data-class="expand"><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
+          <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
+          <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
+          <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
+        </tr>
+      </thead>
+      <{foreach item=class from=$data}>
+        <tr>
+          <td>
+            <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebTitle}></a>
+          </td>
+          <td>
+
+            <span class="label <{if $class.WebID|in_array:$MyWebs}>label-default<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
+          </td>
+          <td>
+            <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebName}></a>
+          </td>
+          <td>
+            <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebCounter}></a>
+          </td>
+        </tr>
+
+      <{/foreach}>
+    </table>
+
+  <{/if}>
   <div class="clearfix"></div>
 <{/if}>

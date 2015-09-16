@@ -2,7 +2,8 @@
 //需加入模組語系
 define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
 
-define('_MD_TCW_HOME', 'Home');
+define('_MD_TCW_HOME', 'List');
+define("_MD_TCW_CLASS_HOME", "Home");
 define('_MD_TCW_ADMIN', 'Management');
 define("_MD_TCW_ADMIN_MEM", "Member management");
 define('_MD_TCW_CLEAR', 'Clear');
@@ -76,8 +77,8 @@ define('_MD_TCW_MEM_AMOUNT', 'Class size');
 define('_MD_TCW_GET_SOMEONE', 'A few lucky draw it!');
 define('_MD_TCW_IMPORT_PREVIEW', 'Preview Import Results');
 define('_MD_TCW_IMPORT_DESCRIPT', '
-                               < ol>
-   < li> If the result is correct, direct push the "Import" button. </li>
+<ol>
+   <li> If the result is correct, direct push the "Import" button. </li>
   <li> If a small portion of the error, the line changes. </li>
   <li> If large amounts are incorrect, please re-corrected Excel file and then re-imported. </li>
   <li> If the field is blank, indicating that the field is left blank. </li>
@@ -96,7 +97,7 @@ define('_MD_TCW_CLASS_SETUP', 'Class title setup');
 define('_MD_TCW_FCNCTION_SETUP', 'Function setting');
 define('_MD_TCW_SELECT_TO_CANCEL', 'Please select the function you want to hide.');
 define('_MD_TCW_CLICK_TO_CHANG', 'Click on a picture to change image. You can drag background image and logo to anywhere.');
-define("_MD_TCW_GOOD_LOGO_SITE", "");
+define("_MD_TCW_GOOD_LOGO_SITE", "Good tool:<a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a>");
 define('_MD_TCW_RAND_IMAGE', 'Select random background');
 define('_MD_TCW_BG_TOP', 'Ton');
 define('_MD_TCW_BG_CENTER', 'Medium');
@@ -135,7 +136,29 @@ define('_MD_TCW_NEWS_NEXT_MONTH', 'Next Month');
 define('_MD_TCW_HOMEWORK', 'Contact book');
 define('_MD_TCW_HOMEWORK_SHORT', 'Content');
 define('_MD_TCW_HOMEWORK_ADD', 'Write contact book');
-define('_MD_TCW_HOMEWORK_DEFAULT', " < h3> [Today's job] </h3> <ol> <li> & nbsp; </li> </ol> <h3> [tomorrow Preparation] </h3> <ol> < li> & nbsp; </li> </ol> <p> & nbsp; </p> ");
+define('_MD_TCW_HOMEWORK_DEFAULT', "
+  <table class='table'>
+  <tbody>
+    <tr>
+      <td><img alt='Today's job' src='" . XOOPS_URL . "/modules/tad_web/images/today_homework.png' /></td>
+      <td><img alt='tomorrow Preparation' src='" . XOOPS_URL . "/modules/tad_web/images/bring.png' /></td>
+      <td><img alt='Teacher say...' src='" . XOOPS_URL . "/modules/tad_web/images/teacher_say.png' /></td>
+    </tr>
+    <tr>
+      <td>
+      <ol>
+        <li>&nbsp;</li>
+      </ol>
+      </td>
+      <td>
+      <ol>
+        <li>&nbsp;</li>
+      </ol>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>");
 
 //action.php
 define('_MD_TCW_ACTION', 'Events');
@@ -220,3 +243,13 @@ define("_MD_TCW_MAIN_NAV_HOVER_BG_COLOR", "Navbar hover background color");
 
 define("_MD_TCW_BLOCKS_LIST", "All blocks");
 define("_MD_TCW_BLOCKS_SELECTED", "Enabled blocks");
+
+//action.php
+define("_MD_TCW_WORKS", "Works Gallery");
+define("_MD_TCW_WORKS_SHORT", "Works");
+define("_MD_TCW_WORKS_ID", "Works ID");
+define("_MD_TCW_WORKS_DESC", "Works Description");
+define("_MD_TCW_WORKS_DATE", "Works updated");
+define("_MD_TCW_WORKS_NAME", "Works Title");
+define("_MD_TCW_WORKS_UPLOAD", "Upload works");
+define("_MD_TCW_WORKS_COUNT", "Counter");

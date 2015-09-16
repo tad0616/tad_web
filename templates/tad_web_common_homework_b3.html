@@ -21,7 +21,7 @@
             <a href="homework.php?op=tad_web_news_form&NewsID=<{$homework_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
           <{/if}>
         </h3>
-        <div style="height: 200px; overflow: auto; line-height: 1.8; background-color: #FCF6CF;">
+        <div style="mini-height: 100px; overflow: auto; line-height: 1.8; background-color: #FCF6CF;">
           <{$homework_data.0.NewsContent}>
         </div>
       </div>
@@ -29,12 +29,13 @@
 
     <div class="row">
       <div class="col-md-12">
-        <ul>
+        <ul class="list-group">
           <{foreach from=$homework_data key=i item=news}>
             <{if $i > 0}>
-              <li>
+              <li class="list-group-item">
+              <span class="badge"><{$news.NewsCounter}></span>
               <{$news.Date}>
-              <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a> (<{$news.NewsCounter}>)
+              <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
 
                 <{if !$showWebTitleNews && $isMineNews}>
                   <a href="javascript:delete_tad_web_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>

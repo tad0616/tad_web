@@ -6,7 +6,7 @@ include_once "../function.php";
 /*-----------function區--------------*/
 
 //取得所有班級
-function list_all_web()
+function list_all_web($defCateID = '')
 {
     global $xoopsDB, $xoopsTpl;
 
@@ -15,7 +15,9 @@ function list_all_web()
         return;
     }
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . "  order by WebSort";
+    $and_cate = empty($defCateID) ? "" : "and CateID='{$CateID}'";
+
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where 1 $and_cate order by WebSort";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     $data = "";
@@ -49,6 +51,9 @@ function list_all_web()
         $xoopsTpl->assign('WebYear', $WebYear);
         $xoopsTpl->assign('data', $data);
         $xoopsTpl->assign('jquery', $jquery);
+        $xoopsTpl->assign('CateID', $defCateID);
+        $xoopsTpl->assign('tad_web_cate_menu_options', get_tad_web_cate_menu_options($defCateID));
+
     }
 }
 
@@ -349,16 +354,19 @@ function update_tad_web($WebID = "")
 
     $myts              = &MyTextSanitizer::getInstance();
     $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
-    $_POST['WebOwner'] = $myts->addSlashes($_POST['WebOwner']);
     $_POST['WebTitle'] = $myts->addSlashes($_POST['WebTitle']);
 
+    $WebOwner = XoopsUser::getUnameFromId($_POST['WebOwnerUid'], 1);
+    if (empty($WebOwner)) {
+        $WebOwner = XoopsUser::getUnameFromId($_POST['WebOwnerUid'], 0);
+    }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set
-     `WebName` = '{$_POST['WebName']}' ,
-     `WebSort` = '{$_POST['WebSort']}' ,
-     `WebEnable` = '{$_POST['WebEnable']}' ,
-   `WebOwner` = '{$_POST['WebOwner']}' ,
-   `WebOwnerUid` = '{$_POST['WebOwnerUid']}' ,
-   `WebTitle` = '{$_POST['WebTitle']}'
+    `WebName` = '{$_POST['WebName']}' ,
+    `WebSort` = '{$_POST['WebSort']}' ,
+    `WebEnable` = '{$_POST['WebEnable']}' ,
+    `WebOwner` = '{$WebOwner}' ,
+    `WebOwnerUid` = '{$_POST['WebOwnerUid']}' ,
+    `WebTitle` = '{$_POST['WebTitle']}'
     where WebID='$WebID'";
     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     mklogoPic($WebID);
@@ -557,6 +565,7 @@ function order_by_teamtitle()
 /*-----------執行動作判斷區----------*/
 $op              = (!isset($_REQUEST['op'])) ? "" : $_REQUEST['op'];
 $WebID           = (empty($_REQUEST['WebID'])) ? "" : intval($_REQUEST['WebID']);
+$CateID          = (empty($_REQUEST['CateID'])) ? "" : intval($_REQUEST['CateID']);
 $grade_num       = (empty($_REQUEST['grade_num'])) ? "" : $_REQUEST['grade_num'];
 $class_num       = (empty($_REQUEST['class_num'])) ? "" : intval($_REQUEST['class_num']);
 $class_name_type = (!isset($_REQUEST['class_name_type'])) ? "" : $_REQUEST['class_name_type'];
@@ -627,7 +636,7 @@ switch ($op) {
 
     //預設動作
     default:
-        list_all_web();
+        list_all_web($CateID);
         break;
 
         /*---判斷動作請貼在上方---*/

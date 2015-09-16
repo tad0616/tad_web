@@ -13,4 +13,5 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 $op = (empty($_REQUEST['op'])) ? "" : $_REQUEST['op'];
 common_template($WebID);
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign('WebTitle', $WebTitle);
 include_once XOOPS_ROOT_PATH . '/footer.php';

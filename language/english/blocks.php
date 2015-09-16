@@ -4,6 +4,7 @@ define('_MB_TCW_MY_TOOLS', 'Web Management Tools');
 define('_MB_TCW_NEWS_ADD', 'News release');
 define('_MB_TCW_HOMEWORK_ADD', 'Write contact book');
 define('_MB_TCW_FILES_ADD', 'Upload file');
+define("_MB_TCW_WORKS_ADD", "Upload works");
 define('_MB_TCW_ACTION_ADD', 'Upload photos');
 define('_MB_TCW_VIDEO_ADD', 'Publish Movie');
 define('_MB_TCW_LINK_ADD', 'New Link');

@@ -137,30 +137,6 @@ function common_template($WebID)
 
 }
 
-//輸出檔頭
-function output_head_file()
-{
-    global $WebID;
-
-    $all_config = get_web_all_config($WebID);
-
-    foreach ($all_config as $k => $v) {
-        $$k = $v;
-    }
-
-    $main = '
-      <div class="well" id="web_head" style="height: 200px; overflow: hidden; padding: 0px; position: relative;">
-        <img src="' . XOOPS_URL . '/uploads/tad_web/' . $WebID . '/head/' . $web_head . '" alt="head bg" id="head_bg" style="margin: 0px; width: 100%; position: absolute; z-index: 0; top: ' . $head_top . 'px; left: ' . $head_left . 'px;">
-        <a href="index.php?WebID=<{$WebID}>"><img src="<{$xoops_url}>/uploads/tad_web/<{$WebID}>/logo/' . $web_logo . '" alt="web log" id="tad_web_logo" class="draggable" style="position: absolute; z-index: 1; top: ' . $logo_top . 'px; left: ' . $logo_left . 'px;"></a>
-      </div>
-    ';
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
-    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/tad_web_header.html";
-    file_put_contents($file, $main);
-    $file_b3 = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/tad_web_header_b3.html";
-    file_put_contents($file_b3, $main);
-}
-
 //取得回覆數量
 function get_re_num($DiscussID = "")
 {
@@ -263,6 +239,10 @@ function isMine($uid = null)
     global $xoopsUser, $isAdmin, $MyWebs, $WebID;
     if (empty($xoopsUser)) {
         return false;
+    }
+
+    if ($isAdmin) {
+        return true;
     }
 
     $uid = empty($uid) ? $xoopsUser->uid() : $uid;
@@ -652,4 +632,151 @@ function TadUpFilesHead()
     $TadUpFilesHead = new TadUpFiles("tad_web", "/{$WebID}/head", null, "", "/thumbs");
     $TadUpFilesHead->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesHead;
+}
+
+//取得tad_web_cate分類選單的選項（單層選單）
+function get_tad_web_cate_menu_options($default_CateID = "0")
+{
+    global $xoopsDB, $xoopsModule;
+    $sql = "select `CateID`, `CateName`
+    from `" . $xoopsDB->prefix("tad_web_cate") . "` order by `CateSort`";
+    $result = $xoopsDB->query($sql)
+    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+    $option = '';
+    while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
+        $selected = ($CateID == $default_CateID) ? 'selected = "selected"' : '';
+        $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
+    }
+    return $option;
+}
+
+//取得tad_web_cate所有資料陣列
+function get_tad_web_cate_all()
+{
+    global $xoopsDB;
+    $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where CateEnable='1' order by CateSort";
+    $result = $xoopsDB->query($sql)
+    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $data_arr = '';
+
+    $webs = get_web_cate_arr();
+
+    while ($data = $xoopsDB->fetchArray($result)) {
+        $CateID                    = $data['CateID'];
+        $data_arr[$CateID]         = $data;
+        $data_arr[$CateID]['webs'] = $webs[$CateID];
+    }
+    return $data_arr;
+}
+
+//取得所有分類下的網站
+function get_web_cate_arr()
+{
+    global $xoopsDB;
+    $sql    = "select * from `" . $xoopsDB->prefix("tad_web") . "` where WebEnable='1' and WebID > 0 order by WebTitle";
+    $result = $xoopsDB->query($sql)
+    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $data_arr = '';
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+        if (empty($WebID)) {
+            continue;
+        }
+
+        $data_arr[$CateID][$WebID]          = $all;
+        $data_arr[$CateID]['WebID'][$WebID] = $WebID;
+    }
+    return $data_arr;
+}
+
+//製作文字圖片
+function output_head_file()
+{
+    global $xoopsUser, $WebID;
+
+    //先刪掉舊檔
+    $filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png";
+    if (file_exists($filename)) {
+        unlink($filename);
+    }
+
+    $width  = 1140;
+    $height = 200;
+
+    $all_config = get_web_all_config($WebID);
+
+    foreach ($all_config as $k => $v) {
+        $$k = $v;
+    }
+
+    $im = @imagecreatetruecolor($width, $height);
+    imagecolortransparent($im, imagecolorallocatealpha($im, 0, 0, 0, 127));
+    imagealphablending($im, true);
+    imagesavealpha($im, true);
+
+    $bg_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}";
+    if (file_exists($bg_filename)) {
+        list($bg_width, $bg_height) = getimagesize($bg_filename);
+
+        //縮放比例
+        $rate = round($bg_width / $width, 2);
+
+        $type = strtolower(substr(strrchr($bg_filename, "."), 1));
+        if ($type == 'jpeg') {
+            $type = 'jpg';
+        }
+
+        switch ($type) {
+            case 'bmp':$bg_im = imagecreatefromwbmp($bg_filename);
+                break;
+            case 'gif':$bg_im = imagecreatefromgif($bg_filename);
+                break;
+            case 'jpg':$bg_im = imagecreatefromjpeg($bg_filename);
+                break;
+            case 'png':$bg_im = imagecreatefrompng($bg_filename);
+                break;
+            default:return "Unsupported picture type!";
+        }
+
+        $head_top = abs($head_top);
+        $bg_top   = round($head_top * $rate, 0);
+
+        //背景圖
+        imagecopyresampled($im, $bg_im, 0, 0, 0, $bg_top, $width, $bg_height, $bg_width, $bg_height);
+    }
+
+    $logo_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$web_logo}";
+    if (file_exists($logo_filename)) {
+        list($logo_width, $logo_height) = getimagesize($logo_filename);
+
+        $type = strtolower(substr(strrchr($logo_filename, "."), 1));
+        if ($type == 'jpeg') {
+            $type = 'jpg';
+        }
+
+        switch ($type) {
+            case 'bmp':$logo_im = imagecreatefromwbmp($logo_filename);
+                break;
+            case 'gif':$logo_im = imagecreatefromgif($logo_filename);
+                break;
+            case 'jpg':$logo_im = imagecreatefromjpeg($logo_filename);
+                break;
+            case 'png':$logo_im = imagecreatefrompng($logo_filename);
+                imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
+                imagealphablending($logo_im, true);
+                imagesavealpha($logo_im, true);
+                break;
+            default:return "Unsupported picture type!";
+        }
+
+        //logo圖
+        imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $logo_width, $logo_height, $logo_width, $logo_height);
+    }
+
+    header('Content-type: image/png');
+    imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png");
+    imagedestroy($im);
 }

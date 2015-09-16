@@ -16,12 +16,10 @@ function list_all_tad_webs()
             $$k           = $v;
             $data[$i][$k] = $v;
         }
-//echo "<p>$WebID</p>";
-        $TadUpFiles->set_col("WebOwner", $WebID, 1);
-        $data[$i]['WebOwnerPic'] = $TadUpFiles->get_pic_file();
-        //echo "<p>{$data[$i]['WebOwnerPic']}</p>";
-        //echo "<p>{$data[$i]['WebOwnerPic']}</p>";
-        //if($WebID==9)die($data[$i]['WebOwnerPic']);
+
+        //$TadUpFiles->set_col("WebOwner", $WebID, 1);
+        //$data[$i]['WebOwnerPic'] = $TadUpFiles->get_pic_file();
+
         $data[$i]['my']    = in_array($WebID, $MyWebs) ? 1 : 0;
         $data[$i]['uname'] = XoopsUser::getUnameFromId($WebOwnerUid, 0);
 
@@ -33,6 +31,8 @@ function list_all_tad_webs()
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('MyWebs', $MyWebs);
     $xoopsTpl->assign('count', $i);
+    $xoopsTpl->assign('tad_web_cate', get_tad_web_cate_all());
+
 }
 
 //最新消息
@@ -179,7 +179,7 @@ function list_tad_web_files($WebID = null, $limit = "")
 //活動剪影
 function list_tad_web_action($WebID = "", $limit = null)
 {
-    global $xoopsDB, $xoopsTpl;
+    global $xoopsDB, $xoopsTpl, $TadUpFiles;
 
     $showWebTitle = (empty($WebID)) ? 1 : 0;
     $andWebID     = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
@@ -215,6 +215,13 @@ function list_tad_web_action($WebID = "", $limit = null)
         $main_data[$i]['ActionPlace'] = $ActionPlace;
         $main_data[$i]['ActionCount'] = $ActionCount;
         $main_data[$i]['WebTitle']    = "<a href='index.php?WebID=$WebID'>{$Class['WebTitle']}</a>";
+
+        $subdir = isset($WebID) ? "/{$WebID}" : "";
+        $TadUpFiles->set_dir('subdir', $subdir);
+        $TadUpFiles->set_col("ActionID", $ActionID);
+        $ActionPic = $TadUpFiles->get_pic_file('thumb');
+        //die(var_export($ActionPic));
+        $main_data[$i]['ActionPic'] = $ActionPic;
         $i++;
     }
 
@@ -226,6 +233,54 @@ function list_tad_web_action($WebID = "", $limit = null)
 
 }
 
+//作品分享
+function list_tad_web_works($WebID = "", $limit = null)
+{
+    global $xoopsDB, $xoopsTpl;
+
+    $showWebTitle = (empty($WebID)) ? 1 : 0;
+    $andWebID     = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
+    $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
+    $sql          = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID order by a.WorksDate desc $andLimit";
+
+    if (empty($limit)) {
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar = getPageBar($sql, 20, 10);
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
+    } else {
+        $bar = "";
+    }
+
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+    $main_data = "";
+    $i         = 0;
+    while ($all = $xoopsDB->fetchArray($result)) {
+        //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+
+        $Class = getWebInfo($WebID);
+
+        $main_data[$i]['WorksDate']  = substr($WorksDate, 0, 10);
+        $main_data[$i]['WorksID']    = $WorksID;
+        $main_data[$i]['WebID']      = $WebID;
+        $main_data[$i]['WorkName']   = $WorkName;
+        $main_data[$i]['WorksCount'] = $WorksCount;
+        $main_data[$i]['WebTitle']   = "<a href='index.php?WebID=$WebID'>{$Class['WebTitle']}</a>";
+        $i++;
+    }
+
+    $xoopsTpl->assign('works_data', $main_data);
+
+    $xoopsTpl->assign('bar', $bar);
+    $xoopsTpl->assign('isMineWorks', isMine());
+    $xoopsTpl->assign('showWebTitleWorks', $showWebTitle);
+
+}
 //好站連結
 function list_tad_web_link($WebID = "", $limit = "")
 {

@@ -15,6 +15,7 @@ define('_MI_TCW_LINK', '常用網站');
 define('_MI_TCW_DISCUSS', '留言簿');
 
 define('_MI_TCW_ADMENU1', '網站管理');
+define('_MI_TCW_ADMENU2', '網站分類');
 
 define("_MI_TCW_BNAME1", "網頁列表選單");
 define("_MI_TCW_BDESC1", "列出所有個人網頁的選單");

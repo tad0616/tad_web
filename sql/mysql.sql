@@ -17,7 +17,7 @@ CREATE TABLE `tad_web` (
 CREATE TABLE `tad_web_cate` (
   `CateID` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '編號',
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `CateName` tinyint(3) unsigned NOT NULL default 0 COMMENT '名稱',
+  `CateName` varchar(255) NOT NULL default '' COMMENT '名稱',
   `ColName` varchar(255) NOT NULL default '' COMMENT '擁有者',
   `ColSN` mediumint(8) unsigned NOT NULL default 0 COMMENT '擁有者uid',
   `CateSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
@@ -106,6 +106,7 @@ CREATE TABLE `tad_web_action` (
   `ActionPlace` varchar(255) NOT NULL default '' COMMENT '活動地點',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
   `ActionCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
+  `ActionKind` varchar(255) NOT NULL default 'action' COMMENT '種類',
 PRIMARY KEY (`ActionID`)
 ) ENGINE=MyISAM;
 
@@ -125,6 +126,17 @@ CREATE TABLE `tad_web_discuss` (
 PRIMARY KEY (`DiscussID`)
 ) ENGINE=MyISAM;
 
+CREATE TABLE `tad_web_works` (
+  `WorksID` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
+  `CateID` smallint(6) unsigned NOT NULL default 0,
+  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+  `WorkName` varchar(255) NOT NULL default '' COMMENT '活動名稱',
+  `WorkDesc` text NOT NULL COMMENT '活動說明',
+  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
+  `WorksDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '日期',
+  `WorksCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
+PRIMARY KEY (`WorksID`)
+) ENGINE=MyISAM;
 
 CREATE TABLE `tad_web_files` (
   `fsn` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',

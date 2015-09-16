@@ -98,7 +98,6 @@ define("_MD_TCW_FCNCTION_SETUP", "功能設定");
 define("_MD_TCW_SELECT_TO_CANCEL", "請將想要隱藏的功能打勾");
 define("_MD_TCW_CLICK_TO_CHANG", "點選下圖以切換圖片，並可拖動上方底圖或logo圖，以調整喜歡的位置。");
 define("_MD_TCW_GOOD_LOGO_SITE", "可從 <a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a> 線上製作 logo 圖。");
-
 define("_MD_TCW_RAND_IMAGE", "回復成隨機背景");
 define("_MD_TCW_BG_TOP", "上");
 define("_MD_TCW_BG_CENTER", "中");
@@ -244,3 +243,13 @@ define("_MD_TCW_MAIN_NAV_HOVER_BG_COLOR", "滑鼠移過導覽列底色");
 
 define("_MD_TCW_BLOCKS_LIST", "可選用區塊");
 define("_MD_TCW_BLOCKS_SELECTED", "已選用區塊");
+
+//action.php
+define("_MD_TCW_WORKS", "作品分享");
+define("_MD_TCW_WORKS_SHORT", "作品");
+define("_MD_TCW_WORKS_ID", "作品編號");
+define("_MD_TCW_WORKS_DESC", "主題說明");
+define("_MD_TCW_WORKS_DATE", "上傳日期");
+define("_MD_TCW_WORKS_NAME", "作品主題");
+define("_MD_TCW_WORKS_UPLOAD", "上傳作品");
+define("_MD_TCW_WORKS_COUNT", "人氣");

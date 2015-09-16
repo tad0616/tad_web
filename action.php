@@ -6,6 +6,7 @@ if (!empty($_GET['WebID'])) {
 } else {
     $xoopsOption['template_main'] = set_bootstrap('tad_web_action.html');
 }
+
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
@@ -253,4 +254,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign('WebTitle', $WebTitle);
 include_once XOOPS_ROOT_PATH . '/footer.php';

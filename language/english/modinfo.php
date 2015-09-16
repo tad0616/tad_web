@@ -15,6 +15,7 @@ define('_MI_TCW_LINK', 'Common website');
 define('_MI_TCW_DISCUSS', 'ChatBox');
 
 define('_MI_TCW_ADMENU1', 'Site management');
+define('_MI_TCW_ADMENU2', 'Site category');
 
 define('_MI_TCW_BNAME1', 'Page menu list');
 define('_MI_TCW_BDESC1', 'Lists all the individual pages of the menu');

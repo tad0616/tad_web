@@ -3,49 +3,51 @@
   <{if $op=="tad_web_form"}>
     <{$formValidator_code}>
     <div class="row">
-      <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
-        <table class="table" style="<{$pic}>">
+      <div class="col-md-12">
+        <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
+          <table class="table" style="<{$pic}>">
 
-          <tr>
-            <td nowrap><{$smarty.const._MA_TCW_TEAMNAME}></td>
-            <td><input type="text" name="WebName"  value="<{$WebName}>" id="WebName" class="validate[required] form-control"></td>
-          </tr>
+            <tr>
+              <td nowrap><{$smarty.const._MA_TCW_TEAMNAME}></td>
+              <td><input type="text" name="WebName"  value="<{$WebName}>" id="WebName" class="validate[required] form-control"></td>
+            </tr>
 
-          <tr>
-            <td nowrap><{$smarty.const._MA_TCW_TEAMTITLE}></td>
-            <td><input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required] form-control"></td>
-          </tr>
+            <tr>
+              <td nowrap><{$smarty.const._MA_TCW_TEAMTITLE}></td>
+              <td><input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required] form-control"></td>
+            </tr>
 
-          <tr>
-            <td nowrap><{$smarty.const._MA_TCW_TEAMLEADER}></td>
-            <td><{$user_menu}></td>
-          </tr>
+            <tr>
+              <td nowrap><{$smarty.const._MA_TCW_TEAMLEADER}></td>
+              <td><{$user_menu}></td>
+            </tr>
 
-          <tr>
-            <td nowrap><{$smarty.const._MA_TCW_TEAMENABLE}></td>
-            <td>
-              <label class="radio-inline">
-                <input type="radio" name="WebEnable" id="WebEnable" value="1" <{$WebEnable1}>><{$smarty.const._TAD_ENABLE}>
-              </label>
+            <tr>
+              <td nowrap><{$smarty.const._MA_TCW_TEAMENABLE}></td>
+              <td>
+                <label class="radio-inline">
+                  <input type="radio" name="WebEnable" id="WebEnable" value="1" <{$WebEnable1}>><{$smarty.const._TAD_ENABLE}>
+                </label>
 
-              <label class="radio-inline">
-                <input type="radio" name="WebEnable" id="WebEnable" value="0" <{$WebEnable0}>><{$smarty.const._TAD_UNABLE}>
-              </label>
-            </td>
-          </tr>
+                <label class="radio-inline">
+                  <input type="radio" name="WebEnable" id="WebEnable" value="0" <{$WebEnable0}>><{$smarty.const._TAD_UNABLE}>
+                </label>
+              </td>
+            </tr>
 
-          <tr>
-            <td class="bar" colspan="2">
-              <input type="hidden" name="WebSort" size="20" value="<{$WebSort}>" id="WebSort">
+            <tr>
+              <td class="bar" colspan="2">
+                <input type="hidden" name="WebSort" size="20" value="<{$WebSort}>" id="WebSort">
 
-              <!--編號-->
-              <input type="hidden" name="WebID" value="<{$WebID}>">
-              <input type="hidden" name="op" value="<{$next_op}>">
-              <input type="submit" value="<{$smarty.const._TAD_SAVE}>">
-            </td>
-          </tr>
-        </table>
-      </form>
+                <!--編號-->
+                <input type="hidden" name="WebID" value="<{$WebID}>">
+                <input type="hidden" name="op" value="<{$next_op}>">
+                <input type="submit" value="<{$smarty.const._TAD_SAVE}>">
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
     </div>
   <{elseif $op=="batch_creat_class"}>
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
@@ -110,6 +112,18 @@
     </div>
 
     <h2><{$WebYear}><{$smarty.const._MA_TCW_MAIN_TITLE}></h2>
+
+    <{if $tad_web_cate_menu_options}>
+      <div class="row">
+        <div class="col-md-3">
+          <select name="CateID" id="CateID" class="form-control" onchange="location.href='main.php?CateID='+this.value">
+            <option value="" <{if $CateID==""}>selected="selected"<{/if}>><{$smarty.const._MA_TCW_SELECT_CATE}></option>
+            <{$tad_web_cate_menu_options}>
+          </select>
+        </div>
+      </div>
+    <{/if}>
+
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
       <div id="save_msg"></div>
       <table class="table table-striped table-hover" style="width:auto;">

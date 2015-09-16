@@ -23,6 +23,10 @@ if ($WebID) {
     $WebName  = $Web['WebTitle'];
     $WebTitle = $Web['WebTitle'];
     $WebOwner = $Web['WebOwner'];
+
+    if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png")) {
+        output_head_file();
+    }
 } else {
     $Web      = "";
     $WebName  = "";
@@ -82,6 +86,16 @@ if ($xoopsModuleConfig['web_mode'] == "class") {
     }
 
 }
+
+if (!in_array('works', $hide_function)) {
+    $menu_var[$i]['id']     = $i;
+    $menu_var[$i]['title']  = _MD_TCW_WORKS;
+    $menu_var[$i]['url']    = "works.php?WebID={$WebID}";
+    $menu_var[$i]['target'] = "_self";
+    $menu_var[$i]['icon']   = "fa-paint-brush";
+    $i++;
+}
+
 if (!in_array('files', $hide_function)) {
     $menu_var[$i]['id']     = $i;
     $menu_var[$i]['title']  = _MD_TCW_FILES;
@@ -146,7 +160,7 @@ $web_logo = $TadUpFiles->get_pic_file();
 //我的班級ID（陣列）
 $MyWebs = MyWebID();
 //目前瀏覽的是否是我的班級？
-$isMyWeb = in_array($WebID, $MyWebs);
+$isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
 
 if ($isMyWeb) {
     $menu_var[$i]['id']     = $i;
@@ -156,6 +170,13 @@ if ($isMyWeb) {
     $menu_var[$i]['icon']   = "fa-check-square-o";
     $i++;
 }
+
+$menu_var[$i]['id']     = $i;
+$menu_var[$i]['title']  = _MD_TCW_HOME;
+$menu_var[$i]['url']    = "index.php";
+$menu_var[$i]['target'] = "_self";
+$menu_var[$i]['icon']   = "fa-share-square-o";
+$i++;
 
 if ($isAdmin) {
     $menu_var[$i]['id']     = $i;

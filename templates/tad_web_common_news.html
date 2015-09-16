@@ -12,17 +12,30 @@
   <{if $news_data}>
     <div class="row-fluid">
       <div class="span12">
-        <h3>
-          <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
+        <{if $news_data.0.NewsContent}>
+          <h3>
+            <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
-          <{if !$showWebTitleNews && $isMineNews}>
-            <a href="javascript:delete_tad_web_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-            <a href="news.php?op=tad_web_news_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
-          <{/if}>
-        </h3>
-        <div class="well" style="height: 200px; overflow: auto; line-height: 1.8; background-color: #FCFCFC;">
-          <{$news_data.0.NewsContent}>
-        </div>
+            <{if !$showWebTitleNews && $isMineNews}>
+              <a href="javascript:delete_tad_web_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="news.php?op=tad_web_news_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
+          </h3>
+          <div class="well" style="mini-height: 100px; overflow: auto; line-height: 1.8; background-color: #FCFCFC;">
+            <{$news_data.0.NewsContent}>
+          </div>
+        <{else}>
+          <div class="well" style="height: 100px; overflow: auto; line-height: 1.8; background-color: #FCFCFC;">
+            <h3>
+              <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
+
+              <{if !$showWebTitleNews && $isMineNews}>
+                <a href="javascript:delete_tad_web_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="news.php?op=tad_web_news_form&NewsID=<{$news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{/if}>
+            </h3>
+          </div>
+        <{/if}>
       </div>
     </div>
 

@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
-$modversion['version']     = 1.1;
+$modversion['version']     = 1.2;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author']      = _MI_TCW_AUTHOR;
 $modversion['credits']     = _MI_TCW_CREDITS;
@@ -47,6 +47,7 @@ $modversion['tables'][]         = "tad_web_files_center";
 $modversion['tables'][]         = "tad_web_files";
 $modversion['tables'][]         = "tad_web_video";
 $modversion['tables'][]         = "tad_web_config";
+$modversion['tables'][]         = "tad_web_works";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;
@@ -98,14 +99,6 @@ $modversion['templates'][$i]['description'] = 'tad_web_index.html';
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_index_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_index_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_header.html';
-$modversion['templates'][$i]['description'] = 'tad_web_header.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_header_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_header_b3.html';
 
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_aboutus.html';
@@ -258,6 +251,29 @@ $modversion['templates'][$i]['description'] = 'tad_web_discuss_login.html';
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_discuss_login_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_discuss_login_b3.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_cate.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_cate.html";
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_cate_b3.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_cate_b3.html";
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_works.html';
+$modversion['templates'][$i]['description'] = 'tad_web_works.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_works_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_works_b3.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_common_works.html';
+$modversion['templates'][$i]['description'] = 'tad_web_common_works.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_common_works_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_common_works_b3.html';
 
 //---區塊設定---//
 $i                                       = 1;

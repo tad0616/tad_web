@@ -60,9 +60,11 @@
 
     <{$learn_info}>
     <{$ShowCal}>
-    <div class="well">
-     <{$NewsContent}>
-    </div>
+    <{if $NewsContent}>
+      <div class="well">
+       <{$NewsContent}>
+      </div>
+    <{/if}>
     <{$NewsUrlTxt}>
 
   <{$NewsFiles}>

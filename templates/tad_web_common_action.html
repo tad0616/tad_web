@@ -10,69 +10,33 @@
 
 
 <h1><{$smarty.const._MD_TCW_ACTION}></h1>
-<table class="footable table common_table">
-  <thead>
-    <tr>
-      <th data-hide="phone" style="width:100px;text-align:center;">
-        <{$smarty.const._MD_TCW_ACTIONDATE}>
-      </th>
-      <th data-class="expand">
-        <{$smarty.const._MD_TCW_ACTIONNAME}>
-      </th>
-      <th data-hide="phone" style="width:100px;text-align:center;">
-        <{$smarty.const._MD_TCW_ACTIONPLACE}>
-      </th>
-      <th data-hide="phone" style="width:50px;text-align:center;">
-        <{$smarty.const._MD_TCW_ACTIONCOUNT}>
-      </th>
-      <{if $showWebTitleAction}>
-        <th data-hide="phone" style="width:100px;text-align:center;">
-          <{$smarty.const._MD_TCW_TEAMID}>
-        </th>
-      <{/if}>
-      <{if !$showWebTitleAction && $isMineAction}>
-        <th data-hide="phone" style="width:100px;text-align:center;">
-          <{$smarty.const._TAD_FUNCTION}>
-        </th>
-      <{/if}>
-    </tr>
-  </thead>
   <{if $action_data}>
     <{foreach item=act from=$action_data}>
-      <tr>
-        <td class="text-center">
-          <{$act.ActionDate}>
-        </td>
-        <td>
+      <div style="width: 166px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
+        <div style="width: 160px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
+          <div style="width: 140px; height: 140px; background: #F1F7FF url('<{$act.ActionPic}>') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;">
+          </div>
+        </div>
+        <div class="text-center" style="margin: 8px auto;">
           <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
-        </td>
-        <td class="text-center">
-          <{$act.ActionPlace}>
-        </td>
-        <td class="text-center">
-          <{$act.ActionCount}>
-        </td>
+          <{if !$showWebTitleAction && $isMineAction}>
+            <a href="javascript:delete_tad_web_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <a href="action.php?WebID=<{$WebID}>&op=tad_web_action_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+          <{/if}>
+        </div>
         <{if $showWebTitleAction}>
-          <td class="text-center">
+          <div class="text-center">
             <{$act.WebTitle}>
-          </td>
+          </div>
         <{/if}>
-        <{if !$showWebTitleAction && $isMineAction}>
-        <td class="text-center">
-          <a href="javascript:delete_tad_web_action_func(<{$act.ActionID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
-          <a href="action.php?WebID=<{$WebID}>&op=tad_web_action_form&ActionID=<{$act.ActionID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
-        </td>
-        <{/if}>
-      </tr>
+      </div>
     <{/foreach}>
+    <div style="clear: both;"></div>
   <{else}>
-    <tr>
-      <td colspan=4 class="text-center">
-        <{$smarty.const._MD_TCW_EMPTY}>
-      </td>
-    </tr>
+    <div class="well">
+      <{$smarty.const._MD_TCW_EMPTY}>
+    </div>
   <{/if}>
-</table>
 
 <{if $action_data}>
   <{$bar}>
