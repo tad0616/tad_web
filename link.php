@@ -1,6 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+$web_cate = new web_cate($WebID, "tad_web_link", "link");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_link_b3.html';
 } else {
@@ -12,7 +13,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //tad_web_link編輯表單
 function tad_web_link_form($LinkID = "")
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $xoopsTpl, $isMyWeb;
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $xoopsTpl, $isMyWeb, $web_cate;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=tad_web_link_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -54,6 +55,11 @@ function tad_web_link_form($LinkID = "")
     $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
     $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
 
+    //設定「CateID」欄位預設值
+    $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+    $cate_menu = $web_cate->cate_menu($CateID);
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
     $op = (empty($LinkID)) ? "insert_tad_web_link" : "update_tad_web_link";
     //$op="replace_tad_web_link";
 
@@ -89,7 +95,7 @@ function tad_web_link_max_sort()
 //新增資料到tad_web_link中
 function insert_tad_web_link()
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB, $xoopsUser, $web_cate;
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
@@ -102,9 +108,11 @@ function insert_tad_web_link()
     $_POST['LinkCounter'] = intval($_POST['LinkCounter']);
     $_POST['LinkSort']    = intval($_POST['LinkSort']);
 
+    $CateID = $web_cate->save_tad_web_cate();
+
     $sql = "insert into " . $xoopsDB->prefix("tad_web_link") . "
-      (`LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
-      values('{$_POST['LinkTitle']}' , '{$_POST['LinkDesc']}' , '{$_POST['LinkUrl']}' , '{$_POST['LinkCounter']}' , '{$_POST['LinkSort']}' , '{$_POST['WebID']}' , '{$uid}')";
+      (`CateID`, `LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
+      values('{$CateID}', '{$_POST['LinkTitle']}' , '{$_POST['LinkDesc']}' , '{$_POST['LinkUrl']}' , '{$_POST['LinkCounter']}' , '{$_POST['LinkSort']}' , '{$_POST['WebID']}' , '{$uid}')";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     //取得最後新增資料的流水編號
@@ -115,7 +123,7 @@ function insert_tad_web_link()
 //更新tad_web_link某一筆資料
 function update_tad_web_link($LinkID = "")
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB, $xoopsUser, $web_cate;
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
@@ -130,7 +138,9 @@ function update_tad_web_link($LinkID = "")
     $_POST['LinkCounter'] = intval($_POST['LinkCounter']);
     $_POST['LinkSort']    = intval($_POST['LinkSort']);
 
-    $sql = "update " . $xoopsDB->prefix("tad_web_link") . " set
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "update " . $xoopsDB->prefix("tad_web_link") . " set
+   `CateID` = '{$CateID}' ,
    `LinkTitle` = '{$_POST['LinkTitle']}' ,
    `LinkDesc` = '{$_POST['LinkDesc']}' ,
    `LinkUrl` = '{$_POST['LinkUrl']}' ,
@@ -191,6 +201,7 @@ function show_one_tad_web_link($LinkID = "")
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $LinkID = system_CleanVars($_REQUEST, 'LinkID', 0, 'int');
+$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 common_template($WebID);
 
@@ -230,7 +241,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($LinkID)) {
-            list_tad_web_link($WebID);
+            list_tad_web_link($WebID, $CateID);
         } else {
             show_one_tad_web_link($LinkID);
         }
@@ -239,5 +250,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

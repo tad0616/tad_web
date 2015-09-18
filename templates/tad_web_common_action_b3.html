@@ -50,7 +50,7 @@
       <a href="action.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineAction}>
+  <{if $isMineAction and $WebID}>
     <a href="action.php?WebID=<{$WebID}>&op=tad_web_action_form" class="btn btn-xs btn-info"><{$smarty.const._TAD_ADD}></a>
   <{/if}>
 </div>

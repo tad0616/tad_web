@@ -6,6 +6,13 @@ $isAdmin = false;
 if ($xoopsUser) {
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin   = $xoopsUser->isAdmin($module_id);
+} else {
+
+    $LoginMemID       = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
+    $LoginMemName     = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
+    $LoginMemNickName = isset($_SESSION['LoginMemNickName']) ? $_SESSION['LoginMemNickName'] : null;
+    $LoginWebID       = isset($_SESSION['LoginWebID']) ? $_SESSION['LoginWebID'] : null;
+
 }
 
 //目前觀看的班級
@@ -17,6 +24,7 @@ if (!empty($_REQUEST['WebID'])) {
 }
 
 include_once "function.php";
+include_once "class/cate.php";
 
 if ($WebID) {
     $Web      = getWebInfo($WebID);

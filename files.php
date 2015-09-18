@@ -1,6 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+$web_cate = new web_cate($WebID, "tad_web_files", "files");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_file_b3.html';
 } else {
@@ -15,7 +16,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //tad_web_files編輯表單
 function tad_web_files_form($fsn = "", $WebID = "")
 {
-    global $xoopsDB, $xoopsUser, $xoopsModuleConfig, $isAdmin, $MyWebs, $xoopsTpl, $isMyWeb, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $xoopsModuleConfig, $isAdmin, $MyWebs, $xoopsTpl, $isMyWeb, $TadUpFiles, $web_cate;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=tad_web_files_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -49,6 +50,11 @@ function tad_web_files_form($fsn = "", $WebID = "")
     //設定「WebID」欄位預設值
     $WebID = (!isset($DBV['WebID'])) ? $WebID : $DBV['WebID'];
 
+    //設定「CateID」欄位預設值
+    $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+    $cate_menu = $web_cate->cate_menu($CateID);
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
     $op = (empty($fsn)) ? "insert_tad_web_files" : "update_tad_web_files";
 
     $xoopsTpl->assign('WebID', $WebID);
@@ -65,19 +71,20 @@ function tad_web_files_form($fsn = "", $WebID = "")
 //新增資料到tad_web_files中
 function insert_tad_web_files()
 {
-    global $xoopsDB, $xoopsUser, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $TadUpFiles, $web_cate;
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
 
     $myts = &MyTextSanitizer::getInstance();
 
-    $_POST['CateID'] = intval($_POST['CateID']);
-    $_POST['WebID']  = intval($_POST['WebID']);
+    $_POST['WebID'] = intval($_POST['WebID']);
+
+    $CateID = $web_cate->save_tad_web_cate();
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web_files") . "
   (`uid` , `CateID` , `file_date`  , `WebID`)
-  values('{$uid}' , '{$_POST['CateID']}' , now()  , '{$_POST['WebID']}')";
+  values('{$uid}' , '{$CateID}' , now()  , '{$_POST['WebID']}')";
 
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
@@ -92,7 +99,7 @@ function insert_tad_web_files()
 //更新tad_web_files某一筆資料
 function update_tad_web_files($fsn = "")
 {
-    global $xoopsDB, $xoopsUser, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $TadUpFiles, $web_cate;
 
     $myts = &MyTextSanitizer::getInstance();
 
@@ -100,11 +107,13 @@ function update_tad_web_files($fsn = "")
 
     $_POST['CateID'] = intval($_POST['CateID']);
     $_POST['WebID']  = intval($_POST['WebID']);
-    $sql             = "update " . $xoopsDB->prefix("tad_web_files") . " set
-   `CateID` = '{$_POST['CateID']}' ,
+
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "update " . $xoopsDB->prefix("tad_web_files") . " set
+   `CateID` = '{$CateID}' ,
    `file_date` = now() ,
    `WebID` = '{$_POST['WebID']}'
-  where fsn='$fsn' $anduid";
+    where fsn='$fsn' $anduid";
     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     $TadUpFiles->set_col('fsn', $fsn);
@@ -142,6 +151,7 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op       = system_CleanVars($_REQUEST, 'op', '', 'string');
 $files_sn = system_CleanVars($_REQUEST, 'files_sn', 0, 'int');
 $fsn      = system_CleanVars($_REQUEST, 'fsn', 0, 'int');
+$CateID   = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 common_template($WebID);
 
@@ -183,12 +193,12 @@ switch ($op) {
     //預設動作
     default:
         if (empty($fsn)) {
-            list_tad_web_files($WebID);
+            list_tad_web_files($WebID, $CateID);
         }
         break;
 
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

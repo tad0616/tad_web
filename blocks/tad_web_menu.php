@@ -12,11 +12,13 @@ function tad_web_menu($options)
             $block['span']         = 'col-md-';
             $block['form_group']   = 'form-group';
             $block['form_control'] = 'form-control';
+            $block['mini']         = 'form-xs';
         } else {
             $block['row']          = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
             $block['span']         = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
             $block['form_group']   = $_SESSION['web_bootstrap'] == '3' ? 'form-group' : 'control-group';
             $block['form_control'] = $_SESSION['web_bootstrap'] == '3' ? 'form-control' : 'span12';
+            $block['mini']         = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
         }
 
         $block['op'] = 'login';

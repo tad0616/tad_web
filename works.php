@@ -1,19 +1,19 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+$web_cate = new web_cate($WebID, "tad_web_works", "works");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_works_b3.html';
 } else {
     $xoopsOption['template_main'] = set_bootstrap('tad_web_works.html');
 }
-
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
 //tad_web_works編輯表單
 function tad_web_works_form($WorksID = "")
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $web_cate;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&tad_web_works_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -55,6 +55,11 @@ function tad_web_works_form($WorksID = "")
     //設定「WorksCount」欄位預設值
     $WorksCount = (!isset($DBV['WorksCount'])) ? "" : $DBV['WorksCount'];
 
+    //設定「CateID」欄位預設值
+    $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+    $cate_menu = $web_cate->cate_menu($CateID);
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
     $op = (empty($WorksID)) ? "insert_tad_web_works" : "update_tad_web_works";
 
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -84,7 +89,7 @@ function tad_web_works_form($WorksID = "")
 //新增資料到tad_web_works中
 function insert_tad_web_works()
 {
-    global $xoopsDB, $xoopsUser, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $TadUpFiles, $web_cate;
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
@@ -93,9 +98,11 @@ function insert_tad_web_works()
     $_POST['WorkName'] = $myts->addSlashes($_POST['WorkName']);
     $_POST['WorkDesc'] = $myts->addSlashes($_POST['WorkDesc']);
 
+    $CateID = $web_cate->save_tad_web_cate();
+
     $sql = "insert into " . $xoopsDB->prefix("tad_web_works") . "
     (`CateID`,`WorkName` , `WorkDesc` , `WorksDate` ,  `uid` , `WebID` , `WorksCount`)
-    values('{$_POST['CateID']}' , '{$_POST['WorkName']}' , '{$_POST['WorkDesc']}' , '{$_POST['WorksDate']}' , '{$uid}' , '{$_POST['WebID']}' , '0')";
+    values('{$CateID}' , '{$_POST['WorkName']}' , '{$_POST['WorkDesc']}' , '{$_POST['WorksDate']}' , '{$uid}' , '{$_POST['WebID']}' , '0')";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     //取得最後新增資料的流水編號
@@ -110,7 +117,7 @@ function insert_tad_web_works()
 //更新tad_web_works某一筆資料
 function update_tad_web_works($WorksID = "")
 {
-    global $xoopsDB, $xoopsUser, $isAdmin, $MyWebs, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $isAdmin, $MyWebs, $TadUpFiles, $web_cate;
 
     $myts              = &MyTextSanitizer::getInstance();
     $_POST['WorkName'] = $myts->addSlashes($_POST['WorkName']);
@@ -120,8 +127,9 @@ function update_tad_web_works($WorksID = "")
 
     $_POST['WorksCount'] = intval($_POST['WorksCount']);
 
-    $sql = "update " . $xoopsDB->prefix("tad_web_works") . " set
-     `CateID` = '{$_POST['CateID']}' ,
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "update " . $xoopsDB->prefix("tad_web_works") . " set
+     `CateID` = '{$CateID}' ,
      `WorkName` = '{$_POST['WorkName']}' ,
      `WorkDesc` = '{$_POST['WorkDesc']}' ,
      `WorksDate` = '{$_POST['WorksDate']}'
@@ -168,7 +176,7 @@ function delete_tad_web_works($WorksID = "")
 //以流水號秀出某筆tad_web_works資料內容
 function show_one_tad_web_works($WorksID = "")
 {
-    global $xoopsDB, $xoopsTpl, $TadUpFiles;
+    global $xoopsDB, $xoopsTpl, $TadUpFiles, $web_cate;
     if (empty($WorksID)) {
         return;
     } else {
@@ -191,7 +199,7 @@ function show_one_tad_web_works($WorksID = "")
 
     $uid_name  = XoopsUser::getUnameFromId($uid, 1);
     $WorksDate = str_replace(' 00:00:00', '', $WorksDate);
-    $xoopsTpl->assign('isMineAction', isMine());
+    $xoopsTpl->assign('isMineWorks', isMine());
     $xoopsTpl->assign('WorkName', $WorkName);
     $xoopsTpl->assign('WorksDate', $WorksDate);
     $xoopsTpl->assign('WorkDesc', nl2br($WorkDesc));
@@ -201,12 +209,17 @@ function show_one_tad_web_works($WorksID = "")
     $xoopsTpl->assign('op', 'show_one_tad_web_works');
     $xoopsTpl->assign('WorksID', $WorksID);
     $xoopsTpl->assign('ActionInfo', sprintf(_MD_TCW_INFO, $uid_name, $WorksDate, $WorksCount));
+
+    //取得單一分類資料
+    $cate = $web_cate->get_tad_web_cate($CateID);
+    $xoopsTpl->assign('cate', $cate);
 }
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op      = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WorksID = system_CleanVars($_REQUEST, 'WorksID', 0, 'int');
+$CateID  = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 common_template($WebID);
 
@@ -240,7 +253,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($WorksID)) {
-            list_tad_web_works($WebID);
+            list_tad_web_works($WebID, $CateID);
         } else {
             show_one_tad_web_works($WorksID);
         }
@@ -249,5 +262,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

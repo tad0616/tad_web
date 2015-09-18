@@ -16,3 +16,4 @@ define("_MB_TCW_WEB_CONFIG", "網站設定");
 define("_MB_TCW_MENU", "專用選單");
 define("_MB_TCW_ALL_WEBS", "網頁列表");
 define("_MB_TCW_EMPTY_DISCUSS", "尚無任何討論主題");
+define("_MB_TCW_IM_MEM", "我是學生（僅留言簿須登入）");

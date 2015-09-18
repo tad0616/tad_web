@@ -103,8 +103,8 @@ define("_MD_TCW_BG_TOP", "上");
 define("_MD_TCW_BG_CENTER", "中");
 define("_MD_TCW_BG_BOTTOM", "下");
 define("_MD_TCW_BG_POSITION", "圖片位置：");
-define("_MD_TCW_MEM_UNAME", "帳號");
-define("_MD_TCW_MEM_PASSWD", "密碼");
+define("_MD_TCW_MEM_UNAME", "學生帳號");
+define("_MD_TCW_MEM_PASSWD", "學生密碼");
 define("_MD_TCW_PLEASE_INPUT", "請輸入");
 define("_MD_TCW_LOGIN", "登入");
 define("_MD_TCW_HELLO", "您好！歡迎使用討論區，請注意禮貌喔！");
@@ -162,6 +162,7 @@ define("_MD_TCW_HOMEWORK_DEFAULT", "
 
 //action.php
 define("_MD_TCW_ACTION", "活動剪影");
+define("_MD_TCW_ACTION_ADD", "上傳圖檔");
 define("_MD_TCW_ACTION_SHORT", "活動");
 define("_MD_TCW_ACTIONID", "活動編號");
 define("_MD_TCW_ACTIONNAME", "活動名稱");
@@ -191,6 +192,7 @@ define("_MD_TCW_DISCUSS_ADD", "我要留言");
 
 //files.php
 define("_MD_TCW_FILES", "檔案下載");
+define("_MD_TCW_FILES_ADD", "上傳檔案");
 define("_MD_TCW_FILES_SHORT", "檔案");
 define("_MD_TCW_FSN", "檔案流水號");
 define("_MD_TCW_FILES_UID", "上傳者");
@@ -201,6 +203,7 @@ define("_MD_TCW_FILES_UPLOAD", "上傳檔案");
 
 //link.php
 define("_MD_TCW_LINK", "常用網站");
+define("_MD_TCW_LINK_ADD", "新增連結");
 define("_MD_TCW_LINK_SHORT", "網站");
 define("_MD_TCW_LINKURL", "網站連結");
 define("_MD_TCW_LINKID", "編號");
@@ -213,6 +216,7 @@ define("_MD_TCW_LINK_AUTO_GET", "自動抓取");
 
 //video.php
 define("_MD_TCW_VIDEO", "線上影片");
+define("_MD_TCW_VIDEO_ADD", "發布影片");
 define("_MD_TCW_VIDEO_SHORT", "影片");
 define("_MD_TCW_VIDEOID", "影片編號");
 define("_MD_TCW_VIDEONAME", "影片名稱");
@@ -246,6 +250,7 @@ define("_MD_TCW_BLOCKS_SELECTED", "已選用區塊");
 
 //action.php
 define("_MD_TCW_WORKS", "作品分享");
+define("_MD_TCW_WORKS_ADD", "上傳作品");
 define("_MD_TCW_WORKS_SHORT", "作品");
 define("_MD_TCW_WORKS_ID", "作品編號");
 define("_MD_TCW_WORKS_DESC", "主題說明");
@@ -253,3 +258,6 @@ define("_MD_TCW_WORKS_DATE", "上傳日期");
 define("_MD_TCW_WORKS_NAME", "作品主題");
 define("_MD_TCW_WORKS_UPLOAD", "上傳作品");
 define("_MD_TCW_WORKS_COUNT", "人氣");
+
+define("_MD_TCW_NEW_CATE", "建立新分類");
+define("_MD_TCW_SELECT_CATE", "選擇分類");

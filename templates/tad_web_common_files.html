@@ -35,7 +35,12 @@
     <{foreach item=file from=$file_data}>
       <tr>
         <td>
-          <div style="word-wrap:break-word;"><{$file.showurl}></div>
+          <div style="word-wrap:break-word;">
+          <{if $file.cate.CateID}>
+            <span class="label label-info"><a href="files.php?WebID=<{$file.WebID}>&CateID=<{$file.cate.CateID}>" style="color: #FFFFFF;"><{$file.cate.CateName}></a></span>
+          <{/if}>
+          <{$file.showurl}>
+          </div>
         </td>
         <td class="text-center" nowrap>
           <{$file.uid_name}>
@@ -50,7 +55,7 @@
         <{if !$showWebTitleFiles && $isMineFiles}>
           <td class="text-center">
             <a href="javascript:delete_tad_web_files_func(<{$file.fsn}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
-            <a href="files.php?op=tad_web_files_form&fsn=<{$file.fsn}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
+            <a href="files.php?WebID=<{$file.WebID}>&op=tad_web_files_form&fsn=<{$file.fsn}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
           </td>
         <{/if}>
       </tr>
@@ -77,7 +82,7 @@
     <{/if}>
   <{/if}>
 
-  <{if $isMineFiles}>
+  <{if $isMineFiles and $WebID}>
     <a href="files.php?WebID=<{$WebID}>&op=tad_web_files_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a>
   <{/if}>
 </div>

@@ -21,7 +21,7 @@
             <a href="homework.php?op=tad_web_news_form&NewsID=<{$homework_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
           <{/if}>
         </h3>
-        <div style="mini-height: 100px; overflow: auto; line-height: 1.8; background-color: #FCF6CF;">
+        <div style="mini-height: 100px; overflow: auto; line-height: 1.8; background-color: #FFFFFF; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
           <{$homework_data.0.NewsContent}>
         </div>
       </div>
@@ -94,7 +94,7 @@
           <{if !$showWebTitleHomework && $isMineHomework}>
             <td class="text-center">
               <a href="javascript:delete_tad_web_news_func(<{$news.NewsID}>);" class="btn btn-mini btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
-              <a href="homework.php?op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
+              <a href="homework.php?WebID=<{$news.WebID}>&op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
             </td>
         <{/if}>
       </tr>
@@ -123,7 +123,7 @@
         <a href="homework.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
       <{/if}>
     <{/if}>
-    <{if $isMineHomework}>
+    <{if $isMineHomework and $WebID}>
       <a href="homework.php?WebID=<{$WebID}>&op=tad_web_news_form" class="btn btn-mini btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_ADD}></a>
     <{/if}>
   </div>

@@ -1,34 +1,105 @@
 <{if $block.op=="login"}>
-  <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
-    <div class="<{$block.form_group}>">
-      <label class="<{$block.span}>3 control-label">
-        <{$smarty.const.TF_USER_S_ID}>
-      </label>
-      <div class="<{$block.span}>9 contros">
-        <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="<{$block.form_control}>" />
-      </div>
-    </div>
+  <{if $LoginMemNickName==""}>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#tad_web_login").hide();
+        $("#stu_login").click(function() {
+          var x = document.getElementById("stu_login").checked;
+          if(x){
+            $("#tad_web_login").show();
+            $("#xoops_login").hide();
+          }else{
+            $("#tad_web_login").hide();
+            $("#xoops_login").show();
+          }
+        });
 
-    <div class="<{$block.form_group}>">
-      <label class="<{$block.span}>3 control-label">
-        <{$smarty.const.TF_USER_S_PASS}>
-      </label>
-      <div class="<{$block.span}>9 contros">
-      <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="<{$block.form_control}>" />
-      </div>
-    </div>
+      });
+    </script>
+    <div class="well">
+      <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login">
+        <div class="<{$block.form_group}>">
+          <label class="<{$block.span}>4 control-label">
+            XOOPS<{$smarty.const.TF_USER_S_ID}>
+          </label>
+          <div class="<{$block.span}>8 contros">
+            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="<{$block.form_control}>" />
+          </div>
+        </div>
 
-    <div class="<{$block.form_group}>">
-      <label class="<{$block.span}>3 control-label">
-      </label>
-      <div class="<{$block.span}>9 contros">
-        <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
-        <input type="hidden" name="rememberme" value="On" />
-        <input type="hidden" name="op" value="login" />
-        <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
-      </div>
+        <div class="<{$block.form_group}>">
+          <label class="<{$block.span}>4 control-label">
+            XOOPS<{$smarty.const.TF_USER_S_PASS}>
+          </label>
+          <div class="<{$block.span}>8 contros">
+          <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="<{$block.form_control}>" />
+          </div>
+        </div>
+
+        <div class="<{$block.form_group}>">
+          <label class="<{$block.span}>4 control-label">
+          </label>
+          <div class="<{$block.span}>8 contros">
+            <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
+            <input type="hidden" name="rememberme" value="On" />
+            <input type="hidden" name="op" value="login" />
+            <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}> XOOPS</button>
+          </div>
+        </div>
+      </form>
+      <form action="discuss.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="tad_web_login">
+        <div class="<{$block.form_group}>">
+          <label class="<{$block.span}>4 control-label">
+            <{$smarty.const._MD_TCW_MEM_UNAME}><{$smarty.const._TAD_FOR}>
+          </label>
+          <div class="<{$block.span}>8 controls">
+            <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_UNAME}>">
+          </div>
+        </div>
+        <div class="<{$block.form_group}>">
+          <label class="<{$block.span}>4 control-label">
+            <{$smarty.const._MD_TCW_MEM_PASSWD}><{$smarty.const._TAD_FOR}>
+          </label>
+          <div class="<{$block.span}>8 controls">
+            <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_PASSWD}>">
+          </div>
+        </div>
+
+        <div class="<{$block.form_group}>">
+          <label class="<{$block.span}>4 control-label">
+          </label>
+          <div class="<{$block.span}>8">
+            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="op" value="mem_login">
+            <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
+          </div>
+        </div>
+      </form>
+
+        <div class="text-center">
+          <label class="checkbox">
+            <input type="checkbox" id="stu_login" value="stu_login"><{$smarty.const._MB_TCW_IM_MEM}>
+          </label>
+        </div>
     </div>
-  </form>
+  <{else}>
+    <div class="well well-small">
+
+      <{$LoginMemName}>
+      <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>
+      <{$smarty.const._MD_TCW_HELLO}>
+
+      <div class="<{$block.row}>">
+        <div class="<{$block.span}>6">
+          <a href="<{$xoops_url}>/modules/tad_web/discuss.php?op=logout" class="btn btn-<{$mini}> btn-warning btn-block""><{$smarty.const._MD_TCW_EXIT}></a>
+        </div>
+        <div class="<{$block.span}>6">
+          <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID}>&op=tad_web_discuss_form" class="btn btn-<{$mini}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+        </div>
+      </div>
+
+    </div>
+  <{/if}>
 
 <{elseif $block.op=="logout"}>
   <a href="<{$xoops_url}>/user.php?op=logout" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>

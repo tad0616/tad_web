@@ -3,6 +3,7 @@
 $xoopsOption['template_main'] = "tad_web_adm_main.html";
 include_once 'header.php';
 include_once "../function.php";
+include_once "../class/cate.php";
 /*-----------function區--------------*/
 
 //取得所有班級
@@ -15,9 +16,10 @@ function list_all_web($defCateID = '')
         return;
     }
 
-    $and_cate = empty($defCateID) ? "" : "and CateID='{$CateID}'";
+    $and_cate = empty($defCateID) ? "" : "and CateID='{$defCateID}'";
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where 1 $and_cate order by WebSort";
+    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where 1 $and_cate order by WebSort";
+
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     $data = "";
@@ -52,7 +54,10 @@ function list_all_web($defCateID = '')
         $xoopsTpl->assign('data', $data);
         $xoopsTpl->assign('jquery', $jquery);
         $xoopsTpl->assign('CateID', $defCateID);
-        $xoopsTpl->assign('tad_web_cate_menu_options', get_tad_web_cate_menu_options($defCateID));
+
+        $web_cate = new web_cate("", "", "web_cate");
+        $cate     = $web_cate->get_tad_web_cate_arr();
+        $xoopsTpl->assign('cate', $cate);
 
     }
 }

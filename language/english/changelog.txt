@@ -1,3 +1,22 @@
+Tad Web version 1.2 release (2015-09-17 release)
+====================================================
+1. Fixed issue news page can not download the attached files.
+2. Problem Fixed menu block can not be displayed correctly.
+3. Add a site Categories management function
+4. Site list presented in a way change to tab (if there is set Categories)
+5. Fixed management student interface
+6. Fixed menu block
+7. Website title made into a real picture
+8. Adjust the news page is rendered, no content news hide blank boxes
+9. The administrator can manage any website
+10. Fixed background editing site
+11. Added "work share" feature
+12. Action page with thumbnails way to present
+13. The title font changed to "嵐.萌系一號"
+14. Added Categories function.
+15. The logon block can be login to XOOPS or personal web site.
+
+
 Tad Web version 1.1 release (2015-09-05 release)
 ====================================================
  1.Optimization news display

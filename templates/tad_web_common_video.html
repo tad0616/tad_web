@@ -44,6 +44,9 @@
       <td>
         <{$video.VideoDate}>
         <p>
+          <{if $video.cate.CateID}>
+            <span class="label label-info"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
+          <{/if}>
           <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>"><{$video.VideoName}></a>
         </p>
         <p style="font-size:12px;">
@@ -59,7 +62,7 @@
       <{if !$showWebTitleVideo && $isMineVideo}>
         <td style="width:100px;text-align:center;">
           <a href="javascript:delete_tad_web_video_func(<{$video.VideoID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
-          <a href="video.php?op=tad_web_video_form&VideoID=<{$video.VideoID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
+          <a href="video.php?WebID=<{$video.WebID}>&op=tad_web_video_form&VideoID=<{$video.VideoID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
         </td>
       <{/if}>
     </tr>
@@ -85,7 +88,7 @@
       <a href="video.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineVideo}>
+  <{if $isMineVideo and $WebID}>
     <a href="video.php?WebID=<{$WebID}>&op=tad_web_video_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a>
   <{/if}>
 </div>

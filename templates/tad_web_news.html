@@ -1,4 +1,13 @@
 <{if $mode=="list"}>
+  <{if $cate}>
+    <h1><{$cate.CateName}></h1>
+    <ol class="breadcrumb">
+      <li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>"><{$HomeTitle}></a> <span class="divider">/</span></li>
+      <{if $cate.CateID}><li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <span class="divider">/</span></li><{/if}>
+    </ol>
+  <{else}>
+    <h1><{$HomeTitle}></h1>
+  <{/if}>
   <{$FooTableJS}>
   <{if $smarty.const._NEWS_KIND=="homework"}>
     <{includeq file="db:tad_web_common_homework.html"}>
@@ -41,7 +50,11 @@
         })
     });
     </script>
-    <div id="calendar"></div>
+
+    <div class="well" style="background-color: #FFFFFF; margin: 10px auto;">
+      <div id="calendar"></div>
+    </div>
+
   <{/if}>
 <{elseif $mode=="one_news"}>
 
@@ -56,16 +69,26 @@
   <{/if}>
 
   <h1><{$NewsTitle}></h1>
-  <div style="text-align:right;font-size:12px;"><{$NewsInfo}></div>
+  <ol class="breadcrumb">
+    <li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>"><{$HomeTitle}></a> <span class="divider">/</span></li>
+    <{if $cate.CateID}><li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <span class="divider">/</span></li><{/if}>
+    <li><{$NewsInfo}></li>
+  </ol>
 
-    <{$learn_info}>
-    <{$ShowCal}>
-    <{if $NewsContent}>
+  <{$learn_info}>
+
+  <{if $NewsContent}>
+    <{if $smarty.const._NEWS_KIND=="homework"}>
+      <div style="mini-height: 100px; overflow: auto; line-height: 1.8; background-color: #FFFFFF; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
+         <{$NewsContent}>
+      </div>
+    <{else}>
       <div class="well">
        <{$NewsContent}>
       </div>
     <{/if}>
-    <{$NewsUrlTxt}>
+  <{/if}>
+  <{$NewsUrlTxt}>
 
   <{$NewsFiles}>
 
@@ -80,104 +103,117 @@
 
   <{$formValidator_code}>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-  <form action="<{$smarty.const._NEWS_KIND}>.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
-    <!--標題-->
-    <div class="control-group">
-      <div class="span12 controls">
-        <input name="NewsTitle" id="NewsTitle" class="validate[required] span12" type="text" value="<{$NewsTitle}>" placeholder="<{$smarty.const._MD_TCW_NEWSTITLE}>">
-      </div>
-    </div>
+  <{if $smarty.const._NEWS_KIND=="homework"}>
+    <h1><{$smarty.const._MD_TCW_HOMEWORK_ADD}></h1>
+  <{else}>
+    <h1><{$smarty.const._MD_TCW_NEWS_ADD}></h1>
+  <{/if}>
+  <div class="well">
+    <form action="<{$smarty.const._NEWS_KIND}>.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
-    <!--內容-->
-    <div class="control-group">
-      <div class="span12 controls">
-         <{$NewsContent_editor}>
-      </div>
-    </div>
+      <!--分類-->
+      <{if $smarty.const._NEWS_KIND!="homework"}>
+        <{$cate_menu}>
+      <{/if}>
 
-    <!--地點-->
-    <{if $SHOW_NEWS_PLACE || SHOW_NEWS_MASTER}>
+      <!--標題-->
       <div class="control-group">
-        <{if $SHOW_NEWS_PLACE}>
-          <label class="span2 control-label">
-            <{$smarty.const._MD_TCW_NEWSPLACE}>
-          </label>
-          <div class="span10 controls">
-            <input type="text" name="NewsPlace"  value="<{$NewsPlace}>" id="NewsPlace" class="span12">
-          </div>
-        <{/if}>
-
-        <!--主持人-->
-        <{if $SHOW_NEWS_MASTER}>
-          <label class="span2 control-label">
-            <{$smarty.const._MD_TCW_NEWSMASTER}>
-          </label>
-          <div class="span10 controls">
-            <input type="text" name="NewsMaster" value="<{$NewsMaster}>" id="NewsMaster" class="span12">
-          </div>
-        <{/if}>
-      </div>
-    <{/if}>
-
-    <!--相關連結-->
-    <{if $SHOW_NEWS_URL}>
-      <div class="control-group">
-        <label class="span2 control-label">
-          <{$smarty.const._MD_TCW_NEWSURL}>
-        </label>
-        <div class="span10 controls">
-          <input type="text" name="NewsUrl" value="<{$NewsUrl}>" id="NewsUrl" class="span12">
+        <div class="span12 controls">
+          <input name="NewsTitle" id="NewsTitle" class="validate[required] span12" type="text" value="<{$NewsTitle}>" placeholder="<{$smarty.const._MD_TCW_NEWSTITLE}>">
         </div>
       </div>
-    <{/if}>
 
-
-    <{if $USE_NEWS_FORM_DATETIME || SHOW_NEWS_TOCAL}>
+      <!--內容-->
       <div class="control-group">
-        <!--發布時間-->
-        <{if $USE_NEWS_FORM_DATETIME}>
-          <label class="span2 control-label">
-            <{$smarty.const._MD_TCW_DISCUSSDATE}>
-          </label>
-          <div class="span4 controls">
-            <input type="text" name="NewsDate" value="<{$NewsDate}>" id="NewsDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m}'})" class="span12">
-          </div>
-        <{/if}>
-
-        <!--加到行事曆-->
-        <{if $SHOW_NEWS_TOCAL}>
-          <label class="span2 control-label">
-            <{$smarty.const._MD_TCW_TOCAL}>
-          </label>
-          <div class="span4 controls">
-            <input type="text" name="toCal" value="<{$toCal}>" id="toCal" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}'})" class="span12" placeholder="<{$smarty.const._NEWS_TOCAL_DESC}>">
-          </div>
-        <{/if}>
-      </div>
-    <{/if}>
-
-    <!--相關附件-->
-    <{if $SHOW_NEWS_UPLOAD}>
-      <div class="control-group">
-        <label class="span2 control-label">
-          <{$smarty.const._MD_TCW_NEWS_FILES}>
-        </label>
-        <div class="span10 controls">
-          <{$upform}>
+        <div class="span12 controls">
+           <{$NewsContent_editor}>
         </div>
       </div>
-    <{/if}>
+
+      <!--地點-->
+      <{if $SHOW_NEWS_PLACE || SHOW_NEWS_MASTER}>
+        <div class="control-group">
+          <{if $SHOW_NEWS_PLACE}>
+            <label class="span2 control-label">
+              <{$smarty.const._MD_TCW_NEWSPLACE}>
+            </label>
+            <div class="span10 controls">
+              <input type="text" name="NewsPlace"  value="<{$NewsPlace}>" id="NewsPlace" class="span12">
+            </div>
+          <{/if}>
+
+          <!--主持人-->
+          <{if $SHOW_NEWS_MASTER}>
+            <label class="span2 control-label">
+              <{$smarty.const._MD_TCW_NEWSMASTER}>
+            </label>
+            <div class="span10 controls">
+              <input type="text" name="NewsMaster" value="<{$NewsMaster}>" id="NewsMaster" class="span12">
+            </div>
+          <{/if}>
+        </div>
+      <{/if}>
+
+      <!--相關連結-->
+      <{if $SHOW_NEWS_URL}>
+        <div class="control-group">
+          <label class="span2 control-label">
+            <{$smarty.const._MD_TCW_NEWSURL}>
+          </label>
+          <div class="span10 controls">
+            <input type="text" name="NewsUrl" value="<{$NewsUrl}>" id="NewsUrl" class="span12">
+          </div>
+        </div>
+      <{/if}>
 
 
-    <div class="text-center">
-      <!--文章種類-->
-      <input type="hidden" name="NewsKind" value="<{$smarty.const._NEWS_KIND}>">
-      <!--編號-->
-      <input type="hidden" name="NewsID" value="<{$NewsID}>">
-      <input type="hidden" name="WebID" value="<{$WebID}>">
+      <{if $USE_NEWS_FORM_DATETIME || SHOW_NEWS_TOCAL}>
+        <div class="control-group">
+          <!--發布時間-->
+          <{if $USE_NEWS_FORM_DATETIME}>
+            <label class="span2 control-label">
+              <{$smarty.const._MD_TCW_DISCUSSDATE}>
+            </label>
+            <div class="span4 controls">
+              <input type="text" name="NewsDate" value="<{$NewsDate}>" id="NewsDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m}'})" class="span12">
+            </div>
+          <{/if}>
 
-      <input type="hidden" name="op" value="<{$op}>">
-      <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-    </div>
-  </form>
+          <!--加到行事曆-->
+          <{if $SHOW_NEWS_TOCAL}>
+            <label class="span2 control-label">
+              <{$smarty.const._MD_TCW_TOCAL}>
+            </label>
+            <div class="span4 controls">
+              <input type="text" name="toCal" value="<{$toCal}>" id="toCal" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}'})" class="span12" placeholder="<{$smarty.const._NEWS_TOCAL_DESC}>">
+            </div>
+          <{/if}>
+        </div>
+      <{/if}>
+
+      <!--相關附件-->
+      <{if $SHOW_NEWS_UPLOAD}>
+        <div class="control-group">
+          <label class="span2 control-label">
+            <{$smarty.const._MD_TCW_NEWS_FILES}>
+          </label>
+          <div class="span10 controls">
+            <{$upform}>
+          </div>
+        </div>
+      <{/if}>
+
+
+      <div class="text-center">
+        <!--文章種類-->
+        <input type="hidden" name="NewsKind" value="<{$smarty.const._NEWS_KIND}>">
+        <!--編號-->
+        <input type="hidden" name="NewsID" value="<{$NewsID}>">
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+
+        <input type="hidden" name="op" value="<{$op}>">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+      </div>
+    </form>
+  </div>
 <{/if}>

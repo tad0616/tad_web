@@ -36,10 +36,13 @@
       <tr>
         <td>
           <i class="fa fa-external-link"></i>
+          <{if $link.cate.CateID}>
+            <span class="label label-info"><a href="link.php?WebID=<{$link.WebID}>&CateID=<{$link.cate.CateID}>" style="color: #FFFFFF;"><{$link.cate.CateName}></a></span>
+          <{/if}>
           <a href="link.php?WebID=<{$link.WebID}>&LinkID=<{$link.LinkID}>" target="_blank"><{$link.LinkTitle}></a>
-          <span><{$link.LinkUrl}></span>
+          <div style="margin: 6px 0px;"><a href="link.php?WebID=<{$link.WebID}>&LinkID=<{$link.LinkID}>" target="_blank"><{$link.LinkUrl}></a></div>
           <{if $link.LinkDesc}>
-            <div style="font-size:12px;color:#666699"><{$link.LinkDesc}></div>
+            <div style="font-size:12px;color:#666699; line-height:1.5;"><{$link.LinkDesc}></div>
           <{/if}>
         </td>
         <td class="text-center">
@@ -53,7 +56,7 @@
         <{if !$showWebTitleLink && $isMineLink}>
           <td class="text-center">
             <a href="javascript:delete_tad_web_link_func(<{$link.LinkID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-            <a href="link.php?op=tad_web_link_form&LinkID=<{$link.LinkID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+            <a href="link.php?WebID=<{$link.WebID}>&op=tad_web_link_form&LinkID=<{$link.LinkID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
           </td>
         <{/if}>
       </tr>
@@ -80,7 +83,7 @@
       <a href="link.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineLink}>
+  <{if $isMineLink and $WebID}>
     <a href="link.php?WebID=<{$WebID}>&op=tad_web_link_form" class="btn btn-xs btn-info">
   <{$smarty.const._TAD_ADD}></a>
   <{/if}>

@@ -1,6 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+$web_cate = new web_cate($WebID, "tad_web_discuss", "discuss");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_discuss_b3.html';
 } else {
@@ -8,23 +9,12 @@ if (!empty($_GET['WebID'])) {
 }
 include_once XOOPS_ROOT_PATH . "/header.php";
 
-$LoginMemID       = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
-$LoginMemName     = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
-$LoginMemNickName = isset($_SESSION['LoginMemNickName']) ? $_SESSION['LoginMemNickName'] : null;
-$LoginWebID       = isset($_SESSION['LoginWebID']) ? $_SESSION['LoginWebID'] : null;
-
-$xoopsTpl->assign("LoginMemID", $LoginMemID);
-$xoopsTpl->assign("LoginMemName", $LoginMemName);
-$xoopsTpl->assign("LoginMemNickName", $LoginMemNickName);
-$xoopsTpl->assign("LoginWebID", $LoginWebID);
-$xoopsTpl->assign("MyWebs", $MyWebs);
-
 /*-----------function區--------------*/
 
 //tad_web_discuss編輯表單
 function tad_web_discuss_form($DiscussID = "")
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin, $xoopsTpl;
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin, $xoopsTpl, $web_cate;
 
     if (!isAdmin and !$MyWebs and empty($_SESSION['LoginMemID'])) {
         redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
@@ -88,6 +78,13 @@ function tad_web_discuss_form($DiscussID = "")
     //設定「DiscussCounter」欄位預設值
     $DiscussCounter = (!isset($DBV['DiscussCounter'])) ? "" : $DBV['DiscussCounter'];
 
+    //設定「CateID」欄位預設值
+    $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+
+    $new_cate  = empty($_SESSION['LoginMemID']) ? true : false;
+    $cate_menu = $web_cate->cate_menu($CateID, $new_cate);
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
     $op = (empty($DiscussID)) ? "insert_tad_web_discuss" : "update_tad_web_discuss";
     //$op="replace_tad_web_discuss";
 
@@ -112,7 +109,7 @@ function tad_web_discuss_form($DiscussID = "")
 //新增資料到tad_web_discuss中
 function insert_tad_web_discuss()
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin;
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin, $web_cate;
 
     if (empty($_SESSION['LoginMemID']) and !MyWebs and $isAdmin) {
         redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
@@ -135,8 +132,9 @@ function insert_tad_web_discuss()
 
     $_POST['ReDiscussID'] = intval($_POST['ReDiscussID']);
 
-    $sql = "insert into " . $xoopsDB->prefix("tad_web_discuss") . " 	(`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
-	values('{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "insert into " . $xoopsDB->prefix("tad_web_discuss") . " 	(`CateID`,`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
+	values('{$CateID}'  ,'{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     //取得最後新增資料的流水編號
@@ -158,7 +156,7 @@ function insert_tad_web_discuss()
 //更新tad_web_discuss某一筆資料
 function update_tad_web_discuss($DiscussID = "")
 {
-    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $MyWebs;
+    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $MyWebs, $web_cate;
 
     if ($MyWebs) {
         $uid     = $xoopsUser->uid();
@@ -180,7 +178,9 @@ function update_tad_web_discuss($DiscussID = "")
 
     $_POST['ReDiscussID'] = intval($_POST['ReDiscussID']);
 
-    $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "update " . $xoopsDB->prefix("tad_web_discuss") . " set
+     `CateID` = '{$CateID}' ,
 	 `ReDiscussID` = '{$_POST['ReDiscussID']}' ,
 	 `DiscussTitle` = '{$_POST['DiscussTitle']}' ,
 	 `DiscussContent` = '{$_POST['DiscussContent']}' ,
@@ -235,7 +235,7 @@ function delete_tad_web_discuss($DiscussID = "")
 //以流水號秀出某筆tad_web_discuss資料內容
 function show_one_tad_web_discuss($DiscussID = "")
 {
-    global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl;
+    global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl, $web_cate;
     if (empty($DiscussID)) {
         return;
     } else {
@@ -272,6 +272,10 @@ function show_one_tad_web_discuss($DiscussID = "")
     $xoopsTpl->assign('DiscussInfo', sprintf(_MD_TCW_INFO, $MemName, $DiscussDate, $DiscussCounter));
     $xoopsTpl->assign('re', get_re($DiscussID));
     $xoopsTpl->assign('LoginMemID', $_SESSION['LoginMemID']);
+
+    //取得單一分類資料
+    $cate = $web_cate->get_tad_web_cate($CateID);
+    $xoopsTpl->assign('cate', $cate);
 }
 
 //是否有管理權（或由自己發布的），判斷是否要秀出管理工具
@@ -401,6 +405,7 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op        = system_CleanVars($_REQUEST, 'op', '', 'string');
 $DiscussID = system_CleanVars($_REQUEST, 'DiscussID', 0, 'int');
 $WebID     = system_CleanVars($_REQUEST, 'WebID', $LoginWebID, 'int');
+$CateID    = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 common_template($WebID);
 
@@ -455,7 +460,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($DiscussID)) {
-            list_tad_web_discuss($WebID);
+            list_tad_web_discuss($WebID, $CateID);
         } else {
             show_one_tad_web_discuss($DiscussID);
         }
@@ -464,5 +469,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

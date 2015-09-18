@@ -16,3 +16,4 @@ define('_MB_TCW_WEB_CONFIG', 'Web config');
 define('_MB_TCW_MENU', 'Special menu');
 define("_MB_TCW_ALL_WEBS", "Web List");
 define("_MB_TCW_EMPTY_DISCUSS", "None");
+define("_MB_TCW_IM_MEM", "I'm member (only for fourm)");

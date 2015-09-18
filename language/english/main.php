@@ -103,8 +103,8 @@ define('_MD_TCW_BG_TOP', 'Ton');
 define('_MD_TCW_BG_CENTER', 'Medium');
 define('_MD_TCW_BG_BOTTOM', 'Bottom');
 define('_MD_TCW_BG_POSITION', 'Picture Location:');
-define('_MD_TCW_MEM_UNAME', 'Account');
-define('_MD_TCW_MEM_PASSWD', 'Password');
+define('_MD_TCW_MEM_UNAME', 'Student Account');
+define('_MD_TCW_MEM_PASSWD', 'Student Password');
 define('_MD_TCW_PLEASE_INPUT', 'Enter');
 define('_MD_TCW_LOGIN', 'Login');
 define('_MD_TCW_HELLO', 'Hello, welcome to use the Forums! Please pay attention to manners!!');
@@ -162,6 +162,7 @@ define('_MD_TCW_HOMEWORK_DEFAULT', "
 
 //action.php
 define('_MD_TCW_ACTION', 'Events');
+define("_MD_TCW_ACTION_ADD", "Upload image file");
 define('_MD_TCW_ACTION_SHORT', 'Events');
 define('_MD_TCW_ACTIONID', 'Event number');
 define('_MD_TCW_ACTIONNAME', 'Event Name');
@@ -191,6 +192,7 @@ define('_MD_TCW_DISCUSS_ADD', 'Message');
 
 //files.php
 define('_MD_TCW_FILES', 'Downloads');
+define("_MD_TCW_FILES_ADD", "Upload file");
 define('_MD_TCW_FILES_SHORT', 'File');
 define('_MD_TCW_FSN', 'File serial number');
 define('_MD_TCW_FILES_UID', 'Uploaders');
@@ -201,6 +203,7 @@ define('_MD_TCW_FILES_UPLOAD', 'Upload file');
 
 //link.php
 define('_MD_TCW_LINK', 'Common Website');
+define("_MD_TCW_LINK_ADD", "Add Website");
 define('_MD_TCW_LINK_SHORT', 'Website');
 define('_MD_TCW_LINKURL', 'Links URL');
 define('_MD_TCW_LINKID', 'Number');
@@ -213,6 +216,7 @@ define('_MD_TCW_LINK_AUTO_GET', 'Auto-screenshot');
 
 //video.php
 define('_MD_TCW_VIDEO', 'Online video');
+define("_MD_TCW_VIDEO_ADD", "Add video");
 define('_MD_TCW_VIDEO_SHORT', 'Film');
 define('_MD_TCW_VIDEOID', 'Video number');
 define('_MD_TCW_VIDEONAME', 'Video name');
@@ -246,6 +250,7 @@ define("_MD_TCW_BLOCKS_SELECTED", "Enabled blocks");
 
 //action.php
 define("_MD_TCW_WORKS", "Works Gallery");
+define("_MD_TCW_WORKS_ADD", "Upload works");
 define("_MD_TCW_WORKS_SHORT", "Works");
 define("_MD_TCW_WORKS_ID", "Works ID");
 define("_MD_TCW_WORKS_DESC", "Works Description");
@@ -253,3 +258,6 @@ define("_MD_TCW_WORKS_DATE", "Works updated");
 define("_MD_TCW_WORKS_NAME", "Works Title");
 define("_MD_TCW_WORKS_UPLOAD", "Upload works");
 define("_MD_TCW_WORKS_COUNT", "Counter");
+
+define("_MD_TCW_NEW_CATE", "New Categories");
+define("_MD_TCW_SELECT_CATE", "Select Category");

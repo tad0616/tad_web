@@ -655,15 +655,12 @@ function get_tad_web_cate_menu_options($default_CateID = "0")
 function get_tad_web_cate_all()
 {
     global $xoopsDB;
-    $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where CateEnable='1' order by CateSort";
-    $result = $xoopsDB->query($sql)
-    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    $data_arr = '';
+    $web_cate = new web_cate('0', '', "web_cate");
+    $cate     = $web_cate->get_tad_web_cate_arr();
 
     $webs = get_web_cate_arr();
 
-    while ($data = $xoopsDB->fetchArray($result)) {
-        $CateID                    = $data['CateID'];
+    foreach ($cate as $CateID => $data) {
         $data_arr[$CateID]         = $data;
         $data_arr[$CateID]['webs'] = $webs[$CateID];
     }

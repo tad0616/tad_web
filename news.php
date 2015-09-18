@@ -1,6 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+$web_cate = new web_cate($WebID, "tad_web_news", "news");
+
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_news_b3.html';
 } else {
@@ -61,7 +63,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //tad_web_news編輯表單
 function tad_web_news_form($NewsID = "")
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $web_cate;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=tad_web_news_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -123,6 +125,11 @@ function tad_web_news_form($NewsID = "")
     //設定「NewsCounter」欄位預設值
     $NewsCounter = (!isset($DBV['NewsCounter'])) ? "" : $DBV['NewsCounter'];
 
+    //設定「CateID」欄位預設值
+    $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+    $cate_menu = $web_cate->cate_menu($CateID);
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
     $op = (empty($NewsID)) ? "insert_tad_web_news" : "update_tad_web_news";
     //$op="replace_tad_web_news";
 
@@ -169,7 +176,7 @@ function tad_web_news_form($NewsID = "")
 //新增資料到tad_web_news中
 function insert_tad_web_news()
 {
-    global $xoopsDB, $xoopsUser, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $TadUpFiles, $web_cate;
 
     $uid = $xoopsUser->getVar('uid');
 
@@ -187,9 +194,10 @@ function insert_tad_web_news()
         $_POST['toCal'] = "0000-00-00 00:00:00";
     }
 
-    $sql = "insert into " . $xoopsDB->prefix("tad_web_news") . "
-	(`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsPlace` , `NewsMaster` , `NewsUrl` , `WebID` , `NewsKind` , `NewsCounter` , `uid`)
-	values('{$_POST['NewsTitle']}' , '{$_POST['NewsContent']}' , '{$newstime}' , '{$_POST['toCal']}' , '{$_POST['NewsPlace']}' , '{$_POST['NewsMaster']}' , '{$_POST['NewsUrl']}' , '{$_POST['WebID']}' , '{$_POST['NewsKind']}' , '0' , '{$uid}')";
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "insert into " . $xoopsDB->prefix("tad_web_news") . "
+	(`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsPlace` , `NewsMaster` , `NewsUrl` , `WebID` , `NewsKind` , `NewsCounter` , `uid`)
+	values('{$CateID}','{$_POST['NewsTitle']}' , '{$_POST['NewsContent']}' , '{$newstime}' , '{$_POST['toCal']}' , '{$_POST['NewsPlace']}' , '{$_POST['NewsMaster']}' , '{$_POST['NewsUrl']}' , '{$_POST['WebID']}' , '{$_POST['NewsKind']}' , '0' , '{$uid}')";
     //die($sql);
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
@@ -205,7 +213,7 @@ function insert_tad_web_news()
 //更新tad_web_news某一筆資料
 function update_tad_web_news($NewsID = "")
 {
-    global $xoopsDB, $xoopsUser, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $TadUpFiles, $web_cate;
 
     $myts                 = &MyTextSanitizer::getInstance();
     $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
@@ -226,7 +234,9 @@ function update_tad_web_news($NewsID = "")
         $_POST['toCal'] = "0000-00-00 00:00:00";
     }
 
-    $sql = "update " . $xoopsDB->prefix("tad_web_news") . " set
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "update " . $xoopsDB->prefix("tad_web_news") . " set
+     `CateID` = '{$CateID}' ,
 	 `NewsTitle` = '{$_POST['NewsTitle']}' ,
 	 `NewsContent` = '{$_POST['NewsContent']}' ,
 	 `NewsDate` = '{$newstime}' ,
@@ -246,7 +256,7 @@ function update_tad_web_news($NewsID = "")
 //以流水號秀出某筆tad_web_news資料內容
 function show_one_tad_web_news($NewsID = "", $show_place = false, $nl2br = false)
 {
-    global $xoopsDB, $WebID, $isAdmin, $xoopsTpl, $TadUpFiles;
+    global $xoopsDB, $WebID, $isAdmin, $xoopsTpl, $TadUpFiles, $web_cate;
     if (empty($NewsID)) {
         return;
     } else {
@@ -271,8 +281,6 @@ function show_one_tad_web_news($NewsID = "", $show_place = false, $nl2br = false
 
     $NewsUrlTxt = empty($NewsUrl) ? "" : "<div>" . _MD_TCW_NEWSURL . _TAD_FOR . "<a href='$NewsUrl' target='_blank'>$NewsUrl</a></div>";
 
-    $ShowCal = ($toCal == "0000-00-00 00:00:00") ? "" : _MD_TCW_NEWSDATE . _TAD_FOR . $toCal;
-
     $NewsContent = ($nl2br) ? nl2br($NewsContent) : $NewsContent;
 
     $learn_info = "";
@@ -289,7 +297,6 @@ function show_one_tad_web_news($NewsID = "", $show_place = false, $nl2br = false
     $xoopsTpl->assign('NewsTitle', $NewsTitle);
     $xoopsTpl->assign('NewsUrlTxt', $NewsUrlTxt);
     $xoopsTpl->assign('NewsContent', $NewsContent);
-    $xoopsTpl->assign('ShowCal', $ShowCal);
     $xoopsTpl->assign('learn_info', $learn_info);
     $xoopsTpl->assign('uid_name', $uid_name);
     $xoopsTpl->assign('NewsDate', $NewsDate);
@@ -297,6 +304,15 @@ function show_one_tad_web_news($NewsID = "", $show_place = false, $nl2br = false
     $xoopsTpl->assign('NewsFiles', $NewsFiles);
     $xoopsTpl->assign('NewsID', $NewsID);
     $xoopsTpl->assign('NewsInfo', sprintf(_MD_TCW_INFO, $uid_name, $NewsDate, $NewsCounter));
+    if ($NewsKind == "homework") {
+        $xoopsTpl->assign('HomeTitle', _MD_TCW_HOMEWORK);
+    } else {
+        $xoopsTpl->assign('HomeTitle', _MD_TCW_NEWS);
+    }
+
+    //取得單一分類資料
+    $cate = $web_cate->get_tad_web_cate($CateID);
+    $xoopsTpl->assign('cate', $cate);
 
 }
 
@@ -337,6 +353,7 @@ function get_tad_web_news($NewsID = "")
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $NewsID = system_CleanVars($_REQUEST, 'NewsID', 0, 'int');
+$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 $xoopsTpl->assign("news_kind", _NEWS_KIND);
 
@@ -386,7 +403,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($NewsID)) {
-            list_tad_web_news($WebID, _NEWS_KIND, null);
+            list_tad_web_news($WebID, $CateID, _NEWS_KIND, null);
 
             if (_SHOW_FULLCALENDAR) {
                 $xoopsTpl->assign('show_fullcalendar', true);
@@ -399,5 +416,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

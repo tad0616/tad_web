@@ -4,7 +4,12 @@
   <{else}>
 
     <{$formValidator_code}>
-    <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <h1><{$smarty.const._MD_TCW_DISCUSS_ADD}></h1>
+    <div class="well">
+      <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+      <!--分類-->
+      <{$cate_menu}>
 
       <!--標題-->
       <div class="form-group">
@@ -31,8 +36,8 @@
           <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_DISCUSS_SUBMIT}></button>
         </div>
       </div>
-
-    </form>
+      </form>
+    </div>
   <{/if}>
 
 <{elseif $op=="show_one_tad_web_discuss"}>
@@ -54,9 +59,12 @@
       <a href="discuss.php?WebID=<{$WebID}>&op=tad_web_discuss_form&DiscussID=<{$DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
     <{/if}>
   </div>
-  <div class="well" style="line-height:180%;">
-    <{$DiscussContent}>
-  </div>
+
+  <{if $DiscussContent}>
+    <div class="well" style="line-height:180%;">
+      <{$DiscussContent}>
+    </div>
+  <{/if}>
 
   <{$re}>
 

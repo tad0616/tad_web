@@ -24,46 +24,52 @@
   </script>
 
   <{$formValidator_code}>
-  <form video="video.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
-    <!--影片網址-->
-    <div class="control-group">
-      <div class="span10 controls">
-        <input type="text" name="Youtube" value="<{$Youtube}>" id="Youtube" class="validate[required] span12" placeholder="<{$smarty.const._MD_TCW_VIDEOYOUTUBE}>">
+  <h1><{$smarty.const._MD_TCW_VIDEO_ADD}></h1>
+  <div class="well">
+    <form action="video.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+      <!--分類-->
+      <{$cate_menu}>
+
+      <!--影片網址-->
+      <div class="control-group">
+        <div class="span10 controls">
+          <input type="text" name="Youtube" value="<{$Youtube}>" id="Youtube" class="validate[required] span12" placeholder="<{$smarty.const._MD_TCW_VIDEOYOUTUBE}>">
+        </div>
+        <div class="span2 controls">
+          <button type="button" class="btn" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
+        </div>
       </div>
-      <div class="span2 controls">
-        <button type="button" class="btn" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
+
+
+      <!--影片名稱-->
+      <div class="control-group">
+        <div class="span12 controls">
+          <input type="text" name="VideoName" value="<{$VideoName}>" id="VideoName" class="validate[required] span12" placeholder="<{$smarty.const._MD_TCW_VIDEONAME}>">
+        </div>
       </div>
-    </div>
 
 
-    <!--影片名稱-->
-    <div class="control-group">
-      <div class="span12 controls">
-        <input type="text" name="VideoName" value="<{$VideoName}>" id="VideoName" class="validate[required] span12" placeholder="<{$smarty.const._MD_TCW_VIDEONAME}>">
+      <!--影片說明-->
+      <div class="control-group">
+        <div class="span12 controls">
+          <textarea name="VideoDesc" rows=4 id="VideoDesc"  class="span12" placeholder="<{$smarty.const._MD_TCW_VIDEODESC}>"><{$VideoDesc}></textarea>
+        </div>
       </div>
-    </div>
 
+      <div class="control-group">
+        <div class="span12 controls text-center">
+          <!--影片編號-->
+          <input type="hidden" name="VideoID" value="<{$VideoID}>">
 
-    <!--影片說明-->
-    <div class="control-group">
-      <div class="span12 controls">
-        <textarea name="VideoDesc" rows=4 id="VideoDesc"  class="span12" placeholder="<{$smarty.const._MD_TCW_VIDEODESC}>"><{$VideoDesc}></textarea>
+          <!--所屬團隊-->
+          <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="op" value="<{$next_op}>">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        </div>
       </div>
-    </div>
-
-    <div class="control-group">
-      <div class="span12 controls text-center">
-        <!--影片編號-->
-        <input type="hidden" name="VideoID" value="<{$VideoID}>">
-
-        <!--所屬團隊-->
-        <input type="hidden" name="WebID" value="<{$WebID}>">
-        <input type="hidden" name="op" value="<{$next_op}>">
-        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-      </div>
-    </div>
-
-  </form>
+    </form>
+  </div>
 <{elseif $op=="show_one_tad_web_video"}>
 
   <{if $isMineVideo}>
@@ -95,7 +101,7 @@
   <{if $isMineVideo}>
     <div class="text-right">
     <a href="javascript:delete_tad_web_video_func(<{$VideoID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
-    <a href="video.php?op=tad_web_video_form&VideoID=<{$VideoID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+    <a href="video.php?WebID=<{$WebID}>&op=tad_web_video_form&VideoID=<{$VideoID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
 <{else}>

@@ -4,35 +4,40 @@
   <{else}>
 
     <{$formValidator_code}>
-    <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <h1><{$smarty.const._MD_TCW_DISCUSS_ADD}></h1>
+    <div class="well">
+      <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
-      <!--標題-->
-      <div class="control-group">
-        <div class="span12 controls">
-          <input type="text" name="DiscussTitle" value="<{$DiscussTitle}>" id="DiscussTitle" class="span12 validate[required]" placeholder="<{$smarty.const._MD_TCW_DISCUSSTITLE}>">
+        <!--分類-->
+        <{$cate_menu}>
+
+        <!--標題-->
+        <div class="control-group">
+          <div class="span12 controls">
+            <input type="text" name="DiscussTitle" value="<{$DiscussTitle}>" id="DiscussTitle" class="span12 validate[required]" placeholder="<{$smarty.const._MD_TCW_DISCUSSTITLE}>">
+          </div>
         </div>
-      </div>
 
-      <!--內容-->
-      <div class="control-group">
-        <div class="span12 controls">
-          <textarea name="DiscussContent" class="span12" rows=15 id="DiscussContent" placehold="<{$smarty.const._MD_TCW_DISCUSSCONTENT}>"><{$DiscussContent}></textarea>
+        <!--內容-->
+        <div class="control-group">
+          <div class="span12 controls">
+            <textarea name="DiscussContent" class="span12" rows=15 id="DiscussContent" placehold="<{$smarty.const._MD_TCW_DISCUSSCONTENT}>"><{$DiscussContent}></textarea>
+          </div>
         </div>
-      </div>
 
-      <div class="control-group">
-        <div class="span12 controls text-center">
-          <input type="hidden" name="WebID" value="<{$WebID}>">
-          <input type="hidden" name="DiscussID" value="<{$DiscussID}>">
-          <input type="hidden" name="ReDiscussID" value="<{$ReDiscussID}>">
-          <input type="hidden" name="LoginWebID" value="<{$LoginWebID}>">
+        <div class="control-group">
+          <div class="span12 controls text-center">
+            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="DiscussID" value="<{$DiscussID}>">
+            <input type="hidden" name="ReDiscussID" value="<{$ReDiscussID}>">
+            <input type="hidden" name="LoginWebID" value="<{$LoginWebID}>">
 
-          <input type="hidden" name="op" value="<{$next_op}>">
-          <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_DISCUSS_SUBMIT}></button>
+            <input type="hidden" name="op" value="<{$next_op}>">
+            <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_DISCUSS_SUBMIT}></button>
+          </div>
         </div>
-      </div>
-
-    </form>
+      </form>
+    </div>
   <{/if}>
 
 <{elseif $op=="show_one_tad_web_discuss"}>
@@ -54,9 +59,12 @@
       <a href="discuss.php?WebID=<{$WebID}>&op=tad_web_discuss_form&DiscussID=<{$DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
     <{/if}>
   </div>
-  <div class="well" style="line-height:180%;">
-    <{$DiscussContent}>
-  </div>
+
+  <{if $DiscussContent}>
+    <div class="well" style="line-height:180%;">
+      <{$DiscussContent}>
+    </div>
+  <{/if}>
 
   <{$re}>
 

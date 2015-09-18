@@ -43,7 +43,7 @@ function tad_web_cate_form($CateID = '')
     $CateCounter = !isset($DBV['CateCounter']) ? '0' : $DBV['CateCounter'];
     $xoopsTpl->assign('CateCounter', $CateCounter);
 
-    $op = empty($CateID) ? "insert_tad_web_cate" : "update_tad_web_cate";
+    $op = empty($CateID) ? "save_tad_web_cate" : "update_tad_web_cate";
     //$op = "replace_tad_web_cate";
 
     //套用formValidator驗證機制
@@ -72,7 +72,7 @@ function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
 }
 
 //新增資料到tad_web_cate中
-function insert_tad_web_cate()
+function save_tad_web_cate()
 {
     global $xoopsDB, $xoopsUser, $isAdmin;
 
@@ -127,7 +127,7 @@ function update_tad_web_cate($CateID = '')
     return $CateID;
 }
 
-//更新tad_web_cate某一筆資料
+//更新tad_web_cate資料
 function update_tad_web_cate_arr($CateID = '')
 {
     global $xoopsDB, $isAdmin, $xoopsUser;
@@ -277,8 +277,8 @@ switch ($op) {
     /*---判斷動作請貼在下方---*/
 
     //新增資料
-    case "insert_tad_web_cate":
-        $CateID = insert_tad_web_cate();
+    case "save_tad_web_cate":
+        $CateID = save_tad_web_cate();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;

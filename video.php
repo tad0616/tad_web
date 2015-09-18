@@ -1,6 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+$web_cate = new web_cate($WebID, "tad_web_video", "video");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_video_b3.html';
 } else {
@@ -12,7 +13,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //tad_web_video編輯表單
 function tad_web_video_form($VideoID = "")
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl;
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl, $web_cate;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=tad_web_video_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -57,6 +58,11 @@ function tad_web_video_form($VideoID = "")
     //設定「Youtube」欄位預設值
     $Youtube = (!isset($DBV['Youtube'])) ? "" : $DBV['Youtube'];
 
+    //設定「CateID」欄位預設值
+    $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+    $cate_menu = $web_cate->cate_menu($CateID);
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
     $op = (empty($VideoID)) ? "insert_tad_web_video" : "update_tad_web_video";
     //$op="replace_tad_web_video";
 
@@ -81,7 +87,7 @@ function tad_web_video_form($VideoID = "")
 //新增資料到tad_web_video中
 function insert_tad_web_video()
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB, $xoopsUser, $web_cate;
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
@@ -92,9 +98,12 @@ function insert_tad_web_video()
 
     $VideoPlace          = tad_web_getYTid($_POST['Youtube']);
     $_POST['VideoCount'] = intval($_POST['VideoCount']);
-    $sql                 = "insert into " . $xoopsDB->prefix("tad_web_video") . "
-	(`VideoName` , `VideoDesc` , `VideoDate` , `VideoPlace` , `uid` , `WebID` , `VideoCount` , `Youtube`)
-	values('{$_POST['VideoName']}' , '{$_POST['VideoDesc']}' , now() , '{$VideoPlace}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['VideoCount']}' , '{$_POST['Youtube']}')";
+
+    $CateID = $web_cate->save_tad_web_cate();
+
+    $sql = "insert into " . $xoopsDB->prefix("tad_web_video") . "
+	(`CateID`, `VideoName` , `VideoDesc` , `VideoDate` , `VideoPlace` , `uid` , `WebID` , `VideoCount` , `Youtube`)
+	values('{$CateID}', '{$_POST['VideoName']}' , '{$_POST['VideoDesc']}' , now() , '{$VideoPlace}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['VideoCount']}' , '{$_POST['Youtube']}')";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     //取得最後新增資料的流水編號
@@ -116,7 +125,7 @@ function tad_web_getYTid($ytURL = "")
 //更新tad_web_video某一筆資料
 function update_tad_web_video($VideoID = "")
 {
-    global $xoopsDB, $xoopsUser, $isAdmin;
+    global $xoopsDB, $xoopsUser, $isAdmin, $web_cate;
 
     $myts               = &MyTextSanitizer::getInstance();
     $_POST['VideoName'] = $myts->addSlashes($_POST['VideoName']);
@@ -126,7 +135,11 @@ function update_tad_web_video($VideoID = "")
     $anduid = onlyMine();
 
     $_POST['VideoCount'] = intval($_POST['VideoCount']);
-    $sql                 = "update " . $xoopsDB->prefix("tad_web_video") . " set
+
+    $CateID = $web_cate->save_tad_web_cate();
+
+    $sql = "update " . $xoopsDB->prefix("tad_web_video") . " set
+     `CateID` = '{$CateID}' ,
 	 `VideoName` = '{$_POST['VideoName']}' ,
 	 `VideoDesc` = '{$_POST['VideoDesc']}' ,
 	 `VideoDate` = now() ,
@@ -170,7 +183,7 @@ function delete_tad_web_video($VideoID = "")
 //以流水號秀出某筆tad_web_video資料內容
 function show_one_tad_web_video($VideoID = "")
 {
-    global $xoopsDB, $xoopsTpl;
+    global $xoopsDB, $xoopsTpl, $web_cate;
     if (empty($VideoID)) {
         return;
     } else {
@@ -221,12 +234,17 @@ function show_one_tad_web_video($VideoID = "")
     $xoopsTpl->assign('op', 'show_one_tad_web_video');
     $xoopsTpl->assign('VideoID', $VideoID);
     $xoopsTpl->assign('VideoInfo', sprintf(_MD_TCW_INFO, $uid_name, $VideoDate, $VideoCount));
+
+    //取得單一分類資料
+    $cate = $web_cate->get_tad_web_cate($CateID);
+    $xoopsTpl->assign('cate', $cate);
 }
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op      = system_CleanVars($_REQUEST, 'op', '', 'string');
 $VideoID = system_CleanVars($_REQUEST, 'VideoID', 0, 'int');
+$CateID  = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 common_template($WebID);
 
@@ -266,7 +284,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($VideoID)) {
-            list_tad_web_video($WebID);
+            list_tad_web_video($WebID, $CateID);
             //$main.=tad_web_video_form($VideoID);
         } else {
             show_one_tad_web_video($VideoID);
@@ -276,5 +294,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

@@ -1,4 +1,4 @@
-<{if $isMineAction}>
+<{if $isMineWorks}>
   <script>
     function delete_tad_web_works_func(WorksID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -27,7 +27,7 @@
           <{$smarty.const._MD_TCW_TEAMID}>
         </th>
       <{/if}>
-      <{if !$showWebTitleAction && $isMineAction}>
+      <{if !$showWebTitleAction && $isMineWorks}>
         <th data-hide="phone" style="width:100px;text-align:center;">
           <{$smarty.const._TAD_FUNCTION}>
         </th>
@@ -41,6 +41,9 @@
           <{$work.WorksDate}>
         </td>
         <td>
+          <{if $work.cate.CateID}>
+            <span class="label label-info"><a href="work.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
+          <{/if}>
           <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
         </td>
         <td class="text-center">
@@ -51,7 +54,7 @@
             <{$work.WebTitle}>
           </td>
         <{/if}>
-        <{if !$showWebTitleAction && $isMineAction}>
+        <{if !$showWebTitleAction && $isMineWorks}>
         <td class="text-center">
           <a href="javascript:delete_tad_web_works_func(<{$work.WorksID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
           <a href="works.php?WebID=<{$WebID}>&op=tad_web_works_form&WorksID=<{$work.WorksID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -80,7 +83,7 @@
       <a href="works.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
     <{/if}>
   <{/if}>
-  <{if $isMineAction}>
+  <{if $isMineWorks and $WebID}>
     <a href="works.php?WebID=<{$WebID}>&op=tad_web_works_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a>
   <{/if}>
 </div>

@@ -14,6 +14,7 @@
       <div class="span12">
         <{if $news_data.0.NewsContent}>
           <h3>
+            <{$news_data.0.Date}>
             <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
             <{if !$showWebTitleNews && $isMineNews}>
@@ -22,11 +23,15 @@
             <{/if}>
           </h3>
           <div class="well" style="mini-height: 100px; overflow: auto; line-height: 1.8; background-color: #FCFCFC;">
+            <{if $news_data.0.cate.CateID}>
+              <span class="label label-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$news_data.0.cate.CateName}></a></span>
+            <{/if}>
             <{$news_data.0.NewsContent}>
           </div>
         <{else}>
           <div class="well" style="height: 100px; overflow: auto; line-height: 1.8; background-color: #FCFCFC;">
             <h3>
+              <{$news_data.0.Date}>
               <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
               <{if !$showWebTitleNews && $isMineNews}>
@@ -46,6 +51,9 @@
             <{if $i > 0}>
               <li>
               <{$news.Date}>
+              <{if $news.cate.CateID}>
+                <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+              <{/if}>
               <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a> (<{$news.NewsCounter}>)
 
                 <{if !$showWebTitleNews && $isMineNews}>
@@ -88,16 +96,20 @@
     </thead>
 
     <{if $news_data}>
-      <{foreach item=news from=$news_data}>
+      <{foreach from=$news_data item=news}>
         <tr>
           <td class="text-center"><{$news.Date}></td>
-          <td><a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
+          <td>
+          <{if $news.cate.CateID}>
+            <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+          <{/if}>
+          <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
           <td class="text-center"><{$news.NewsCounter}></td>
           <{if $showWebTitleNews}><td class="text-center"><{$news.WebTitle}></td><{/if}>
           <{if !$showWebTitleNews && $isMineNews}>
           <td class="text-center">
             <a href="javascript:delete_tad_web_news_func(<{$news.NewsID}>);" class="btn btn-mini btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
-            <a href="news.php?op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
+            <a href="news.php?WebID=<{$news.WebID}>&op=tad_web_news_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
           </td>
           <{/if}>
         </tr>
@@ -114,7 +126,6 @@
   <{if $news_data}>
     <{$bar}>
   <{/if}>
-
 <{/if}>
 
 <{if $news_data}>
@@ -126,7 +137,7 @@
         <a href="news.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <{/if}>
     <{/if}>
-    <{if $isMineNews}>
+    <{if $isMineNews and $WebID}>
       <a href="news.php?WebID=<{$WebID}>&op=tad_web_news_form" class="btn btn-mini btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_ADD}></a>
     <{/if}>
   </div>

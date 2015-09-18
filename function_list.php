@@ -31,12 +31,13 @@ function list_all_tad_webs()
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('MyWebs', $MyWebs);
     $xoopsTpl->assign('count', $i);
+
     $xoopsTpl->assign('tad_web_cate', get_tad_web_cate_all());
 
 }
 
 //最新消息
-function list_tad_web_news($WebID = "", $NewsKind = 'news', $limit = null, $order = 'NewsDate')
+function list_tad_web_news($WebID = "", $CateID = "", $NewsKind = 'news', $limit = null, $order = 'NewsDate')
 {
     global $xoopsDB, $MyWebs, $isAdmin, $xoopsTpl;
 
@@ -49,6 +50,17 @@ function list_tad_web_news($WebID = "", $NewsKind = 'news', $limit = null, $orde
         $whereWebID = "and a.`WebID`='$WebID'";
     }
 
+    //取得tad_web_cate所有資料陣列
+    $web_cate = new web_cate($WebID, "tad_web_news", "news");
+    if (empty($CateID)) {
+        $andCateID = "";
+    } else {
+        //取得單一分類資料
+        $cate = $web_cate->get_tad_web_cate($CateID);
+        $xoopsTpl->assign('cate', $cate);
+        $andCateID = "and a.`CateID`='$CateID'";
+    }
+
     if (!empty($_REQUEST['key'])) {
         $andKey   = "and (a.`NewsTitle` like '%{$_REQUEST['key']}%' or a.`NewsContent` like '%{$_REQUEST['key']}%' or a.`NewsPlace` like '%{$_REQUEST['key']}%')";
         $andLimit = '';
@@ -57,7 +69,7 @@ function list_tad_web_news($WebID = "", $NewsKind = 'news', $limit = null, $orde
         $andKey   = '';
     }
 
-    $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.NewsKind='$NewsKind' $whereWebID $andKey order by $order desc $andLimit";
+    $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.NewsKind='$NewsKind' $whereWebID $andCateID $andKey order by $order desc $andLimit";
     //die($sql);
 
     $bar = "";
@@ -85,6 +97,10 @@ function list_tad_web_news($WebID = "", $NewsKind = 'news', $limit = null, $orde
 
         $Class = getWebInfo($WebID);
 
+        $web_cate->set_WebID($WebID);
+        $cate                  = $web_cate->get_tad_web_cate_arr();
+        $main_data[$i]['cate'] = $cate[$CateID];
+
         $main_data[$i]['Date']        = $Date;
         $main_data[$i]['NewsID']      = $NewsID;
         $main_data[$i]['NewsTitle']   = $NewsTitle;
@@ -106,12 +122,15 @@ function list_tad_web_news($WebID = "", $NewsKind = 'news', $limit = null, $orde
     $xoopsTpl->assign('mode', $mode);
     $xoopsTpl->assign("isMine{$NewsKindTag}", isMine());
     $xoopsTpl->assign("isMyWeb", in_array($WebID, $MyWebs));
-
-    //return $data;
+    if ($NewsKind == "homework") {
+        $xoopsTpl->assign('HomeTitle', _MD_TCW_HOMEWORK);
+    } else {
+        $xoopsTpl->assign('HomeTitle', _MD_TCW_NEWS);
+    }
 }
 
 //檔案下載
-function list_tad_web_files($WebID = null, $limit = "")
+function list_tad_web_files($WebID = "", $CateID = "", $limit = "")
 {
     global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl;
 
@@ -122,13 +141,23 @@ function list_tad_web_files($WebID = null, $limit = "")
     //所有文件種類名稱
     $kindname = getAllCateName('file', $WebID);
 
-    //限制某班級
-    $whereWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
-    $andLimit   = ($limit > 0) ? "limit 0,$limit" : "";
+    $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
+
+    //取得tad_web_cate所有資料陣列
+    $web_cate = new web_cate($WebID, "tad_web_files", "files");
+    if (empty($CateID)) {
+        $andCateID = "";
+    } else {
+        //取得單一分類資料
+        $cate = $web_cate->get_tad_web_cate($CateID);
+        $xoopsTpl->assign('cate', $cate);
+        $andCateID = "and a.`CateID`='$CateID'";
+    }
+    $andLimit = ($limit > 0) ? "limit 0,$limit" : "";
 
     $data = $title = "";
 
-    $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' and b.col_name='fsn' $whereWebID order by a.file_date desc $andLimit";
+    $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' and b.col_name='fsn' $andWebID $andCateID order by a.file_date desc $andLimit";
 
     if (empty($limit)) {
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -162,6 +191,10 @@ function list_tad_web_files($WebID = null, $limit = "")
 
         $showurl = ($enable_link) ? "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn' class='iconize'>{$description}</a>" : $description;
 
+        $web_cate->set_WebID($WebID);
+        $cate                 = $web_cate->get_tad_web_cate_arr();
+        $all_data[$i]['cate'] = $cate[$CateID];
+
         $all_data[$i]['showurl']  = $showurl;
         $all_data[$i]['uid_name'] = $uid_name;
         $all_data[$i]['fsn']      = $fsn;
@@ -177,14 +210,25 @@ function list_tad_web_files($WebID = null, $limit = "")
 }
 
 //活動剪影
-function list_tad_web_action($WebID = "", $limit = null)
+function list_tad_web_action($WebID = "", $CateID = "", $limit = null)
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
 
     $showWebTitle = (empty($WebID)) ? 1 : 0;
     $andWebID     = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
-    $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
-    $sql          = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID order by a.ActionDate desc $andLimit";
+
+    //取得tad_web_cate所有資料陣列
+    $web_cate = new web_cate($WebID, "tad_web_action", "action");
+    if (empty($CateID)) {
+        $andCateID = "";
+    } else {
+        //取得單一分類資料
+        $cate = $web_cate->get_tad_web_cate($CateID);
+        $xoopsTpl->assign('cate', $cate);
+        $andCateID = "and a.`CateID`='$CateID'";
+    }
+    $andLimit = (empty($limit)) ? "" : "limit 0 , $limit";
+    $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionDate desc $andLimit";
 
     if (empty($limit)) {
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -207,6 +251,10 @@ function list_tad_web_action($WebID = "", $limit = null)
         }
 
         $Class = getWebInfo($WebID);
+
+        $web_cate->set_WebID($WebID);
+        $cate                  = $web_cate->get_tad_web_cate_arr();
+        $main_data[$i]['cate'] = $cate[$CateID];
 
         $main_data[$i]['ActionDate']  = $ActionDate;
         $main_data[$i]['ActionID']    = $ActionID;
@@ -234,14 +282,25 @@ function list_tad_web_action($WebID = "", $limit = null)
 }
 
 //作品分享
-function list_tad_web_works($WebID = "", $limit = null)
+function list_tad_web_works($WebID = "", $CateID = "", $limit = null)
 {
     global $xoopsDB, $xoopsTpl;
 
     $showWebTitle = (empty($WebID)) ? 1 : 0;
     $andWebID     = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
-    $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
-    $sql          = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID order by a.WorksDate desc $andLimit";
+
+    //取得tad_web_cate所有資料陣列
+    $web_cate = new web_cate($WebID, "tad_web_works", "works");
+    if (empty($CateID)) {
+        $andCateID = "";
+    } else {
+        //取得單一分類資料
+        $cate = $web_cate->get_tad_web_cate($CateID);
+        $xoopsTpl->assign('cate', $cate);
+        $andCateID = "and a.`CateID`='$CateID'";
+    }
+    $andLimit = (empty($limit)) ? "" : "limit 0 , $limit";
+    $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.WorksDate desc $andLimit";
 
     if (empty($limit)) {
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -265,6 +324,10 @@ function list_tad_web_works($WebID = "", $limit = null)
 
         $Class = getWebInfo($WebID);
 
+        $web_cate->set_WebID($WebID);
+        $cate                  = $web_cate->get_tad_web_cate_arr();
+        $main_data[$i]['cate'] = $cate[$CateID];
+
         $main_data[$i]['WorksDate']  = substr($WorksDate, 0, 10);
         $main_data[$i]['WorksID']    = $WorksID;
         $main_data[$i]['WebID']      = $WebID;
@@ -282,16 +345,27 @@ function list_tad_web_works($WebID = "", $limit = null)
 
 }
 //好站連結
-function list_tad_web_link($WebID = "", $limit = "")
+function list_tad_web_link($WebID = "", $CateID = "", $limit = "")
 {
     global $xoopsDB, $xoopsTpl;
 
     $showWebTitle = (empty($WebID)) ? 1 : 0;
 
     $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
+
+    //取得tad_web_cate所有資料陣列
+    $web_cate = new web_cate($WebID, "tad_web_link", "link");
+    if (empty($CateID)) {
+        $andCateID = "";
+    } else {
+        //取得單一分類資料
+        $cate = $web_cate->get_tad_web_cate($CateID);
+        $xoopsTpl->assign('cate', $cate);
+        $andCateID = "and a.`CateID`='$CateID'";
+    }
     $andLimit = ($limit > 0) ? "limit 0,$limit" : "";
 
-    $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID order by a.LinkID desc $andLimit";
+    $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.LinkID desc $andLimit";
 
     if (empty($limit)) {
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -316,7 +390,12 @@ function list_tad_web_link($WebID = "", $limit = "")
 
         $Class = getWebInfo($WebID);
 
-        $LinkDesc                     = nl2br(xoops_substr(strip_tags($LinkDesc), 0, 150));
+        $LinkDesc = nl2br(xoops_substr(strip_tags($LinkDesc), 0, 150));
+
+        $web_cate->set_WebID($WebID);
+        $cate                  = $web_cate->get_tad_web_cate_arr();
+        $main_data[$i]['cate'] = $cate[$CateID];
+
         $main_data[$i]['LinkUrl']     = $LinkUrl;
         $main_data[$i]['LinkTitle']   = $LinkTitle;
         $main_data[$i]['LinkDesc']    = $LinkDesc;
@@ -335,15 +414,26 @@ function list_tad_web_link($WebID = "", $limit = "")
 }
 
 //影片
-function list_tad_web_video($WebID = "", $limit = "")
+function list_tad_web_video($WebID = "", $CateID = "", $limit = "")
 {
     global $xoopsDB, $xoopsTpl;
 
     $showWebTitle = (empty($WebID)) ? 1 : 0;
 
     $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
+
+    //取得tad_web_cate所有資料陣列
+    $web_cate = new web_cate($WebID, "tad_web_video", "video");
+    if (empty($CateID)) {
+        $andCateID = "";
+    } else {
+        //取得單一分類資料
+        $cate = $web_cate->get_tad_web_cate($CateID);
+        $xoopsTpl->assign('cate', $cate);
+        $andCateID = "and a.`CateID`='$CateID'";
+    }
     $andLimit = ($limit > 0) ? "limit 0,$limit" : "";
-    $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID order by a.VideoDate desc , a.VideoID desc $andLimit";
+    $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.VideoDate desc , a.VideoID desc $andLimit";
 
     if (empty($limit)) {
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -368,6 +458,10 @@ function list_tad_web_video($WebID = "", $limit = "")
 
         $Class = getWebInfo($WebID);
 
+        $web_cate->set_WebID($WebID);
+        $cate                  = $web_cate->get_tad_web_cate_arr();
+        $main_data[$i]['cate'] = $cate[$CateID];
+
         $main_data[$i]['VideoID']    = $VideoID;
         $main_data[$i]['VideoPlace'] = $VideoPlace;
         $main_data[$i]['WebID']      = $WebID;
@@ -386,7 +480,7 @@ function list_tad_web_video($WebID = "", $limit = "")
 }
 
 //列出所有tad_web_discuss資料
-function list_tad_web_discuss($WebID = null, $limit = null)
+function list_tad_web_discuss($WebID = "", $CateID = "", $limit = null)
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
 
@@ -397,8 +491,19 @@ function list_tad_web_discuss($WebID = null, $limit = null)
         $showWebTitle = (empty($WebID)) ? 1 : 0;
 
         $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
+
+        //取得tad_web_cate所有資料陣列
+        $web_cate = new web_cate($WebID, "tad_web_discuss", "discuss");
+        if (empty($CateID)) {
+            $andCateID = "";
+        } else {
+            //取得單一分類資料
+            $cate = $web_cate->get_tad_web_cate($CateID);
+            $xoopsTpl->assign('cate', $cate);
+            $andCateID = "and a.`CateID`='$CateID'";
+        }
         $andLimit = ($limit > 0) ? "limit 0,$limit" : "";
-        $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.ReDiscussID='0' $andWebID  order by a.LastTime desc $andLimit";
+        $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.ReDiscussID='0' $andWebID $andCateID order by a.LastTime desc $andLimit";
 
         if (empty($limit)) {
             //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -426,6 +531,10 @@ function list_tad_web_discuss($WebID = null, $limit = null)
 
             $LastTime = substr($LastTime, 0, 10);
             $Class    = getWebInfo($WebID);
+
+            $web_cate->set_WebID($WebID);
+            $cate                  = $web_cate->get_tad_web_cate_arr();
+            $main_data[$i]['cate'] = $cate[$CateID];
 
             $main_data[$i]['DiscussID']      = $DiscussID;
             $main_data[$i]['DiscussTitle']   = $DiscussTitle;

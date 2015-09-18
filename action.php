@@ -1,6 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
+$web_cate = new web_cate($WebID, "tad_web_action", "action");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_action_b3.html';
 } else {
@@ -13,7 +14,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //tad_web_action編輯表單
 function tad_web_action_form($ActionID = "")
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $web_cate;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&tad_web_action_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -55,6 +56,11 @@ function tad_web_action_form($ActionID = "")
     //設定「ActionCount」欄位預設值
     $ActionCount = (!isset($DBV['ActionCount'])) ? "" : $DBV['ActionCount'];
 
+    //設定「CateID」欄位預設值
+    $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+    $cate_menu = $web_cate->cate_menu($CateID);
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
     $op = (empty($ActionID)) ? "insert_tad_web_action" : "update_tad_web_action";
 
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -84,7 +90,7 @@ function tad_web_action_form($ActionID = "")
 //新增資料到tad_web_action中
 function insert_tad_web_action()
 {
-    global $xoopsDB, $xoopsUser, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $TadUpFiles, $web_cate;
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
@@ -96,9 +102,10 @@ function insert_tad_web_action()
 
     $_POST['ActionCount'] = intval($_POST['ActionCount']);
 
-    $sql = "insert into " . $xoopsDB->prefix("tad_web_action") . "
-	(`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
-	values('{$_POST['ActionName']}' , '{$_POST['ActionDesc']}' , '{$_POST['ActionDate']}' , '{$_POST['ActionPlace']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['ActionCount']}')";
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "insert into " . $xoopsDB->prefix("tad_web_action") . "
+	(`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
+	values('{$CateID}' ,'{$_POST['ActionName']}' , '{$_POST['ActionDesc']}' , '{$_POST['ActionDate']}' , '{$_POST['ActionPlace']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['ActionCount']}')";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
     //取得最後新增資料的流水編號
@@ -113,7 +120,7 @@ function insert_tad_web_action()
 //更新tad_web_action某一筆資料
 function update_tad_web_action($ActionID = "")
 {
-    global $xoopsDB, $xoopsUser, $isAdmin, $MyWebs, $TadUpFiles;
+    global $xoopsDB, $xoopsUser, $isAdmin, $MyWebs, $TadUpFiles, $web_cate;
 
     $myts                 = &MyTextSanitizer::getInstance();
     $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
@@ -124,7 +131,9 @@ function update_tad_web_action($ActionID = "")
 
     $_POST['ActionCount'] = intval($_POST['ActionCount']);
 
-    $sql = "update " . $xoopsDB->prefix("tad_web_action") . " set
+    $CateID = $web_cate->save_tad_web_cate();
+    $sql    = "update " . $xoopsDB->prefix("tad_web_action") . " set
+     `CateID` = '{$CateID}' ,
 	 `ActionName` = '{$_POST['ActionName']}' ,
 	 `ActionDesc` = '{$_POST['ActionDesc']}' ,
 	 `ActionDate` = '{$_POST['ActionDate']}' ,
@@ -172,7 +181,7 @@ function delete_tad_web_action($ActionID = "")
 //以流水號秀出某筆tad_web_action資料內容
 function show_one_tad_web_action($ActionID = "")
 {
-    global $xoopsDB, $xoopsTpl, $TadUpFiles;
+    global $xoopsDB, $xoopsTpl, $TadUpFiles, $web_cate;
     if (empty($ActionID)) {
         return;
     } else {
@@ -206,12 +215,17 @@ function show_one_tad_web_action($ActionID = "")
     $xoopsTpl->assign('op', 'show_one_tad_web_action');
     $xoopsTpl->assign('ActionID', $ActionID);
     $xoopsTpl->assign('ActionInfo', sprintf(_MD_TCW_INFO, $uid_name, $ActionDate, $ActionCount));
+
+    //取得單一分類資料
+    $cate = $web_cate->get_tad_web_cate($CateID);
+    $xoopsTpl->assign('cate', $cate);
 }
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op       = system_CleanVars($_REQUEST, 'op', '', 'string');
 $ActionID = system_CleanVars($_REQUEST, 'ActionID', 0, 'int');
+$CateID   = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 common_template($WebID);
 
@@ -245,7 +259,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($ActionID)) {
-            list_tad_web_action($WebID);
+            list_tad_web_action($WebID, $CateID);
         } else {
             show_one_tad_web_action($ActionID);
         }
@@ -254,5 +268,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

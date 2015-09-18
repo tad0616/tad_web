@@ -4,9 +4,14 @@
 
 
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-  <h1><{$smarty.const._MD_TCW_WORKS}></h1>
+  <h1><{$smarty.const._MD_TCW_WORKS_ADD}></h1>
   <div class="well">
-    <form works="works.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <form action="works.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+      <!--分類-->
+      <{$cate_menu}>
+
+
       <!--作品名稱-->
       <div class="control-group">
         <div class="span12 controls">
@@ -60,7 +65,7 @@
   </div>
 <{elseif $op=="show_one_tad_web_works"}>
 
-  <{if $isMineAction}>
+  <{if $isMineWorks}>
   <script>
     function delete_tad_web_works_func(WorksID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -85,7 +90,7 @@
     <{$pics}>
   </div>
 
-  <{if $isMineAction}>
+  <{if $isMineWorks}>
     <div class="text-right">
       <a href="javascript:delete_tad_web_works_func(<{$WorksID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="works.php?WebID=<{$WebID}>&op=tad_web_works_form&WorksID=<{$WorksID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>

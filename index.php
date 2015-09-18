@@ -21,35 +21,35 @@ function ClassHome($WebID = "")
     }
 
     if (!in_array('news', $hide_function)) {
-        list_tad_web_news($WebID, 'news', 5, 'NewsDate');
+        list_tad_web_news($WebID, '', 'news', 5, 'NewsDate');
     }
 
     if (!in_array('homework', $hide_function)) {
-        list_tad_web_news($WebID, 'homework', 5, 'NewsDate');
+        list_tad_web_news($WebID, '', 'homework', 5, 'NewsDate');
     }
 
     if (!in_array('works', $hide_function)) {
-        list_tad_web_works($WebID, 5);
+        list_tad_web_works($WebID, '', 5);
     }
 
     if (!in_array('discuss', $hide_function)) {
-        list_tad_web_discuss($WebID, 5);
+        list_tad_web_discuss($WebID, '', 5);
     }
 
     if (!in_array('files', $hide_function)) {
-        list_tad_web_files($WebID, 5);
+        list_tad_web_files($WebID, '', 5);
     }
 
     if (!in_array('action', $hide_function)) {
-        list_tad_web_action($WebID, 5);
+        list_tad_web_action($WebID, '', 5);
     }
 
     if (!in_array('video', $hide_function)) {
-        list_tad_web_video($WebID, 5);
+        list_tad_web_video($WebID, '', 5);
     }
 
     if (!in_array('link', $hide_function)) {
-        list_tad_web_link($WebID, 5);
+        list_tad_web_link($WebID, '', 5);
     }
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
@@ -64,14 +64,14 @@ function list_all_class()
 {
 
     list_all_tad_webs();
-    list_tad_web_news('', 'news', 5, 'NewsDate');
-    list_tad_web_news('', 'homework', 5, 'NewsDate');
-    list_tad_web_works('', 5);
-    list_tad_web_discuss('', 5);
-    list_tad_web_files('', 5);
-    list_tad_web_action('', 10);
-    list_tad_web_video('', 5);
-    list_tad_web_link('', 5);
+    list_tad_web_news('', '', 'news', 5, 'NewsDate');
+    list_tad_web_news('', '', 'homework', 5, 'NewsDate');
+    list_tad_web_works('', '', 5);
+    list_tad_web_discuss('', '', 5);
+    list_tad_web_files('', '', 5);
+    list_tad_web_action('', '', 10);
+    list_tad_web_video('', '', 5);
+    list_tad_web_link('', '', 5);
 
 }
 
@@ -86,17 +86,17 @@ switch ($op) {
 
     case "list_tad_web_news":
         $xoopsTpl->assign("op", $op);
-        list_tad_web_news("", 'news');
+        list_tad_web_news("", "", 'news');
         break;
 
     case "list_tad_web_homework":
         $xoopsTpl->assign("op", $op);
-        list_tad_web_news("", 'homework');
+        list_tad_web_news("", "", 'homework');
         break;
 
     case "list_tad_web_files":
         $xoopsTpl->assign("op", $op);
-        list_tad_web_files("");
+        list_tad_web_files();
         break;
 
     case "list_tad_web_action":
@@ -106,17 +106,17 @@ switch ($op) {
 
     case "list_tad_web_video":
         $xoopsTpl->assign("op", $op);
-        list_tad_web_video("");
+        list_tad_web_video();
         break;
 
     case "list_tad_web_link":
         $xoopsTpl->assign("op", $op);
-        list_tad_web_link("");
+        list_tad_web_link();
         break;
 
     case "list_tad_web_discuss":
         $xoopsTpl->assign("op", $op);
-        list_tad_web_discuss("");
+        list_tad_web_discuss();
         break;
 
     default:
@@ -129,5 +129,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('WebTitle', $WebTitle);
+include_once '/footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';
