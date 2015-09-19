@@ -275,6 +275,15 @@ $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_common_works_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_common_works_b3.html';
 
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_header.html';
+$modversion['templates'][$i]['description'] = 'tad_web_header.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_header_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_header_b3.html';
+
+
 //---區塊設定---//
 $i                                       = 1;
 $modversion['blocks'][$i]['file']        = "tad_web_menu.php";
