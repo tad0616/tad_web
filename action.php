@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "action");
+$web_cate = new web_cate($WebID, "action", "tad_web_action");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_action_b3.html';
 } else {
@@ -102,7 +102,7 @@ function insert_tad_web_action()
 
     $_POST['ActionCount'] = intval($_POST['ActionCount']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "insert into " . $xoopsDB->prefix("tad_web_action") . "
 	(`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
 	values('{$CateID}' ,'{$_POST['ActionName']}' , '{$_POST['ActionDesc']}' , '{$_POST['ActionDate']}' , '{$_POST['ActionPlace']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['ActionCount']}')";
@@ -131,7 +131,7 @@ function update_tad_web_action($ActionID = "")
 
     $_POST['ActionCount'] = intval($_POST['ActionCount']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "update " . $xoopsDB->prefix("tad_web_action") . " set
      `CateID` = '{$CateID}' ,
 	 `ActionName` = '{$_POST['ActionName']}' ,

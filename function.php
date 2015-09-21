@@ -652,10 +652,10 @@ function get_tad_web_cate_menu_options($default_CateID = "0")
 }
 
 //取得tad_web_cate所有資料陣列
-function get_tad_web_cate_all()
+function get_tad_web_cate_all($table)
 {
     global $xoopsDB;
-    $web_cate = new web_cate('0', "web_cate");
+    $web_cate = new web_cate('0', "web_cate", $table);
     $cate     = $web_cate->get_tad_web_cate_arr();
 
     $webs = get_web_cate_arr();

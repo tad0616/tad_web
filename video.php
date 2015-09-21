@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "video");
+$web_cate = new web_cate($WebID, "video", "tad_web_video");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_video_b3.html';
 } else {
@@ -99,7 +99,7 @@ function insert_tad_web_video()
     $VideoPlace          = tad_web_getYTid($_POST['Youtube']);
     $_POST['VideoCount'] = intval($_POST['VideoCount']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web_video") . "
 	(`CateID`, `VideoName` , `VideoDesc` , `VideoDate` , `VideoPlace` , `uid` , `WebID` , `VideoCount` , `Youtube`)
@@ -136,7 +136,7 @@ function update_tad_web_video($VideoID = "")
 
     $_POST['VideoCount'] = intval($_POST['VideoCount']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
     $sql = "update " . $xoopsDB->prefix("tad_web_video") . " set
      `CateID` = '{$CateID}' ,

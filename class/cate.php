@@ -1,7 +1,7 @@
 <?php
 /*
 
-$web_cate = new web_cate($WebID, "news");
+$web_cate = new web_cate($WebID, "news","tad_web_news");
 
 //設定「CateID」欄位預設值
 $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
@@ -10,7 +10,7 @@ $cate_menu = $web_cate->cate_menu($CateID);
 $xoopsTpl->assign('cate_menu', $cate_menu);
 
 //儲存
-$CateID = $web_cate->save_tad_web_cate();
+$CateID = $web_cate->save_tad_web_cate($CateID, $newCateName);
 
 //取得單一分類資料
 $cate = $web_cate->get_tad_web_cate($CateID);
@@ -23,7 +23,7 @@ $xoopsTpl->assign('cate', $cate);
 </ol>
 
 //取得tad_web_cate所有資料陣列
-$web_cate = new web_cate($WebID, "news");
+$web_cate = new web_cate($WebID, "news","tad_web_news");
 $web_cate->set_WebID($WebID);
 $cate = $web_cate->get_tad_web_cate_arr();
 
@@ -37,8 +37,9 @@ class web_cate
     public $WebID = 0;
     public $ColName;
     public $ColSN = 0;
+    public $Tbl   = 0;
 
-    public function web_cate($WebID = "0", $ColName = "")
+    public function web_cate($WebID = "0", $ColName = "", $Tbl = "")
     {
         global $xoopsDB;
         if (!empty($WebID)) {
@@ -47,6 +48,10 @@ class web_cate
 
         if (!empty($ColName)) {
             $this->set_ColName($ColName);
+        }
+
+        if (!empty($Tbl)) {
+            $this->set_Tbl($Tbl);
         }
 
     }
@@ -63,8 +68,13 @@ class web_cate
         $this->ColName = $ColName;
     }
 
+    public function set_Tbl($Tbl = "")
+    {
+        $this->Tbl = $Tbl;
+    }
+
     //分類選單
-    public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false)
+    public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true)
     {
         global $xoopsDB;
 
@@ -90,7 +100,7 @@ class web_cate
 
         $tools = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}' class='btn btn-warning' >" . _MD_TCW_CATE_TOOLS . "</a></div>" : "";
 
-        if ($option) {
+        if ($option and $show_select) {
             $onchange  = $change_page ? "onchange=\"location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&CateID=' + this.value\"" : "";
             $cate_menu = "
             <div class=\"{$span}3\">
@@ -112,8 +122,10 @@ class web_cate
             $new_input = "";
         }
 
+        $label_title = ($show_select) ? _MD_TCW_SELECT_CATE : _MD_TCW_NEW_CATE;
+
         $label = $show_label ? "<label class=\"{$span}2 control-label\">
-          " . _MD_TCW_SELECT_CATE . "
+          {$label_title}
           </label>" : "";
 
         $row = ($mode == "form") ? $form_group : $row;
@@ -130,10 +142,10 @@ class web_cate
     }
 
     //新增資料到tad_web_cate中
-    public function save_tad_web_cate()
+    public function save_tad_web_cate($CateID = "", $newCateName = "")
     {
         global $xoopsDB, $xoopsUser;
-        if (empty($_POST['newCateName'])) {
+        if (empty($newCateName)) {
             return $_POST['CateID'];
         }
 
@@ -177,13 +189,13 @@ class web_cate
         return ++$sort;
     }
 
-//更新tad_web_cate某一筆資料
-    public function update_tad_web_cate($CateID = '')
+    //更新tad_web_cate某一筆資料
+    public function update_tad_web_cate($CateID = '', $newCateName = '')
     {
         global $xoopsDB, $isAdmin, $xoopsUser;
 
         $myts     = MyTextSanitizer::getInstance();
-        $CateName = $myts->addSlashes($_POST['CateName']);
+        $CateName = $myts->addSlashes($newCateName);
 
         $sql = "update `" . $xoopsDB->prefix("tad_web_cate") . "` set
        `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
@@ -204,17 +216,102 @@ class web_cate
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
+
     //取得tad_web_cate所有資料陣列
     public function get_tad_web_cate_arr()
     {
         global $xoopsDB;
-
-        $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' order by CateSort";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $counter = $this->tad_web_cate_data_counter();
+        $sql     = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' order by CateSort";
+        $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
         while ($data = $xoopsDB->fetchArray($result)) {
-            $CateID       = $data['CateID'];
-            $arr[$CateID] = $data;
+            $CateID          = $data['CateID'];
+            $data['counter'] = $counter[$CateID];
+            $arr[$CateID]    = $data;
         }
         return $arr;
     }
+
+    //搬移tad_web_cate某筆資料資料
+    public function move_tad_web_cate($CateID = '', $move2CateID = 0)
+    {
+        global $xoopsDB;
+
+        if (empty($CateID)) {
+            return;
+        }
+
+        if (empty($this->Tbl)) {
+            $table = "tad_web_{$this->ColName}";
+        } else {
+            $table = $this->Tbl;
+        }
+
+        $sql = "update `" . $xoopsDB->prefix($table) . "` set
+       `CateID` = '{$move2CateID}' where `CateID`='{$CateID}'";
+        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+    }
+
+    //刪除tad_web_cate某筆資料資料
+    public function delete_tad_web_cate($CateID = '', $move2CateID = 0)
+    {
+        global $xoopsDB;
+
+        if (empty($CateID)) {
+            return;
+        }
+
+        if (!empty($move2CateID)) {
+            $this->move_tad_web_cate($CateID, $move2CateID);
+        } else {
+            $this->delete_tad_web_cate_data($CateID);
+        }
+
+        $sql = "delete from `" . $xoopsDB->prefix("tad_web_cate") . "`
+        where `CateID` = '{$CateID}'";
+        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+    }
+
+    //刪除tad_web_cate某筆資料資料
+    public function delete_tad_web_cate_data($CateID = '')
+    {
+        global $xoopsDB;
+
+        if (empty($CateID)) {
+            return;
+        }
+
+        if (empty($this->Tbl)) {
+            $table = "tad_web_{$this->ColName}";
+        } else {
+            $table = $this->Tbl;
+        }
+
+        $sql = "delete from `" . $xoopsDB->prefix($table) . "`
+        where `CateID` = '{$CateID}'";
+        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+    }
+
+    //取得各分類下的檔案數
+    public function tad_web_cate_data_counter()
+    {
+        global $xoopsDB;
+
+        if (empty($this->Tbl)) {
+            $table = "tad_web_{$this->ColName}";
+        } else {
+            $table = $this->Tbl;
+        }
+
+        $sql    = "select count(*),CateID from `" . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {
+            $counter[$CateID] = $count;
+        }
+        return $counter;
+    }
+
 }

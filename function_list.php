@@ -32,7 +32,7 @@ function list_all_tad_webs()
     $xoopsTpl->assign('MyWebs', $MyWebs);
     $xoopsTpl->assign('count', $i);
 
-    $xoopsTpl->assign('tad_web_cate', get_tad_web_cate_all());
+    $xoopsTpl->assign('tad_web_cate', get_tad_web_cate_all('tad_web'));
 
 }
 
@@ -51,7 +51,7 @@ function list_tad_web_news($WebID = "", $CateID = "", $NewsKind = 'news', $limit
     }
 
     //取得tad_web_cate所有資料陣列
-    $web_cate  = new web_cate($WebID, "news");
+    $web_cate  = new web_cate($WebID, "news", "tad_web_news");
     $cate_menu = $web_cate->cate_menu($CateID, 'page', false, true, false, true);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
@@ -147,7 +147,7 @@ function list_tad_web_files($WebID = "", $CateID = "", $limit = "")
     $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
 
     //取得tad_web_cate所有資料陣列
-    $web_cate  = new web_cate($WebID, "files");
+    $web_cate  = new web_cate($WebID, "files", "tad_web_files");
     $cate_menu = $web_cate->cate_menu($CateID, 'page', false, true, false, true);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
@@ -224,7 +224,7 @@ function list_tad_web_action($WebID = "", $CateID = "", $limit = null)
     $andWebID     = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
 
     //取得tad_web_cate所有資料陣列
-    $web_cate  = new web_cate($WebID, "action");
+    $web_cate  = new web_cate($WebID, "action", "tad_web_action");
     $cate_menu = $web_cate->cate_menu($CateID, 'page', false, true, false, true);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
@@ -299,7 +299,7 @@ function list_tad_web_works($WebID = "", $CateID = "", $limit = null)
     $andWebID     = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
 
     //取得tad_web_cate所有資料陣列
-    $web_cate  = new web_cate($WebID, "works");
+    $web_cate  = new web_cate($WebID, "works", "tad_web_works");
     $cate_menu = $web_cate->cate_menu($CateID, 'page', false, true, false, true);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
@@ -366,7 +366,7 @@ function list_tad_web_link($WebID = "", $CateID = "", $limit = "")
     $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
 
     //取得tad_web_cate所有資料陣列
-    $web_cate  = new web_cate($WebID, "link");
+    $web_cate  = new web_cate($WebID, "link", "tad_web_link");
     $cate_menu = $web_cate->cate_menu($CateID, 'page', false, true, false, true);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
@@ -438,7 +438,7 @@ function list_tad_web_video($WebID = "", $CateID = "", $limit = "")
     $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
 
     //取得tad_web_cate所有資料陣列
-    $web_cate  = new web_cate($WebID, "video");
+    $web_cate  = new web_cate($WebID, "video", "tad_web_video");
     $cate_menu = $web_cate->cate_menu($CateID, 'page', false, true, false, true);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
@@ -511,7 +511,7 @@ function list_tad_web_discuss($WebID = "", $CateID = "", $limit = null)
         $andWebID = (empty($WebID)) ? "" : "and a.WebID='$WebID'";
 
         //取得tad_web_cate所有資料陣列
-        $web_cate  = new web_cate($WebID, "discuss");
+        $web_cate  = new web_cate($WebID, "discuss", "tad_web_discuss");
         $cate_menu = $web_cate->cate_menu($CateID, 'page', false, true, false, true);
         $xoopsTpl->assign('cate_menu', $cate_menu);
 

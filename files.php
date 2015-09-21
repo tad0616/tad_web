@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "files");
+$web_cate = new web_cate($WebID, "files", "tad_web_files");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_file_b3.html';
 } else {
@@ -80,7 +80,7 @@ function insert_tad_web_files()
 
     $_POST['WebID'] = intval($_POST['WebID']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web_files") . "
   (`uid` , `CateID` , `file_date`  , `WebID`)
@@ -108,7 +108,7 @@ function update_tad_web_files($fsn = "")
     $_POST['CateID'] = intval($_POST['CateID']);
     $_POST['WebID']  = intval($_POST['WebID']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "update " . $xoopsDB->prefix("tad_web_files") . " set
    `CateID` = '{$CateID}' ,
    `file_date` = now() ,

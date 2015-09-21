@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "link");
+$web_cate = new web_cate($WebID, "link", "tad_web_link");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_link_b3.html';
 } else {
@@ -108,7 +108,7 @@ function insert_tad_web_link()
     $_POST['LinkCounter'] = intval($_POST['LinkCounter']);
     $_POST['LinkSort']    = intval($_POST['LinkSort']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web_link") . "
       (`CateID`, `LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
@@ -138,7 +138,7 @@ function update_tad_web_link($LinkID = "")
     $_POST['LinkCounter'] = intval($_POST['LinkCounter']);
     $_POST['LinkSort']    = intval($_POST['LinkSort']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "update " . $xoopsDB->prefix("tad_web_link") . " set
    `CateID` = '{$CateID}' ,
    `LinkTitle` = '{$_POST['LinkTitle']}' ,

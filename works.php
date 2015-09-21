@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "works");
+$web_cate = new web_cate($WebID, "works", "tad_web_works");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_works_b3.html';
 } else {
@@ -98,7 +98,7 @@ function insert_tad_web_works()
     $_POST['WorkName'] = $myts->addSlashes($_POST['WorkName']);
     $_POST['WorkDesc'] = $myts->addSlashes($_POST['WorkDesc']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web_works") . "
     (`CateID`,`WorkName` , `WorkDesc` , `WorksDate` ,  `uid` , `WebID` , `WorksCount`)
@@ -127,7 +127,7 @@ function update_tad_web_works($WorksID = "")
 
     $_POST['WorksCount'] = intval($_POST['WorksCount']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "update " . $xoopsDB->prefix("tad_web_works") . " set
      `CateID` = '{$CateID}' ,
      `WorkName` = '{$_POST['WorkName']}' ,

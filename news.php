@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "news");
+$web_cate = new web_cate($WebID, "news", "tad_web_news");
 
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_news_b3.html';
@@ -194,7 +194,7 @@ function insert_tad_web_news()
         $_POST['toCal'] = "0000-00-00 00:00:00";
     }
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "insert into " . $xoopsDB->prefix("tad_web_news") . "
 	(`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsPlace` , `NewsMaster` , `NewsUrl` , `WebID` , `NewsKind` , `NewsCounter` , `uid`)
 	values('{$CateID}','{$_POST['NewsTitle']}' , '{$_POST['NewsContent']}' , '{$newstime}' , '{$_POST['toCal']}' , '{$_POST['NewsPlace']}' , '{$_POST['NewsMaster']}' , '{$_POST['NewsUrl']}' , '{$_POST['WebID']}' , '{$_POST['NewsKind']}' , '0' , '{$uid}')";
@@ -234,7 +234,7 @@ function update_tad_web_news($NewsID = "")
         $_POST['toCal'] = "0000-00-00 00:00:00";
     }
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "update " . $xoopsDB->prefix("tad_web_news") . " set
      `CateID` = '{$CateID}' ,
 	 `NewsTitle` = '{$_POST['NewsTitle']}' ,

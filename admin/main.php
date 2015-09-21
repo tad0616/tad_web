@@ -55,7 +55,7 @@ function list_all_web($defCateID = '')
         $xoopsTpl->assign('jquery', $jquery);
         $xoopsTpl->assign('CateID', $defCateID);
 
-        $web_cate = new web_cate("", "web_cate");
+        $web_cate = new web_cate("", "web_cate", "tad_web");
         $cate     = $web_cate->get_tad_web_cate_arr();
         $xoopsTpl->assign('cate', $cate);
 

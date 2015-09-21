@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "discuss");
+$web_cate = new web_cate($WebID, "discuss", "tad_web_discuss");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_discuss_b3.html';
 } else {
@@ -132,7 +132,7 @@ function insert_tad_web_discuss()
 
     $_POST['ReDiscussID'] = intval($_POST['ReDiscussID']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "insert into " . $xoopsDB->prefix("tad_web_discuss") . " 	(`CateID`,`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
 	values('{$CateID}'  ,'{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
     $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
@@ -178,7 +178,7 @@ function update_tad_web_discuss($DiscussID = "")
 
     $_POST['ReDiscussID'] = intval($_POST['ReDiscussID']);
 
-    $CateID = $web_cate->save_tad_web_cate();
+    $CateID = $web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
     $sql    = "update " . $xoopsDB->prefix("tad_web_discuss") . " set
      `CateID` = '{$CateID}' ,
 	 `ReDiscussID` = '{$_POST['ReDiscussID']}' ,
