@@ -1,5 +1,5 @@
 <{if $op=="tad_web_discuss_form"}>
-  <{if $LoginMemID=="" and $MyWebs==""}>
+  <{if $LoginMemID=="" and !$isMyWeb}>
     <{includeq file="db:tad_web_discuss_login_b3.html"}>
   <{else}>
 

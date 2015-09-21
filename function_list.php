@@ -573,5 +573,6 @@ function list_tad_web_discuss($WebID = "", $CateID = "", $limit = null)
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineDiscuss', isMine());
         $xoopsTpl->assign('showWebTitleDiscuss', $showWebTitle);
+        //$xoopsTpl->assign('WebID', $main_data);
     }
 }

@@ -14,9 +14,10 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //tad_web_discuss編輯表單
 function tad_web_discuss_form($DiscussID = "")
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin, $xoopsTpl, $web_cate;
+    global $xoopsDB, $xoopsUser, $WebID, $isAdmin, $xoopsTpl, $web_cate, $isMyWeb;
 
-    if (!isAdmin and !$MyWebs and empty($_SESSION['LoginMemID'])) {
+    if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
+        //die('isMyWeb:' . $isMyWeb);
         redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
     }
 
@@ -29,7 +30,7 @@ function tad_web_discuss_form($DiscussID = "")
 
     //預設值設定
 
-    if ($MyWebs) {
+    if ($isMyWeb) {
 
         //設定「uid」欄位預設值
         $uid = (!isset($DBV['uid'])) ? $xoopsUser->uid() : $DBV['uid'];
@@ -103,15 +104,16 @@ function tad_web_discuss_form($DiscussID = "")
     $xoopsTpl->assign('ReDiscussID', $ReDiscussID);
     $xoopsTpl->assign('next_op', $op);
     $xoopsTpl->assign('op', 'tad_web_discuss_form');
+    $xoopsTpl->assign('isMyWeb', $isMyWeb);
 
 }
 
 //新增資料到tad_web_discuss中
 function insert_tad_web_discuss()
 {
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $isAdmin, $web_cate;
+    global $xoopsDB, $xoopsUser, $WebID, $isMyWeb, $isAdmin, $web_cate;
 
-    if (empty($_SESSION['LoginMemID']) and !MyWebs and $isAdmin) {
+    if (empty($_SESSION['LoginMemID']) and !$isMyWeb and $isAdmin) {
         redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
     }
 
@@ -119,7 +121,7 @@ function insert_tad_web_discuss()
     $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
     $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
 
-    if ($MyWebs) {
+    if ($isMyWeb) {
         $uid     = $xoopsUser->uid();
         $MemID   = 0;
         $MemName = $xoopsUser->name();
@@ -156,9 +158,9 @@ function insert_tad_web_discuss()
 //更新tad_web_discuss某一筆資料
 function update_tad_web_discuss($DiscussID = "")
 {
-    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $MyWebs, $web_cate;
+    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $isMyWeb, $web_cate;
 
-    if ($MyWebs) {
+    if ($isMyWeb) {
         $uid     = $xoopsUser->uid();
         $MemID   = 0;
         $MemName = $xoopsUser->name();
@@ -208,21 +210,21 @@ function get_tad_web_discuss($DiscussID = "")
 //刪除tad_web_discuss某筆資料資料
 function delete_tad_web_discuss($DiscussID = "")
 {
-    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $MyWebs;
+    global $xoopsDB, $xoopsUser, $isAdmin, $WebID, $isMyWeb, $isMyWeb;
 
-    if ($MyWebs) {
-        $uid     = $xoopsUser->uid();
-        $MemID   = 0;
-        $MemName = $xoopsUser->name();
-        $WebID   = $WebID;
-        $anduid  = ($isAdmin) ? "" : "and `WebID`='{$WebID}'";
+    if ($isMyWeb) {
+        // $uid     = $xoopsUser->uid();
+        // $MemID   = 0;
+        // $MemName = $xoopsUser->name();
+        // $WebID   = $WebID;
+        $anduid = ($isAdmin) ? "" : "and `WebID`='{$WebID}'";
     } else {
 
-        $uid     = 0;
-        $MemID   = $_SESSION['LoginMemID'];
-        $MemName = $_SESSION['LoginMemName'];
-        $WebID   = $_SESSION['LoginWebID'];
-        $anduid  = "and `MemID`='{$MemID}'";
+        // $uid     = 0;
+        // $MemID   = $_SESSION['LoginMemID'];
+        // $MemName = $_SESSION['LoginMemName'];
+        // $WebID   = $_SESSION['LoginWebID'];
+        $anduid = "and `MemID`='{$MemID}'";
     }
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='$DiscussID' $anduid";
@@ -281,12 +283,12 @@ function show_one_tad_web_discuss($DiscussID = "")
 //是否有管理權（或由自己發布的），判斷是否要秀出管理工具
 function isMineDiscuss($DiscussMemID = null, $DiscussWebID = null)
 {
-    global $MyWebs, $isAdmin, $xoopsUser;
+    global $isMyWeb, $isAdmin, $xoopsUser;
 
     if (!empty($DiscussMemID) and $_SESSION['LoginMemID'] == $DiscussMemID) {
         return true;
 
-    } elseif (!empty($DiscussWebID) and $MyWebs == $DiscussWebID) {
+    } elseif (!empty($DiscussWebID) and $isMyWeb) {
         return true;
     } elseif ($isAdmin) {
         return true;
@@ -298,7 +300,7 @@ function isMineDiscuss($DiscussMemID = null, $DiscussWebID = null)
 //回覆的留言
 function get_re($DiscussID = "")
 {
-    global $xoopsDB, $MyWebs, $TadUpFiles;
+    global $xoopsDB, $isMyWeb, $TadUpFiles;
     if (empty($DiscussID)) {
         return;
     }

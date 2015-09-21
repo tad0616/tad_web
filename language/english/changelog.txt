@@ -1,3 +1,12 @@
+Tad Web version 1.3 release (2015-09-21 release)
+====================================================
+1. Fixed the issue that sites categories menu does not work.
+2. Fixed the issue that can not delete the members who empty name.
+3. Fixed the issue that can not download files in works page.
+4. New category management function.
+5. Fixed the issue that students guestbook messages can not be deleted
+
+
 Tad Web version 1.2 release (2015-09-17 release)
 ====================================================
 1. Fixed issue news page can not download the attached files.
