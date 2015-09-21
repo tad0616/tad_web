@@ -105,6 +105,12 @@
     </div>
   <{/if}>
 <{else}>
+  <h1><{$smarty.const._MD_TCW_VIDEO}></h1>
+  <{$cate_menu}>
   <{$FooTableJS}>
-  <{includeq file="db:tad_web_common_video.html"}>
+  <div class="row-fluid">
+    <div class="span12">
+      <{includeq file="db:tad_web_common_video.html"}>
+    </div>
+  </div>
 <{/if}>

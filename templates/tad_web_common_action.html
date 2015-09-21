@@ -8,35 +8,33 @@
     </script>
 <{/if}>
 
-
-<h1><{$smarty.const._MD_TCW_ACTION}></h1>
-  <{if $action_data}>
-    <{foreach item=act from=$action_data}>
-      <div style="width: 166px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
-        <div style="width: 160px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
-          <div style="width: 140px; height: 140px; background: #F1F7FF url('<{$act.ActionPic}>') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;">
-          </div>
+<{if $action_data}>
+  <{foreach item=act from=$action_data}>
+    <div style="width: 166px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
+      <div style="width: 160px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
+        <div style="width: 140px; height: 140px; background: #F1F7FF url('<{$act.ActionPic}>') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;">
         </div>
-        <div class="text-center" style="margin: 8px auto;">
-          <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
-          <{if !$showWebTitleAction && $isMineAction}>
-            <a href="javascript:delete_tad_web_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-            <a href="action.php?WebID=<{$WebID}>&op=tad_web_action_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
-          <{/if}>
-        </div>
-        <{if $showWebTitleAction}>
-          <div class="text-center">
-            <{$act.WebTitle}>
-          </div>
+      </div>
+      <div class="text-center" style="margin: 8px auto;">
+        <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
+        <{if !$showWebTitleAction && $isMineAction}>
+          <a href="javascript:delete_tad_web_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+          <a href="action.php?WebID=<{$WebID}>&op=tad_web_action_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
         <{/if}>
       </div>
-    <{/foreach}>
-    <div style="clear: both;"></div>
-  <{else}>
-    <div class="well">
-      <{$smarty.const._MD_TCW_EMPTY}>
+      <{if $showWebTitleAction}>
+        <div class="text-center">
+          <{$act.WebTitle}>
+        </div>
+      <{/if}>
     </div>
-  <{/if}>
+  <{/foreach}>
+  <div style="clear: both;"></div>
+<{else}>
+  <div class="well">
+    <{$smarty.const._MD_TCW_EMPTY}>
+  </div>
+<{/if}>
 
 <{if $action_data}>
   <{$bar}>

@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "tad_web_works", "works");
+$web_cate = new web_cate($WebID, "works");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_works_b3.html';
 } else {
@@ -250,6 +250,13 @@ switch ($op) {
         exit;
         break;
 
+    //下載檔案
+    case "tufdl":
+        $files_sn = isset($_GET['files_sn']) ? intval($_GET['files_sn']) : "";
+        $TadUpFiles->add_file_counter($files_sn);
+        exit;
+        break;
+
     //預設動作
     default:
         if (empty($WorksID)) {
@@ -262,5 +269,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once '/footer.php';
+include_once 'footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

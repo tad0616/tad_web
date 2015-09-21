@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "tad_web_discuss", "discuss");
+$web_cate = new web_cate($WebID, "discuss");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_discuss_b3.html';
 } else {
@@ -82,7 +82,7 @@ function tad_web_discuss_form($DiscussID = "")
     $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
 
     $new_cate  = empty($_SESSION['LoginMemID']) ? true : false;
-    $cate_menu = $web_cate->cate_menu($CateID, $new_cate);
+    $cate_menu = $web_cate->cate_menu($CateID, 'form', $new_cate);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
     $op = (empty($DiscussID)) ? "insert_tad_web_discuss" : "update_tad_web_discuss";
@@ -469,5 +469,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once '/footer.php';
+include_once 'footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

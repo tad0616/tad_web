@@ -31,7 +31,13 @@
     </form>
   </div>
 <{else}>
+  <h1><{$smarty.const._MD_TCW_FILES}></h1>
+  <{$cate_menu}>
   <{$FooTableJS}>
-  <{includeq file="db:tad_web_common_files_b3.html"}>
+  <div class="row">
+    <div class="col-md-12">
+      <{includeq file="db:tad_web_common_files_b3.html"}>
+    </div>
+  </div>
 <{/if}>
 

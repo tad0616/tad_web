@@ -1,7 +1,7 @@
 <?php
 /*
 
-$web_cate = new web_cate($WebID, "tad_web_news", "news");
+$web_cate = new web_cate($WebID, "news");
 
 //設定「CateID」欄位預設值
 $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
@@ -23,7 +23,7 @@ $xoopsTpl->assign('cate', $cate);
 </ol>
 
 //取得tad_web_cate所有資料陣列
-$web_cate = new web_cate($WebID, "tad_web_news", "news");
+$web_cate = new web_cate($WebID, "news");
 $web_cate->set_WebID($WebID);
 $cate = $web_cate->get_tad_web_cate_arr();
 
@@ -35,19 +35,14 @@ $cate = $web_cate->get_tad_web_cate_arr();
 class web_cate
 {
     public $WebID = 0;
-    public $tbl;
     public $ColName;
     public $ColSN = 0;
 
-    public function web_cate($WebID = "0", $tbl = "", $ColName = "")
+    public function web_cate($WebID = "0", $ColName = "")
     {
         global $xoopsDB;
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
-        }
-
-        if (!empty($tbl)) {
-            $this->set_tbl($tbl);
         }
 
         if (!empty($ColName)) {
@@ -63,18 +58,13 @@ class web_cate
         $this->WebID = $WebID;
     }
 
-    public function set_tbl($tbl = "")
-    {
-        $this->tbl = $tbl;
-    }
-
     public function set_ColName($ColName = "")
     {
         $this->ColName = $ColName;
     }
 
     //分類選單
-    public function cate_menu($defCateID = "", $newCate = true)
+    public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false)
     {
         global $xoopsDB;
 
@@ -98,33 +88,42 @@ class web_cate
         $form_group   = $_SESSION['bootstrap'] == '3' ? 'form-group' : 'control-group';
         $form_control = $_SESSION['bootstrap'] == '3' ? 'form-control' : 'span12';
 
+        $tools = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}' class='btn btn-warning' >" . _MD_TCW_CATE_TOOLS . "</a></div>" : "";
+
         if ($option) {
+            $onchange  = $change_page ? "onchange=\"location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&CateID=' + this.value\"" : "";
             $cate_menu = "
             <div class=\"{$span}3\">
-              <select name='CateID' id='CateID' class='{$form_control}'>
+              <select name='CateID' id='CateID' class='{$form_control}' {$onchange}>
                 <option value=''>" . _MD_TCW_SELECT_CATE . "</option>
                 {$option}
               </select>
-            </div>";
+            </div>
+            ";
         } else {
             $cate_menu = "";
         }
         if ($newCate) {
             $new_input = "
             <div class=\"{$span}4\">
-            <input type='text' name='newCateName' placeholder='" . _MD_TCW_NEW_CATE . "' class='{$form_control}'>
-          </div>";
+              <input type='text' name='newCateName' placeholder='" . _MD_TCW_NEW_CATE . "' class='{$form_control}'>
+            </div>";
         } else {
             $new_input = "";
         }
 
-        $menu = "
-        <div class=\"{$form_group}\">
-          <label class=\"{$span}2 control-label\">
+        $label = $show_label ? "<label class=\"{$span}2 control-label\">
           " . _MD_TCW_SELECT_CATE . "
-          </label>
+          </label>" : "";
+
+        $row = ($mode == "form") ? $form_group : $row;
+
+        $menu = "
+        <div class=\"{$row}\" style=\"margin:10px 0px;\">
+          $label
           $cate_menu
           $new_input
+          $tools
         </div>
         ";
         return $menu;

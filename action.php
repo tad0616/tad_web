@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "tad_web_action", "action");
+$web_cate = new web_cate($WebID, "action");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_action_b3.html';
 } else {
@@ -268,5 +268,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once '/footer.php';
+include_once 'footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

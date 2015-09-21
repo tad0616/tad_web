@@ -262,3 +262,6 @@ define("_MD_TCW_WORKS_COUNT", "人氣");
 
 define("_MD_TCW_NEW_CATE", "建立新分類");
 define("_MD_TCW_SELECT_CATE", "選擇分類");
+define("_MD_TCW_CATE_TOOLS", "分類管理");
+define("_MD_TCW_DEL_CATE", "刪除分類");
+define("_MD_TCW_EDIT_CATE", "編輯分類");

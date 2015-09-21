@@ -261,3 +261,6 @@ define("_MD_TCW_WORKS_COUNT", "Counter");
 
 define("_MD_TCW_NEW_CATE", "New Categories");
 define("_MD_TCW_SELECT_CATE", "Select Category");
+define("_MD_TCW_CATE_TOOLS", "Category Tools");
+define("_MD_TCW_DEL_CATE", "Delete Category");
+define("_MD_TCW_EDIT_CATE", "Edit Category");

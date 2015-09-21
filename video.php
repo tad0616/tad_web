@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$web_cate = new web_cate($WebID, "tad_web_video", "video");
+$web_cate = new web_cate($WebID, "video");
 if (!empty($_GET['WebID'])) {
     $xoopsOption['template_main'] = 'tad_web_video_b3.html';
 } else {
@@ -294,5 +294,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once '/footer.php';
+include_once 'footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

@@ -22,7 +22,7 @@
               <a href="news.php?op=tad_web_news_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </h3>
-          <div class="well" style="mini-height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
+          <div class="well" style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
             <{if $news_data.0.cate.CateID}>
               <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$news_data.0.cate.CateName}></a></span>
             <{/if}>

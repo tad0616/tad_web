@@ -1,0 +1,28 @@
+<{$formValidator_code}>
+
+<h1><{$smarty.const._MD_TCW_CATE_TOOLS}></h1>
+
+<form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+  <{foreach from=$cate item=cate}>
+      <!--<{$cate.CateName}>-->
+    <div class="control-group">
+      <label class="span2 control-label">
+        <{$cate.CateName}>
+      </label>
+      <div class="span3 controls">
+        <input type="text" name="CateID[<{$cate.CateID}>]" value="<{$cate.CateName}>" id="CateID<{$cate.CateID}>" class="validate[required] span12">
+      </div>
+    </div>
+  <{/foreach}>
+
+  <div class="control-group">
+    <div class="span12 text-center">
+
+      <input type="hidden" name="ColName" value="<{$ColName}>">
+      <input type="hidden" name="WebID" value="<{$WebID}>">
+      <input type="hidden" name="op" value="save_cate">
+      <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+    </div>
+  </div>
+</form>

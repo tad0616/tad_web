@@ -91,7 +91,14 @@
   <{/if}>
 
 <{else}>
+  <h1><{$smarty.const._MD_TCW_DISCUSS}></h1>
+  <{$cate_menu}>
+
   <{$FooTableJS}>
-  <{includeq file="db:tad_web_discuss_login.html"}>
-  <{includeq file="db:tad_web_common_discuss.html"}>
+    <div class="row-fluid">
+      <div class="span12">
+        <{includeq file="db:tad_web_discuss_login.html"}>
+        <{includeq file="db:tad_web_common_discuss.html"}>
+      </div>
+    </div>
 <{/if}>

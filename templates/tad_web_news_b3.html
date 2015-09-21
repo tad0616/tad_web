@@ -1,13 +1,9 @@
 <{if $mode=="list"}>
-  <{if $cate}>
-    <h1><{$cate.CateName}></h1>
-    <ol class="breadcrumb">
-      <li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>"><{$HomeTitle}></a></li>
-      <{if $cate.CateID}><li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
-    </ol>
-  <{else}>
-    <h1><{$HomeTitle}></h1>
-  <{/if}>
+
+  <h1><{$HomeTitle}></h1>
+
+  <{$cate_menu}>
+
   <{$FooTableJS}>
   <{if $smarty.const._NEWS_KIND=="homework"}>
     <{includeq file="db:tad_web_common_homework_b3.html"}>
@@ -77,7 +73,7 @@
 
   <{if $NewsContent}>
     <{if $smarty.const._NEWS_KIND=="homework"}>
-      <div style="mini-height: 100px; overflow: auto; line-height: 1.8; background-color: #FFFFFF; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
+      <div style="min-height: 100px; overflow: auto; line-height: 1.8; background-color: #FFFFFF; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
          <{$NewsContent}>
       </div>
     <{else}>

@@ -655,7 +655,7 @@ function get_tad_web_cate_menu_options($default_CateID = "0")
 function get_tad_web_cate_all()
 {
     global $xoopsDB;
-    $web_cate = new web_cate('0', '', "web_cate");
+    $web_cate = new web_cate('0', "web_cate");
     $cate     = $web_cate->get_tad_web_cate_arr();
 
     $webs = get_web_cate_arr();
