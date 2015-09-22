@@ -11,10 +11,12 @@
 <{if $action_data}>
   <{foreach item=act from=$action_data}>
     <div style="width: 156px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
-      <div style="width: 150px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
+      <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
+        <div style="width: 150px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
         <div style="width: 140px; height: 140px; background: #F1F7FF url('<{$act.ActionPic}>') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;">
         </div>
-      </div>
+        </div>
+      </a>
       <div class="text-center" style="margin: 8px auto;">
         <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
         <{if !$showWebTitleAction && $isMineAction}>
