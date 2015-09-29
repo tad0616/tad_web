@@ -89,6 +89,7 @@ define("_MD_TCW_CATE_PLUGIN_ENABLE", "是否啟用");
 define("_MD_TCW_CATE_PLUGIN_TITLE", "功能名稱");
 define("_MD_TCW_CATE_PLUGIN_NEW_NAME", "自訂名稱");
 define("_MD_TCW_CATE_PLUGIN_IN_FRONTPAGE", "在首頁顯示/資料數");
+define("_MD_TCW_ADD", "新增");
 
 $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
 if (is_dir($dir)) {

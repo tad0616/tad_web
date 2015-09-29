@@ -1,0 +1,70 @@
+<link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+<div class="container-fluid">
+  <!--顯示表單-->
+  <{if $now_op=="tad_web_cate_form"}>
+
+    <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_core.js"></script>
+    <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_spry_linkedselect.js"></script>
+    <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
+
+    <script type="text/javascript">
+
+      function getOptions()
+      {
+
+        var values = [];
+        var sel = document.getElementById('destination');
+        for (var i=0, n=sel.options.length;i<n;i++) {
+          if (sel.options[i].value) values.push(sel.options[i].value);
+        }
+        var hide_id='web_setup_show_arr';
+        document.getElementById(hide_id).value=values.join(',');
+
+
+        var values2 = [];
+        var sel2 = document.getElementById('repository');
+        for (var i=0, n=sel2.options.length;i<n;i++) {
+          if (sel2.options[i].value) values2.push(sel2.options[i].value);
+        }
+        var hide_id2='web_setup_hide_arr';
+        document.getElementById(hide_id2).value=values2.join(',');
+      }
+    </script>
+
+    <form action="setup.php" method="post" id="myForm" class="form-horizontal" role="form">
+      <div class="form-group">
+        <div class="col-md-5">
+          <select id="repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control" style="height: 200px;">
+            <{foreach from=$repository item=opt}>
+              <{if $opt.dirname}>
+                <option value="<{$opt.dirname}>"><{$opt.title}></option>
+              <{/if}>
+            <{/foreach}>
+          </select>
+
+        </div>
+        <div class="col-md-1 text-center">
+          <img src="<{$xoops_url}>/modules/tad_web/images/right.png" onclick="tmt.spry.linkedselect.util.moveOptions('repository', 'destination'); getOptions();" alt="right"><br>
+          <img src="<{$xoops_url}>/modules/tad_web/images/left.png" onclick="tmt.spry.linkedselect.util.moveOptions('destination' , 'repository'); getOptions();" alt="left"><br><br>
+
+          <img src="<{$xoops_url}>/modules/tad_web/images/up.png" onclick="tmt.spry.linkedselect.util.moveOptionUp('destination'); getOptions();" alt="up"><br>
+          <img src="<{$xoops_url}>/modules/tad_web/images/down.png" onclick="tmt.spry.linkedselect.util.moveOptionDown('destination'); getOptions();" alt="down"><br><br>
+
+          <input type='hidden' name='web_cate_arr' id='web_setup_show_arr' value='<{$web_setup_show_arr}>'>
+          <input type='hidden' name='web_setup_hide_arr' id='web_setup_hide_arr' value='<{$web_setup_hide_arr}>'>
+          <input type="hidden" name="op" value="save_tad_web_setup">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        </div>
+        <div class="col-md-5">
+          <select id="destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control" style="height: 200px;">
+            <{foreach from=$destination item=opt}>
+              <{if $opt.dirname}>
+                <option value="<{$opt.dirname}>"><{$opt.title}></option>
+              <{/if}>
+            <{/foreach}>
+          </select>
+        </div>
+      </div>
+    </form>
+  <{/if}>
+</div>

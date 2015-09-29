@@ -21,6 +21,12 @@ $adminmenu[$i]['desc']  = _MI_TCW_ADMENU2;
 $adminmenu[$i]['icon']  = "{$icon_dir}category.png";
 
 $i++;
+$adminmenu[$i]['title'] = _MI_TCW_ADMENU3;
+$adminmenu[$i]['link']  = "admin/setup.php";
+$adminmenu[$i]['desc']  = _MI_TCW_ADMENU3;
+$adminmenu[$i]['icon']  = "{$icon_dir}setup.png";
+
+$i++;
 $adminmenu[$i]['title'] = _MI_TAD_ADMIN_ABOUT;
 $adminmenu[$i]['link']  = 'admin/about.php';
 $adminmenu[$i]['desc']  = _MI_TAD_ADMIN_ABOUT_DESC;

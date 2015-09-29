@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
-$modversion['version']     = 1.3;
+$modversion['version']     = 1.4;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author']      = _MI_TCW_AUTHOR;
 $modversion['credits']     = _MI_TCW_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2015/09/21';
+$modversion['release_date']        = '2015/09/30';
 $modversion['module_website_url']  = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -37,18 +37,9 @@ $modversion['system_menu'] = 1;
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
 $modversion['tables'][]         = "tad_web";
 $modversion['tables'][]         = "tad_web_cate";
-$modversion['tables'][]         = "tad_web_mems";
-$modversion['tables'][]         = "tad_web_link_mems";
-$modversion['tables'][]         = "tad_web_link";
-$modversion['tables'][]         = "tad_web_news";
-$modversion['tables'][]         = "tad_web_action";
-$modversion['tables'][]         = "tad_web_discuss";
 $modversion['tables'][]         = "tad_web_files_center";
-$modversion['tables'][]         = "tad_web_files";
-$modversion['tables'][]         = "tad_web_video";
 $modversion['tables'][]         = "tad_web_config";
-$modversion['tables'][]         = "tad_web_works";
-$modversion['tables'][]         = "tad_web_homework";
+$modversion['tables'][]         = "tad_web_plugins";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;
@@ -68,21 +59,6 @@ $modversion['hasMain'] = 1;
 // $i++;
 // $modversion['sub'][$i]['name'] = _MI_TCW_NEWS;
 // $modversion['sub'][$i]['url']  = "news.php";
-// $i++;
-// $modversion['sub'][$i]['name'] = _MI_TCW_ACTION;
-// $modversion['sub'][$i]['url']  = "action.php";
-// $i++;
-// $modversion['sub'][$i]['name'] = _MI_TCW_VIDEO;
-// $modversion['sub'][$i]['url']  = "video.php";
-// $i++;
-// $modversion['sub'][$i]['name'] = _MI_TCW_FILES;
-// $modversion['sub'][$i]['url']  = "files.php";
-// $i++;
-// $modversion['sub'][$i]['name'] = _MI_TCW_LINK;
-// $modversion['sub'][$i]['url']  = "link.php";
-// $i++;
-// $modversion['sub'][$i]['name'] = _MI_TCW_DISCUSS;
-// $modversion['sub'][$i]['url']  = "discuss.php";
 
 //---樣板設定---//
 $i                                          = 1;
@@ -108,6 +84,14 @@ $modversion['templates'][$i]['description'] = "tad_web_adm_cate.html";
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_adm_cate_b3.html';
 $modversion['templates'][$i]['description'] = "tad_web_adm_cate_b3.html";
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_setup.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_setup.html";
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_setup_b3.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_setup_b3.html";
 
 //tad_web_config.html 不需要
 

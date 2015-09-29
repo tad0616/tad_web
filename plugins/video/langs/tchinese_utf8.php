@@ -1,6 +1,5 @@
 <?php
 define("_MD_TCW_VIDEO", "線上影片");
-define("_MD_TCW_VIDEO_SHORT", "影片");
 define("_MD_TCW_VIDEO_ADD", "發布影片");
 define("_MD_TCW_VIDEO_SHORT", "影片");
 define("_MD_TCW_VIDEOID", "影片編號");

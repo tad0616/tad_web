@@ -222,6 +222,7 @@ class web_cate
     {
         global $xoopsDB;
         $counter = $this->tad_web_cate_data_counter();
+        $arr     = "";
         $sql     = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' order by CateSort";
         $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
         while ($data = $xoopsDB->fetchArray($result)) {
@@ -305,9 +306,9 @@ class web_cate
         } else {
             $table = $this->Tbl;
         }
-
-        $sql    = "select count(*),CateID from `" . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $counter = "";
+        $sql     = "select count(*),CateID from `" . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
+        $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
         while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {
             $counter[$CateID] = $count;
         }

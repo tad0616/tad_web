@@ -537,6 +537,8 @@ function save_webs_title($webTitles = array())
 
         $TadUpFiles->set_col("WebLogo", $WebID);
         $TadUpFiles->upload_file('upfile', 246, null, null, null, true);
+
+        mk_menu_var_file($WebID);
         mklogoPic($WebID);
     }
     return $WebID;

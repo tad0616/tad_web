@@ -16,7 +16,7 @@ class Tad_WebCorePreload extends XoopsPreloadItem
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
         list($tt_bootstrap_color) = $xoopsDB->fetchRow($result);
-        if ($_GET['WebID']) {
+        if (isset($_GET['WebID']) and !empty($_GET['WebID'])) {
             $_SESSION['bootstrap']     = 3;
             $_SESSION['web_bootstrap'] = 3;
         } else {
@@ -34,7 +34,7 @@ class Tad_WebCorePreload extends XoopsPreloadItem
             }
         }
 
-        if ($_REQUEST['WebID'] and strpos($_SERVER['PHP_SELF'], "modules/tad_web") !== false and strpos($_SERVER['REQUEST_URI'], "?WebID=") !== false) {
+        if (isset($_REQUEST['WebID']) and !empty($_REQUEST['WebID']) and strpos($_SERVER['PHP_SELF'], "modules/tad_web") !== false and strpos($_SERVER['REQUEST_URI'], "?WebID=") !== false) {
 
             $GLOBALS['xoopsConfig']['theme_set_allowed'][] = "for_tad_web_theme";
             $_REQUEST['xoops_theme_select']                = "for_tad_web_theme";

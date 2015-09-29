@@ -3,7 +3,27 @@ function xoops_module_install_tad_web(&$module)
 {
 
     mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web");
+    chk_sql();
     return true;
+}
+
+function chk_sql()
+{
+    global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $dir_plugins = get_dir_plugins();
+    foreach ($dir_plugins as $dirname) {
+        include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
+        if (!empty($pluginConfig['sql'])) {
+            foreach ($pluginConfig['sql'] as $sql_name) {
+                $sql    = "select count(*) from " . $xoopsDB->prefix($sql_name);
+                $result = $xoopsDB->query($sql);
+                if (empty($result)) {
+                    $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
+                }
+            }
+        }
+    }
 }
 
 //建立目錄

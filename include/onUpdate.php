@@ -44,6 +44,7 @@ function xoops_module_update_tad_web(&$module, $old_version)
         go_update10();
     }
 
+    chk_sql();
     go_update_var();
 
     return true;
@@ -51,11 +52,29 @@ function xoops_module_update_tad_web(&$module, $old_version)
 
 function go_update_var()
 {
-    global $xoopsDB;
-    include XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $Webs = getAllWebInfo('WebTitle');
     foreach ($Webs as $WebID => $WebTitle) {
         mk_menu_var_file($WebID);
+    }
+}
+
+function chk_sql()
+{
+    global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $dir_plugins = get_dir_plugins();
+    foreach ($dir_plugins as $dirname) {
+        include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
+        if (!empty($pluginConfig['sql'])) {
+            foreach ($pluginConfig['sql'] as $sql_name) {
+                $sql    = "select count(*) from " . $xoopsDB->prefix($sql_name);
+                $result = $xoopsDB->query($sql);
+                if (empty($result)) {
+                    $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
+                }
+            }
+        }
     }
 }
 
@@ -194,13 +213,13 @@ function go_update5()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_files_center") . "
-  ADD `original_filename` varchar(255) NOT NULL default '',
-  ADD `hash_filename` varchar(255) NOT NULL default '',
-  ADD `sub_dir` varchar(255) NOT NULL default ''";
+      ADD `original_filename` varchar(255) NOT NULL default '',
+      ADD `hash_filename` varchar(255) NOT NULL default '',
+      ADD `sub_dir` varchar(255) NOT NULL default ''";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
 
     $sql = "update " . $xoopsDB->prefix("tad_web_files_center") . " set
-  `original_filename`=`description`";
+    `original_filename`=`description`";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
 }
 

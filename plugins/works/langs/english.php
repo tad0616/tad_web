@@ -1,6 +1,5 @@
 <?php
 define("_MD_TCW_WORKS", "Works Gallery");
-define("_MD_TCW_WORKS_SHORT", "Works");
 define("_MD_TCW_WORKS_ADD", "Upload works");
 define("_MD_TCW_WORKS_SHORT", "Works");
 define("_MD_TCW_WORKS_ID", "Works ID");

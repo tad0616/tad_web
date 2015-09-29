@@ -141,13 +141,13 @@
             </a>
           </td>
           <td>
-            <a href="<{$plugin.url}>&op=edit_form" title="<{$smarty.const._TAD_ADD}>">
+            <a href="<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
               <i class="fa fa-pencil"></i>
             </a>
           </td>
           <td>
             <{if $plugin.cate=='1'}>
-              <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>"  title="<{$smarty.const._MD_TCW_CATE_TOOLS}>">
+              <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>"  title="<{$plugin.short}><{$smarty.const._MB_TCW_CATE_TOOLS}>">
                 <i class="fa fa-folder-open"></i>
               </a>
             <{/if}>

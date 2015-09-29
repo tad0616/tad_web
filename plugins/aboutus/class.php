@@ -562,12 +562,13 @@ class tad_web_aboutus
         global $xoopsDB;
         $web_cate = new web_cate('0', "web_cate", $table);
         $cate     = $web_cate->get_tad_web_cate_arr();
-
-        $webs = get_web_cate_arr();
-
-        foreach ($cate as $CateID => $data) {
-            $data_arr[$CateID]         = $data;
-            $data_arr[$CateID]['webs'] = $webs[$CateID];
+        $webs     = get_web_cate_arr();
+        $data_arr = "";
+        if (is_array($cate)) {
+            foreach ($cate as $CateID => $data) {
+                $data_arr[$CateID]         = $data;
+                $data_arr[$CateID]['webs'] = $webs[$CateID];
+            }
         }
         return $data_arr;
     }

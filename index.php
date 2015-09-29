@@ -26,7 +26,7 @@ function ClassHome($WebID = "")
         include_once "plugins/{$dirname}/class.php";
         $plugin_name  = "tad_web_{$dirname}";
         $$plugin_name = new $plugin_name($WebID);
-        $$plugin_name->list_all($CateID, $plugin['db']['limit']);
+        $$plugin_name->list_all('', $plugin['db']['limit']);
 
     }
 
@@ -48,8 +48,8 @@ function list_all_class()
         $dirname = $plugin['dirname'];
         include_once "plugins/{$dirname}/class.php";
         $plugin_name  = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name();
-        $$plugin_name->list_all($CateID, 5);
+        $$plugin_name = new $plugin_name(0);
+        $$plugin_name->list_all('', 5);
     }
 }
 

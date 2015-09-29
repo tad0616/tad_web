@@ -6,10 +6,25 @@ function xoops_module_uninstall_tad_web(&$module)
 
     rename(XOOPS_ROOT_PATH . "/uploads/tad_web", XOOPS_ROOT_PATH . "/uploads/tad_web_bak_{$date}");
 
-    //full_copy(XOOPS_ROOT_PATH."/uploads/ck2_gallery",XOOPS_ROOT_PATH."/uploads/ck2_gallery_bak_{$date}");
-    //delete_directory(XOOPS_ROOT_PATH."/uploads/ck2_gallery");
+    uninstall_sql();
 
     return true;
+}
+
+function uninstall_sql()
+{
+    global $xoopsDB;
+    include XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $dir_plugins = get_dir_plugins();
+    foreach ($dir_plugins as $dirname) {
+        include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
+        if (!empty($pluginConfig['sql'])) {
+            foreach ($pluginConfig['sql'] as $sql_name) {
+                $sql    = "DROP TABLE " . $xoopsDB->prefix($sql_name);
+                $result = $xoopsDB->query($sql);
+            }
+        }
+    }
 }
 
 function delete_directory($dirname)

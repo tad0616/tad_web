@@ -1,6 +1,5 @@
 <?php
 define('_MD_TCW_VIDEO', 'Online video');
-define("_MD_TCW_VIDEO_SHORT", "Video");
 define("_MD_TCW_VIDEO_ADD", "Add video");
 define('_MD_TCW_VIDEO_SHORT', 'Film');
 define('_MD_TCW_VIDEOID', 'Video number');

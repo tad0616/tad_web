@@ -93,6 +93,7 @@ define("_MD_TCW_CATE_PLUGIN_ENABLE", "Enable");
 define("_MD_TCW_CATE_PLUGIN_TITLE", "Title");
 define("_MD_TCW_CATE_PLUGIN_NEW_NAME", "New Title");
 define("_MD_TCW_CATE_PLUGIN_IN_FRONTPAGE", "Display in frontpage? / Display number?");
+define("_MD_TCW_ADD", "Add");
 
 $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
 if (is_dir($dir)) {
