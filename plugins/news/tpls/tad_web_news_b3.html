@@ -1,0 +1,173 @@
+<{if $op=="edit_form"}>
+
+  <{$formValidator_code}>
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+  <{if $smarty.const._NEWS_KIND=="homework"}>
+    <h1><{$smarty.const._MD_TCW_HOMEWORK_ADD}></h1>
+  <{else}>
+    <h1><{$smarty.const._MD_TCW_NEWS_ADD}></h1>
+  <{/if}>
+  <div class="well">
+    <form action="<{$smarty.const._NEWS_KIND}>.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+      <!--分類-->
+      <{if $smarty.const._NEWS_KIND!="homework"}>
+        <{$cate_menu}>
+      <{/if}>
+      <!--標題-->
+      <div class="form-group">
+        <div class="col-md-12">
+          <input name="NewsTitle" id="NewsTitle" class="validate[required] form-control" type="text" value="<{$NewsTitle}>" placeholder="<{$smarty.const._MD_TCW_NEWSTITLE}>">
+        </div>
+      </div>
+
+      <!--內容-->
+      <div class="form-group">
+        <div class="col-md-12">
+           <{$NewsContent_editor}>
+        </div>
+      </div>
+
+      <!--地點-->
+      <{if $SHOW_NEWS_PLACE || SHOW_NEWS_MASTER}>
+        <div class="form-group">
+          <{if $SHOW_NEWS_PLACE}>
+            <label class="col-md-2 control-label">
+              <{$smarty.const._MD_TCW_NEWSPLACE}>
+            </label>
+            <div class="col-md-10">
+              <input type="text" name="NewsPlace"  value="<{$NewsPlace}>" id="NewsPlace" class="form-control">
+            </div>
+          <{/if}>
+
+          <!--主持人-->
+          <{if $SHOW_NEWS_MASTER}>
+            <label class="col-md-2 control-label">
+              <{$smarty.const._MD_TCW_NEWSMASTER}>
+            </label>
+            <div class="col-md-10">
+              <input type="text" name="NewsMaster" value="<{$NewsMaster}>" id="NewsMaster" class="form-control">
+            </div>
+          <{/if}>
+        </div>
+      <{/if}>
+
+      <!--相關連結-->
+      <{if $SHOW_NEWS_URL}>
+        <div class="form-group">
+          <label class="col-md-2 control-label">
+            <{$smarty.const._MD_TCW_NEWSURL}>
+          </label>
+          <div class="col-md-10">
+            <input type="text" name="NewsUrl" value="<{$NewsUrl}>" id="NewsUrl" class="form-control">
+          </div>
+        </div>
+      <{/if}>
+
+
+      <{if $USE_NEWS_FORM_DATETIME || SHOW_NEWS_TOCAL}>
+        <div class="form-group">
+          <!--發布時間-->
+          <{if $USE_NEWS_FORM_DATETIME}>
+            <label class="col-md-2 control-label">
+              <{$smarty.const._MD_TCW_DISCUSSDATE}>
+            </label>
+            <div class="col-md-4">
+              <input type="text" name="NewsDate" value="<{$NewsDate}>" id="NewsDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m}'})" class="form-control">
+            </div>
+          <{/if}>
+
+          <!--加到行事曆-->
+          <{if $SHOW_NEWS_TOCAL}>
+            <label class="col-md-2 control-label">
+              <{$smarty.const._MD_TCW_TOCAL}>
+            </label>
+            <div class="col-md-4">
+              <input type="text" name="toCal" value="<{$toCal}>" id="toCal" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}'})" class="form-control" placeholder="<{$smarty.const._NEWS_TOCAL_DESC}>">
+            </div>
+          <{/if}>
+        </div>
+      <{/if}>
+
+      <!--相關附件-->
+      <{if $SHOW_NEWS_UPLOAD}>
+        <div class="form-group">
+          <label class="col-md-2 control-label">
+            <{$smarty.const._MD_TCW_NEWS_FILES}>
+          </label>
+          <div class="col-md-10">
+            <{$upform}>
+          </div>
+        </div>
+      <{/if}>
+
+
+      <div class="text-center">
+        <!--文章種類-->
+        <input type="hidden" name="NewsKind" value="<{$smarty.const._NEWS_KIND}>">
+        <!--編號-->
+        <input type="hidden" name="NewsID" value="<{$NewsID}>">
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+
+        <input type="hidden" name="op" value="<{$op}>">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+      </div>
+    </form>
+  </div>
+<{elseif $op=="show_one"}>
+
+  <{if $isMine}>
+    <script>
+    function delete_func(NewsID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="<{$smarty.const._NEWS_KIND}>.php?op=delete&NewsID=" + NewsID;
+    }
+    </script>
+  <{/if}>
+
+  <h1><{$NewsTitle}></h1>
+  <ol class="breadcrumb">
+    <li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_NEWS}></a></li>
+    <{if $cate.CateID}><li><a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <li><{$NewsInfo}></li>
+  </ol>
+
+  <{if $NewsContent}>
+    <{if $smarty.const._NEWS_KIND=="homework"}>
+      <div style="min-height: 100px; overflow: auto; line-height: 1.8; background-color: #FFFFFF; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
+         <{$NewsContent}>
+      </div>
+    <{else}>
+      <div class="well">
+       <{$NewsContent}>
+      </div>
+    <{/if}>
+  <{/if}>
+
+  <{$NewsUrlTxt}>
+
+  <{$NewsFiles}>
+
+  <{if $isMine}>
+    <div class="text-right">
+      <a href="javascript:delete_func(<{$NewsID}>);" class='btn btn-danger'><{$smarty.const._TAD_DEL}></a>
+      <a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
+      <a href="<{$smarty.const._NEWS_KIND}>.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$NewsID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+    </div>
+  <{/if}>
+<{else}>
+  <{if $WebID==""}>
+    <h1><{$smarty.const._MD_TCW_NEWS}></h1>
+  <{else}>
+    <h1><{$the_plugin.PluginTitle}></h1>
+  <{/if}>
+
+  <{$cate_menu}>
+
+  <{$FooTableJS}>
+
+  <{includeq file="$xoops_rootpath/modules/tad_web/plugins/news/tpls/tad_web_common_news_b3.html"}>
+
+  <div class="clearfix"></div>
+<{/if}>

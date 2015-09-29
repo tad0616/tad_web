@@ -1,0 +1,108 @@
+<{if $op=="edit_form"}>
+  <{if $LoginMemID=="" and !$isMyWeb}>
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_discuss_login_b3.html"}>
+  <{else}>
+
+    <{$formValidator_code}>
+    <h1><{$smarty.const._MD_TCW_DISCUSS_ADD}></h1>
+    <div class="well">
+      <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+      <!--分類-->
+      <{$cate_menu}>
+
+      <!--標題-->
+      <div class="form-group">
+        <div class="col-md-12">
+          <input type="text" name="DiscussTitle" value="<{$DiscussTitle}>" id="DiscussTitle" class="form-control validate[required]" placeholder="<{$smarty.const._MD_TCW_DISCUSSTITLE}>">
+        </div>
+      </div>
+
+      <!--內容-->
+      <div class="form-group">
+        <div class="col-md-12">
+          <textarea name="DiscussContent" class="form-control" rows=15 id="DiscussContent" placehold="<{$smarty.const._MD_TCW_DISCUSSCONTENT}>"><{$DiscussContent}></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-12 text-center">
+          <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="DiscussID" value="<{$DiscussID}>">
+          <input type="hidden" name="ReDiscussID" value="<{$ReDiscussID}>">
+          <input type="hidden" name="LoginWebID" value="<{$LoginWebID}>">
+
+          <input type="hidden" name="op" value="<{$next_op}>">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_DISCUSS_SUBMIT}></button>
+        </div>
+      </div>
+      </form>
+    </div>
+  <{/if}>
+
+<{elseif $op=="show_one"}>
+
+  <link href="bubble.css" rel="stylesheet" type="text/css">
+  <script>
+  	function delete_func(DiscussID){
+  		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+  		if (!sure)	return;
+  		location.href="discuss.php?op=delete&DiscussID=" + DiscussID;
+  	}
+  </script>
+
+  <h1><{$DiscussTitle}></h1>
+  <div style="text-align:right;font-size:12px;">
+    <{$DiscussInfo}>
+    <{if $isMineDiscuss}>
+      <a href="javascript:delete_func(<{$DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+      <a href="discuss.php?WebID=<{$WebID}>&op=edit_form&DiscussID=<{$DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+    <{/if}>
+  </div>
+
+  <{if $DiscussContent}>
+    <div class="well" style="line-height:180%;">
+      <{$DiscussContent}>
+    </div>
+  <{/if}>
+
+  <{$re}>
+
+  <{if $LoginMemID or $MyWebs}>
+    <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+      <div class="form-group">
+        <div class="col-md-12">
+          <textarea name="DiscussContent" class="form-control" rows=8 id="DiscussContent" class="validate[required , length[10,9999]]"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-12">
+          <input type="hidden" name="WebID" value="<{$WebID}>">
+
+          <!--回覆編號-->
+          <input type="hidden" name="ReDiscussID" value="<{$DiscussID}>">
+          <input type="hidden" name="DiscussTitle" value="Re:<{$DiscussTitle}>" id="DiscussTitle">
+          <input type="hidden" name="op" value="insert">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_DISCUSS_TO_REPLY}></button>
+        </div>
+      </div>
+    </form>
+  <{/if}>
+
+<{else}>
+  <{if $WebID==""}>
+    <h1><{$smarty.const._MD_TCW_DISCUSS}></h1>
+  <{else}>
+    <h1><{$the_plugin.PluginTitle}></h1>
+  <{/if}>
+
+  <{$cate_menu}>
+  <{$FooTableJS}>
+  <div class="row">
+    <div class="col-md-12">
+      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_discuss_login_b3.html"}>
+      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_common_discuss_b3.html"}>
+    </div>
+  </div>
+<{/if}>

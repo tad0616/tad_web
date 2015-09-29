@@ -48,6 +48,7 @@ $modversion['tables'][]         = "tad_web_files";
 $modversion['tables'][]         = "tad_web_video";
 $modversion['tables'][]         = "tad_web_config";
 $modversion['tables'][]         = "tad_web_works";
+$modversion['tables'][]         = "tad_web_homework";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;
@@ -61,27 +62,27 @@ $modversion['onUninstall'] = "include/onUninstall.php";
 //---使用者主選單設定---//
 $modversion['hasMain'] = 1;
 
-$i                             = 0;
-$modversion['sub'][$i]['name'] = _MI_TCW_ABOUTUS;
-$modversion['sub'][$i]['url']  = "aboutus.php";
-$i++;
-$modversion['sub'][$i]['name'] = _MI_TCW_NEWS;
-$modversion['sub'][$i]['url']  = "news.php";
-$i++;
-$modversion['sub'][$i]['name'] = _MI_TCW_ACTION;
-$modversion['sub'][$i]['url']  = "action.php";
-$i++;
-$modversion['sub'][$i]['name'] = _MI_TCW_VIDEO;
-$modversion['sub'][$i]['url']  = "video.php";
-$i++;
-$modversion['sub'][$i]['name'] = _MI_TCW_FILES;
-$modversion['sub'][$i]['url']  = "files.php";
-$i++;
-$modversion['sub'][$i]['name'] = _MI_TCW_LINK;
-$modversion['sub'][$i]['url']  = "link.php";
-$i++;
-$modversion['sub'][$i]['name'] = _MI_TCW_DISCUSS;
-$modversion['sub'][$i]['url']  = "discuss.php";
+// $i                             = 0;
+// $modversion['sub'][$i]['name'] = _MI_TCW_ABOUTUS;
+// $modversion['sub'][$i]['url']  = "aboutus.php";
+// $i++;
+// $modversion['sub'][$i]['name'] = _MI_TCW_NEWS;
+// $modversion['sub'][$i]['url']  = "news.php";
+// $i++;
+// $modversion['sub'][$i]['name'] = _MI_TCW_ACTION;
+// $modversion['sub'][$i]['url']  = "action.php";
+// $i++;
+// $modversion['sub'][$i]['name'] = _MI_TCW_VIDEO;
+// $modversion['sub'][$i]['url']  = "video.php";
+// $i++;
+// $modversion['sub'][$i]['name'] = _MI_TCW_FILES;
+// $modversion['sub'][$i]['url']  = "files.php";
+// $i++;
+// $modversion['sub'][$i]['name'] = _MI_TCW_LINK;
+// $modversion['sub'][$i]['url']  = "link.php";
+// $i++;
+// $modversion['sub'][$i]['name'] = _MI_TCW_DISCUSS;
+// $modversion['sub'][$i]['url']  = "discuss.php";
 
 //---樣板設定---//
 $i                                          = 1;
@@ -101,195 +102,38 @@ $modversion['templates'][$i]['file']        = 'tad_web_index_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_index_b3.html';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'tad_web_aboutus.html';
-$modversion['templates'][$i]['description'] = 'tad_web_aboutus.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_aboutus_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_aboutus_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_news.html';
-$modversion['templates'][$i]['description'] = 'tad_web_news.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_news_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_news_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_news.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_news.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_news_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_news_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_file.html';
-$modversion['templates'][$i]['description'] = 'tad_web_file.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_file_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_file_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_files.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_files.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_files_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_files_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_action.html';
-$modversion['templates'][$i]['description'] = 'tad_web_action.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_action_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_action_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_action.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_action.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_action_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_action_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_discuss.html';
-$modversion['templates'][$i]['description'] = 'tad_web_discuss.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_discuss_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_discuss_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_discuss.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_discuss.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_discuss_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_discuss_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_link.html';
-$modversion['templates'][$i]['description'] = 'tad_web_link.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_link_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_link_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_link.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_link.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_link_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_link_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_video.html';
-$modversion['templates'][$i]['description'] = 'tad_web_video.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_video_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_video_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_video.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_video.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_video_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_video_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_calendar.html';
-$modversion['templates'][$i]['description'] = 'tad_web_calendar.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_calendar_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_calendar_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_homework.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_homework.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_homework_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_homework_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_aboutus.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_aboutus.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_aboutus_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_aboutus_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_adm.html';
-$modversion['templates'][$i]['description'] = 'tad_web_adm.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_adm_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_adm_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_config.html';
-$modversion['templates'][$i]['description'] = 'tad_web_config.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_config_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_config_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_discuss_login.html';
-$modversion['templates'][$i]['description'] = 'tad_web_discuss_login.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_discuss_login_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_discuss_login_b3.html';
-
-$i++;
 $modversion['templates'][$i]['file']        = 'tad_web_adm_cate.html';
 $modversion['templates'][$i]['description'] = "tad_web_adm_cate.html";
 
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_adm_cate_b3.html';
 $modversion['templates'][$i]['description'] = "tad_web_adm_cate_b3.html";
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_works.html';
-$modversion['templates'][$i]['description'] = 'tad_web_works.html';
+
+//tad_web_config.html 不需要
 
 $i++;
-$modversion['templates'][$i]['file']        = 'tad_web_works_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_works_b3.html';
+$modversion['templates'][$i]['file']        = 'tad_web_config_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_config_b3.html';
 
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_works.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_works.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_common_works_b3.html';
-$modversion['templates'][$i]['description'] = 'tad_web_common_works_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_cate.html';
-$modversion['templates'][$i]['description'] = 'tad_web_cate.html';
+//tad_web_cate.html 不需要
 
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_cate_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_cate_b3.html';
 
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_web_header.html';
-$modversion['templates'][$i]['description'] = 'tad_web_header.html';
+//tad_web_header.html 不需要
 
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_header_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_header_b3.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_tpl.html';
+$modversion['templates'][$i]['description'] = 'tad_web_tpl.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_tpl_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_tpl_b3.html';
 
 //---區塊設定---//
 $i                                       = 1;

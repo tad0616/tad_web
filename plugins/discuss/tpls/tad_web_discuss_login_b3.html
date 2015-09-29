@@ -1,0 +1,33 @@
+<{if $MyWebs==""}>
+  <{if $LoginMemID==""}>
+    <form action="discuss.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_UNAME}><{$smarty.const._TAD_FOR}>
+        </label>
+        <div class="col-md-3">
+          <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_MEM_UNAME}>">
+        </div>
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_PASSWD}><{$smarty.const._TAD_FOR}>
+        </label>
+        <div class="col-md-3">
+          <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_MEM_PASSWD}>">
+        </div>
+        <div class="col-md-2">
+          <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="op" value="mem_login">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_LOGIN}></button>
+        </div>
+      </div>
+    </form>
+  <{else}>
+    <div class="well well-small">
+      <a href="discuss.php?op=logout" class="btn btn-xs btn-warning"><{$smarty.const._MD_TCW_EXIT}></a>
+      <a href="discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-xs btn-info pull-right"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+      <{$LoginMemName}>
+      <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>
+      <{$smarty.const._MD_TCW_HELLO}>
+    </div>
+  <{/if}>
+<{/if}>

@@ -35,7 +35,28 @@ function xoops_module_update_tad_web(&$module, $old_version)
     if (chk_chk8()) {
         go_update8();
     }
+
+    if (chk_chk9()) {
+        go_update9();
+    }
+
+    if (chk_chk10()) {
+        go_update10();
+    }
+
+    go_update_var();
+
     return true;
+}
+
+function go_update_var()
+{
+    global $xoopsDB;
+    include XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $Webs = getAllWebInfo('WebTitle');
+    foreach ($Webs as $WebID => $WebTitle) {
+        mk_menu_var_file($WebID);
+    }
 }
 
 //刪除錯誤的重複欄位及樣板檔
@@ -333,7 +354,7 @@ function go_update7()
     return true;
 }
 
-//新增簽收表格
+//新增作品分享表格
 function chk_chk8()
 {
     global $xoopsDB;
@@ -360,6 +381,78 @@ function go_update8()
       `WorksCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
     PRIMARY KEY (`WorksID`)
     ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
+}
+
+//新增聯絡簿
+function chk_chk9()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_homework");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update9()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_homework") . "` (
+      `HomeworkID` smallint(6) unsigned NOT NULL auto_increment COMMENT '編號',
+      `CateID` smallint(6) unsigned NOT NULL default 0,
+      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+      `HomeworkTitle` varchar(255) NOT NULL default '' COMMENT '標題',
+      `HomeworkContent` text NOT NULL COMMENT '內容',
+      `HomeworkDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布日期',
+      `toCal` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '加到行事曆',
+      `HomeworkCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
+      `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
+    PRIMARY KEY (`HomeworkID`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
+
+    $sql    = "select * from `" . $xoopsDB->prefix("tad_web_news") . "` where NewsKind='homework'";
+    $result = $xoopsDB->queryF($sql) or die($sql);
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+
+        $sql = "insert into `" . $xoopsDB->prefix("tad_web_homework") . "` (`WebID`, `HomeworkTitle`, `HomeworkContent`, `HomeworkDate`, `toCal`, `HomeworkCounter`, `uid`) values('{$WebID}', '{$NewsTitle}', '{$NewsContent}', '{$NewsDate}', '{$toCal}', '{$NewsCounter}', '{$uid}')";
+        $xoopsDB->queryF($sql);
+
+        $sql = "delete from `" . $xoopsDB->prefix("tad_web_news") . "` where `NewsID`='{$NewsID}'";
+        $xoopsDB->queryF($sql);
+    }
+}
+
+//新增外掛表格
+function chk_chk10()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_plugins");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update10()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_plugins") . "` (
+      `PluginDirname` varchar(100) NOT NULL COMMENT '目錄名稱',
+      `PluginTitle` varchar(255) NOT NULL COMMENT '外掛名稱',
+      `PluginSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
+      `PluginEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
+      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+    PRIMARY KEY (`PluginDirname`,`WebID`)
+    ) ENGINE=MyISAM;";
     $xoopsDB->queryF($sql);
 }
 

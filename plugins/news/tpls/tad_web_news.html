@@ -1,0 +1,10 @@
+<{if $WebID==""}>
+  <h1><{$smarty.const._MD_TCW_NEWS}></h1>
+<{else}>
+  <h1><{$the_plugin.PluginTitle}></h1>
+<{/if}>
+
+<{$cate_menu}>
+<{$FooTableJS}>
+<{includeq file="$xoops_rootpath/modules/tad_web/plugins/news/tpls/tad_web_common_news.html"}>
+<div class="clearfix"></div>

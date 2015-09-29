@@ -32,7 +32,7 @@ function tad_web_menu($options)
     $i = 0;
 
     $oldWebID    = !empty($_GET['WebID']) ? intval($_GET['WebID']) : 0;
-    $defaltWebID = 0;
+    $defaltWebID = $oldWebID;
 
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
@@ -53,44 +53,17 @@ function tad_web_menu($options)
         $i++;
     }
 
-    // if (!empty($oldWebID) and !in_array($oldWebID, $WebID_Arr)) {
-    //     $block['op'] = "logout";
-    //     return $block;
-    // }
-
-    $block['WebTitle'] = $defaltWebTitle;
-
-    $block['my_web']       = mkMenuOpt(sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName), "index.php?WebID={$defaltWebID}", "fa-home");
-    $block['news_add']     = mkMenuOpt(_MB_TCW_NEWS_ADD, "news.php?WebID={$defaltWebID}&op=tad_web_news_form", "fa-newspaper-o");
-    $block['works_add']    = mkMenuOpt(_MB_TCW_WORKS_ADD, "works.php?WebID={$defaltWebID}&op=tad_web_works_form", "fa-paint-brush");
-    $block['homework_add'] = mkMenuOpt(_MB_TCW_HOMEWORK_ADD, "homework.php?WebID={$defaltWebID}&op=tad_web_news_form", "fa-pencil-square-o");
-    $block['files_add']    = mkMenuOpt(_MB_TCW_FILES_ADD, "files.php?WebID={$defaltWebID}&op=tad_web_files_form", "fa-upload");
-    $block['action_add']   = mkMenuOpt(_MB_TCW_ACTION_ADD, "action.php?WebID={$defaltWebID}&op=tad_web_action_form", "fa-camera");
-    $block['class_setup']  = mkMenuOpt(_MB_TCW_WEB_SETUP, "aboutus.php?WebID={$defaltWebID}&op=tad_web_adm", "fa-smile-o");
-    $block['video_add']    = mkMenuOpt(_MB_TCW_VIDEO_ADD, "video.php?WebID={$defaltWebID}&op=tad_web_video_form", "fa-film");
-    $block['link_add']     = mkMenuOpt(_MB_TCW_LINK_ADD, "link.php?WebID={$defaltWebID}&op=tad_web_link_form", "fa-globe");
-    $block['logout']       = mkMenuOpt(_MB_TCW_LOGOUT, "/user.php?op=logout", "fa-sign-out");
-    $block['web_config']   = mkMenuOpt(_MB_TCW_WEB_CONFIG, "config.php?WebID={$defaltWebID}", "fa-check-square-o ");
-
+    $block['WebTitle']    = $defaltWebTitle;
+    $block['back_home']   = sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
+    $block['defaltWebID'] = $defaltWebID;
+    //$block['plugins']     = get_plugins($defaltWebID, 'show', true);
     $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
     $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
 
-    return $block;
-}
-
-function mkMenuOpt($title = "", $url = "", $icon = "icon-volume-up")
-{
-    if (substr($url, 0, 1) == "/") {
-        $path = XOOPS_URL . $url;
-    } else {
-        $path = XOOPS_URL . "/modules/tad_web/{$url}";
+    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
+    if (file_exists($file)) {
+        include $file;
+        $block['plugins'] = $menu_var;
     }
-
-    $opt = "
-        <a href='{$path}' class='btn'>
-            <i class='fa {$icon}'></i>
-            $title
-        </a>
-    ";
-    return $opt;
+    return $block;
 }

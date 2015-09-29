@@ -1,0 +1,120 @@
+<{if $op=="edit_form"}>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#Youtube').change(function() {
+        $('#VideoName').val($('#Youtube').val());
+        $.post("link_ajax.php", { url: $('#Youtube').val()},
+         function(data) {
+          var obj = $.parseJSON(data);
+           $('#VideoName').val(obj.title);
+           $('#VideoDesc').val(obj.description);
+         });
+      });
+
+
+      $('#LinkGet').click(function() {
+        $.post("link_ajax.php", { url: $('#Youtube').val()},
+         function(data) {
+          var obj = $.parseJSON(data);
+           $('#VideoName').val(obj.title);
+           $('#VideoDesc').val(obj.description);
+         });
+      });
+    });
+  </script>
+
+  <{$formValidator_code}>
+  <h1><{$smarty.const._MD_TCW_VIDEO_ADD}></h1>
+  <div class="well">
+    <form action="video.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+      <!--分類-->
+      <{$cate_menu}>
+
+      <!--影片網址-->
+      <div class="form-group">
+        <div class="col-md-10">
+          <input type="text" name="Youtube" value="<{$Youtube}>" id="Youtube" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_VIDEOYOUTUBE}>">
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
+        </div>
+      </div>
+
+
+      <!--影片名稱-->
+      <div class="form-group">
+        <div class="col-md-12">
+          <input type="text" name="VideoName" value="<{$VideoName}>" id="VideoName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_VIDEONAME}>">
+        </div>
+      </div>
+
+
+      <!--影片說明-->
+      <div class="form-group">
+        <div class="col-md-12">
+          <textarea name="VideoDesc" rows=4 id="VideoDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_VIDEODESC}>"><{$VideoDesc}></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-12 text-center">
+          <!--影片編號-->
+          <input type="hidden" name="VideoID" value="<{$VideoID}>">
+
+          <!--所屬團隊-->
+          <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="op" value="<{$next_op}>">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        </div>
+      </div>
+    </form>
+  </div>
+<{elseif $op=="show_one"}>
+
+  <{if $isMineVideo}>
+    <script>
+    function delete_func(VideoID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="video.php?op=delete&VideoID=" + VideoID;
+    }
+    </script>
+  <{/if}>
+
+  <h1><{$VideoName}></h1>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="well">
+        <{$player}>
+      </div>
+
+      <div>
+        <{$VideoDesc}>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:right;color:#669900;font-size:11pt;"><{$VideoInfo}></div>
+
+  <{if $isMineVideo}>
+    <div class="text-right">
+    <a href="javascript:delete_func(<{$VideoID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+    <a href="video.php?WebID=<{$WebID}>&op=edit_form&VideoID=<{$VideoID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+    </div>
+  <{/if}>
+<{else}>
+  <{if $WebID==""}>
+    <h1><{$smarty.const._MD_TCW_VIDEO}></h1>
+  <{else}>
+    <h1><{$the_plugin.PluginTitle}></h1>
+  <{/if}>
+
+  <{$cate_menu}>
+  <{$FooTableJS}>
+  <div class="row">
+    <div class="col-md-12">
+      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/video/tpls/tad_web_common_video_b3.html"}>
+    </div>
+  </div>
+<{/if}>

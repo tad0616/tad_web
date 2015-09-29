@@ -1,0 +1,92 @@
+<{if $isMineWorks}>
+  <script>
+    function delete_func(WorksID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="works.php?WebID=<{$WebID}>&op=delete&WorksID=" + WorksID;
+    }
+    </script>
+<{/if}>
+
+<{if $WebID=="" and $display_mode=='index'}>
+  <h1><{$smarty.const._MD_TCW_WORKS}></h1>
+<{elseif $display_mode=='home'}>
+  <h1><{$plugin.db.PluginTitle}></h1>
+<{/if}>
+<table class="footable table common_table">
+  <thead>
+    <tr>
+      <th data-hide="phone" style="width:100px;text-align:center;">
+        <{$smarty.const._MD_TCW_WORKS_DATE}>
+      </th>
+      <th data-class="expand">
+        <{$smarty.const._MD_TCW_WORKS_NAME}>
+      </th>
+      <th data-hide="phone" style="width:50px;text-align:center;">
+        <{$smarty.const._MD_TCW_WORKS_COUNT}>
+      </th>
+      <{if $showWebTitleAction}>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._MD_TCW_TEAMID}>
+        </th>
+      <{/if}>
+      <{if !$showWebTitleAction && $isMineWorks}>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._TAD_FUNCTION}>
+        </th>
+      <{/if}>
+    </tr>
+  </thead>
+  <{if $works_data}>
+    <{foreach item=work from=$works_data}>
+      <tr>
+        <td class="text-center">
+          <{$work.WorksDate}>
+        </td>
+        <td>
+          <{if $work.cate.CateID}>
+            <span class="label label-info"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
+          <{/if}>
+          <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
+        </td>
+        <td class="text-center">
+          <{$work.WorksCount}>
+        </td>
+        <{if $showWebTitleAction}>
+          <td class="text-center">
+            <{$work.WebTitle}>
+          </td>
+        <{/if}>
+        <{if !$showWebTitleAction && $isMineWorks}>
+        <td class="text-center">
+          <a href="javascript:delete_func(<{$work.WorksID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+          <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
+        </td>
+        <{/if}>
+      </tr>
+    <{/foreach}>
+  <{else}>
+    <tr>
+      <td colspan=4 class="text-center">
+        <{$smarty.const._MD_TCW_EMPTY}>
+      </td>
+    </tr>
+  <{/if}>
+</table>
+
+<{if $works_data}>
+  <{$bar}>
+<{/if}>
+
+<div style="text-align:right">
+  <{if $bar==""}>
+    <{if $WebID==""}>
+      <a href="works.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
+    <{else}>
+      <a href="works.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
+    <{/if}>
+  <{/if}>
+  <{if $isMineWorks and $WebID}>
+    <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a>
+  <{/if}>
+</div>

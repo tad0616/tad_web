@@ -1,12 +1,12 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-if (!empty($_GET['WebID'])) {
+
+if (!empty($_REQUEST['WebID']) and $isMyWeb) {
     $xoopsOption['template_main'] = 'tad_web_config_b3.html';
+} elseif (!$isMyWeb and $MyWebs) {
+    redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
 } else {
-    $xoopsOption['template_main'] = set_bootstrap('tad_web_config.html');
-}
-if (!$isMyWeb) {
     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
 }
 include_once XOOPS_ROOT_PATH . "/header.php";
@@ -15,8 +15,35 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //網站設定
 function tad_web_config($WebID)
 {
-    global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles;
+    global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb;
 
+    get_jquery(true);
+    $xoopsTpl->assign('isMine', $isMyWeb);
+    $xoopsTpl->assign('config', true);
+    $configs = get_web_all_config($WebID);
+
+    foreach ($configs as $ConfigName => $ConfigValue) {
+        $xoopsTpl->assign($ConfigName, $ConfigValue);
+    }
+
+    //網站設定
+
+    $Web = get_tad_web($WebID);
+    $xoopsTpl->assign('WebName', $Web['WebName']);
+
+    $TadUpFiles->set_col("WebOwner", $WebID, 1);
+    $teacher_pic = $TadUpFiles->get_pic_file('thumb');
+    $xoopsTpl->assign('teacher_thumb_pic', $teacher_pic);
+
+    $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
+    $xoopsTpl->assign('upform_teacher', $upform);
+
+    //功能設定
+    $plugins = get_plugins($WebID, 'edit');
+    //die(var_export($plugins));
+    $xoopsTpl->assign('plugins', $plugins);
+
+    //背景圖設定
     $bg_path      = XOOPS_ROOT_PATH . "/modules/tad_web/images/bg";
     $bg_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg";
     mk_dir($bg_user_path);
@@ -27,6 +54,7 @@ function tad_web_config($WebID)
     $TadUpFilesBg->set_col("bg", $WebID);
     $xoopsTpl->assign('all_bg', $TadUpFilesBg->get_file_for_smarty());
 
+    //標題設定
     $head_path      = XOOPS_ROOT_PATH . "/modules/tad_web/images/head";
     $head_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head";
     mk_dir($head_user_path);
@@ -37,6 +65,7 @@ function tad_web_config($WebID)
     $TadUpFilesHead->set_col("head", $WebID);
     $xoopsTpl->assign('all_head', $TadUpFilesHead->get_file_for_smarty());
 
+    //logo設定
     $logo_path      = XOOPS_ROOT_PATH . "/modules/tad_web/images/logo";
     $logo_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo";
     mk_dir($logo_user_path);
@@ -47,54 +76,7 @@ function tad_web_config($WebID)
     $TadUpFilesLogo->set_col("logo", $WebID);
     $xoopsTpl->assign('all_logo', $TadUpFilesLogo->get_file_for_smarty());
 
-    $xoopsTpl->assign('config', true);
-    get_jquery(true);
-
-    $TadUpFiles->set_col("WebOwner", $WebID, 1);
-    $teacher_pic = $TadUpFiles->get_pic_file('thumb');
-    $xoopsTpl->assign('teacher_thumb_pic', $teacher_pic);
-
-    $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
-    $xoopsTpl->assign('upform', $upform);
-
-    $ConfigValue   = get_web_config("hide_function", $WebID);
-    $hide_function = explode(';', $ConfigValue);
-
-    $mod_name['aboutus']  = _MD_TCW_ABOUTUS;
-    $mod_name['news']     = _MD_TCW_NEWS;
-    $mod_name['works']    = _MD_TCW_WORKS;
-    $mod_name['homework'] = _MD_TCW_HOMEWORK;
-    $mod_name['files']    = _MD_TCW_FILES;
-    $mod_name['action']   = _MD_TCW_ACTION;
-    $mod_name['video']    = _MD_TCW_VIDEO;
-    $mod_name['link']     = _MD_TCW_LINK;
-    $mod_name['discuss']  = _MD_TCW_DISCUSS;
-    $mod_name['calendar'] = _MD_TCW_CALENDAR;
-
-    $all_functions = "";
-
-    $inline = $_SESSION['bootstrap'] == '3' ? '-inline' : ' inline';
-
-    foreach ($mod_name as $function_name => $function_text) {
-        $checked = in_array($function_name, $hide_function) ? "checked" : "";
-        $all_functions .= "
-        <label class='checkbox{$inline}'>
-          <input name='ConfigValue[]' type='checkbox' value='{$function_name}' $checked>{$function_text}
-        </label>";
-    }
-
-    $Web = get_tad_web($WebID);
-
-    $xoopsTpl->assign('all_functions', $all_functions);
-    $xoopsTpl->assign('op', 'tad_web_config');
-    $xoopsTpl->assign('isMine', isMine());
-    $xoopsTpl->assign('WebName', $Web['WebName']);
-
-    $TadUpFiles->set_col("WebOwner", $WebID);
-    $list_del_file = $TadUpFiles->list_del_file();
-
-    $xoopsTpl->assign('list_del_file', $list_del_file);
-
+    //顏色設定
     if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/mColorPicker.php")) {
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
     }
@@ -104,9 +86,8 @@ function tad_web_config($WebID)
     $xoopsTpl->assign('mColorPicker_code', $mColorPicker_code);
 
     //區塊設定
-
-    $display_blocks = get_web_config("display_blocks", $WebID);
-    if (!empty($display_blocks)) {
+    //$display_blocks = get_web_config("display_blocks", $WebID);
+    if (!empty($configs['display_blocks'])) {
         $display_blocks_arr = explode(',', $display_blocks);
     } else {
         $display_blocks_arr = "";
@@ -211,7 +192,7 @@ function update_tad_web()
     mklogoPic($WebID);
     $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
     //import_img(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo", "logo", $WebID);
-    output_head_file();
+    output_head_file($WebID);
 }
 
 //移除網站設定
@@ -224,9 +205,41 @@ function delete_web_config($ConfigName = "")
 
 }
 
+function save_plugins($WebID)
+{
+    global $xoopsDB;
+    $plugins = get_plugins($WebID);
+    //echo var_export($plugins);
+    $myts = &MyTextSanitizer::getInstance();
+    $i    = 1;
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+    foreach ($plugins as $plugin) {
+        $dirname      = $plugin['dirname'];
+        $PluginTitle  = $myts->addSlashes($_POST['plugin_name'][$dirname]);
+        $PluginEnable = ($_POST['plugin_enable'][$dirname] == '1') ? '1' : '0';
+
+        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$PluginEnable}', '{$WebID}')";
+        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+        save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname]);
+        save_web_config($dirname . '_display', $_POST['plugin_display'][$dirname]);
+        $i++;
+    }
+    // echo '<hr>';
+    // $plugins = get_plugins($WebID);
+    // echo var_export($plugins);
+    // exit;
+    mk_menu_var_file($WebID);
+
+}
+
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
+$WebID          = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $MemID          = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
 $color_setup    = system_CleanVars($_REQUEST, 'color_setup', '', 'array');
 $filename       = system_CleanVars($_REQUEST, 'filename', '', 'string');
@@ -238,8 +251,7 @@ $logo_left      = system_CleanVars($_REQUEST, 'logo_left', '', 'string');
 $col_name       = system_CleanVars($_REQUEST, 'col_name', '', 'string');
 $col_val        = system_CleanVars($_REQUEST, 'col_val', '', 'string');
 $display_blocks = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
-
-common_template($WebID);
+$other_web_url  = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
 
 switch ($op) {
     //儲存設定值
@@ -268,12 +280,11 @@ switch ($op) {
     //標題設定
     case "save_head":
         save_web_config("web_head", $filename);
-        output_head_file();
+        output_head_file($WebID);
         break;
 
-    case "save_hide_function":
-        $ConfigValue = implode(';', $ConfigValue);
-        save_web_config("hide_function", $ConfigValue);
+    case "save_plugins":
+        save_plugins($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -281,7 +292,7 @@ switch ($op) {
     case "save_head_bg":
         save_web_config("head_top", $head_top);
         save_web_config("head_left", $head_left);
-        output_head_file();
+        output_head_file($WebID);
         break;
 
     case "upload_head":
@@ -296,12 +307,12 @@ switch ($op) {
     case "save_logo":
         save_web_config("logo_top", $logo_top);
         save_web_config("logo_left", $logo_left);
-        output_head_file();
+        output_head_file($WebID);
         break;
 
     case "save_logo_pic":
         save_web_config("web_logo", $filename);
-        output_head_file();
+        output_head_file($WebID);
         break;
 
     case "upload_logo":
@@ -315,7 +326,7 @@ switch ($op) {
     //標題設定
     case "save_bg":
         save_web_config("web_bg", $filename);
-        output_head_file();
+        output_head_file($WebID);
         break;
 
     case "upload_bg":
@@ -338,6 +349,13 @@ switch ($op) {
     case "save_block":
         save_web_config("display_blocks", $display_blocks);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    case "save_other_web_url":
+        save_web_config("other_web_url", $other_web_url);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
         break;
 
     //預設動作
@@ -346,6 +364,7 @@ switch ($op) {
             header("location: index.php");
             exit;
         } else {
+            common_template($WebID);
             tad_web_config($WebID);
         }
         break;

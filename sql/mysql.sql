@@ -35,117 +35,7 @@ CREATE TABLE `tad_web_config` (
   PRIMARY KEY (`ConfigName`,`WebID`)
 ) ENGINE = MYISAM ;
 
-CREATE TABLE `tad_web_link_mems` (
-  `MemID` mediumint(8) unsigned NOT NULL COMMENT 'MemID',
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `MemNum` tinyint(3) unsigned NOT NULL default 0 COMMENT '座號',
-  `MemSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
-  `MemEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-  `top` smallint(6) NOT NULL default 0,
-  `left` smallint(6) NOT NULL default 0,
-PRIMARY KEY (`MemID`,`WebID`)
-) ENGINE=MyISAM;
 
-
-CREATE TABLE `tad_web_mems` (
-  `MemID` mediumint(8) unsigned NOT NULL auto_increment COMMENT 'MemID',
-  `MemName` varchar(255) NOT NULL DEFAULT '' COMMENT '學生姓名',
-  `MemNickName` varchar(255) NOT NULL DEFAULT '' COMMENT '學生暱稱',
-  `MemSex` enum('1','0') NOT NULL DEFAULT '1' COMMENT '性別',
-  `MemUnicode` varchar(255) NOT NULL DEFAULT '' COMMENT '學號',
-  `MemBirthday` date NOT NULL DEFAULT '0000-00-00' COMMENT '生日',
-  `MemUrl` varchar(255) NOT NULL DEFAULT '' COMMENT '網址',
-  `MemClassOrgan` varchar(255) NOT NULL DEFAULT '' COMMENT '職稱',
-  `MemExpertises` varchar(255) NOT NULL DEFAULT '' COMMENT '專長',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT 'uid',
-  `MemUname` varchar(255) NOT NULL DEFAULT '' COMMENT '帳號',
-  `MemPasswd` varchar(255) NOT NULL DEFAULT '' COMMENT '密碼',
-  PRIMARY KEY `uid` (`MemID`)
-) ENGINE=MyISAM;
-
-
-CREATE TABLE `tad_web_link` (
-  `LinkID` smallint(6) unsigned NOT NULL auto_increment COMMENT '編號',
-  `CateID` smallint(6) unsigned NOT NULL default 0,
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `LinkTitle` varchar(255) NOT NULL default '' COMMENT '網站名稱',
-  `LinkDesc` text NOT NULL COMMENT '說明',
-  `LinkUrl` varchar(255) NOT NULL default '' COMMENT '網站連結',
-  `LinkCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-  `LinkSort` tinyint(3) unsigned NOT NULL default 0 COMMENT '排序',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-PRIMARY KEY (`LinkID`)
-) ENGINE=MyISAM;
-
-
-CREATE TABLE `tad_web_news` (
-  `NewsID` smallint(6) unsigned NOT NULL auto_increment COMMENT '編號',
-  `CateID` smallint(6) unsigned NOT NULL default 0,
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `NewsTitle` varchar(255) NOT NULL default '' COMMENT '標題',
-  `NewsContent` text NOT NULL COMMENT '內容',
-  `NewsDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布日期',
-  `toCal` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '加到行事曆',
-  `NewsPlace` varchar(255) NOT NULL default '' COMMENT '地點',
-  `NewsMaster` varchar(255) NOT NULL default '' COMMENT '主持人',
-  `NewsUrl` varchar(255) NOT NULL default '' COMMENT '相關連結',
-  `NewsCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-  `NewsKind` varchar(255) NOT NULL default '' COMMENT '文章種類',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-PRIMARY KEY (`NewsID`)
-) ENGINE=MyISAM;
-
-
-CREATE TABLE `tad_web_action` (
-  `ActionID` smallint(6) unsigned NOT NULL auto_increment COMMENT '活動編號',
-  `CateID` smallint(6) unsigned NOT NULL default 0,
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `ActionName` varchar(255) NOT NULL default '' COMMENT '活動名稱',
-  `ActionDesc` text NOT NULL COMMENT '活動說明',
-  `ActionDate` date NOT NULL default '0000-00-00' COMMENT '活動日期',
-  `ActionPlace` varchar(255) NOT NULL default '' COMMENT '活動地點',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-  `ActionCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-  `ActionKind` varchar(255) NOT NULL default 'action' COMMENT '種類',
-PRIMARY KEY (`ActionID`)
-) ENGINE=MyISAM;
-
-CREATE TABLE `tad_web_discuss` (
-  `DiscussID` smallint(6) unsigned NOT NULL auto_increment COMMENT '編號',
-  `ReDiscussID` smallint(6) unsigned NOT NULL default 0 COMMENT '回覆編號',
-  `CateID` smallint(6) unsigned NOT NULL default 0,
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT 'uid',
-  `MemID` smallint(6) unsigned NOT NULL default 0 COMMENT '發布者',
-  `MemName` varchar(255) NOT NULL default '' COMMENT '發布者姓名',
-  `DiscussTitle` varchar(255) NOT NULL default '' COMMENT '標題',
-  `DiscussContent` text NOT NULL COMMENT '內容',
-  `DiscussDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布時間',
-  `LastTime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '最後發表時間',
-  `DiscussCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-PRIMARY KEY (`DiscussID`)
-) ENGINE=MyISAM;
-
-CREATE TABLE `tad_web_works` (
-  `WorksID` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
-  `CateID` smallint(6) unsigned NOT NULL default 0,
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `WorkName` varchar(255) NOT NULL default '' COMMENT '活動名稱',
-  `WorkDesc` text NOT NULL COMMENT '活動說明',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
-  `WorksDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '日期',
-  `WorksCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-PRIMARY KEY (`WorksID`)
-) ENGINE=MyISAM;
-
-CREATE TABLE `tad_web_files` (
-  `fsn` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
-  `CateID` smallint(6) unsigned NOT NULL default 0,
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
-  `file_date` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '日期',
-PRIMARY KEY (`fsn`)
-) ENGINE=MyISAM;
 
 
 CREATE TABLE `tad_web_files_center` (
@@ -167,17 +57,11 @@ CREATE TABLE `tad_web_files_center` (
 ) ENGINE=MyISAM;
 
 
-CREATE TABLE `tad_web_video` (
-  `VideoID` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '影片編號',
-  `CateID` smallint(6) unsigned NOT NULL default 0,
+CREATE TABLE `tad_web_plugins` (
+  `PluginDirname` varchar(100) NOT NULL COMMENT '目錄名稱',
+  `PluginTitle` varchar(255) NOT NULL COMMENT '外掛名稱',
+  `PluginSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
+  `PluginEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-  `VideoName` varchar(255) NOT NULL default '' COMMENT '影片名稱',
-  `VideoDesc` text NOT NULL COMMENT '影片說明',
-  `VideoDate` date NOT NULL default '0000-00-00' COMMENT '影片日期',
-  `VideoPlace` varchar(255) NOT NULL default '' COMMENT '影片地點',
-  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-  `VideoCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-  `Youtube` varchar(255) NOT NULL default '' COMMENT 'Youtube 位址',
-  PRIMARY KEY (`VideoID`)
+PRIMARY KEY (`PluginDirname`,`WebID`)
 ) ENGINE=MyISAM;
-

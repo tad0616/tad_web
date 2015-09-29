@@ -1,0 +1,61 @@
+<{if $isMineAction}>
+  <script>
+    function delete_func(ActionID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="action.php?WebID=<{$WebID}>&op=delete&ActionID=" + ActionID;
+    }
+    </script>
+<{/if}>
+
+<{if $action_data}>
+  <{if $WebID=="" and $display_mode=='index'}>
+    <h1><{$smarty.const._MD_TCW_ACTION}></h1>
+  <{elseif $display_mode=='home'}>
+    <h1><{$plugin.db.PluginTitle}></h1>
+  <{/if}>
+  <{foreach item=act from=$action_data}>
+    <div style="width: 166px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
+      <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
+        <div style="width: 160px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
+          <div style="width: 140px; height: 140px; background: #F1F7FF url('<{$act.ActionPic}>') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;">
+          </div>
+        </div>
+      </a>
+      <div class="text-center" style="margin: 8px auto;">
+        <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
+        <{if !$showWebTitleAction && $isMineAction}>
+          <a href="javascript:delete_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+          <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+        <{/if}>
+      </div>
+      <{if $showWebTitleAction}>
+        <div class="text-center">
+          <{$act.WebTitle}>
+        </div>
+      <{/if}>
+    </div>
+  <{/foreach}>
+  <div style="clear: both;"></div>
+<{else}>
+  <div class="well">
+    <{$smarty.const._MD_TCW_EMPTY}>
+  </div>
+<{/if}>
+
+<{if $action_data}>
+  <{$bar}>
+<{/if}>
+
+<div style="text-align:right">
+  <{if $bar==""}>
+    <{if $WebID==""}>
+      <a href="action.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+    <{else}>
+      <a href="action.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+    <{/if}>
+  <{/if}>
+  <{if $isMineAction and $WebID}>
+    <a href="action.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a>
+  <{/if}>
+</div>

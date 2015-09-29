@@ -1,0 +1,102 @@
+<{if $isMine}>
+  <div id="setupClass">
+    <div id="myForm1">
+      <form action="aboutus.php" method="post" enctype="multipart/form-data">
+        <fieldset>
+          <legend><{$smarty.const._MD_TCW_STUDENT_SETUP}></legend>
+          <div class="row">
+            <label class="col-md-3"><{$smarty.const._MD_TCW_IMPORT_EXCEL}></label>
+            <div class="col-md-5">
+              <input type="file" name="importfile">
+            </div>
+            <input type="hidden" name="op" value="import_excel">
+            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_IMPORT}></button>
+            <button type="button" onClick="edit_stu();" class="btn btn-info"><{$smarty.const._MD_TCW_ADD_MEM}></button>
+          </div>
+        </fieldset>
+      </form>
+
+      <div class="row">
+        <div class="help-block col-md-6">
+          <{$smarty.const._MD_TCW_IMPORT_LINK}>
+        </div>
+        <div class="col-md-6">
+        </div>
+      </div>
+    </div>
+
+    <span class="help-block"><{$smarty.const._MD_TCW_SELECT_TO_EDIT}></span>
+    <div id="save_info"></div>
+  </div>
+<{/if}>
+
+
+<{if $students1 || $students2}>
+  <style>
+  .draggable {padding: 5px; margin: 0 10px 10px 0; font-size: 12px; border:0px dotted gray;position:absolute;}
+  #snaptarget {width:640px; height: 540px; border:1px solid black;background:#CC6633 url('images/classroom2.png') center center no-repeat;position:relative;border:1px solid red;}
+  </style>
+
+  <script>
+    $(function() {
+      $( ".draggable" ).draggable({
+        snapMode: "outer",
+        containment: "#snaptarget",
+        cursor:"move",
+        stop: function(e, ui) {
+          var top = ui.position.top;
+          var left = ui.position.left;
+          var MemID = $(this).attr("id");
+
+          $.post("aboutus.php", {op: "save_seat", MemID: MemID , top: top, left: left } , function(data) {
+            $("#save_info").html("<{$smarty.const._MD_TCW_MEM_SAVE_OK}>");
+          });
+        }});
+    });
+
+    function edit_stu(MemID){
+      $.post("aboutus.php", {op: "edit_stu", MemID: MemID, WebID: <{$WebID}>} , function(data) {
+        $("#setupClass").html(data);
+      });
+
+    }
+  </script>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div id="snaptarget">
+        <{$students1}>
+      </div>
+
+      <br style="clear:both;" />
+      <{$students2}>
+    </div>
+  </div>
+
+
+
+<{else}>
+
+  <style>
+    #snaptarget {width:640px; height: 540px; border:1px solid gray;background:rgb(233,231,237) url(images/classroom2.png) center center no-repeat;position:relative;background-size:contain;}
+  </style>
+
+  <script>
+  function edit_stu(){
+    $.post("aboutus.php", {op: "edit_stu" , WebID: <{$WebID}>} , function(data) {
+      $("#setupClass").html(data);
+    });
+  }
+  </script>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div id="snaptarget" style="font-size:24px;color:gray;text-align:center;line-height:540px;">
+        <{$smarty.const._MD_TCW_COMMING_SOON}>
+        <img src="images/clean.png" alt="<{$smarty.const._MD_TCW_COMMING_SOON}>"  title="<{$smarty.const._MD_TCW_COMMING_SOON}>">
+      </div>
+    </div>
+  </div>
+<{/if}>
+
