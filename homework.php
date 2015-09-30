@@ -26,7 +26,7 @@ switch ($op) {
 
     //更新資料
     case "update":
-        $HomeworkID = $tad_web_homework->update();
+        $HomeworkID = $tad_web_homework->update($HomeworkID);
         header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&HomeworkID={$HomeworkID}");
         exit;
         break;
@@ -57,7 +57,7 @@ switch ($op) {
             $tad_web_homework->list_all($CateID);
         } else {
             $op = 'show_one';
-            $tad_web_homework->show_one($HomeworkID, _SHOW_NEWS_PLACE, _NEWS_NL2BR);
+            $tad_web_homework->show_one($HomeworkID);
         }
         break;
 

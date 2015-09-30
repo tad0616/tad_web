@@ -43,7 +43,7 @@ class tad_web_homework
             $total   = $PageBar['total'];
         }
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";
 
@@ -52,7 +52,7 @@ class tad_web_homework
         $Webs = getAllWebInfo();
 
         while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID , $HomeworkKind , $HomeworkCounter
+            //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
@@ -75,11 +75,12 @@ class tad_web_homework
             $i++;
         }
 
-        $xoopsTpl->assign('homwork_data', $main_data);
+        $xoopsTpl->assign('CalKind', 'homework');
+        $xoopsTpl->assign('homework_data', $main_data);
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineHomework', $isMyWeb);
         $xoopsTpl->assign('showWebTitleHomework', $showWebTitle);
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'files'));
+        $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
     }
 
     //以流水號秀出某筆tad_web_homework資料內容
@@ -93,10 +94,10 @@ class tad_web_homework
         $this->add_counter($HomeworkID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkID='{$HomeworkID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID , $HomeworkKind , $HomeworkCounter ,$uid
+        //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID , $HomeworkCounter ,$uid
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -138,7 +139,7 @@ class tad_web_homework
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
-        $Class = getWebInfo($WebID);
+        $Class = getWebInfo($this->WebID);
 
         //抓取預設值
         if (!empty($HomeworkID)) {
@@ -227,9 +228,9 @@ class tad_web_homework
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_homework") . "
-        (`CateID`,`HomeworkTitle` , `HomeworkContent` , `HomeworkDate` , `toCal` , `WebID` , `HomeworkKind` , `uid`)
+        (`CateID`,`HomeworkTitle` , `HomeworkContent` , `HomeworkDate` , `toCal` , `WebID` , `HomeworkCounter` , `uid`)
         values('{$CateID}','{$_POST['HomeworkTitle']}' , '{$_POST['HomeworkContent']}' , '{$_POST['HomeworkDate']}' , '{$_POST['toCal']}' , '{$_POST['WebID']}' , '0' , '{$uid}')";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $HomeworkID = $xoopsDB->getInsertId();
@@ -265,9 +266,9 @@ class tad_web_homework
          `HomeworkTitle` = '{$_POST['HomeworkTitle']}' ,
          `HomeworkContent` = '{$_POST['HomeworkContent']}' ,
          `HomeworkDate` = '{$_POST['HomeworkDate']}' ,
-         `toCal` = '{$_POST['toCal']}' ,
+         `toCal` = '{$_POST['toCal']}'
         where HomeworkID='$HomeworkID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -281,7 +282,7 @@ class tad_web_homework
         global $xoopsDB, $TadUpFiles;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkID='$HomeworkID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $TadUpFiles->del_files();
@@ -292,7 +293,7 @@ class tad_web_homework
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_homework") . " set `HomeworkCounter`=`HomeworkCounter`+1 where `HomeworkID`='{$HomeworkID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_homework資料
@@ -304,7 +305,7 @@ class tad_web_homework
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkID='$HomeworkID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

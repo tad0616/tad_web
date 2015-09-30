@@ -2,6 +2,8 @@
 define('_MD_TCW_HOMEWORK', 'Contact book');
 define('_MD_TCW_HOMEWORK_SHORT', 'Content');
 define('_MD_TCW_HOMEWORK_ADD', 'Write contact book');
+define("_MD_TCW_HOMEWORK_FILES", "Attachment");
+
 define('_MD_TCW_HOMEWORK_DEFAULT', "
   <table class='table'>
   <tbody>

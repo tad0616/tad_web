@@ -264,12 +264,10 @@ function update_tad_web_cate_sort()
     return _TAD_SORTED . " (" . date("Y-m-d H:i:s") . ")";
 }
 /*-----------執行動作判斷區----------*/
-$op              = (!isset($_REQUEST['op'])) ? "" : $_REQUEST['op'];
-$WebID           = (empty($_REQUEST['WebID'])) ? "" : intval($_REQUEST['WebID']);
-$CateID          = (empty($_REQUEST['CateID'])) ? "" : intval($_REQUEST['CateID']);
-$grade_num       = (empty($_REQUEST['grade_num'])) ? "" : $_REQUEST['grade_num'];
-$class_num       = (empty($_REQUEST['class_num'])) ? "" : intval($_REQUEST['class_num']);
-$class_name_type = (!isset($_REQUEST['class_name_type'])) ? "" : $_REQUEST['class_name_type'];
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
+$WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 $xoopsTpl->assign('op', $_REQUEST['op']);
 

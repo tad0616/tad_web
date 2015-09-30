@@ -79,7 +79,7 @@ class tad_web_news
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineNews', $isMyWeb);
         $xoopsTpl->assign('showWebTitleNews', $showWebTitle);
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'news'));
+        $xoopsTpl->assign('news', get_db_plugin($this->WebID, 'news'));
 
     }
 
@@ -112,8 +112,6 @@ class tad_web_news
         }
 
         $NewsUrlTxt = empty($NewsUrl) ? "" : "<div>" . _MD_TCW_NEWSURL . _TAD_FOR . "<a href='$NewsUrl' target='_blank'>$NewsUrl</a></div>";
-
-        $NewsContent = ($nl2br) ? nl2br($NewsContent) : $NewsContent;
 
         $TadUpFiles->set_col("NewsID", $NewsID);
         $NewsFiles = $TadUpFiles->show_files('upfile', true, null, true);

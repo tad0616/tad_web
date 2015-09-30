@@ -1,9 +1,9 @@
 <{if $isMineHomework}>
   <script>
-    function delete_func(NewsID){
+    function delete_func(HomeworkID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
-      location.href="homework.php?op=delete&NewsID=" + NewsID;
+      location.href="homework.php?op=delete&HomeworkID=" + HomeworkID;
     }
     </script>
 <{/if}>
@@ -13,16 +13,16 @@
     <div class="row">
       <div class="col-md-12">
         <h3>
-          <a href="homework.php?WebID=<{$WebID}>&NewsID=<{$homework_data.0.NewsID}>"><{$homework_data.0.NewsTitle}></a>
+          <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework_data.0.HomeworkID}>"><{$homework_data.0.HomeworkTitle}></a>
 
-          <{if !$showWebTitleNews && $isMineNews}>
-            <a href="javascript:delete_func(<{$homework_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+          <{if !$showWebTitleHomework && $isMineHomework}>
+            <a href="javascript:delete_func(<{$homework_data.0.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
 
-            <a href="homework.php?op=edit_form&NewsID=<{$homework_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+            <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework_data.0.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
           <{/if}>
         </h3>
         <div style="min-height: 100px; overflow: auto; line-height: 1.8; background-color: #FFFFFF; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
-          <{$homework_data.0.NewsContent}>
+          <{$homework_data.0.HomeworkContent}>
         </div>
       </div>
     </div>
@@ -30,16 +30,16 @@
     <div class="row">
       <div class="col-md-12">
         <ul class="list-group">
-          <{foreach from=$homework_data key=i item=news}>
+          <{foreach from=$homework_data key=i item=homework}>
             <{if $i > 0}>
               <li class="list-group-item">
-              <span class="badge"><{$news.NewsCounter}></span>
-              <{$news.Date}>
-              <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
+              <span class="badge"><{$homework.HomeworkCounter}></span>
+              <{$homework.Date}>
+              <a href="<{$homework.HomeworkKind}>.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a>
 
-                <{if !$showWebTitleNews && $isMineNews}>
-                  <a href="javascript:delete_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                  <a href="homework.php?op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                <{if !$showWebTitleHomework && $isMineHomework}>
+                  <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
               </li>
             <{/if}>
@@ -49,23 +49,21 @@
     </div>
   <{/if}>
 <{else}>
-  <{if $WebID=="" and $display_mode=='index'}>
-    <h1><{$smarty.const._MD_TCW_HOMEWORK}></h1>
-  <{elseif $display_mode=='home'}>
-    <h1><{$plugin.db.PluginTitle}></h1>
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h1><{$homework.PluginTitle}></h1>
   <{/if}>
 
   <table class="footable table common_table">
     <thead>
       <tr>
         <th data-hide="phone" style="width:100px;text-align:center;">
-          <{$smarty.const._MD_TCW_NEWSDATE}>
+          <{$smarty.const._MD_TCW_HOMEWORKDATE}>
         </th>
         <th data-class="expand">
           <{$smarty.const._MD_TCW_HOMEWORK}>
         </th>
         <th data-hide="phone" style="width:50px;text-align:center;">
-          <{$smarty.const._MD_TCW_NEWSCOUNTER}>
+          <{$smarty.const._MD_TCW_HOMEWORKCOUNTER}>
         </th>
         <{if $showWebTitleHomework}>
           <th data-hide="phone" style="width:100px;text-align:center;">
@@ -86,10 +84,10 @@
             <{$homework.Date}>
           </td>
           <td>
-            <a href="<{$homework.NewsKind}>.php?WebID=<{$homework.WebID}>&NewsID=<{$homework.NewsID}>"><{$homework.NewsTitle}></a>
+            <a href="<{$homework.HomeworkKind}>.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a>
           </td>
           <td class="text-center">
-            <{$homework.NewsCounter}>
+            <{$homework.HomeworkCounter}>
           </td>
           <{if $showWebTitleHomework}>
             <td class="text-center">
@@ -98,8 +96,8 @@
           <{/if}>
           <{if !$showWebTitleHomework && $isMineHomework}>
             <td class="text-center">
-              <a href="javascript:delete_func(<{$news.NewsID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
-              <a href="homework.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
+              <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
+              <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
             </td>
         <{/if}>
       </tr>
@@ -130,7 +128,7 @@
       <{/if}>
     <{/if}>
     <{if $isMineHomework and $WebID}>
-      <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_ADD}></a>
+      <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
     <{/if}>
   </div>
 <{/if}>

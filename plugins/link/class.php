@@ -74,7 +74,7 @@ class tad_web_link
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineLink', $isMyWeb);
         $xoopsTpl->assign('showWebTitleLink', $showWebTitle);
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'link'));
+        $xoopsTpl->assign('link', get_db_plugin($this->WebID, 'link'));
     }
 
     //以流水號秀出某筆tad_web_link資料內容

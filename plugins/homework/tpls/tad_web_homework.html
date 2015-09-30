@@ -1,48 +1,7 @@
-<{if $WebID==""}>
-  <h1><{$smarty.const._MD_TCW_HOMEWORK}></h1>
-<{else}>
-  <h1><{$the_plugin.PluginTitle}></h1>
-<{/if}>
+<h1><{$homework.PluginTitle}></h1>
 
 <{$cate_menu}>
 <{$FooTableJS}>
 <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework.html"}>
 <div class="clearfix"></div>
-
-<link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.css">
-<script src="class/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(function() {
-    $("#calendar").fullCalendar({
-      buttonText:{today:"<{$smarty.const._MD_TCW_NEWS_TODAY}>",prev:"<{$smarty.const._MD_TCW_NEWS_PREV_MONTH}>",next:"<{$smarty.const._MD_TCW_NEWS_NEXT_MONTH}>"},
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: ''
-      },
-      events: function(start, end, callback) {
-        $.getJSON("get_event.php",
-        {
-          start: start.getTime(),
-          NewsKind: "<{$smarty.const._NEWS_KIND}>" ,
-          WebID: "<{$WebID}>"
-        },
-        function(result) {
-          callback(result);
-        });
-
-      },
-      eventClick: function(event) {
-        if (event.rel) {
-          location.href=event.rel;
-          return false;
-        }
-      }
-    })
-});
-</script>
-
-<div class="well" style="background-color: #FFFFFF; margin: 10px auto;">
-  <div id="calendar"></div>
-</div>
-
+<{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_calendar.html"}>

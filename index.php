@@ -14,21 +14,24 @@ function ClassHome($WebID = "")
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs;
 
-    $plugins = get_plugins($WebID, 'show', true);
-    $xoopsTpl->assign('plugins', $plugins);
+    include XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+    //die(var_export($menu_var));
     $xoopsTpl->assign('display_mode', 'home');
-    //die(var_export($plugins));
-    foreach ($plugins as $plugin) {
+
+    foreach ($menu_var as $plugin) {
         $dirname = $plugin['dirname'];
-        if ($plugin['db']['display'] != '1') {
+        if (empty($dirname)) {
             continue;
         }
+
         include_once "plugins/{$dirname}/class.php";
         $plugin_name  = "tad_web_{$dirname}";
         $$plugin_name = new $plugin_name($WebID);
-        $$plugin_name->list_all('', $plugin['db']['limit']);
-
+        $limit        = get_web_config("{$dirname}_limit", 0);
+        $$plugin_name->list_all('', $limit);
+        $show_arr[] = $dirname;
     }
+    $xoopsTpl->assign('show_arr', $show_arr);
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
@@ -40,16 +43,26 @@ function ClassHome($WebID = "")
 function list_all_class()
 {
     global $xoopsTpl;
-    $plugins = get_plugins('', 'show');
-    $xoopsTpl->assign('plugins', $plugins);
+
+    $web_setup_show_arr = get_web_config("web_setup_show_arr", 0);
+    if (empty($web_setup_show_arr)) {
+        $show_arr = get_dir_plugins();
+    } else {
+        $show_arr = explode(',', $web_setup_show_arr);
+    }
+
+    $xoopsTpl->assign('show_arr', $show_arr);
     $xoopsTpl->assign('display_mode', 'index');
 
-    foreach ($plugins as $plugin) {
-        $dirname = $plugin['dirname'];
+    foreach ($show_arr as $dirname) {
+        if (empty($dirname)) {
+            continue;
+        }
         include_once "plugins/{$dirname}/class.php";
+        $limit        = get_web_config("{$dirname}_limit", 0);
         $plugin_name  = "tad_web_{$dirname}";
         $$plugin_name = new $plugin_name(0);
-        $$plugin_name->list_all('', 5);
+        $$plugin_name->list_all('', $limit);
     }
 }
 

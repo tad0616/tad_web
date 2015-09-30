@@ -77,7 +77,7 @@ class tad_web_action
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineAction', $isMyWeb);
         $xoopsTpl->assign('showWebTitleAction', $showWebTitle);
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'action'));
+        $xoopsTpl->assign('action', get_db_plugin($this->WebID, 'action'));
 
     }
 

@@ -5,10 +5,8 @@
   </div>
 
 <{else}>
-  <{if $WebID=="" and $display_mode=='index'}>
-    <h1><{$smarty.const._MD_TCW_DISCUSS}></h1>
-  <{elseif $display_mode=='home'}>
-    <h1><{$plugin.db.PluginTitle}></h1>
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h1><{$discuss.PluginTitle}></h1>
   <{/if}>
 
   <table class="footable table common_table">

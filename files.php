@@ -27,7 +27,7 @@ switch ($op) {
 
     //更新資料
     case "update":
-        $fsn = $tad_web_files->update();
+        $fsn = $tad_web_files->update($files_sn);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

@@ -1,9 +1,11 @@
 <{$FooTableJS}>
 
-<{foreach from=$plugins item=plugin}>
-  <div class="row-fluid">
-    <div class="span12">
-      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$plugin.dirname`/tpls/tad_web_common_`$plugin.dirname`_b3.html"}>
+<{foreach from=$show_arr item=dirname}>
+  <{if "$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`.html"|file_exists}>
+    <div class="row-fluid">
+      <div class="span12">
+        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`.html"}>
+      </div>
     </div>
-  </div>
+  <{/if}>
 <{/foreach}>

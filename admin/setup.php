@@ -9,52 +9,57 @@ function tad_web_setup_form()
 {
     global $xoopsDB, $xoopsTpl, $isAdmin;
 
-    $plugins = get_plugins();
-    die(var_export($plugins));
-    $web_setup_show_arr = get_web_config("web_setup_show_arr", 0);
-    $web_setup_hide_arr = get_web_config("web_setup_hide_arr", 0);
-
-    $i = 0;
-
-    if (empty($web_setup_show_arr)) {
-        $repository = $plugin_arr = '';
-        foreach ($plugins as $plugin) {
-            $destination[$i]['dirname'] = $plugin['dirname'];
-            $destination[$i]['title']   = $plugin['config']['name'];
-            $plugin_arr[]               = $plugin['dirname'];
-            // $repository[$i]['dirname'] = $plugin['dirname'];
-            // $repository[$i]['title']   = $plugin['config']['name'];
-            $i++;
-        }
-        $web_setup_show_arr = implode($plugin_arr);
-    } else {
-        $plugin_arr = explode(',', $web_setup_show_arr);
-
-    }
-
+    $plugins = get_plugins(0, 'edit');
+    $xoopsTpl->assign('plugins', $plugins);
+    $web_setup_show_arr = explode(',', get_web_config('web_setup_show_arr', 0));
     $xoopsTpl->assign('web_setup_show_arr', $web_setup_show_arr);
-    $xoopsTpl->assign('web_setup_hide_arr', $web_setup_hide_arr);
-    $xoopsTpl->assign('destination', $destination);
-    $xoopsTpl->assign('repository', $repository);
+    get_jquery(true);
 }
 
 //新增資料到tad_web_setup中
-function save_tad_web_setup()
+
+function save_plugins()
 {
-    save_web_config("web_setup_show_arr", $web_setup_show_arr);
-    save_web_config("web_setup_hide_arr", $web_setup_hide_arr);
-    return;
+    global $xoopsDB;
+    $plugins = get_plugins(0);
+    //die(var_export($plugins));
+    $myts = &MyTextSanitizer::getInstance();
+
+    $i = 1;
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='0'";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $display_plugins = '';
+    foreach ($plugins as $plugin) {
+        $dirname     = $plugin['dirname'];
+        $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
+
+        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '1', '0')";
+        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+        save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname]);
+        //save_web_config($dirname . '_display', $_POST['plugin_display'][$dirname]);
+        if ($_POST['plugin_display'][$dirname] == '1') {
+            $display_plugins[] = $dirname;
+        }
+        $i++;
+    }
+
+    mk_menu_var_file(0);
+    save_web_config('web_setup_show_arr', implode(',', $display_plugins));
+
 }
 
 /*-----------執行動作判斷區----------*/
-$op = (!isset($_REQUEST['op'])) ? "" : $_REQUEST['op'];
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/
 
     //新增資料
-    case "save_tad_web_setup":
-        save_tad_web_setup();
+    case "save_plugins":
+        save_plugins();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;

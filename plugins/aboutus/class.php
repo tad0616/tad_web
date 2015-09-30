@@ -38,7 +38,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('count', $i);
 
         $xoopsTpl->assign('tad_web_cate', $this->get_tad_web_cate_all('tad_web'));
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'aboutus'));
+        $xoopsTpl->assign('aboutus', get_db_plugin($this->WebID, 'aboutus'));
 
     }
 

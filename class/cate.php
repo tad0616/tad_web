@@ -131,7 +131,7 @@ class web_cate
         $row = ($mode == "form") ? $form_group : $row;
 
         $menu = "
-        <div class=\"{$row}\" style=\"margin:10px 0px;\">
+        <div class=\"{$row}\" style=\"margin-bottom: 10px;\">
           $label
           $cate_menu
           $new_input
@@ -227,7 +227,7 @@ class web_cate
         $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
         while ($data = $xoopsDB->fetchArray($result)) {
             $CateID          = $data['CateID'];
-            $data['counter'] = $counter[$CateID];
+            $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID]    = $data;
         }
         return $arr;

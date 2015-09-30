@@ -27,7 +27,7 @@ switch ($op) {
 
     //更新資料
     case "update":
-        $DiscussID = $tad_web_discuss->update();
+        $DiscussID = $tad_web_discuss->update($DiscussID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

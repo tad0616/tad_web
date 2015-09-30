@@ -82,7 +82,7 @@ class tad_web_discuss
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('isMineDiscuss', $isMyWeb);
             $xoopsTpl->assign('showWebTitleDiscuss', $showWebTitle);
-            $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'discuss'));
+            $xoopsTpl->assign('discuss', get_db_plugin($this->WebID, 'discuss'));
         }
     }
 

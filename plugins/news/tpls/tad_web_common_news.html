@@ -19,7 +19,7 @@
 
             <{if !$showWebTitleNews && $isMineNews}>
               <a href="javascript:delete_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-              <a href="news.php?op=edit_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
+              <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </h3>
           <div class="well" style="min-height: 100px; overflow: auto; line-height: 1.8; background-color: #FCFCFC;">
@@ -36,7 +36,7 @@
 
               <{if !$showWebTitleNews && $isMineNews}>
                 <a href="javascript:delete_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                <a href="news.php?op=edit_form&NewsID=<{$news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
               <{/if}>
             </h3>
           </div>
@@ -58,7 +58,7 @@
 
                 <{if !$showWebTitleNews && $isMineNews}>
                   <a href="javascript:delete_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                  <a href="news.php?op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                  <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
               </li>
             <{/if}>
@@ -69,10 +69,8 @@
   <{/if}>
 <{else}>
 
-  <{if $WebID=="" and $display_mode=='index'}>
-    <h1><{$smarty.const._MD_TCW_NEWS}></h1>
-  <{elseif $display_mode=='home'}>
-    <h1><{$plugin.db.PluginTitle}></h1>
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h1><{$news.PluginTitle}></h1>
   <{/if}>
 
   <table class="footable table common_table">
@@ -143,7 +141,7 @@
       <{/if}>
     <{/if}>
     <{if $isMineNews and $WebID}>
-      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_ADD}></a>
+      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
     <{/if}>
   </div>
 <{/if}>

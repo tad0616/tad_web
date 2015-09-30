@@ -82,7 +82,7 @@ class tad_web_files
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineFiles', $isMyWeb);
         $xoopsTpl->assign('showWebTitleFiles', $showWebTitle);
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'files'));
+        $xoopsTpl->assign('files', get_db_plugin($this->WebID, 'files'));
     }
 
     //以流水號秀出某筆tad_web_file資料內容

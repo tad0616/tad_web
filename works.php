@@ -26,7 +26,7 @@ switch ($op) {
 
     //更新資料
     case "update":
-        $WorksID = $tad_web_works->update();
+        $WorksID = $tad_web_works->update($WorksID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&WorksID=$WorksID");
         exit;
         break;

@@ -104,11 +104,17 @@
             <{foreach from=$plugins item=plugin}>
               <tr id="tr_<{$plugin.dirname}>">
                 <td>
-                  <label class="checkbox"><input type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked="checked"<{elseif $plugin.db.PluginEnable=='0' or $plugin.dirname|in_array:$hide_function}><{else}>checked="checked"<{/if}>><{$plugin.dirname}></label>
+                  <label class="checkbox-inline"><input type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked="checked"<{elseif $plugin.db.PluginEnable=='0' or $plugin.dirname|in_array:$hide_function}><{else}>checked="checked"<{/if}>><{$plugin.dirname}></label>
                 </td>
                 <td><{$plugin.config.name}></td>
                 <td><input type="text" name="plugin_name[<{$plugin.dirname}>]" value="<{if $plugin.db.PluginTitle}><{$plugin.db.PluginTitle}><{else}><{$plugin.config.name}><{/if}>" class="form-control" style="width: 120px;"></td>
-                <td><label class="checkbox"><input type="checkbox" name="plugin_display[<{$plugin.dirname}>]" value="1" <{if $plugin.db.display=='1'}>checked="checked"<{/if}>></label></td>
+                <td>
+                  <{if $plugin.config.common==1}>
+                    <label class="checkbox"><input type="checkbox" name="plugin_display[<{$plugin.dirname}>]" value="1" <{if $plugin.db.display=='1'}>checked="checked"<{/if}>></label>
+                  <{else}>
+                    <input type="hidden" name="plugin_display[<{$plugin.dirname}>]" value="0">
+                  <{/if}>
+                </td>
                 <td>
                   <{if $plugin.config.limit!=''}>
                     <input type="text" name="plugin_limit[<{$plugin.dirname}>]" value="<{if $plugin.db.limit}><{$plugin.db.limit}><{else}><{$plugin.config.limit}><{/if}>" class="form-control" style="width: 50px;">

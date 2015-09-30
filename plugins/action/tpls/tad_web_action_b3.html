@@ -105,11 +105,7 @@
     </div>
   <{/if}>
 <{else}>
-  <{if $WebID==""}>
-    <h1><{$smarty.const._MD_TCW_ACTION}></h1>
-  <{else}>
-    <h1><{$the_plugin.PluginTitle}></h1>
-  <{/if}>
+  <h1><{$action.PluginTitle}></h1>
   <{$cate_menu}>
   <{$FooTableJS}>
   <div class="row">

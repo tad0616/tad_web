@@ -15,6 +15,42 @@ $TadUpFiles->set_dir('subdir', $subdir);
 include_once TADTOOLS_PATH . "/tad_function.php";
 
 /********************* 自訂函數 *********************/
+function html5($content = "", $ui = false, $bootstrap = true)
+{
+    $jquery         = get_jquery($ui);
+    $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='screen' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css' />" : "";
+    $main           = "<!DOCTYPE html>
+      <html lang='zh-TW'>
+        <head>
+          <meta charset='utf-8'>
+          <title></title>
+          <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+          $bootstrap_link
+          {$jquery}
+        </head>
+        <body>
+            <div class='contain'>
+                <div class='row'>
+                    <div class='col-md-12'>
+                        {$content}
+                    </div>
+                </div>
+            </div>
+        </body>
+      </html>
+      ";
+    return $main;
+}
+
+function web_error($sql)
+{
+    global $isAdmin;
+    if ($isAdmin) {
+        die(html5("<div class='well'>$sql</div><div class='alert alert-danger'>" . mysql_error() . "</div>"));
+    } else {
+        redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    }
+}
 
 //取得所有網站設定值
 function get_web_all_config($WebID = "")
@@ -57,17 +93,17 @@ function get_web_all_config($WebID = "")
 }
 
 //取得網站設定值
-function get_web_config($ConfigName = "", $defWebID = "")
+function get_web_config($ConfigName = null, $defWebID = "")
 {
     global $xoopsDB;
 
-    $andWebID = empty($defWebID) ? "" : "and `WebID`='$defWebID'";
+    $andWebID = is_null($defWebID) ? "" : "and `WebID`='$defWebID'";
 
     $sql = "select `ConfigValue`,`WebID` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='{$ConfigName}' $andWebID ";
 
     $result      = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     $ConfigValue = "";
-    if ($defWebID) {
+    if (!is_null($defWebID)) {
         list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result);
     } else {
         while (list($Value, $WebID) = $xoopsDB->fetchRow($result)) {
@@ -82,7 +118,7 @@ function get_web_config($ConfigName = "", $defWebID = "")
 function save_web_config($ConfigName = "", $ConfigValue = "")
 {
     global $xoopsDB, $xoopsUser, $WebID, $isMyWeb;
-    if (!$isMyWeb) {
+    if (!empty($WebID) and !$isMyWeb) {
         return;
     }
 
@@ -148,11 +184,12 @@ function get_dir_plugins()
             closedir($dh);
         }
     }
+    sort($plugins);
     return $plugins;
 }
 
 //取得所有外掛
-function get_plugins($WebID, $mode = 'show', $only_enable = false)
+function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
 {
     global $TadUpFiles, $xoopsDB;
 
@@ -259,7 +296,7 @@ function common_template($WebID)
 
 }
 
-function mk_menu_var_file($WebID)
+function mk_menu_var_file($WebID = null)
 {
     //die('$WebID:' . $WebID);
     $all_plugins = get_plugins($WebID, 'show');
@@ -282,8 +319,14 @@ function mk_menu_var_file($WebID)
 
         $i++;
     }
-    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+
+    if (empty($WebID)) {
+        $file = XOOPS_ROOT_PATH . "/uploads/tad_web/menu_var.php";
+    } else {
+        $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+    }
     file_put_contents($file, $current);
+
 }
 
 //取得回覆數量

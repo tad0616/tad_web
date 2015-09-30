@@ -72,7 +72,7 @@ class tad_web_works
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineWorks', $isMyWeb);
         $xoopsTpl->assign('showWebTitleWorks', $showWebTitle);
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'works'));
+        $xoopsTpl->assign('works', get_db_plugin($this->WebID, 'works'));
     }
 
     //以流水號秀出某筆tad_web_works資料內容

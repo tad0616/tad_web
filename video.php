@@ -26,7 +26,7 @@ switch ($op) {
 
     //更新資料
     case "update":
-        $VideoID = $tad_web_video->update();
+        $VideoID = $tad_web_video->update($VideoID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&VideoID=$VideoID");
         exit;
         break;

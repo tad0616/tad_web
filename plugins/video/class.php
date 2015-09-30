@@ -72,7 +72,7 @@ class tad_web_video
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('isMineVideo', $isMyWeb);
         $xoopsTpl->assign('showWebTitleVideo', $showWebTitle);
-        $xoopsTpl->assign('the_plugin', get_db_plugin($this->WebID, 'video'));
+        $xoopsTpl->assign('video', get_db_plugin($this->WebID, 'video'));
     }
 
     //以流水號秀出某筆tad_web_video資料內容

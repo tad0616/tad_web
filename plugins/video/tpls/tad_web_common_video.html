@@ -8,10 +8,8 @@
   </script>
 <{/if}>
 
-<{if $WebID=="" and $display_mode=='index'}>
-  <h1><{$smarty.const._MD_TCW_VIDEO}></h1>
-<{elseif $display_mode=='home'}>
-  <h1><{$plugin.db.PluginTitle}></h1>
+<{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+  <h1><{$video.PluginTitle}></h1>
 <{/if}>
 
 <table class="footable table common_table">
@@ -92,6 +90,6 @@
     <{/if}>
   <{/if}>
   <{if $isMineVideo and $WebID}>
-    <a href="video.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_ADD}></a>
+    <a href="video.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
   <{/if}>
 </div>
