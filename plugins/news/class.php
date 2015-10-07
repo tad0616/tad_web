@@ -18,7 +18,6 @@ class tad_web_news
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
-        $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
 
         //取得tad_web_cate所有資料陣列
         $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
@@ -32,16 +31,16 @@ class tad_web_news
             $andCateID = "and a.`CateID`='$CateID'";
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by NewsDate desc $andLimit";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by NewsDate desc";
 
-        $bar = "";
-        if (empty($limit)) {
-            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, 20, 10);
-            $bar     = $PageBar['bar'];
-            $sql     = $PageBar['sql'];
-            $total   = $PageBar['total'];
-        }
+        $to_limit = empty($limit) ? 20 : $limit;
+
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar  = getPageBar($sql, $to_limit, 10);
+        $bar      = $PageBar['bar'];
+        $sql      = $PageBar['sql'];
+        $total    = $PageBar['total'];
+        $show_bar = empty($limit) ? $bar : "";
 
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
@@ -76,10 +75,11 @@ class tad_web_news
         }
 
         $xoopsTpl->assign('news_data', $main_data);
-        $xoopsTpl->assign('bar', $bar);
+        $xoopsTpl->assign('news_bar', $show_bar);
         $xoopsTpl->assign('isMineNews', $isMyWeb);
         $xoopsTpl->assign('showWebTitleNews', $showWebTitle);
         $xoopsTpl->assign('news', get_db_plugin($this->WebID, 'news'));
+        return $total;
 
     }
 

@@ -9,3 +9,11 @@
     </div>
   <{/if}>
 <{/foreach}>
+
+<{if $data_count_sum==0 and $display_mode=='home'}>
+  <div class="row-fluid">
+    <div class="span12">
+      <img src="<{$xoops_url}>/modules/tad_web/images/comingsoon.png" alt="coming soon" class="img-rounded img-responsive" >
+    </div>
+  </div>
+<{/if}>

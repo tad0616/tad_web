@@ -14,3 +14,4 @@ define("_MD_TCW_DISCUSS_SUBMIT", "送出討論");
 define("_MD_TCW_DISCUSS_TO_REPLY", "我要回覆");
 define("_MD_TCW_DISCUSS_REPLY", "回覆");
 define("_MD_TCW_DISCUSS_ADD", "我要留言");
+define("_MD_TCW_DISCUSS_FILES", "相關附件");

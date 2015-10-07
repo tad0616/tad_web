@@ -9,7 +9,7 @@
             var top = ui.position.top;
             var left = ui.position.left;
 
-            $.post("config.php", {op: "save_head_bg", WebID: <{$WebID}> , head_top: top, head_left: left });
+            $.post("config_ajax.php", {op: "save_head_bg", WebID: <{$WebID}> , head_top: top, head_left: left });
           }});
 
         $( "#tad_web_logo" ).draggable({
@@ -18,7 +18,7 @@
             var top = ui.position.top;
             var left = ui.position.left;
 
-            $.post("config.php", {op: "save_logo", WebID: <{$WebID}> , logo_top: top, logo_left: left });
+            $.post("config_ajax.php", {op: "save_logo", WebID: <{$WebID}> , logo_top: top, logo_left: left });
           }});
       });
     </script>

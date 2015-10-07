@@ -14,35 +14,43 @@ function ClassHome($WebID = "")
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs;
 
-    include XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
-    //die(var_export($menu_var));
-    $xoopsTpl->assign('display_mode', 'home');
+    $web_setup_show_arr = get_web_config("web_setup_show_arr", $WebID);
+    if (empty($web_setup_show_arr)) {
+        $show_arr = get_dir_plugins();
+    } else {
+        $show_arr = explode(',', $web_setup_show_arr);
+    }
 
-    foreach ($menu_var as $plugin) {
-        $dirname = $plugin['dirname'];
+    $xoopsTpl->assign('show_arr', $show_arr);
+    $xoopsTpl->assign('display_mode', 'home');
+    $data_count = "";
+    foreach ($show_arr as $dirname) {
         if (empty($dirname)) {
             continue;
         }
 
         include_once "plugins/{$dirname}/class.php";
-        $plugin_name  = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name($WebID);
-        $limit        = get_web_config("{$dirname}_limit", 0);
-        $$plugin_name->list_all('', $limit);
-        $show_arr[] = $dirname;
+        $plugin_name          = "tad_web_{$dirname}";
+        $$plugin_name         = new $plugin_name($WebID);
+        $limit                = get_web_config("{$dirname}_limit", 0);
+        $data_count[$dirname] = $$plugin_name->list_all('', $limit);
+        $show_arr[]           = $dirname;
     }
-    $xoopsTpl->assign('show_arr', $show_arr);
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
 
     $xoopsTpl->assign('MyWebs', $MyWebs);
+    $xoopsTpl->assign('data_count', $data_count);
+    $xoopsTpl->assign('data_count_sum', array_sum($data_count));
 }
 
 //取得所有班級
 function list_all_class()
 {
-    global $xoopsTpl;
+    global $xoopsTpl, $xoopsModuleConfig;
+
+    $xoopsTpl->assign('module_title', $xoopsModuleConfig['module_title']);
 
     $web_setup_show_arr = get_web_config("web_setup_show_arr", 0);
     if (empty($web_setup_show_arr)) {
@@ -53,17 +61,20 @@ function list_all_class()
 
     $xoopsTpl->assign('show_arr', $show_arr);
     $xoopsTpl->assign('display_mode', 'index');
+    $data_count = "";
 
     foreach ($show_arr as $dirname) {
         if (empty($dirname)) {
             continue;
         }
         include_once "plugins/{$dirname}/class.php";
-        $limit        = get_web_config("{$dirname}_limit", 0);
-        $plugin_name  = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name(0);
-        $$plugin_name->list_all('', $limit);
+        $limit                = get_web_config("{$dirname}_limit", 0);
+        $plugin_name          = "tad_web_{$dirname}";
+        $$plugin_name         = new $plugin_name(0);
+        $data_count[$dirname] = $$plugin_name->list_all('', $limit);
     }
+    $xoopsTpl->assign('data_count', $data_count);
+    $xoopsTpl->assign('data_count_sum', array_sum($data_count));
 }
 
 /*-----------執行動作判斷區----------*/

@@ -113,12 +113,14 @@
 
     <h2><{$WebYear}><{$smarty.const._MA_TCW_MAIN_TITLE}></h2>
 
-    <{if $tad_web_cate_menu_options}>
+    <{if $cate}>
       <div class="row-fluid">
         <div class="span3">
-          <select name="CateID" id="CateID" class="span12" onchange="location.href='main.php?CateID='+this.value">
+          <select name="CateID" id="CateID" class="form-control" onchange="location.href='main.php?CateID='+this.value">
             <option value="" <{if $CateID==""}>selected="selected"<{/if}>><{$smarty.const._MA_TCW_SELECT_CATE}></option>
-            <{$tad_web_cate_menu_options}>
+            <{foreach from=$cate item=cate}>
+              <option value="<{$cate.CateID}>" <{if $CateID==$cate.CateID}>selected="selected"<{/if}>><{$cate.CateName}></option>
+            <{/foreach}>
           </select>
         </div>
       </div>

@@ -82,16 +82,27 @@
   <{/if}>
 
   <h1><{$ActionName}></h1>
-  <div class="alert alert-info">
+
+  <ol class="breadcrumb">
+    <li><a href="action.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_ACTION}></a></li>
+    <{if $cate.CateID}><li><a href="action.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <li><{$ActionInfo}></li>
+  </ol>
+
+  <div class="alert alert-default">
     <div class="row">
-      <div class="col-md-3"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
-      <div class="col-md-3"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
-      <div class="col-md-6"><{$ActionInfo}></div>
+      <{if $ActionDate}>
+        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
+      <{/if}>
+
+      <{if $ActionPlace}>
+        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
+      <{/if}>
     </div>
   </div>
 
   <{if $ActionDesc}>
-    <div class="well"><{$ActionDesc}></div>
+    <div style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FFFFFF url('<{$bg_pic}>') center center; border: 2px solid #AAC1DD; border-radius: 5px; margin:10px auto; padding: 20px; background-size:cover;"><{$ActionDesc}></div>
   <{/if}>
 
   <div class="row">

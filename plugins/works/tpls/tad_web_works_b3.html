@@ -73,12 +73,15 @@
   <{/if}>
 
   <h1><{$WorkName}></h1>
-  <div class="alert alert-info">
-    <div class="row">
-      <div class="col-md-4"><{$smarty.const._MD_TCW_WORKS_DATE}><{$smarty.const._TAD_FOR}><{$WorksDate}></div>
-      <div class="col-md-8 text-right"><{$ActionInfo}></div>
-    </div>
-  </div>
+
+  <ol class="breadcrumb">
+    <li><a href="works.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_WORKS}></a></li>
+    <{if $cate.CateID}><li><a href="works.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <li><{$WorksInfo}></li>
+  </ol>
+
+
+
   <{if $WorkDesc}>
     <div class="well"><{$WorkDesc}></div>
   <{/if}>

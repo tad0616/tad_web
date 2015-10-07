@@ -103,7 +103,7 @@ if (is_dir($dir)) {
                 if (substr($file, 0, 1) == '.') {
                     continue;
                 }
-                include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/english.php";
+                include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/english.php";
             }
         }
         closedir($dh);

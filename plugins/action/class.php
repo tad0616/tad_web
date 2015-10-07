@@ -19,7 +19,6 @@ class tad_web_action
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
-        $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
 
         //取得tad_web_cate所有資料陣列
         $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
@@ -33,16 +32,16 @@ class tad_web_action
             $andCateID = "and a.`CateID`='$CateID'";
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionDate desc $andLimit";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionDate desc";
 
-        $bar = "";
-        if (empty($limit)) {
-            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, 20, 10);
-            $bar     = $PageBar['bar'];
-            $sql     = $PageBar['sql'];
-            $total   = $PageBar['total'];
-        }
+        $to_limit = empty($limit) ? 20 : $limit;
+
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar  = getPageBar($sql, $to_limit, 10);
+        $bar      = $PageBar['bar'];
+        $sql      = $PageBar['sql'];
+        $total    = $PageBar['total'];
+        $show_bar = empty($limit) ? $bar : "";
 
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
@@ -68,16 +67,19 @@ class tad_web_action
 
             $subdir = isset($WebID) ? "/{$WebID}" : "";
             $TadUpFiles->set_dir('subdir', $subdir);
-            $ActionPic                  = $TadUpFiles->get_pic_file('thumb');
+            $TadUpFiles->set_col("ActionID", $ActionID);
+            $ActionPic = $TadUpFiles->get_pic_file('thumb');
+            //die('ActionPic:' . $ActionPic);
             $main_data[$i]['ActionPic'] = $ActionPic;
             $i++;
         }
 
         $xoopsTpl->assign('action_data', $main_data);
-        $xoopsTpl->assign('bar', $bar);
+        $xoopsTpl->assign('action_bar', $show_bar);
         $xoopsTpl->assign('isMineAction', $isMyWeb);
         $xoopsTpl->assign('showWebTitleAction', $showWebTitle);
         $xoopsTpl->assign('action', get_db_plugin($this->WebID, 'action'));
+        return $total;
 
     }
 
@@ -107,6 +109,16 @@ class tad_web_action
 
         $TadUpFiles->set_col("ActionID", $ActionID);
         $pics = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+
+        $TadUpFiles->set_col("ActionID", $ActionID, 1);
+        $bg_pic = $TadUpFiles->get_file_for_smarty();
+        //die(var_export($bg_pic));
+        $new_name = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg";
+        if (!file_exists($new_name)) {
+            $this->mk_blur_pic($bg_pic[0]['path'], $new_name);
+        }
+
+        $xoopsTpl->assign('bg_pic', XOOPS_URL . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg");
 
         $uid_name = XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
@@ -300,4 +312,93 @@ class tad_web_action
         return $data;
     }
 
+    public function blur($gdImageResource, $blurFactor = 3)
+    {
+        // blurFactor has to be an integer
+        $blurFactor = round($blurFactor);
+
+        $originalWidth  = imagesx($gdImageResource);
+        $originalHeight = imagesy($gdImageResource);
+
+        $smallestWidth  = ceil($originalWidth * pow(0.5, $blurFactor));
+        $smallestHeight = ceil($originalHeight * pow(0.5, $blurFactor));
+
+        // for the first run, the previous image is the original input
+        $prevImage  = $gdImageResource;
+        $prevWidth  = $originalWidth;
+        $prevHeight = $originalHeight;
+
+        // scale way down and gradually scale back up, blurring all the way
+        for ($i = 0; $i < $blurFactor; $i += 1) {
+            // determine dimensions of next image
+            $nextWidth  = $smallestWidth * pow(2, $i);
+            $nextHeight = $smallestHeight * pow(2, $i);
+
+            // resize previous image to next size
+            $nextImage = imagecreatetruecolor($nextWidth, $nextHeight);
+            imagecopyresized($nextImage, $prevImage, 0, 0, 0, 0,
+                $nextWidth, $nextHeight, $prevWidth, $prevHeight);
+
+            // apply blur filter
+            imagefilter($nextImage, IMG_FILTER_GAUSSIAN_BLUR);
+
+            // now the new image becomes the previous image for the next step
+            $prevImage  = $nextImage;
+            $prevWidth  = $nextWidth;
+            $prevHeight = $nextHeight;
+        }
+
+        // scale back to original size and blur one more time
+        imagecopyresized($gdImageResource, $nextImage,
+            0, 0, 0, 0, $originalWidth, $originalHeight, $nextWidth, $nextHeight);
+        imagefilter($gdImageResource, IMG_FILTER_GAUSSIAN_BLUR);
+
+        // clean up
+        imagedestroy($prevImage);
+
+        // return result
+        return $gdImageResource;
+    }
+
+    public function mk_blur_pic($filepath, $new_name)
+    {
+        $type         = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize()
+        $allowedTypes = array(
+            1, // [] gif
+            2, // [] jpg
+            3, // [] png
+            6, // [] bmp
+        );
+        if (!in_array($type, $allowedTypes)) {
+            return false;
+        }
+        switch ($type) {
+            case 1:
+                $im = imageCreateFromGif($filepath);
+                break;
+            case 2:
+                $im = imageCreateFromJpeg($filepath);
+                break;
+            case 3:
+                $im = imageCreateFromPng($filepath);
+                break;
+            case 6:
+                $im = imageCreateFromBmp($filepath);
+                break;
+        }
+
+        //$im = $this->blur($im, 3);
+
+        $color = imagecolorallocatealpha($im, 255, 255, 255, 10);
+        $this->ImageFillAlpha($im, $color);
+
+        imagejpeg($im, $new_name);
+        imagedestroy($im);
+        return $im;
+    }
+
+    public function ImageFillAlpha($image, $color)
+    {
+        imagefilledrectangle($image, 0, 0, imagesx($image), imagesy($image), $color);
+    }
 }

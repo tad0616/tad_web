@@ -30,7 +30,13 @@ define("_MI_TCW_BDESC3", "活動剪影");
 define("_MI_TCW_BNAME4", "選單");
 define("_MI_TCW_BDESC4", "選單");
 
-define("_MI_TCW_WEB_MODE", "模組用途");
-define("_MI_TCW_WEB_MODE_DESC", "「班級網頁」會呈現班級的相關功能");
-define("_MI_TCW_WEB_MODE_OPT1", "班級網頁");
-define("_MI_TCW_WEB_MODE_OPT2", "個人網頁");
+define("_MI_TCW_WEB_MODE_TITLE", "模組首頁標題");
+define("_MI_TCW_WEB_MODE_DESC", "此模組首頁欲呈現的標題");
+define("_MI_TCW_WEB_MODE_DEF", "班級網頁一覽");
+
+define('_MI_TCW_WEB_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_TCW_WEB_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_TCW_WEB_BACK_2_ADMIN', '管理');
+
+//help
+define('_MI_TCW_WEB_HELP_OVERVIEW', '概要');

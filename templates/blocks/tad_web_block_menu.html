@@ -16,6 +16,11 @@
 
       });
     </script>
+
+    <{if $block.DefWebID}>
+      <h3><{$smarty.const._MB_TCW_LOGIN}></h3>
+    <{/if}>
+
     <div class="well">
       <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login">
         <div class="<{$block.form_group}>">
@@ -83,6 +88,7 @@
         </div>
     </div>
   <{else}>
+
     <div class="well well-small">
 
       <{$LoginMemName}>
@@ -104,18 +110,24 @@
 <{elseif $block.op=="logout"}>
   <a href="<{$xoops_url}>/user.php?op=logout" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
 <{else}>
-  <select class="span12 form-control" onChange="location.href=this.value">
-    <{foreach from=$block.webs item=web}>
-      <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
-    <{/foreach}>
-  </select>
 
-  <h3><{$block.WebTitle}><small><{$smarty.const._MB_TCW_MENU}></small></h3>
+  <{if $block.DefWebID}>
+    <h3><{$block.WebTitle}><small><{$smarty.const._MB_TCW_MENU}></small></h3>
+  <{/if}>
+
 
   <div class="well">
 
     <div class="<{$block.row}>">
       <div class="<{$block.span}>12">
+        <{if $web_num > 1}>
+          <select class="span12 form-control" onChange="location.href=this.value">
+            <{foreach from=$block.webs item=web}>
+              <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
+            <{/foreach}>
+          </select>
+        <{/if}>
+
         <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$block.defaltWebID}>" class="btn">
           <i class="fa fa-home"></i>
           <{$block.back_home}>
@@ -135,13 +147,13 @@
       <{foreach from=$block.plugins item=plugin}>
         <tr>
           <td>
-            <a href="<{$plugin.url}>">
+            <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
               <i class="fa <{$plugin.icon}>"></i>
               <{$plugin.title}>
             </a>
           </td>
           <td>
-            <a href="<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
+            <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
               <i class="fa fa-pencil"></i>
             </a>
           </td>

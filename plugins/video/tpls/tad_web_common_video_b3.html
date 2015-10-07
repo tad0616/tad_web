@@ -1,39 +1,39 @@
-<{if $isMineVideo}>
-  <script type="text/javascript">
-  function delete_func(VideoID){
-    var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-    if (!sure)  return;
-    location.href="video.php?op=delete&VideoID=" + VideoID;
-  }
-  </script>
-<{/if}>
-
-<{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-  <h1><{$video.PluginTitle}></h1>
-<{/if}>
-
-<table class="footable table common_table">
-<thead>
-  <tr>
-    <th data-hide="phone" style="width:100px;text-align:center;">
-      <{$smarty.const._MD_TCW_VIDEODATE}>
-    </th>
-    <th data-class="expand">
-      <{$smarty.const._MD_TCW_VIDEONAME}>
-    </th>
-    <{if $showWebTitleVideo}>
-      <th data-hide="phone" style="width:100px;text-align:center;">
-        <{$smarty.const._MD_TCW_TEAMID}>
-      </th>
-    <{/if}>
-    <{if !$showWebTitleVideo && $isMineVideo}>
-      <th data-hide="phone" style="width:100px;text-align:center;">
-        <{$smarty.const._TAD_FUNCTION}>
-      </th>
-    <{/if}>
-  </tr>
-</thead>
 <{if $video_data}>
+  <{if $isMineVideo}>
+    <script type="text/javascript">
+    function delete_func(VideoID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="video.php?op=delete&VideoID=" + VideoID;
+    }
+    </script>
+  <{/if}>
+
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h1><{$video.PluginTitle}></h1>
+  <{/if}>
+
+  <table class="footable table common_table">
+  <thead>
+    <tr>
+      <th data-hide="phone" style="width:100px;text-align:center;">
+        <{$smarty.const._MD_TCW_VIDEODATE}>
+      </th>
+      <th data-class="expand">
+        <{$smarty.const._MD_TCW_VIDEONAME}>
+      </th>
+      <{if $showWebTitleVideo}>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._MD_TCW_TEAMID}>
+        </th>
+      <{/if}>
+      <{if !$showWebTitleVideo && $isMineVideo}>
+        <th data-hide="phone" style="width:100px;text-align:center;">
+          <{$smarty.const._TAD_FUNCTION}>
+        </th>
+      <{/if}>
+    </tr>
+  </thead>
   <{foreach item=video from=$video_data}>
     <tr>
       <td style="width:130px;">
@@ -67,29 +67,21 @@
         </td>
       <{/if}>
     </tr>
-    <{/foreach}>
-  <{else}>
-    <tr>
-      <td colspan=4 class="text-center">
-        <{$smarty.const._MD_TCW_EMPTY}>
-      </td>
-    </tr>
-  <{/if}>
-</table>
+  <{/foreach}>
+  </table>
 
-<{if $video_data}>
-  <{$bar}>
-<{/if}>
+  <{$video_bar}>
 
-<div style="text-align:right">
-  <{if $bar==""}>
-    <{if $WebID==""}>
-      <a href="video.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
-    <{else}>
-      <a href="video.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
+  <div style="text-align:right; margin-bottom: 10px;">
+    <{if $video_bar==""}>
+      <{if $WebID==""}>
+        <a href="video.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
+      <{else}>
+        <a href="video.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
+      <{/if}>
     <{/if}>
-  <{/if}>
-  <{if $isMineVideo and $WebID}>
-    <a href="video.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
-  <{/if}>
-</div>
+    <{if $isMineVideo and $WebID}>
+      <a href="video.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
+    <{/if}>
+  </div>
+<{/if}>

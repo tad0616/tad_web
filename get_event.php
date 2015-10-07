@@ -23,13 +23,11 @@ function get_event()
 
         while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
 
-            $toCal   = userTimeToServerTime(strtotime($toCal));
-            $CalKind = ($_REQUEST['CalKind'] == "homework") ? "homework" : "news";
-            $IDCol   = ($_REQUEST['CalKind'] == "homework") ? "HomeworkID" : "NewsID";
+            $toCal = userTimeToServerTime(strtotime($toCal));
 
             $myEvents[$i]['id']        = $ID;
             $myEvents[$i]['title']     = $Title;
-            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/{$CalKind}.php?WebID=$WebID&$IDCol={$ID}";
+            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/homework.php?WebID=$WebID&HomeworkID={$ID}";
             $myEvents[$i]['start']     = $toCal;
             $myEvents[$i]['allDay']    = true;
             $myEvents[$i]['className'] = "fc-event";
@@ -42,31 +40,28 @@ function get_event()
 
         while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
 
-            $toCal   = userTimeToServerTime(strtotime($toCal));
-            $CalKind = ($_REQUEST['CalKind'] == "homework") ? "homework" : "news";
-            $IDCol   = ($_REQUEST['CalKind'] == "homework") ? "HomeworkID" : "NewsID";
+            $toCal = userTimeToServerTime(strtotime($toCal));
 
             $myEvents[$i]['id']        = $ID;
             $myEvents[$i]['title']     = $Title;
-            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/{$CalKind}.php?WebID=$WebID&$IDCol={$ID}";
+            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/news.php?WebID=$WebID&NewsID={$ID}";
             $myEvents[$i]['start']     = $toCal;
             $myEvents[$i]['allDay']    = true;
             $myEvents[$i]['className'] = "fc-event";
 
             $i++;
         }
+
         $sql    = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
         $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
         while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
 
-            $toCal   = userTimeToServerTime(strtotime($toCal));
-            $CalKind = ($_REQUEST['CalKind'] == "homework") ? "homework" : "news";
-            $IDCol   = ($_REQUEST['CalKind'] == "homework") ? "HomeworkID" : "NewsID";
+            $toCal = userTimeToServerTime(strtotime($toCal));
 
             $myEvents[$i]['id']        = $ID;
             $myEvents[$i]['title']     = $Title;
-            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/{$CalKind}.php?WebID=$WebID&$IDCol={$ID}";
+            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/homework.php?WebID=$WebID&HomeworkID={$ID}";
             $myEvents[$i]['start']     = $toCal;
             $myEvents[$i]['allDay']    = true;
             $myEvents[$i]['className'] = "fc-event";

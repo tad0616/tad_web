@@ -35,25 +35,19 @@
     </div>
   <{/foreach}>
   <div style="clear: both;"></div>
-<{else}>
-  <div class="well">
-    <{$smarty.const._MD_TCW_EMPTY}>
-  </div>
-<{/if}>
-
-<{if $action_data}>
-  <{$bar}>
-<{/if}>
-
-<div style="text-align:right">
-  <{if $bar==""}>
+  <{$action_bar}>
+  <div style="text-align:right; margin-bottom: 10px;">
+  <{if $action_bar==""}>
     <{if $WebID==""}>
       <a href="action.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
     <{else}>
       <a href="action.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
     <{/if}>
   <{/if}>
+
   <{if $isMineAction and $WebID}>
     <a href="action.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
   <{/if}>
 </div>
+<{/if}>
+

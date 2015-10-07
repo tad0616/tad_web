@@ -1,3 +1,13 @@
+Tad Web 1.4 release (2015-10-02 release)
+====================================================
+1. All features modular, simplify the development process
+2. The user can specify your own website in a different address
+3. The homework became an independent function
+4. The administrator can decide to appear in the overview page functionality
+5. The site owner can adjust Home and Menu functions order
+6. Add new management plug-in page
+
+
 Tad Web version 1.3 release (2015-09-21 release)
 ====================================================
 1. Fixed the issue that sites categories menu does not work.

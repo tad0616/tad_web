@@ -25,6 +25,16 @@
         </div>
       </div>
 
+      <!--相關附件-->
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_DISCUSS_FILES}>
+        </label>
+        <div class="col-md-10">
+          <{$upform}>
+        </div>
+      </div>
+
       <div class="form-group">
         <div class="col-md-12 text-center">
           <input type="hidden" name="WebID" value="<{$WebID}>">
@@ -36,6 +46,8 @@
           <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_DISCUSS_SUBMIT}></button>
         </div>
       </div>
+
+
       </form>
     </div>
   <{/if}>
@@ -52,32 +64,49 @@
   </script>
 
   <h1><{$DiscussTitle}></h1>
-  <div style="text-align:right;font-size:12px;">
-    <{$DiscussInfo}>
-    <{if $isMineDiscuss}>
-      <a href="javascript:delete_func(<{$DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-      <a href="discuss.php?WebID=<{$WebID}>&op=edit_form&DiscussID=<{$DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
-    <{/if}>
-  </div>
+
+  <ol class="breadcrumb">
+    <li><a href="discuss.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_DISCUSS}></a></li>
+    <{if $cate.CateID}><li><a href="discuss.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <li><{$DiscussInfo}></li>
+  </ol>
 
   <{if $DiscussContent}>
-    <div class="well" style="line-height:180%;">
-      <{$DiscussContent}>
+    <{$DiscussContent}>
+    <img src='<{$pic}>' alt='<{$MemName}>' style='width:120px;margin:0px 15px 0px 30px;float:left;'>
+    <div style='line-height:1.5em;'>
+      <div><{$MemName}></div><div style='font-size:12px;'><{$DiscussDate}></div>
+    </div>
+
+    <div style="text-align:right;font-size:12px;">
+      <{if $isMineDiscuss}>
+        <a href="javascript:delete_func(<{$DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+        <a href="discuss.php?WebID=<{$WebID}>&op=edit_form&DiscussID=<{$DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+      <{/if}>
     </div>
   <{/if}>
 
   <{$re}>
 
-  <{if $LoginMemID or $MyWebs}>
-    <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+  <{if $LoginMemID or $isMineDiscuss}>
+    <div style="clear: both;"></div>
+    <h3><{$smarty.const._MD_TCW_DISCUSS_REPLY}></h3>
+    <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form" style="margin-top:16px;">
       <div class="form-group">
         <div class="col-md-12">
           <textarea name="DiscussContent" class="form-control" rows=8 id="DiscussContent" class="validate[required , length[10,9999]]"></textarea>
         </div>
       </div>
 
+      <!--相關附件-->
       <div class="form-group">
-        <div class="col-md-12">
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_DISCUSS_FILES}>
+        </label>
+        <div class="col-md-8">
+          <{$upform}>
+        </div>
+        <div class="col-md-2">
           <input type="hidden" name="WebID" value="<{$WebID}>">
 
           <!--回覆編號-->

@@ -22,7 +22,6 @@ class tad_web_discuss
 
             $showWebTitle = (empty($this->WebID)) ? 1 : 0;
             $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
-            $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
 
             //取得tad_web_cate所有資料陣列
             $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
@@ -36,16 +35,16 @@ class tad_web_discuss
                 $andCateID = "and a.`CateID`='$CateID'";
             }
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.ReDiscussID='0' $andWebID $andCateID order by a.LastTime desc $andLimit";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.ReDiscussID='0' $andWebID $andCateID order by a.LastTime desc";
 
-            $bar = "";
-            if (empty($limit)) {
-                //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-                $PageBar = getPageBar($sql, 20, 10);
-                $bar     = $PageBar['bar'];
-                $sql     = $PageBar['sql'];
-                $total   = $PageBar['total'];
-            }
+            $to_limit = empty($limit) ? 20 : $limit;
+
+            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+            $PageBar  = getPageBar($sql, $to_limit, 10);
+            $bar      = $PageBar['bar'];
+            $sql      = $PageBar['sql'];
+            $total    = $PageBar['total'];
+            $show_bar = empty($limit) ? $bar : "";
 
             $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
@@ -69,7 +68,7 @@ class tad_web_discuss
                 $main_data[$i]['cate']     = $cate[$CateID];
                 $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
 
-                $renum       = get_re_num($DiscussID);
+                $renum       = $this->get_re_num($DiscussID);
                 $show_re_num = empty($renum) ? "" : " ({$renum}) ";
                 $LastTime    = substr($LastTime, 0, 10);
 
@@ -79,17 +78,18 @@ class tad_web_discuss
             }
 
             $xoopsTpl->assign('discuss_data', $main_data);
-            $xoopsTpl->assign('bar', $bar);
+            $xoopsTpl->assign('discuss_bar', $show_bar);
             $xoopsTpl->assign('isMineDiscuss', $isMyWeb);
             $xoopsTpl->assign('showWebTitleDiscuss', $showWebTitle);
             $xoopsTpl->assign('discuss', get_db_plugin($this->WebID, 'discuss'));
+            return $total;
         }
     }
 
     //以流水號秀出某筆tad_web_discuss資料內容
     public function show_one($DiscussID = "")
     {
-        global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl;
+        global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl, $TadUpFiles;
         if (empty($DiscussID)) {
             return;
         }
@@ -110,10 +110,31 @@ class tad_web_discuss
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $xoopsTpl->assign('isMineDiscuss', isMineDiscuss($MemID, $WebID));
+        if (!empty($uid)) {
+            $TadUpFiles->set_col("WebOwner", $WebID, "1");
+            $pic = $TadUpFiles->get_pic_file("thumb");
+            if (empty($pic)) {
+                $pic = "images/nobody.png";
+            }
+
+        } else {
+            $TadUpFiles->set_col("MemID", $MemID, "1");
+            $pic = $TadUpFiles->get_pic_file("thumb");
+            $M   = get_tad_web_mems($MemID);
+            if (empty($pic)) {
+                $pic = ($M['MemSex'] == '1') ? XOOPS_URL . "/modules/tad_web/images/boy.gif" : XOOPS_URL . "/modules/tad_web/images/girl.gif";
+            }
+        }
+        $xoopsTpl->assign('pic', $pic);
+
+        $TadUpFiles->set_col("DiscussID", $DiscussID);
+        $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
+        //$xoopsTpl->assign('DiscussFiles', $DiscussFiles);
+
+        $xoopsTpl->assign('isMineDiscuss', $this->isMineDiscuss($MemID, $WebID));
         $xoopsTpl->assign('DiscussTitle', $DiscussTitle);
         $xoopsTpl->assign('MemID', $MemID);
-        $xoopsTpl->assign('DiscussContent', nl2br($DiscussContent));
+        $xoopsTpl->assign('DiscussContent', $this->bubble(nl2br($DiscussContent) . $DiscussFiles));
         $xoopsTpl->assign('DiscussDate', $DiscussDate);
         $xoopsTpl->assign('LastTime', $LastTime);
         $xoopsTpl->assign('MemName', $MemName);
@@ -121,12 +142,16 @@ class tad_web_discuss
         $xoopsTpl->assign('DiscussCounter', $DiscussCounter);
         $xoopsTpl->assign('DiscussID', $DiscussID);
         $xoopsTpl->assign('DiscussInfo', sprintf(_MD_TCW_INFO, $MemName, $DiscussDate, $DiscussCounter));
-        $xoopsTpl->assign('re', get_re($DiscussID));
+        $xoopsTpl->assign('re', $this->get_re($DiscussID));
         $xoopsTpl->assign('LoginMemID', $_SESSION['LoginMemID']);
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
+
+        $upform = $TadUpFiles->upform(false, 'upfile', null, false);
+        $xoopsTpl->assign('upform', $upform);
+
     }
 
     //tad_web_discuss編輯表單
@@ -180,6 +205,7 @@ class tad_web_discuss
         $xoopsTpl->assign('MemID', $MemID);
         $xoopsTpl->assign('MemName', $MemName);
         $xoopsTpl->assign('WebID', $WebID);
+        $xoopsTpl->assign('isMyWeb', $isMyWeb);
 
         //設定「DiscussID」欄位預設值
         $DiscussID = (!isset($DBV['DiscussID'])) ? "" : $DBV['DiscussID'];
@@ -227,12 +253,16 @@ class tad_web_discuss
 
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
+
+        $TadUpFiles->set_col("DiscussID", $DiscussID);
+        $upform = $TadUpFiles->upform();
+        $xoopsTpl->assign('upform', $upform);
     }
 
     //新增資料到tad_web_discuss中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $WebID, $isMyWeb, $isAdmin;
+        global $xoopsDB, $xoopsUser, $WebID, $isMyWeb, $isAdmin, $TadUpFiles;
 
         if (empty($_SESSION['LoginMemID']) and !$isMyWeb and $isAdmin) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
@@ -264,6 +294,9 @@ class tad_web_discuss
         //取得最後新增資料的流水編號
         $DiscussID = $xoopsDB->getInsertId();
 
+        $TadUpFiles->set_col("DiscussID", $DiscussID);
+        $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
+
         if (!empty($_POST['ReDiscussID'])) {
             $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `LastTime` = now()
             where `DiscussID` = '{$_POST['ReDiscussID']}' or `ReDiscussID` = '{$_POST['ReDiscussID']}'";
@@ -280,7 +313,7 @@ class tad_web_discuss
     //更新tad_web_discuss某一筆資料
     public function update($DiscussID = "")
     {
-        global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb;
+        global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
 
         if ($isMyWeb) {
             $uid     = $xoopsUser->uid();
@@ -313,13 +346,16 @@ class tad_web_discuss
         where DiscussID='{$DiscussID}' {$anduid}";
         $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
+        $TadUpFiles->set_col("DiscussID", $DiscussID);
+        $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
+
         return $DiscussID;
     }
 
     //刪除tad_web_discuss某筆資料資料
     public function delete($DiscussID = "")
     {
-        global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb;
+        global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
 
         if ($isMyWeb) {
             $anduid = ($isAdmin) ? "" : "and `WebID`='{$this->WebID}'";
@@ -332,6 +368,9 @@ class tad_web_discuss
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' $anduid";
         $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+
+        $TadUpFiles->set_col("DiscussID", $DiscussID);
+        $TadUpFiles->del_files();
     }
 
     //新增tad_web_discuss計數器
@@ -407,17 +446,21 @@ class tad_web_discuss
                 }
             }
 
-            $fun = (isMineDiscuss($MemID)) ? "<div style='font-size:12px;'>
+            $fun = ($this->isMineDiscuss($MemID)) ? "<div style='font-size:12px;'>
             <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID'>" . _TAD_EDIT . "</a> | <a href=\"javascript:delete_func($DiscussID);\">" . _TAD_DEL . "</a>
             </div>" : "";
 
+            $TadUpFiles->set_col("DiscussID", $DiscussID);
+            $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
+
             $DiscussContent = nl2br($DiscussContent);
-            $DiscussContent = bubble($DiscussContent);
+            $DiscussContent = $this->bubble($DiscussContent . $DiscussFiles);
             $re_data .= "<tr><td style='line-height:180%;'>
-            $DiscussContent
-            <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='margin:0px 15px 0px 30px;float:left;' class='img-rounded img-polaroid'>
+            {$DiscussContent}
+            <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='width:120px;margin:0px 15px 0px 30px;float:left;' class='img-rounded img-polaroid'>
             <div style='line-height:1.5em;'>
-              <div>{$MemName}</div><div style='font-size:12px;'>$DiscussDate</div>{$fun}
+              <div>{$MemName}</div><div style='font-size:12px;'>$DiscussDate</div>
+              {$fun}
             </div>
             <div style='clean:both;'></div>
             </td></tr>";
@@ -432,6 +475,21 @@ class tad_web_discuss
             ";
         }
         return $re;
+    }
+
+    //取得回覆數量
+    public function get_re_num($DiscussID = "")
+    {
+        global $xoopsDB, $xoopsUser;
+        if (empty($DiscussID)) {
+            return 0;
+        }
+
+        $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID'";
+
+        $result        = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        list($counter) = $xoopsDB->fetchRow($result);
+        return $counter;
     }
 
     public function bubble($content = "")

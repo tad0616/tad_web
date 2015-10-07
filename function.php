@@ -93,18 +93,22 @@ function get_web_all_config($WebID = "")
 }
 
 //取得網站設定值
-function get_web_config($ConfigName = null, $defWebID = "")
+function get_web_config($ConfigName = null, $defWebID = null)
 {
     global $xoopsDB;
 
     $andWebID = is_null($defWebID) ? "" : "and `WebID`='$defWebID'";
 
     $sql = "select `ConfigValue`,`WebID` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='{$ConfigName}' $andWebID ";
+    //die($sql);
+    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
-    $result      = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     $ConfigValue = "";
     if (!is_null($defWebID)) {
-        list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result);
+        if ($xoopsDB->getRowsNum($result)) {
+            list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result);
+        }
+
     } else {
         while (list($Value, $WebID) = $xoopsDB->fetchRow($result)) {
             $ConfigValue[$WebID] = $Value;
@@ -298,14 +302,22 @@ function common_template($WebID)
 
 function mk_menu_var_file($WebID = null)
 {
-    //die('$WebID:' . $WebID);
+    $web_plugin_enable_arr = get_web_config("web_plugin_enable_arr", $WebID);
+    if (empty($web_plugin_enable_arr)) {
+        $plugin_enable_arr = get_dir_plugins();
+    } else {
+        $plugin_enable_arr = explode(',', $web_plugin_enable_arr);
+    }
+
     $all_plugins = get_plugins($WebID, 'show');
-    //die(var_export($all_plugins));
+
     $current = "<?php\n";
     $i       = 1;
     foreach ($all_plugins as $plugin) {
-
         $dirname = $plugin['dirname'];
+        if (!in_array($dirname, $plugin_enable_arr)) {
+            continue;
+        }
 
         $current .= "\$menu_var[$i]['id']     = $i;\n";
         $current .= "\$menu_var[$i]['title']  = '{$plugin['db']['PluginTitle']}';\n";
@@ -327,20 +339,6 @@ function mk_menu_var_file($WebID = null)
     }
     file_put_contents($file, $current);
 
-}
-
-//取得回覆數量
-function get_re_num($DiscussID = "")
-{
-    global $xoopsDB, $xoopsUser;
-    if (empty($DiscussID)) {
-        return 0;
-    }
-
-    $sql           = "select count(*) from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID'";
-    $result        = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    list($counter) = $xoopsDB->fetchRow($result);
-    return $counter;
 }
 
 function get_tad_web_mems($MemID)
@@ -484,7 +482,7 @@ function getAllWebInfo($get_col = 'WebTitle')
 
     $sql    = "select `WebID`, `{$get_col}` from " . $xoopsDB->prefix("tad_web") . " order by WebSort";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-
+    $Webs   = '';
     while (list($WebID, $data) = $xoopsDB->fetchRow($result)) {
         $Webs[$WebID] = $data;
     }
@@ -831,7 +829,7 @@ function get_web_cate_arr()
     global $xoopsDB, $isAdmin, $MyWebs;
     $other_web_url_arr = get_web_config('other_web_url');
 
-    $sql    = "select * from `" . $xoopsDB->prefix("tad_web") . "` where WebEnable='1' and WebID > 0 order by WebTitle";
+    $sql    = "select * from `" . $xoopsDB->prefix("tad_web") . "` where WebEnable='1' and WebID > 0 order by WebSort,WebTitle";
     $result = $xoopsDB->query($sql)
     or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     $data_arr = '';
@@ -842,7 +840,7 @@ function get_web_cate_arr()
         if (empty($WebID)) {
             continue;
         }
-        $all['other_web_url']               = $other_web_url_arr[$WebID];
+        $all['other_web_url']               = isset($other_web_url_arr[$WebID]) ? $other_web_url_arr[$WebID] : '';
         $all['isMyWeb']                     = ($isAdmin) ? true : in_array($WebID, $MyWebs);
         $data_arr[$CateID][$WebID]          = $all;
         $data_arr[$CateID]['WebID'][$WebID] = $WebID;

@@ -3,6 +3,8 @@ define("_MD_TCW_HOMEWORK", "聯絡簿");
 define("_MD_TCW_HOMEWORK_SHORT", "聯絡簿");
 define("_MD_TCW_HOMEWORK_ADD", "寫聯絡簿");
 define("_MD_TCW_HOMEWORK_FILES", "相關檔案");
+define("_MD_TCW_HOMEWORKDATE", "日期");
+define("_MD_TCW_HOMEWORKCOUNTER", "人氣");
 
 define("_MD_TCW_HOMEWORK_DEFAULT", "
   <table class='table'>

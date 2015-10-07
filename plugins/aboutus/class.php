@@ -36,6 +36,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('data', $data);
         $xoopsTpl->assign('MyWebs', $MyWebs);
         $xoopsTpl->assign('count', $i);
+        $xoopsTpl->assign('isMyWeb', $isMyWeb);
 
         $xoopsTpl->assign('tad_web_cate', $this->get_tad_web_cate_all('tad_web'));
         $xoopsTpl->assign('aboutus', get_db_plugin($this->WebID, 'aboutus'));
@@ -441,6 +442,7 @@ class tad_web_aboutus
     public function import_excel($file = "")
     {
         global $xoopsDB, $xoopsTpl;
+
         if (empty($file) or empty($file)) {
             return;
         }
@@ -505,8 +507,7 @@ class tad_web_aboutus
             $main .= "<tr>{$all}</tr>";
         }
 
-        $xoopsTpl->assign('op', 'import_excel');
-        $xoopsTpl->assign('main', $main);
+        $xoopsTpl->assign('stud_chk_table', $main);
     }
 
 //匯入資料庫

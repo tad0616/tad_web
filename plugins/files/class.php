@@ -18,7 +18,6 @@ class tad_web_files
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
-        $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
 
         //取得tad_web_cate所有資料陣列
         $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
@@ -34,16 +33,16 @@ class tad_web_files
 
         $data = $title = "";
 
-        $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' and b.col_name='fsn' $andWebID $andCateID order by a.file_date desc $andLimit";
+        $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' and b.col_name='fsn' $andWebID $andCateID order by a.file_date desc";
 
-        $bar = "";
-        if (empty($limit)) {
-            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, 20, 10);
-            $bar     = $PageBar['bar'];
-            $sql     = $PageBar['sql'];
-            $total   = $PageBar['total'];
-        }
+        $to_limit = empty($limit) ? 20 : $limit;
+
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar  = getPageBar($sql, $to_limit, 10);
+        $bar      = $PageBar['bar'];
+        $sql      = $PageBar['sql'];
+        $total    = $PageBar['total'];
+        $show_bar = empty($limit) ? $bar : "";
 
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
@@ -79,10 +78,11 @@ class tad_web_files
         }
 
         $xoopsTpl->assign('file_data', $main_data);
-        $xoopsTpl->assign('bar', $bar);
+        $xoopsTpl->assign('file_bar', $show_bar);
         $xoopsTpl->assign('isMineFiles', $isMyWeb);
         $xoopsTpl->assign('showWebTitleFiles', $showWebTitle);
         $xoopsTpl->assign('files', get_db_plugin($this->WebID, 'files'));
+        return $total;
     }
 
     //以流水號秀出某筆tad_web_file資料內容

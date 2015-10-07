@@ -143,7 +143,7 @@
               $(".thumb").click(function(){
                 var bg=$(this).attr("id");
                 $("#head_bg").attr("src","<{$xoops_url}>/uploads/tad_web/<{$WebID}>/head/"+bg);
-                $.post("config.php", {op: "save_head" , filename: bg});
+                $.post("config_ajax.php", {op: "save_head" , filename: bg, WebID: <{$WebID}>});
               });
             });
           </script>
@@ -167,7 +167,7 @@
                 <{if $all_head}>
                   <{foreach from=$all_head item=head}>
                     <div style="width:100px; height:96px; display:inline-block; margin:4px;">
-                      <a href="#top">
+                      <a href="#top" title="<{$head.file_name}>" class="thumb_link">
                         <label style="width: 100px; height: 70px; background: #000000 url('<{$head.tb_path}>') center center no-repeat; border: 1px solid gray; background-size: contain;" id="<{$head.file_name}>" class="thumb">
                         </label>
                       </a>
@@ -200,7 +200,7 @@
               $(".logo_thumb").click(function(){
                 var logo=$(this).attr("id");
                 $("#tad_web_logo").attr("src","<{$xoops_url}>/uploads/tad_web/<{$WebID}>/logo/"+logo);
-                $.post("config.php", {op: "save_logo_pic" , filename: logo});
+                $.post("config_ajax.php", {op: "save_logo_pic" , filename: logo, WebID: <{$WebID}>});
               });
             });
           </script>
@@ -261,11 +261,11 @@
                 var bg=$(this).attr("id");
                 if(bg=="none"){
                   $("body").css("background-image","none");
-                  $.post("config.php", {op: "save_bg" , filename: ''});
+                  $.post("config_ajax.php", {op: "save_bg" , filename: '', WebID: <{$WebID}>});
                 }else{
                   $("body").css("background-image","url('<{$xoops_url}>/uploads/tad_web/<{$WebID}>/bg/"+bg+"')");
                   $(this).css("border","2px solid blue");
-                  $.post("config.php", {op: "save_bg" , filename: bg});
+                  $.post("config_ajax.php", {op: "save_bg" , filename: bg, WebID: <{$WebID}>});
                 }
               });
             });
@@ -328,7 +328,7 @@
               $(selector).css(css_name,css_val);
             }
             function save_color(col){
-                $.post("config.php", {op: "save_color" , col_name: $(col).attr('id'), col_val: $(col).val()});
+                $.post("config_ajax.php", {op: "save_color" , col_name: $(col).attr('id'), col_val: $(col).val(), WebID: <{$WebID}>});
             }
 
             $(document).ready(function () {

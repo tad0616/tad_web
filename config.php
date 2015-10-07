@@ -32,7 +32,7 @@ function tad_web_config($WebID)
     $xoopsTpl->assign('WebName', $Web['WebName']);
 
     $TadUpFiles->set_col("WebOwner", $WebID, 1);
-    $teacher_pic = $TadUpFiles->get_pic_file('thumb');
+    $teacher_pic = $TadUpFiles->get_pic_file();
     $xoopsTpl->assign('teacher_thumb_pic', $teacher_pic);
 
     $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
@@ -215,7 +215,7 @@ function save_plugins($WebID)
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-
+    $enable_plugins = $display_plugins = '';
     foreach ($plugins as $plugin) {
         $dirname      = $plugin['dirname'];
         $PluginTitle  = $myts->addSlashes($_POST['plugin_name'][$dirname]);
@@ -225,13 +225,17 @@ function save_plugins($WebID)
         $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
         save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname]);
-        save_web_config($dirname . '_display', $_POST['plugin_display'][$dirname]);
+        //save_web_config($dirname . '_display', $_POST['plugin_display'][$dirname]);
+        if ($PluginEnable == '1') {
+            $enable_plugins[] = $dirname;
+            if ($_POST['plugin_display'][$dirname] == '1') {
+                $display_plugins[] = $dirname;
+            }
+        }
         $i++;
     }
-    // echo '<hr>';
-    // $plugins = get_plugins($WebID);
-    // echo var_export($plugins);
-    // exit;
+    save_web_config('web_plugin_enable_arr', implode(',', $enable_plugins));
+    save_web_config('web_setup_show_arr', implode(',', $display_plugins));
     mk_menu_var_file($WebID);
 
 }
@@ -254,12 +258,6 @@ $display_blocks = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
 $other_web_url  = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
 
 switch ($op) {
-    //儲存設定值
-    case "save_color":
-        save_web_config($col_name, $col_val);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
-        break;
 
     //儲存設定值
     case "save_all_color":
@@ -277,22 +275,10 @@ switch ($op) {
         exit;
         break;
 
-    //標題設定
-    case "save_head":
-        save_web_config("web_head", $filename);
-        output_head_file($WebID);
-        break;
-
     case "save_plugins":
         save_plugins($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
-
-    case "save_head_bg":
-        save_web_config("head_top", $head_top);
-        save_web_config("head_left", $head_left);
-        output_head_file($WebID);
         break;
 
     case "upload_head":
@@ -303,30 +289,12 @@ switch ($op) {
         exit;
         break;
 
-    //logo設定
-    case "save_logo":
-        save_web_config("logo_top", $logo_top);
-        save_web_config("logo_left", $logo_left);
-        output_head_file($WebID);
-        break;
-
-    case "save_logo_pic":
-        save_web_config("web_logo", $filename);
-        output_head_file($WebID);
-        break;
-
     case "upload_logo":
         $TadUpFilesLogo = TadUpFilesLogo();
         $TadUpFilesLogo->set_col('logo', $WebID);
         $TadUpFilesLogo->upload_file('logo', null, null, null, "", true);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
-
-    //標題設定
-    case "save_bg":
-        save_web_config("web_bg", $filename);
-        output_head_file($WebID);
         break;
 
     case "upload_bg":
@@ -341,7 +309,7 @@ switch ($op) {
     case "update_photo":
         $TadUpFiles->set_col("WebOwner", $WebID, 1);
         $TadUpFiles->del_files();
-        $TadUpFiles->upload_file('upfile', 1024, 480, null, null, true);
+        $TadUpFiles->upload_file('upfile', 480, 120, null, null, true);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

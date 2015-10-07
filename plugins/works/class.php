@@ -18,7 +18,6 @@ class tad_web_works
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
-        $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
 
         //取得tad_web_cate所有資料陣列
         $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
@@ -32,16 +31,16 @@ class tad_web_works
             $andCateID = "and a.`CateID`='$CateID'";
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.WorksDate desc $andLimit";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.WorksDate desc";
 
-        $bar = "";
-        if (empty($limit)) {
-            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, 20, 10);
-            $bar     = $PageBar['bar'];
-            $sql     = $PageBar['sql'];
-            $total   = $PageBar['total'];
-        }
+        $to_limit = empty($limit) ? 20 : $limit;
+
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar  = getPageBar($sql, $to_limit, 10);
+        $bar      = $PageBar['bar'];
+        $sql      = $PageBar['sql'];
+        $total    = $PageBar['total'];
+        $show_bar = empty($limit) ? $bar : "";
 
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
@@ -52,7 +51,7 @@ class tad_web_works
         $Webs = getAllWebInfo();
 
         while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
+            //以下會產生這些變數： $WorksID , $WorksName , $WorksDesc , $WorksDate , $WorksPlace , $uid , $WebID , $WorksCount
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
@@ -69,10 +68,11 @@ class tad_web_works
         }
 
         $xoopsTpl->assign('works_data', $main_data);
-        $xoopsTpl->assign('bar', $bar);
+        $xoopsTpl->assign('works_bar', $show_bar);
         $xoopsTpl->assign('isMineWorks', $isMyWeb);
         $xoopsTpl->assign('showWebTitleWorks', $showWebTitle);
         $xoopsTpl->assign('works', get_db_plugin($this->WebID, 'works'));
+        return $total;
     }
 
     //以流水號秀出某筆tad_web_works資料內容
@@ -113,7 +113,7 @@ class tad_web_works
         $xoopsTpl->assign('WorksCount', $WorksCount);
         $xoopsTpl->assign('pics', $pics);
         $xoopsTpl->assign('WorksID', $WorksID);
-        $xoopsTpl->assign('ActionInfo', sprintf(_MD_TCW_INFO, $uid_name, $WorksDate, $WorksCount));
+        $xoopsTpl->assign('WorksInfo', sprintf(_MD_TCW_INFO, $uid_name, $WorksDate, $WorksCount));
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);

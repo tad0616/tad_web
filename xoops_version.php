@@ -14,7 +14,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2015/09/30';
+$modversion['release_date']        = '2015/10/02';
 $modversion['module_website_url']  = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -150,10 +150,9 @@ $modversion['blocks'][$i]['template'] = "tad_web_block_discuss.html";
  */
 
 //---偏好設定---//
-$modversion['config'][0]['name']        = 'web_mode';
-$modversion['config'][0]['title']       = '_MI_TCW_WEB_MODE';
+$modversion['config'][0]['name']        = 'module_title';
+$modversion['config'][0]['title']       = '_MI_TCW_WEB_MODE_TITLE';
 $modversion['config'][0]['description'] = '_MI_TCW_WEB_MODE_DESC';
-$modversion['config'][0]['formtype']    = 'select';
+$modversion['config'][0]['formtype']    = 'textbox';
 $modversion['config'][0]['valuetype']   = 'text';
-$modversion['config'][0]['default']     = "class";
-$modversion['config'][0]['options']     = array('_MI_TCW_WEB_MODE_OPT1' => 'class', '_MI_TCW_WEB_MODE_OPT2' => 'person');
+$modversion['config'][0]['default']     = _MI_TCW_WEB_MODE_DEF;

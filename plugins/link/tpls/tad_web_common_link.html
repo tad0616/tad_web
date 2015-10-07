@@ -1,39 +1,39 @@
-<{if $isMineLink}>
-  <script type="text/javascript">
-    function delete_func(LinkID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="link.php?op=delete&LinkID=" + LinkID;
-    }
-  </script>
-<{/if}>
+<{if $link_data}>
+  <{if $isMineLink}>
+    <script type="text/javascript">
+      function delete_func(LinkID){
+        var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+        if (!sure)  return;
+        location.href="link.php?op=delete&LinkID=" + LinkID;
+      }
+    </script>
+  <{/if}>
 
-<{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-  <h1><{$link.PluginTitle}></h1>
-<{/if}>
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h1><{$link.PluginTitle}></h1>
+  <{/if}>
 
-<table class="footable table common_table">
-  <thead>
-    <tr>
-      <th data-class="expand">
-        <{$smarty.const._MD_TCW_LINKTITLE}>
-      </th>
-      <th data-hide="phone" style="width:50px;text-align:center;">
-        <{$smarty.const._MD_TCW_ACTIONCOUNT}>
-      </th>
-      <{if $showWebTitleLink}>
-        <th data-hide="phone" style="width:100px;text-align:center;">
-          <{$smarty.const._MD_TCW_TEAMID}>
+  <table class="footable table common_table">
+    <thead>
+      <tr>
+        <th data-class="expand">
+          <{$smarty.const._MD_TCW_LINKTITLE}>
         </th>
-      <{/if}>
-      <{if !$showWebTitleLink && $isMineLink}>
-        <th data-hide="phone" style="width:100px;text-align:center;">
-          <{$smarty.const._TAD_FUNCTION}>
+        <th data-hide="phone" style="width:50px;text-align:center;">
+          <{$smarty.const._MD_TCW_ACTIONCOUNT}>
         </th>
-      <{/if}>
-    </tr>
-  </thead>
-  <{if $link_data}>
+        <{if $showWebTitleLink}>
+          <th data-hide="phone" style="width:100px;text-align:center;">
+            <{$smarty.const._MD_TCW_TEAMID}>
+          </th>
+        <{/if}>
+        <{if !$showWebTitleLink && $isMineLink}>
+          <th data-hide="phone" style="width:100px;text-align:center;">
+            <{$smarty.const._TAD_FUNCTION}>
+          </th>
+        <{/if}>
+      </tr>
+    </thead>
     <{foreach item=link from=$link_data}>
       <tr>
         <td>
@@ -62,31 +62,22 @@
           </td>
         <{/if}>
       </tr>
-
     <{/foreach}>
-  <{else}>
-    <tr>
-      <td colspan=4 class="text-center">
-        <{$smarty.const._MD_TCW_EMPTY}>
-      </td>
-    </tr>
-  <{/if}>
-</table>
+  </table>
 
-<{if $link_data}>
-  <{$bar}>
-<{/if}>
+  <{$link_bar}>
 
-<div style="text-align:right">
-  <{if $bar==""}>
-    <{if $WebID==""}>
-      <a href="link.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
-    <{else}>
-      <a href="link.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
+  <div style="text-align:right; margin-bottom: 10px;">
+    <{if $link_bar==""}>
+      <{if $WebID==""}>
+        <a href="link.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
+      <{else}>
+        <a href="link.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
+      <{/if}>
     <{/if}>
-  <{/if}>
-  <{if $isMineLink and $WebID}>
-    <a href="link.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info">
-  <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
-  <{/if}>
-</div>
+    <{if $isMineLink and $WebID}>
+      <a href="link.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info">
+    <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
+    <{/if}>
+  </div>
+<{/if}>

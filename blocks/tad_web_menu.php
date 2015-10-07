@@ -4,10 +4,13 @@ function tad_web_menu($options)
 {
     global $xoopsUser, $xoopsDB, $MyWebs;
 
+    $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
+    $block['DefWebID'] = $DefWebID;
+
     if ($xoopsUser) {
         $uid = $xoopsUser->uid();
     } else {
-        if (!empty($_GET['WebID'])) {
+        if (!empty($DefWebID)) {
             $block['row']          = 'row';
             $block['span']         = 'col-md-';
             $block['form_group']   = 'form-group';
@@ -26,19 +29,17 @@ function tad_web_menu($options)
     }
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' order by WebSort";
-    //die($sql);
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
-    $i = 0;
+    $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $web_num = $xoopsDB->getRowsNum($result);
+    $i       = 0;
 
-    $oldWebID    = !empty($_GET['WebID']) ? intval($_GET['WebID']) : 0;
-    $defaltWebID = $oldWebID;
-
+    $defaltWebID = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
-        if (empty($defaltWebID) or $defaltWebID == $WebID) {
+        if (empty($defaltWebID)) {
             $defaltWebID    = $WebID;
             $defaltWebTitle = $WebTitle;
             $defaltWebName  = $WebName;
@@ -49,14 +50,14 @@ function tad_web_menu($options)
         $block['webs'][$i]['name']  = $WebName;
         $block['webs'][$i]['url']   = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
 
-        $WebID_Arr[] = $WebID;
         $i++;
     }
 
+    $block['web_num']     = $web_num;
     $block['WebTitle']    = $defaltWebTitle;
-    $block['back_home']   = sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
+    $block['back_home']   = empty($defaltWebName) ? _MB_TCW_HOME : sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
     $block['defaltWebID'] = $defaltWebID;
-    //$block['plugins']     = get_plugins($defaltWebID, 'show', true);
+
     $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
     $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
 

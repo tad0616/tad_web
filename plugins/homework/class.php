@@ -18,7 +18,6 @@ class tad_web_homework
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
-        $andLimit     = (empty($limit)) ? "" : "limit 0 , $limit";
 
         //取得tad_web_cate所有資料陣列
         $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
@@ -32,16 +31,16 @@ class tad_web_homework
             $andCateID = "and a.`CateID`='$CateID'";
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by HomeworkDate desc $andLimit";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by HomeworkDate desc";
 
-        $bar = "";
-        if (empty($limit)) {
-            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, 20, 10);
-            $bar     = $PageBar['bar'];
-            $sql     = $PageBar['sql'];
-            $total   = $PageBar['total'];
-        }
+        $to_limit = empty($limit) ? 20 : $limit;
+
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar  = getPageBar($sql, $to_limit, 10);
+        $bar      = $PageBar['bar'];
+        $sql      = $PageBar['sql'];
+        $total    = $PageBar['total'];
+        $show_bar = empty($limit) ? $bar : "";
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
@@ -65,7 +64,7 @@ class tad_web_homework
             $main_data[$i]['cate']     = $cate[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
 
-            $Date = substr($$order, 0, 10);
+            $Date = substr($HomeworkDate, 0, 10);
             if (empty($HomeworkTitle)) {
                 $HomeworkTitle = _MD_TCW_EMPTY_TITLE;
             }
@@ -77,10 +76,11 @@ class tad_web_homework
 
         $xoopsTpl->assign('CalKind', 'homework');
         $xoopsTpl->assign('homework_data', $main_data);
-        $xoopsTpl->assign('bar', $bar);
+        $xoopsTpl->assign('homework_bar', $show_bar);
         $xoopsTpl->assign('isMineHomework', $isMyWeb);
         $xoopsTpl->assign('showWebTitleHomework', $showWebTitle);
         $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
+        return $total;
     }
 
     //以流水號秀出某筆tad_web_homework資料內容
@@ -113,6 +113,7 @@ class tad_web_homework
 
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $HomeworkFiles = $TadUpFiles->show_files('upfile', true, null, true);
+        $xoopsTpl->assign('HomeworkFiles', $HomeworkFiles);
 
         $xoopsTpl->assign('isMine', $isMyWeb);
         $xoopsTpl->assign('HomeworkTitle', $HomeworkTitle);

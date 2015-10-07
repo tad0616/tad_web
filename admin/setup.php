@@ -11,7 +11,12 @@ function tad_web_setup_form()
 
     $plugins = get_plugins(0, 'edit');
     $xoopsTpl->assign('plugins', $plugins);
-    $web_setup_show_arr = explode(',', get_web_config('web_setup_show_arr', 0));
+    $web_setup_show_arr = '';
+    $web_setup_show     = get_web_config('web_setup_show_arr', '0');
+    if ($web_setup_show) {
+        $web_setup_show_arr = explode(',', $web_setup_show);
+    }
+
     $xoopsTpl->assign('web_setup_show_arr', $web_setup_show_arr);
     get_jquery(true);
 }

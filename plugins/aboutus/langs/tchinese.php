@@ -53,3 +53,5 @@ define("_MD_TCW_IMPORT_LINK", "
   <li><a href='import.xls'>學生資料Excel匯入檔範例</a></li>
   <li style='color:red;'>僅支援 xls 格式（csv、xlsx 均不支援）</li>
 </ul>");
+define("_MD_TCW_NO_WEB", "目前尚無任何的個人網站，等待管理員建立中。");
+define("_MD_TCW_NO_WEB_ADMIN", "目前沒有任何的個人網站，請管理員儘速至後台指定可以擁有個人網站的使用者。");

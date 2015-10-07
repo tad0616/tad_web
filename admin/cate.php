@@ -136,11 +136,15 @@ function update_tad_web_cate_arr($CateID = '')
     $web_cate_arr       = $myts->addSlashes($_POST['web_cate_arr']);
     $web_cate_blank_arr = $myts->addSlashes($_POST['web_cate_blank_arr']);
 
-    if ($web_cate_arr) {
-        $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set
-       `CateID` = '{$CateID}' where `WebID` in($web_cate_arr)";
+    $web_cate_array = explode(',', $web_cate_arr);
+
+    $i = 1;
+    foreach ($web_cate_array as $WebID) {
+        $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `CateID` = '{$CateID}', WebSort='{$i}' where `WebID` ='{$WebID}'";
         $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $i++;
     }
+
     if ($web_cate_blank_arr) {
         $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set
        `CateID` = '0' where `WebID` in($web_cate_blank_arr)";

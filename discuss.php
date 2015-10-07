@@ -28,7 +28,7 @@ switch ($op) {
     //更新資料
     case "update":
         $DiscussID = $tad_web_discuss->update($DiscussID);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&DiscussID=$DiscussID");
         exit;
         break;
 
@@ -53,7 +53,7 @@ switch ($op) {
 
     //登入
     case "mem_login":
-        mem_login($_POST['MemUname'], $_POST['MemPasswd']);
+        $tad_web_discuss->mem_login($_POST['MemUname'], $_POST['MemPasswd']);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
