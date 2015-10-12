@@ -43,3 +43,5 @@ define('_MA_TCW_SELECT_CATE', 'All Category');
 define('_MA_TCW_DISK_TOTAL_SPACE_STATUS', 'Disk total space');
 define('_MA_TCW_DISK_TOTAL_SPACE', 'Disk total space');
 define('_MA_TCW_DISK_PATH', 'WebSite Dir');
+define('_MA_TCW_DISK_SPACE_TOTAL', 'Used space:');
+define('_MA_TCW_DISK_AVAILABLE_SPACE', ', Available space');

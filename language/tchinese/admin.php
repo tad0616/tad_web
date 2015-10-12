@@ -44,3 +44,5 @@ define('_MA_TCW_SELECT_CATE', '不分類');
 define('_MA_TCW_DISK_TOTAL_SPACE_STATUS', '網站使用空間一覽');
 define('_MA_TCW_DISK_TOTAL_SPACE', '網站已使用空間');
 define('_MA_TCW_DISK_PATH', '個人網站存放目錄');
+define('_MA_TCW_DISK_SPACE_TOTAL', '已使用：');
+define('_MA_TCW_DISK_AVAILABLE_SPACE', '，可用空間：');

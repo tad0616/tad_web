@@ -24,13 +24,14 @@ function list_all_web($defCateID = '')
 
         $dir_size = get_dir_size("{$dir}{$WebID}/");
 
-        $data[$WebID]                     = $all;
-        $data[$WebID]['disk_total_space'] = roundsize($dir_size);
-        $data[$WebID]['disk_space']       = "{$dir}{$WebID}/";
-        $data[$WebID]['memAmount']        = memAmount($WebID);
-        $data[$WebID]['uname']            = XoopsUser::getUnameFromId($all['WebOwnerUid'], 0);
+        $data[$WebID]                    = $all;
+        $data[$WebID]['disk_used_space'] = roundsize($dir_size);
+        $data[$WebID]['disk_space']      = "{$dir}{$WebID}/";
+        $data[$WebID]['memAmount']       = memAmount($WebID);
+        $data[$WebID]['uname']           = XoopsUser::getUnameFromId($all['WebOwnerUid'], 0);
 
         $space[$WebID] = $dir_size;
+
         $i++;
     }
 
@@ -39,7 +40,20 @@ function list_all_web($defCateID = '')
     $xoopsTpl->assign('WebYear', $WebYear);
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('space', $space);
+    $xoopsTpl->assign('free_space', get_free_space());
+    $xoopsTpl->assign('total_space', roundsize(get_dir_size($dir)));
 
+}
+
+//目前硬碟空間
+function get_free_space()
+{
+    $bytes     = disk_free_space(".");
+    $si_prefix = array('B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB');
+    $base      = 1024;
+    $class     = min((int) log($bytes, $base), count($si_prefix) - 1);
+    $space     = sprintf('%1.2f', $bytes / pow($base, $class)) . ' ' . $si_prefix[$class];
+    return $space;
 }
 
 function get_dir_size($dir_name)
@@ -67,7 +81,7 @@ function get_dir_size($dir_name)
 function roundsize($size)
 {
     $i   = 0;
-    $iec = array("B", "Kb", "Mb", "Gb", "Tb");
+    $iec = array('B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB');
     while (($size / 1024) > 1) {
         $size = $size / 1024;
         $i++;}
