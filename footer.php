@@ -13,3 +13,6 @@ if (!empty($plugin)) {
 
 $xoopsTpl->assign('menu_var', $menu_var);
 $xoopsTpl->assign('bootstrap', $_SESSION['bootstrap']);
+
+//區塊
+get_tad_web_blocks($WebID);

@@ -1,0 +1,127 @@
+<{if $op=="edit_form"}>
+
+  <{$formValidator_code}>
+
+
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+
+  <h1><{$smarty.const._MD_TCW_SCHEDULE_ADD}></h1>
+  <div class="well">
+    <form schedule="schedule.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+
+      <!--分類-->
+      <{$cate_menu}>
+
+      <!--活動名稱-->
+      <div class="form-group">
+        <div class="col-md-12">
+          <input type="text" name="ScheduleName" value="<{$ScheduleName}>" id="ScheduleName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_SCHEDULENAME}>">
+        </div>
+      </div>
+
+
+      <!--活動說明-->
+      <div class="form-group">
+        <div class="col-md-12">
+          <textarea name="ScheduleDesc"  rows=4 id="ScheduleDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_SCHEDULEDESC}>"><{$ScheduleDesc}></textarea>
+        </div>
+      </div>
+
+      <!--活動日期-->
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_SCHEDULEDATE}>
+        </label>
+        <div class="col-md-4">
+          <input type="text" name="ScheduleDate" class="form-control" value="<{$ScheduleDate}>" id="ScheduleDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
+        </div>
+        <!--活動地點-->
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_SCHEDULEPLACE}>
+        </label>
+        <div class="col-md-4">
+          <input type="text" name="SchedulePlace" class="form-control" value="<{$SchedulePlace}>" id="SchedulePlace" >
+        </div>
+      </div>
+
+
+
+      <!--上傳圖檔-->
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_SCHEDULE_UPLOAD}>
+        </label>
+        <div class="col-md-10">
+          <{$upform}>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-12 text-center">
+
+          <!--活動編號-->
+          <input type="hidden" name="ScheduleID" value="<{$ScheduleID}>">
+          <!--所屬團隊-->
+          <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="op" value="<{$next_op}>">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        </div>
+      </div>
+    </form>
+  </div>
+<{elseif $op=="show_one"}>
+
+  <{if $isMineSchedule}>
+  <script>
+    function delete_func(ScheduleID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="schedule.php?WebID=<{$WebID}>&op=delete&ScheduleID=" + ScheduleID;
+    }
+  </script>
+  <{/if}>
+
+  <h1><{$ScheduleName}></h1>
+
+  <ol class="breadcrumb">
+    <li><a href="schedule.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_SCHEDULE}></a></li>
+    <{if $cate.CateID}><li><a href="schedule.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <li><{$ScheduleInfo}></li>
+  </ol>
+
+  <div class="alert alert-default">
+    <div class="row">
+      <{if $ScheduleDate}>
+        <div class="col-md-6"><{$smarty.const._MD_TCW_SCHEDULEDATE}><{$smarty.const._TAD_FOR}><{$ScheduleDate}></div>
+      <{/if}>
+
+      <{if $SchedulePlace}>
+        <div class="col-md-6"><{$smarty.const._MD_TCW_SCHEDULEPLACE}><{$smarty.const._TAD_FOR}><{$SchedulePlace}></div>
+      <{/if}>
+    </div>
+  </div>
+
+  <{if $ScheduleDesc}>
+    <div style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FFFFFF url('<{$bg_pic}>') center center; border: 2px solid #AAC1DD; border-radius: 5px; margin:10px auto; padding: 20px; background-size:cover;"><{$ScheduleDesc}></div>
+  <{/if}>
+
+  <div class="row">
+    <{$pics}>
+  </div>
+
+  <{if $isMineSchedule}>
+    <div class="text-right">
+      <a href="javascript:delete_func(<{$ScheduleID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+      <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$ScheduleID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+    </div>
+  <{/if}>
+<{else}>
+  <h1><{$schedule.PluginTitle}></h1>
+  <{$cate_menu}>
+  <{$FooTableJS}>
+  <div class="row">
+    <div class="col-md-12">
+      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/tad_web_common_schedule_b3.html"}>
+    </div>
+  </div>
+<{/if}>

@@ -67,7 +67,7 @@ class tad_web_aboutus
             $TadUpFiles->set_col("MemID", $MemID, 1);
             $pic_url = $TadUpFiles->get_pic_file('thumb');
 
-            if (empty($pic_url) or !$MyWebs) {
+            if (empty($pic_url) or !$isMyWeb) {
                 $pic   = ($MemSex == '1') ? "images/boy.gif" : "images/girl.gif";
                 $cover = "";
             } else {
@@ -75,7 +75,7 @@ class tad_web_aboutus
                 $cover = "background-size: cover;";
             }
 
-            if (!$MyWebs) {
+            if (!$isMyWeb) {
                 $MemName = empty($MemNickName) ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemNickName;
             }
 

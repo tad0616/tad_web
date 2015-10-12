@@ -1,3 +1,8 @@
+Tad Web 1.4.1 release (2015-10-08 release)
+====================================================
+1. Fixed a person has two or more sites, the menu can not switch the site.
+2. Fixed external class website can not automatically link
+
 Tad Web 1.4 release (2015-10-02 release)
 ====================================================
 1. All features modular, simplify the development process

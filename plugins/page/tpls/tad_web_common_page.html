@@ -1,0 +1,53 @@
+<{if $isMinePage}>
+  <script>
+    function delete_func(PageID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="page.php?WebID=<{$WebID}>&op=delete&PageID=" + PageID;
+    }
+    </script>
+<{/if}>
+
+<{if $page_data}>
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h1><{$page.PluginTitle}></h1>
+  <{/if}>
+  <{foreach item=act from=$page_data}>
+    <div style="width: 166px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
+      <a href='page.php?WebID=<{$act.WebID}>&PageID=<{$act.PageID}>'>
+        <div style="width: 160px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
+          <div style="width: 140px; height: 140px; background: #F1F7FF url('<{$act.PagePic}>') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;">
+          </div>
+        </div>
+      </a>
+      <div class="text-center" style="margin: 8px auto;">
+        <a href='page.php?WebID=<{$act.WebID}>&PageID=<{$act.PageID}>'><{$act.PageTitle}></a>
+        <{if !$showWebTitlePage && $isMinePage}>
+          <a href="javascript:delete_func(<{$act.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+          <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$act.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+        <{/if}>
+      </div>
+      <{if $showWebTitlePage}>
+        <div class="text-center">
+          <{$act.WebTitle}>
+        </div>
+      <{/if}>
+    </div>
+  <{/foreach}>
+  <div style="clear: both;"></div>
+  <{$page_bar}>
+  <div style="text-align:right; margin-bottom: 10px;">
+  <{if $page_bar==""}>
+    <{if $WebID==""}>
+      <a href="page.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+    <{else}>
+      <a href="page.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+    <{/if}>
+  <{/if}>
+
+  <{if $isMinePage and $WebID}>
+    <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+  <{/if}>
+</div>
+<{/if}>
+

@@ -1,0 +1,83 @@
+<{if $isMinePage}>
+  <script>
+    function delete_func(PageID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="page.php?WebID=<{$WebID}>&op=delete&PageID=" + PageID;
+    }
+    </script>
+<{/if}>
+<{if $page_data and ($display_mode=='home' or $WebID!="")}>
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h1><{$page.PluginTitle}></h1>
+  <{/if}>
+
+  <{if $PageDefCateID}>
+    <div class="row">
+      <div class="col-md-12">
+        <h3><{$cate.CateName}></h3>
+        <ul class="list-group" style="max-height:300px; overflow: auto;">
+          <{foreach item=page from=$cate_data.$PageDefCateID}>
+            <li class="list-group-item">
+              <span class="badge"><{$page.PageCount}></span>
+              <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
+              <{if !$showWebTitlePage && $isMinePage}>
+                <a href="javascript:delete_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{/if}>
+            </li>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
+  <{else}>
+    <{assign var="i" value=0}>
+    <{assign var="total" value=1}>
+    <{foreach item=cate from=$cate_arr}>
+
+      <{if $i==0}>
+      <div class="row">
+      <{/if}>
+
+        <div class="col-md-<{$md}>">
+          <h3><a href="page.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></h3>
+          <{assign var="cid" value=$cate.CateID}>
+          <ul class="list-group" style="max-height:300px; overflow: auto;">
+            <{foreach item=page from=$cate_data.$cid}>
+              <li class="list-group-item">
+                <span class="badge"><{$page.PageCount}></span>
+                <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
+                <{if !$showWebTitlePage && $isMinePage}>
+                  <a href="javascript:delete_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+                <{/if}>
+              </li>
+            <{/foreach}>
+          </ul>
+        </div>
+
+
+      <{assign var="i" value=$i+1}>
+      <{if $i == $line_count || $total==$cate_count}>
+        </div>
+        <{assign var="i" value=0}>
+      <{/if}>
+      <{assign var="total" value=$total+1}>
+    <{/foreach}>
+  <{/if}>
+
+
+
+  <div style="text-align:right; margin-bottom: 10px;">
+    <{if $display_mode=='home'}>
+      <a href="page.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+    <{elseif $PageDefCateID}>
+      <a href="page.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+    <{/if}>
+
+    <{if $isMinePage and $WebID}>
+      <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+    <{/if}>
+  </div>
+<{/if}>
+

@@ -15,6 +15,19 @@ $TadUpFiles->set_dir('subdir', $subdir);
 include_once TADTOOLS_PATH . "/tad_function.php";
 
 /********************* 自訂函數 *********************/
+//取得多人網頁的內部區塊
+function get_tad_web_blocks($WebID)
+{
+    global $xoopsTpl;
+    $plugins = get_dir_plugins();
+    $dir     = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
+    foreach ($plugins as $plugin) {
+        if (file_exists("{$dir}{$plugin}/blocks.php")) {
+            include "{$dir}{$plugin}/blocks.php";
+        }
+    }
+    $xoopsTpl->assign('plugins', $plugins);
+}
 function html5($content = "", $ui = false, $bootstrap = true)
 {
     $jquery         = get_jquery($ui);

@@ -26,8 +26,8 @@ include_once "function.php";
 include_once "class/cate.php";
 
 //圖案
-$TadUpFiles->set_col("WebLogo", $WebID, "1");
-$web_logo = $TadUpFiles->get_pic_file();
+// $TadUpFiles->set_col("WebLogo", $WebID, "1");
+// $web_logo = $TadUpFiles->get_pic_file();
 
 //我的班級ID（陣列）
 $MyWebs = MyWebID();

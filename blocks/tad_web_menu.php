@@ -30,16 +30,20 @@ function tad_web_menu($options)
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' order by WebSort";
 
-    $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
-    $web_num = $xoopsDB->getRowsNum($result);
-    $i       = 0;
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    //$web_num = $xoopsDB->getRowsNum($result);
+    $i = 0;
 
     $defaltWebID = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
-        if (empty($defaltWebID)) {
+        if (!empty($DefWebID) and $WebID == $DefWebID) {
+            $defaltWebID    = $WebID;
+            $defaltWebTitle = $WebTitle;
+            $defaltWebName  = $WebName;
+        } elseif (empty($defaltWebID)) {
             $defaltWebID    = $WebID;
             $defaltWebTitle = $WebTitle;
             $defaltWebName  = $WebName;
@@ -53,7 +57,7 @@ function tad_web_menu($options)
         $i++;
     }
 
-    $block['web_num']     = $web_num;
+    $block['web_num']     = $i;
     $block['WebTitle']    = $defaltWebTitle;
     $block['back_home']   = empty($defaltWebName) ? _MB_TCW_HOME : sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
     $block['defaltWebID'] = $defaltWebID;
