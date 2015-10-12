@@ -93,6 +93,14 @@ $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_adm_setup_b3.html';
 $modversion['templates'][$i]['description'] = "tad_web_adm_setup_b3.html";
 
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_disk.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_disk.html";
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_disk_b3.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_disk_b3.html";
+
 //tad_web_config.html 不需要
 
 $i++;

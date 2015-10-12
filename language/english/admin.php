@@ -40,3 +40,6 @@ define('_MA_TADWEB_CATESORT', 'Category Sort');
 define('_MA_TADWEB_CATEENABLE', 'Category Status');
 define('_MA_TADWEB_CATECOUNTER', 'Category Counter');
 define('_MA_TCW_SELECT_CATE', 'All Category');
+define('_MA_TCW_DISK_TOTAL_SPACE_STATUS', 'Disk total space');
+define('_MA_TCW_DISK_TOTAL_SPACE', 'Disk total space');
+define('_MA_TCW_DISK_PATH', 'WebSite Dir');

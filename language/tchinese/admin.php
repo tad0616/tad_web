@@ -41,3 +41,6 @@ define('_MA_TADWEB_CATESORT', '排序');
 define('_MA_TADWEB_CATEENABLE', '狀態');
 define('_MA_TADWEB_CATECOUNTER', '人氣');
 define('_MA_TCW_SELECT_CATE', '不分類');
+define('_MA_TCW_DISK_TOTAL_SPACE_STATUS', '網站使用空間一覽');
+define('_MA_TCW_DISK_TOTAL_SPACE', '網站已使用空間');
+define('_MA_TCW_DISK_PATH', '個人網站存放目錄');
