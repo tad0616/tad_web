@@ -51,10 +51,6 @@ define('_MD_TCW_BG_TOP', 'Ton');
 define('_MD_TCW_BG_CENTER', 'Medium');
 define('_MD_TCW_BG_BOTTOM', 'Bottom');
 define('_MD_TCW_BG_POSITION', 'Picture Location:');
-define('_MD_TCW_MEM_UNAME', 'Student Account');
-define('_MD_TCW_MEM_PASSWD', 'Student Password');
-define('_MD_TCW_PLEASE_INPUT', 'Enter');
-define('_MD_TCW_LOGIN', 'Login');
 define('_MD_TCW_HELLO', 'Hello, welcome to use the Forums! Please pay attention to manners!!');
 define('_MD_TCW_EXIT', 'Exit');
 

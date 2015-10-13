@@ -52,21 +52,22 @@
           </div>
         </div>
       </form>
+
       <form action="discuss.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="tad_web_login">
         <div class="<{$block.form_group}>">
           <label class="<{$block.span}>4 control-label">
-            <{$smarty.const._MD_TCW_MEM_UNAME}><{$smarty.const._TAD_FOR}>
+            <{$smarty.const._MB_TCW_MEM_UNAME}>
           </label>
           <div class="<{$block.span}>8 controls">
-            <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_UNAME}>">
+            <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_UNAME}>">
           </div>
         </div>
         <div class="<{$block.form_group}>">
           <label class="<{$block.span}>4 control-label">
-            <{$smarty.const._MD_TCW_MEM_PASSWD}><{$smarty.const._TAD_FOR}>
+            <{$smarty.const._MB_TCW_MEM_PASSWD}>
           </label>
           <div class="<{$block.span}>8 controls">
-            <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_PASSWD}>">
+            <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_PASSWD}>">
           </div>
         </div>
 
@@ -76,16 +77,23 @@
           <div class="<{$block.span}>8">
             <input type="hidden" name="WebID" value="<{$WebID}>">
             <input type="hidden" name="op" value="mem_login">
-            <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
+            <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MB_TCW_LOGIN}></button>
           </div>
         </div>
       </form>
 
-        <div class="text-center">
-          <label class="checkbox">
-            <input type="checkbox" id="stu_login" value="stu_login"><{$smarty.const._MB_TCW_IM_MEM}>
-          </label>
-        </div>
+      <div class="text-center">
+        <label class="checkbox">
+          <input type="checkbox" id="stu_login" value="stu_login"><{$smarty.const._MB_TCW_IM_MEM}>
+        </label>
+      </div>
+
+      <{foreach from=$block.tlogin item=login}>
+        <a href="<{$login.link}>" class="btn">
+          <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
+          <{$login.text}>
+        </a>
+      <{/foreach}>
     </div>
   <{else}>
 

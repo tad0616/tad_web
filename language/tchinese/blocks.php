@@ -13,3 +13,6 @@ define("_MB_TCW_IM_MEM", "我是學生（僅留言簿須登入）");
 define("_MB_TCW_ADD", "新增");
 define("_MB_TCW_CATE_TOOLS", "分類管理");
 define("_MB_TCW_HOME", "回總覽");
+define("_MB_TCW_MEM_UNAME", "學生帳號");
+define("_MB_TCW_MEM_PASSWD", "學生密碼");
+define("_MB_TCW_PLEASE_INPUT", "請輸入");

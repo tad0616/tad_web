@@ -2,7 +2,7 @@
 //區塊主函式 (班級選單(tad_web_menu))
 function tad_web_menu($options)
 {
-    global $xoopsUser, $xoopsDB, $MyWebs;
+    global $xoopsUser, $xoopsDB, $MyWebs, $xoopsConfig;
 
     $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
     $block['DefWebID'] = $DefWebID;
@@ -22,6 +22,39 @@ function tad_web_menu($options)
             $block['form_group']   = $_SESSION['web_bootstrap'] == '3' ? 'form-group' : 'control-group';
             $block['form_control'] = $_SESSION['web_bootstrap'] == '3' ? 'form-control' : 'span12';
             $block['mini']         = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
+        }
+
+        $modhandler     = &xoops_gethandler('module');
+        $config_handler = &xoops_gethandler('config');
+
+        $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+        if ($TadLoginXoopsModule) {
+            include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
+            include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+            $tad_login['facebook'] = facebook_login('return');
+
+            $config_handler = &xoops_gethandler('config');
+            $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+
+            $auth_method = $modConfig['auth_method'];
+            $i           = 0;
+
+            foreach ($auth_method as $method) {
+                $method_const = "_" . strtoupper($method);
+                $loginTitle   = sprintf(_TAD_LOGIN_BY, constant($method_const));
+
+                if ($method == "facebook") {
+                    $tlogin[$i]['link'] = $tad_login['facebook'];
+                } else {
+                    $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
+                }
+                $tlogin[$i]['img']  = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+                $tlogin[$i]['text'] = $loginTitle;
+
+                $i++;
+            }
+            //die(var_export($tlogin));
+            $block['tlogin'] = $tlogin;
         }
 
         $block['op'] = 'login';
@@ -70,5 +103,6 @@ function tad_web_menu($options)
         include $file;
         $block['plugins'] = $menu_var;
     }
+
     return $block;
 }

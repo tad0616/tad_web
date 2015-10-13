@@ -13,3 +13,7 @@ define("_MB_TCW_IM_MEM", "I'm member (only for fourm)");
 define("_MB_TCW_ADD", "Add");
 define("_MB_TCW_CATE_TOOLS", "Category Tools");
 define("_MB_TCW_HOME", "Home");
+define('_MB_TCW_MEM_UNAME', 'Student Account');
+define('_MB_TCW_MEM_PASSWD', 'Student Password');
+define("_MB_TCW_PLEASE_INPUT", "Enter ");
+define('_MB_TCW_LOGIN', 'Login');
