@@ -45,3 +45,14 @@ define('_MA_TCW_DISK_TOTAL_SPACE', 'Disk total space');
 define('_MA_TCW_DISK_PATH', 'WebSite Dir');
 define('_MA_TCW_DISK_SPACE_TOTAL', 'Used space:');
 define('_MA_TCW_DISK_AVAILABLE_SPACE', ', Available space');
+
+define('_MA_TCW_WEB_SCHEDULE_TEMPLATE', 'Edit schedule table template');
+define('_MA_TCW_WEB_SCHEDULE_TEMPLATE_DESC', '
+  <p> {weeks-section} will allow the teacher entered into the fields. </ p>
+  <p> According to {weeks-section} rule, self-add tags, you can remove the unwanted (eg Section VIII). </ p>
+  <p> Sunday ~ Saturday was 0-6. As the first section of Sunday {0-1}, Section V of Saturday is {6-5}. </ p>
+  <p> Don\'t edit {weeks-section} tags , the other can be changed. </ p>
+  <p> You can modify ' . XOOPS_ROOT_PATH . ' /modules/tad_web/plugins/schedule/schedule.css to change the color. </ p>');
+
+define('_MA_TCW_WEB_SCHEDULE_SUBJECT', 'Set subjects (for teachers optional)');
+define('_MA_TCW_WEB_SCHEDULE_SUBJECT_DESC', 'E.g:Writing;Reading;Math;Science;Art;Music');

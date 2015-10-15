@@ -1,5 +1,5 @@
 <?php
-include_once "../../tadtools/language/{$xoopsConfig['language']}/admin_common.php";
+include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
 
 //main.php
 define("_MA_TCW_TEAMID", "編號");
@@ -46,3 +46,17 @@ define('_MA_TCW_DISK_TOTAL_SPACE', '網站已使用空間');
 define('_MA_TCW_DISK_PATH', '個人網站存放目錄');
 define('_MA_TCW_DISK_SPACE_TOTAL', '已使用：');
 define('_MA_TCW_DISK_AVAILABLE_SPACE', '，可用空間：');
+
+define('_MA_TCW_WEB_SCHEDULE_TEMPLATE', '設定功課表樣板');
+define('_MA_TCW_WEB_SCHEDULE_TEMPLATE_DESC', '
+  <p>{週-節} 屆時在前台會轉變為可讓老師輸入的欄位。</p>
+  <p>可根據 {週-節} 規則，自行新增標籤，不需要的也可以移除，例如第八節（移除列）或星期六（移除欄）。</p>
+  <p>週日~週六，分別為0~6。如星期日第一節為 {0-1}，星期六第五節為 {6-5}。</p>
+  <p>除了 {週-節} 標籤不要編輯以外，其他都能自行修改。</p>
+  <p>若欲調整顏色，可自行修改 ' . XOOPS_ROOT_PATH . '/modules/tad_web/plugins/schedule/schedule.css 檔案內容</p>');
+
+define('_MA_TCW_WEB_SCHEDULE_SUBJECT', '設定科目（供老師選用）');
+define('_MA_TCW_WEB_SCHEDULE_SUBJECT_DESC', '國民小學教學科目：(11科)<br>
+國語;數學;社會;自然;音樂;體育;美勞;團體活動;輔導活動;鄉土教學;道德與健康<br>
+國民中學教學科目：(21科) <br>
+國文;英語;數學;歷史;地理;生物;理化;地球科學;健康教育;認識臺灣;公民與道德;家政與生活科技;電腦;體育;音樂;美術;童軍教育;鄉土藝術活動;輔導活動;團體活動;選修科目');

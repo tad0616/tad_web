@@ -13,7 +13,7 @@ function list_all_web($defCateID = '')
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web") . "  order by WebSort";
 
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $data = "";
     $dir  = XOOPS_ROOT_PATH . "/uploads/tad_web/";

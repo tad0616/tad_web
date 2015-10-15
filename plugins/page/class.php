@@ -44,7 +44,7 @@ class tad_web_page
         // $total    = $PageBar['total'];
         // $show_bar = empty($limit) ? $bar : "";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = $cate_data = "";
 
@@ -106,7 +106,7 @@ class tad_web_page
         $this->add_counter($PageID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_page") . " where PageID='{$PageID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $PageID , $PageTitle , $PageContent , $PageDate , $PageSort , $uid , $WebID , $PageCount
@@ -149,7 +149,7 @@ class tad_web_page
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -243,7 +243,7 @@ class tad_web_page
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_page") . "
         (`CateID`,`PageTitle` , `PageContent` , `PageDate` , `PageSort` , `uid` , `WebID` , `PageCount`)
         values('{$CateID}' ,'{$_POST['PageTitle']}' , '{$_POST['PageContent']}' , '{$PageDate}' , '{$PageSort}' , '{$uid}' , '{$_POST['WebID']}' , '0')";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $PageID = $xoopsDB->getInsertId();
@@ -276,7 +276,7 @@ class tad_web_page
          `PageContent` = '{$_POST['PageContent']}' ,
          `PageDate` = '{$PageDate}'
         where PageID='$PageID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -290,7 +290,7 @@ class tad_web_page
         global $xoopsDB, $TadUpFiles;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->del_files();
@@ -301,7 +301,7 @@ class tad_web_page
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_page") . " set `PageCount`=`PageCount`+1 where `PageID`='{$PageID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_page資料
@@ -313,7 +313,7 @@ class tad_web_page
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -323,7 +323,7 @@ class tad_web_page
     {
         global $xoopsDB;
         $sql        = "select max(`PageSort`) from " . $xoopsDB->prefix("tad_web_page") . " where WebID='$WebID' and CateID='{$CateID}'";
-        $result     = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result     = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }

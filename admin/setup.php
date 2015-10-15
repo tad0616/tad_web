@@ -33,14 +33,14 @@ function save_plugins()
     $i = 1;
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='0'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
     $display_plugins = '';
     foreach ($plugins as $plugin) {
         $dirname     = $plugin['dirname'];
         $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
 
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '1', '0')";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname]);
         //save_web_config($dirname . '_display', $_POST['plugin_display'][$dirname]);

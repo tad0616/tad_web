@@ -20,7 +20,7 @@ switch ($op) {
     //新增資料
     case "insert":
         $ScheduleID = $tad_web_schedule->insert();
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&ScheduleID=$ScheduleID");
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form&ScheduleID=$ScheduleID");
         exit;
         break;
 
@@ -42,6 +42,15 @@ switch ($op) {
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
+
+    case "setup_subject":
+        $tad_web_schedule->setup_subject($ScheduleID);
+        break;
+
+    case "save_subject":
+        $tad_web_schedule->save_subject($ScheduleID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form&ScheduleID={$ScheduleID}");
+        exit;
 
     //預設動作
     default:

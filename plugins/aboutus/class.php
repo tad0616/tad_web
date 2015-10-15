@@ -15,7 +15,7 @@ class tad_web_aboutus
         global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $isMyWeb;
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by WebSort";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $data = "";
         $i    = 0;
@@ -50,7 +50,7 @@ class tad_web_aboutus
         $Web = get_tad_web($this->WebID);
 
         $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $i      = 0;
 
         $students1   = $students2   = "";
@@ -127,7 +127,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('students2', $students2);
 
         $sql             = "select min(`MemNum`) as min , max(`MemNum`) as max from " . $xoopsDB->prefix("tad_web_link_mems") . " where `WebID` = '{$this->WebID}' and MemEnable='1' and `MemNum` > 0";
-        $result          = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result          = $xoopsDB->query($sql) or web_error($sql);
         list($min, $max) = $xoopsDB->fetchRow($result);
 
         $xoopsTpl->assign('min', $min);
@@ -364,7 +364,7 @@ class tad_web_aboutus
   (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`,  `MemUname`, `MemPasswd`)
   values('{$_POST['MemName']}' , '{$_POST['MemNickName']}', '{$_POST['MemSex']}', '{$_POST['MemUnicode']}', '{$_POST['MemBirthday']}', '{$_POST['MemUrl']}', '{$_POST['MemClassOrgan']}', '{$_POST['MemExpertises']}' ,'{$_POST['MemUname']}', '{$_POST['MemPasswd']}')";
 
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $MemID = $xoopsDB->getInsertId();
@@ -376,7 +376,7 @@ class tad_web_aboutus
   (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`)
   values('{$MemID}' , '{$WebID}' , '{$_POST['MemNum']}' , '{$MemSort}' , '1' )";
 
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         return $MemID;
     }
@@ -407,13 +407,13 @@ class tad_web_aboutus
    `MemUname` = '{$_POST['MemUname']}',
    `MemPasswd` = '{$_POST['MemPasswd']}'
   where MemID ='$MemID'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set
    `MemNum` = '{$_POST['MemNum']}' ,
    `MemSort` = '{$_POST['MemSort']}'
   where MemID ='$MemID'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("MemID", $MemID);
         $TadUpFiles->upload_file("upfile", 180, null, null, null, true);
@@ -425,7 +425,7 @@ class tad_web_aboutus
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set MemEnable='0' where MemID ='$MemID'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //自動取得tad_web_mems的最新排序
@@ -433,7 +433,7 @@ class tad_web_aboutus
     {
         global $xoopsDB;
         $sql        = "select max(`MemSort`) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='$WebID'";
-        $result     = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result     = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -525,13 +525,13 @@ class tad_web_aboutus
             $col[5] = $myts->addSlashes($col[5]);
             $sex    = (trim($col[4]) == _MD_TCW_BOY) ? 1 : 0;
             $sql    = "insert into " . $xoopsDB->prefix("tad_web_mems") . " (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUname`, `MemPasswd`) values('{$col[1]}','{$col[5]}','{$sex}','{$col[2]}','{$col[3]}','{$col[1]}','{$col[3]}')";
-            $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $xoopsDB->queryF($sql) or web_error($sql);
 
             //取得最後新增資料的流水編號
             $MemID = $xoopsDB->getInsertId();
 
             $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . " (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`) values('{$MemID}','{$this->WebID}','{$col[0]}','{$col[0]}','1','{$top}','{$left}')";
-            $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $xoopsDB->queryF($sql) or web_error($sql);
 
             $j++;
             if ($j % 6 == 0) {
@@ -553,7 +553,7 @@ class tad_web_aboutus
    `left` = '{$_POST['left']}'
     where MemID='$MemID'";
         //die($sql);
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
         return $MemID;
     }
 

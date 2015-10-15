@@ -44,7 +44,7 @@ class tad_web_files
         $total    = $PageBar['total'];
         $show_bar = empty($limit) ? $bar : "";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";
 
@@ -97,7 +97,7 @@ class tad_web_files
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -160,7 +160,7 @@ class tad_web_files
           (`uid` , `CateID` , `file_date`  , `WebID`)
           values('{$uid}' , '{$CateID}' , now()  , '{$_POST['WebID']}')";
 
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $fsn = $xoopsDB->getInsertId();
@@ -189,7 +189,7 @@ class tad_web_files
         `file_date` = now() ,
         `WebID` = '{$_POST['WebID']}'
         where fsn='$fsn' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('fsn', $fsn);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -202,7 +202,7 @@ class tad_web_files
         global $xoopsDB, $TadUpFiles;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("fsn", $fsn);
         $TadUpFiles->del_files();
@@ -217,7 +217,7 @@ class tad_web_files
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

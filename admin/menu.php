@@ -27,6 +27,12 @@ $adminmenu[$i]['desc']  = _MI_TCW_ADMENU3;
 $adminmenu[$i]['icon']  = "{$icon_dir}setup.png";
 
 $i++;
+$adminmenu[$i]['title'] = _MI_TCW_ADMENU5;
+$adminmenu[$i]['link']  = "admin/schedule.php";
+$adminmenu[$i]['desc']  = _MI_TCW_ADMENU5;
+$adminmenu[$i]['icon']  = "{$icon_dir}table_edit.png";
+
+$i++;
 $adminmenu[$i]['title'] = _MI_TCW_ADMENU4;
 $adminmenu[$i]['link']  = "admin/disk.php";
 $adminmenu[$i]['desc']  = _MI_TCW_ADMENU4;

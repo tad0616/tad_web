@@ -19,7 +19,7 @@ function get_event()
     $i = 0;
     if ($_REQUEST['CalKind'] == "homework") {
         $sql    = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
 
         while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
 
@@ -36,7 +36,7 @@ function get_event()
         }
     } else {
         $sql    = "select NewsID,NewsTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_news") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
 
         while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
 
@@ -53,7 +53,7 @@ function get_event()
         }
 
         $sql    = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
 
         while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
 

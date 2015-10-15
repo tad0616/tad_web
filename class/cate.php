@@ -36,8 +36,9 @@ class web_cate
 {
     public $WebID = 0;
     public $ColName;
-    public $ColSN = 0;
-    public $Tbl   = 0;
+    public $ColSN    = 0;
+    public $Tbl      = 0;
+    public $demo_txt = '';
 
     public function web_cate($WebID = "0", $ColName = "", $Tbl = "")
     {
@@ -73,6 +74,11 @@ class web_cate
         $this->Tbl = $Tbl;
     }
 
+    public function set_demo_txt($demo_txt = "")
+    {
+        $this->demo_txt = $demo_txt;
+    }
+
     //分類選單
     public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true)
     {
@@ -84,7 +90,7 @@ class web_cate
 
         $option = "";
         $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchArray($result)) {
             foreach ($data as $k => $v) {
                 $$k = $v;
@@ -101,10 +107,9 @@ class web_cate
         $tools = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}' class='btn btn-warning' >" . _MD_TCW_CATE_TOOLS . "</a></div>" : "";
 
         if ($option and $show_select) {
-            $onchange  = $change_page ? "onchange=\"location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&CateID=' + this.value\"" : "";
             $cate_menu = "
             <div class=\"{$span}3\">
-              <select name='CateID' id='CateID' class='{$form_control}' {$onchange}>
+              <select name='CateID' id='CateID' class='{$form_control}'>
                 <option value=''>" . _MD_TCW_SELECT_CATE . "</option>
                 {$option}
               </select>
@@ -113,10 +118,16 @@ class web_cate
         } else {
             $cate_menu = "";
         }
+
+        $demo_txt = "";
+        if (!empty($this->demo_txt)) {
+            $demo_txt = ", {$this->demo_txt}";
+        }
+
         if ($newCate) {
             $new_input = "
-            <div class=\"{$span}4\">
-              <input type='text' name='newCateName' placeholder='" . _MD_TCW_NEW_CATE . "' class='{$form_control}'>
+            <div class=\"{$span}7\" id=\"newCate\">
+              <input type='text' name='newCateName' placeholder='" . _MD_TCW_NEW_CATE . " {$demo_txt}' class='{$form_control}'>
             </div>";
         } else {
             $new_input = "";
@@ -130,7 +141,22 @@ class web_cate
 
         $row = ($mode == "form") ? $form_group : $row;
 
+        $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&CateID=' + $('#CateID').val();" : "";
+
+        $newCate_js = ($mode == "form") ? "if(\$('#CateID').val()==''){\$('#newCate').show(); }else{ \$('#newCate').hide();}" : "";
+
+        $hide_newCate_js = empty($defCateID) ? '' : "\$('#newCate').hide();";
+
         $menu = "
+        <script>
+        $(function() {
+            {$hide_newCate_js}
+            $('#CateID').change(function(){
+                {$change_page_js}
+                {$newCate_js}
+            });
+        });
+        </script>
         <div class=\"{$row}\" style=\"margin-bottom: 10px;\">
           $label
           $cate_menu
@@ -170,7 +196,7 @@ class web_cate
           '1',
           0
         )";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $CateID = $xoopsDB->getInsertId();
@@ -184,7 +210,7 @@ class web_cate
         global $xoopsDB;
         $sql    = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
         $result = $xoopsDB->query($sql)
-        or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -199,7 +225,7 @@ class web_cate
 
         $sql = "update `" . $xoopsDB->prefix("tad_web_cate") . "` set
        `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         return $CateID;
     }
@@ -212,7 +238,7 @@ class web_cate
             return;
         }
         $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `CateID` = '{$CateID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -224,7 +250,7 @@ class web_cate
         $counter = $this->tad_web_cate_data_counter();
         $arr     = "";
         $sql     = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' order by CateSort";
-        $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result  = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchArray($result)) {
             $CateID          = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
@@ -250,7 +276,7 @@ class web_cate
 
         $sql = "update `" . $xoopsDB->prefix($table) . "` set
        `CateID` = '{$move2CateID}' where `CateID`='{$CateID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
     }
 
@@ -271,7 +297,7 @@ class web_cate
 
         $sql = "delete from `" . $xoopsDB->prefix("tad_web_cate") . "`
         where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
     }
 
@@ -292,7 +318,7 @@ class web_cate
 
         $sql = "delete from `" . $xoopsDB->prefix($table) . "`
         where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
     }
 
@@ -308,7 +334,7 @@ class web_cate
         }
         $counter = "";
         $sql     = "select count(*),CateID from `" . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
-        $result  = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result  = $xoopsDB->query($sql) or web_error($sql);
         while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {
             $counter[$CateID] = $count;
         }

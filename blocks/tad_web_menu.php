@@ -63,7 +63,7 @@ function tad_web_menu($options)
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' order by WebSort";
 
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     //$web_num = $xoopsDB->getRowsNum($result);
     $i = 0;
 

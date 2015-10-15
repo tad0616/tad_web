@@ -66,7 +66,7 @@ function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
     global $xoopsDB;
     $sql    = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$WebID}' and  ColName='{$ColName}' and ColSN='{$ColSN}'";
     $result = $xoopsDB->query($sql)
-    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    or web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -104,7 +104,7 @@ function save_tad_web_cate()
         '{$CateEnable}',
         0
     )";
-    $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->query($sql) or web_error($sql);
 
     //取得最後新增資料的流水編號
     $CateID = $xoopsDB->getInsertId();
@@ -122,7 +122,7 @@ function update_tad_web_cate($CateID = '')
 
     $sql = "update `" . $xoopsDB->prefix("tad_web_cate") . "` set
        `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     return $CateID;
 }
@@ -141,14 +141,14 @@ function update_tad_web_cate_arr($CateID = '')
     $i = 1;
     foreach ($web_cate_array as $WebID) {
         $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `CateID` = '{$CateID}', WebSort='{$i}' where `WebID` ='{$WebID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
         $i++;
     }
 
     if ($web_cate_blank_arr) {
         $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set
        `CateID` = '0' where `WebID` in($web_cate_blank_arr)";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     return $CateID;
@@ -165,11 +165,11 @@ function delete_tad_web_cate($CateID = '')
 
     $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set
        `CateID` = '0' where `CateID`='{$CateID}'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     $sql = "delete from `" . $xoopsDB->prefix("tad_web_cate") . "`
     where `CateID` = '{$CateID}'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
 }
 
@@ -185,7 +185,7 @@ function get_tad_web_cate($CateID = '')
     $sql = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "`
     where `CateID` = '{$CateID}'";
     $result = $xoopsDB->query($sql)
-    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    or web_error($sql);
     $data = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -199,7 +199,7 @@ function tad_web_list_cate()
 
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID`='0' and `ColName`='web_cate' and `ColSN`='0' order by `CateSort`";
     $result = $xoopsDB->query($sql)
-    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    or web_error($sql);
 
     $all_content = '';
 

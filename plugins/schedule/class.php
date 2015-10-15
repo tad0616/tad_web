@@ -12,10 +12,10 @@ class tad_web_schedule
         $this->web_cate = new web_cate($WebID, "schedule", "tad_web_schedule");
     }
 
-    //活動剪影
+    //課表
     public function list_all($CateID = "", $limit = null)
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $isMyWeb;
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
@@ -24,26 +24,19 @@ class tad_web_schedule
         $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
         $xoopsTpl->assign('cate_menu', $cate_menu);
 
-        $andCateID = "";
+        $andCateID = $andDisplay = "";
         if (!empty($CateID)) {
             //取得單一分類資料
             $cate = $this->web_cate->get_tad_web_cate($CateID);
             $xoopsTpl->assign('cate', $cate);
             $andCateID = "and a.`CateID`='$CateID'";
+        } else {
+            $andDisplay = "and a.`ScheduleDisplay`='1'";
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID $andDisplay";
 
-        $to_limit = empty($limit) ? 20 : $limit;
-
-        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar  = getPageBar($sql, $to_limit, 10);
-        $bar      = $PageBar['bar'];
-        $sql      = $PageBar['sql'];
-        $total    = $PageBar['total'];
-        $show_bar = empty($limit) ? $bar : "";
-
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";
 
@@ -52,7 +45,7 @@ class tad_web_schedule
         $Webs = getAllWebInfo();
 
         while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDesc , $ScheduleDate , $SchedulePlace , $uid , $WebID , $ScheduleCount
+            //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount , $ScheduleTime
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
@@ -64,18 +57,11 @@ class tad_web_schedule
 
             $main_data[$i]['cate']     = $cate[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-
-            $subdir = isset($WebID) ? "/{$WebID}" : "";
-            $TadUpFiles->set_dir('subdir', $subdir);
-            $TadUpFiles->set_col("ScheduleID", $ScheduleID);
-            $SchedulePic = $TadUpFiles->get_pic_file('thumb');
-            //die('SchedulePic:' . $SchedulePic);
-            $main_data[$i]['SchedulePic'] = $SchedulePic;
+            $main_data[$i]['schedule'] = $this->get_one_schedule($ScheduleID);
             $i++;
         }
 
         $xoopsTpl->assign('schedule_data', $main_data);
-        $xoopsTpl->assign('schedule_bar', $show_bar);
         $xoopsTpl->assign('isMineSchedule', $isMyWeb);
         $xoopsTpl->assign('showWebTitleSchedule', $showWebTitle);
         $xoopsTpl->assign('schedule', get_db_plugin($this->WebID, 'schedule'));
@@ -86,7 +72,7 @@ class tad_web_schedule
     //以流水號秀出某筆tad_web_schedule資料內容
     public function show_one($ScheduleID = "")
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $isMyWeb, $xoopsModuleConfig;
         if (empty($ScheduleID)) {
             return;
         }
@@ -95,10 +81,10 @@ class tad_web_schedule
         $this->add_counter($ScheduleID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='{$ScheduleID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDesc , $ScheduleDate , $SchedulePlace , $uid , $WebID , $ScheduleCount
+        //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount ,$ScheduleTime
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -107,19 +93,6 @@ class tad_web_schedule
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $TadUpFiles->set_col("ScheduleID", $ScheduleID);
-        $pics = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-
-        $TadUpFiles->set_col("ScheduleID", $ScheduleID, 1);
-        $bg_pic = $TadUpFiles->get_file_for_smarty();
-        //die(var_export($bg_pic));
-        $new_name = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ScheduleID}.jpg";
-        if (!file_exists($new_name)) {
-            $this->mk_blur_pic($bg_pic[0]['path'], $new_name);
-        }
-
-        $xoopsTpl->assign('bg_pic', XOOPS_URL . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ScheduleID}.jpg");
-
         $uid_name = XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
@@ -127,28 +100,29 @@ class tad_web_schedule
 
         $xoopsTpl->assign('isMineSchedule', $isMyWeb);
         $xoopsTpl->assign('ScheduleName', $ScheduleName);
-        $xoopsTpl->assign('ScheduleDate', $ScheduleDate);
-        $xoopsTpl->assign('SchedulePlace', $SchedulePlace);
-        $xoopsTpl->assign('ScheduleDesc', nl2br($ScheduleDesc));
+        $xoopsTpl->assign('ScheduleDisplay', $ScheduleDisplay);
         $xoopsTpl->assign('uid_name', $uid_name);
         $xoopsTpl->assign('ScheduleCount', $ScheduleCount);
-        $xoopsTpl->assign('pics', $pics);
+        $xoopsTpl->assign('ScheduleTime', $ScheduleTime);
         $xoopsTpl->assign('ScheduleID', $ScheduleID);
-        $xoopsTpl->assign('ScheduleInfo', sprintf(_MD_TCW_INFO, $uid_name, $ScheduleDate, $ScheduleCount));
+        $xoopsTpl->assign('ScheduleInfo', sprintf(_MD_TCW_INFO, $uid_name, $ScheduleTime, $ScheduleCount));
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
+
+        $schedule_template = $this->get_one_schedule($ScheduleID);
+        $xoopsTpl->assign('schedule_template', $schedule_template);
     }
 
     //tad_web_schedule編輯表單
     public function edit_form($ScheduleID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $WebName, $xoopsModuleConfig;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -166,20 +140,12 @@ class tad_web_schedule
         $xoopsTpl->assign('ScheduleID', $ScheduleID);
 
         //設定「ScheduleName」欄位預設值
-        $ScheduleName = (!isset($DBV['ScheduleName'])) ? "" : $DBV['ScheduleName'];
+        $ScheduleName = (!isset($DBV['ScheduleName'])) ? $WebName . _MD_TCW_SCHEDULE : $DBV['ScheduleName'];
         $xoopsTpl->assign('ScheduleName', $ScheduleName);
 
-        //設定「ScheduleDesc」欄位預設值
-        $ScheduleDesc = (!isset($DBV['ScheduleDesc'])) ? "" : $DBV['ScheduleDesc'];
-        $xoopsTpl->assign('ScheduleDesc', $ScheduleDesc);
-
-        //設定「ScheduleDate」欄位預設值
-        $ScheduleDate = (!isset($DBV['ScheduleDate'])) ? date("Y-m-d") : $DBV['ScheduleDate'];
-        $xoopsTpl->assign('ScheduleDate', $ScheduleDate);
-
-        //設定「SchedulePlace」欄位預設值
-        $SchedulePlace = (!isset($DBV['SchedulePlace'])) ? "" : $DBV['SchedulePlace'];
-        $xoopsTpl->assign('SchedulePlace', $SchedulePlace);
+        //設定「ScheduleDisplay」欄位預設值
+        $ScheduleDisplay = (!isset($DBV['ScheduleDisplay'])) ? "0" : $DBV['ScheduleDisplay'];
+        $xoopsTpl->assign('ScheduleDisplay', $ScheduleDisplay);
 
         //設定「uid」欄位預設值
         $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
@@ -194,8 +160,17 @@ class tad_web_schedule
         $ScheduleCount = (!isset($DBV['ScheduleCount'])) ? "" : $DBV['ScheduleCount'];
         $xoopsTpl->assign('ScheduleCount', $ScheduleCount);
 
+        //設定「ScheduleTime」欄位預設值
+        $ScheduleTime = (!isset($DBV['ScheduleTime'])) ? "" : $DBV['ScheduleTime'];
+        $xoopsTpl->assign('ScheduleTime', $ScheduleTime);
+
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+
+        $ys = $this->get_seme();
+        $xoopsTpl->assign('ys', $ys);
+
+        $this->web_cate->set_demo_txt(sprintf(_MD_TCW_SCHEDULE_CATE_DEMO, $ys[0], $ys[1]));
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu', $cate_menu);
 
@@ -211,38 +186,61 @@ class tad_web_schedule
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
-        $TadUpFiles->set_col('ScheduleID', $ScheduleID); //若 $show_list_del_file ==true 時一定要有
-        $upform = $TadUpFiles->upform(true, 'upfile');
-        $xoopsTpl->assign('upform', $upform);
+        $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
+        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $SubjectArr = '';
+        while ($all = $xoopsDB->fetchArray($result)) {
+            foreach ($all as $k => $v) {
+                $$k = $v;
+            }
+            $key = "{$SDWeek}-{$SDSort}";
+
+            $SubjectArr[$key]   = $Subject;
+            $colorArr[$key]     = $color;
+            $bg_colortArr[$key] = $bg_color;
+        }
+
+        $schedule_template = $xoopsModuleConfig['schedule_template'];
+        preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
+
+        foreach ($opt[0] as $tag) {
+            $new_tag   = str_replace("{", '', $tag);
+            $new_tag   = str_replace("}", '', $new_tag);
+            $val       = empty($SubjectArr[$new_tag]) ? _MD_TCW_SCHEDULE_BLANK : $SubjectArr[$new_tag];
+            $dropped   = empty($SubjectArr[$new_tag]) ? '' : 'dropped';
+            $new_input = '<div id="' . $new_tag . '" class="droppable ' . $dropped . '" style="padding: 8px; margin: 0px; color: ' . $colorArr[$new_tag] . '; background-color: ' . $bg_colortArr[$new_tag] . ';"><div>' . $val . '</div></div>';
+
+            $schedule_template = str_replace($tag, $new_input, $schedule_template);
+        }
+
+        $xoopsTpl->assign('schedule_template', $schedule_template);
+        $xoopsTpl->assign('schedule_subjects', $this->get_subjects());
+
     }
 
     //新增資料到tad_web_schedule中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
+        global $xoopsDB, $xoopsUser;
 
         //取得使用者編號
         $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
 
-        $myts                   = &MyTextSanitizer::getInstance();
-        $_POST['ScheduleName']  = $myts->addSlashes($_POST['ScheduleName']);
-        $_POST['ScheduleDesc']  = $myts->addSlashes($_POST['ScheduleDesc']);
-        $_POST['SchedulePlace'] = $myts->addSlashes($_POST['SchedulePlace']);
-        $_POST['ScheduleCount'] = intval($_POST['ScheduleCount']);
-        $_POST['CateID']        = intval($_POST['CateID']);
-        $_POST['WebID']         = intval($_POST['WebID']);
+        $myts                     = &MyTextSanitizer::getInstance();
+        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
+        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
+        $_POST['CateID']          = intval($_POST['CateID']);
+        $_POST['WebID']           = intval($_POST['WebID']);
+        $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_schedule") . "
-        (`CateID`,`ScheduleName` , `ScheduleDesc` , `ScheduleDate` , `SchedulePlace` , `uid` , `WebID` , `ScheduleCount`)
-        values('{$CateID}' ,'{$_POST['ScheduleName']}' , '{$_POST['ScheduleDesc']}' , '{$_POST['ScheduleDate']}' , '{$_POST['SchedulePlace']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['ScheduleCount']}')";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        (`CateID`,`ScheduleName` , `ScheduleDisplay` , `uid` , `WebID` , `ScheduleCount` , `ScheduleTime`)
+        values('{$CateID}' ,'{$_POST['ScheduleName']}' , '{$_POST['ScheduleDisplay']}'  , '{$uid}' , '{$_POST['WebID']}' , '0' , '{$ScheduleTime}')";
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $ScheduleID = $xoopsDB->getInsertId();
-
-        $TadUpFiles->set_col('ScheduleID', $ScheduleID);
-        $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
 
         return $ScheduleID;
     }
@@ -250,14 +248,14 @@ class tad_web_schedule
     //更新tad_web_schedule某一筆資料
     public function update($ScheduleID = "")
     {
-        global $xoopsDB, $TadUpFiles;
+        global $xoopsDB;
 
-        $myts                   = &MyTextSanitizer::getInstance();
-        $_POST['ScheduleName']  = $myts->addSlashes($_POST['ScheduleName']);
-        $_POST['ScheduleDesc']  = $myts->addSlashes($_POST['ScheduleDesc']);
-        $_POST['SchedulePlace'] = $myts->addSlashes($_POST['SchedulePlace']);
-        $_POST['CateID']        = intval($_POST['CateID']);
-        $_POST['WebID']         = intval($_POST['WebID']);
+        $myts                     = &MyTextSanitizer::getInstance();
+        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
+        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
+        $_POST['CateID']          = intval($_POST['CateID']);
+        $_POST['WebID']           = intval($_POST['WebID']);
+        $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
@@ -266,14 +264,17 @@ class tad_web_schedule
         $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set
          `CateID` = '{$CateID}' ,
          `ScheduleName` = '{$_POST['ScheduleName']}' ,
-         `ScheduleDesc` = '{$_POST['ScheduleDesc']}' ,
-         `ScheduleDate` = '{$_POST['ScheduleDate']}' ,
-         `SchedulePlace` = '{$_POST['SchedulePlace']}'
+         `ScheduleDisplay` = '{$_POST['ScheduleDisplay']}',
+         `ScheduleTime` = '{$ScheduleTime}'
         where ScheduleID='$ScheduleID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
-        $TadUpFiles->set_col('ScheduleID', $ScheduleID);
-        $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
+        if ($_POST['ScheduleDisplay'] == '1') {
+            $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set
+             `ScheduleDisplay` = '0'
+            where WebID='{$_POST['WebID']}' and ScheduleID!='{$ScheduleID}' $anduid";
+            $xoopsDB->queryF($sql) or web_error($sql);
+        }
 
         return $ScheduleID;
     }
@@ -281,13 +282,17 @@ class tad_web_schedule
     //刪除tad_web_schedule某筆資料資料
     public function delete($ScheduleID = "")
     {
-        global $xoopsDB, $TadUpFiles;
+        global $xoopsDB;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        if ($xoopsDB->queryF($sql)) {
 
-        $TadUpFiles->set_col('ScheduleID', $ScheduleID);
-        $TadUpFiles->del_files();
+            $sql = "delete from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='$ScheduleID'";
+            $xoopsDB->queryF($sql) or web_error($sql);
+        } else {
+            web_error($sql);
+        }
+
     }
 
     //新增tad_web_schedule計數器
@@ -295,7 +300,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set `ScheduleCount`=`ScheduleCount`+1 where `ScheduleID`='{$ScheduleID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_schedule資料
@@ -307,98 +312,138 @@ class tad_web_schedule
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
 
-    public function blur($gdImageResource, $blurFactor = 3)
+    //取得目前的學年學期陣列
+    public function get_seme()
     {
-        // blurFactor has to be an integer
-        $blurFactor = round($blurFactor);
-
-        $originalWidth  = imagesx($gdImageResource);
-        $originalHeight = imagesy($gdImageResource);
-
-        $smallestWidth  = ceil($originalWidth * pow(0.5, $blurFactor));
-        $smallestHeight = ceil($originalHeight * pow(0.5, $blurFactor));
-
-        // for the first run, the previous image is the original input
-        $prevImage  = $gdImageResource;
-        $prevWidth  = $originalWidth;
-        $prevHeight = $originalHeight;
-
-        // scale way down and gradually scale back up, blurring all the way
-        for ($i = 0; $i < $blurFactor; $i += 1) {
-            // determine dimensions of next image
-            $nextWidth  = $smallestWidth * pow(2, $i);
-            $nextHeight = $smallestHeight * pow(2, $i);
-
-            // resize previous image to next size
-            $nextImage = imagecreatetruecolor($nextWidth, $nextHeight);
-            imagecopyresized($nextImage, $prevImage, 0, 0, 0, 0,
-                $nextWidth, $nextHeight, $prevWidth, $prevHeight);
-
-            // apply blur filter
-            imagefilter($nextImage, IMG_FILTER_GAUSSIAN_BLUR);
-
-            // now the new image becomes the previous image for the next step
-            $prevImage  = $nextImage;
-            $prevWidth  = $nextWidth;
-            $prevHeight = $nextHeight;
+        global $xoopsDB;
+        $y = date("Y");
+        $m = date("n");
+        $d = date("j");
+        if ($m >= 8) {
+            $ys[0] = $y - 1911;
+            $ys[1] = 1;
+        } elseif ($m >= 2) {
+            $ys[0] = $y - 1912;
+            $ys[1] = 2;
+        } else {
+            $ys[0] = $y - 1912;
+            $ys[1] = 1;
         }
-
-        // scale back to original size and blur one more time
-        imagecopyresized($gdImageResource, $nextImage,
-            0, 0, 0, 0, $originalWidth, $originalHeight, $nextWidth, $nextHeight);
-        imagefilter($gdImageResource, IMG_FILTER_GAUSSIAN_BLUR);
-
-        // clean up
-        imagedestroy($prevImage);
-
-        // return result
-        return $gdImageResource;
+        return $ys;
     }
 
-    public function mk_blur_pic($filepath, $new_name)
+    //取得某一個功課表
+    public function get_one_schedule($ScheduleID)
     {
-        $type         = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize()
-        $allowedTypes = array(
-            1, // [] gif
-            2, // [] jpg
-            3, // [] png
-            6, // [] bmp
-        );
-        if (!in_array($type, $allowedTypes)) {
-            return false;
-        }
-        switch ($type) {
-            case 1:
-                $im = imageCreateFromGif($filepath);
-                break;
-            case 2:
-                $im = imageCreateFromJpeg($filepath);
-                break;
-            case 3:
-                $im = imageCreateFromPng($filepath);
-                break;
-            case 6:
-                $im = imageCreateFromBmp($filepath);
-                break;
+        global $xoopsDB, $xoopsModuleConfig;
+        $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
+        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $SubjectArr = '';
+        while ($all = $xoopsDB->fetchArray($result)) {
+            //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount
+            foreach ($all as $k => $v) {
+                $$k = $v;
+            }
+            $key = "{$SDWeek}-{$SDSort}";
+
+            $SubjectArr[$key] = "<div style='padding:8px; margin:0px; color: {$color}; background-color: {$bg_color};'><div>{$Subject}</div><div style='font-size:12px;'>{$Teacher}</div></div>";
         }
 
-        //$im = $this->blur($im, 3);
+        $schedule_template = $xoopsModuleConfig['schedule_template'];
+        preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
-        $color = imagecolorallocatealpha($im, 255, 255, 255, 10);
-        $this->ImageFillAlpha($im, $color);
-
-        imagejpeg($im, $new_name);
-        imagedestroy($im);
-        return $im;
+        foreach ($opt[0] as $tag) {
+            $new_tag           = str_replace("{", '', $tag);
+            $new_tag           = str_replace("}", '', $new_tag);
+            $schedule_template = str_replace($tag, $SubjectArr[$new_tag], $schedule_template);
+        }
+        return $schedule_template;
     }
 
-    public function ImageFillAlpha($image, $color)
+    //取得科目
+    public function get_subjects()
     {
-        imagefilledrectangle($image, 0, 0, imagesx($image), imagesy($image), $color);
+        global $xoopsModuleConfig;
+        $my_subject_file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/my_subject.json";
+        if (file_exists($my_subject_file)) {
+            $schedule_subjects_arr = json_decode(file_get_contents($my_subject_file), true);
+        } else {
+            $schedule_subjects     = explode(';', $xoopsModuleConfig['schedule_subjects']);
+            $schedule_subjects_arr = '';
+
+            $i = 0;
+            foreach ($schedule_subjects as $subject) {
+                $schedule_subjects_arr[$i]['Subject']  = $subject;
+                $schedule_subjects_arr[$i]['Teacher']  = '';
+                $schedule_subjects_arr[$i]['color']    = '#000000';
+                $schedule_subjects_arr[$i]['bg_color'] = '#FFFFFF';
+                $i++;
+            }
+        }
+        //die(var_export($schedule_subjects_arr));
+        return $schedule_subjects_arr;
+    }
+
+    //設定科目
+    public function setup_subject($ScheduleID)
+    {
+        global $xoopsModuleConfig, $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser;
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+
+        $xoopsTpl->assign('ScheduleID', $ScheduleID);
+
+        $schedule_subjects_arr = $this->get_subjects();
+        $xoopsTpl->assign('schedule_subjects_arr', $schedule_subjects_arr);
+        $xoopsTpl->assign('item_form_index_start', sizeof($schedule_subjects_arr));
+
+        //顏色設定
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/mColorPicker.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/mColorPicker.php";
+        $mColorPicker      = new mColorPicker('.color');
+        $mColorPicker_code = $mColorPicker->render();
+        $xoopsTpl->assign('mColorPicker_code', $mColorPicker_code);
+
+    }
+
+    //儲存科目設定
+    public function save_subject($ScheduleID)
+    {
+        global $xoopsDB;
+        $my_subject_file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/my_subject.json";
+        foreach ($_POST['old_Subject'] as $k => $old_Subject) {
+            $schedule_subjects_arr[$k]['Subject']  = $_POST['Subject'][$k];
+            $schedule_subjects_arr[$k]['Teacher']  = $_POST['Teacher'][$k];
+            $schedule_subjects_arr[$k]['color']    = $_POST['color'][$k];
+            $schedule_subjects_arr[$k]['bg_color'] = $_POST['bg_color'][$k];
+        }
+        $schedule_subjects = json_encode($schedule_subjects_arr);
+        file_put_contents($my_subject_file, $schedule_subjects);
+
+        //找出本站所有功課表
+        // $sql    = "select ScheduleID from " . $xoopsDB->prefix("tad_web_schedule") . " where WebID='{$this->WebID}'";
+        // $result = $xoopsDB->query($sql) or web_error($sql);
+
+        // while (list($ScheduleID) = $xoopsDB->fetchRow($result)) {
+        foreach ($_POST['old_Subject'] as $k => $old_Subject) {
+            $Subject  = $_POST['Subject'][$k];
+            $Teacher  = $_POST['Teacher'][$k];
+            $color    = $_POST['color'][$k];
+            $bg_color = $_POST['bg_color'][$k];
+
+            $sql2 = "update " . $xoopsDB->prefix("tad_web_schedule_data") . " set `Subject`='{$Subject}', `Teacher`='{$Teacher}', `color`='{$color}', `bg_color`='{$bg_color}' where ScheduleID='{$ScheduleID}' and `Subject`='{$old_Subject}'";
+            $xoopsDB->queryF($sql2) or web_error($sql2);
+        }
+        //}
     }
 }

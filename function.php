@@ -26,8 +26,9 @@ function get_tad_web_blocks($WebID)
             include "{$dir}{$plugin}/blocks.php";
         }
     }
-    $xoopsTpl->assign('plugins', $plugins);
+    $xoopsTpl->assign('block_plugins', $plugins);
 }
+
 function html5($content = "", $ui = false, $bootstrap = true)
 {
     $jquery         = get_jquery($ui);
@@ -61,7 +62,7 @@ function web_error($sql)
     if ($isAdmin) {
         die(html5("<div class='well'>$sql</div><div class='alert alert-danger'>" . mysql_error() . "</div>"));
     } else {
-        redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        web_error($sql);
     }
 }
 
@@ -96,7 +97,7 @@ function get_web_all_config($WebID = "")
 
     $sql = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$WebID'";
 
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
 
     while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
         $tad_web_config[$ConfigName] = $ConfigValue;
@@ -114,7 +115,7 @@ function get_web_config($ConfigName = null, $defWebID = null)
 
     $sql = "select `ConfigValue`,`WebID` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='{$ConfigName}' $andWebID ";
     //die($sql);
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
 
     $ConfigValue = "";
     if (!is_null($defWebID)) {
@@ -149,7 +150,7 @@ function save_web_config($ConfigName = "", $ConfigValue = "")
       (`ConfigName`, `ConfigValue`, `WebID`)
       values('{$ConfigName}' , '{$ConfigValue}', '{$WebID}')";
 
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
 }
 
@@ -160,7 +161,7 @@ function get_db_plugins($WebID = "", $only_enable = false)
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' {$andEnable} order by PluginSort";
     //die($sql);
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         $dirname           = $all['PluginDirname'];
@@ -177,7 +178,7 @@ function get_db_plugin($WebID = "", $dirname = "")
     global $xoopsDB;
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' and PluginDirname='{$dirname}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $all = $xoopsDB->fetchArray($result);
     return $all;
@@ -231,7 +232,7 @@ function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
         if (empty($pluginVal)) {
             $sort = plugins_max_sort($WebID, $file);
             $sql  = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$file}', '{$pluginConfig['name']}', '{$sort}', '1', '{$WebID}')";
-            $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
 
         if (!isset($config_arr[$file . '_limit'])) {
@@ -264,7 +265,7 @@ function plugins_max_sort($WebID, $dirname)
     global $xoopsDB;
 
     $sql    = "select max(PluginSort) from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' and PluginDirname='{$dirname}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     list($sort) = $xoopsDB->fetchRow($result);
     $sort++;
@@ -293,7 +294,7 @@ function common_template($WebID)
 
     if (empty($display_blocks)) {
         $sql    = "select bid from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         while (list($bid) = $xoopsDB->fetchRow($result)) {
             $display_blocks_arr[] = $bid;
         }
@@ -359,7 +360,7 @@ function get_tad_web_mems($MemID)
     global $xoopsDB;
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_mems") . " where MemID='{$MemID}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
     return $all;
 }
@@ -369,7 +370,7 @@ function get_tad_web_link_mems($MemID)
     global $xoopsDB;
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_link_mems") . " where MemID='{$MemID}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
     return $all;
 }
@@ -383,7 +384,7 @@ function get_tad_web($WebID = "")
     }
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     $data   = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -394,7 +395,7 @@ function memAmount($WebID = "")
     global $xoopsDB;
 
     $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$WebID}'";
-    $result      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result      = $xoopsDB->query($sql) or web_error($sql);
     list($count) = $xoopsDB->fetchRow($result);
     return $count;
 }
@@ -462,7 +463,7 @@ function MyWebID()
     if ($xoopsUser) {
         $uid    = $xoopsUser->uid();
         $sql    = "select WebID from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
         if (empty($total)) {
             return;
@@ -482,7 +483,7 @@ function getWebInfo($WebID = null)
     $WebID = intval($WebID);
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='{$WebID}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $Web = $xoopsDB->fetchArray($result);
     return $Web;
@@ -494,7 +495,7 @@ function getAllWebInfo($get_col = 'WebTitle')
     global $xoopsDB;
 
     $sql    = "select `WebID`, `{$get_col}` from " . $xoopsDB->prefix("tad_web") . " order by WebSort";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     $Webs   = '';
     while (list($WebID, $data) = $xoopsDB->fetchRow($result)) {
         $Webs[$WebID] = $data;
@@ -507,7 +508,7 @@ function getLevelName($WebID = "")
 {
     global $xoopsDB;
     $sql            = "select `WebTitle` from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID'";
-    $result         = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result         = $xoopsDB->query($sql) or web_error($sql);
     list($WebTitle) = $xoopsDB->fetchRow($result);
 
     return $main;
@@ -826,7 +827,7 @@ function get_tad_web_cate_menu_options($default_CateID = "0")
     $sql = "select `CateID`, `CateName`
     from `" . $xoopsDB->prefix("tad_web_cate") . "` order by `CateSort`";
     $result = $xoopsDB->query($sql)
-    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    or web_error($sql);
 
     $option = '';
     while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
@@ -844,7 +845,7 @@ function get_web_cate_arr()
 
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web") . "` where WebEnable='1' and WebID > 0 order by WebSort,WebTitle";
     $result = $xoopsDB->query($sql)
-    or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    or web_error($sql);
     $data_arr = '';
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {

@@ -42,7 +42,7 @@ class tad_web_link
         $total    = $PageBar['total'];
         $show_bar = empty($limit) ? $bar : "";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";
 
@@ -89,7 +89,7 @@ class tad_web_link
         $this->add_counter($LinkID);
 
         $sql           = "select LinkUrl from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='{$LinkID}'";
-        $result        = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result        = $xoopsDB->query($sql) or web_error($sql);
         list($LinkUrl) = $xoopsDB->fetchRow($result);
 
         header("location: {$LinkUrl}");
@@ -103,7 +103,7 @@ class tad_web_link
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -190,7 +190,7 @@ class tad_web_link
         $sql = "insert into " . $xoopsDB->prefix("tad_web_link") . "
           (`CateID`, `LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
           values('{$CateID}', '{$_POST['LinkTitle']}' , '{$_POST['LinkDesc']}' , '{$_POST['LinkUrl']}' , '{$_POST['LinkCounter']}' , '{$_POST['LinkSort']}' , '{$_POST['WebID']}' , '{$uid}')";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $LinkID = $xoopsDB->getInsertId();
@@ -220,7 +220,7 @@ class tad_web_link
        `LinkUrl` = '{$_POST['LinkUrl']}' ,
        `WebID` = '{$_POST['WebID']}'
         where LinkID='$LinkID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
         return $LinkID;
     }
 
@@ -232,7 +232,7 @@ class tad_web_link
         $anduid = onlyMine();
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //自動取得tad_web_link的最新排序
@@ -240,7 +240,7 @@ class tad_web_link
     {
         global $xoopsDB;
         $sql        = "select max(`LinkSort`) from " . $xoopsDB->prefix("tad_web_link");
-        $result     = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result     = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -250,7 +250,7 @@ class tad_web_link
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_link") . " set `LinkCounter`=`LinkCounter`+1 where `LinkID`='{$LinkID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_link資料
@@ -262,7 +262,7 @@ class tad_web_link
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

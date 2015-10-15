@@ -20,7 +20,7 @@ function list_all_web($defCateID = '')
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where 1 $and_cate order by WebSort";
 
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $data = "";
     $i    = 1;
@@ -71,14 +71,14 @@ function create_by_user()
     $groupid = chk_tad_web_group(_MA_TCW_GROUP_NAME);
 
     $sql    = "select uid from " . $xoopsDB->prefix("groups_users_link") . " where `groupid`='$groupid' order by uid";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         $ok_uid[] = $uid;
     }
     $WebOwnerUid = implode(',', $ok_uid);
 
     $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts = MyTextSanitizer::getInstance();
     $opt  = "";
@@ -148,7 +148,7 @@ function no_web($uid = '')
     global $xoopsDB;
 
     $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid'";
-    $result      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result      = $xoopsDB->query($sql) or web_error($sql);
     list($count) = $xoopsDB->fetchRow($result);
     if (empty($count)) {
         return true;
@@ -179,7 +179,7 @@ function batch_add_class_by_user()
             insert_tad_web(0, $WebName, $i, '1', $uid_name, $uid, $WebTitle);
 
             $sql = "replace into " . $xoopsDB->prefix("groups_users_link") . " (`uid` , `groupid`) values('{$uid}' , '{$groupid}')";
-            $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $xoopsDB->queryF($sql) or web_error($sql);
             $i++;
         }
     }
@@ -212,12 +212,12 @@ function chk_tad_web_group($name = "")
 {
     global $xoopsDB;
     $sql           = "select groupid from " . $xoopsDB->prefix("groups") . " where `name`='$name'";
-    $result        = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result        = $xoopsDB->query($sql) or web_error($sql);
     list($groupid) = $xoopsDB->fetchRow($result);
 
     if (empty($groupid)) {
         $sql = "insert into " . $xoopsDB->prefix("groups") . " (`name`,`description`) values('{$name}','" . _MA_TCW_GROUP_DESC . "')";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
         //取得最後新增資料的流水編號
 
         $groupid = $xoopsDB->getInsertId();
@@ -278,7 +278,7 @@ function tad_web_form($WebID = null)
     $formValidator_code = $formValidator->render();
 
     $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $user_menu = "<select name='WebOwnerUid'>";
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -312,7 +312,7 @@ function tad_web_max_sort()
 {
     global $xoopsDB;
     $sql        = "select max(`WebSort`) from " . $xoopsDB->prefix("tad_web");
-    $result     = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result     = $xoopsDB->query($sql) or web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -344,7 +344,7 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
     $sql = "insert into " . $xoopsDB->prefix("tad_web") . "
     (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`)
     values('{$CateID}' , '{$WebName}' , '{$WebSort}', '{$WebEnable}', '0' , '{$WebOwner}', '{$WebOwnerUid}', '{$WebTitle}', now() , '{$WebYear}')";
-    $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->query($sql) or web_error($sql);
 
     //取得最後新增資料的流水編號
     $WebID = $xoopsDB->getInsertId();
@@ -373,7 +373,7 @@ function update_tad_web($WebID = "")
     `WebOwnerUid` = '{$_POST['WebOwnerUid']}' ,
     `WebTitle` = '{$_POST['WebTitle']}'
     where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
     mklogoPic($WebID);
     return $WebID;
 }
@@ -384,7 +384,7 @@ function delete_tad_web_chk($WebID = "")
     global $xoopsDB, $xoopsTpl;
 
     $sql        = "select b.`MemName` from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.`MemID`=b.`MemID` where a.`WebID`='$WebID'";
-    $result     = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result     = $xoopsDB->query($sql) or web_error($sql);
     $allMemName = "";
     while (list($MemName) = $xoopsDB->fetchRow($result)) {
         $allMemName .= "{$MemName} ,";
@@ -392,7 +392,7 @@ function delete_tad_web_chk($WebID = "")
     $xoopsTpl->assign('allMemName', $allMemName);
 
     $sql          = "select LinkID,LinkTitle from " . $xoopsDB->prefix("tad_web_link") . " where WebID='$WebID'";
-    $result       = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result       = $xoopsDB->query($sql) or web_error($sql);
     $allLinkTitle = "<ol>";
     while (list($LinkID, $LinkTitle) = $xoopsDB->fetchRow($result)) {
         $allLinkTitle .= "<li><a href='../link.php?WebID=$WebID&LinkID=$LinkID'>$LinkTitle</a></li>";
@@ -401,7 +401,7 @@ function delete_tad_web_chk($WebID = "")
     $xoopsTpl->assign('allLinkTitle', $allLinkTitle);
 
     $sql          = "select NewsID,NewsTitle from " . $xoopsDB->prefix("tad_web_news") . " where WebID='$WebID'";
-    $result       = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result       = $xoopsDB->query($sql) or web_error($sql);
     $allNewsTitle = "<ol>";
     while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
         $allNewsTitle .= "<li><a href='../news.php?WebID=$WebID&NewsID=$NewsID'>$NewsTitle</a></li>";
@@ -410,7 +410,7 @@ function delete_tad_web_chk($WebID = "")
     $xoopsTpl->assign('allNewsTitle', $allNewsTitle);
 
     $sql           = "select ActionID,ActionName from " . $xoopsDB->prefix("tad_web_action") . " where WebID='$WebID'";
-    $result        = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result        = $xoopsDB->query($sql) or web_error($sql);
     $allActionName = "<ol>";
     while (list($ActionID, $ActionName) = $xoopsDB->fetchRow($result)) {
         $allActionName .= "<li><a href='../action.php?WebID=$WebID&ActionID=$ActionID'>$ActionName</a></li>";
@@ -419,7 +419,7 @@ function delete_tad_web_chk($WebID = "")
     $xoopsTpl->assign('allActionName', $allActionName);
 
     $sql         = "select b.files_sn,b.description from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn where a.WebID='$WebID' and b.col_name='fsn'";
-    $result      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result      = $xoopsDB->query($sql) or web_error($sql);
     $allFileName = "<ol>";
     while (list($files_sn, $file_name) = $xoopsDB->fetchRow($result)) {
         $allFileName .= "<li><a href='../files.php?WebID=$WebID&fop=dl&files_sn={$files_sn}'>$file_name</a></li>";
@@ -428,7 +428,7 @@ function delete_tad_web_chk($WebID = "")
     $xoopsTpl->assign('allFileName', $allFileName);
 
     $sql          = "select VideoID,VideoName from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID'";
-    $result       = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result       = $xoopsDB->query($sql) or web_error($sql);
     $allVideoName = "<ol>";
     while (list($VideoID, $VideoName) = $xoopsDB->fetchRow($result)) {
         $allVideoName .= "<li><a href='../video.php?WebID=$WebID&VideoID=$VideoID'>$VideoName</a></li>";
@@ -437,7 +437,7 @@ function delete_tad_web_chk($WebID = "")
     $xoopsTpl->assign('allVideoName', $allVideoName);
 
     $sql             = "select DiscussID,DiscussTitle from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='$WebID'";
-    $result          = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result          = $xoopsDB->query($sql) or web_error($sql);
     $allDiscussTitle = "<ol>";
     while (list($DiscussID, $DiscussTitle) = $xoopsDB->fetchRow($result)) {
         $allDiscussTitle .= "<li><a href='../discuss.php?WebID=$WebID&DiscussID=$DiscussID'>$DiscussTitle</a></li>";
@@ -457,68 +457,68 @@ function delete_tad_web($WebID = "")
 
     //刪除影片
     $sql = "delete from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //刪除討論
     $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //刪除連結
     $sql = "delete from " . $xoopsDB->prefix("tad_web_link") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //刪除會員
     $sql    = "select MemID from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($MemID) = $xoopsDB->fetchRow($result)) {
         $sql = "delete from " . $xoopsDB->prefix("tad_web_mems") . " where MemID='$MemID'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
         $TadUpFiles->set_col("MemID", $MemID);
         $TadUpFiles->del_files();
     }
     $sql = "delete from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //刪除消息
     $sql    = "select NewsID from " . $xoopsDB->prefix("tad_web_news") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($NewsID) = $xoopsDB->fetchRow($result)) {
         $TadUpFiles->set_col("NewsID", $NewsID);
         $TadUpFiles->del_files();
     }
     $sql = "delete from " . $xoopsDB->prefix("tad_web_news") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //刪除活動
     $sql    = "select ActionID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($ActionID) = $xoopsDB->fetchRow($result)) {
 
         $TadUpFiles->set_col("ActionID", $ActionID);
         $TadUpFiles->del_files();
     }
     $sql = "delete from " . $xoopsDB->prefix("tad_web_action") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //刪除檔案
     $sql    = "select fsn from " . $xoopsDB->prefix("tad_web_files") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($fsn) = $xoopsDB->fetchRow($result)) {
 
         $TadUpFiles->set_col("fsn", $fsn);
         $TadUpFiles->del_files();
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //刪除網站
     $sql               = "select WebOwnerUid from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID'";
-    $result            = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result            = $xoopsDB->queryF($sql) or web_error($sql);
     list($WebOwnerUid) = $xoopsDB->fetchRow($result);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     $TadUpFiles->set_col("WebOwner", $WebOwnerUid);
     $TadUpFiles->del_files();
@@ -533,7 +533,7 @@ function save_webs_title($webTitles = array())
         $WebTitle = $myts->addSlashes($WebTitle);
 
         $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("WebLogo", $WebID);
         $TadUpFiles->upload_file('upfile', 246, null, null, null, true);
@@ -549,7 +549,7 @@ function save_webs_able($WebID = "", $able = "")
     global $xoopsDB;
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '{$able}' where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     return $WebID;
 }
@@ -559,11 +559,11 @@ function order_by_teamtitle()
     global $xoopsDB;
 
     $sql    = "select WebID from " . $xoopsDB->prefix("tad_web") . " order by WebTitle";
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     $i      = 1;
     while (list($WebID) = $xoopsDB->fetchRow($result)) {
         $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebSort` = '{$i}' where WebID='$WebID'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
         $i++;
     }
 

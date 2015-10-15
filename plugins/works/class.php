@@ -42,7 +42,7 @@ class tad_web_works
         $total    = $PageBar['total'];
         $show_bar = empty($limit) ? $bar : "";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";
 
@@ -87,7 +87,7 @@ class tad_web_works
         $this->add_counter($WorksID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='{$WorksID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $WorksID , $WorkName , $WorkDesc , $WorksDate , $uid , $WebID , $WorksCount
@@ -127,7 +127,7 @@ class tad_web_works
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -210,7 +210,7 @@ class tad_web_works
         $sql = "insert into " . $xoopsDB->prefix("tad_web_works") . "
         (`CateID`,`WorkName` , `WorkDesc` , `WorksDate` ,  `uid` , `WebID` , `WorksCount`)
         values('{$CateID}' , '{$_POST['WorkName']}' , '{$_POST['WorkDesc']}' , '{$_POST['WorksDate']}' , '{$uid}' , '{$_POST['WebID']}' , '0')";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $WorksID = $xoopsDB->getInsertId();
@@ -240,7 +240,7 @@ class tad_web_works
          `WorkDesc` = '{$_POST['WorkDesc']}' ,
          `WorksDate` = '{$_POST['WorksDate']}'
         where WorksID='$WorksID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -254,7 +254,7 @@ class tad_web_works
         global $xoopsDB, $TadUpFiles;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->del_files();
@@ -265,7 +265,7 @@ class tad_web_works
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_works") . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_works資料
@@ -277,7 +277,7 @@ class tad_web_works
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

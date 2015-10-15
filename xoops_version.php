@@ -101,6 +101,14 @@ $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_adm_disk_b3.html';
 $modversion['templates'][$i]['description'] = "tad_web_adm_disk_b3.html";
 
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_schedule.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_schedule.html";
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_schedule_b3.html';
+$modversion['templates'][$i]['description'] = "tad_web_adm_schedule_b3.html";
+
 //tad_web_config.html 不需要
 
 $i++;
@@ -164,3 +172,17 @@ $modversion['config'][0]['description'] = '_MI_TCW_WEB_MODE_DESC';
 $modversion['config'][0]['formtype']    = 'textbox';
 $modversion['config'][0]['valuetype']   = 'text';
 $modversion['config'][0]['default']     = _MI_TCW_WEB_MODE_DEF;
+
+$modversion['config'][1]['name']        = 'schedule_template';
+$modversion['config'][1]['title']       = '_MI_TCW_WEB_SCHEDULE_TEMPLATE';
+$modversion['config'][1]['description'] = '_MI_TCW_WEB_SCHEDULE_TEMPLATE_DESC';
+$modversion['config'][1]['formtype']    = 'textarea';
+$modversion['config'][1]['valuetype']   = 'text';
+$modversion['config'][1]['default']     = _MI_TCW_WEB_SCHEDULE_TEMPLATE_DEF;
+
+$modversion['config'][2]['name']        = 'schedule_subjects';
+$modversion['config'][2]['title']       = '_MI_TCW_WEB_SCHEDULE_SUBJECTS';
+$modversion['config'][2]['description'] = '_MI_TCW_WEB_SCHEDULE_SUBJECTS_DESC';
+$modversion['config'][2]['formtype']    = 'textbox';
+$modversion['config'][2]['valuetype']   = 'text';
+$modversion['config'][2]['default']     = _MI_TCW_WEB_SCHEDULE_SUBJECTS_DEF;

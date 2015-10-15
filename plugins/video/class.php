@@ -42,7 +42,7 @@ class tad_web_video
         $total    = $PageBar['total'];
         $show_bar = empty($limit) ? $bar : "";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";
 
@@ -87,7 +87,7 @@ class tad_web_video
         $this->add_counter($VideoID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='{$VideoID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount
@@ -145,7 +145,7 @@ class tad_web_video
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -235,7 +235,7 @@ class tad_web_video
         $sql = "insert into " . $xoopsDB->prefix("tad_web_video") . "
         (`CateID`, `VideoName` , `VideoDesc` , `VideoDate` , `VideoPlace` , `uid` , `WebID` , `VideoCount` , `Youtube`)
         values('{$CateID}', '{$_POST['VideoName']}' , '{$_POST['VideoDesc']}' , now() , '{$VideoPlace}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['VideoCount']}' , '{$_POST['Youtube']}')";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $VideoID = $xoopsDB->getInsertId();
@@ -278,7 +278,7 @@ class tad_web_video
          `VideoDate` = now() ,
          `VideoPlace` = '{$VideoPlace}'
         where VideoID='$VideoID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
         return $VideoID;
     }
 
@@ -288,7 +288,7 @@ class tad_web_video
         global $xoopsDB;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //新增tad_web_video計數器
@@ -296,7 +296,7 @@ class tad_web_video
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_video") . " set `VideoCount`=`VideoCount`+1 where `VideoID`='{$VideoID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_video資料
@@ -308,7 +308,7 @@ class tad_web_video
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

@@ -13,7 +13,7 @@ class Tad_WebCorePreload extends XoopsPreloadItem
 
         $sql = "select `tt_bootstrap_color` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$GLOBALS['xoopsConfig']['theme_set']}'";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         list($tt_bootstrap_color) = $xoopsDB->fetchRow($result);
         if (isset($_GET['WebID']) and !empty($_GET['WebID'])) {

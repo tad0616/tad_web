@@ -43,7 +43,7 @@ class tad_web_action
         $total    = $PageBar['total'];
         $show_bar = empty($limit) ? $bar : "";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";
 
@@ -95,7 +95,7 @@ class tad_web_action
         $this->add_counter($ActionID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
@@ -148,7 +148,7 @@ class tad_web_action
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -236,7 +236,7 @@ class tad_web_action
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_action") . "
         (`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
         values('{$CateID}' ,'{$_POST['ActionName']}' , '{$_POST['ActionDesc']}' , '{$_POST['ActionDate']}' , '{$_POST['ActionPlace']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['ActionCount']}')";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $ActionID = $xoopsDB->getInsertId();
@@ -270,7 +270,7 @@ class tad_web_action
          `ActionDate` = '{$_POST['ActionDate']}' ,
          `ActionPlace` = '{$_POST['ActionPlace']}'
         where ActionID='$ActionID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -284,7 +284,7 @@ class tad_web_action
         global $xoopsDB, $TadUpFiles;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->del_files();
@@ -295,7 +295,7 @@ class tad_web_action
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_action") . " set `ActionCount`=`ActionCount`+1 where `ActionID`='{$ActionID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_action資料
@@ -307,7 +307,7 @@ class tad_web_action
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

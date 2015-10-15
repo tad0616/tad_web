@@ -6,7 +6,7 @@ function tad_web_discuss($options)
     global $xoopsDB;
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='0'  order by LastTime desc limit 0,10";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $main_data = "";
 
@@ -49,7 +49,7 @@ function get_block_re_num($DiscussID = "")
     }
 
     $sql           = "select count(*) from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID'";
-    $result        = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result        = $xoopsDB->query($sql) or web_error($sql);
     list($counter) = $xoopsDB->fetchRow($result);
     return $counter;
 }

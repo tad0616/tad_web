@@ -27,7 +27,6 @@ function tad_web_config($WebID)
     }
 
     //網站設定
-
     $Web = get_tad_web($WebID);
     $xoopsTpl->assign('WebName', $Web['WebName']);
 
@@ -94,7 +93,7 @@ function tad_web_config($WebID)
     }
 
     $sql    = "select bid,name,title from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts     = MyTextSanitizer::getInstance();
     $block_ok = $block_yet = $block_name = "";
@@ -183,7 +182,7 @@ function update_tad_web()
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set
    `WebName` = '{$_POST['WebName']}'
     where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     $TadUpFilesLogo = TadUpFilesLogo();
     $TadUpFilesLogo->set_col('logo', $WebID, 1);
@@ -201,7 +200,7 @@ function delete_web_config($ConfigName = "")
     global $xoopsDB, $xoopsUser, $WebID, $MyWebs;
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='{$ConfigName}' and `WebID`='{$MyWebs}'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
 }
 
@@ -214,7 +213,7 @@ function save_plugins($WebID)
     $i    = 1;
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
     $enable_plugins = $display_plugins = '';
     foreach ($plugins as $plugin) {
         $dirname      = $plugin['dirname'];
@@ -222,7 +221,7 @@ function save_plugins($WebID)
         $PluginEnable = ($_POST['plugin_enable'][$dirname] == '1') ? '1' : '0';
 
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$PluginEnable}', '{$WebID}')";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname]);
         //save_web_config($dirname . '_display', $_POST['plugin_display'][$dirname]);

@@ -46,7 +46,7 @@ class tad_web_discuss
             $total    = $PageBar['total'];
             $show_bar = empty($limit) ? $bar : "";
 
-            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $result = $xoopsDB->query($sql) or web_error($sql);
 
             $main_data = "";
 
@@ -98,7 +98,7 @@ class tad_web_discuss
         $this->add_counter($DiscussID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $DiscussID , $ReDiscussID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
@@ -161,7 +161,7 @@ class tad_web_discuss
 
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
-        } elseif (empty($this->WebID)) {
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -289,7 +289,7 @@ class tad_web_discuss
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_discuss") . "  (`CateID`,`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
         values('{$CateID}'  ,'{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
-        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $DiscussID = $xoopsDB->getInsertId();
@@ -300,7 +300,7 @@ class tad_web_discuss
         if (!empty($_POST['ReDiscussID'])) {
             $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `LastTime` = now()
             where `DiscussID` = '{$_POST['ReDiscussID']}' or `ReDiscussID` = '{$_POST['ReDiscussID']}'";
-            $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
 
         if (!empty($_POST['ReDiscussID'])) {
@@ -344,7 +344,7 @@ class tad_web_discuss
          `DiscussContent` = '{$_POST['DiscussContent']}' ,
          `LastTime` = now()
         where DiscussID='{$DiscussID}' {$anduid}";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -364,10 +364,10 @@ class tad_web_discuss
         }
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->del_files();
@@ -378,7 +378,7 @@ class tad_web_discuss
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //以流水號取得某筆tad_web_discuss資料
@@ -390,7 +390,7 @@ class tad_web_discuss
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='$DiscussID'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -420,7 +420,7 @@ class tad_web_discuss
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' order by DiscussDate";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         $re_data = "";
 
@@ -487,7 +487,7 @@ class tad_web_discuss
 
         $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID'";
 
-        $result        = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result        = $xoopsDB->query($sql) or web_error($sql);
         list($counter) = $xoopsDB->fetchRow($result);
         return $counter;
     }
@@ -514,7 +514,7 @@ class tad_web_discuss
         }
 
         $sql    = "select a.`MemID` , a.`MemName` , a.`MemNickName` , b.`WebID` from " . $xoopsDB->prefix("tad_web_mems") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID` where a.`MemUname`='$MemUname' and a.`MemPasswd`='$MemPasswd' and b.`MemEnable`='1'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         list($MemID, $MemName, $MemNickName, $WebID) = $xoopsDB->fetchRow($result);
 
