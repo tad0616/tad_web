@@ -6,9 +6,42 @@ function xoops_module_uninstall_tad_web(&$module)
 
     rename(XOOPS_ROOT_PATH . "/uploads/tad_web", XOOPS_ROOT_PATH . "/uploads/tad_web_bak_{$date}");
 
+    add_log('delete');
     uninstall_sql();
 
     return true;
+}
+
+//擷取網站網址、名稱、站長信箱、多人網頁版本、子網站數等資訊以供統計或日後更新通知
+function add_log($status)
+{
+    global $xoopsConfig, $xoopsDB;
+    $modhandler  = &xoops_gethandler('module');
+    $xoopsModule = &$modhandler->getByDirname("tad_web");
+    $version     = $xoopsModule->version();
+    if ($status == 'install') {
+        $web_amount = 0;
+    } else {
+        $sql        = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by WebSort";
+        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $web_amount = $xoopsDB->getRowsNum($result);
+    }
+    $add_count_url = "http://120.115.2.99/modules/apply/status.php?url=" . XOOPS_URL . "&web_name={$xoopsConfig['sitename']}&version={$version}&web_amount={$web_amount}&email={$xoopsConfig['adminmail']}&status={$status}";
+    if (function_exists('curl_init')) {
+        $ch      = curl_init();
+        $timeout = 5;
+        curl_setopt($ch, CURLOPT_URL, $add_count_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_exec($ch);
+        curl_close($ch);
+    } elseif (function_exists('file_get_contents')) {
+        file_get_contents($add_count_url);
+    } else {
+        $handle = fopen($add_count_url, "rb");
+        stream_get_contents($handle);
+        fclose($handle);
+    }
 }
 
 function uninstall_sql()

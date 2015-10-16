@@ -1,5 +1,5 @@
 <?php
-get_page_list($WebID);
+//get_page_list($WebID);
 
 function get_page_list($WebID)
 {
@@ -36,9 +36,10 @@ function get_page_list($WebID)
             $j++;
         }
 
-        $main[$i]['CateID']   = $CateID;
-        $main[$i]['CateName'] = $CateName;
-        $main[$i]['content']  = $content;
+        $main[$i]['CateID']     = $CateID;
+        $main[$i]['CateName']   = $CateName;
+        $main[$i]['CateAmount'] = $j;
+        $main[$i]['content']    = $content;
         $i++;
 
     }

@@ -60,12 +60,12 @@ define('_MI_TCW_WEB_SCHEDULE_TEMPLATE_DEF', '<table class="table table-bordered 
         <tr>
             <td class="schedule_time">08:00~08:40</td>
             <td class="schedule_section">&nbsp;</td>
-            <td class="schedule_note">Teacher Time</td>
-            <td class="schedule_note">Teacher Time</td>
-            <td class="schedule_note">Teacher Time</td>
-            <td class="schedule_note">Teacher Time</td>
-            <td class="schedule_note">Teacher Time</td>
-            <td class="schedule_note">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
         </tr>
         <tr>
             <td class="schedule_time">08:40~09:20</td>

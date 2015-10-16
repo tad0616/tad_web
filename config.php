@@ -85,42 +85,51 @@ function tad_web_config($WebID)
     $xoopsTpl->assign('mColorPicker_code', $mColorPicker_code);
 
     //區塊設定
-    //$display_blocks = get_web_config("display_blocks", $WebID);
+    //取得系統所有區塊
+    $block_option = get_all_blocks();
+
+    $block_ok = $block_yet = $block_name = $ok_blocks = "";
+
     if (!empty($configs['display_blocks'])) {
-        $display_blocks_arr = explode(',', $display_blocks);
-    } else {
-        $display_blocks_arr = "";
-    }
-
-    $sql    = "select bid,name,title from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-
-    $myts     = MyTextSanitizer::getInstance();
-    $block_ok = $block_yet = $block_name = "";
-
-    while ($all = $xoopsDB->fetchArray($result)) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
+        $display_blocks_arr = explode(',', $configs['display_blocks']);
+        foreach ($display_blocks_arr as $func) {
+            $block_ok .= "<option value=\"$func\">{$block_option[$func]}</option>";
+            $ok_blocks[] = $func;
         }
-        $name  = $myts->htmlSpecialChars($name);
-        $title = $myts->htmlSpecialChars($title);
-        if (!empty($display_blocks)) {
-            if (!in_array($bid, $display_blocks_arr)) {
-                $block_yet .= "<option value=\"$bid\">{$name}</option>";
+        foreach ($block_option as $func => $name) {
+            if (!in_array($func, $ok_blocks)) {
+                $block_yet .= "<option value=\"$func\">{$name}</option>";
             }
-            $block_name[$bid] = $name;
-        } else {
-            $block_ok .= "<option value=\"$bid\">{$name}</option>";
-            $blocks[] = $bid;
         }
-    }
-    if (empty($display_blocks_arr)) {
-        $display_blocks = implode(',', $blocks);
     } else {
-        foreach ($display_blocks_arr as $bid) {
-            $block_ok .= "<option value=\"$bid\">{$block_name[$bid]}</option>";
+        foreach ($block_option as $func => $name) {
+            $block_ok .= "<option value=\"$func\">{$name}</option>";
+            $ok_blocks[] = $func;
         }
+        $block_yet = "";
     }
+    $display_blocks = implode(',', $ok_blocks);
+
+    // foreach ($block_option as $func => $name) {
+    //     if (!empty($display_blocks)) {
+    //         if (!in_array($func, $display_blocks_arr)) {
+    //             $block_yet .= "<option value=\"$func\">{$name}</option>";
+    //         }
+    //         $block_name[$func] = $name;
+    //     } else {
+    //         $block_ok .= "<option value=\"$func\">{$name}</option>";
+    //         $blocks[] = $func;
+    //     }
+    // }
+
+    // if (empty($display_blocks_arr)) {
+    //     $display_blocks = implode(',', $blocks);
+    // } else {
+    //     foreach ($display_blocks_arr as $bid) {
+    //         $block_ok .= "<option value=\"$bid\">{$block_name[$bid]}</option>";
+    //     }
+    // }
+
     $block_content = "
         <script type=\"text/javascript\" src=\"" . XOOPS_URL . "/modules/tad_web/class/tmt_core.js\"></script>
         <script type=\"text/javascript\" src=\"" . XOOPS_URL . "/modules/tad_web/class/tmt_spry_linkedselect.js\"></script>
@@ -223,8 +232,7 @@ function save_plugins($WebID)
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$PluginEnable}', '{$WebID}')";
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname]);
-        //save_web_config($dirname . '_display', $_POST['plugin_display'][$dirname]);
+        save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], $WebID);
         if ($PluginEnable == '1') {
             $enable_plugins[] = $dirname;
             if ($_POST['plugin_display'][$dirname] == '1') {
@@ -233,8 +241,10 @@ function save_plugins($WebID)
         }
         $i++;
     }
-    save_web_config('web_plugin_enable_arr', implode(',', $enable_plugins));
-    save_web_config('web_setup_show_arr', implode(',', $display_plugins));
+
+    //die(var_export($_POST['plugin_display']));
+    save_web_config('web_plugin_enable_arr', implode(',', $enable_plugins), $WebID);
+    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), $WebID);
     mk_menu_var_file($WebID);
 
 }
@@ -261,7 +271,7 @@ switch ($op) {
     //儲存設定值
     case "save_all_color":
         foreach ($color_setup as $col_name => $col_val) {
-            save_web_config($col_name, $col_val);
+            save_web_config($col_name, $col_val, $WebID);
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
@@ -314,13 +324,13 @@ switch ($op) {
         break;
 
     case "save_block":
-        save_web_config("display_blocks", $display_blocks);
+        save_web_config("display_blocks", $display_blocks, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
 
     case "save_other_web_url":
-        save_web_config("other_web_url", $other_web_url);
+        save_web_config("other_web_url", $other_web_url, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

@@ -46,13 +46,56 @@ function xoops_module_update_tad_web(&$module, $old_version)
 
     chk_sql();
     go_update_var();
-
+    add_log('update');
     return true;
+}
+
+//擷取網站網址、名稱、站長信箱、多人網頁版本、子網站數等資訊以供統計或日後更新通知
+function add_log($status)
+{
+    global $xoopsConfig, $xoopsDB;
+    $modhandler  = &xoops_gethandler('module');
+    $xoopsModule = &$modhandler->getByDirname("tad_web");
+    $version     = $xoopsModule->version();
+    if ($status == 'install') {
+        $web_amount = 0;
+    } else {
+        $sql        = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by WebSort";
+        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $web_amount = $xoopsDB->getRowsNum($result);
+    }
+    $add_count_url = "http://120.115.2.99/modules/apply/status.php?url=" . XOOPS_URL . "&web_name={$xoopsConfig['sitename']}&version={$version}&web_amount={$web_amount}&email={$xoopsConfig['adminmail']}&status={$status}";
+    if (function_exists('curl_init')) {
+        $ch      = curl_init();
+        $timeout = 5;
+        curl_setopt($ch, CURLOPT_URL, $add_count_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_exec($ch);
+        curl_close($ch);
+    } elseif (function_exists('file_get_contents')) {
+        file_get_contents($add_count_url);
+    } else {
+        $handle = fopen($add_count_url, "rb");
+        stream_get_contents($handle);
+        fclose($handle);
+    }
 }
 
 function go_update_var()
 {
+    global $xoopsDB;
+    $sql = "delete from " . $xoopsDB->prefix('tad_web_config') . " WHERE `ConfigName` LIKE '%_display'";
+    $xoopsDB->queryF($sql);
+
+    $sql = "update " . $xoopsDB->prefix('tad_web_config') . " set `ConfigName`='web_plugin_display_arr' WHERE `ConfigName` = 'web_setup_show_arr'";
+    $xoopsDB->queryF($sql);
+
+    $sql = "delete from " . $xoopsDB->prefix('tad_web_config') . " WHERE `ConfigValue` = '活動剪影,網頁列表選單,選單,文章選單'";
+    $xoopsDB->queryF($sql);
+
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+
     $Webs = getAllWebInfo('WebTitle');
     foreach ($Webs as $WebID => $WebTitle) {
         mk_menu_var_file($WebID);

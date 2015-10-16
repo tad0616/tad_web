@@ -1,8 +1,5 @@
 <{if $data}>
   <{if $WebID==""}>
-    <{assign var="i" value=0}>
-    <{assign var="total" value=0}>
-
     <{if $tad_web_cate}>
 
       <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
@@ -23,54 +20,55 @@
       <div id="tad_web_cate_tabs">
         <ul>
           <{foreach from=$tad_web_cate key=i item=cate}>
-          <li><a href="<{$xoops_url}>/modules/tad_web/get_webs.php?CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>
+          <li><a href="<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_webs.php?CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>
           <{/foreach}>
         </ul>
       </div>
     <{else}>
       <h1><{$module_title}></h1>
-      <table class="table footable">
+      <table class="table" data-sorting="true" data-filtering="true">
         <thead>
           <tr>
-            <th data-class="expand"><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
+            <th><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
             <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
-            <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
-            <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
+            <th data-breakpoints="xs sm"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
+            <th data-breakpoints="xs sm"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
           </tr>
         </thead>
-        <{foreach item=class from=$data}>
-          <tr>
-            <td>
-              <{if $class.other_web_url}>
-                <a href="<{$class.other_web_url}>"><{$class.WebTitle}></a>
-              <{else}>
-                <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebTitle}></a>
-              <{/if}>
-            </td>
-            <td>
-
-              <span class="label <{if $class.WebID|in_array:$MyWebs}>label-info<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
-            </td>
-            <td>
-              <{if $class.other_web_url}>
-                <a href="<{$class.other_web_url}>"><{$class.WebName}></a>
-                <{if $class.isMyWeb}>
-                  <a href="config.php?WebID=<{$class.WebID}>"><i class="fa fa-wrench text-danger"></i></a>
+        <tbody>
+          <{foreach item=class from=$data}>
+            <tr>
+              <td>
+                <{if $class.other_web_url}>
+                  <a href="<{$class.other_web_url}>"><{$class.WebTitle}></a>
+                <{else}>
+                  <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebTitle}></a>
                 <{/if}>
-              <{else}>
-                <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebName}></a>
-              <{/if}>
-            </td>
-            <td>
-              <{if $class.other_web_url}>
-                <a href="<{$class.other_web_url}>"><{$class.WebCounter}></a>
-              <{else}>
-                <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebCounter}></a>
-              <{/if}>
-            </td>
-          </tr>
+              </td>
+              <td>
 
-        <{/foreach}>
+                <span class="label <{if $class.WebID|in_array:$MyWebs}>label-info<{else}>label-success<{/if}>"><{$class.WebOwner}></span>
+              </td>
+              <td>
+                <{if $class.other_web_url}>
+                  <a href="<{$class.other_web_url}>"><{$class.WebName}></a>
+                  <{if $class.isMyWeb}>
+                    <a href="config.php?WebID=<{$class.WebID}>"><i class="fa fa-wrench text-danger"></i></a>
+                  <{/if}>
+                <{else}>
+                  <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebName}></a>
+                <{/if}>
+              </td>
+              <td>
+                <{if $class.other_web_url}>
+                  <a href="<{$class.other_web_url}>"><{$class.WebCounter}></a>
+                <{else}>
+                  <a href="index.php?WebID=<{$class.WebID}>"><{$class.WebCounter}></a>
+                <{/if}>
+              </td>
+            </tr>
+          <{/foreach}>
+        </tbody>
       </table>
     <{/if}>
   <{/if}>

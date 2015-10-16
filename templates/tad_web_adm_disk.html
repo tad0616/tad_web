@@ -16,6 +16,7 @@
     <{foreach from=$space key=WebID item=space}>
       <{assign var="class" value=$data.$WebID}>
       <tr>
+        <td>
         <{if $class.WebEnable=='1'}>
           <img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>">
         <{else}>

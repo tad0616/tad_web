@@ -23,7 +23,7 @@ class tad_web_page
         //取得tad_web_cate所有資料陣列
         $cate_arr = $this->web_cate->get_tad_web_cate_arr();
         $xoopsTpl->assign('cate_arr', $cate_arr);
-
+        //die(var_export($cate_arr));
         $andCateID = "";
         if (!empty($CateID)) {
             //取得單一分類資料
@@ -33,20 +33,12 @@ class tad_web_page
             $xoopsTpl->assign('PageDefCateID', $CateID);
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageDate desc";
-
-        $to_limit = empty($limit) ? 20 : $limit;
-
-        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        // $PageBar  = getPageBar($sql, $to_limit, 10);
-        // $bar      = $PageBar['bar'];
-        // $sql      = $PageBar['sql'];
-        // $total    = $PageBar['total'];
-        // $show_bar = empty($limit) ? $bar : "";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
 
         $result = $xoopsDB->query($sql) or web_error($sql);
+        $total  = $xoopsDB->getRowsNum($result);
 
-        $main_data = $cate_data = "";
+        $page_data = $cate_data = "";
 
         $i = 0;
 
@@ -58,34 +50,19 @@ class tad_web_page
                 $$k = $v;
             }
 
-            $main_data[$i] = $all;
+            $page_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
             $cate = $this->web_cate->get_tad_web_cate_arr();
 
-            $main_data[$i]['cate']     = $cate[$CateID];
-            $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $page_data[$i]['cate']     = $cate[$CateID];
+            $page_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             $cate_data[$CateID][]      = $all;
             $i++;
         }
-        $cate_count = sizeof($cate);
-        if ($cate_count % 4 == 0) {
-            $line_count = 4;
-        } elseif ($cate_count % 3 == 0) {
-            $line_count = 3;
-        } elseif ($cate_count % 2 == 0) {
-            $line_count = 2;
-        } else {
-            $line_count = 3;
-        }
-
-        $md = 12 / $line_count;
-        //die(var_export($cate));
-        $xoopsTpl->assign('cate_count', $cate_count);
-        $xoopsTpl->assign('line_count', $line_count);
-        $xoopsTpl->assign('md', $md);
+        //die(var_export($page_data));
         $xoopsTpl->assign('cate_data', $cate_data);
-        $xoopsTpl->assign('page_data', $main_data);
+        $xoopsTpl->assign('page_data', $page_data);
         $xoopsTpl->assign('page_bar', $show_bar);
         $xoopsTpl->assign('isMinePage', $isMyWeb);
         $xoopsTpl->assign('showWebTitlePage', $showWebTitle);

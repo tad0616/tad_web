@@ -1,3 +1,23 @@
+Tad Web 1.5.1 release (2015-10-16 release)
+====================================================
+ 1.Fixed GuestBook English language
+ 2.Fixed problem of disappearing blocks
+
+
+
+Tad Web 1.5 release (2015-10-16 release)
+====================================================
+1. Fixed activity English language
+2. New page functions and blocks
+3. Add class schedule table function
+4. New block mechanism
+5. New web space usage status
+6. Add OpenID login in Sign Block
+7. fixed serious security problems
+8. The capture site URL, name, webmaster mailbox, multiplayer version of the page, the number of sub-sites and other information for statistical or later update notification
+9. Fixed the external classes can not be used in bootstrap2
+
+
 Tad Web 1.4.1 release (2015-10-08 release)
 ====================================================
 1. Fixed a person has two or more sites, the menu can not switch the site.

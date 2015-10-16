@@ -34,7 +34,7 @@ class tad_web_schedule
             $andDisplay = "and a.`ScheduleDisplay`='1'";
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID $andDisplay";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID $andDisplay order by b.WebSort";
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
@@ -61,11 +61,12 @@ class tad_web_schedule
             $i++;
         }
 
+        $xoopsTpl->assign('schedule_amount', $i);
         $xoopsTpl->assign('schedule_data', $main_data);
         $xoopsTpl->assign('isMineSchedule', $isMyWeb);
         $xoopsTpl->assign('showWebTitleSchedule', $showWebTitle);
         $xoopsTpl->assign('schedule', get_db_plugin($this->WebID, 'schedule'));
-        return $total;
+        return $i;
 
     }
 

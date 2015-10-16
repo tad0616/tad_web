@@ -28,43 +28,43 @@ switch ($op) {
 
     //標題設定
     case "save_head":
-        save_web_config("web_head", $filename);
+        save_web_config("web_head", $filename, $WebID);
         output_head_file($WebID);
         die($filename);
         exit;
         break;
 
     case "save_head_bg":
-        save_web_config("head_top", $head_top);
-        save_web_config("head_left", $head_left);
+        save_web_config("head_top", $head_top, $WebID);
+        save_web_config("head_left", $head_left, $WebID);
         output_head_file($WebID);
         exit;
         break;
 
     //logo設定
     case "save_logo":
-        save_web_config("logo_top", $logo_top);
-        save_web_config("logo_left", $logo_left);
+        save_web_config("logo_top", $logo_top, $WebID);
+        save_web_config("logo_left", $logo_left, $WebID);
         output_head_file($WebID);
         exit;
         break;
 
     case "save_logo_pic":
-        save_web_config("web_logo", $filename);
+        save_web_config("web_logo", $filename, $WebID);
         output_head_file($WebID);
         exit;
         break;
 
     //標題設定
     case "save_bg":
-        save_web_config("web_bg", $filename);
+        save_web_config("web_bg", $filename, $WebID);
         output_head_file($WebID);
         exit;
         break;
 
     //儲存設定值
     case "save_color":
-        save_web_config($col_name, $col_val);
+        save_web_config($col_name, $col_val, $WebID);
         exit;
         break;
 }

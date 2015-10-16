@@ -22,10 +22,6 @@ define("_MD_TCW_DATA_NOT_EXIST", "該資訊不存在");
 define("_MD_TCW_ALL_CLASS", "網站列表");
 define("_MD_TCW_MY_CLASS", "關於我們");
 define("_MD_TCW_ALL_WEB", "網頁列表");
-define("_MD_TCW_ALL_WEB_TITLE", "正式名稱");
-define("_MD_TCW_ALL_WEB_NAME", "網頁名稱");
-define("_MD_TCW_ALL_WEB_COUNTER", "人氣");
-define("_MD_TCW_ALL_WEB_OWNER", "擁有者");
 
 //common
 define("_MD_TCW_TEAMID", "所屬網頁");

@@ -4,6 +4,10 @@ include_once "../../mainfile.php";
 //判斷是否對該模組有管理權限
 $isAdmin = false;
 if ($xoopsUser) {
+    if (!$xoopsModule) {
+        $modhandler  = &xoops_gethandler('module');
+        $xoopsModule = &$modhandler->getByDirname("tad_web");
+    }
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin   = $xoopsUser->isAdmin($module_id);
 } else {

@@ -1,5 +1,9 @@
 <?php
 define("_MD_TCW_ABOUTUS", "關於我們");
+define("_MD_TCW_ALL_WEB_TITLE", "正式名稱");
+define("_MD_TCW_ALL_WEB_NAME", "網頁名稱");
+define("_MD_TCW_ALL_WEB_COUNTER", "人氣");
+define("_MD_TCW_ALL_WEB_OWNER", "擁有者");
 define("_MD_TCW_STUDENT_SETUP", "學生設定");
 define("_MD_TCW_ABOUTUS_SHORT", "成員");
 define("_MD_TCW_UID", "成員");

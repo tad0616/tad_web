@@ -12,7 +12,7 @@ if ($op == 'plugin') {
         $display_plugins[] = $dirname;
         $sort++;
     }
-    save_web_config('web_setup_show_arr', implode(',', $display_plugins));
+    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), $WebID);
     mk_menu_var_file(0);
 } else {
 

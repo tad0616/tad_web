@@ -1,3 +1,13 @@
-<{foreach from=$block_plugins item=plugin}>
-  <{includeq file="$xoops_rootpath/modules/tad_web/plugins/$plugin/tpls/tad_web_`$plugin`_block_b3.html"}>
+<{foreach from=$blocks_arr item=block}>
+  <div class="tad_web_block">
+    <{if $block.type=="system"}>
+        <{block id=$block.func}>
+    <{else}>
+      <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
+        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
+      <{/if}>
+    <{/if}>
+  </div>
 <{/foreach}>
+
+

@@ -22,10 +22,6 @@ define("_MD_TCW_DATA_NOT_EXIST", "This information does not exis.");
 define('_MD_TCW_ALL_CLASS', 'Class List');
 define('_MD_TCW_MY_CLASS', 'Class members');
 define('_MD_TCW_ALL_WEB', 'Pages list');
-define('_MD_TCW_ALL_WEB_TITLE', 'Official Name');
-define('_MD_TCW_ALL_WEB_NAME', 'Page Name');
-define('_MD_TCW_ALL_WEB_COUNTER', 'Popular');
-define('_MD_TCW_ALL_WEB_OWNER', 'Owner');
 
 // Common
 define('_MD_TCW_TEAMID', 'Belongs to the page');

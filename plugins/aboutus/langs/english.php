@@ -1,5 +1,9 @@
 <?php
 define('_MD_TCW_ABOUTUS', 'About Us');
+define('_MD_TCW_ALL_WEB_TITLE', 'Official Name');
+define('_MD_TCW_ALL_WEB_NAME', 'Page Name');
+define('_MD_TCW_ALL_WEB_COUNTER', 'Popular');
+define('_MD_TCW_ALL_WEB_OWNER', 'Owner');
 define('_MD_TCW_STUDENT_SETUP', 'Student set');
 define('_MD_TCW_ABOUTUS_SHORT', 'Members');
 define('_MD_TCW_UID', 'Members');

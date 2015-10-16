@@ -14,11 +14,11 @@ function ClassHome($WebID = "")
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs;
 
-    $web_setup_show_arr = get_web_config("web_setup_show_arr", $WebID);
-    if (empty($web_setup_show_arr)) {
+    $web_plugin_display_arr = get_web_config("web_plugin_display_arr", $WebID);
+    if (empty($web_plugin_display_arr)) {
         $show_arr = get_dir_plugins();
     } else {
-        $show_arr = explode(',', $web_setup_show_arr);
+        $show_arr = explode(',', $web_plugin_display_arr);
     }
 
     $xoopsTpl->assign('show_arr', $show_arr);
@@ -52,11 +52,11 @@ function list_all_class()
 
     $xoopsTpl->assign('module_title', $xoopsModuleConfig['module_title']);
 
-    $web_setup_show_arr = get_web_config("web_setup_show_arr", 0);
-    if (empty($web_setup_show_arr)) {
+    $web_plugin_display_arr = get_web_config("web_plugin_display_arr", 0);
+    if (empty($web_plugin_display_arr)) {
         $show_arr = get_dir_plugins();
     } else {
-        $show_arr = explode(',', $web_setup_show_arr);
+        $show_arr = explode(',', $web_plugin_display_arr);
     }
 
     $xoopsTpl->assign('show_arr', $show_arr);

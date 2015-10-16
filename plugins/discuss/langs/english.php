@@ -15,3 +15,6 @@ define('_MD_TCW_DISCUSS_TO_REPLY', 'I want to reply');
 define('_MD_TCW_DISCUSS_REPLY', 'Reply');
 define('_MD_TCW_DISCUSS_ADD', 'Message');
 define("_MD_TCW_DISCUSS_FILES", "Attachment");
+define('_MD_TCW_MEM_UNAME', 'Student Account');
+define('_MD_TCW_MEM_PASSWD', 'Student Password');
+define("_MD_TCW_PLEASE_INPUT", "Enter ");

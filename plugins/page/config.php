@@ -5,5 +5,5 @@ $pluginConfig['short']  = _MD_TCW_PAGE_SHORT;
 $pluginConfig['icon']   = 'fa-file-text-o';
 $pluginConfig['limit']  = '';
 $pluginConfig['cate']   = true;
-$pluginConfig['common'] = true;
+$pluginConfig['common'] = false;
 $pluginConfig['sql']    = array('tad_web_page');

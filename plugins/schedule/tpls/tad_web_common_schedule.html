@@ -10,31 +10,48 @@
 
 <{if $schedule_data}>
   <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
-  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+  <{if $WebID==""}>
     <h1><{$schedule.PluginTitle}></h1>
-  <{/if}>
-  <{foreach item=act from=$schedule_data}>
+    <{assign var="i" value=0}>
+    <{assign var="total" value=1}>
 
-    <div style="margin: 8px auto;">
-      <a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a>
-      <{if !$showWebTitleSchedule && $isMineSchedule}>
-        <a href="javascript:delete_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-        <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+    <{foreach item=act from=$schedule_data}>
+      <{if $i==0}>
+      <div class="row-fluid">
       <{/if}>
-    </div>
-
-  <{/foreach}>
+        <div class="col-md-3">
+          <a href="schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>" class="btn btn-link btn-block"><i class="fa fa-table"></i> <{$act.ScheduleName}>
+          </a>
+        </div>
+    <{assign var="i" value=$i+1}>
+    <{if $i == 4 || $total==$schedule_amount}>
+      </div>
+      <{assign var="i" value=0}>
+    <{/if}>
+    <{assign var="total" value=$total+1}>
+    <{/foreach}>
+  <{else}>
+    <{foreach item=act from=$schedule_data}>
+      <div style="margin: 8px auto;">
+        <h2>
+          <a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}>
+          </a>
+          <a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}>
+          </a>
+          <small>
+            <{if !$showWebTitleSchedule && $isMineSchedule}>
+              <a href="javascript:delete_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
+          </small>
+        </h2>
+        <{$act.schedule}>
+      </div>
+    <{/foreach}>
+  <{/if}>
   <div style="clear: both;"></div>
 
   <div style="text-align:right; margin-bottom: 10px;">
-    <{if $schedule_bar==""}>
-      <{if $WebID==""}>
-        <a href="schedule.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
-      <{else}>
-        <a href="schedule.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
-      <{/if}>
-    <{/if}>
-
     <{if $isMineSchedule and $WebID}>
       <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
     <{/if}>
