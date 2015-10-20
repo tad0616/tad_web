@@ -212,6 +212,7 @@ function get_db_plugins($WebID = "", $only_enable = false)
         $plugin_enable_arr = get_dir_plugins();
         save_web_config('web_plugin_enable_arr', implode(',', $plugin_enable_arr), $WebID);
         save_web_config('web_plugin_display_arr', implode(',', $plugin_enable_arr), $WebID);
+        $plugin_display_arr = $plugin_enable_arr;
     } else {
         $plugin_display_arr = explode(',', $web_plugin_display_arr);
     }
@@ -297,7 +298,10 @@ function get_plugin_blocks()
 {
     $plugins = get_dir_plugins();
     foreach ($plugins as $plugin) {
-        include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
+        $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
+        if (file_exists($config_blocks_file)) {
+            include $config_blocks_file;
+        }
     }
     return $blockConfig;
 }

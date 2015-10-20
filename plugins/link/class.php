@@ -61,11 +61,11 @@ class tad_web_link
             $this->web_cate->set_WebID($WebID);
             $cate = $this->web_cate->get_tad_web_cate_arr();
 
-            $main_data[$i]['cate']     = $cate[$CateID];
-            $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-
-            $LinkDesc                  = nl2br(xoops_substr(strip_tags($LinkDesc), 0, 150));
-            $main_data[$i]['LinkDesc'] = $LinkDesc;
+            $main_data[$i]['cate']         = $cate[$CateID];
+            $main_data[$i]['WebTitle']     = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['LinkShortUrl'] = xoops_substr($LinkUrl, 0, 100, '...');
+            $LinkDesc                      = nl2br(xoops_substr(strip_tags($LinkDesc), 0, 150));
+            $main_data[$i]['LinkDesc']     = $LinkDesc;
             $i++;
         }
 

@@ -8,9 +8,10 @@ echo get_event();
 function get_event()
 {
     global $xoopsDB, $xoopsUser;
-    $andWebID = (empty($_REQUEST['WebID'])) ? "" : "and `WebID`='{$_REQUEST['WebID']}'";
-    $start    = date("Y-m-d", $_REQUEST['start'] / 1000);
-    $andEnd   = "";
+    $andWebID  = (empty($_REQUEST['WebID'])) ? "" : "and `WebID`='{$_REQUEST['WebID']}'";
+    $andCateID = (empty($_REQUEST['CateID'])) ? "" : "and `CateID`='{$_REQUEST['CateID']}'";
+    $start     = date("Y-m-d", $_REQUEST['start'] / 1000);
+    $andEnd    = "";
     if ($_REQUEST['end']) {
         $end    = date("Y-m-d", $_REQUEST['end'] / 1000);
         $andEnd = "and toCal <= '$end'";
@@ -35,6 +36,23 @@ function get_event()
             $i++;
         }
     } else {
+        $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' $andEnd $andWebID $andCateID order by CalendarDate";
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
+
+        while (list($CalendarID, $CalendarName, $CalendarDate, $WebID) = $xoopsDB->fetchRow($result)) {
+
+            $CalendarDate = userTimeToServerTime(strtotime($CalendarDate));
+
+            $myEvents[$i]['id']        = $CalendarID;
+            $myEvents[$i]['title']     = $CalendarName;
+            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/calendar.php?WebID=$WebID&CalendarID={$CalendarID}";
+            $myEvents[$i]['start']     = $CalendarDate;
+            $myEvents[$i]['allDay']    = true;
+            $myEvents[$i]['className'] = "fc-event";
+
+            $i++;
+        }
+
         $sql    = "select NewsID,NewsTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_news") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
         $result = $xoopsDB->queryF($sql) or web_error($sql);
 

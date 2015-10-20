@@ -1,4 +1,5 @@
 <?php
+global $xoopsConfig;
 include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/discuss/langs/{$xoopsConfig['language']}.php";
 $pluginConfig['name']   = _MD_TCW_DISCUSS;
 $pluginConfig['short']  = _MD_TCW_DISCUSS_SHORT;

@@ -28,7 +28,7 @@ function xoops_module_update_tad_web(&$module, $old_version)
     go_update6();
     chk_tad_web_block();
 
-    if (!chk_chk7()) {
+    if (chk_chk7()) {
         go_update7();
     }
 
@@ -368,24 +368,25 @@ function go_update6()
             $from = iconv(_CHARSET, "UTF-8", $from);
             $to   = iconv(_CHARSET, "UTF-8", $to);
         }
-
-        rename($from, $to);
-        if ($typedir == "image") {
-            mk_dir("{$updir}/{$WebID}");
-            mk_dir("{$updir}/{$WebID}/{$typedir}");
-            mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
-
-            $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
-            $to   = "{$updir}/{$WebID}/{$typedir}/.thumbs/{$file_name}";
-
-            if ($os == "win" and _CHARSET == "UTF-8") {
-                $from = iconv(_CHARSET, "Big5", $from);
-                $to   = iconv(_CHARSET, "Big5", $to);
-            } elseif ($os == "linux" and _CHARSET == "Big5") {
-                $from = iconv(_CHARSET, "UTF-8", $from);
-                $to   = iconv(_CHARSET, "UTF-8", $to);
-            }
+        if (file_exists($from)) {
             rename($from, $to);
+            if ($typedir == "image") {
+                mk_dir("{$updir}/{$WebID}");
+                mk_dir("{$updir}/{$WebID}/{$typedir}");
+                mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
+
+                $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
+                $to   = "{$updir}/{$WebID}/{$typedir}/.thumbs/{$file_name}";
+
+                if ($os == "win" and _CHARSET == "UTF-8") {
+                    $from = iconv(_CHARSET, "Big5", $from);
+                    $to   = iconv(_CHARSET, "Big5", $to);
+                } elseif ($os == "linux" and _CHARSET == "Big5") {
+                    $from = iconv(_CHARSET, "UTF-8", $from);
+                    $to   = iconv(_CHARSET, "UTF-8", $to);
+                }
+                rename($from, $to);
+            }
         }
     }
 }
@@ -407,7 +408,7 @@ function go_update7()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_action") . "
-      ADD `ActionKind` varchar(255) NOT NULL default 'action'";
+      DROP `ActionKind`";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
 
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` varchar(255) NOT NULL DEFAULT '' NOT NULL";
