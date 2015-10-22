@@ -31,6 +31,14 @@ define('_MA_TCW_UPDATE_FAIL', 'Update Failed!');
 define('_MA_TCW_SAVE_SORT_OK', 'The sort is complete!');
 define("_MA_TCW_NEED_TAD_WEB_THEME", "<ul><li style='line-height:2;'>This module need <a href='http://120.115.2.90/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme</a>。</li><li style='line-height:2;'>Just need to download it and unzip it to themes folder.</li><li style='line-height:2;'>You can install from <a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>Tad Adm module</a></li></ul>");
 
+define('_MA_TCW_NEED_IMAGECREATETURECOLOR', 'Need imagecreatetruecolor()');
+define('_MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT', "
+Please install imagecreatetruecolor for PHP:<a href='http://120.115.2.90/modules/tad_book3/page.php?tbdsn=216' target='_blank'>http://120.115.2.90/modules/tad_book3/page.php?tbdsn=216</a>");
+define('_MA_TCW_NEED_THEME', 'Missing for_tad_web theme');
+define('_MA_TCW_NEED_THEME_CONTENT', "Download and unzip <a href='http://120.115.2.90/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme</a> to themes folder. You can also install it directly from the <a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>Tad_adm</a>");
+define('_MA_TCW_NEED_TADTOOLS', 'TadTools version must > 2.7.4');
+define('_MA_TCW_NEED_TADTOOLS_CONTENT', "Please update tadtools form <a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>Tad_adm</a>.");
+
 define('_MA_TADWEB_CATEID', 'Category ID');
 define('_MA_TADWEB_WEBID', 'Web ID');
 define('_MA_TADWEB_CATENAME', 'Category Name');

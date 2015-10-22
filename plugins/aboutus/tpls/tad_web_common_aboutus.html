@@ -25,14 +25,15 @@
         </ul>
       </div>
     <{else}>
+      <{$FooTableJS}>
       <h1><{$module_title}></h1>
-      <table class="table" data-sorting="true" data-filtering="true">
+      <table class="table footable">
         <thead>
           <tr>
-            <th><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
+            <th data-class="expand"><{$smarty.const._MD_TCW_ALL_WEB_TITLE}></th>
             <th><{$smarty.const._MD_TCW_ALL_WEB_OWNER}></th>
-            <th data-breakpoints="xs sm"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
-            <th data-breakpoints="xs sm"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
+            <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_NAME}></th>
+            <th data-hide="phone"><{$smarty.const._MD_TCW_ALL_WEB_COUNTER}></th>
           </tr>
         </thead>
         <tbody>

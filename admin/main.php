@@ -6,13 +6,35 @@ include_once "../function.php";
 include_once "../class/cate.php";
 /*-----------function區--------------*/
 
+//環境檢查
+function chk_evn()
+{
+    $error = '';
+    if (!function_exists('imagecreatetruecolor')) {
+        $error[_MA_TCW_NEED_IMAGECREATETURECOLOR] = _MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT;
+    }
+
+    if (!is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme")) {
+        $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
+    }
+
+    $modhandler    = &xoops_gethandler('module');
+    $ttxoopsModule = &$modhandler->getByDirname("tadtools");
+    $version       = $ttxoopsModule->version();
+    if ($version < 274) {
+        $error[_MA_TCW_NEED_TADTOOLS] = _MA_TCW_NEED_TADTOOLS_CONTENT;
+    }
+    return $error;
+}
+
 //取得所有班級
 function list_all_web($defCateID = '')
 {
     global $xoopsDB, $xoopsTpl;
-
-    if (!is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme")) {
-        $xoopsTpl->assign('op', 'need_tad_web_theme');
+    $error = chk_evn();
+    if ($error) {
+        $xoopsTpl->assign('error', $error);
+        $xoopsTpl->assign('op', 'error');
         return;
     }
 

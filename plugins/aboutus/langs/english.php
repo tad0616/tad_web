@@ -60,3 +60,6 @@ define('_MD_TCW_IMPORT_LINK', "
 
 define("_MD_TCW_NO_WEB", "There is no any personal website, wait for the administrator establishment.");
 define("_MD_TCW_NO_WEB_ADMIN", "There are no personal website, ask the administrator as soon as possible to the management page to specify a user can have a personal Web site.");
+
+define("_MD_TCW_ABOUTUS_HOMEWORK", "Homework");
+define("_MD_TCW_ABOUTUS_SCHEDULE", "Schedule Table");

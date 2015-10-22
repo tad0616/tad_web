@@ -79,10 +79,13 @@
       <input type="hidden" name="WebID" value="<{$WebID}>">
       <button type="submit" class="btn btn-danger"><{$smarty.const._MA_TCW_DELETE}></button>
     </form>
-  <{elseif $op=="need_tad_web_theme"}>
-    <div class="alert alert-danger">
-      <{$smarty.const._MA_TCW_NEED_TAD_WEB_THEME}>
-    </div>
+  <{elseif $op=="error"}>
+    <{foreach from=$error key=title item=content}>
+      <h2><{$title}></h2>
+      <div class="alert alert-danger">
+        <{$content}>
+      </div>
+    <{/foreach}>
   <{else}>
 
     <script type="text/javascript">

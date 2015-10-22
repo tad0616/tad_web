@@ -406,10 +406,10 @@ function common_template($WebID)
 
     }
 
-    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable_bootstrap.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/FooTable_bootstrap.php";
+    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php";
         $FooTable   = new FooTable();
-        $FooTableJS = $FooTable->render("#list_all_webs");
+        $FooTableJS = $FooTable->render();
     }
     $xoopsTpl->assign('display_blocks_arr', $display_blocks_arr);
 
