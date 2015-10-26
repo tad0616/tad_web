@@ -71,46 +71,25 @@ function get_tad_web_blocks($WebID)
     $xoopsTpl->assign('blocks_arr', $blocks_arr);
 }
 
-function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3)
+//取得角色陣列
+function get_web_roles($defWebID = '', $defRole = '')
 {
-    $jquery         = get_jquery($ui);
-    $bootstrap_path = $bootstrap_version == 2 ? "bootstrap" : "bootstrap3";
-    $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='screen' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
 
-    $row  = $bootstrap_version == 2 ? "row-fluid" : "row";
-    $span = $bootstrap_version == 2 ? "span" : "col-md-";
+    global $xoopsDB;
 
-    $main = "<!DOCTYPE html>
-      <html lang='zh-TW'>
-        <head>
-          <meta charset='utf-8'>
-          <title></title>
-          <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-          $bootstrap_link
-          {$jquery}
-        </head>
-        <body>
-            <div class='contain'>
-                <div class='{$row}'>
-                    <div class='{$span}12'>
-                        {$content}
-                    </div>
-                </div>
-            </div>
-        </body>
-      </html>
-      ";
-    return $main;
-}
+    $andWebID = empty($defWebID) ? "" : "and `WebID`='$defWebID'";
+    $andRole  = empty($defRole) ? "" : "and `role`='$defRole'";
 
-function web_error($sql)
-{
-    global $isAdmin;
-    if ($isAdmin) {
-        die(html5("<div class='well'>$sql</div><div class='alert alert-danger'>" . mysql_error() . "</div>"));
-    } else {
-        web_error($sql);
+    $sql = "select `uid`,`role` from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
+    //die($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+
+    while (list($uid, $role) = $xoopsDB->fetchRow($result)) {
+        $ConfigValue[$WebID] = $Value;
     }
+
+    return $ConfigValue;
+
 }
 
 //取得所有網站設定值

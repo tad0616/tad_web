@@ -22,20 +22,14 @@ class tad_web_aboutus
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
             foreach ($all as $k => $v) {
-                $$k           = $v;
                 $data[$i][$k] = $v;
             }
-            // $data[$i]['isMyWeb'] = $isMyWeb;
-            // $data[$i]['uname']   = XoopsUser::getUnameFromId($WebOwnerUid, 0);
 
             $i++;
         }
-        //exit;
-        $n = ceil($i / 4);
 
-        $xoopsTpl->assign('data', $data);
         $xoopsTpl->assign('MyWebs', $MyWebs);
-        $xoopsTpl->assign('count', $i);
+        $xoopsTpl->assign('data', $data);
         $xoopsTpl->assign('isMyWeb', $isMyWeb);
 
         $xoopsTpl->assign('tad_web_cate', $this->get_tad_web_cate_all('tad_web'));
@@ -358,7 +352,7 @@ class tad_web_aboutus
         $_POST['MemName']       = $myts->addSlashes($_POST['MemName']);
         $_POST['MemNickName']   = $myts->addSlashes($_POST['MemNickName']);
 
-        $MemSort = max_sort($MyWebs);
+        $MemSort = $this->max_sort($MyWebs);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_mems") . "
   (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`,  `MemUname`, `MemPasswd`)

@@ -163,3 +163,16 @@ define('_MI_TCW_WEB_SCHEDULE_TEMPLATE_DEF', '<table class="table table-bordered 
 define('_MI_TCW_WEB_SCHEDULE_SUBJECTS', '功課表科目設定');
 define('_MI_TCW_WEB_SCHEDULE_SUBJECTS_DESC', '勿動，請由後台「<a href="' . XOOPS_URL . '/modules/tad_web/admin/schedule.php">課表樣板</a>」修改之');
 define('_MI_TCW_WEB_SCHEDULE_SUBJECTS_DEF', '國語;數學;社會;自然;音樂;體育;美勞;團體活動;輔導活動;鄉土教學;道德與健康');
+define('_MI_TADWEB_ABOUTUS_MODE', '總覽網站列表呈現模式');
+define('_MI_TADWEB_ABOUTUS_MODE_DESC', '設定總覽網站列表呈現模式');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY1', '人氣');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY2', '網頁名稱');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY3', '功課表');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY4', '聯絡簿');
+
+define('_MI_TADWEB_CAL_COLS', '首頁行事曆顯示內容');
+define('_MI_TADWEB_CAL_COLS_DESC', '設定首頁行事曆欲顯示的內容');
+define('_MI_TADWEB_CAL_COLS_KEY1', '母站事件');
+define('_MI_TADWEB_CAL_COLS_KEY2', '子站事件');
+define('_MI_TADWEB_CAL_COLS_KEY3', '新聞事件');
+define('_MI_TADWEB_CAL_COLS_KEY4', '聯絡簿');

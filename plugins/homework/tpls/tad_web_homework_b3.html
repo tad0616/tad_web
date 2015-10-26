@@ -88,7 +88,9 @@
     </div>
   <{/if}>
 
-  <{$HomeworkFiles}>
+  <{if $HomeworkFiles}>
+    <{$HomeworkFiles}>
+  <{/if}>
 
   <{if $isMine}>
     <div class="text-right">
@@ -106,5 +108,5 @@
   <{$FooTableJS}>
   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework_b3.html"}>
   <div class="clearfix"></div>
-  <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_calendar_b3.html"}>
+  <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
 <{/if}>

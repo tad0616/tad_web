@@ -74,6 +74,20 @@ class tad_web_homework
             $i++;
         }
 
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php")) {
+            redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50", 3, _TAD_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
+        $fullcalendar = new fullcalendar();
+        if ($this->WebID) {
+            $fullcalendar->add_json_parameter('WebID', $this->WebID);
+        }
+        if (strrpos($_SERVER['PHP_SELF'], 'homework.php') !== false) {
+            $fullcalendar->add_json_parameter('CalKind', 'homework');
+        }
+        $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
+
+        $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
         $xoopsTpl->assign('CalKind', 'homework');
         $xoopsTpl->assign('homework_data', $main_data);
         $xoopsTpl->assign('homework_bar', $show_bar);

@@ -110,74 +110,33 @@ function tad_web_config($WebID)
     }
     $display_blocks = implode(',', $ok_blocks);
 
-    // foreach ($block_option as $func => $name) {
-    //     if (!empty($display_blocks)) {
-    //         if (!in_array($func, $display_blocks_arr)) {
-    //             $block_yet .= "<option value=\"$func\">{$name}</option>";
-    //         }
-    //         $block_name[$func] = $name;
-    //     } else {
-    //         $block_ok .= "<option value=\"$func\">{$name}</option>";
-    //         $blocks[] = $func;
-    //     }
-    // }
+    $xoopsTpl->assign('block_ok', $block_ok);
+    $xoopsTpl->assign('block_yet', $block_yet);
+    $xoopsTpl->assign('display_blocks', $display_blocks);
 
-    // if (empty($display_blocks_arr)) {
-    //     $display_blocks = implode(',', $blocks);
-    // } else {
-    //     foreach ($display_blocks_arr as $bid) {
-    //         $block_ok .= "<option value=\"$bid\">{$block_name[$bid]}</option>";
-    //     }
-    // }
+    //管理員設定
+    $web_admin_arr = get_web_roles($WebID, 'admin');
+    $sql           = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
+    $result        = $xoopsDB->query($sql) or web_error($sql);
 
-    $block_content = "
-        <script type=\"text/javascript\" src=\"" . XOOPS_URL . "/modules/tad_web/class/tmt_core.js\"></script>
-        <script type=\"text/javascript\" src=\"" . XOOPS_URL . "/modules/tad_web/class/tmt_spry_linkedselect.js\"></script>
-        <script type=\"text/javascript\">
-        function getOptions()
-        {
-
-        var values = [];
-        var sel = document.getElementById('destination');
-        for (var i=0, n=sel.options.length;i<n;i++) {
-          if (sel.options[i].value) values.push(sel.options[i].value);
+    $myts = MyTextSanitizer::getInstance();
+    $opt  = "";
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
         }
-          document.getElementById('display_blocks').value=values.join(',');
-          }
-        </script>
-
-        <table style='width:auto'>
-
-            <tr>
-                <td style='vertical-align:top;'>
-                    <h3>" . _MD_TCW_BLOCKS_LIST . "</h3>
-                    <select name=\"repository\" id=\"repository\" size=\"12\" multiple=\"multiple\" tmt:linkedselect=\"true\" style='width: 300px;'>
-                    $block_yet
-                    </select>
-                </td>
-                <td style='vertical-align:middle'>
-                    <img src=\"" . XOOPS_URL . "/modules/tad_web/images/right.png\" onclick=\"tmt.spry.linkedselect.util.moveOptions('repository', 'destination');getOptions();\"><br>
-                    <img src=\"" . XOOPS_URL . "/modules/tad_web/images/left.png\" onclick=\"tmt.spry.linkedselect.util.moveOptions('destination' , 'repository');getOptions();\"><br><br>
-
-                    <img src=\"" . XOOPS_URL . "/modules/tad_web/images/up.png\" onclick=\"tmt.spry.linkedselect.util.moveOptionUp('destination');getOptions();\"><br>
-                    <img src=\"" . XOOPS_URL . "/modules/tad_web/images/down.png\" onclick=\"tmt.spry.linkedselect.util.moveOptionDown('destination');getOptions();\">
-                </td>
-                <td style='vertical-align:top;'>
-                    <h3>" . _MD_TCW_BLOCKS_SELECTED . "</h3>
-                    <select id=\"destination\" size=\"12\" multiple=\"multiple\" tmt:linkedselect=\"true\" style='width: 300px;'>
-                    $block_ok
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan=4>
-                    <input type='hidden' name='display_blocks' id='display_blocks' value='$display_blocks'>
-                </td>
-            </tr>
-        </table>
-    ";
-    $xoopsTpl->assign('block_content', $block_content);
-
+        $name  = $myts->htmlSpecialChars($name);
+        $uname = $myts->htmlSpecialChars($uname);
+        $name  = empty($name) ? "" : " ({$name})";
+        if (in_array($uid, $web_admin_arr)) {
+            $user_ok .= "<option value=\"$uid\">{$uname} {$name}</option>";
+        } else {
+            $user_yet .= "<option value=\"$uid\">{$uname} {$name}</option>";
+        }
+    }
+    $xoopsTpl->assign('user_ok', $user_ok);
+    $xoopsTpl->assign('user_yet', $user_yet);
+    $xoopsTpl->assign('web_admins', $web_admins);
 }
 
 //更新網頁資訊

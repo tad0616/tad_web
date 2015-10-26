@@ -65,3 +65,12 @@ CREATE TABLE `tad_web_plugins` (
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
 PRIMARY KEY (`PluginDirname`,`WebID`)
 ) ENGINE=MyISAM;
+
+CREATE TABLE `tad_web_roles` (
+  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '使用者',
+  `role` varchar(255) NOT NULL COMMENT '角色',
+  `term` date  NOT NULL default '0000-00-00' COMMENT '期限',
+  `enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
+  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+PRIMARY KEY (`WebID`,`uid`,`role`)
+) ENGINE=MyISAM;

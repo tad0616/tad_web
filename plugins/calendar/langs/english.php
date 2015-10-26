@@ -11,3 +11,4 @@ define("_MD_TCW_CALENDARDESC", "Event Content");
 define("_MD_TCW_CALENDARDATE", "Event Date");
 define("_MD_TCW_CALENDARUID", "Publisher");
 define("_MD_TCW_CALENDARCOUNT", "Count");
+define("_MD_TCW_CALENDAR_TYPE_GLOBAL", "This event is to be display to other subsites calendar (global event)");

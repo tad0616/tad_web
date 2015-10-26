@@ -34,12 +34,13 @@ function save_plugins()
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='0'";
     $xoopsDB->queryF($sql) or web_error($sql);
+
     $display_plugins = '';
     foreach ($plugins as $plugin) {
         $dirname     = $plugin['dirname'];
         $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
 
-        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '1', '0')";
+        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], $WebID);

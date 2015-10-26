@@ -18,60 +18,21 @@ class tad_web_calendar
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
-        //取得tad_web_cate所有資料陣列
-        $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
-
-        $andCateID = "";
-        if (!empty($CateID)) {
-            //取得單一分類資料
-            $cate      = $this->web_cate->get_tad_web_cate($CateID);
-            $andCateID = "and a.`CateID`='$CateID'";
-            $xoopsTpl->assign('cate', $cate);
-            $xoopsTpl->assign('CateID', $CateID);
-        }
-
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_calendar") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.CalendarDate desc";
-
-        $to_limit = empty($limit) ? 20 : $limit;
-
-        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar  = getPageBar($sql, $to_limit, 10);
-        $bar      = $PageBar['bar'];
-        $sql      = $PageBar['sql'];
-        $total    = $PageBar['total'];
-        $show_bar = empty($limit) ? $bar : "";
-
-        $result = $xoopsDB->query($sql) or web_error($sql);
-
-        $main_data = "";
-
-        $i = 0;
-
-        $Webs = getAllWebInfo();
-
-        while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $CalendarID , $CalendarName , $CalendarDesc , $CalendarDate , $uid , $WebID , $CalendarCount
-            foreach ($all as $k => $v) {
-                $$k = $v;
-            }
-
-            $main_data[$i] = $all;
-
-            $this->web_cate->set_WebID($WebID);
-            $cate = $this->web_cate->get_tad_web_cate_arr();
-
-            $main_data[$i]['cate']     = $cate[$CateID];
-            $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-
-            $i++;
-        }
-
-        $xoopsTpl->assign('calendar_data', $main_data);
-        $xoopsTpl->assign('calendar_bar', $show_bar);
         $xoopsTpl->assign('isMineCalendar', $isMyWeb);
         $xoopsTpl->assign('showWebTitleCalendar', $showWebTitle);
         $xoopsTpl->assign('calendar', get_db_plugin($this->WebID, 'calendar'));
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php")) {
+            redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50", 3, _TAD_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
+        $fullcalendar = new fullcalendar();
+        //$fullcalendar->add_js_parameter('dayClick', "function(date, jsEvent, view) {alert('新增事件')}", false);
+        if ($this->WebID) {
+            $fullcalendar->add_json_parameter('WebID', $this->WebID);
+        }
+        $fullcalendar_code = $fullcalendar->render('#calendar', 'get_event.php');
+        $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
         return $total;
 
     }
@@ -91,7 +52,7 @@ class tad_web_calendar
         $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $CalendarID , $CalendarName , $CalendarDesc , $CalendarDate , $uid , $WebID , $CalendarCount
+        //以下會產生這些變數： $CalendarID , $CalendarName , $CalendarType , $CalendarDesc , $CalendarDate , $uid , $WebID , $CalendarCount
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -107,6 +68,7 @@ class tad_web_calendar
 
         $xoopsTpl->assign('isMineCalendar', $isMyWeb);
         $xoopsTpl->assign('CalendarName', $CalendarName);
+        $xoopsTpl->assign('CalendarType', $CalendarType);
         $xoopsTpl->assign('CalendarDate', $CalendarDate);
         $xoopsTpl->assign('CalendarDesc', nl2br($CalendarDesc));
         $xoopsTpl->assign('uid_name', $uid_name);
@@ -115,8 +77,8 @@ class tad_web_calendar
         $xoopsTpl->assign('CalendarInfo', sprintf(_MD_TCW_INFO, $uid_name, $CalendarDate, $CalendarCount));
 
         //取得單一分類資料
-        $cate = $this->web_cate->get_tad_web_cate($CateID);
-        $xoopsTpl->assign('cate', $cate);
+        // $cate = $this->web_cate->get_tad_web_cate($CateID);
+        // $xoopsTpl->assign('cate', $cate);
     }
 
     //tad_web_calendar編輯表單
@@ -147,6 +109,10 @@ class tad_web_calendar
         $CalendarName = (!isset($DBV['CalendarName'])) ? "" : $DBV['CalendarName'];
         $xoopsTpl->assign('CalendarName', $CalendarName);
 
+        //設定「CalendarType」欄位預設值
+        $CalendarType = (!isset($DBV['CalendarType'])) ? "" : $DBV['CalendarType'];
+        $xoopsTpl->assign('CalendarType', $CalendarType);
+
         //設定「CalendarDesc」欄位預設值
         $CalendarDesc = (!isset($DBV['CalendarDesc'])) ? "" : $DBV['CalendarDesc'];
         $xoopsTpl->assign('CalendarDesc', $CalendarDesc);
@@ -169,9 +135,9 @@ class tad_web_calendar
         $xoopsTpl->assign('CalendarCount', $CalendarCount);
 
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
-        $cate_menu = $this->web_cate->cate_menu($CateID);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        // $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        // $cate_menu = $this->web_cate->cate_menu($CateID);
+        // $xoopsTpl->assign('cate_menu', $cate_menu);
 
         $op = (empty($CalendarID)) ? "insert" : "update";
 
@@ -196,15 +162,16 @@ class tad_web_calendar
 
         $myts                   = &MyTextSanitizer::getInstance();
         $_POST['CalendarName']  = $myts->addSlashes($_POST['CalendarName']);
+        $_POST['CalendarType']  = $myts->addSlashes($_POST['CalendarType']);
         $_POST['CalendarDesc']  = $myts->addSlashes($_POST['CalendarDesc']);
         $_POST['CalendarCount'] = intval($_POST['CalendarCount']);
-        $_POST['CateID']        = intval($_POST['CateID']);
-        $_POST['WebID']         = intval($_POST['WebID']);
+        //$_POST['CateID']        = intval($_POST['CateID']);
+        $_POST['WebID'] = intval($_POST['WebID']);
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_calendar") . "
-        (`CateID`,`CalendarName` , `CalendarDesc` , `CalendarDate` , `uid` , `WebID` , `CalendarCount`)
-        values('{$CateID}' ,'{$_POST['CalendarName']}' , '{$_POST['CalendarDesc']}' , '{$_POST['CalendarDate']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['CalendarCount']}')";
+        (`CateID`,`CalendarName`,`CalendarType` , `CalendarDesc` , `CalendarDate` , `uid` , `WebID` , `CalendarCount`)
+        values('0' ,'{$_POST['CalendarName']}' ,'{$_POST['CalendarType']}' , '{$_POST['CalendarDesc']}' , '{$_POST['CalendarDate']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['CalendarCount']}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -220,17 +187,18 @@ class tad_web_calendar
 
         $myts                  = &MyTextSanitizer::getInstance();
         $_POST['CalendarName'] = $myts->addSlashes($_POST['CalendarName']);
+        $_POST['CalendarType'] = $myts->addSlashes($_POST['CalendarType']);
         $_POST['CalendarDesc'] = $myts->addSlashes($_POST['CalendarDesc']);
-        $_POST['CateID']       = intval($_POST['CateID']);
-        $_POST['WebID']        = intval($_POST['WebID']);
+        //$_POST['CateID']       = intval($_POST['CateID']);
+        $_POST['WebID'] = intval($_POST['WebID']);
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
         $anduid = onlyMine();
 
         $sql = "update " . $xoopsDB->prefix("tad_web_calendar") . " set
-         `CateID` = '{$CateID}' ,
          `CalendarName` = '{$_POST['CalendarName']}' ,
+         `CalendarType` = '{$_POST['CalendarType']}' ,
          `CalendarDesc` = '{$_POST['CalendarDesc']}' ,
          `CalendarDate` = '{$_POST['CalendarDate']}'
         where CalendarID='$CalendarID' $anduid";

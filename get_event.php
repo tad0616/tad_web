@@ -1,145 +1,171 @@
 <?php
 include_once "header.php";
 
-/* 連資料庫檢查 */
-echo get_event();
+$WebID = intval($_REQUEST['WebID']);
+$start = empty($_REQUEST['start']) ? date("Y-m-01") : date("Y-m-d", $_REQUEST['start'] / 1000);
+$end   = empty($_REQUEST['end']) ? date("Y-m-t") : date("Y-m-d", $_REQUEST['end'] / 1000);
 
-//取得事件
-function get_event()
-{
-    global $xoopsDB, $xoopsUser;
-    $andWebID  = (empty($_REQUEST['WebID'])) ? "" : "and `WebID`='{$_REQUEST['WebID']}'";
-    $andCateID = (empty($_REQUEST['CateID'])) ? "" : "and `CateID`='{$_REQUEST['CateID']}'";
-    $start     = date("Y-m-d", $_REQUEST['start'] / 1000);
-    $andEnd    = "";
-    if ($_REQUEST['end']) {
-        $end    = date("Y-m-d", $_REQUEST['end'] / 1000);
-        $andEnd = "and toCal <= '$end'";
-    }
+if (!isset($xoopsModuleConfig)) {
 
-    $i = 0;
-    if ($_REQUEST['CalKind'] == "homework") {
-        $sql    = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-        while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
-
-            $toCal = userTimeToServerTime(strtotime($toCal));
-
-            $myEvents[$i]['id']        = $ID;
-            $myEvents[$i]['title']     = $Title;
-            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/homework.php?WebID=$WebID&HomeworkID={$ID}";
-            $myEvents[$i]['start']     = $toCal;
-            $myEvents[$i]['allDay']    = true;
-            $myEvents[$i]['className'] = "fc-event";
-
-            $i++;
-        }
-    } else {
-        $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' $andEnd $andWebID $andCateID order by CalendarDate";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-        while (list($CalendarID, $CalendarName, $CalendarDate, $WebID) = $xoopsDB->fetchRow($result)) {
-
-            $CalendarDate = userTimeToServerTime(strtotime($CalendarDate));
-
-            $myEvents[$i]['id']        = $CalendarID;
-            $myEvents[$i]['title']     = $CalendarName;
-            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/calendar.php?WebID=$WebID&CalendarID={$CalendarID}";
-            $myEvents[$i]['start']     = $CalendarDate;
-            $myEvents[$i]['allDay']    = true;
-            $myEvents[$i]['className'] = "fc-event";
-
-            $i++;
-        }
-
-        $sql    = "select NewsID,NewsTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_news") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-        while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
-
-            $toCal = userTimeToServerTime(strtotime($toCal));
-
-            $myEvents[$i]['id']        = $ID;
-            $myEvents[$i]['title']     = $Title;
-            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/news.php?WebID=$WebID&NewsID={$ID}";
-            $myEvents[$i]['start']     = $toCal;
-            $myEvents[$i]['allDay']    = true;
-            $myEvents[$i]['className'] = "fc-event";
-
-            $i++;
-        }
-
-        $sql    = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' $andEnd $andWebID order by toCal";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-        while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
-
-            $toCal = userTimeToServerTime(strtotime($toCal));
-
-            $myEvents[$i]['id']        = $ID;
-            $myEvents[$i]['title']     = $Title;
-            $myEvents[$i]['rel']       = XOOPS_URL . "/modules/tad_web/homework.php?WebID=$WebID&HomeworkID={$ID}";
-            $myEvents[$i]['start']     = $toCal;
-            $myEvents[$i]['allDay']    = true;
-            $myEvents[$i]['className'] = "fc-event";
-
-            $i++;
-        }
-    }
-
-    return json_encode($myEvents);
+    $modhandler        = &xoops_gethandler('module');
+    $xoopsModule       = &$modhandler->getByDirname("tad_web");
+    $config_handler    = &xoops_gethandler('config');
+    $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 }
 
-if (!function_exists('json_encode')) {
-    function json_encode($a = false)
-    {
-        if (is_null($a)) {
-            return 'null';
-        }
+$cal_cols = $xoopsModuleConfig['cal_cols'];
 
-        if ($a === false) {
-            return 'false';
-        }
+// $myEvents[0]['title'] = 'cal_cols=' . implode(',', $cal_cols);
+// $myEvents[0]['start'] = date("Y-m-d");
+// die(json_encode($myEvents));
 
-        if ($a === true) {
-            return 'true';
-        }
+if ($_REQUEST['CalKind'] == "homework") {
+    //抓取聯絡簿
+    $myEvents = get_homework_event($start, $end, $WebID);
 
-        if (is_scalar($a)) {
-            if (is_float($a)) {
-                // Always use "." for floats.
-                return floatval(str_replace(",", ".", strval($a)));
-            }
+} else {
 
-            if (is_string($a)) {
-                static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
-                return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $a) . '"';
-            } else {
-                return $a;
-            }
-
-        }
-        $isList = true;
-        for ($i = 0, reset($a); $i < count($a); $i++, next($a)) {
-            if (key($a) !== $i) {
-                $isList = false;
-                break;
-            }
-        }
-        $result = array();
-        if ($isList) {
-            foreach ($a as $v) {
-                $result[] = json_encode($v);
-            }
-
-            return '[' . join(',', $result) . ']';
-        } else {
-            foreach ($a as $k => $v) {
-                $result[] = json_encode($k) . ':' . json_encode($v);
-            }
-
-            return '{' . join(',', $result) . '}';
+    $i = 0;
+    //抓取母站行事曆
+    if (in_array('all', $cal_cols)) {
+        $allEvents = get_all_event($start, $end, $WebID);
+        foreach ($allEvents as $evens) {
+            $myEvents[$i] = $evens;
+            $i++;
         }
     }
+
+    //抓取子站行事曆
+    if (in_array('web', $cal_cols)) {
+        $calEvents = get_web_event($start, $end, $WebID);
+        foreach ($calEvents as $evens) {
+            $myEvents[$i] = $evens;
+            $i++;
+        }
+    }
+
+    //抓取新聞
+    if (in_array('news', $cal_cols)) {
+        $newsEvents = get_news_event($start, $end, $WebID);
+        foreach ($newsEvents as $evens) {
+            $myEvents[$i] = $evens;
+            $i++;
+        }
+    }
+
+    //抓取聯絡簿
+    if (in_array('homework', $cal_cols)) {
+        $homeworkEvents = get_homework_event($start, $end, $WebID);
+        foreach ($homeworkEvents as $evens) {
+            $myEvents[$i] = $evens;
+            $i++;
+        }
+    }
+
+}
+//die(var_export($myEvents));
+echo json_encode($myEvents);
+
+//抓取聯絡簿
+function get_homework_event($start, $end, $WebID)
+{
+    global $xoopsDB;
+
+    $andWebID = empty($WebID) ? "" : "and `WebID`='{$WebID}'";
+
+    $sql    = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' and toCal <= '$end' $andWebID order by toCal";
+    $result = $xoopsDB->queryF($sql) or die($sql);
+    $i      = 0;
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
+
+        $toCal = userTimeToServerTime(strtotime($toCal));
+
+        $myEvents[$i]['id']        = $ID;
+        $myEvents[$i]['title']     = $Title;
+        $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/homework.php?WebID=$WebID&HomeworkID={$ID}";
+        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['allDay']    = true;
+        $myEvents[$i]['className'] = "fc-event";
+        $myEvents[$i]['color']     = '#D37545';
+        $i++;
+    }
+    return $myEvents;
+}
+
+//抓取新聞
+function get_news_event($start, $end, $WebID)
+{
+    global $xoopsDB;
+
+    $andWebID = empty($WebID) ? "" : "and `WebID`='{$WebID}'";
+
+    $sql    = "select NewsID,NewsTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_news") . " where toCal >= '$start' and toCal <= '$end' $andWebID order by toCal";
+    $result = $xoopsDB->queryF($sql) or die($sql);
+    $i      = 0;
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
+
+        $toCal = userTimeToServerTime(strtotime($toCal));
+
+        $myEvents[$i]['id']        = $ID;
+        $myEvents[$i]['title']     = $Title;
+        $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/news.php?WebID=$WebID&NewsID={$ID}";
+        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['allDay']    = true;
+        $myEvents[$i]['className'] = "fc-event";
+        $myEvents[$i]['color']     = '#639674';
+        $i++;
+    }
+    return $myEvents;
+}
+
+//抓取行事曆事件
+function get_all_event($start, $end, $WebID)
+{
+    global $xoopsDB;
+
+    //$andWebID = empty($WebID) ? "" : "and `WebID`='{$WebID}'";
+
+    $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' and CalendarDate <= '$end' and CalendarType='all' order by CalendarDate";
+    $result = $xoopsDB->queryF($sql) or die($sql);
+    $i      = 0;
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
+
+        $toCal = userTimeToServerTime(strtotime($toCal));
+
+        $myEvents[$i]['id']        = $ID;
+        $myEvents[$i]['title']     = $Title;
+        $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/calendar.php?WebID=$WebID&CalendarID={$ID}";
+        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['allDay']    = true;
+        $myEvents[$i]['className'] = "fc-event";
+        $myEvents[$i]['color']     = '#AA1D1D';
+        $i++;
+    }
+    return $myEvents;
+}
+
+//抓取子站行事曆事件
+function get_web_event($start, $end, $WebID)
+{
+    global $xoopsDB;
+
+    $andWebID = empty($WebID) ? "" : "and `WebID`='{$WebID}'";
+
+    $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' and CalendarDate <= '$end' $andWebID  and CalendarType!='all' order by CalendarDate";
+    $result = $xoopsDB->queryF($sql) or die($sql);
+    $i      = 0;
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
+
+        $toCal = userTimeToServerTime(strtotime($toCal));
+
+        $myEvents[$i]['id']        = $ID;
+        $myEvents[$i]['title']     = $Title;
+        $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/calendar.php?WebID=$WebID&CalendarID={$ID}";
+        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['allDay']    = true;
+        $myEvents[$i]['className'] = "fc-event";
+        $myEvents[$i]['color']     = '#1990EA';
+        $i++;
+    }
+    return $myEvents;
 }

@@ -63,3 +63,5 @@ define("_MD_TCW_NO_WEB_ADMIN", "目前沒有任何的個人網站，請管理員
 
 define("_MD_TCW_ABOUTUS_HOMEWORK", "聯絡簿");
 define("_MD_TCW_ABOUTUS_SCHEDULE", "功課表");
+define("_MD_TCW_ABOUTUS_NO_HOMEWORK", "尚未設定聯絡簿");
+define("_MD_TCW_ABOUTUS_NO_SCHEDULE", "尚未設定功課表");

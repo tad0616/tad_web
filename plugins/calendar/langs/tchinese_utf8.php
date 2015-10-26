@@ -11,3 +11,4 @@ define("_MD_TCW_CALENDARDESC", "事件說明");
 define("_MD_TCW_CALENDARDATE", "事件日期");
 define("_MD_TCW_CALENDARUID", "發布者");
 define("_MD_TCW_CALENDARCOUNT", "人氣");
+define("_MD_TCW_CALENDAR_TYPE_GLOBAL", "此事件為全域事件，會顯示到所有子網站的行事曆中");

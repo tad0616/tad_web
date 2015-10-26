@@ -44,6 +44,10 @@ function xoops_module_update_tad_web(&$module, $old_version)
         go_update10();
     }
 
+    if (chk_chk11()) {
+        go_update11();
+    }
+
     chk_sql();
     go_update_var();
     add_log('update');
@@ -519,6 +523,32 @@ function go_update10()
     $xoopsDB->queryF($sql);
 }
 
+//新增角色表格
+function chk_chk11()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_roles");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update11()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_roles") . "` (
+      `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '使用者',
+      `role` varchar(255) NOT NULL COMMENT '角色',
+      `term` date  NOT NULL default '0000-00-00' COMMENT '期限',
+      `enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
+      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+    PRIMARY KEY (`WebID`,`uid`,`role`)
+    ) ENGINE=MyISAM;";
+    $xoopsDB->queryF($sql);
+}
 //建立目錄
 function mk_dir($dir = "")
 {

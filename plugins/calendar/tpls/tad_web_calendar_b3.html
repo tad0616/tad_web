@@ -9,9 +9,6 @@
   <div class="well">
     <form action="calendar.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
-      <!--分類-->
-      <{$cate_menu}>
-
       <!--活動日期-->
       <div class="form-group">
         <label class="col-md-2 control-label">
@@ -34,14 +31,22 @@
         </div>
       </div>
 
+      <!--全校活動-->
       <div class="form-group">
-        <div class="col-md-12 text-center">
+        <div class="col-md-10">
+          <label class="checkbox-inline">
+            <input type="checkbox" name="CalendarType" id="CalendarType" value="all"><{$smarty.const._MD_TCW_CALENDAR_TYPE_GLOBAL}>
+          </label>
+        </div>
+
+        <div class="col-md-2">
           <input type="hidden" name="CalendarID" value="<{$CalendarID}>">
           <input type="hidden" name="WebID" value="<{$WebID}>">
           <input type="hidden" name="op" value="<{$next_op}>">
           <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
       </div>
+
     </form>
   </div>
 <{elseif $op=="show_one"}>
@@ -65,10 +70,8 @@
   </ol>
 
   <{if $CalendarDesc}>
-    <div class="alert alert-info"><{$CalendarDesc}></div>
+    <div class="alert" style="background-color: #F5F9DB;"><{$CalendarDesc}></div>
   <{/if}>
-
-  <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
 
   <{if $isMineCalendar}>
     <div class="text-right">
@@ -79,7 +82,6 @@
 <{else}>
   <h1><{$calendar.PluginTitle}></h1>
   <{$cate_menu}>
-  <{$FooTableJS}>
   <div class="row">
     <div class="col-md-12">
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>

@@ -60,7 +60,8 @@ function list_all_class()
     }
 
     $xoopsTpl->assign('show_arr', $show_arr);
-    $xoopsTpl->assign('display_mode', 'index');
+    $display_mode = 'index';
+    $xoopsTpl->assign('display_mode', $display_mode);
     $data_count = "";
 
     foreach ($show_arr as $dirname) {

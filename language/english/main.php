@@ -86,6 +86,9 @@ define("_MD_TCW_CATE_PLUGIN_TITLE", "Title");
 define("_MD_TCW_CATE_PLUGIN_NEW_NAME", "New Title");
 define("_MD_TCW_CATE_PLUGIN_IN_FRONTPAGE", "Display in frontpage? / Display number?");
 define("_MD_TCW_ADD", "Add");
+define("_MD_TCW_ADMIN_SETUP", "Co-administrator settings");
+define("_MD_TCW_USER_LIST", "Users list");
+define("_MD_TCW_USER_SELECTED", "Co-administrator");
 
 $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
 if (is_dir($dir)) {

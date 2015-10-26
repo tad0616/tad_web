@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
-$modversion['version']     = 1.51;
+$modversion['version']     = 1.6;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author']      = _MI_TCW_AUTHOR;
 $modversion['credits']     = _MI_TCW_CREDITS;
@@ -40,6 +40,7 @@ $modversion['tables'][]         = "tad_web_cate";
 $modversion['tables'][]         = "tad_web_files_center";
 $modversion['tables'][]         = "tad_web_config";
 $modversion['tables'][]         = "tad_web_plugins";
+$modversion['tables'][]         = "tad_web_roles";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;
@@ -166,23 +167,44 @@ $modversion['blocks'][$i]['template'] = "tad_web_block_discuss.html";
  */
 
 //---偏好設定---//
-$modversion['config'][0]['name']        = 'module_title';
-$modversion['config'][0]['title']       = '_MI_TCW_WEB_MODE_TITLE';
-$modversion['config'][0]['description'] = '_MI_TCW_WEB_MODE_DESC';
-$modversion['config'][0]['formtype']    = 'textbox';
-$modversion['config'][0]['valuetype']   = 'text';
-$modversion['config'][0]['default']     = _MI_TCW_WEB_MODE_DEF;
+$i                                       = 0;
+$modversion['config'][$i]['name']        = 'module_title';
+$modversion['config'][$i]['title']       = '_MI_TCW_WEB_MODE_TITLE';
+$modversion['config'][$i]['description'] = '_MI_TCW_WEB_MODE_DESC';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default']     = _MI_TCW_WEB_MODE_DEF;
 
-$modversion['config'][1]['name']        = 'schedule_template';
-$modversion['config'][1]['title']       = '_MI_TCW_WEB_SCHEDULE_TEMPLATE';
-$modversion['config'][1]['description'] = '_MI_TCW_WEB_SCHEDULE_TEMPLATE_DESC';
-$modversion['config'][1]['formtype']    = 'textarea';
-$modversion['config'][1]['valuetype']   = 'text';
-$modversion['config'][1]['default']     = _MI_TCW_WEB_SCHEDULE_TEMPLATE_DEF;
+$i++;
+$modversion['config'][$i]['name']        = 'schedule_template';
+$modversion['config'][$i]['title']       = '_MI_TCW_WEB_SCHEDULE_TEMPLATE';
+$modversion['config'][$i]['description'] = '_MI_TCW_WEB_SCHEDULE_TEMPLATE_DESC';
+$modversion['config'][$i]['formtype']    = 'textarea';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default']     = _MI_TCW_WEB_SCHEDULE_TEMPLATE_DEF;
 
-$modversion['config'][2]['name']        = 'schedule_subjects';
-$modversion['config'][2]['title']       = '_MI_TCW_WEB_SCHEDULE_SUBJECTS';
-$modversion['config'][2]['description'] = '_MI_TCW_WEB_SCHEDULE_SUBJECTS_DESC';
-$modversion['config'][2]['formtype']    = 'textbox';
-$modversion['config'][2]['valuetype']   = 'text';
-$modversion['config'][2]['default']     = _MI_TCW_WEB_SCHEDULE_SUBJECTS_DEF;
+$i++;
+$modversion['config'][$i]['name']        = 'schedule_subjects';
+$modversion['config'][$i]['title']       = '_MI_TCW_WEB_SCHEDULE_SUBJECTS';
+$modversion['config'][$i]['description'] = '_MI_TCW_WEB_SCHEDULE_SUBJECTS_DESC';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default']     = _MI_TCW_WEB_SCHEDULE_SUBJECTS_DEF;
+
+$i++;
+$modversion['config'][$i]['name']        = 'aboutus_cols';
+$modversion['config'][$i]['title']       = '_MI_TADWEB_ABOUTUS_MODE';
+$modversion['config'][$i]['description'] = '_MI_TADWEB_ABOUTUS_MODE_DESC';
+$modversion['config'][$i]['formtype']    = 'select_multi';
+$modversion['config'][$i]['valuetype']   = 'array';
+$modversion['config'][$i]['default']     = array('counter', 'web', 'schedule', 'homework');
+$modversion['config'][$i]['options']     = array(_MI_TADWEB_ABOUTUS_MODE_KEY1 => 'counter', _MI_TADWEB_ABOUTUS_MODE_KEY2 => 'web', _MI_TADWEB_ABOUTUS_MODE_KEY3 => 'schedule', _MI_TADWEB_ABOUTUS_MODE_KEY4 => 'homework');
+
+$i++;
+$modversion['config'][$i]['name']        = 'cal_cols';
+$modversion['config'][$i]['title']       = '_MI_TADWEB_CAL_COLS';
+$modversion['config'][$i]['description'] = '_MI_TADWEB_CAL_COLS_DESC';
+$modversion['config'][$i]['formtype']    = 'select_multi';
+$modversion['config'][$i]['valuetype']   = 'array';
+$modversion['config'][$i]['default']     = array('all', 'web', 'news', 'homework');
+$modversion['config'][$i]['options']     = array(_MI_TADWEB_CAL_COLS_KEY1 => 'all', _MI_TADWEB_CAL_COLS_KEY2 => 'web', _MI_TADWEB_CAL_COLS_KEY3 => 'news', _MI_TADWEB_CAL_COLS_KEY4 => 'homework');

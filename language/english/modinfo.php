@@ -163,3 +163,16 @@ define('_MI_TCW_WEB_SCHEDULE_TEMPLATE_DEF', '<table class="table table-bordered 
 define('_MI_TCW_WEB_SCHEDULE_SUBJECTS', 'Schedule subjects');
 define('_MI_TCW_WEB_SCHEDULE_SUBJECTS_DESC', 'Don\'t edit it! Please edit it from "<a href="' . XOOPS_URL . '/modules/tad_web/admin/schedule.php</a>">Schedule template"');
 define('_MI_TCW_WEB_SCHEDULE_SUBJECTS_DEF', 'Writing;Reading;Math;Science;Art;Music');
+define('_MI_TADWEB_ABOUTUS_MODE', 'List all web mode');
+define('_MI_TADWEB_ABOUTUS_MODE_DESC', 'Please select fields to appear in the site list.');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY1', 'Counter');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY2', 'Web Title');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY3', 'Schedule');
+define('_MI_TADWEB_ABOUTUS_MODE_KEY4', 'Homework');
+
+define('_MI_TADWEB_CAL_COLS', 'Calendar display');
+define('_MI_TADWEB_CAL_COLS_DESC', 'Setting events to be displayed on the home page calendar.');
+define('_MI_TADWEB_CAL_COLS_KEY1', 'Web Events');
+define('_MI_TADWEB_CAL_COLS_KEY2', 'Sub-web Events');
+define('_MI_TADWEB_CAL_COLS_KEY3', 'News Events');
+define('_MI_TADWEB_CAL_COLS_KEY4', 'Homework');
