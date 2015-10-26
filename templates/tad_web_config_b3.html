@@ -467,16 +467,16 @@
           <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
           <div class="row">
             <div class="col-md-5">
-              <select name="repository" id="repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
+              <select name="block_repository" id="block_repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
               <{$block_yet}>
               </select>
             </div>
             <div class="col-md-2 text-center">
-              <img src="<{$xoops_url}>/modules/tad_web/images/right.png" onclick="tmt.spry.linkedselect.util.moveOptions('repository', 'destination');getOptions('destination','display_blocks');"><br>
-              <img src="<{$xoops_url}>/modules/tad_web/images/left.png" onclick="tmt.spry.linkedselect.util.moveOptions('destination' , 'repository');getOptions('destination','display_blocks');"><br><br>
+              <img src="<{$xoops_url}>/modules/tad_web/images/right.png" onclick="tmt.spry.linkedselect.util.moveOptions('block_repository', 'block_destination');getOptions('block_destination','display_blocks');"><br>
+              <img src="<{$xoops_url}>/modules/tad_web/images/left.png" onclick="tmt.spry.linkedselect.util.moveOptions('block_destination' , 'block_repository');getOptions('block_destination','display_blocks');"><br><br>
 
-              <img src="<{$xoops_url}>/modules/tad_web/images/up.png" onclick="tmt.spry.linkedselect.util.moveOptionUp('destination');getOptions('destination','display_blocks');"><br>
-              <img src="<{$xoops_url}>/modules/tad_web/images/down.png" onclick="tmt.spry.linkedselect.util.moveOptionDown('destination');getOptions('destination','display_blocks');">
+              <img src="<{$xoops_url}>/modules/tad_web/images/up.png" onclick="tmt.spry.linkedselect.util.moveOptionUp('block_destination');getOptions('block_destination','display_blocks');"><br>
+              <img src="<{$xoops_url}>/modules/tad_web/images/down.png" onclick="tmt.spry.linkedselect.util.moveOptionDown('block_destination');getOptions('block_destination','display_blocks');">
               <div class="text-center" style="margin-top: 30px;">
                 <input type="hidden" name="display_blocks" id="display_blocks" value="<{$display_blocks}>">
                 <input type="hidden" name="op" value="save_block">
@@ -485,7 +485,7 @@
               </div>
             </div>
             <div class="col-md-5">
-              <select id="destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
+              <select id="block_destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
               <{$block_ok}>
               </select>
             </div>

@@ -13,6 +13,7 @@ $TadUpFiles->set_dir('subdir', $subdir);
 
 //引入TadTools的函式庫
 include_once TADTOOLS_PATH . "/tad_function.php";
+require_once "function_block.php";
 
 /********************* 自訂函數 *********************/
 //取得多人網頁的內部區塊
@@ -79,16 +80,24 @@ function get_web_roles($defWebID = '', $defRole = '')
 
     $andWebID = empty($defWebID) ? "" : "and `WebID`='$defWebID'";
     $andRole  = empty($defRole) ? "" : "and `role`='$defRole'";
+    $sql      = "select uid from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
+    $result   = $xoopsDB->queryF($sql) or web_error($sql);
 
-    $sql = "select `uid`,`role` from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
-    //die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-    while (list($uid, $role) = $xoopsDB->fetchRow($result)) {
-        $ConfigValue[$WebID] = $Value;
+    $i = 0;
+    while (list($uid) = $xoopsDB->fetchRow($result)) {
+        $users[$i] = $uid;
+        $i++;
     }
+    // $sql = "select * from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
+    // $result = $xoopsDB->queryF($sql) or web_error($sql);
 
-    return $ConfigValue;
+    // $i = 0;
+    // while ($all = $xoopsDB->fetchArray($result)) {
+    //     $users[$i] = $all;
+    //     $i++;
+    // }
+
+    return $users;
 
 }
 
@@ -275,10 +284,12 @@ function get_all_blocks()
 //取得所有區塊設定
 function get_plugin_blocks()
 {
+    global $xoopsConfig;
     $plugins = get_dir_plugins();
     foreach ($plugins as $plugin) {
         $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
         if (file_exists($config_blocks_file)) {
+            include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
             include $config_blocks_file;
         }
     }
@@ -547,26 +558,6 @@ function onlyMine()
     }
     $uid = $xoopsUser->uid();
     return "and uid='$uid'";
-}
-
-//是否為網站擁有者
-function MyWebID()
-{
-    global $xoopsUser, $xoopsDB;
-    if ($xoopsUser) {
-        $uid    = $xoopsUser->uid();
-        $sql    = "select WebID from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
-        $total  = $xoopsDB->getRowsNum($result);
-        if (empty($total)) {
-            return;
-        }
-
-        while (list($WebID) = $xoopsDB->fetchRow($result)) {
-            $MyWebs[] = $WebID;
-        }
-    }
-    return $MyWebs;
 }
 
 //取得網站資訊

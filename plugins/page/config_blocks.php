@@ -1,6 +1,5 @@
 <?php
 global $xoopsConfig;
-include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/page/langs/{$xoopsConfig['language']}.php";
 
 $i = 0;
 

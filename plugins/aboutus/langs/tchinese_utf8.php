@@ -65,3 +65,4 @@ define("_MD_TCW_ABOUTUS_HOMEWORK", "聯絡簿");
 define("_MD_TCW_ABOUTUS_SCHEDULE", "功課表");
 define("_MD_TCW_ABOUTUS_NO_HOMEWORK", "尚未設定聯絡簿");
 define("_MD_TCW_ABOUTUS_NO_SCHEDULE", "尚未設定功課表");
+define("_MD_TCW_ABOUT_BLOCK_LIST_ADM", "本站管理員");

@@ -74,3 +74,4 @@ CREATE TABLE `tad_web_roles` (
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
 PRIMARY KEY (`WebID`,`uid`,`role`)
 ) ENGINE=MyISAM;
+

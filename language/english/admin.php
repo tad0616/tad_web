@@ -64,3 +64,5 @@ define('_MA_TCW_WEB_SCHEDULE_TEMPLATE_DESC', '
 
 define('_MA_TCW_WEB_SCHEDULE_SUBJECT', 'Set subjects (for teachers optional)');
 define('_MA_TCW_WEB_SCHEDULE_SUBJECT_DESC', 'E.g:Writing;Reading;Math;Science;Art;Music');
+
+define('_MA_TCW_CO_ADMIN', 'Co-administrator');

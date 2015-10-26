@@ -137,43 +137,51 @@
           <th><{$smarty.const._MA_TCW_TEAMNAME}></th>
           <th><{$smarty.const._MA_TCW_TEAMTITLE}></th>
           <th><{$smarty.const._MA_TCW_TEAMLEADER}></th>
+          <th><{$smarty.const._MA_TCW_CO_ADMIN}></th>
           <th><{$smarty.const._MA_TCW_MEM_AMOUNT}></th>
           <th><{$smarty.const._MA_TCW_TEAMCOUNTER}></th>
           <th><{$smarty.const._TAD_FUNCTION}></th>
         </tr>
         <tbody id="sort">
-        <{foreach item=class from=$data}>
-        <tr id="tr_<{$class.WebID}>">
-          <td>
-            <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-          </td>
-          <td>
+        <{foreach from=$data item=class}>
+          <tr id="tr_<{$class.WebID}>">
+            <td>
+              <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+            </td>
+            <td>
 
-          <{if $class.WebEnable=='1'}>
-            <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=0"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
-          <{else}>
-            <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=1"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
-          <{/if}>
+            <{if $class.WebEnable=='1'}>
+              <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=0"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
+            <{else}>
+              <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=1"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
+            <{/if}>
 
-            <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
-          </td>
-          <td>
-            <input type="text" name="webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>" class="form-control">
-          </td>
-          <td>
-             <{$class.WebOwner}> (<{$class.uname}>)
-          </td>
-          <td>
-            <{$class.memAmount}>
-          </td>
-          <td>
-            <{$class.WebCounter}>
-          </td>
-          <td>
-            <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-xs btn-info"><{$smarty.const._TAD_EDIT}></a>
+              <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
+            </td>
+            <td>
+              <input type="text" name="webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>" class="form-control">
+            </td>
+            <td>
+              <{$class.WebOwner}> (<{$class.uname}>)
+            </td>
+            <td>
+              <{if $class.admin_arr}>
+                <{foreach from=$class.admin_arr item=admin}>
+                  <{$admin.name}> (<{$admin.uname}>),
+                <{/foreach}>
+              <{/if}>
+            </td>
+            <td>
+              <{$class.memAmount}>
+            </td>
+            <td>
+              <{$class.WebCounter}>
+            </td>
+            <td>
+              <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-xs btn-info"><{$smarty.const._TAD_EDIT}></a>
 
-          </td>
-        </tr>
+            </td>
+          </tr>
         <{/foreach}>
 
 

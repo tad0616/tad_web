@@ -58,7 +58,25 @@ function list_all_web($defCateID = '')
 
         $data[$i]['memAmount'] = memAmount($WebID);
         $data[$i]['uname']     = XoopsUser::getUnameFromId($WebOwnerUid, 0);
+        $web_admin_arr         = get_web_roles($WebID, 'admin');
+        if ($web_admin_arr) {
+            $admin_str = implode("','", $web_admin_arr);
+            $sql2      = "SELECT `uid`,`name`,`uname`,`email` FROM `" . $xoopsDB->prefix("users") . "` WHERE `uid` in('{$admin_str}')";
 
+            $result2   = $xoopsDB->queryF($sql2) or web_error($sql2);
+            $j         = 0;
+            $admin_arr = '';
+            while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result2)) {
+                $admin_arr[$j]['uid']   = $uid;
+                $admin_arr[$j]['name']  = $name;
+                $admin_arr[$j]['uname'] = $uname;
+                $admin_arr[$j]['email'] = $email;
+                $j++;
+            }
+        } else {
+            $admin_arr = "";
+        }
+        $data[$i]['admin_arr'] = $admin_arr;
         //$jeditable->setSelectCol(".Class{$WebID}",$file,"{{$teacher_option}, 'selected':'{$WebOwnerUid}'}","{'WebID' : $WebID , 'op' : 'save_teacher'}",_MA_TCW_CLICK_TO_EDIT);
         $i++;
     }

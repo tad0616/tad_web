@@ -3,7 +3,8 @@
 function tad_web_menu($options)
 {
     global $xoopsUser, $xoopsDB, $MyWebs, $xoopsConfig;
-
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
+    $MyWebID           = MyWebID();
     $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
     $block['DefWebID'] = $DefWebID;
 
@@ -61,8 +62,10 @@ function tad_web_menu($options)
         return $block;
     }
 
-    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' order by WebSort";
+    $AllMyWebID = implode("','", $MyWebID);
 
+    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID in ('{$AllMyWebID}') order by WebSort";
+    //die($sql);
     $result = $xoopsDB->query($sql) or web_error($sql);
     //$web_num = $xoopsDB->getRowsNum($result);
     $i = 0;

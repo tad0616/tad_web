@@ -116,6 +116,7 @@ function tad_web_config($WebID)
 
     //管理員設定
     $web_admin_arr = get_web_roles($WebID, 'admin');
+    $web_admins    = implode(',', $web_admin_arr);
     $sql           = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
     $result        = $xoopsDB->query($sql) or web_error($sql);
 
@@ -208,6 +209,24 @@ function save_plugins($WebID)
 
 }
 
+//儲存使用者
+function save_adm($web_admins, $WebID)
+{
+    global $xoopsDB;
+    if (empty($web_admins) or empty($WebID)) {
+        return;
+    } else {
+        $web_admin_arr = explode(',', $web_admins);
+    }
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_roles") . " where `role`='admin' and `WebID`='$WebID' ";
+    $xoopsDB->queryF($sql) or web_error($sql);
+    foreach ($web_admin_arr as $uid) {
+        $sql = "insert into " . $xoopsDB->prefix("tad_web_roles") . " (`uid`, `role`, `term`, `enable`, `WebID`) values('{$uid}', 'admin', '0000-00-00', '1', '{$WebID}')";
+        $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
+}
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -224,6 +243,7 @@ $col_name       = system_CleanVars($_REQUEST, 'col_name', '', 'string');
 $col_val        = system_CleanVars($_REQUEST, 'col_val', '', 'string');
 $display_blocks = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
 $other_web_url  = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
+$web_admins     = system_CleanVars($_REQUEST, 'web_admins', '', 'string');
 
 switch ($op) {
 
@@ -290,6 +310,12 @@ switch ($op) {
 
     case "save_other_web_url":
         save_web_config("other_web_url", $other_web_url, $WebID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    case "save_adm":
+        save_adm($web_admins, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
