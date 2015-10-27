@@ -41,7 +41,8 @@ function add_log($status)
         $result     = $xoopsDB->query($sql) or web_error($sql);
         $web_amount = $xoopsDB->getRowsNum($result);
     }
-    $add_count_url = "http://120.115.2.99/modules/apply/status.php?url=" . XOOPS_URL . "&web_name={$xoopsConfig['sitename']}&version={$version}&web_amount={$web_amount}&email={$xoopsConfig['adminmail']}&status={$status}";
+    $sitename      = urlencode($xoopsConfig['sitename']);
+    $add_count_url = "http://120.115.2.99/modules/apply/status.php?url=" . XOOPS_URL . "&web_name={$sitename}&version={$version}&web_amount={$web_amount}&email={$xoopsConfig['adminmail']}&status={$status}";
     if (function_exists('curl_init')) {
         $ch      = curl_init();
         $timeout = 5;

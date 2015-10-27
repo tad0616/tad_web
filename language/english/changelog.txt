@@ -1,3 +1,13 @@
+Tad Web 1.6 release (2015-10-26 release)
+====================================================
+ 1. Add new calendar functions and blocks
+ 2. Add setting detection and recommendation function
+ 3. Fixed the class schedule table presentation
+ 4. Adjust the layout of the site list, and can display the Preference Settings To field
+ 5. Fixed the bug that can not manually add members
+ 6. New co-administrator functions
+
+
 Tad Web 1.5.1 release (2015-10-16 release)
 ====================================================
  1.Fixed GuestBook English language
