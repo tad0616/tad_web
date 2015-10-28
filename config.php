@@ -138,6 +138,8 @@ function tad_web_config($WebID)
     $xoopsTpl->assign('user_ok', $user_ok);
     $xoopsTpl->assign('user_yet', $user_yet);
     $xoopsTpl->assign('web_admins', $web_admins);
+    $xoopsTpl->assign('logo_desc', sprintf(_MD_TCW_GOOD_LOGO_SITE, $WebID));
+
 }
 
 //更新網頁資訊
@@ -213,20 +215,36 @@ function save_plugins($WebID)
 function save_adm($web_admins, $WebID)
 {
     global $xoopsDB;
-    if (empty($web_admins) or empty($WebID)) {
+    if (empty($WebID)) {
         return;
-    } else {
-        $web_admin_arr = explode(',', $web_admins);
     }
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_roles") . " where `role`='admin' and `WebID`='$WebID' ";
     $xoopsDB->queryF($sql) or web_error($sql);
-    foreach ($web_admin_arr as $uid) {
-        $sql = "insert into " . $xoopsDB->prefix("tad_web_roles") . " (`uid`, `role`, `term`, `enable`, `WebID`) values('{$uid}', 'admin', '0000-00-00', '1', '{$WebID}')";
-        $xoopsDB->queryF($sql) or web_error($sql);
+
+    if ($web_admins) {
+        $web_admin_arr = explode(',', $web_admins);
+        foreach ($web_admin_arr as $uid) {
+            $sql = "insert into " . $xoopsDB->prefix("tad_web_roles") . " (`uid`, `role`, `term`, `enable`, `WebID`) values('{$uid}', 'admin', '0000-00-00', '1', '{$WebID}')";
+            $xoopsDB->queryF($sql) or web_error($sql);
+        }
     }
 
 }
+
+//儲存使用者
+function reset_logo($WebID)
+{
+    global $xoopsDB;
+    if (empty($WebID)) {
+        return;
+    }
+
+    save_web_config('logo_left', '41.7', $WebID);
+    save_web_config('logo_top', '53.8', $WebID);
+    output_head_file($WebID);
+}
+
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -316,6 +334,12 @@ switch ($op) {
 
     case "save_adm":
         save_adm($web_admins, $WebID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    case "reset_logo":
+        reset_logo($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

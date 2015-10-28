@@ -3,7 +3,14 @@ define('_MD_TCW_HOMEWORK', 'Contact book');
 define('_MD_TCW_HOMEWORK_SHORT', 'Content');
 define('_MD_TCW_HOMEWORK_ADD', 'Write contact book');
 define("_MD_TCW_HOMEWORK_FILES", "Attachment");
+define("_MD_TCW_HOMEWORK_TITLE", "Title");
 define("_MD_TCW_HOMEWORKDATE", "Date");
+define("_MD_TCW_HOMEWORK_CAL_DATE", "Event Date");
+define("_MD_TCW_HOMEWORK_POST_DATE", "Display at ?");
+define("_MD_TCW_HOMEWORK_POST_NOW", "Display after post");
+define("_MD_TCW_HOMEWORK_POST_8", "Display at that day 8:00");
+define("_MD_TCW_HOMEWORK_POST_12", "Display at that day 12:00");
+define("_MD_TCW_HOMEWORK_POST_16", "Display at that day 16:00");
 define("_MD_TCW_HOMEWORKCOUNTER", "Counter");
 
 define('_MD_TCW_HOMEWORK_DEFAULT', "

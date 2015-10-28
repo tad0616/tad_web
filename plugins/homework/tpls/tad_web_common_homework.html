@@ -33,7 +33,6 @@
           <{foreach from=$homework_data key=i item=homework}>
             <{if $i > 0}>
               <li>
-              <{$homework.Date}>
               <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a> (<{$homework.HomeworkCounter}>)
 
                 <{if !$showWebTitleHomework && $isMineHomework}>
@@ -54,9 +53,6 @@
     <table class="footable table common_table">
       <thead>
         <tr>
-          <th data-hide="phone" style="width:100px;text-align:center;">
-            <{$smarty.const._MD_TCW_HOMEWORKDATE}>
-          </th>
           <th data-class="expand">
             <{$smarty.const._MD_TCW_HOMEWORK}>
           </th>
@@ -77,9 +73,6 @@
       </thead>
       <{foreach item=homework from=$homework_data}>
         <tr>
-          <td class="text-center">
-            <{$homework.Date}>
-          </td>
           <td>
             <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a>
           </td>

@@ -30,8 +30,9 @@ class tad_web_homework
             $xoopsTpl->assign('cate', $cate);
             $andCateID = "and a.`CateID`='$CateID'";
         }
+        $now = date("Y-m-d H:i:s");
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by HomeworkDate desc";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkDate desc";
 
         $to_limit = empty($limit) ? 20 : $limit;
 
@@ -51,7 +52,7 @@ class tad_web_homework
         $Webs = getAllWebInfo();
 
         while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter
+            //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
@@ -64,15 +65,24 @@ class tad_web_homework
             $main_data[$i]['cate']     = $cate[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
 
-            $Date = substr($HomeworkDate, 0, 10);
             if (empty($HomeworkTitle)) {
                 $HomeworkTitle = _MD_TCW_EMPTY_TITLE;
             }
 
             $main_data[$i]['HomeworkTitle'] = $HomeworkTitle;
-            $main_data[$i]['Date']          = $Date;
+            $main_data[$i]['HomeworkDate']  = $HomeworkDate;
             $i++;
         }
+
+        $i        = 0;
+        $yet_data = '';
+        $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkDate desc";
+        $result   = $xoopsDB->query($sql) or web_error($sql);
+        while ($all = $xoopsDB->fetchArray($result)) {
+            $yet_data[$i] = $all;
+            $i++;
+        }
+        $xoopsTpl->assign('yet_data', $yet_data);
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php")) {
             redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50", 3, _TAD_NEED_TADTOOLS);
@@ -111,7 +121,7 @@ class tad_web_homework
         $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID , $HomeworkCounter ,$uid
+        //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID , $HomeworkCounter ,$uid ,$HomeworkPostDate
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -135,6 +145,7 @@ class tad_web_homework
         $xoopsTpl->assign('uid_name', $uid_name);
         $xoopsTpl->assign('HomeworkDate', $HomeworkDate);
         $xoopsTpl->assign('HomeworkCounter', $HomeworkCounter);
+        $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
         $xoopsTpl->assign('HomeworkID', $HomeworkID);
         $xoopsTpl->assign('HomeworkInfo', sprintf(_MD_TCW_INFO, $uid_name, $HomeworkDate, $HomeworkCounter));
 
@@ -179,11 +190,15 @@ class tad_web_homework
         $HomeworkDate = (!isset($DBV['HomeworkDate'])) ? date("Y-m-d H:i:s") : $DBV['HomeworkDate'];
         $xoopsTpl->assign('HomeworkDate', $HomeworkDate);
 
+        //設定「HomeworkPostDate」欄位預設值
+        $HomeworkPostDate = (!isset($DBV['HomeworkPostDate'])) ? date("Y-m-d 12:00:00") : $DBV['HomeworkPostDate'];
+        $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
+
         //設定「toCal」欄位預設值
         if (!isset($DBV['toCal'])) {
             $toCal = date("Y-m-d");
         } else {
-            $toCal = ($DBV['toCal'] == "0000-00-00 00:00:00") ? "" : $DBV['toCal'];
+            $toCal = ($DBV['toCal'] == "0000-00-00") ? "" : $DBV['toCal'];
         }
         $xoopsTpl->assign('toCal', $toCal);
 
@@ -194,6 +209,20 @@ class tad_web_homework
         //設定「HomeworkCounter」欄位預設值
         $HomeworkCounter = (!isset($DBV['HomeworkCounter'])) ? "" : $DBV['HomeworkCounter'];
         $xoopsTpl->assign('HomeworkCounter', $HomeworkCounter);
+
+        //設定「HomeworkPostDate」欄位預設值
+        if (isset($DBV['HomeworkPostDate'])) {
+            if (strrpos($DBV['HomeworkPostDate'], "08:00:00") !== false) {
+                $HomeworkPostDate = 8;
+            } elseif (strrpos($DBV['HomeworkPostDate'], "12:00:00") !== false) {
+                $HomeworkPostDate = 12;
+            } elseif (strrpos($DBV['HomeworkPostDate'], "16:00:00") !== false) {
+                $HomeworkPostDate = 16;
+            } else {
+                $HomeworkPostDate = date("Y-m-d H:i:s");
+            }
+        }
+        $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
 
         //設定「CateID」欄位預設值
         $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
@@ -235,16 +264,27 @@ class tad_web_homework
         $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
         $_POST['CateID']          = intval($_POST['CateID']);
         $_POST['WebID']           = intval($_POST['WebID']);
+        $HomeworkDate             = date("Y-m-d H:i:s");
 
         if (empty($_POST['toCal'])) {
-            $_POST['toCal'] = "0000-00-00 00:00:00";
+            $_POST['toCal'] = "0000-00-00";
+        }
+
+        if ($_POST['HomeworkPostDate'] == 8) {
+            $HomeworkPostDate = $_POST['toCal'] . " 08:00:00";
+        } elseif ($_POST['HomeworkPostDate'] == 12) {
+            $HomeworkPostDate = $_POST['toCal'] . " 12:00:00";
+        } elseif ($_POST['HomeworkPostDate'] == 16) {
+            $HomeworkPostDate = $_POST['toCal'] . " 16:00:00";
+        } else {
+            $HomeworkPostDate = date("Y-m-d H:i:s");
         }
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_homework") . "
-        (`CateID`,`HomeworkTitle` , `HomeworkContent` , `HomeworkDate` , `toCal` , `WebID` , `HomeworkCounter` , `uid`)
-        values('{$CateID}','{$_POST['HomeworkTitle']}' , '{$_POST['HomeworkContent']}' , '{$_POST['HomeworkDate']}' , '{$_POST['toCal']}' , '{$_POST['WebID']}' , '0' , '{$uid}')";
+        (`CateID`,`HomeworkTitle` , `HomeworkContent` , `HomeworkDate` , `toCal` , `WebID` , `HomeworkCounter` , `uid` , `HomeworkPostDate`)
+        values('{$CateID}','{$_POST['HomeworkTitle']}' , '{$_POST['HomeworkContent']}' , '{$HomeworkDate}' , '{$_POST['toCal']}' , '{$_POST['WebID']}' , '0' , '{$uid}' , '{$HomeworkPostDate}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -266,10 +306,20 @@ class tad_web_homework
         $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
         $_POST['CateID']          = intval($_POST['CateID']);
         $_POST['WebID']           = intval($_POST['WebID']);
-        $_POST['HomeworkDate']    = $myts->addSlashes($_POST['HomeworkDate']);
+        $HomeworkDate             = date("Y-m-d H:i:s");
 
         if (empty($_POST['toCal'])) {
-            $_POST['toCal'] = "0000-00-00 00:00:00";
+            $_POST['toCal'] = "0000-00-00";
+        }
+
+        if ($_POST['HomeworkPostDate'] == 8) {
+            $HomeworkPostDate = $_POST['toCal'] . " 08:00:00";
+        } elseif ($_POST['HomeworkPostDate'] == 12) {
+            $HomeworkPostDate = $_POST['toCal'] . " 12:00:00";
+        } elseif ($_POST['HomeworkPostDate'] == 16) {
+            $HomeworkPostDate = $_POST['toCal'] . " 16:00:00";
+        } else {
+            $HomeworkPostDate = date("Y-m-d H:i:s");
         }
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
@@ -280,8 +330,9 @@ class tad_web_homework
          `CateID` = '{$CateID}' ,
          `HomeworkTitle` = '{$_POST['HomeworkTitle']}' ,
          `HomeworkContent` = '{$_POST['HomeworkContent']}' ,
-         `HomeworkDate` = '{$_POST['HomeworkDate']}' ,
-         `toCal` = '{$_POST['toCal']}'
+         `HomeworkDate` = '{$HomeworkDate}' ,
+         `toCal` = '{$_POST['toCal']}' ,
+         `HomeworkPostDate` = '{$HomeworkPostDate}'
         where HomeworkID='$HomeworkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 

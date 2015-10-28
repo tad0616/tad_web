@@ -114,7 +114,7 @@ class tad_web_news
         $NewsUrlTxt = empty($NewsUrl) ? "" : "<div>" . _MD_TCW_NEWSURL . _TAD_FOR . "<a href='$NewsUrl' target='_blank'>$NewsUrl</a></div>";
 
         $TadUpFiles->set_col("NewsID", $NewsID);
-        $NewsFiles = $TadUpFiles->show_files('upfile', true, null, true);
+        $NewsFiles = $TadUpFiles->show_files('upfile', true, "", true, false, null, null, false, '');
 
         $xoopsTpl->assign('isMine', $isMyWeb);
         $xoopsTpl->assign('NewsTitle', $NewsTitle);

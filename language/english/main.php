@@ -41,7 +41,8 @@ define('_MD_TCW_CLASS_SETUP', 'Class title setup');
 define('_MD_TCW_FCNCTION_SETUP', 'Function setting');
 define('_MD_TCW_SELECT_TO_CANCEL', 'Please select the function you want to hide.');
 define('_MD_TCW_CLICK_TO_CHANG', 'Click on a picture to change image. You can drag background image and logo to anywhere.');
-define("_MD_TCW_GOOD_LOGO_SITE", "Good tool:<a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a>");
+define("_MD_TCW_GOOD_LOGO_SITE", "<ol><li>Good tool:<a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a></li><li>If logo was disappear , <a href='config.php?WebID=%s&op=reset_logo'>click here to reset it</a>.</li></ol>");
+
 define('_MD_TCW_RAND_IMAGE', 'Select random background');
 define('_MD_TCW_BG_TOP', 'Ton');
 define('_MD_TCW_BG_CENTER', 'Medium');

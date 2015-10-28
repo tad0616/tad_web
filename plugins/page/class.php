@@ -96,7 +96,7 @@ class tad_web_page
         }
 
         $TadUpFiles->set_col("PageID", $PageID);
-        $files = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+        $files = $TadUpFiles->show_files('upfile', true, "", true, false, null, null, false, '');
 
         $uid_name = XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {

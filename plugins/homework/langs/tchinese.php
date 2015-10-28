@@ -3,7 +3,14 @@ define("_MD_TCW_HOMEWORK", "聯絡簿");
 define("_MD_TCW_HOMEWORK_SHORT", "聯絡簿");
 define("_MD_TCW_HOMEWORK_ADD", "寫聯絡簿");
 define("_MD_TCW_HOMEWORK_FILES", "相關檔案");
+define("_MD_TCW_HOMEWORK_TITLE", "聯絡簿標題");
 define("_MD_TCW_HOMEWORKDATE", "日期");
+define("_MD_TCW_HOMEWORK_CAL_DATE", "聯絡簿日期");
+define("_MD_TCW_HOMEWORK_POST_DATE", "何時顯示？");
+define("_MD_TCW_HOMEWORK_POST_NOW", "發布後立即顯示");
+define("_MD_TCW_HOMEWORK_POST_8", "當天早上 8:00 顯示");
+define("_MD_TCW_HOMEWORK_POST_12", "當天中午 12:00 顯示");
+define("_MD_TCW_HOMEWORK_POST_16", "當天下午 4:00 顯示");
 define("_MD_TCW_HOMEWORKCOUNTER", "人氣");
 
 define("_MD_TCW_HOMEWORK_DEFAULT", "

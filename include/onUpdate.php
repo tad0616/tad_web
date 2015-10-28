@@ -123,6 +123,11 @@ function chk_sql()
                 }
             }
         }
+
+        $update_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/onUpdate.php";
+        if (file_exists($update_file)) {
+            include $update_file;
+        }
     }
 }
 

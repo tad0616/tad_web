@@ -72,10 +72,10 @@ function get_homework_event($start, $end, $WebID)
     global $xoopsDB;
 
     $andWebID = empty($WebID) ? "" : "and `WebID`='{$WebID}'";
-
-    $sql    = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' and toCal <= '$end' $andWebID order by toCal";
-    $result = $xoopsDB->queryF($sql) or die($sql);
-    $i      = 0;
+    $now      = date("Y-m-d H:i:s");
+    $sql      = "select HomeworkID,HomeworkTitle,toCal,WebID from " . $xoopsDB->prefix("tad_web_homework") . " where toCal >= '$start' and toCal <= '$end' and HomeworkPostDate <= '$now' $andWebID order by toCal";
+    $result   = $xoopsDB->queryF($sql) or die($sql);
+    $i        = 0;
     while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
 
         $toCal = userTimeToServerTime(strtotime($toCal));

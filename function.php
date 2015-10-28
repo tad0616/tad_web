@@ -548,7 +548,7 @@ function getAllCateName($ColName = "", $WebID = "", $CateID = "")
 }
 
 //更新刪除時是否限制身份
-function onlyMine()
+function onlyMine($uid_col = 'uid')
 {
     global $xoopsUser, $isAdmin, $MyWebs, $WebID;
     if ($isAdmin) {
@@ -557,7 +557,7 @@ function onlyMine()
         return;
     }
     $uid = $xoopsUser->uid();
-    return "and uid='$uid'";
+    return "and `{$uid_col}`='$uid'";
 }
 
 //取得網站資訊

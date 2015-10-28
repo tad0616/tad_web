@@ -39,7 +39,7 @@ define("_MD_TCW_CLASS_SETUP", "班級名稱設定");
 define("_MD_TCW_FCNCTION_SETUP", "功能設定");
 define("_MD_TCW_SELECT_TO_CANCEL", "請將想要隱藏的功能打勾");
 define("_MD_TCW_CLICK_TO_CHANG", "點選下圖以切換圖片，並可拖動上方底圖或logo圖，以調整喜歡的位置。");
-define("_MD_TCW_GOOD_LOGO_SITE", "可從 <a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a> 線上製作 logo 圖。");
+define("_MD_TCW_GOOD_LOGO_SITE", "<ol><li>可從 <a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a> 線上製作 logo 圖。</li><li>若 logo 圖拖曳到看不見，<a href='config.php?WebID=%s&op=reset_logo'>可點此恢復其預設位置</a>。</li></ol>");
 
 define("_MD_TCW_RAND_IMAGE", "回復成隨機背景");
 define("_MD_TCW_BG_TOP", "上");

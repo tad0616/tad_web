@@ -137,6 +137,7 @@
           <th><{$smarty.const._MA_TCW_TEAMNAME}></th>
           <th><{$smarty.const._MA_TCW_TEAMTITLE}></th>
           <th><{$smarty.const._MA_TCW_TEAMLEADER}></th>
+          <th><{$smarty.const._MA_TCW_CO_ADMIN}></th>
           <th><{$smarty.const._MA_TCW_MEM_AMOUNT}></th>
           <th><{$smarty.const._MA_TCW_TEAMCOUNTER}></th>
           <th><{$smarty.const._TAD_FUNCTION}></th>
@@ -163,6 +164,13 @@
           <td>
              <{$class.WebOwner}> (<{$class.uname}>)
           </td>
+            <td>
+              <{if $class.admin_arr}>
+                <{foreach from=$class.admin_arr item=admin}>
+                  <{$admin.name}> (<{$admin.uname}>),
+                <{/foreach}>
+              <{/if}>
+            </td>
           <td>
             <{$class.memAmount}>
           </td>

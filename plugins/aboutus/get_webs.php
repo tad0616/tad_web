@@ -15,9 +15,9 @@ $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('
 
 $CateID = intval($_GET['CateID']);
 $today  = date("Y-m-d");
-
+$now    = date("Y-m-d H:i:s");
 //找出各班最新聯絡簿
-$sql    = "select `WebID`,max(`HomeworkID`),max(`toCal`) from " . $xoopsDB->prefix("tad_web_homework") . " group by `WebID`";
+$sql    = "select `WebID`,max(`HomeworkID`),max(`toCal`) from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkPostDate <= '$now' group by `WebID`";
 $result = $xoopsDB->query($sql) or web_error($sql);
 while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
     $homework[$WebID]      = $HomeworkID;
