@@ -1,3 +1,14 @@
+Tad Web 1.6.1 release (2015-10-29 release)
+====================================================
+ 1. Add the function of the preset contact book contents
+ 2. Fixed issue that co-administrator can not be removed
+ 3. Add the function of reset logo position
+ 4. Fixed the issue that the co-administrator information can't displayed in bootstrap2
+ 5. Fixed the issue that the attached file in page plugin can't be download
+ 6. Add mp3 online playback (need tadtools 2.79 above)
+ 7. Display attached file name in page plugin
+
+
 Tad Web 1.6 release (2015-10-26 release)
 ====================================================
  1. Add new calendar functions and blocks
