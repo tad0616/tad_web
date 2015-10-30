@@ -33,14 +33,38 @@
           <{foreach from=$homework_data key=i item=homework}>
             <{if $i > 0}>
               <li class="list-group-item">
-              <span class="badge"><{$homework.HomeworkCounter}></span>
+                <span class="badge"><{$homework.HomeworkCounter}></span>
 
-              <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a>
+                <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a>
 
                 <{if !$showWebTitleHomework && $isMineHomework}>
                   <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
+              </li>
+            <{/if}>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="list-group">
+          <{foreach from=$yet_data key=i item=homework}>
+            <{if $i > 0}>
+              <li class="list-group-item">
+                <span class="badge"><{$homework.HomeworkCounter}></span>
+
+                <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.HomeworkTitle}></a>
+
+                <{if !$showWebTitleHomework && $isMineHomework}>
+                  <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                <{/if}>
+
+                <span style="color: #840707;"><{$homework.display_at}></span>
               </li>
             <{/if}>
           <{/foreach}>

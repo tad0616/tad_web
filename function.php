@@ -714,20 +714,19 @@ function mklogoPic($WebID = "")
         $n = strlen($WebName) / 3;
     }
     //$width=50*$n+35;
-    $size = round(350 / $n, 0);
+    $size = round(450 / $n, 0);
     if ($size > 70) {
         $size  = 70;
         $x     = $size + 10;
         $size2 = 20;
     } else {
-        $x     = round(350 / $n, 0) + 10;
+        $x     = round(450 / $n, 0) + 10;
         $size2 = 17;
     }
     $y = $size + 55;
 
     header('Content-type: image/png');
-    $im = @imagecreatetruecolor(520, 140)
-    or die(_MD_TCW_MKPIC_ERROR);
+    $im = @imagecreatetruecolor(520, 140) or die(_MD_TCW_MKPIC_ERROR);
     imagesavealpha($im, true);
 
     $white = imagecolorallocate($im, 255, 255, 255);
@@ -778,6 +777,7 @@ function mklogoPic($WebID = "")
 
     imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png");
     imagedestroy($im);
+
 }
 
 function imagettftextoutline(&$im, $size, $angle, $x, $y, &$col, &$outlinecol, $fontfile, $text, $width)
@@ -851,7 +851,7 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
     global $xoopsDB, $xoopsUser, $xoopsModule, $xoopsConfig;
 
     if ($col_name == "bg") {
-        $TadUpFilesBg = TadUpFilesBg();
+        $TadUpFilesBg = TadUpFilesBg($col_sn);
         if (is_object($TadUpFilesBg)) {
             $TadUpFilesBg->set_col($col_name, $col_sn);
             $TadUpFilesBg->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name);
@@ -859,7 +859,7 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
             die('Need TadUpFilesBg Object!');
         }
     } elseif ($col_name == "logo") {
-        $TadUpFilesLogo = TadUpFilesLogo();
+        $TadUpFilesLogo = TadUpFilesLogo($col_sn);
         if (is_object($TadUpFilesLogo)) {
             $TadUpFilesLogo->set_col($col_name, $col_sn);
             $TadUpFilesLogo->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name);
@@ -867,7 +867,7 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
             die('Need TadUpFilesLogo Object!');
         }
     } elseif ($col_name == "head") {
-        $TadUpFilesHead = TadUpFilesHead();
+        $TadUpFilesHead = TadUpFilesHead($col_sn);
         if (is_object($TadUpFilesHead)) {
             $TadUpFilesHead->set_col($col_name, $col_sn);
             $TadUpFilesHead->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name);
@@ -877,27 +877,24 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
     }
 }
 
-function TadUpFilesBg()
+function TadUpFilesBg($WebID)
 {
-    global $WebID;
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
     $TadUpFilesBg = new TadUpFiles("tad_web", "/{$WebID}/bg", null, "", "/thumbs");
     $TadUpFilesBg->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesBg;
 }
 
-function TadUpFilesLogo()
+function TadUpFilesLogo($WebID)
 {
-    global $WebID;
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
     $TadUpFilesLogo = new TadUpFiles("tad_web", "/{$WebID}/logo", null, "", "/thumbs");
     $TadUpFilesLogo->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesLogo;
 }
 
-function TadUpFilesHead()
+function TadUpFilesHead($WebID)
 {
-    global $WebID;
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
     $TadUpFilesHead = new TadUpFiles("tad_web", "/{$WebID}/head", null, "", "/thumbs");
     $TadUpFilesHead->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");

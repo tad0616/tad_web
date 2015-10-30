@@ -11,6 +11,8 @@ define("_MD_TCW_HOMEWORK_POST_NOW", "發布後立即顯示");
 define("_MD_TCW_HOMEWORK_POST_8", "當天早上 8:00 顯示");
 define("_MD_TCW_HOMEWORK_POST_12", "當天中午 12:00 顯示");
 define("_MD_TCW_HOMEWORK_POST_16", "當天下午 4:00 顯示");
+define("_MD_TCW_HOMEWORK_POST_AT", "（預計於 %s 發布）");
+
 define("_MD_TCW_HOMEWORKCOUNTER", "人氣");
 
 define("_MD_TCW_HOMEWORK_DEFAULT", "

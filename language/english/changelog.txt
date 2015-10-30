@@ -1,4 +1,4 @@
-Tad Web 1.6.1 release (2015-10-29 release)
+Tad Web 1.6.1 release (2015-10-30 release)
 ====================================================
  1. Add the function of the preset contact book contents
  2. Fixed issue that co-administrator can not be removed
@@ -7,6 +7,7 @@ Tad Web 1.6.1 release (2015-10-29 release)
  5. Fixed the issue that the attached file in page plugin can't be download
  6. Add mp3 online playback (need tadtools 2.79 above)
  7. Display attached file name in page plugin
+ 8. Fixed problem that change the tile of the site is not automatically updated logo
 
 
 Tad Web 1.6 release (2015-10-26 release)

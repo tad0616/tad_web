@@ -27,7 +27,7 @@ if ($_REQUEST['CalKind'] == "homework") {
 
     $i = 0;
     //抓取母站行事曆
-    if (in_array('all', $cal_cols)) {
+    if (in_array('all', $cal_cols) or $WebID) {
         $allEvents = get_all_event($start, $end, $WebID);
         foreach ($allEvents as $evens) {
             $myEvents[$i] = $evens;
@@ -36,7 +36,7 @@ if ($_REQUEST['CalKind'] == "homework") {
     }
 
     //抓取子站行事曆
-    if (in_array('web', $cal_cols)) {
+    if (in_array('web', $cal_cols) or $WebID) {
         $calEvents = get_web_event($start, $end, $WebID);
         foreach ($calEvents as $evens) {
             $myEvents[$i] = $evens;
@@ -45,7 +45,7 @@ if ($_REQUEST['CalKind'] == "homework") {
     }
 
     //抓取新聞
-    if (in_array('news', $cal_cols)) {
+    if (in_array('news', $cal_cols) or $WebID) {
         $newsEvents = get_news_event($start, $end, $WebID);
         foreach ($newsEvents as $evens) {
             $myEvents[$i] = $evens;
@@ -54,7 +54,7 @@ if ($_REQUEST['CalKind'] == "homework") {
     }
 
     //抓取聯絡簿
-    if (in_array('homework', $cal_cols)) {
+    if (in_array('homework', $cal_cols) or $WebID) {
         $homeworkEvents = get_homework_event($start, $end, $WebID);
         foreach ($homeworkEvents as $evens) {
             $myEvents[$i] = $evens;

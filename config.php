@@ -48,7 +48,7 @@ function tad_web_config($WebID)
     mk_dir($bg_user_path);
     mk_dir("{$bg_user_path}/thumbs");
     import_img($bg_path, "bg", $WebID);
-    $TadUpFilesBg = TadUpFilesBg();
+    $TadUpFilesBg = TadUpFilesBg($WebID);
     $xoopsTpl->assign('upform_bg', $TadUpFilesBg->upform(false, "bg", null, false));
     $TadUpFilesBg->set_col("bg", $WebID);
     $xoopsTpl->assign('all_bg', $TadUpFilesBg->get_file_for_smarty());
@@ -59,7 +59,7 @@ function tad_web_config($WebID)
     mk_dir($head_user_path);
     mk_dir("{$head_user_path}/thumbs");
     import_img($head_path, "head", $WebID);
-    $TadUpFilesHead = TadUpFilesHead();
+    $TadUpFilesHead = TadUpFilesHead($WebID);
     $xoopsTpl->assign('upform_head', $TadUpFilesHead->upform(false, "head", null, false));
     $TadUpFilesHead->set_col("head", $WebID);
     $xoopsTpl->assign('all_head', $TadUpFilesHead->get_file_for_smarty());
@@ -70,7 +70,7 @@ function tad_web_config($WebID)
     mk_dir($logo_user_path);
     mk_dir("{$logo_user_path}/thumbs");
     import_img($logo_path, "logo", $WebID);
-    $TadUpFilesLogo = TadUpFilesLogo();
+    $TadUpFilesLogo = TadUpFilesLogo($WebID);
     $xoopsTpl->assign('upform_logo', $TadUpFilesLogo->upform(false, "logo", null, false));
     $TadUpFilesLogo->set_col("logo", $WebID);
     $xoopsTpl->assign('all_logo', $TadUpFilesLogo->get_file_for_smarty());
@@ -155,7 +155,7 @@ function update_tad_web()
     where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
-    $TadUpFilesLogo = TadUpFilesLogo();
+    $TadUpFilesLogo = TadUpFilesLogo($WebID);
     $TadUpFilesLogo->set_col('logo', $WebID, 1);
     $TadUpFilesLogo->del_files();
 
@@ -288,7 +288,7 @@ switch ($op) {
         break;
 
     case "upload_head":
-        $TadUpFilesHead = TadUpFilesHead();
+        $TadUpFilesHead = TadUpFilesHead($WebID);
         $TadUpFilesHead->set_col('head', $WebID);
         $TadUpFilesHead->upload_file('head', null, null, null, "", true);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
@@ -296,7 +296,7 @@ switch ($op) {
         break;
 
     case "upload_logo":
-        $TadUpFilesLogo = TadUpFilesLogo();
+        $TadUpFilesLogo = TadUpFilesLogo($WebID);
         $TadUpFilesLogo->set_col('logo', $WebID);
         $TadUpFilesLogo->upload_file('logo', null, null, null, "", true);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
@@ -304,7 +304,7 @@ switch ($op) {
         break;
 
     case "upload_bg":
-        $TadUpFilesBg = TadUpFilesBg();
+        $TadUpFilesBg = TadUpFilesBg($WebID);
         $TadUpFilesBg->set_col('bg', $WebID);
         $TadUpFilesBg->upload_file('bg', null, null, null, "", true);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");

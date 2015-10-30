@@ -11,6 +11,7 @@ define("_MD_TCW_HOMEWORK_POST_NOW", "Display after post");
 define("_MD_TCW_HOMEWORK_POST_8", "Display at that day 8:00");
 define("_MD_TCW_HOMEWORK_POST_12", "Display at that day 12:00");
 define("_MD_TCW_HOMEWORK_POST_16", "Display at that day 16:00");
+define("_MD_TCW_HOMEWORK_POST_AT", "(It wiil display at %s)");
 define("_MD_TCW_HOMEWORKCOUNTER", "Counter");
 
 define('_MD_TCW_HOMEWORK_DEFAULT', "

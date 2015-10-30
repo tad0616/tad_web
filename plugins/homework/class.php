@@ -32,7 +32,7 @@ class tad_web_homework
         }
         $now = date("Y-m-d H:i:s");
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkDate desc";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkPostDate desc";
 
         $to_limit = empty($limit) ? 20 : $limit;
 
@@ -74,13 +74,16 @@ class tad_web_homework
             $i++;
         }
 
-        $i        = 0;
         $yet_data = '';
-        $sql      = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkDate desc";
-        $result   = $xoopsDB->query($sql) or web_error($sql);
-        while ($all = $xoopsDB->fetchArray($result)) {
-            $yet_data[$i] = $all;
-            $i++;
+        if ($isMyWeb) {
+            $i      = 0;
+            $sql    = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate > '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkPostDate desc";
+            $result = $xoopsDB->query($sql) or web_error($sql);
+            while ($all = $xoopsDB->fetchArray($result)) {
+                $yet_data[$i]               = $all;
+                $yet_data[$i]['display_at'] = sprintf(_MD_TCW_HOMEWORK_POST_AT, $all['HomeworkPostDate']);
+                $i++;
+            }
         }
         $xoopsTpl->assign('yet_data', $yet_data);
 
@@ -117,9 +120,11 @@ class tad_web_homework
         $HomeworkID = intval($HomeworkID);
         $this->add_counter($HomeworkID);
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkID='{$HomeworkID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
-        $all    = $xoopsDB->fetchArray($result);
+        $now     = date("Y-m-d H:i:s");
+        $andTime = $isMyWeb ? '' : "and HomeworkPostDate <= '{$now}'";
+        $sql     = "select * from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkID='{$HomeworkID}' $andTime";
+        $result  = $xoopsDB->query($sql) or web_error($sql);
+        $all     = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID , $HomeworkCounter ,$uid ,$HomeworkPostDate
         foreach ($all as $k => $v) {

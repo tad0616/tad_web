@@ -274,9 +274,9 @@ function tad_web_form($WebID = null)
     if (!empty($WebID)) {
         $DBV = get_tad_web($WebID);
         //圖案
-        $TadUpFiles->set_col("WebLogo", $WebID, "1");
-        $web_logo = $TadUpFiles->get_pic_file("thumb");
-        $pic      = empty($web_logo) ? "" : "background-image:url($web_logo);background-repeat: no-repeat;  background-position: top right;";
+        // $TadUpFiles->set_col("WebLogo", $WebID, "1");
+        // $web_logo = $TadUpFiles->get_pic_file("thumb");
+        // $pic      = empty($web_logo) ? "" : "background-image:url($web_logo);background-repeat: no-repeat;  background-position: top right;";
     } else {
         $DBV = array();
     }
@@ -389,6 +389,12 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
     //取得最後新增資料的流水編號
     $WebID = $xoopsDB->getInsertId();
     mklogoPic($WebID);
+    $TadUpFilesLogo = TadUpFilesLogo($WebID);
+    $TadUpFilesLogo->set_col('logo', $WebID, 1);
+    $TadUpFilesLogo->del_files();
+
+    $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
+    output_head_file($WebID);
     return $WebID;
 }
 
@@ -415,6 +421,13 @@ function update_tad_web($WebID = "")
     where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
     mklogoPic($WebID);
+    $TadUpFilesLogo = TadUpFilesLogo($WebID);
+    $TadUpFilesLogo->set_col('logo', $WebID, 1);
+    $TadUpFilesLogo->del_files();
+
+    $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
+    output_head_file($WebID);
+
     return $WebID;
 }
 
@@ -564,23 +577,29 @@ function delete_tad_web($WebID = "")
     $TadUpFiles->del_files();
 }
 
-function save_webs_title($webTitles = array())
+function save_webs_title($webTitles = array(), $old_webTitle = array())
 {
     global $xoopsDB, $TadUpFiles;
 
     $myts = &MyTextSanitizer::getInstance();
     foreach ($webTitles as $WebID => $WebTitle) {
-        $WebTitle = $myts->addSlashes($WebTitle);
+        if ($old_webTitle[$WebID] != $WebTitle) {
+            $WebTitle = $myts->addSlashes($WebTitle);
+            $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
+            $xoopsDB->queryF($sql) or web_error($sql);
 
-        $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+            mklogoPic($WebID);
+            $TadUpFilesLogo = TadUpFilesLogo($WebID);
+            $TadUpFilesLogo->set_col('logo', $WebID, 1);
+            $TadUpFilesLogo->del_files();
 
-        $TadUpFiles->set_col("WebLogo", $WebID);
-        $TadUpFiles->upload_file('upfile', 246, null, null, null, true);
+            $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
+            output_head_file($WebID);
 
-        mk_menu_var_file($WebID);
-        mklogoPic($WebID);
+            mk_menu_var_file($WebID);
+        }
     }
+
     return $WebID;
 }
 
@@ -627,23 +646,27 @@ switch ($op) {
     case "batch_add_class_by_user":
         batch_add_class_by_user();
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     case "save_webs_title":
-        save_webs_title($_POST['webTitle']);
+        save_webs_title($_POST['webTitle'], $_POST['old_webTitle']);
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //新增資料
     case "insert_tad_web":
         $WebID = insert_tad_web(0, $_POST['WebName'], $_POST['WebSort'], '1', "", $_POST['WebOwnerUid'], $_POST['WebTitle']);
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //更新資料
     case "update_tad_web":
         update_tad_web($WebID);
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //輸入表格
@@ -665,18 +688,21 @@ switch ($op) {
     case "delete_tad_web":
         delete_tad_web($WebID);
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //刪除資料
     case "save_webs_able":
         save_webs_able($WebID, $_GET['able']);
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //以正式名稱排序
     case "order_by_teamtitle":
         order_by_teamtitle();
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //預設動作
