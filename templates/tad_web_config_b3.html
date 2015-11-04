@@ -97,6 +97,43 @@
           <{/if}>
         </div>
       </div>
+
+
+      <form action="config.php" method="post" class="form-horizontal" role="form">
+        <h3><{$smarty.const._MD_TCW_THEME_TOOLS}></h3>
+        <div class="row">
+          <label class="col-md-2 control-label">
+            <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE}>
+          </label>
+          <div class="col-md-4">
+            <label class="radio-inline">
+              <input type="radio" name="theme_side" value="left" <{if $theme_side=="left"}>checked<{/if}>> <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE_LEFT}>
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="theme_side" value="none" <{if $theme_side=="none"}>checked<{/if}>> <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE_NONE}>
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="theme_side" value="right" <{if $theme_side=="right"}>checked<{/if}>> <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE_RIGHT}>
+            </label>
+          </div>
+
+          <label class="col-md-2 control-label">
+            <{$smarty.const._MD_TCW_THEME_TOOLS_FONT_SIZE}>
+          </label>
+          <div class="col-md-2">
+            <div class="input-group">
+              <input type="text" name="menu_font_size" value="<{$menu_font_size}>" class="form-control">
+              <span class="input-group-addon">px</span>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="op" value="save_theme_config">
+            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+          </div>
+        </div>
+
+      </form>
     </div>
 
     <div id='tad_web_config_tab-2'>

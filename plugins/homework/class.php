@@ -49,7 +49,9 @@ class tad_web_homework
 
         $i = 0;
 
-        $Webs = getAllWebInfo();
+        $Webs     = getAllWebInfo();
+        $WebNames = getAllWebInfo('WebName');
+        $cweek    = array(0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT);
 
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
@@ -63,6 +65,7 @@ class tad_web_homework
             $cate = $this->web_cate->get_tad_web_cate_arr();
 
             $main_data[$i]['cate']     = $cate[$CateID];
+            $main_data[$i]['WebName']  = $WebNames[$WebID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
 
             if (empty($HomeworkTitle)) {
@@ -71,6 +74,8 @@ class tad_web_homework
 
             $main_data[$i]['HomeworkTitle'] = $HomeworkTitle;
             $main_data[$i]['HomeworkDate']  = $HomeworkDate;
+            $w                              = date("w", strtotime($toCal));
+            $main_data[$i]['Week']          = $cweek[$w];
             $i++;
         }
 
@@ -82,13 +87,15 @@ class tad_web_homework
             while ($all = $xoopsDB->fetchArray($result)) {
                 $yet_data[$i]               = $all;
                 $yet_data[$i]['display_at'] = sprintf(_MD_TCW_HOMEWORK_POST_AT, $all['HomeworkPostDate']);
+                $w                          = date("w", strtotime($toCal));
+                $yet_data[$i]['Week']       = $cweek[$w];
                 $i++;
             }
         }
         $xoopsTpl->assign('yet_data', $yet_data);
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php")) {
-            redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50", 3, _TAD_NEED_TADTOOLS);
+            redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1", 3, _TAD_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
         $fullcalendar = new fullcalendar();

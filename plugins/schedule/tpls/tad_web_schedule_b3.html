@@ -124,12 +124,13 @@
 
   <{$schedule_template}>
 
-  <{if $isMineSchedule}>
-    <div class="text-right">
+  <div class="text-right">
+    <{if $isMineSchedule}>
       <a href="javascript:delete_func(<{$ScheduleID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$ScheduleID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
-    </div>
-  <{/if}>
+    <{/if}>
+    <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$ScheduleID}>" class="btn btn-info"><{$smarty.const._MD_TCW_SCHEDULE_PDF}></a>
+  </div>
 <{elseif $op=="setup_subject"}>
   <h1><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></h1>
   <script language="JavaScript">

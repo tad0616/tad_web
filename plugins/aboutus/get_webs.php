@@ -90,7 +90,7 @@ $th3 = in_array('schedule', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide
 $th4 = in_array('homework', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ABOUTUS_HOMEWORK . '</th>' : '';
 
 $content = $FooTableJS . '
-<table class="table footable">
+<table class="footable">
   <thead>
     <tr>
       ' . $th1 . '

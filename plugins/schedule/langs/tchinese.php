@@ -20,3 +20,4 @@ define("_MD_TCW_SCHEDULE_TEACHER_NAME", "教師姓名或教室");
 define("_MD_TCW_SCHEDULE_COLOR", "文字顏色");
 define("_MD_TCW_SCHEDULE_BGCOLOR", "背景顏色");
 define("_MD_TCW_SCHEDULE_ADD_ITEM", "新增一個項目");
+define("_MD_TCW_SCHEDULE_PDF", "下載課表");

@@ -13,6 +13,7 @@ function chk_sql()
     global $xoopsDB;
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $dir_plugins = get_dir_plugins();
+    //die(var_export($dir_plugins));
     foreach ($dir_plugins as $dirname) {
         include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
         if (!empty($pluginConfig['sql'])) {
@@ -31,6 +32,7 @@ function chk_sql()
 function add_log($status)
 {
     global $xoopsConfig, $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
     $modhandler  = &xoops_gethandler('module');
     $xoopsModule = &$modhandler->getByDirname("tad_web");
     $version     = $xoopsModule->version();

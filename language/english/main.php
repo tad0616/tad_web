@@ -91,6 +91,20 @@ define("_MD_TCW_ADMIN_SETUP", "Co-administrator settings");
 define("_MD_TCW_USER_LIST", "Users list");
 define("_MD_TCW_USER_SELECTED", "Co-administrator");
 
+define("_MD_TCW_THEME_TOOLS", "Theme Set");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE", "Side Position:");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE_LEFT", "Left");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE_NONE", "None");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE_RIGHT", "Right");
+define("_MD_TCW_THEME_TOOLS_FONT_SIZE", "Menu Font Size:");
+define("_MD_TCW_SUN", "Sun");
+define("_MD_TCW_MON", "Mon");
+define("_MD_TCW_TUE", "Tue");
+define("_MD_TCW_WED", "Wed");
+define("_MD_TCW_THU", "Thu");
+define("_MD_TCW_FRI", "Fri");
+define("_MD_TCW_SAT", "Sat");
+
 $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
 if (is_dir($dir)) {
     if ($dh = opendir($dir)) {

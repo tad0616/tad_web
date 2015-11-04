@@ -1,3 +1,19 @@
+Tad Web 1.6.3 release（2015-11-04 release)
+====================================================
+1. Fixed function displays the number of each class home setting does not work
+2. Fixed class home homework can not display website name
+3. To fix the problem can not be installed on or uninstalled correctly
+4. Add schedule table Print function (need tadtools 2.8 above)
+
+Tad Web 1.6.2 release（2015-11-02 release)
+====================================================
+1. "Page" can display in front page
+2. Added Menu font size setting
+3. New sidebar position setting (to be with the new version for_tad_web_theme)
+4. Adjust the homework list title
+5. Fixed some display bug of homework in bootstrap2
+
+
 Tad Web 1.6.1 release (2015-10-30 release)
 ====================================================
  1. Add the function of the preset contact book contents

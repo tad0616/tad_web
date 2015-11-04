@@ -87,6 +87,20 @@ define("_MD_TCW_ADMIN_SETUP", "共同管理員設定");
 define("_MD_TCW_USER_LIST", "所有使用者");
 define("_MD_TCW_USER_SELECTED", "已設為共同管理員");
 
+define("_MD_TCW_THEME_TOOLS", "佈景設定");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE", "側邊欄的位置：");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE_LEFT", "左邊");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE_NONE", "不顯示");
+define("_MD_TCW_THEME_TOOLS_THEME_SIDE_RIGHT", "右邊");
+define("_MD_TCW_THEME_TOOLS_FONT_SIZE", "選單字型大小：");
+define("_MD_TCW_SUN", "日");
+define("_MD_TCW_MON", "一");
+define("_MD_TCW_TUE", "二");
+define("_MD_TCW_WED", "三");
+define("_MD_TCW_THU", "四");
+define("_MD_TCW_FRI", "五");
+define("_MD_TCW_SAT", "六");
+
 $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
 if (is_dir($dir)) {
     if ($dh = opendir($dir)) {

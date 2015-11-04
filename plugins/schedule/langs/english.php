@@ -20,3 +20,4 @@ define("_MD_TCW_SCHEDULE_TEACHER_NAME", "Teacher or Class Room");
 define("_MD_TCW_SCHEDULE_COLOR", "Font Color");
 define("_MD_TCW_SCHEDULE_BGCOLOR", "Background Color");
 define("_MD_TCW_SCHEDULE_ADD_ITEM", "Add a new item");
+define("_MD_TCW_SCHEDULE_PDF", "Download Schedule");

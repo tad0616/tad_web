@@ -262,6 +262,8 @@ $col_val        = system_CleanVars($_REQUEST, 'col_val', '', 'string');
 $display_blocks = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
 $other_web_url  = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
 $web_admins     = system_CleanVars($_REQUEST, 'web_admins', '', 'string');
+$menu_font_size = system_CleanVars($_REQUEST, 'menu_font_size', 12, 'int');
+$theme_side     = system_CleanVars($_REQUEST, 'theme_side', 'right', 'string');
 
 switch ($op) {
 
@@ -340,6 +342,13 @@ switch ($op) {
 
     case "reset_logo":
         reset_logo($WebID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    case "save_theme_config":
+        save_web_config('menu_font_size', $menu_font_size, $WebID);
+        save_web_config('theme_side', $theme_side, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

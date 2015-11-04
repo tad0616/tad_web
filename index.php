@@ -32,7 +32,7 @@ function ClassHome($WebID = "")
         include_once "plugins/{$dirname}/class.php";
         $plugin_name          = "tad_web_{$dirname}";
         $$plugin_name         = new $plugin_name($WebID);
-        $limit                = get_web_config("{$dirname}_limit", 0);
+        $limit                = get_web_config("{$dirname}_limit", $WebID);
         $data_count[$dirname] = $$plugin_name->list_all('', $limit);
         $show_arr[]           = $dirname;
     }

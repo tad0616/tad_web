@@ -342,6 +342,14 @@ class tad_web_schedule
     public function get_one_schedule($ScheduleID)
     {
         global $xoopsDB, $xoopsModuleConfig;
+        if (!isset($xoopsModuleConfig)) {
+
+            $modhandler        = &xoops_gethandler('module');
+            $xoopsModule       = &$modhandler->getByDirname("tad_web");
+            $config_handler    = &xoops_gethandler('config');
+            $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+        }
+
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
         $result     = $xoopsDB->query($sql) or web_error($sql);
         $SubjectArr = '';
@@ -356,6 +364,7 @@ class tad_web_schedule
         }
 
         $schedule_template = $xoopsModuleConfig['schedule_template'];
+
         preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
         foreach ($opt[0] as $tag) {

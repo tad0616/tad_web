@@ -7,6 +7,6 @@ CREATE TABLE `tad_web_action` (
   `ActionDate` date NOT NULL default '0000-00-00' COMMENT '活動日期',
   `ActionPlace` varchar(255) NOT NULL default '' COMMENT '活動地點',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-  `ActionCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣'
+  `ActionCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
 PRIMARY KEY (`ActionID`)
 ) ENGINE=MyISAM;

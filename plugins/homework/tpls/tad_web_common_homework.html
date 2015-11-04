@@ -13,7 +13,7 @@
     <div class="row-fluid">
       <div class="span12">
         <h3>
-          <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework_data.0.HomeworkID}>"><{$homework_data.0.HomeworkTitle}></a>
+          <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework_data.0.HomeworkID}>"><{$homework_data.0.toCal}> (<{$homework_data.0.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
           <{if !$showWebTitleHomework && $isMineHomework}>
             <a href="javascript:delete_func(<{$homework_data.0.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
@@ -33,12 +33,35 @@
           <{foreach from=$homework_data key=i item=homework}>
             <{if $i > 0}>
               <li>
-              <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a> (<{$homework.HomeworkCounter}>)
+                <span class="badge"><{$homework.HomeworkCounter}></span>
+                <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
                 <{if !$showWebTitleHomework && $isMineHomework}>
                   <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
+              </li>
+            <{/if}>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="span12">
+        <ul>
+          <{foreach from=$yet_data key=i item=homework}>
+            <{if $i > 0}>
+              <li>
+                <span class="badge"><{$homework.HomeworkCounter}></span>
+                <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
+
+                <{if !$showWebTitleHomework && $isMineHomework}>
+                  <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                <{/if}>
+
+                <span style="color: #840707;"><{$homework.display_at}></span>
               </li>
             <{/if}>
           <{/foreach}>
@@ -60,7 +83,7 @@
             <{$smarty.const._MD_TCW_HOMEWORKCOUNTER}>
           </th>
           <{if $showWebTitleHomework}>
-            <th data-hide="phone" style="width:100px;text-align:center;">
+            <th data-hide="phone" style="width:150px;text-align:center;">
               <{$smarty.const._MD_TCW_TEAMID}>
             </th>
           <{/if}>
@@ -74,15 +97,20 @@
       <{foreach item=homework from=$homework_data}>
         <tr>
           <td>
-            <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.HomeworkTitle}></a>
+            <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.WebName}> <{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
           </td>
           <td class="text-center">
-            <{$homework.HomeworkCounter}>
+            <span class="badge"><{$homework.HomeworkCounter}></span>
           </td>
           <{if $showWebTitleHomework}>
             <td class="text-center">
               <{$homework.WebTitle}>
             </td>
+          <{/if}>
+          <{if !$showWebTitleHomework && $isMineHomework}>
+            <th data-hide="phone" style="width:100px;text-align:center;">
+              <{$smarty.const._TAD_FUNCTION}>
+            </th>
           <{/if}>
           <{if !$showWebTitleHomework && $isMineHomework}>
             <td class="text-center">

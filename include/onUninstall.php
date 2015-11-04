@@ -6,8 +6,8 @@ function xoops_module_uninstall_tad_web(&$module)
 
     rename(XOOPS_ROOT_PATH . "/uploads/tad_web", XOOPS_ROOT_PATH . "/uploads/tad_web_bak_{$date}");
 
-    add_log('delete');
     uninstall_sql();
+    //add_log('delete');
 
     return true;
 }
@@ -16,6 +16,7 @@ function xoops_module_uninstall_tad_web(&$module)
 function add_log($status)
 {
     global $xoopsConfig, $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
     $modhandler  = &xoops_gethandler('module');
     $xoopsModule = &$modhandler->getByDirname("tad_web");
     $version     = $xoopsModule->version();
@@ -51,14 +52,15 @@ function uninstall_sql()
     include XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $dir_plugins = get_dir_plugins();
     foreach ($dir_plugins as $dirname) {
-        include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
+        require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
         if (!empty($pluginConfig['sql'])) {
             foreach ($pluginConfig['sql'] as $sql_name) {
-                $sql    = "DROP TABLE " . $xoopsDB->prefix($sql_name);
-                $result = $xoopsDB->query($sql);
+                $sql = "DROP TABLE " . $xoopsDB->prefix($sql_name);
+                $xoopsDB->queryF($sql);
             }
         }
     }
+    return true;
 }
 
 function delete_directory($dirname)
