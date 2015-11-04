@@ -44,5 +44,5 @@ function get_page_list($WebID)
 
     }
     $xoopsTpl->assign('page_list', $main);
-    return $main;
+    // return $main;
 }

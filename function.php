@@ -58,7 +58,7 @@ function get_tad_web_blocks($WebID)
 
         } else {
             if (file_exists("{$dir}{$blocks[$func]['plugin']}/blocks.php")) {
-                include_once "{$dir}{$blocks[$func]['plugin']}/blocks.php";
+                include "{$dir}{$blocks[$func]['plugin']}/blocks.php";
             }
             call_user_func($func, $WebID);
             $blocks_arr[$i]['plugin'] = $blocks[$func]['plugin'];

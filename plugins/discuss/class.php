@@ -106,9 +106,9 @@ class tad_web_discuss
             $$k = $v;
         }
 
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
-        }
+        // if (empty($uid)) {
+        //     redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
+        // }
 
         if (!empty($uid)) {
             $TadUpFiles->set_col("WebOwner", $WebID, "1");
@@ -161,8 +161,6 @@ class tad_web_discuss
 
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
         //抓取預設值
@@ -315,6 +313,10 @@ class tad_web_discuss
     {
         global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
 
+        if (empty($_SESSION['LoginMemID']) and !$isMyWeb and $isAdmin) {
+            redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
+        }
+
         if ($isMyWeb) {
             $uid     = $xoopsUser->uid();
             $MemID   = 0;
@@ -356,6 +358,10 @@ class tad_web_discuss
     public function delete($DiscussID = "")
     {
         global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
+
+        if (empty($_SESSION['LoginMemID']) and !$isMyWeb and $isAdmin) {
+            redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
+        }
 
         if ($isMyWeb) {
             $anduid = ($isAdmin) ? "" : "and `WebID`='{$this->WebID}'";
@@ -457,7 +463,7 @@ class tad_web_discuss
             $DiscussContent = $this->bubble($DiscussContent . $DiscussFiles);
             $re_data .= "<tr><td style='line-height:180%;'>
             {$DiscussContent}
-            <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='width:120px;margin:0px 15px 0px 30px;float:left;' class='img-rounded img-polaroid'>
+            <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='max-width: 120px; max-height: 120px; margin: 0px 15px 0px 30px; float: left;' class='img-rounded img-polaroid'>
             <div style='line-height:1.5em;'>
               <div>{$MemName}</div><div style='font-size:12px;'>$DiscussDate</div>
               {$fun}
