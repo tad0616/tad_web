@@ -1,7 +1,7 @@
 <?php
 include_once "header.php";
 
-//$_POST['url']  = "http://www.tn.edu.tw/";
+//$_POST['url'] = "https://www.youtube.com/watch?v=ioKB53osad8";
 
 $date['metaTags']['description']['value'] = $date['title'] = '';
 if (!empty($_POST['url'])) {
@@ -42,6 +42,7 @@ function getUrlData($url)
             'metaTags' => $metaTags,
         );
     }
+    //die(var_export($result));
     return $result;
 }
 
@@ -49,6 +50,7 @@ function getUrlContents($url, $maximumRedirections = null, $currentRedirection =
 {
     $result   = false;
     $contents = @file_get_contents($url);
+    //die($contents);
     // Check if we need to go somewhere else
     if (isset($contents) && is_string($contents)) {
         preg_match_all('/<[\s]*meta[\s]*http-equiv="?REFRESH"?' . '[\s]*content="?[0-9]*;[\s]*URL[\s]*=[\s]*([^>"]*)"?' . '[\s]*[\/]?[\s]*>/si', $contents, $match);

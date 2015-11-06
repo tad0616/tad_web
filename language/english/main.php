@@ -66,6 +66,7 @@ define("_MD_TCW_MAIN_NAV_HOVER_BG_COLOR", "Navbar hover background color");
 
 define("_MD_TCW_BLOCKS_LIST", "All blocks");
 define("_MD_TCW_BLOCKS_SELECTED", "Enabled blocks");
+define("_MD_TCW_BLOCKS_SETUP", "Setup block");
 
 //action.php
 

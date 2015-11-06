@@ -41,6 +41,7 @@ $modversion['tables'][]         = "tad_web_files_center";
 $modversion['tables'][]         = "tad_web_config";
 $modversion['tables'][]         = "tad_web_plugins";
 $modversion['tables'][]         = "tad_web_roles";
+$modversion['tables'][]         = "tad_web_blocks";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;

@@ -63,6 +63,7 @@ define("_MD_TCW_MAIN_NAV_HOVER_BG_COLOR", "滑鼠移過導覽列底色");
 
 define("_MD_TCW_BLOCKS_LIST", "可選用區塊");
 define("_MD_TCW_BLOCKS_SELECTED", "已選用區塊");
+define("_MD_TCW_BLOCKS_SETUP", "設定區塊");
 
 define("_MD_TCW_NEW_CATE", "建立新分類");
 define("_MD_TCW_SELECT_CATE", "選擇分類");

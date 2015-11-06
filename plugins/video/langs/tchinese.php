@@ -12,3 +12,4 @@ define("_MD_TCW_VIDEOCOUNT", "人氣");
 define("_MD_TCW_VIDEOYOUTUBE", "Youtube 網址");
 define("_MD_TCW_VIDEOCOUNTINFO", "共 %s 人觀看過");
 define("_MD_TCW_VIDEO_BLOCK_RANDOM", "隨機影片");
+define("_MD_TCW_VIDEO_BLOCK_LATEST", "最新影片");

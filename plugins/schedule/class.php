@@ -368,8 +368,11 @@ class tad_web_schedule
         preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
         foreach ($opt[0] as $tag) {
-            $new_tag           = str_replace("{", '', $tag);
-            $new_tag           = str_replace("}", '', $new_tag);
+            $new_tag = str_replace("{", '', $tag);
+            $new_tag = str_replace("}", '', $new_tag);
+            if (!isset($SubjectArr[$new_tag])) {
+                $SubjectArr[$new_tag] = '';
+            }
             $schedule_template = str_replace($tag, $SubjectArr[$new_tag], $schedule_template);
         }
         return $schedule_template;

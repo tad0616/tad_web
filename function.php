@@ -58,7 +58,7 @@ function get_tad_web_blocks($WebID)
 
         } else {
             if (file_exists("{$dir}{$blocks[$func]['plugin']}/blocks.php")) {
-                include "{$dir}{$blocks[$func]['plugin']}/blocks.php";
+                include_once "{$dir}{$blocks[$func]['plugin']}/blocks.php";
             }
             call_user_func($func, $WebID);
             $blocks_arr[$i]['plugin'] = $blocks[$func]['plugin'];
@@ -289,7 +289,7 @@ function get_plugin_blocks()
     foreach ($plugins as $plugin) {
         $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
         if (file_exists($config_blocks_file)) {
-            include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
             include $config_blocks_file;
         }
     }

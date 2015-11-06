@@ -75,3 +75,15 @@ CREATE TABLE `tad_web_roles` (
 PRIMARY KEY (`WebID`,`uid`,`role`)
 ) ENGINE=MyISAM;
 
+CREATE TABLE `tad_web_blocks` (
+  `BlockName` varchar(100) NOT NULL COMMENT '區塊名稱',
+  `BlockNum` tinyint(3) NOT NULL COMMENT '區塊份數',
+  `BlockTitle` varchar(255) NOT NULL COMMENT '區塊標題',
+  `BlockContent` text NOT NULL COMMENT '區塊內容',
+  `BlockEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
+  `BlockConfig` text NOT NULL default '' COMMENT '區塊設定值',
+  `BlockSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
+  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+PRIMARY KEY (`BlockName`,`WebID`,`BlockNum`)
+) ENGINE=MyISAM;
+

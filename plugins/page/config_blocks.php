@@ -3,6 +3,8 @@ global $xoopsConfig;
 
 $i = 0;
 
-$blockConfig['page'][$i]['name'] = _MD_TCW_PAGE_BLOCK_LIST;
-$blockConfig['page'][$i]['func'] = 'get_page_list';
-$blockConfig['page'][$i]['tpl']  = 'tad_web_page_block_b3.html';
+$blocksArr[$i]['name'] = _MD_TCW_PAGE_BLOCK_LIST;
+$blocksArr[$i]['func'] = 'get_page_list';
+$blocksArr[$i]['tpl']  = 'get_page_list.html';
+
+$blockConfig['page'] = $blocksArr;

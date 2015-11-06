@@ -31,13 +31,13 @@ function xoops_module_update_tad_web(&$module, $old_version)
         go_update7();
     }
 
-    if (chk_chk8()) {
-        go_update8();
-    }
+    // if (chk_chk8()) {
+    //     go_update8();
+    // }
 
-    if (chk_chk9()) {
-        go_update9();
-    }
+    // if (chk_chk9()) {
+    //     go_update9();
+    // }
 
     if (chk_chk10()) {
         go_update10();
@@ -45,6 +45,10 @@ function xoops_module_update_tad_web(&$module, $old_version)
 
     if (chk_chk11()) {
         go_update11();
+    }
+
+    if (chk_chk12()) {
+        go_update12();
     }
 
     chk_sql();
@@ -555,6 +559,53 @@ function go_update11()
     ) ENGINE=MyISAM;";
     $xoopsDB->queryF($sql);
 }
+
+//新增區塊設定表格
+function chk_chk12()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_blocks");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update12()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` (
+      `BlockName` varchar(100) NOT NULL COMMENT '區塊名稱',
+      `BlockNum` tinyint(3) NOT NULL COMMENT '區塊份數',
+      `BlockTitle` varchar(255) NOT NULL COMMENT '區塊標題',
+      `BlockContent` text NOT NULL COMMENT '區塊內容',
+      `BlockEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
+      `BlockConfig` text NOT NULL default '' COMMENT '區塊設定值',
+      `BlockSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
+      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+    PRIMARY KEY (`BlockName`,`WebID`,`BlockNum`)
+    ) ENGINE=MyISAM;";
+    $xoopsDB->queryF($sql);
+
+    $sql    = "select ConfigValue, WebID from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='display_blocks'";
+    $result = $xoopsDB->queryF($sql) or die($sql);
+    $i      = 1;
+    while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
+        $Config = explode(',', $ConfigValue);
+        foreach ($Config as $BlockName) {
+            $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockSort`, `WebID`) values('{$BlockName}', '0', '', '', '1', '', '{$i}', '{$WebID}')";
+            $xoopsDB->queryF($sql);
+            $i++;
+        }
+
+    }
+
+    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='display_blocks'";
+    $xoopsDB->queryF($sql);
+}
+
 //建立目錄
 function mk_dir($dir = "")
 {
