@@ -1,4 +1,17 @@
 <?php
+function list_video($WebID)
+{
+
+    global $xoopsDB, $xoopsTpl, $TadUpFiles;
+    if (empty($WebID)) {
+        retuen;
+    }
+    include_once "class.php";
+
+    $tad_web_video = new tad_web_video($WebID);
+    $tad_web_video->list_all();
+}
+
 function random_video($WebID)
 {
 
@@ -13,8 +26,10 @@ function random_video($WebID)
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount
-    foreach ($all as $k => $v) {
-        $$k = $v;
+    if ($all) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
     }
 
     $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";
@@ -57,8 +72,10 @@ function latest_video($WebID)
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount
-    foreach ($all as $k => $v) {
-        $$k = $v;
+    if ($all) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
     }
 
     $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";

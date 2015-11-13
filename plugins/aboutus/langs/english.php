@@ -66,3 +66,4 @@ define("_MD_TCW_ABOUTUS_SCHEDULE", "Schedule Table");
 define("_MD_TCW_ABOUTUS_NO_HOMEWORK", "No Homework");
 define("_MD_TCW_ABOUTUS_NO_SCHEDULE", "No Schedule");
 define("_MD_TCW_ABOUT_BLOCK_LIST_ADM", "Administrator");
+define("_MD_TCW_ABOUTUS_BLOCK_LIST", "About Us");

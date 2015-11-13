@@ -1,7 +1,7 @@
 <{if $file_data}>
   <{if $isMineFiles}>
     <script type="text/javascript">
-      function delete_func(fsn){
+      function delete_files_func(fsn){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
         if (!sure)  return;
         location.href="files.php?op=delete&fsn=" + fsn;
@@ -56,7 +56,7 @@
 
         <{if !$showWebTitleFiles && $isMineFiles}>
           <td class="text-center">
-            <a href="javascript:delete_func(<{$file.fsn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+            <a href="javascript:delete_files_func(<{$file.fsn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
             <a href="files.php?WebID=<{$file.WebID}>&op=edit_form&fsn=<{$file.fsn}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
           </td>
         <{/if}>

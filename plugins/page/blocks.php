@@ -1,7 +1,18 @@
 <?php
-//get_page_list($WebID);
+function list_page($WebID)
+{
 
-function get_page_list($WebID)
+    global $xoopsDB, $xoopsTpl, $TadUpFiles;
+    if (empty($WebID)) {
+        retuen;
+    }
+    include_once "class.php";
+
+    $tad_web_page = new tad_web_page($WebID);
+    $tad_web_page->list_all();
+}
+
+function page_menu($WebID)
 {
 
     global $xoopsDB, $xoopsTpl;

@@ -24,24 +24,6 @@
         </div>
       </div>
 
-      <!--地點-->
-      <!--div class="form-group">
-        <label class="col-md-2 control-label">
-          <{$smarty.const._MD_TCW_NEWSPLACE}>
-        </label>
-        <div class="col-md-10">
-          <input type="text" name="NewsPlace"  value="<{$NewsPlace}>" id="NewsPlace" class="form-control">
-        </div-->
-
-        <!--主持人-->
-        <!--label class="col-md-2 control-label">
-          <{$smarty.const._MD_TCW_NEWSMASTER}>
-        </label>
-        <div class="col-md-10">
-          <input type="text" name="NewsMaster" value="<{$NewsMaster}>" id="NewsMaster" class="form-control">
-        </div>
-      </div-->
-
       <!--相關連結-->
       <div class="form-group">
         <label class="col-md-2 control-label">
@@ -97,7 +79,7 @@
 
   <{if $isMine}>
     <script>
-    function delete_func(NewsID){
+    function delete_news_func(NewsID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="news.php?op=delete&NewsID=" + NewsID;
@@ -131,7 +113,7 @@
 
   <{if $isMine}>
     <div class="text-right">
-      <a href="javascript:delete_func(<{$NewsID}>);" class='btn btn-danger'><{$smarty.const._TAD_DEL}></a>
+      <a href="javascript:delete_news_func(<{$NewsID}>);" class='btn btn-danger'><{$smarty.const._TAD_DEL}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$NewsID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>

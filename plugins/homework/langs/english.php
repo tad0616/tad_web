@@ -37,3 +37,5 @@ define('_MD_TCW_HOMEWORK_DEFAULT', "
     </tr>
   </tbody>
 </table>");
+
+define("_MD_TCW_HOMEWORK_BLOCK_LIST", "Contact book");

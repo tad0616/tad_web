@@ -12,7 +12,7 @@
       <{/foreach}>
     });
 
-    function delete_func(PageID){
+    function delete_page_func(PageID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="page.php?WebID=<{$WebID}>&op=delete&PageID=" + PageID;
@@ -38,7 +38,7 @@
                 <span class="badge"><{$page.PageCount}></span>
                 <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
                 <{if !$showWebTitlePage && $isMinePage}>
-                  <a href="javascript:delete_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
               </li>

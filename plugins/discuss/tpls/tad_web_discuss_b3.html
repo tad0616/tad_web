@@ -56,7 +56,7 @@
 
   <link href="bubble.css" rel="stylesheet" type="text/css">
   <script>
-  	function delete_func(DiscussID){
+  	function delete_discuss_func(DiscussID){
   		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
   		if (!sure)	return;
   		location.href="discuss.php?op=delete&DiscussID=" + DiscussID;
@@ -80,7 +80,7 @@
 
     <div style="text-align:right;font-size:12px;">
       <{if $isMineDiscuss}>
-        <a href="javascript:delete_func(<{$DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+        <a href="javascript:delete_discuss_func(<{$DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
         <a href="discuss.php?WebID=<{$WebID}>&op=edit_form&DiscussID=<{$DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
       <{/if}>
     </div>

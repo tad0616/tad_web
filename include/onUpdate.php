@@ -52,9 +52,41 @@ function xoops_module_update_tad_web(&$module, $old_version)
     }
 
     chk_sql();
+    chk_newblock();
     go_update_var();
     add_log('update');
     return true;
+}
+
+function chk_newblock()
+{
+    global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
+    $blocks     = get_all_blocks();
+    $all_blocks = array_keys($blocks);
+
+    $allWebID = '';
+    $sql      = "select WebID from `" . $xoopsDB->prefix("tad_web") . "` group by `WebID`";
+    $result   = $xoopsDB->queryF($sql) or web_error($sql);
+    while (list($WebID) = $xoopsDB->fetchRow($result)) {
+        $allWebID[] = $WebID;
+    }
+
+    $sql    = "select BlockName from " . $xoopsDB->prefix("tad_web_blocks") . " group by `BlockName`";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    while (list($BlockName) = $xoopsDB->fetchRow($result)) {
+        $db_blocks[] = $BlockName;
+    }
+
+    foreach ($all_blocks as $BlockName) {
+        if (!in_array($BlockName, $db_blocks)) {
+            foreach ($allWebID as $WebID) {
+                $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`) values('{$BlockName}', '0', '{$blocks[$BlockName]}', '', '1', '', 'uninstall', '', '{$WebID}')";
+                $xoopsDB->queryF($sql) or web_error($sql);
+            }
+        }
+    }
+
 }
 
 //擷取網站網址、名稱、站長信箱、多人網頁版本、子網站數等資訊以供統計或日後更新通知
@@ -576,6 +608,7 @@ function chk_chk12()
 function go_update12()
 {
     global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` (
       `BlockName` varchar(100) NOT NULL COMMENT '區塊名稱',
       `BlockNum` tinyint(3) NOT NULL COMMENT '區塊份數',
@@ -583,27 +616,33 @@ function go_update12()
       `BlockContent` text NOT NULL COMMENT '區塊內容',
       `BlockEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
       `BlockConfig` text NOT NULL default '' COMMENT '區塊設定值',
+      `BlockPosition` varchar(255) NOT NULL COMMENT '區塊位置',
       `BlockSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
       `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
     PRIMARY KEY (`BlockName`,`WebID`,`BlockNum`)
     ) ENGINE=MyISAM;";
     $xoopsDB->queryF($sql);
 
+    //取得系統所有區塊
+    $block_option = get_all_blocks();
+
+    //存入既有設定
     $sql    = "select ConfigValue, WebID from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='display_blocks'";
     $result = $xoopsDB->queryF($sql) or die($sql);
-    $i      = 1;
     while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
         $Config = explode(',', $ConfigValue);
-        foreach ($Config as $BlockName) {
-            $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockSort`, `WebID`) values('{$BlockName}', '0', '', '', '1', '', '{$i}', '{$WebID}')";
-            $xoopsDB->queryF($sql);
-            $i++;
-        }
+        $sort   = 1;
+        foreach ($block_option as $func => $name) {
+            $BlockEnable = in_array($func, $Config) ? 1 : 0;
 
+            $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '', 'side', '{$sort}', '{$WebID}')";
+            $xoopsDB->queryF($sql) or web_error($sql);
+            $sort++;
+        }
     }
 
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='display_blocks'";
-    $xoopsDB->queryF($sql);
+    // $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='display_blocks'";
+    // $xoopsDB->queryF($sql);
 }
 
 //建立目錄

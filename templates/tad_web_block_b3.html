@@ -1,0 +1,177 @@
+  <style>
+  #sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side {
+    border: 1px dashed rgba(0, 0, 0, 0.3);
+    min-height: 40px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    margin-right: 10px;
+  }
+
+  #sort_uninstall li, #sort_block1 li, #sort_block2 li, #sort_block3 li, #sort_block4 li, #sort_block5 li, #sort_block6 li, #sort_side li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+  }
+  </style>
+  <script>
+  $(function() {
+    $( "#sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side" ).sortable({
+      connectWith: ".connectedSortable",
+      placeholder: "ui-state-highlight",
+      forcePlaceholderSize: true,
+      cursor: "move",
+      cursorAt: { left: 5 },
+      opacity: 0.5,
+      receive: function( event, ui ) {
+        $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: $(this).parent().attr("id"), BlockName: ui.item.attr("id")}, function(data) {
+            $("#msg").html(data);
+        });
+      },
+      update: function( event, ui ) {
+        var order = $(this).sortable('toArray', {attribute: 'id'});
+        $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", BlockName: ui.item.attr("id"), order_arr: order}, function(data) {
+            $("#msg").html(data);
+        });
+      }
+    }).disableSelection();
+  });
+
+  function enableBlock(status,BlockName){
+    $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID}>", BlockEnable: status, BlockName: BlockName}, function(data) {
+            $("#msg").html(data);
+            $("#"+BlockName+"_icon").attr("src","images/show"+status+".gif");
+        });
+  }
+  </script>
+
+<h1><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
+
+<{if $uninstall}>
+  <div id="uninstall" class="alert alert-danger">
+    <ul id="sort_uninstall" class="connectedSortable">
+        <{foreach from=$uninstall item=block}>
+          <li id="<{$block.BlockName}>" class="ui-state-highlight">
+            <{$block.icon}>
+            <{$block.BlockTitle}>
+          </li>
+        <{/foreach}>
+    </ul>
+  </div>
+<{/if}>
+
+<div id="msg"></div>
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-12">
+        <div id="block1" class="alert alert-info" style="min-height: 100px;">
+          <ul id="sort_block1" class="connectedSortable">
+            <{if $block1}>
+              <{foreach from=$block1 item=block}>
+                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                  <{$block.icon}>
+                  <{$block.BlockTitle}>
+                </li>
+              <{/foreach}>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div id="block2" class="alert alert-info" style="min-height: 100px;">
+          <ul id="sort_block2" class="connectedSortable">
+            <{if $block2}>
+              <{foreach from=$block2 item=block}>
+                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                  <{$block.icon}>
+                  <{$block.BlockTitle}>
+                </li>
+              <{/foreach}>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="block3" class="alert alert-info" style="min-height: 100px;">
+          <ul id="sort_block3" class="connectedSortable">
+            <{if $block3}>
+              <{foreach from=$block3 item=block}>
+                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                  <{$block.icon}>
+                  <{$block.BlockTitle}>
+                </li>
+              <{/foreach}>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div id="block4" class="alert alert-info" style="min-height: 100px;">
+          <ul id="sort_block4" class="connectedSortable">
+            <{if $block4}>
+              <{foreach from=$block4 item=block}>
+                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                  <{$block.icon}>
+                  <{$block.BlockTitle}>
+                </li>
+              <{/foreach}>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div id="block5" class="alert alert-info" style="min-height: 100px;">
+          <ul id="sort_block5" class="connectedSortable">
+            <{if $block5}>
+              <{foreach from=$block5 item=block}>
+                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                  <{$block.icon}>
+                  <{$block.BlockTitle}>
+                </li>
+              <{/foreach}>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="block6" class="alert alert-info" style="min-height: 100px;">
+          <ul id="sort_block6" class="connectedSortable">
+            <{if $block6}>
+              <{foreach from=$block6 item=block}>
+                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                  <{$block.icon}>
+                  <{$block.BlockTitle}>
+                </li>
+              <{/foreach}>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-4">
+    <div id="side" class="alert alert-success" style="min-height: 300px;">
+    <ul id="sort_side" class="connectedSortable">
+      <{if $side}>
+        <{foreach from=$side item=block}>
+          <li id="<{$block.BlockName}>" class="ui-state-highlight">
+            <{$block.icon}>
+            <{$block.BlockTitle}>
+          </li>
+        <{/foreach}>
+      <{/if}>
+    </ul>
+    </div>
+  </div>
+</div>

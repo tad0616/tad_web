@@ -65,7 +65,7 @@
                 <{/foreach}>
                 <li style="cursor: move; color: #CDCDCD; background-color: #FFFFFF;"><{$smarty.const._MD_TCW_SCHEDULE_BLANK}></li>
               </ul>
-              <div style="clear: both;" class="text-right"><a href="schedule.php?WebID=<{$WebID}>&op=setup_subject&ScheduleID=<{$ScheduleID}>" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></a></div>
+              <div style="clear: both;" class="text-right"><a href="block.php?WebID=<{$WebID}>&op=setup_subject&ScheduleID=<{$ScheduleID}>" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></a></div>
             </div>
           </div>
         </div>
@@ -106,7 +106,7 @@
 
   <{if $isMineSchedule}>
   <script>
-    function delete_func(ScheduleID){
+    function delete_schedule_func(ScheduleID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="schedule.php?WebID=<{$WebID}>&op=delete&ScheduleID=" + ScheduleID;
@@ -126,7 +126,7 @@
 
   <div class="text-right">
     <{if $isMineSchedule}>
-      <a href="javascript:delete_func(<{$ScheduleID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+      <a href="javascript:delete_schedule_func(<{$ScheduleID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$ScheduleID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     <{/if}>
     <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$ScheduleID}>" class="btn btn-info"><{$smarty.const._MD_TCW_SCHEDULE_PDF}></a>

@@ -1,7 +1,7 @@
-<{foreach from=$blocks_arr item=block}>
+<{foreach from=$side_block item=block}>
   <div class="tad_web_block">
     <{if $block.type=="system"}>
-        <{block id=$block.func}>
+        <{block id=$block.name}>
     <{else}>
       <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
         <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>

@@ -10,4 +10,5 @@ define("_MD_TCW_PAGEUID", "Author");
 define("_MD_TCW_PAGECOUNT", "Counter");
 define("_MD_TCW_PAGESORT", "Sort");
 define("_MD_TCW_PAGE_UPLOAD", "Upload");
-define("_MD_TCW_PAGE_BLOCK_LIST", "Page Menu");
+define("_MD_TCW_PAGE_BLOCK_LIST", "Page List");
+define("_MD_TCW_PAGE_BLOCK_MENU", "Page Menu");

@@ -11,3 +11,4 @@ if (!empty($_GET['WebID'])) {
 } else {
     $xoopsOption['template_main'] = set_bootstrap('tad_web_tpl.html');
 }
+define('_DISPLAY_MODE', 'plugin');

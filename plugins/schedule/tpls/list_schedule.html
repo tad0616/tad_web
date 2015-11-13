@@ -1,0 +1,64 @@
+<{if $isMineSchedule}>
+  <script>
+    function delete_func(ScheduleID){
+      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+      if (!sure)  return;
+      location.href="schedule.php?WebID=<{$WebID}>&op=delete&ScheduleID=" + ScheduleID;
+    }
+    </script>
+<{/if}>
+
+<{if $schedule_data}>
+  <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
+  <{if $WebID==""}>
+
+    <{if $display_mode=='index' or $display_mode=='home'}>
+      <h3><{$smarty.const._MD_TCW_SCHEDULE_BLOCK_LIST}></h3>
+    <{/if}>
+    <{assign var="i" value=0}>
+    <{assign var="total" value=1}>
+
+    <{foreach item=act from=$schedule_data}>
+      <{if $i==0}>
+      <div class="row">
+      <{/if}>
+        <div class="col-md-3">
+          <a href="schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>" class="btn btn-link btn-block"><i class="fa fa-table"></i> <{$act.ScheduleName}>
+          </a>
+        </div>
+    <{assign var="i" value=$i+1}>
+    <{if $i == 4 || $total==$schedule_amount}>
+      </div>
+      <{assign var="i" value=0}>
+    <{/if}>
+    <{assign var="total" value=$total+1}>
+    <{/foreach}>
+  <{else}>
+    <{foreach item=act from=$schedule_data}>
+      <div style="margin: 8px auto;">
+        <h2>
+          <a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}>
+          </a>
+          <a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}>
+          </a>
+          <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i></a>
+          <small>
+            <{if !$showWebTitleSchedule && $isMineSchedule}>
+              <a href="javascript:delete_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
+          </small>
+        </h2>
+        <{$act.schedule}>
+      </div>
+    <{/foreach}>
+  <{/if}>
+  <div style="clear: both;"></div>
+
+  <div style="text-align:right; margin-bottom: 10px;">
+    <{if $isMineSchedule and $WebID}>
+      <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
+    <{/if}>
+  </div>
+<{/if}>
+

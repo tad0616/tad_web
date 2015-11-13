@@ -42,8 +42,7 @@
       <li><a href='#tad_web_config_tab-4'><{$smarty.const._MD_TCW_LOGO_TOOLS}></a></li>
       <li><a href='#tad_web_config_tab-5'><{$smarty.const._MD_TCW_BG_TOOLS}></a></li>
       <li><a href='#tad_web_config_tab-6'><{$smarty.const._MD_TCW_COLOR_TOOLS}></a></li>
-      <li><a href='#tad_web_config_tab-7'><{$smarty.const._MD_TCW_BLOCK_TOOLS}></a></li>
-      <li><a href='#tad_web_config_tab-8'><{$smarty.const._MD_TCW_ADMIN_SETUP}></a></li>
+      <li><a href='#tad_web_config_tab-7'><{$smarty.const._MD_TCW_ADMIN_SETUP}></a></li>
     </ul>
 
     <div id='tad_web_config_tab-1'>
@@ -489,51 +488,9 @@
       </div>
     </div>
 
+
+
     <div id="tad_web_config_tab-7">
-      <div class="row">
-        <div class="col-md-5 text-center">
-          <h3><{$smarty.const._MD_TCW_BLOCKS_LIST}></h3>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-5 text-center">
-          <h3><{$smarty.const._MD_TCW_BLOCKS_SELECTED}></h3>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
-          <div class="row">
-            <div class="col-md-5">
-              <select name="block_repository" id="block_repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
-              <{$block_yet}>
-              </select>
-            </div>
-            <div class="col-md-2 text-center">
-              <img src="<{$xoops_url}>/modules/tad_web/images/right.png" onclick="tmt.spry.linkedselect.util.moveOptions('block_repository', 'block_destination');getOptions('block_destination','display_blocks');"><br>
-              <img src="<{$xoops_url}>/modules/tad_web/images/left.png" onclick="tmt.spry.linkedselect.util.moveOptions('block_destination' , 'block_repository');getOptions('block_destination','display_blocks');"><br><br>
-
-              <img src="<{$xoops_url}>/modules/tad_web/images/up.png" onclick="tmt.spry.linkedselect.util.moveOptionUp('block_destination');getOptions('block_destination','display_blocks');"><br>
-              <img src="<{$xoops_url}>/modules/tad_web/images/down.png" onclick="tmt.spry.linkedselect.util.moveOptionDown('block_destination');getOptions('block_destination','display_blocks');">
-              <div class="text-center" style="margin-top: 30px;">
-                <input type="hidden" name="display_blocks" id="display_blocks" value="<{$display_blocks}>">
-                <input type="hidden" name="op" value="save_block">
-                <input type="hidden" name="WebID" value="<{$WebID}>">
-                <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <select id="block_destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
-              <{$block_ok}>
-              </select>
-            </div>
-          </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-
-    <div id="tad_web_config_tab-8">
       <div class="row">
         <div class="col-md-5 text-center">
           <h3><{$smarty.const._MD_TCW_USER_LIST}></h3>

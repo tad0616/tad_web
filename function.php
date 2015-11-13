@@ -16,23 +16,86 @@ include_once TADTOOLS_PATH . "/tad_function.php";
 require_once "function_block.php";
 
 /********************* 自訂函數 *********************/
-//取得多人網頁的內部區塊
-function get_tad_web_blocks($WebID)
+//取得已安裝的區塊
+function get_blocks($WebID)
 {
-    global $xoopsTpl;
-    $plugins        = get_dir_plugins();
-    $display_blocks = get_web_config("display_blocks", $WebID);
+    global $xoopsDB;
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' order by `BlockSort`";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $Blocks = '';
+    while ($all = $xoopsDB->fetchArray($result)) {
+        $Blocks[] = $all;
+    }
+    return $Blocks;
+}
 
-    if ($display_blocks) {
-        $display_blocks_arr = explode(',', $display_blocks);
-    } else {
-        //取得系統所有區塊
-        $block_option = get_all_blocks();
-        foreach ($block_option as $func => $name) {
-            $display_blocks_arr[] = $func;
+//取得各外掛及系統所有區塊
+function get_all_blocks()
+{
+    global $xoopsDB;
+    $sql    = "select bid,name,title from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
+    $result = $xoopsDB->query($sql) or web_error($sql);
+
+    $myts = MyTextSanitizer::getInstance();
+
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
         }
+
+        $name               = $myts->htmlSpecialChars($name);
+        $block_option[$bid] = $name;
     }
 
+    $allBlockConfig = get_plugin_blocks();
+    foreach ($allBlockConfig as $plugin => $blockConfig) {
+        foreach ($blockConfig as $i => $block) {
+            $func                = $block['func'];
+            $name                = $myts->htmlSpecialChars($block['name']);
+            $block_option[$func] = $name;
+        }
+    }
+    return $block_option;
+}
+
+function get_position_blocks($WebID, $BlockPosition)
+{
+    global $xoopsDB;
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' order by `BlockSort`";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $Blocks = '';
+    $i      = 0;
+    while ($all = $xoopsDB->fetchArray($result)) {
+        $Blocks[$i]         = $all;
+        $BlockEnable        = $all['BlockEnable'] == 1 ? '0' : '1';
+        $Blocks[$i]['icon'] = "<img src=\"images/show{$all['BlockEnable']}.gif\" id=\"{$all['BlockName']}_icon\" alt=\"{$all['BlockTitle']}\" title=\"{$all['BlockName']}\" style=\"cursor: pointer;\" onClick=\"enableBlock('{$BlockEnable}','{$all['BlockName']}')\" >";
+        $i++;
+    }
+    return $Blocks;
+}
+
+function get_display_blocks($WebID, $BlockEnable = 1)
+{
+    global $xoopsDB;
+    $andBlockEnable = is_null($BlockEnable) ? "" : "and BlockEnable='{$BlockEnable}'";
+    $sql            = "select BlockName from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' {$andBlockEnable}";
+    $result         = $xoopsDB->queryF($sql) or web_error($sql);
+
+    $i      = 0;
+    $Blocks = '';
+    while (list($BlockName) = $xoopsDB->fetchRow($result)) {
+        $Blocks[$i] = $BlockName;
+        $i++;
+    }
+    return $Blocks;
+}
+
+//取得多人網頁的內部區塊(在footer.php執行)
+function get_tad_web_blocks($WebID = null, $mode = '')
+{
+    global $xoopsTpl, $xoopsDB;
+
+    $display_blocks_arr = get_display_blocks($WebID);
     //取得系統所有區塊設定
     $allBlockConfig = get_plugin_blocks();
     foreach ($allBlockConfig as $plugin => $blockConfig) {
@@ -44,32 +107,68 @@ function get_tad_web_blocks($WebID)
             $blocks[$func]['name']   = $block['name'];
         }
     }
+    //die(var_export($blocks));
 
-    $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
+    $dir              = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
+    $block            = '';
+    $andBlockPosition = $mode == 'home' ? '' : "and `BlockPosition`='side'";
+    //取得區塊位置
+    $sql = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' and `BlockEnable`='1' $andBlockPosition order by `BlockPosition`,`BlockSort`";
+    //die($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
 
-    $i = 0;
-    foreach ($display_blocks_arr as $func) {
-        $blocks_arr[$i]['func'] = $func;
-        if (is_numeric($func)) {
-            $blocks_arr[$i]['plugin'] = '';
-            $blocks_arr[$i]['tpl']    = '';
-            $blocks_arr[$i]['name']   = '';
-            $blocks_arr[$i]['type']   = 'system';
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+        $blocks_arr['name']  = $BlockName;
+        $blocks_arr['title'] = $BlockTitle;
+        if (is_numeric($BlockName)) {
+            $blocks_arr['plugin'] = '';
+            $blocks_arr['tpl']    = '';
+            $blocks_arr['type']   = 'system';
 
         } else {
-            if (file_exists("{$dir}{$blocks[$func]['plugin']}/blocks.php")) {
-                include_once "{$dir}{$blocks[$func]['plugin']}/blocks.php";
+            if (file_exists("{$dir}{$blocks[$BlockName]['plugin']}/blocks.php")) {
+                include_once "{$dir}{$blocks[$BlockName]['plugin']}/blocks.php";
             }
-            call_user_func($func, $WebID);
-            $blocks_arr[$i]['plugin'] = $blocks[$func]['plugin'];
-            $blocks_arr[$i]['tpl']    = $blocks[$func]['tpl'];
-            $blocks_arr[$i]['name']   = $blocks[$func]['name'];
-            $blocks_arr[$i]['type']   = 'tad_web';
+            call_user_func($BlockName, $WebID);
+            $blocks_arr['plugin'] = $blocks[$BlockName]['plugin'];
+            $blocks_arr['tpl']    = $blocks[$BlockName]['tpl'];
+            $blocks_arr['type']   = 'tad_web';
         }
-        $i++;
+        $block[$BlockPosition][$BlockSort] = $blocks_arr;
     }
-    //die(var_export($blocks_arr));
-    $xoopsTpl->assign('blocks_arr', $blocks_arr);
+
+    //die(var_export($block['block2']));
+
+    $xoopsTpl->assign('center_block1', $block['block1']);
+    $xoopsTpl->assign('center_block2', $block['block2']);
+    $xoopsTpl->assign('center_block3', $block['block3']);
+    $xoopsTpl->assign('center_block4', $block['block4']);
+    $xoopsTpl->assign('center_block5', $block['block5']);
+    $xoopsTpl->assign('center_block6', $block['block6']);
+    $xoopsTpl->assign('side_block', $block['side']);
+/*
+array (
+0 =>
+array (
+'func' => '171',
+'plugin' => '',
+'tpl' => '',
+'name' => '',
+'type' => 'system',
+),
+1 =>
+array (
+'func' => 'list_web_adm',
+'plugin' => 'aboutus',
+'tpl' => 'tad_web_aboutus_block_b3.html',
+'name' => '本站管理員',
+'type' => 'tad_web',
+)
+}
+ */
 }
 
 //取得角色陣列
@@ -252,35 +351,6 @@ function get_dir_plugins()
     return $plugins;
 }
 
-//取得系統所有區塊
-function get_all_blocks()
-{
-    global $xoopsDB;
-    $sql    = "select bid,name,title from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-
-    $myts = MyTextSanitizer::getInstance();
-
-    while ($all = $xoopsDB->fetchArray($result)) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-
-        $name               = $myts->htmlSpecialChars($name);
-        $block_option[$bid] = $name;
-    }
-
-    $allBlockConfig = get_plugin_blocks();
-    foreach ($allBlockConfig as $plugin => $blockConfig) {
-        foreach ($blockConfig as $i => $block) {
-            $func                = $block['func'];
-            $name                = $myts->htmlSpecialChars($block['name']);
-            $block_option[$func] = $name;
-        }
-    }
-    return $block_option;
-}
-
 //取得所有區塊設定
 function get_plugin_blocks()
 {
@@ -385,16 +455,7 @@ function common_template($WebID)
         }
     }
 
-    if (empty($display_blocks)) {
-        $sql    = "select bid from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
-        $result = $xoopsDB->query($sql) or web_error($sql);
-        while (list($bid) = $xoopsDB->fetchRow($result)) {
-            $display_blocks_arr[] = $bid;
-        }
-    } else {
-        $display_blocks_arr = explode(',', $display_blocks);
-
-    }
+    $display_blocks_arr = get_display_blocks($WebID);
 
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php";
@@ -408,6 +469,7 @@ function common_template($WebID)
 //製作選單
 function mk_menu_var_file($WebID = null)
 {
+    global $xoopsDB;
     $web_plugin_enable_arr = get_web_config("web_plugin_enable_arr", $WebID);
     if (empty($web_plugin_enable_arr)) {
         $plugin_enable_arr = get_dir_plugins();
@@ -446,15 +508,16 @@ function mk_menu_var_file($WebID = null)
         $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
     }
     file_put_contents($file, $current);
-
-    $display_blocks = get_web_config("display_blocks", $WebID);
-    if (empty($display_blocks)) {
+    $display_blocks_arr = get_display_blocks($WebID);
+    if (empty($display_blocks_arr)) {
         //取得系統所有區塊
         $block_option = get_all_blocks();
+        $sort         = 1;
         foreach ($block_option as $func => $name) {
-            $display_blocks_arr[] = $func;
+            $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`) values('{$func}', '0', '{$name}', '', '1', '', 'side', '{$sort}', '{$WebID}')";
+            $xoopsDB->queryF($sql) or web_error($sql);
+            $sort++;
         }
-        save_web_config('display_blocks', implode(',', $display_blocks_arr), $WebID);
     }
 
 }
@@ -595,94 +658,6 @@ function getLevelName($WebID = "")
     $result         = $xoopsDB->query($sql) or web_error($sql);
     list($WebTitle) = $xoopsDB->fetchRow($result);
 
-    return $main;
-}
-
-//把模組設定項目轉為選項
-function mc2arr($name = "", $def = "", $type = 'option', $other = "")
-{
-    global $xoopsModuleConfig;
-    $arr = explode(",", $xoopsModuleConfig[$name]);
-    foreach ($arr as $item) {
-        if (ereg("=", $item)) {
-            $vv          = explode("=", $item);
-            $k           = $vv[0];
-            $v           = $vv[1];
-            $new_arr[$k] = $v;
-            $v_as_k      = false;
-        } else {
-            $new_arr[] = $item;
-            $v_as_k    = true;
-        }
-    }
-
-    if ($type == "checkbox") {
-        $opt = arr2chk($name, $new_arr, $def, $def, $v_as_k, $other);
-    } elseif ($type == "radio") {
-        $opt = arr2radio($name, $new_arr, $def, $v_as_k, $other);
-    } elseif ($type == "array") {
-        $opt = $new_arr;
-    } else {
-        $opt = arr2opt($new_arr, $def, $v_as_k, $other);
-    }
-    return $opt;
-}
-
-//把陣列轉為選項
-function arr2opt($arr, $def = "", $v_as_k = false, $other = "")
-{
-    if (is_array($def)) {
-        $def_arr = $def;
-    } else {
-        $def_arr = array($def);
-    }
-    foreach ($arr as $k => $v) {
-        if ($v_as_k) {
-            $k = $v;
-        }
-
-        $selected = (in_array($k, $def_arr)) ? "selected" : "";
-        $main .= "<option value='$k' $selected $other>$v</option>";
-    }
-    return $main;
-}
-
-//把陣列轉為選項
-function arr2chk($name, $arr, $def = "", $v_as_k = false, $other = "")
-{
-    if (is_array($def)) {
-        $def_arr = $def;
-    } else {
-        $def_arr = array($def);
-    }
-    $i = 1;
-    foreach ($arr as $k => $v) {
-        if ($v_as_k) {
-            $k = $v;
-        }
-
-        $checked = (in_array($k, $def_arr)) ? "checked" : "";
-        $main .= "<span style='white-space:nowrap;'><input type='checkbox' name='{$name}[]' value='$k' id='{$name}_{$i}' $checked $other>
-        <label for='{$name}_{$i}'>$v</label></span> ";
-        $i++;
-    }
-    return $main;
-}
-
-//把陣列轉為單選項
-function arr2radio($name, $arr, $def = "", $v_as_k = false, $other = "")
-{
-    $i = 1;
-    foreach ($arr as $k => $v) {
-        if ($v_as_k) {
-            $k = $v;
-        }
-
-        $checked = ($def == $k) ? "checked" : "";
-        $main .= "<span style='white-space:nowrap;'><input type='radio' name='{$name}' value='$k' id='{$name}_{$i}' $checked $other>
-      <label for='{$name}_{$i}'>$v</label></span> ";
-        $i++;
-    }
     return $main;
 }
 

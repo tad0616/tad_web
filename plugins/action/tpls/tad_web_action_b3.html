@@ -73,7 +73,7 @@
 
   <{if $isMineAction}>
   <script>
-    function delete_func(ActionID){
+    function delete_action_func(ActionID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="action.php?WebID=<{$WebID}>&op=delete&ActionID=" + ActionID;
@@ -111,7 +111,7 @@
 
   <{if $isMineAction}>
     <div class="text-right">
-      <a href="javascript:delete_func(<{$ActionID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+      <a href="javascript:delete_action_func(<{$ActionID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$ActionID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>

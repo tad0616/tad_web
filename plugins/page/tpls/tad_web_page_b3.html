@@ -54,7 +54,7 @@
 
   <{if $isMinePage}>
   <script>
-    function delete_func(PageID){
+    function delete_page_func(PageID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="page.php?WebID=<{$WebID}>&op=delete&PageID=" + PageID;
@@ -80,7 +80,7 @@
 
   <{if $isMinePage}>
     <div class="text-right">
-      <a href="javascript:delete_func(<{$PageID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+      <a href="javascript:delete_page_func(<{$PageID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$PageID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>

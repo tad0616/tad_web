@@ -1,8 +1,9 @@
 <?php
-global $xoopsConfig;
+$blocksArr = '';
+$i         = 0;
 
-$i = 0;
+$blocksArr[$i]['name'] = _MD_TCW_ABOUT_BLOCK_LIST_ADM;
+$blocksArr[$i]['func'] = 'list_web_adm';
+$blocksArr[$i]['tpl']  = 'list_web_adm.html';
 
-$blockConfig['aboutus'][$i]['name'] = _MD_TCW_ABOUT_BLOCK_LIST_ADM;
-$blockConfig['aboutus'][$i]['func'] = 'list_web_adm';
-$blockConfig['aboutus'][$i]['tpl']  = 'tad_web_aboutus_block_b3.html';
+$blockConfig['aboutus'] = $blocksArr;

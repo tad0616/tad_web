@@ -84,36 +84,6 @@ function tad_web_config($WebID)
     $mColorPicker_code = $mColorPicker->render();
     $xoopsTpl->assign('mColorPicker_code', $mColorPicker_code);
 
-    //區塊設定
-    //取得系統所有區塊
-    $block_option = get_all_blocks();
-
-    $block_ok = $block_yet = $block_name = $ok_blocks = "";
-
-    if (!empty($configs['display_blocks'])) {
-        $display_blocks_arr = explode(',', $configs['display_blocks']);
-        foreach ($display_blocks_arr as $func) {
-            $block_ok .= "<option value=\"$func\">{$block_option[$func]}</option>";
-            $ok_blocks[] = $func;
-        }
-        foreach ($block_option as $func => $name) {
-            if (!in_array($func, $ok_blocks)) {
-                $block_yet .= "<option value=\"$func\">{$name}</option>";
-            }
-        }
-    } else {
-        foreach ($block_option as $func => $name) {
-            $block_ok .= "<option value=\"$func\">{$name}</option>";
-            $ok_blocks[] = $func;
-        }
-        $block_yet = "";
-    }
-    $display_blocks = implode(',', $ok_blocks);
-
-    $xoopsTpl->assign('block_ok', $block_ok);
-    $xoopsTpl->assign('block_yet', $block_yet);
-    $xoopsTpl->assign('display_blocks', $display_blocks);
-
     //管理員設定
     $web_admin_arr = get_web_roles($WebID, 'admin');
     $web_admins    = implode(',', $web_admin_arr);
@@ -245,6 +215,16 @@ function reset_logo($WebID)
     output_head_file($WebID);
 }
 
+//儲存區塊
+function save_block($display_blocks = '', $WebID = '')
+{
+    global $xoopsDB;
+    $display_block_arr = explode(',', $display_blocks);
+    foreach ($display_block_arr as $sort => $BlockName) {
+        $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`) values('{$BlockName}', '0', '', '', '1', '', '{$sort}', 'side', '{$WebID}')";
+        $xoopsDB->queryF($sql) or web_error($sql);
+    }
+}
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -323,7 +303,7 @@ switch ($op) {
         break;
 
     case "save_block":
-        save_web_config("display_blocks", $display_blocks, $WebID);
+        save_block($display_blocks, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

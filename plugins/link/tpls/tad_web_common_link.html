@@ -1,7 +1,7 @@
 <{if $link_data}>
   <{if $isMineLink}>
     <script type="text/javascript">
-      function delete_func(LinkID){
+      function delete_link_func(LinkID){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
         if (!sure)  return;
         location.href="link.php?op=delete&LinkID=" + LinkID;
@@ -57,7 +57,7 @@
         <{/if}>
         <{if !$showWebTitleLink && $isMineLink}>
           <td class="text-center">
-            <a href="javascript:delete_func(<{$link.LinkID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+            <a href="javascript:delete_link_func(<{$link.LinkID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
             <a href="link.php?WebID=<{$link.WebID}>&op=edit_form&LinkID=<{$link.LinkID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
           </td>
         <{/if}>

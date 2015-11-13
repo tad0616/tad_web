@@ -1,7 +1,7 @@
 <{if $works_data}>
   <{if $isMineWorks}>
     <script>
-      function delete_func(WorksID){
+      function delete_works_func(WorksID){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
         if (!sure)  return;
         location.href="works.php?WebID=<{$WebID}>&op=delete&WorksID=" + WorksID;
@@ -58,7 +58,7 @@
         <{/if}>
         <{if !$showWebTitleAction && $isMineWorks}>
         <td class="text-center">
-          <a href="javascript:delete_func(<{$work.WorksID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
+          <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
           <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="btn btn-mini btn-warning"><{$smarty.const._TAD_EDIT}></a>
         </td>
         <{/if}>

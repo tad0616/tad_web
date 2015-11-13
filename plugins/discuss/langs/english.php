@@ -18,3 +18,4 @@ define("_MD_TCW_DISCUSS_FILES", "Attachment");
 define('_MD_TCW_MEM_UNAME', 'Student Account');
 define('_MD_TCW_MEM_PASSWD', 'Student Password');
 define("_MD_TCW_PLEASE_INPUT", "Enter ");
+define("_MD_TCW_DISCUSS_BLOCK_LIST", "ChatBox");

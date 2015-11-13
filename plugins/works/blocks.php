@@ -1,4 +1,17 @@
 <?php
+function list_work($WebID)
+{
+
+    global $xoopsDB, $xoopsTpl, $TadUpFiles;
+    if (empty($WebID)) {
+        retuen;
+    }
+    include_once "class.php";
+
+    $tad_web_works = new tad_web_works($WebID);
+    $tad_web_works->list_all();
+}
+
 function random_work($WebID)
 {
 
@@ -12,16 +25,17 @@ function random_work($WebID)
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $WorksID , $WorkName , $WorkDesc , $WorksDate , $uid , $WebID , $WorksCount
-    foreach ($all as $k => $v) {
-        $$k = $v;
+    if ($all) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+        $TadUpFiles->set_col("WorksID", $WorksID);
+        $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+        $xoopsTpl->assign('random_work', $pics);
+        $xoopsTpl->assign('WorksID', $WorksID);
+        $xoopsTpl->assign('WorkName', $WorkName);
     }
 
-    $TadUpFiles->set_col("WorksID", $WorksID);
-    $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-
-    $xoopsTpl->assign('WorkName', $WorkName);
-    $xoopsTpl->assign('random_work', $pics);
-    $xoopsTpl->assign('WorksID', $WorksID);
     $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('func', 'random_work');
 
@@ -40,16 +54,18 @@ function latest_work($WebID)
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $WorksID , $WorkName , $WorkDesc , $WorksDate , $uid , $WebID , $WorksCount
-    foreach ($all as $k => $v) {
-        $$k = $v;
+    if ($all) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+        $TadUpFiles->set_col("WorksID", $WorksID);
+        $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+
+        $xoopsTpl->assign('WorkName', $WorkName);
+        $xoopsTpl->assign('latest_work', $pics);
+        $xoopsTpl->assign('WorksID', $WorksID);
     }
 
-    $TadUpFiles->set_col("WorksID", $WorksID);
-    $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-
-    $xoopsTpl->assign('WorkName', $WorkName);
-    $xoopsTpl->assign('latest_work', $pics);
-    $xoopsTpl->assign('WorksID', $WorksID);
     $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('func', 'latest_work');
 

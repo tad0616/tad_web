@@ -1,7 +1,7 @@
 <{if $homework_data}>
   <{if $isMineHomework}>
     <script>
-      function delete_func(HomeworkID){
+      function delete_homework_func(HomeworkID){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
         if (!sure)  return;
         location.href="homework.php?op=delete&HomeworkID=" + HomeworkID;
@@ -16,7 +16,7 @@
           <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework_data.0.HomeworkID}>"><{$homework_data.0.toCal}> (<{$homework_data.0.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
           <{if !$showWebTitleHomework && $isMineHomework}>
-            <a href="javascript:delete_func(<{$homework_data.0.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <a href="javascript:delete_homework_func(<{$homework_data.0.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
 
             <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework_data.0.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
           <{/if}>
@@ -38,7 +38,7 @@
                 <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
                 <{if !$showWebTitleHomework && $isMineHomework}>
-                  <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
               </li>
@@ -60,7 +60,7 @@
                 <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
                 <{if !$showWebTitleHomework && $isMineHomework}>
-                  <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
 
@@ -112,7 +112,7 @@
           <{/if}>
           <{if !$showWebTitleHomework && $isMineHomework}>
             <td class="text-center">
-              <a href="javascript:delete_func(<{$homework.HomeworkID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
+              <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
               <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
             </td>
         <{/if}>

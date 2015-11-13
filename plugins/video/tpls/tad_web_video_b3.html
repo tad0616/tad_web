@@ -73,7 +73,7 @@
 
   <{if $isMineVideo}>
     <script>
-    function delete_func(VideoID){
+    function delete_video_func(VideoID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="video.php?op=delete&VideoID=" + VideoID;
@@ -105,7 +105,7 @@
 
   <{if $isMineVideo}>
     <div class="text-right">
-    <a href="javascript:delete_func(<{$VideoID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+    <a href="javascript:delete_video_func(<{$VideoID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
     <a href="video.php?WebID=<{$WebID}>&op=edit_form&VideoID=<{$VideoID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>

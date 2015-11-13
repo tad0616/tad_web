@@ -1,6 +1,6 @@
 <{if $isMineSchedule}>
   <script>
-    function delete_func(ScheduleID){
+    function delete_schedule_func(ScheduleID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="schedule.php?WebID=<{$WebID}>&op=delete&ScheduleID=" + ScheduleID;
@@ -40,7 +40,7 @@
           </a>
           <small>
             <{if !$showWebTitleSchedule && $isMineSchedule}>
-              <a href="javascript:delete_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </small>

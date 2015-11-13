@@ -1,6 +1,6 @@
 <{if $isMinePage}>
   <script>
-    function delete_func(PageID){
+    function delete_page_func(PageID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
       if (!sure)  return;
       location.href="page.php?WebID=<{$WebID}>&op=delete&PageID=" + PageID;
@@ -23,7 +23,7 @@
       <div class="text-center" style="margin: 8px auto;">
         <a href='page.php?WebID=<{$act.WebID}>&PageID=<{$act.PageID}>'><{$act.PageTitle}></a>
         <{if !$showWebTitlePage && $isMinePage}>
-          <a href="javascript:delete_func(<{$act.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+          <a href="javascript:delete_page_func(<{$act.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
           <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$act.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
         <{/if}>
       </div>

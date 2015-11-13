@@ -118,13 +118,11 @@ $modversion['templates'][$i]['file']        = 'tad_web_config_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_config_b3.html';
 
 //tad_web_cate.html 不需要
-
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_cate_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_cate_b3.html';
 
 //tad_web_header.html 不需要
-
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_header_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_header_b3.html';
@@ -136,6 +134,10 @@ $modversion['templates'][$i]['description'] = 'tad_web_tpl.html';
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_tpl_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_tpl_b3.html';
+//tad_web_block.html 不需要
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_block_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_block_b3.html';
 
 //---區塊設定---//
 $i                                       = 1;
@@ -158,6 +160,7 @@ $modversion['blocks'][$i]['name']        = _MI_TCW_BNAME3;
 $modversion['blocks'][$i]['description'] = _MI_TCW_BDESC3;
 $modversion['blocks'][$i]['show_func']   = "tad_web_image";
 $modversion['blocks'][$i]['template']    = "tad_web_block_image.html";
+
 /*
 $i++;
 $modversion['blocks'][$i]['file'] = "tad_web_discuss.php";

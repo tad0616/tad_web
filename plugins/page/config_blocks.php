@@ -1,10 +1,14 @@
 <?php
-global $xoopsConfig;
-
-$i = 0;
+$blocksArr = '';
+$i         = 0;
 
 $blocksArr[$i]['name'] = _MD_TCW_PAGE_BLOCK_LIST;
-$blocksArr[$i]['func'] = 'get_page_list';
-$blocksArr[$i]['tpl']  = 'get_page_list.html';
+$blocksArr[$i]['func'] = 'list_page';
+$blocksArr[$i]['tpl']  = 'list_page.html';
+
+$i++;
+$blocksArr[$i]['name'] = _MD_TCW_PAGE_BLOCK_MENU;
+$blocksArr[$i]['func'] = 'page_menu';
+$blocksArr[$i]['tpl']  = 'page_menu.html';
 
 $blockConfig['page'] = $blocksArr;

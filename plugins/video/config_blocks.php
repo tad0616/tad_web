@@ -1,8 +1,12 @@
 <?php
-global $xoopsConfig;
+$blocksArr = '';
+$i         = 0;
 
-$i = 0;
+$blocksArr[$i]['name'] = _MD_TCW_VIDEO_BLOCK_LIST;
+$blocksArr[$i]['func'] = 'list_video';
+$blocksArr[$i]['tpl']  = 'list_video.html';
 
+$i++;
 $blocksArr[$i]['name'] = _MD_TCW_VIDEO_BLOCK_RANDOM;
 $blocksArr[$i]['func'] = 'random_video';
 $blocksArr[$i]['tpl']  = 'random_video.html';

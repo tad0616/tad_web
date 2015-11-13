@@ -15,4 +15,4 @@ $xoopsTpl->assign('menu_var', $menu_var);
 $xoopsTpl->assign('bootstrap', $_SESSION['bootstrap']);
 
 //區塊
-get_tad_web_blocks($WebID);
+get_tad_web_blocks($WebID, _DISPLAY_MODE);

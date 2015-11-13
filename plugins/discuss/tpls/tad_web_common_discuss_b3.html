@@ -38,7 +38,7 @@
       </thead>
       <{if $discuss_data}>
         <script>
-        	function delete_func(DiscussID){
+        	function delete_discuss_func(DiscussID){
         		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
         		if (!sure)	return;
         		location.href="discuss.php?WebID=<{$WebID}>&op=delete&DiscussID=" + DiscussID;
@@ -70,7 +70,7 @@
             <{/if}>
             <{if !$showWebTitleDiscuss && $isMineDiscuss}>
               <td class="text-center">
-                <a href="javascript:delete_func(<{$discuss.DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+                <a href="javascript:delete_discuss_func(<{$discuss.DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                 <a href="discuss.php?WebID=<{$discuss.WebID}>&op=edit_form&DiscussID=<{$discuss.DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
               </td>
             <{/if}>

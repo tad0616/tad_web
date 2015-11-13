@@ -8,3 +8,4 @@ define('_MD_TCW_FILE_KIND', 'Category');
 define('_MD_TCW_FILE_DATE', 'Date');
 define('_MD_TCW_FILENAME', 'Filename');
 define('_MD_TCW_FILES_UPLOAD', 'Upload file');
+define("_MD_TCW_FILES_BLOCK_LIST", "Downloads");

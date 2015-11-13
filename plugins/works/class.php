@@ -171,7 +171,7 @@ class tad_web_works
         //設定「CateID」欄位預設值
         $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
         $cate_menu = $this->web_cate->cate_menu($CateID);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($WorksID)) ? "insert" : "update";
 

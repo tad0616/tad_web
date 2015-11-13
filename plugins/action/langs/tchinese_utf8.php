@@ -10,3 +10,4 @@ define("_MD_TCW_ACTIONPLACE", "活動地點");
 define("_MD_TCW_ACTIONUID", "發布者");
 define("_MD_TCW_ACTIONCOUNT", "人氣");
 define("_MD_TCW_ACTION_UPLOAD", "上傳圖檔");
+define("_MD_TCW_ACTION_BLOCK_LIST", "活動剪影");

@@ -10,3 +10,4 @@ define("_MD_TCW_LINKSORT", "排序");
 define("_MD_TCW_LINKUID", "發布者");
 define("_MD_TCW_LINKCOUNTER", "人氣");
 define("_MD_TCW_LINK_AUTO_GET", "自動抓取");
+define("_MD_TCW_LINK_BLOCK_LIST", "常用網站");

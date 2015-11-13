@@ -10,6 +10,7 @@ define('_MD_TCW_CLEAR', 'Clear');
 define('_MD_TCW_TOTAL', 'Total');
 define('_MD_TCW_PEOPLE', 'People');
 define("_MD_TCW_TOOLS", "Setup");
+define("_MD_TCW_WEB_TOOLS", "Web");
 define("_MD_TCW_PLUGIN_TOOLS", "Plugins");
 define("_MD_TCW_HEAD_TOOLS", "Header");
 define("_MD_TCW_LOGO_TOOLS", "Logo");

@@ -1,0 +1,81 @@
+<{if $link_data}>
+  <{if $isMineLink}>
+    <script type="text/javascript">
+      function delete_link_func(LinkID){
+        var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
+        if (!sure)  return;
+        location.href="link.php?op=delete&LinkID=" + LinkID;
+      }
+    </script>
+  <{/if}>
+
+  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
+    <h3><{$smarty.const._MD_TCW_LINK_BLOCK_LIST}></h3>
+  <{/if}>
+
+  <table class="footable table common_table">
+    <thead>
+      <tr>
+        <th data-class="expand">
+          <{$smarty.const._MD_TCW_LINKTITLE}>
+        </th>
+        <th data-hide="phone" style="width:50px;text-align:center;">
+          <{$smarty.const._MD_TCW_ACTIONCOUNT}>
+        </th>
+        <{if $showWebTitleLink}>
+          <th data-hide="phone" style="width:150px;text-align:center;">
+            <{$smarty.const._MD_TCW_TEAMID}>
+          </th>
+        <{/if}>
+        <{if !$showWebTitleLink && $isMineLink}>
+          <th data-hide="phone" style="width:100px;text-align:center;">
+            <{$smarty.const._TAD_FUNCTION}>
+          </th>
+        <{/if}>
+      </tr>
+    </thead>
+    <{foreach item=link from=$link_data}>
+      <tr>
+        <td>
+          <i class="fa fa-external-link"></i>
+          <{if $link.cate.CateID}>
+            <span class="label label-info"><a href="link.php?WebID=<{$link.WebID}>&CateID=<{$link.cate.CateID}>" style="color: #FFFFFF;"><{$link.cate.CateName}></a></span>
+          <{/if}>
+          <a href="link.php?WebID=<{$link.WebID}>&LinkID=<{$link.LinkID}>" target="_blank"><{$link.LinkTitle}></a>
+          <div style="margin: 6px 0px;"><a href="link.php?WebID=<{$link.WebID}>&LinkID=<{$link.LinkID}>" target="_blank"><{$link.LinkShortUrl}></a></div>
+          <{if $link.LinkDesc}>
+            <div style="font-size:12px;color:#666699; line-height:1.5;"><{$link.LinkDesc}></div>
+          <{/if}>
+        </td>
+        <td class="text-center">
+          <{$link.LinkCounter}>
+        </td>
+        <{if $showWebTitleLink}>
+          <td class="text-center">
+            <{$link.WebTitle}>
+          </td>
+        <{/if}>
+        <{if !$showWebTitleLink && $isMineLink}>
+          <td class="text-center">
+            <a href="javascript:delete_link_func(<{$link.LinkID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+            <a href="link.php?WebID=<{$link.WebID}>&op=edit_form&LinkID=<{$link.LinkID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+          </td>
+        <{/if}>
+      </tr>
+    <{/foreach}>
+  </table>
+
+  <div style="text-align:right; margin-bottom: 10px;">
+    <{if $link_bar==""}>
+      <{if $WebID==""}>
+        <a href="link.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
+      <{else}>
+        <a href="link.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
+      <{/if}>
+    <{/if}>
+    <{if $isMineLink and $WebID}>
+      <a href="link.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info">
+    <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
+    <{/if}>
+  </div>
+<{/if}>

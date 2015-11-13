@@ -80,6 +80,21 @@ if ($isMyWeb) {
     $menu_var[$i]['url']    = "config.php?WebID={$WebID}";
     $menu_var[$i]['target'] = "_self";
     $menu_var[$i]['icon']   = "fa-check-square-o";
+
+    $j                          = 0;
+    $sub_menu_var[$j]['id']     = $j;
+    $sub_menu_var[$j]['title']  = _MD_TCW_WEB_TOOLS;
+    $sub_menu_var[$j]['url']    = "config.php?WebID={$WebID}";
+    $sub_menu_var[$j]['target'] = "_self";
+    $sub_menu_var[$j]['icon']   = "fa-check-square-o";
+    $j++;
+    $sub_menu_var[$j]['id']     = $j;
+    $sub_menu_var[$j]['title']  = _MD_TCW_BLOCK_TOOLS;
+    $sub_menu_var[$j]['url']    = "block.php?WebID={$WebID}";
+    $sub_menu_var[$j]['target'] = "_self";
+    $sub_menu_var[$j]['icon']   = "fa-check-square-o";
+
+    $menu_var[$i]['submenu'] = $sub_menu_var;
     $i++;
 }
 

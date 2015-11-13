@@ -1,7 +1,7 @@
 <{if $news_data}>
   <{if $isMineNews}>
     <script>
-      function delete_func(NewsID){
+      function delete_news_func(NewsID){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
         if (!sure)  return;
         location.href="news.php?op=delete&NewsID=" + NewsID;
@@ -18,7 +18,7 @@
             <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
             <{if !$showWebTitleNews && $isMineNews}>
-              <a href="javascript:delete_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="javascript:delete_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </h3>
@@ -35,7 +35,7 @@
               <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
               <{if !$showWebTitleNews && $isMineNews}>
-                <a href="javascript:delete_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="javascript:delete_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                 <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
               <{/if}>
             </h3>
@@ -58,7 +58,7 @@
               <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
 
                 <{if !$showWebTitleNews && $isMineNews}>
-                  <a href="javascript:delete_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                  <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
               </li>
@@ -109,7 +109,7 @@
           <{if $showWebTitleNews}><td class="text-center"><{$news.WebTitle}></td><{/if}>
           <{if !$showWebTitleNews && $isMineNews}>
           <td class="text-center">
-            <a href="javascript:delete_func(<{$news.NewsID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
+            <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
             <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
           </td>
           <{/if}>
