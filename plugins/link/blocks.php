@@ -1,5 +1,5 @@
 <?php
-function list_link($WebID)
+function list_link($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -9,5 +9,7 @@ function list_link($WebID)
     include_once "class.php";
 
     $tad_web_link = new tad_web_link($WebID);
-    $tad_web_link->list_all();
+
+    $block = $tad_web_link->list_all("", $config['limit'], 'return');
+    return $block;
 }

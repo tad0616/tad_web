@@ -18,6 +18,7 @@ define("_MD_TCW_BG_TOOLS", "Background");
 define("_MD_TCW_COLOR_TOOLS", "Color");
 define("_MD_TCW_BLOCK_TOOLS", "Blocks");
 define("_MD_TCW_DATA_NOT_EXIST", "This information does not exis.");
+define("_MD_TCW_SAVED", "Saved");
 
 //header.php
 define('_MD_TCW_ALL_CLASS', 'Class List');

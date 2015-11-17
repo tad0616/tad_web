@@ -13,7 +13,7 @@ class tad_web_page
     }
 
     //文章剪影
-    public function list_all($CateID = "", $limit = null)
+    public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
 
@@ -53,22 +53,33 @@ class tad_web_page
             $page_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = $this->web_cate->get_tad_web_cate_arr();
+            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
             $page_data[$i]['cate']     = $cate[$CateID];
             $page_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             $cate_data[$CateID][]      = $all;
             $i++;
         }
-        //die(var_export($page_data));
-        $xoopsTpl->assign('cate_data', $cate_data);
-        $xoopsTpl->assign('page_data', $page_data);
-        $xoopsTpl->assign('page_bar', $show_bar);
-        $xoopsTpl->assign('isMinePage', $isMyWeb);
-        $xoopsTpl->assign('showWebTitlePage', $showWebTitle);
-        $xoopsTpl->assign('page', get_db_plugin($this->WebID, 'page'));
-        return $total;
 
+        if ($mode == "return") {
+            $data['cate_arr']         = $cate_arr;
+            $data['cate_data']        = $cate_data;
+            $data['page_data']        = $page_data;
+            $data['page_bar']         = $show_bar;
+            $data['isMinePage']       = $isMyWeb;
+            $data['showWebTitlePage'] = $showWebTitle;
+            //$data['page']             = get_db_plugin($this->WebID, 'page');
+            $data['total'] = $total;
+            return $data;
+        } else {
+            $xoopsTpl->assign('cate_data', $cate_data);
+            $xoopsTpl->assign('page_data', $page_data);
+            $xoopsTpl->assign('page_bar', $show_bar);
+            $xoopsTpl->assign('isMinePage', $isMyWeb);
+            $xoopsTpl->assign('showWebTitlePage', $showWebTitle);
+            $xoopsTpl->assign('page', get_db_plugin($this->WebID, 'page'));
+            return $total;
+        }
     }
 
     //以流水號秀出某筆tad_web_page資料內容
@@ -175,7 +186,7 @@ class tad_web_page
         //設定「CateID」欄位預設值
         $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
         $cate_menu = $this->web_cate->cate_menu($CateID);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($PageID)) ? "insert" : "update";
 

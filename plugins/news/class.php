@@ -12,23 +12,25 @@ class tad_web_news
     }
 
     //最新消息
-    public function list_all($CateID = "", $limit = null)
+    public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $isMyWeb;
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
-        //取得tad_web_cate所有資料陣列
-        $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
-
         $andCateID = "";
-        if (!empty($CateID)) {
-            //取得單一分類資料
-            $cate = $this->web_cate->get_tad_web_cate($CateID);
-            $xoopsTpl->assign('cate', $cate);
-            $andCateID = "and a.`CateID`='$CateID'";
+        if ($mode == "assign") {
+            //取得tad_web_cate所有資料陣列
+            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+            $xoopsTpl->assign('cate_menu', $cate_menu);
+
+            if (!empty($CateID)) {
+                //取得單一分類資料
+                $cate = $this->web_cate->get_tad_web_cate($CateID);
+                $xoopsTpl->assign('cate', $cate);
+                $andCateID = "and a.`CateID`='$CateID'";
+            }
         }
 
         $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by NewsDate desc";
@@ -59,7 +61,7 @@ class tad_web_news
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = $this->web_cate->get_tad_web_cate_arr();
+            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
             $main_data[$i]['cate']     = $cate[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -74,13 +76,22 @@ class tad_web_news
             $i++;
         }
 
-        $xoopsTpl->assign('news_data', $main_data);
-        $xoopsTpl->assign('news_bar', $show_bar);
-        $xoopsTpl->assign('isMineNews', $isMyWeb);
-        $xoopsTpl->assign('showWebTitleNews', $showWebTitle);
-        $xoopsTpl->assign('news', get_db_plugin($this->WebID, 'news'));
-        return $total;
-
+        if ($mode == "return") {
+            $data['news_data']        = $main_data;
+            $data['news_bar']         = $show_bar;
+            $data['isMineNews']       = $isMyWeb;
+            $data['showWebTitleNews'] = $showWebTitle;
+            //$data['news']             = get_db_plugin($this->WebID, 'news');
+            $data['total'] = $total;
+            return $data;
+        } else {
+            $xoopsTpl->assign('news_data', $main_data);
+            $xoopsTpl->assign('news_bar', $show_bar);
+            $xoopsTpl->assign('isMineNews', $isMyWeb);
+            $xoopsTpl->assign('showWebTitleNews', $showWebTitle);
+            $xoopsTpl->assign('news', get_db_plugin($this->WebID, 'news'));
+            return $total;
+        }
     }
 
     //以流水號秀出某筆tad_web_news資料內容
@@ -201,7 +212,7 @@ class tad_web_news
         //設定「CateID」欄位預設值
         $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
         $cate_menu = $this->web_cate->cate_menu($CateID);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($NewsID)) ? "insert" : "update";
 

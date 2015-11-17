@@ -12,23 +12,25 @@ class tad_web_link
     }
 
     //好站連結
-    public function list_all($CateID = "", $limit = "")
+    public function list_all($CateID = "", $limit = "", $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $isMyWeb;
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
-        //取得tad_web_cate所有資料陣列
-        $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
-
         $andCateID = "";
-        if (!empty($CateID)) {
-            //取得單一分類資料
-            $cate = $this->web_cate->get_tad_web_cate($CateID);
-            $xoopsTpl->assign('cate', $cate);
-            $andCateID = "and a.`CateID`='$CateID'";
+        if ($mode == "assign") {
+            //取得tad_web_cate所有資料陣列
+            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+            $xoopsTpl->assign('cate_menu', $cate_menu);
+
+            if (!empty($CateID)) {
+                //取得單一分類資料
+                $cate = $this->web_cate->get_tad_web_cate($CateID);
+                $xoopsTpl->assign('cate', $cate);
+                $andCateID = "and a.`CateID`='$CateID'";
+            }
         }
 
         $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.LinkID desc";
@@ -59,7 +61,7 @@ class tad_web_link
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = $this->web_cate->get_tad_web_cate_arr();
+            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
             $main_data[$i]['cate']         = $cate[$CateID];
             $main_data[$i]['WebTitle']     = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -69,12 +71,22 @@ class tad_web_link
             $i++;
         }
 
-        $xoopsTpl->assign('link_data', $main_data);
-        $xoopsTpl->assign('link_bar', $show_bar);
-        $xoopsTpl->assign('isMineLink', $isMyWeb);
-        $xoopsTpl->assign('showWebTitleLink', $showWebTitle);
-        $xoopsTpl->assign('link', get_db_plugin($this->WebID, 'link'));
-        return $total;
+        if ($mode == "return") {
+            $data['link_data']        = $main_data;
+            $data['link_bar']         = $show_bar;
+            $data['isMineLink']       = $isMyWeb;
+            $data['showWebTitleLink'] = $showWebTitle;
+            //$data['link']             = get_db_plugin($this->WebID, 'link');
+            $data['total'] = $total;
+            return $data;
+        } else {
+            $xoopsTpl->assign('link_data', $main_data);
+            $xoopsTpl->assign('link_bar', $show_bar);
+            $xoopsTpl->assign('isMineLink', $isMyWeb);
+            $xoopsTpl->assign('showWebTitleLink', $showWebTitle);
+            $xoopsTpl->assign('link', get_db_plugin($this->WebID, 'link'));
+            return $total;
+        }
     }
 
     //以流水號秀出某筆tad_web_link資料內容
@@ -151,7 +163,7 @@ class tad_web_link
         //設定「CateID」欄位預設值
         $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
         $cate_menu = $this->web_cate->cate_menu($CateID);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($LinkID)) ? "insert" : "update";
         //$op="replace_tad_web_link";

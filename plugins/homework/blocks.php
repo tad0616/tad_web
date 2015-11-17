@@ -1,5 +1,5 @@
 <?php
-function list_homework($WebID)
+function list_homework($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -7,7 +7,8 @@ function list_homework($WebID)
         retuen;
     }
     include_once "class.php";
-
     $tad_web_homework = new tad_web_homework($WebID);
-    $tad_web_homework->list_all();
+
+    $block = $tad_web_homework->list_all("", $config['limit'], 'return');
+    return $block;
 }

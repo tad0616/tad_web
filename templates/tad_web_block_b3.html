@@ -24,23 +24,31 @@
       cursorAt: { left: 5 },
       opacity: 0.5,
       receive: function( event, ui ) {
-        $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: $(this).parent().attr("id"), BlockName: ui.item.attr("id")}, function(data) {
+        $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: $(this).parent().attr("id"), BlockID: ui.item.attr("id")}, function(data) {
             $("#msg").html(data);
         });
       },
       update: function( event, ui ) {
         var order = $(this).sortable('toArray', {attribute: 'id'});
-        $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", BlockName: ui.item.attr("id"), order_arr: order}, function(data) {
+        $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", BlockID: ui.item.attr("id"), order_arr: order}, function(data) {
             $("#msg").html(data);
         });
       }
     }).disableSelection();
   });
 
-  function enableBlock(status,BlockName){
-    $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID}>", BlockEnable: status, BlockName: BlockName}, function(data) {
+  function enableBlock(BlockID){
+    var img_id="#"+BlockID+"_icon";
+    var now_status=$(img_id).attr('title');
+    if(now_status=='1'){
+      status=0;
+    }else{
+      status=1;
+    }
+    $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID}>", BlockEnable: status, BlockID: BlockID}, function(data) {
             $("#msg").html(data);
-            $("#"+BlockName+"_icon").attr("src","images/show"+status+".gif");
+            $(img_id).attr("src","images/show"+status+".gif");
+            $(img_id).attr("title",status);
         });
   }
   </script>
@@ -51,7 +59,7 @@
   <div id="uninstall" class="alert alert-danger">
     <ul id="sort_uninstall" class="connectedSortable">
         <{foreach from=$uninstall item=block}>
-          <li id="<{$block.BlockName}>" class="ui-state-highlight">
+          <li id="<{$block.BlockID}>" class="ui-state-highlight">
             <{$block.icon}>
             <{$block.BlockTitle}>
           </li>
@@ -69,7 +77,7 @@
           <ul id="sort_block1" class="connectedSortable">
             <{if $block1}>
               <{foreach from=$block1 item=block}>
-                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                <li id="<{$block.BlockID}>" class="ui-state-highlight">
                   <{$block.icon}>
                   <{$block.BlockTitle}>
                 </li>
@@ -86,7 +94,7 @@
           <ul id="sort_block2" class="connectedSortable">
             <{if $block2}>
               <{foreach from=$block2 item=block}>
-                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                <li id="<{$block.BlockID}>" class="ui-state-highlight">
                   <{$block.icon}>
                   <{$block.BlockTitle}>
                 </li>
@@ -100,7 +108,7 @@
           <ul id="sort_block3" class="connectedSortable">
             <{if $block3}>
               <{foreach from=$block3 item=block}>
-                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                <li id="<{$block.BlockID}>" class="ui-state-highlight">
                   <{$block.icon}>
                   <{$block.BlockTitle}>
                 </li>
@@ -117,7 +125,7 @@
           <ul id="sort_block4" class="connectedSortable">
             <{if $block4}>
               <{foreach from=$block4 item=block}>
-                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                <li id="<{$block.BlockID}>" class="ui-state-highlight">
                   <{$block.icon}>
                   <{$block.BlockTitle}>
                 </li>
@@ -134,7 +142,7 @@
           <ul id="sort_block5" class="connectedSortable">
             <{if $block5}>
               <{foreach from=$block5 item=block}>
-                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                <li id="<{$block.BlockID}>" class="ui-state-highlight">
                   <{$block.icon}>
                   <{$block.BlockTitle}>
                 </li>
@@ -148,7 +156,7 @@
           <ul id="sort_block6" class="connectedSortable">
             <{if $block6}>
               <{foreach from=$block6 item=block}>
-                <li id="<{$block.BlockName}>" class="ui-state-highlight">
+                <li id="<{$block.BlockID}>" class="ui-state-highlight">
                   <{$block.icon}>
                   <{$block.BlockTitle}>
                 </li>
@@ -165,7 +173,7 @@
     <ul id="sort_side" class="connectedSortable">
       <{if $side}>
         <{foreach from=$side item=block}>
-          <li id="<{$block.BlockName}>" class="ui-state-highlight">
+          <li id="<{$block.BlockID}>" class="ui-state-highlight">
             <{$block.icon}>
             <{$block.BlockTitle}>
           </li>

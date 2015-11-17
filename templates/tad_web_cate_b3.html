@@ -28,10 +28,10 @@
 <h1><{$smarty.const._MD_TCW_CATE_TOOLS}></h1>
 
 <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
-  <{$cate_menu}>
+  <{$cate_menu_form}>
   <hr>
 
-  <{foreach from=$cate_arr item=cate}>
+  <{foreach from=$cate_opt_arr item=cate}>
     <!--<{$cate.CateName}>-->
     <div class="form-group">
       <label class="col-md-2 control-label">

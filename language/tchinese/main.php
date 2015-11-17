@@ -18,6 +18,7 @@ define("_MD_TCW_BG_TOOLS", "背景圖設定");
 define("_MD_TCW_COLOR_TOOLS", "顏色設定");
 define("_MD_TCW_BLOCK_TOOLS", "區塊設定");
 define("_MD_TCW_DATA_NOT_EXIST", "該資訊不存在");
+define("_MD_TCW_SAVED", "已儲存");
 
 //header.php
 define("_MD_TCW_ALL_CLASS", "網站列表");

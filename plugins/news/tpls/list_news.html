@@ -1,5 +1,6 @@
-<{if $news_data}>
-  <{if $isMineNews}>
+<{assign var="bc" value=$block.BlockContent}>
+<{if $bc.news_data}>
+  <{if $bc.isMineNews}>
     <script>
       function delete_news_func(NewsID){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -12,31 +13,31 @@
   <{if $WebID}>
     <div class="row">
       <div class="col-md-12">
-        <{if $news_data.0.NewsContent}>
+        <{if $bc.news_data.0.NewsContent}>
           <h3>
-            <{$news_data.0.Date}>
-            <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
+            <{$bc.news_data.0.Date}>
+            <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.news_data.0.NewsID}>"><{$bc.news_data.0.NewsTitle}></a>
 
-            <{if !$showWebTitleNews && $isMineNews}>
-              <a href="javascript:delete_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-              <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{if !$bc.showWebTitleNews && $bc.isMineNews}>
+              <a href="javascript:delete_news_func(<{$bc.news_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </h3>
           <div class="well" style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
-            <{if $news_data.0.cate.CateID}>
-              <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$news_data.0.cate.CateName}></a></span>
+            <{if $bc.news_data.0.cate.CateID}>
+              <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$bc.news_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$bc.news_data.0.cate.CateName}></a></span>
             <{/if}>
-            <{$news_data.0.NewsContent}>
+            <{$bc.news_data.0.NewsContent}>
           </div>
         <{else}>
           <div class="well" style="height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
             <h3>
-              <{$news_data.0.Date}>
-              <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
+              <{$bc.news_data.0.Date}>
+              <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.news_data.0.NewsID}>"><{$bc.news_data.0.NewsTitle}></a>
 
-              <{if !$showWebTitleNews && $isMineNews}>
-                <a href="javascript:delete_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{if !$bc.showWebTitleNews && $bc.isMineNews}>
+                <a href="javascript:delete_news_func(<{$bc.news_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
               <{/if}>
             </h3>
           </div>
@@ -47,7 +48,7 @@
     <div class="row">
       <div class="col-md-12">
         <ul class="list-group">
-          <{foreach from=$news_data key=i item=news}>
+          <{foreach from=$bc.news_data key=i item=news}>
             <{if $i > 0}>
               <li class="list-group-item">
               <span class="badge"><{$news.NewsCounter}></span>
@@ -57,7 +58,7 @@
               <{/if}>
               <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
 
-                <{if !$showWebTitleNews && $isMineNews}>
+                <{if !$bc.showWebTitleNews && $bc.isMineNews}>
                   <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
@@ -97,7 +98,7 @@
           <{/if}>
         </tr>
       </thead>
-      <{foreach from=$news_data item=news}>
+      <{foreach from=$bc.news_data item=news}>
         <tr>
           <td class="text-center"><{$news.Date}></td>
           <td>
@@ -106,8 +107,8 @@
           <{/if}>
           <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
           <td class="text-center"><{$news.NewsCounter}></td>
-          <{if $showWebTitleNews}><td class="text-center"><{$news.WebTitle}></td><{/if}>
-          <{if !$showWebTitleNews && $isMineNews}>
+          <{if $bc.showWebTitleNews}><td class="text-center"><{$news.WebTitle}></td><{/if}>
+          <{if !$bc.showWebTitleNews && $bc.isMineNews}>
           <td class="text-center">
             <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
             <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
@@ -117,11 +118,10 @@
       <{/foreach}>
     </table>
 
-    <{$news_bar}>
   <{/if}>
 
   <div style="text-align:right; margin-bottom: 10px;">
-    <{if $news_bar==""}>
+    <{if $bc.news_bar==""}>
       <{if $WebID==""}>
         <a href="news.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <{else}>

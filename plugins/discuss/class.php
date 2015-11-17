@@ -12,7 +12,7 @@ class tad_web_discuss
     }
 
     //列出所有tad_web_discuss資料
-    public function list_all($CateID = "", $limit = null)
+    public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
         global $xoopsDB, $xoopsUser, $xoopsTpl, $isMyWeb;
 
@@ -23,16 +23,18 @@ class tad_web_discuss
             $showWebTitle = (empty($this->WebID)) ? 1 : 0;
             $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
-            //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
-
             $andCateID = "";
-            if (!empty($CateID)) {
-                //取得單一分類資料
-                $cate = $this->web_cate->get_tad_web_cate($CateID);
-                $xoopsTpl->assign('cate', $cate);
-                $andCateID = "and a.`CateID`='$CateID'";
+            if ($mode == "assign") {
+                //取得tad_web_cate所有資料陣列
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+
+                if (!empty($CateID)) {
+                    //取得單一分類資料
+                    $cate = $this->web_cate->get_tad_web_cate($CateID);
+                    $xoopsTpl->assign('cate', $cate);
+                    $andCateID = "and a.`CateID`='$CateID'";
+                }
             }
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.ReDiscussID='0' $andWebID $andCateID order by a.LastTime desc";
@@ -63,7 +65,7 @@ class tad_web_discuss
                 $main_data[$i] = $all;
 
                 $this->web_cate->set_WebID($WebID);
-                $cate = $this->web_cate->get_tad_web_cate_arr();
+                $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
                 $main_data[$i]['cate']     = $cate[$CateID];
                 $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -77,12 +79,22 @@ class tad_web_discuss
                 $i++;
             }
 
-            $xoopsTpl->assign('discuss_data', $main_data);
-            $xoopsTpl->assign('discuss_bar', $show_bar);
-            $xoopsTpl->assign('isMineDiscuss', $isMyWeb);
-            $xoopsTpl->assign('showWebTitleDiscuss', $showWebTitle);
-            $xoopsTpl->assign('discuss', get_db_plugin($this->WebID, 'discuss'));
-            return $total;
+            if ($mode == "return") {
+                $data['discuss_data']        = $main_data;
+                $data['discuss_bar']         = $show_bar;
+                $data['isMineDiscuss']       = $isMyWeb;
+                $data['showWebTitleDiscuss'] = $showWebTitle;
+                //$data['discuss']             = get_db_plugin($this->WebID, 'discuss');
+                $data['total'] = $total;
+                return $data;
+            } else {
+                $xoopsTpl->assign('discuss_data', $main_data);
+                $xoopsTpl->assign('discuss_bar', $show_bar);
+                $xoopsTpl->assign('isMineDiscuss', $isMyWeb);
+                $xoopsTpl->assign('showWebTitleDiscuss', $showWebTitle);
+                $xoopsTpl->assign('discuss', get_db_plugin($this->WebID, 'discuss'));
+                return $total;
+            }
         }
     }
 
@@ -238,7 +250,7 @@ class tad_web_discuss
 
         $new_cate  = empty($_SESSION['LoginMemID']) ? true : false;
         $cate_menu = $this->web_cate->cate_menu($CateID, 'form', $new_cate);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($DiscussID)) ? "insert" : "update";
 

@@ -13,19 +13,22 @@ class tad_web_schedule
     }
 
     //課表
-    public function list_all($CateID = "", $limit = null)
+    public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $isMyWeb;
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
-        //取得tad_web_cate所有資料陣列
-        $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
-
         $andCateID = $andDisplay = "";
-        if (!empty($CateID)) {
+        if ($mode == "assign") {
+            //取得tad_web_cate所有資料陣列
+            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+            $xoopsTpl->assign('cate_menu', $cate_menu);
+
+        }
+
+        if (!empty($CateID) and $mode == "assign") {
             //取得單一分類資料
             $cate = $this->web_cate->get_tad_web_cate($CateID);
             $xoopsTpl->assign('cate', $cate);
@@ -33,7 +36,6 @@ class tad_web_schedule
         } else {
             $andDisplay = "and a.`ScheduleDisplay`='1'";
         }
-
         $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID $andDisplay order by b.WebSort";
 
         $result = $xoopsDB->query($sql) or web_error($sql);
@@ -53,7 +55,7 @@ class tad_web_schedule
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = $this->web_cate->get_tad_web_cate_arr();
+            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
             $main_data[$i]['cate']     = $cate[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -61,13 +63,21 @@ class tad_web_schedule
             $i++;
         }
 
-        $xoopsTpl->assign('schedule_amount', $i);
-        $xoopsTpl->assign('schedule_data', $main_data);
-        $xoopsTpl->assign('isMineSchedule', $isMyWeb);
-        $xoopsTpl->assign('showWebTitleSchedule', $showWebTitle);
-        $xoopsTpl->assign('schedule', get_db_plugin($this->WebID, 'schedule'));
-        return $i;
-
+        if ($mode == "return") {
+            $data['schedule_amount']      = $i;
+            $data['schedule_data']        = $main_data;
+            $data['isMineSchedule']       = $isMyWeb;
+            $data['showWebTitleSchedule'] = $showWebTitle;
+            //$data['schedule']             = get_db_plugin($this->WebID, 'schedule');
+            return $data;
+        } else {
+            $xoopsTpl->assign('schedule_amount', $i);
+            $xoopsTpl->assign('schedule_data', $main_data);
+            $xoopsTpl->assign('isMineSchedule', $isMyWeb);
+            $xoopsTpl->assign('showWebTitleSchedule', $showWebTitle);
+            $xoopsTpl->assign('schedule', get_db_plugin($this->WebID, 'schedule'));
+            return $i;
+        }
     }
 
     //以流水號秀出某筆tad_web_schedule資料內容
@@ -173,7 +183,7 @@ class tad_web_schedule
 
         $this->web_cate->set_demo_txt(sprintf(_MD_TCW_SCHEDULE_CATE_DEMO, $ys[0], $ys[1]));
         $cate_menu = $this->web_cate->cate_menu($CateID);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($ScheduleID)) ? "insert" : "update";
 

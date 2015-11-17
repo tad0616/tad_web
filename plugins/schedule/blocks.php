@@ -1,5 +1,5 @@
 <?php
-function list_schedule($WebID)
+function list_schedule($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -9,5 +9,7 @@ function list_schedule($WebID)
     include_once "class.php";
 
     $tad_web_schedule = new tad_web_schedule($WebID);
-    $tad_web_schedule->list_all();
+
+    $block = $tad_web_schedule->list_all("", $config['limit'], 'return');
+    return $block;
 }

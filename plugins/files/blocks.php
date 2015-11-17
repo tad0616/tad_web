@@ -1,5 +1,5 @@
 <?php
-function list_files($WebID)
+function list_files($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -9,5 +9,7 @@ function list_files($WebID)
     include_once "class.php";
 
     $tad_web_files = new tad_web_files($WebID);
-    $tad_web_files->list_all();
+
+    $block = $tad_web_files->list_all("", $config['limit'], 'return');
+    return $block;
 }

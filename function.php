@@ -29,8 +29,23 @@ function get_blocks($WebID)
     return $Blocks;
 }
 
-//取得各外掛及系統所有區塊
-function get_all_blocks()
+//取得所有區塊設定
+function get_plugin_blocks()
+{
+    global $xoopsConfig;
+    $plugins = get_dir_plugins();
+    foreach ($plugins as $plugin) {
+        $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
+        if (file_exists($config_blocks_file)) {
+            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+            include $config_blocks_file;
+        }
+    }
+    return $blockConfig;
+}
+
+//取得各外掛及系統所有區塊(onUpdate.php)
+function get_all_blocks($value = 'title')
 {
     global $xoopsDB;
     $sql    = "select bid,name,title from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
@@ -43,16 +58,37 @@ function get_all_blocks()
             $$k = $v;
         }
 
-        $name               = $myts->htmlSpecialChars($name);
-        $block_option[$bid] = $name;
+        if ($value == "plugin") {
+            $block_option[$bid] = 'xoops';
+        } elseif ($value == "limit") {
+            $block_option[$bid] = '';
+        } elseif ($value == "config") {
+            $block_option[$bid] = array();
+        } elseif ($value == "tpl") {
+            $block_option[$bid] = '';
+        } else {
+            $name               = $myts->htmlSpecialChars($name);
+            $block_option[$bid] = $name;
+        }
     }
 
     $allBlockConfig = get_plugin_blocks();
     foreach ($allBlockConfig as $plugin => $blockConfig) {
         foreach ($blockConfig as $i => $block) {
-            $func                = $block['func'];
-            $name                = $myts->htmlSpecialChars($block['name']);
-            $block_option[$func] = $name;
+            $func = $block['func'];
+            if ($value == "plugin") {
+                $block_option[$func] = $plugin;
+            } elseif ($value == "limit") {
+                $block_option[$func] = $block['config']['limit'];
+            } elseif ($value == "config") {
+                $block_option[$func] = $block['config'];
+            } elseif ($value == "tpl") {
+                $block_option[$func] = $block['tpl'];
+            } else {
+                $name                = $myts->htmlSpecialChars($block['name']);
+                $block_option[$func] = $name;
+
+            }
         }
     }
     return $block_option;
@@ -68,12 +104,13 @@ function get_position_blocks($WebID, $BlockPosition)
     while ($all = $xoopsDB->fetchArray($result)) {
         $Blocks[$i]         = $all;
         $BlockEnable        = $all['BlockEnable'] == 1 ? '0' : '1';
-        $Blocks[$i]['icon'] = "<img src=\"images/show{$all['BlockEnable']}.gif\" id=\"{$all['BlockName']}_icon\" alt=\"{$all['BlockTitle']}\" title=\"{$all['BlockName']}\" style=\"cursor: pointer;\" onClick=\"enableBlock('{$BlockEnable}','{$all['BlockName']}')\" >";
+        $Blocks[$i]['icon'] = "<img src=\"images/show{$all['BlockEnable']}.gif\" id=\"{$all['BlockID']}_icon\" alt=\"{$all['BlockTitle']}\" title=\"{$all['BlockEnable']}\" style=\"cursor: pointer;\" onClick=\"enableBlock('{$all['BlockID']}')\" >";
         $i++;
     }
     return $Blocks;
 }
 
+//取得所有顯示的區塊
 function get_display_blocks($WebID, $BlockEnable = 1)
 {
     global $xoopsDB;
@@ -83,8 +120,8 @@ function get_display_blocks($WebID, $BlockEnable = 1)
 
     $i      = 0;
     $Blocks = '';
-    while (list($BlockName) = $xoopsDB->fetchRow($result)) {
-        $Blocks[$i] = $BlockName;
+    while ($all = $xoopsDB->fetchArray($result)) {
+        $Blocks[$i] = $all;
         $i++;
     }
     return $Blocks;
@@ -95,20 +132,7 @@ function get_tad_web_blocks($WebID = null, $mode = '')
 {
     global $xoopsTpl, $xoopsDB;
 
-    $display_blocks_arr = get_display_blocks($WebID);
-    //取得系統所有區塊設定
-    $allBlockConfig = get_plugin_blocks();
-    foreach ($allBlockConfig as $plugin => $blockConfig) {
-        foreach ($blockConfig as $i => $block) {
-            $func = $block['func'];
-
-            $blocks[$func]['tpl']    = $block['tpl'];
-            $blocks[$func]['plugin'] = $plugin;
-            $blocks[$func]['name']   = $block['name'];
-        }
-    }
-    //die(var_export($blocks));
-
+    $block_tpl        = get_all_blocks('tpl');
     $dir              = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
     $block            = '';
     $andBlockPosition = $mode == 'home' ? '' : "and `BlockPosition`='side'";
@@ -121,21 +145,17 @@ function get_tad_web_blocks($WebID = null, $mode = '')
         foreach ($all as $k => $v) {
             $$k = $v;
         }
-        $blocks_arr['name']  = $BlockName;
-        $blocks_arr['title'] = $BlockTitle;
-        if (is_numeric($BlockName)) {
-            $blocks_arr['plugin'] = '';
-            $blocks_arr['tpl']    = '';
-            $blocks_arr['type']   = 'system';
-
+        $blocks_arr = $all;
+        if ($plugin == "xoops") {
+            $blocks_arr['tpl'] = '';
+        } elseif ($plugin == "my") {
+            $blocks_arr['BlockContent'] = '';
         } else {
-            if (file_exists("{$dir}{$blocks[$BlockName]['plugin']}/blocks.php")) {
-                include_once "{$dir}{$blocks[$BlockName]['plugin']}/blocks.php";
+            if (file_exists("{$dir}{$plugin}/blocks.php")) {
+                include_once "{$dir}{$plugin}/blocks.php";
             }
-            call_user_func($BlockName, $WebID);
-            $blocks_arr['plugin'] = $blocks[$BlockName]['plugin'];
-            $blocks_arr['tpl']    = $blocks[$BlockName]['tpl'];
-            $blocks_arr['type']   = 'tad_web';
+            $blocks_arr['tpl']          = $block_tpl[$BlockName];
+            $blocks_arr['BlockContent'] = call_user_func($BlockName, $WebID, json_decode($BlockConfig, true));
         }
         $block[$BlockPosition][$BlockSort] = $blocks_arr;
     }
@@ -149,26 +169,7 @@ function get_tad_web_blocks($WebID = null, $mode = '')
     $xoopsTpl->assign('center_block5', $block['block5']);
     $xoopsTpl->assign('center_block6', $block['block6']);
     $xoopsTpl->assign('side_block', $block['side']);
-/*
-array (
-0 =>
-array (
-'func' => '171',
-'plugin' => '',
-'tpl' => '',
-'name' => '',
-'type' => 'system',
-),
-1 =>
-array (
-'func' => 'list_web_adm',
-'plugin' => 'aboutus',
-'tpl' => 'tad_web_aboutus_block_b3.html',
-'name' => '本站管理員',
-'type' => 'tad_web',
-)
-}
- */
+
 }
 
 //取得角色陣列
@@ -351,21 +352,6 @@ function get_dir_plugins()
     return $plugins;
 }
 
-//取得所有區塊設定
-function get_plugin_blocks()
-{
-    global $xoopsConfig;
-    $plugins = get_dir_plugins();
-    foreach ($plugins as $plugin) {
-        $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
-        if (file_exists($config_blocks_file)) {
-            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
-            include $config_blocks_file;
-        }
-    }
-    return $blockConfig;
-}
-
 //取得所有外掛
 function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
 {
@@ -509,17 +495,35 @@ function mk_menu_var_file($WebID = null)
     }
     file_put_contents($file, $current);
     $display_blocks_arr = get_display_blocks($WebID);
+
+    //將首頁轉為區塊
+    $web_plugin_display_arr_val = get_web_config("web_plugin_display_arr", $WebID);
+    $web_plugin_display_arr     = explode(',', $web_plugin_display_arr_val);
+
     if (empty($display_blocks_arr)) {
         //取得系統所有區塊
         $block_option = get_all_blocks();
-        $sort         = 1;
+        $block_plugin = get_all_blocks('plugin');
+        $block_config = get_all_blocks('config');
+
+        //存入既有設定
+        $sort = 1;
         foreach ($block_option as $func => $name) {
-            $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`) values('{$func}', '0', '{$name}', '', '1', '', 'side', '{$sort}', '{$WebID}')";
+
+            if ($func == "list_{$block_plugin[$func]}" and empty($web_plugin_display_arr_val)) {
+                $BlockEnable   = 1;
+                $BlockPosition = 'block4';
+            } else {
+                $BlockEnable   = in_array($func, $Config) ? 1 : 0;
+                $BlockPosition = 'side';
+            }
+            $BlockConfig = json_encode($block_config[$func], JSON_UNESCAPED_UNICODE);
+
+            $sql = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$BlockConfig}', '$BlockPosition', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
             $xoopsDB->queryF($sql) or web_error($sql);
             $sort++;
         }
     }
-
 }
 
 function get_tad_web_mems($MemID)

@@ -1,5 +1,5 @@
 <?php
-function list_action($WebID)
+function list_action($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -9,5 +9,7 @@ function list_action($WebID)
     include_once "class.php";
 
     $tad_web_action = new tad_web_action($WebID);
-    $tad_web_action->list_all();
+
+    $block = $tad_web_action->list_all("", $config['limit'], 'return');
+    return $block;
 }

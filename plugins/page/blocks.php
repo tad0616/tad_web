@@ -1,5 +1,5 @@
 <?php
-function list_page($WebID)
+function list_page($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -9,10 +9,13 @@ function list_page($WebID)
     include_once "class.php";
 
     $tad_web_page = new tad_web_page($WebID);
-    $tad_web_page->list_all();
+
+    $block = $tad_web_page->list_all("", $config['limit'], 'return');
+    //die(var_export($block));
+    return $block;
 }
 
-function page_menu($WebID)
+function page_menu($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl;
@@ -54,8 +57,7 @@ function page_menu($WebID)
         $i++;
 
     }
-    $xoopsTpl->assign('page_list', $main);
-    $xoopsTpl->assign('WebID', $WebID);
-    $xoopsTpl->assign('func', 'get_page_list');
-    // return $main;
+    $block['page_list'] = $main;
+
+    return $block;
 }

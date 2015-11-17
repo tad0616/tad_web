@@ -24,6 +24,7 @@ switch ($op) {
 
     //預設動作
     default:
+        //die(var_export(get_all_blocks('limit')));
         $xoopsTpl->assign('block1', get_position_blocks($WebID, 'block1'));
         $xoopsTpl->assign('block2', get_position_blocks($WebID, 'block2'));
         $xoopsTpl->assign('block3', get_position_blocks($WebID, 'block3'));

@@ -215,16 +215,6 @@ function reset_logo($WebID)
     output_head_file($WebID);
 }
 
-//儲存區塊
-function save_block($display_blocks = '', $WebID = '')
-{
-    global $xoopsDB;
-    $display_block_arr = explode(',', $display_blocks);
-    foreach ($display_block_arr as $sort => $BlockName) {
-        $sql = "replace into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockNum`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`) values('{$BlockName}', '0', '', '', '1', '', '{$sort}', 'side', '{$WebID}')";
-        $xoopsDB->queryF($sql) or web_error($sql);
-    }
-}
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -298,12 +288,6 @@ switch ($op) {
         $TadUpFiles->set_col("WebOwner", $WebID, 1);
         $TadUpFiles->del_files();
         $TadUpFiles->upload_file('upfile', 480, 120, null, null, true);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
-        break;
-
-    case "save_block":
-        save_block($display_blocks, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

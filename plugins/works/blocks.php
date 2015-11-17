@@ -1,5 +1,6 @@
 <?php
-function list_work($WebID)
+/************** list_work *************/
+function list_work($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -9,17 +10,33 @@ function list_work($WebID)
     include_once "class.php";
 
     $tad_web_works = new tad_web_works($WebID);
-    $tad_web_works->list_all();
+    $block         = $tad_web_works->list_all("", $config['limit'], 'return');
+    return $block;
 }
 
-function random_work($WebID)
+function config_list_work($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
         retuen;
     }
+    include_once "class.php";
 
+    $tad_web_works = new tad_web_works($WebID);
+    $tad_web_works->list_all("", $config['limit'], 'return');
+}
+
+/************** random_work *************/
+
+function random_work($WebID, $config = array())
+{
+
+    global $xoopsDB, $xoopsTpl, $TadUpFiles;
+    if (empty($WebID)) {
+        retuen;
+    }
+    $block  = '';
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$WebID}' order by rand() limit 0,1";
     $result = $xoopsDB->query($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
@@ -31,23 +48,24 @@ function random_work($WebID)
         }
         $TadUpFiles->set_col("WorksID", $WorksID);
         $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-        $xoopsTpl->assign('random_work', $pics);
-        $xoopsTpl->assign('WorksID', $WorksID);
-        $xoopsTpl->assign('WorkName', $WorkName);
+
+        $block['random_work'] = $pics;
+        $block['WorksID']     = $WorksID;
+        $block['WorkName']    = $WorkName;
     }
-
-    $xoopsTpl->assign('WebID', $WebID);
-    $xoopsTpl->assign('func', 'random_work');
-
+    return $block;
 }
 
-function latest_work($WebID)
+/************** latest_work *************/
+
+function latest_work($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
         retuen;
     }
+    $block = '';
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$WebID}' order by WorksDate desc limit 0,1";
     $result = $xoopsDB->query($sql) or web_error($sql);
@@ -61,12 +79,9 @@ function latest_work($WebID)
         $TadUpFiles->set_col("WorksID", $WorksID);
         $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
-        $xoopsTpl->assign('WorkName', $WorkName);
-        $xoopsTpl->assign('latest_work', $pics);
-        $xoopsTpl->assign('WorksID', $WorksID);
+        $block['latest_work'] = $pics;
+        $block['WorksID']     = $WorksID;
+        $block['WorkName']    = $WorkName;
     }
-
-    $xoopsTpl->assign('WebID', $WebID);
-    $xoopsTpl->assign('func', 'latest_work');
-
+    return $block;
 }

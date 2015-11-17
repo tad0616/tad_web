@@ -1,6 +1,7 @@
+<{assign var="bc" value=$block.BlockContent}>
 <h3><{$smarty.const._MD_TCW_PAGE}></h3>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <{foreach from=$page_list item=page}>
+  <{foreach from=$bc.page_list item=page}>
     <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="heading<{$page.CateID}>">
         <h4 class="panel-title">

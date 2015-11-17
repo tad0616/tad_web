@@ -1,5 +1,6 @@
-<{if $file_data}>
-  <{if $isMineFiles}>
+<{assign var="bc" value=$block.BlockContent}>
+<{if $bc.file_data}>
+  <{if $bc.isMineFiles}>
     <script type="text/javascript">
       function delete_files_func(fsn){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -10,7 +11,7 @@
   <{/if}>
 
   <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-    <h3><{$smarty.const._MD_TCW_FILES_BLOCK_LIST}></h3>
+    <h3><{$block.BlockTitle}></h3>
   <{/if}>
 
   <table class="footable table common_table">
@@ -22,19 +23,19 @@
         <th data-hide="phone" nowrap style="width:60px;">
           <{$smarty.const._MD_TCW_FILES_UID}>
         </th>
-        <{if $showWebTitleFiles}>
+        <{if $bc.showWebTitleFiles}>
           <th data-hide="phone"  style="width:150px;text-align:center;">
             <{$smarty.const._MD_TCW_TEAMID}>
           </th>
         <{/if}>
-        <{if !$showWebTitleFiles && $isMineFiles}>
+        <{if !$bc.showWebTitleFiles && $bc.isMineFiles}>
           <th data-hide="phone" style="width:100px;text-align:center;">
             <{$smarty.const._TAD_FUNCTION}>
           </th>
         <{/if}>
       </tr>
     </thead>
-    <{foreach item=file from=$file_data}>
+    <{foreach item=file from=$bc.file_data}>
       <tr>
         <td>
           <div style="word-wrap:break-word;">
@@ -48,13 +49,13 @@
           <{$file.uid_name}>
         </td>
 
-        <{if $showWebTitleFiles}>
+        <{if $bc.showWebTitleFiles}>
           <td style="width:100px;text-align:center;">
             <{$file.WebTitle}>
           </td>
         <{/if}>
 
-        <{if !$showWebTitleFiles && $isMineFiles}>
+        <{if !$bc.showWebTitleFiles && $bc.isMineFiles}>
           <td class="text-center">
             <a href="javascript:delete_files_func(<{$file.fsn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
             <a href="files.php?WebID=<{$file.WebID}>&op=edit_form&fsn=<{$file.fsn}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -65,7 +66,7 @@
   </table>
 
   <div style="text-align:right; margin-bottom: 10px;">
-    <{if $file_bar==""}>
+    <{if $bc.file_bar==""}>
       <{if $WebID==""}>
         <a href="files.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
       <{else}>
@@ -73,7 +74,7 @@
       <{/if}>
     <{/if}>
 
-    <{if $isMineFiles and $WebID}>
+    <{if $bc.isMineFiles and $WebID}>
       <a href="files.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
     <{/if}>
   </div>

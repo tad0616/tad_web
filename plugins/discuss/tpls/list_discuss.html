@@ -1,4 +1,5 @@
-<{if $discuss_data}>
+<{assign var="bc" value=$block.BlockContent}>
+<{if $bc.isMineFiles}>
   <{if $mode=="need_login"}>
 
     <div class="well">
@@ -6,7 +7,7 @@
     </div>
   <{else}>
     <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-      <h3><{$smarty.const._MD_TCW_DISCUSS_BLOCK_LIST}></h3>
+      <h3><{$block.BlockTitle}></h3>
     <{/if}>
 
     <table class="footable table common_table">
@@ -24,19 +25,19 @@
           <th data-hide="phone" style="width:50px;text-align:center;">
             <{$smarty.const._MD_TCW_ACTIONCOUNT}>
           </th>
-          <{if $showWebTitleDiscuss}>
+          <{if $bc.showWebTitleDiscuss}>
             <th data-hide="phone" style="width:150px;text-align:center;">
               <{$smarty.const._MD_TCW_TEAMID}>
             </th>
           <{/if}>
-          <{if !$showWebTitleDiscuss && $isMineDiscuss}>
+          <{if !$bc.showWebTitleDiscuss && $bc.isMineDiscuss}>
             <th data-hide="phone" style="width:100px;text-align:center;">
               <{$smarty.const._TAD_FUNCTION}>
             </th>
           <{/if}>
         </tr>
       </thead>
-      <{if $discuss_data}>
+      <{if $bc.isMineFiles}>
         <script>
         	function delete_discuss_func(DiscussID){
         		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -45,7 +46,7 @@
         	}
         </script>
 
-        <{foreach item=discuss from=$discuss_data}>
+        <{foreach item=discuss from=$bc.isMineFiles}>
           <tr>
             <td class="text-center">
               <{$discuss.LastTime}>
@@ -63,12 +64,12 @@
             <td class="text-center">
               <{$discuss.DiscussCounter}>
             </td>
-            <{if $showWebTitleDiscuss}>
+            <{if $bc.showWebTitleDiscuss}>
               <td class="text-center">
                 <{$discuss.WebTitle}>
               </td>
             <{/if}>
-            <{if !$showWebTitleDiscuss && $isMineDiscuss}>
+            <{if !$bc.showWebTitleDiscuss && $bc.isMineDiscuss}>
               <td class="text-center">
                 <a href="javascript:delete_discuss_func(<{$discuss.DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                 <a href="discuss.php?WebID=<{$discuss.WebID}>&op=edit_form&DiscussID=<{$discuss.DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -86,14 +87,14 @@
     </table>
 
     <div style="text-align:right; margin-bottom: 10px;">
-      <{if $discuss_bar==""}>
+      <{if $bc.discuss_bar==""}>
         <{if $WebID==""}>
           <a href="discuss.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
         <{else}>
           <a href="discuss.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
         <{/if}>
       <{/if}>
-      <{if $isMineDiscuss}>
+      <{if $bc.isMineDiscuss}>
         <a href="discuss.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
       <{/if}>
     </div>

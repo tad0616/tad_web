@@ -1,4 +1,5 @@
-<{if $isMineAction}>
+<{assign var="bc" value=$block.BlockContent}>
+<{if $bc.isMineAction}>
   <script>
     function delete_action_func(ActionID){
       var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -8,11 +9,11 @@
     </script>
 <{/if}>
 
-<{if $action_data}>
+<{if $bc.action_data}>
   <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-    <h3><{$smarty.const._MD_TCW_ACTION_BLOCK_LIST}></h3>
+    <h3><{$block.BlockTitle}></h3>
   <{/if}>
-  <{foreach item=act from=$action_data}>
+  <{foreach item=act from=$bc.action_data}>
     <div style="width: 156px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
       <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
         <div style="width: 150px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
@@ -22,12 +23,12 @@
       </a>
       <div class="text-center" style="margin: 8px auto;">
         <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
-        <{if !$showWebTitleAction && $isMineAction}>
+        <{if !$bc.showWebTitleAction && $bc.isMineAction}>
           <a href="javascript:delete_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
           <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
         <{/if}>
       </div>
-      <{if $showWebTitleAction}>
+      <{if $bc.showWebTitleAction}>
         <div class="text-center">
           <{$act.WebTitle}>
         </div>
@@ -37,7 +38,7 @@
   <div style="clear: both;"></div>
 
   <div style="text-align:right; margin-bottom: 10px;">
-    <{if $action_bar==""}>
+    <{if $bc.action_bar==""}>
       <{if $WebID==""}>
         <a href="action.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
       <{else}>
@@ -45,7 +46,7 @@
       <{/if}>
     <{/if}>
 
-    <{if $isMineAction and $WebID}>
+    <{if $bc.isMineAction and $WebID}>
       <a href="action.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
     <{/if}>
   </div>

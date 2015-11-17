@@ -1,8 +1,6 @@
 <?php
 $plugin_name = "tad_web_{$plugin}";
 
-$web_cate = new web_cate($WebID, $plugin, $plugin_name);
-
 include_once "plugins/{$plugin}/class.php";
 $$plugin_name = new $plugin_name($WebID);
 

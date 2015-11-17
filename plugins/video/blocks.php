@@ -1,5 +1,6 @@
 <?php
-function list_video($WebID)
+/************** list_video *************/
+function list_video($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -8,17 +9,22 @@ function list_video($WebID)
     }
     include_once "class.php";
 
+    $block         = '';
     $tad_web_video = new tad_web_video($WebID);
-    $tad_web_video->list_all();
+    $block         = $tad_web_video->list_all("", $config['limit'], 'return');
+    return $block;
 }
 
-function random_video($WebID)
+/************** random_video *************/
+
+function random_video($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
         retuen;
     }
+    $block = '';
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by rand() limit 0,1";
     //die($sql);
@@ -50,23 +56,24 @@ function random_video($WebID)
     $jw     = new JwPlayer("random_video_{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
     $player = $jw->render();
 
-    $xoopsTpl->assign('VideoName', $VideoName);
-    $xoopsTpl->assign('random_video', $player);
-    $xoopsTpl->assign('VideoID', $VideoID);
-    $xoopsTpl->assign('WebID', $WebID);
-    $xoopsTpl->assign('func', 'random_video');
+    $block['random_video'] = $player;
+    $block['VideoID']      = $VideoID;
+    $block['VideoName']    = $VideoName;
+    return $block;
 
 }
 
-function latest_video($WebID)
+/************** latest_video *************/
+
+function latest_video($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
         retuen;
     }
-
-    $sql = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by VideoDate desc limit 0,1";
+    $block = '';
+    $sql   = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by VideoDate desc limit 0,1";
     //die($sql);
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
@@ -96,9 +103,8 @@ function latest_video($WebID)
     $jw     = new JwPlayer("latest_video_{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
     $player = $jw->render();
 
-    $xoopsTpl->assign('VideoName', $VideoName);
-    $xoopsTpl->assign('latest_video', $player);
-    $xoopsTpl->assign('VideoID', $VideoID);
-    $xoopsTpl->assign('WebID', $WebID);
-    $xoopsTpl->assign('func', 'latest_video');
+    $block['latest_video'] = $player;
+    $block['VideoID']      = $VideoID;
+    $block['VideoName']    = $VideoName;
+    return $block;
 }

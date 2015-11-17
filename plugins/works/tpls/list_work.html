@@ -1,5 +1,6 @@
-<{if $works_data}>
-  <{if $isMineWorks}>
+<{assign var="bc" value=$block.BlockContent}>
+<{if $bc.works_data}>
+  <{if $bc.isMineWorks}>
     <script>
       function delete_work_func(WorksID){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -10,7 +11,7 @@
   <{/if}>
 
   <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-    <h3><{$smarty.const._MD_TCW_WORK_BLOCK_LIST}></h3>
+    <h3><{$block.BlockTitle}></h3>
   <{/if}>
 
   <table class="footable table common_table">
@@ -37,7 +38,7 @@
         <{/if}>
       </tr>
     </thead>
-    <{foreach item=work from=$works_data}>
+    <{foreach item=work from=$bc.works_data}>
       <tr>
         <td class="text-center">
           <{$work.WorksDate}>
@@ -76,6 +77,7 @@
       <{/if}>
     <{/if}>
     <{if $isMineWorks and $WebID}>
+      <a href="block.php?op=config&WebID=<{$WebID}>&BlockID=<{$block.BlockID}>" class="btn btn-warning btn-xs"><{$smarty.const._MD_TCW_BLOCKS_SETUP}></a>
       <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
     <{/if}>
   </div>

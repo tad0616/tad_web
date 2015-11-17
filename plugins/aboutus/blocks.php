@@ -1,6 +1,6 @@
 <?php
 
-function list_web_adm($WebID)
+function list_web_adm($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl;

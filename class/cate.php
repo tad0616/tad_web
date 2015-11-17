@@ -90,6 +90,7 @@ class web_cate
 
         $option = "";
         $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
+        //echo $sql . '<hr>';
         $result = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchArray($result)) {
             foreach ($data as $k => $v) {
@@ -250,7 +251,8 @@ class web_cate
         $counter = $this->tad_web_cate_data_counter();
         $arr     = "";
         $sql     = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' order by CateSort";
-        $result  = $xoopsDB->query($sql) or web_error($sql);
+        //echo $sql . '<br>';
+        $result = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchArray($result)) {
             $CateID          = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;

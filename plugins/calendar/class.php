@@ -11,16 +11,12 @@ class tad_web_calendar
         $this->web_cate = new web_cate($WebID, "calendar", "tad_web_calendar");
     }
 
-    public function list_all($CateID = "", $limit = null)
+    public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $isMyWeb;
 
         $showWebTitle = (empty($this->WebID)) ? 1 : 0;
         $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
-
-        $xoopsTpl->assign('isMineCalendar', $isMyWeb);
-        $xoopsTpl->assign('showWebTitleCalendar', $showWebTitle);
-        $xoopsTpl->assign('calendar', get_db_plugin($this->WebID, 'calendar'));
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php")) {
             redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1", 3, _TAD_NEED_TADTOOLS);
@@ -32,8 +28,19 @@ class tad_web_calendar
             $fullcalendar->add_json_parameter('WebID', $this->WebID);
         }
         $fullcalendar_code = $fullcalendar->render('#calendar', 'get_event.php');
-        $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
-        return $total;
+        if ($mode == "return") {
+            $data['fullcalendar_code']    = $fullcalendar_code;
+            $data['isMineCalendar']       = $isMyWeb;
+            $data['showWebTitleCalendar'] = $showWebTitle;
+            //$data['calendar']             = get_db_plugin($this->WebID, 'calendar');
+            return $data;
+        } else {
+            $xoopsTpl->assign('isMineCalendar', $isMyWeb);
+            $xoopsTpl->assign('showWebTitleCalendar', $showWebTitle);
+            $xoopsTpl->assign('calendar', get_db_plugin($this->WebID, 'calendar'));
+            $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
+            return $total;
+        }
 
     }
 

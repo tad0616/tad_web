@@ -1,5 +1,6 @@
-<{if $link_data}>
-  <{if $isMineLink}>
+<{assign var="bc" value=$block.BlockContent}>
+<{if $bc.link_data}>
+  <{if $bc.isMineLink}>
     <script type="text/javascript">
       function delete_link_func(LinkID){
         var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
@@ -10,7 +11,7 @@
   <{/if}>
 
   <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-    <h3><{$smarty.const._MD_TCW_LINK_BLOCK_LIST}></h3>
+    <h3><{$block.BlockTitle}></h3>
   <{/if}>
 
   <table class="footable table common_table">
@@ -22,19 +23,19 @@
         <th data-hide="phone" style="width:50px;text-align:center;">
           <{$smarty.const._MD_TCW_ACTIONCOUNT}>
         </th>
-        <{if $showWebTitleLink}>
+        <{if $bc.showWebTitleLink}>
           <th data-hide="phone" style="width:150px;text-align:center;">
             <{$smarty.const._MD_TCW_TEAMID}>
           </th>
         <{/if}>
-        <{if !$showWebTitleLink && $isMineLink}>
+        <{if !$bc.showWebTitleLink && $bc.isMineLink}>
           <th data-hide="phone" style="width:100px;text-align:center;">
             <{$smarty.const._TAD_FUNCTION}>
           </th>
         <{/if}>
       </tr>
     </thead>
-    <{foreach item=link from=$link_data}>
+    <{foreach item=link from=$bc.link_data}>
       <tr>
         <td>
           <i class="fa fa-external-link"></i>
@@ -50,12 +51,12 @@
         <td class="text-center">
           <{$link.LinkCounter}>
         </td>
-        <{if $showWebTitleLink}>
+        <{if $bc.showWebTitleLink}>
           <td class="text-center">
             <{$link.WebTitle}>
           </td>
         <{/if}>
-        <{if !$showWebTitleLink && $isMineLink}>
+        <{if !$bc.showWebTitleLink && $bc.isMineLink}>
           <td class="text-center">
             <a href="javascript:delete_link_func(<{$link.LinkID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
             <a href="link.php?WebID=<{$link.WebID}>&op=edit_form&LinkID=<{$link.LinkID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -66,14 +67,14 @@
   </table>
 
   <div style="text-align:right; margin-bottom: 10px;">
-    <{if $link_bar==""}>
+    <{if $bc.link_bar==""}>
       <{if $WebID==""}>
         <a href="link.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
       <{else}>
         <a href="link.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
       <{/if}>
     <{/if}>
-    <{if $isMineLink and $WebID}>
+    <{if $bc.isMineLink and $WebID}>
       <a href="link.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info">
     <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
     <{/if}>

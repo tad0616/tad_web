@@ -1,5 +1,5 @@
 <?php
-function list_discuss($WebID)
+function list_discuss($WebID, $config = array())
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -9,5 +9,7 @@ function list_discuss($WebID)
     include_once "class.php";
 
     $tad_web_discuss = new tad_web_discuss($WebID);
-    $tad_web_discuss->list_all();
+
+    $block = $tad_web_discuss->list_all("", $config['limit'], 'return');
+    return $block;
 }
