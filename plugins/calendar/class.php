@@ -21,9 +21,10 @@ class tad_web_calendar
             redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1", 3, _TAD_NEED_TADTOOLS);
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='{$CalendarID}'";
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
+
         if (empty($total)) {
             $calendar_data = '';
         } else {

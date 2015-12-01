@@ -118,12 +118,13 @@
 
   <{$schedule_template}>
 
-  <div class="text-right">
+  <div class="text-right" style="margin: 30px 0px;">
     <{if $isMyWeb}>
-      <a href="javascript:delete_schedule_func(<{$ScheduleID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
-      <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$ScheduleID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+      <a href="javascript:delete_schedule_func(<{$ScheduleID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
+    <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
+      <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$ScheduleID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
     <{/if}>
-    <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$ScheduleID}>" class="btn btn-info"><{$smarty.const._MD_TCW_SCHEDULE_PDF}></a>
+    <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$ScheduleID}>" class="btn btn-primary"><{$smarty.const._MD_TCW_SCHEDULE_PDF}></a>
   </div>
 <{elseif $op=="setup_subject"}>
   <h1><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></h1>

@@ -1,3 +1,16 @@
+Tad Web 1.6.4 release（2015-12-01 release)
+====================================================
+1. Fixed bug Students can not add a message on the message or viewing
+2. Add the latest videos, random videos block
+3. Add the latest, the random works share block
+4. Home List all contents are converted to block plug
+5. New block setting function, you can set its own block position
+6. You can set up their own set Home Content
+7. Fixed the problem of data can not be deleted
+8. When you delete a site, you can completely delete all website content
+9. Add some new method for each plug
+
+
 Tad Web 1.6.3 release（2015-11-04 release)
 ====================================================
 1. Fixed function displays the number of each class home setting does not work
