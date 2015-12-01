@@ -9,10 +9,11 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op        = system_CleanVars($_REQUEST, 'op', '', 'string');
-$DiscussID = system_CleanVars($_REQUEST, 'DiscussID', 0, 'int');
-$WebID     = system_CleanVars($_REQUEST, 'WebID', $LoginWebID, 'int');
-$CateID    = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$op           = system_CleanVars($_REQUEST, 'op', '', 'string');
+$DiscussID    = system_CleanVars($_REQUEST, 'DiscussID', 0, 'int');
+$WebID        = system_CleanVars($_REQUEST, 'WebID', $LoginWebID, 'int');
+$CateID       = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$DefDiscussID = system_CleanVars($_REQUEST, 'DefDiscussID', 0, 'int');
 
 common_template($WebID, $web_all_config);
 
@@ -40,7 +41,7 @@ switch ($op) {
     //刪除資料
     case "delete":
         $tad_web_discuss->delete($DiscussID);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&DiscussID=$DefDiscussID");
         exit;
         break;
 
@@ -48,20 +49,6 @@ switch ($op) {
     case "tufdl":
         $files_sn = isset($_GET['files_sn']) ? intval($_GET['files_sn']) : "";
         $TadUpFiles->add_file_counter($files_sn);
-        exit;
-        break;
-
-    //登入
-    case "mem_login":
-        $tad_web_discuss->mem_login($_POST['MemUname'], $_POST['MemPasswd']);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
-        break;
-
-    //登出
-    case "logout":
-        $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = "";
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
 

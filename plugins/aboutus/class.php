@@ -248,7 +248,7 @@ class tad_web_aboutus
         function delete_student_func(MemID){
           var sure = window.confirm('" . _TAD_DEL_CONFIRM . "');
           if (!sure)  return;
-          location.href=\"{$_SERVER['PHP_SELF']}?op=delete&WebID={$WebID}&MemID=\" + MemID;
+          location.href=\"{$_SERVER['PHP_SELF']}?op=delete&WebID={$this->WebID}&MemID=\" + MemID;
         }
         </script>
         <form action='{$_SERVER['PHP_SELF']}' method='post' id='myForm' enctype='multipart/form-data' class='form-horizontal' role='form'>
@@ -357,7 +357,7 @@ class tad_web_aboutus
     //新增資料到tad_web_mems中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $WebID, $MyWebs, $TadUpFiles;
+        global $xoopsDB, $xoopsUse, $MyWebs, $TadUpFiles;
 
         //tad_web_link_mems:`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
         //tad_web_mems:`MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`
@@ -387,7 +387,7 @@ class tad_web_aboutus
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . "
           (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`)
-          values('{$MemID}' , '{$WebID}' , '{$_POST['MemNum']}' , '{$MemSort}' , '1' )";
+          values('{$MemID}' , '{$this->WebID}' , '{$_POST['MemNum']}' , '{$MemSort}' , '1' )";
 
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -586,7 +586,7 @@ class tad_web_aboutus
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$this->WebID}", 3, _MD_TCW_IMPORT_OK);
     }
 
-//儲存位置
+    //儲存位置
     public function save_seat($MemID)
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles;
@@ -617,4 +617,25 @@ class tad_web_aboutus
         return $data_arr;
     }
 
+    //登入
+    public function mem_login($MemUname = "", $MemPasswd = "")
+    {
+        global $xoopsDB, $xoopsUser;
+        if (empty($MemUname) or empty($MemPasswd)) {
+            return false;
+        }
+
+        $sql    = "select a.`MemID` , a.`MemName` , a.`MemNickName` , b.`WebID` from " . $xoopsDB->prefix("tad_web_mems") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID` where a.`MemUname`='$MemUname' and a.`MemPasswd`='$MemPasswd' and b.`MemEnable`='1'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        list($MemID, $MemName, $MemNickName, $WebID) = $xoopsDB->fetchRow($result);
+
+        if (!empty($MemID)) {
+            $_SESSION['LoginMemID']       = $MemID;
+            $_SESSION['LoginMemName']     = $MemName;
+            $_SESSION['LoginMemNickName'] = $MemNickName;
+            $_SESSION['LoginWebID']       = $WebID;
+        }
+        return true;
+    }
 }

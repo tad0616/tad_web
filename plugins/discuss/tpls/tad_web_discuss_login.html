@@ -23,7 +23,7 @@
     </form>
   <{else}>
     <div class="well well-small">
-      <a href="discuss.php?op=logout" class="btn btn-mini btn-warning"><{$smarty.const._MD_TCW_EXIT}></a>
+      <a href="aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-mini btn-warning"><{$smarty.const._MD_TCW_EXIT}></a>
       <a href="discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-mini btn-info pull-right"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
       <{$LoginMemName}>
       <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>

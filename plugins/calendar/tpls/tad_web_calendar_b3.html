@@ -73,11 +73,20 @@
       <a href="calendar.php?WebID=<{$WebID}>&op=edit_form&CalendarID=<{$CalendarID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
-<{else}>
+<{elseif $calendar_data}>
   <{$cate_menu}>
   <div class="row">
     <div class="col-md-12">
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
     </div>
   </div>
+<{else}>
+  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$calendar.PluginTitle}></h1>
+  <{if $isMyWeb and $WebID}>
+    <a href="calendar.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
+  <{else}>
+    <div class="text-center">
+      <img src="images/empty.png" alt="<{$smarty.const._MD_TCW_EMPTY}>" title="<{$smarty.const._MD_TCW_EMPTY}>">
+    </div>
+  <{/if}>
 <{/if}>

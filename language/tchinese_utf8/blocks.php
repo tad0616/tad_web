@@ -18,3 +18,4 @@ define("_MB_TCW_MEM_UNAME", "學生帳號");
 define("_MB_TCW_MEM_PASSWD", "學生密碼");
 define("_MB_TCW_PLEASE_INPUT", "請輸入");
 define("_MB_TCW_ENABLE_PLUGIN", "啟用此功能");
+define("_MB_TCW_HI", "嗨！%s 您好！");

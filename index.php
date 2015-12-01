@@ -17,10 +17,27 @@ function ClassHome($WebID = "")
     // $xoopsTpl->assign('display_mode', 'home');
     define('_DISPLAY_MODE', 'home');
 
+    $web_plugin_enable_arr = get_web_config("web_plugin_enable_arr", $WebID);
+    if (empty($web_plugin_enable_arr)) {
+        $show_arr = get_dir_plugins();
+    } else {
+        $show_arr = explode(',', $web_plugin_enable_arr);
+    }
+    $plugin_data_total = 0;
+    foreach ($show_arr as $dirname) {
+        if (empty($dirname)) {
+            continue;
+        }
+        include_once "plugins/{$dirname}/class.php";
+        $plugin_name  = "tad_web_{$dirname}";
+        $$plugin_name = new $plugin_name($WebID);
+        $plugin_data_total += $$plugin_name->get_total();
+    }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
 
     $xoopsTpl->assign('MyWebs', $MyWebs);
+    $xoopsTpl->assign('plugin_data_total', $plugin_data_total);
 }
 
 //取得所有班級

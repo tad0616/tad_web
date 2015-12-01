@@ -8,22 +8,80 @@ function tad_web_menu($options)
     $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
     $block['DefWebID'] = $DefWebID;
 
+    if (!empty($DefWebID)) {
+        $block['row']          = 'row';
+        $block['span']         = 'col-md-';
+        $block['form_group']   = 'form-group';
+        $block['form_control'] = 'form-control';
+        $block['mini']         = 'form-xs';
+    } else {
+        $block['row']          = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
+        $block['span']         = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
+        $block['form_group']   = $_SESSION['web_bootstrap'] == '3' ? 'form-group' : 'control-group';
+        $block['form_control'] = $_SESSION['web_bootstrap'] == '3' ? 'form-control' : 'span12';
+        $block['mini']         = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
+    }
+
     if ($xoopsUser) {
         $uid = $xoopsUser->uid();
-    } else {
-        if (!empty($DefWebID)) {
-            $block['row']          = 'row';
-            $block['span']         = 'col-md-';
-            $block['form_group']   = 'form-group';
-            $block['form_control'] = 'form-control';
-            $block['mini']         = 'form-xs';
-        } else {
-            $block['row']          = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
-            $block['span']         = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
-            $block['form_group']   = $_SESSION['web_bootstrap'] == '3' ? 'form-group' : 'control-group';
-            $block['form_control'] = $_SESSION['web_bootstrap'] == '3' ? 'form-control' : 'span12';
-            $block['mini']         = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
+
+        $AllMyWebID = implode("','", $MyWebID);
+
+        $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID in ('{$AllMyWebID}') order by WebSort";
+        //die($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        //$web_num = $xoopsDB->getRowsNum($result);
+        $i = 0;
+
+        $defaltWebID = 0;
+        while ($all = $xoopsDB->fetchArray($result)) {
+            foreach ($all as $k => $v) {
+                $$k = $v;
+            }
+            if (!empty($DefWebID) and $WebID == $DefWebID) {
+                $defaltWebID    = $WebID;
+                $defaltWebTitle = $WebTitle;
+                $defaltWebName  = $WebName;
+            } elseif (empty($defaltWebID)) {
+                $defaltWebID    = $WebID;
+                $defaltWebTitle = $WebTitle;
+                $defaltWebName  = $WebName;
+            }
+
+            $block['webs'][$i]['title'] = $WebTitle;
+            $block['webs'][$i]['WebID'] = $WebID;
+            $block['webs'][$i]['name']  = $WebName;
+            $block['webs'][$i]['url']   = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
+
+            $i++;
         }
+
+        $block['web_num']     = $i;
+        $block['WebTitle']    = $defaltWebTitle;
+        $block['back_home']   = empty($defaltWebName) ? _MB_TCW_HOME : sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
+        $block['defaltWebID'] = $defaltWebID;
+
+        $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
+        $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
+        $block['mini'] = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
+        define('_SHOW_UNABLE', '1');
+        $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
+        if (file_exists($file)) {
+            include $file;
+            $block['plugins'] = $menu_var;
+        }
+
+        return $block;
+    } elseif (!empty($_SESSION['LoginMemID'])) {
+        $block['op']               = 'mem';
+        $block['LoginMemID']       = $_SESSION['LoginMemID'];
+        $block['LoginMemName']     = $_SESSION['LoginMemName'];
+        $block['LoginMemNickName'] = $_SESSION['LoginMemNickName'];
+        $block['LoginWebID']       = $_SESSION['LoginWebID'];
+        $block['say_hi']           = sprintf(_MB_TCW_HI, $_SESSION['LoginMemName']);
+
+        return $block;
+    } else {
 
         $modhandler     = &xoops_gethandler('module');
         $config_handler = &xoops_gethandler('config');
@@ -62,51 +120,4 @@ function tad_web_menu($options)
         return $block;
     }
 
-    $AllMyWebID = implode("','", $MyWebID);
-
-    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID in ('{$AllMyWebID}') order by WebSort";
-    //die($sql);
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    //$web_num = $xoopsDB->getRowsNum($result);
-    $i = 0;
-
-    $defaltWebID = 0;
-    while ($all = $xoopsDB->fetchArray($result)) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-        if (!empty($DefWebID) and $WebID == $DefWebID) {
-            $defaltWebID    = $WebID;
-            $defaltWebTitle = $WebTitle;
-            $defaltWebName  = $WebName;
-        } elseif (empty($defaltWebID)) {
-            $defaltWebID    = $WebID;
-            $defaltWebTitle = $WebTitle;
-            $defaltWebName  = $WebName;
-        }
-
-        $block['webs'][$i]['title'] = $WebTitle;
-        $block['webs'][$i]['WebID'] = $WebID;
-        $block['webs'][$i]['name']  = $WebName;
-        $block['webs'][$i]['url']   = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
-
-        $i++;
-    }
-
-    $block['web_num']     = $i;
-    $block['WebTitle']    = $defaltWebTitle;
-    $block['back_home']   = empty($defaltWebName) ? _MB_TCW_HOME : sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
-    $block['defaltWebID'] = $defaltWebID;
-
-    $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
-    $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
-    $block['mini'] = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
-    define('_SHOW_UNABLE', '1');
-    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
-    if (file_exists($file)) {
-        include $file;
-        $block['plugins'] = $menu_var;
-    }
-
-    return $block;
 }

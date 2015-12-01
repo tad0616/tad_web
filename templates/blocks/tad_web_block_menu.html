@@ -8,9 +8,11 @@
           if(x){
             $("#tad_web_login").show();
             $("#xoops_login").hide();
+            $("#open_login").hide();
           }else{
             $("#tad_web_login").hide();
             $("#xoops_login").show();
+            $("#open_login").show();
           }
         });
 
@@ -53,7 +55,7 @@
         </div>
       </form>
 
-      <form action="discuss.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="tad_web_login">
+      <form action="aboutus.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="tad_web_login">
         <div class="<{$block.form_group}>">
           <label class="<{$block.span}>4 control-label">
             <{$smarty.const._MB_TCW_MEM_UNAME}>
@@ -87,36 +89,38 @@
           <input type="checkbox" id="stu_login" value="stu_login"><{$smarty.const._MB_TCW_IM_MEM}>
         </label>
       </div>
-
-      <{foreach from=$block.tlogin item=login}>
-        <a href="<{$login.link}>" class="btn">
-          <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
-          <{$login.text}>
-        </a>
-      <{/foreach}>
-    </div>
-  <{else}>
-
-    <div class="well well-small">
-
-      <{$LoginMemName}>
-      <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>
-      <{$smarty.const._MD_TCW_HELLO}>
-
-      <div class="<{$block.row}>">
-        <div class="<{$block.span}>6">
-          <a href="<{$xoops_url}>/modules/tad_web/discuss.php?op=logout" class="btn btn-<{$mini}> btn-warning btn-block""><{$smarty.const._MD_TCW_EXIT}></a>
-        </div>
-        <div class="<{$block.span}>6">
-          <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-<{$mini}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
-        </div>
+      <div id="open_login">
+        <{foreach from=$block.tlogin item=login}>
+          <a href="<{$login.link}>" class="btn">
+            <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
+            <{$login.text}>
+          </a>
+        <{/foreach}>
       </div>
-
     </div>
   <{/if}>
 
-<{elseif $block.op=="logout"}>
-  <a href="<{$xoops_url}>/user.php?op=logout" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+<{elseif $block.op=="mem"}>
+  <div class="<{$block.row}>">
+    <div class="<{$block.span}>12">
+      <div class="well well-small">
+
+        <{$LoginMemName}>
+        <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>
+        <{$smarty.const._MD_TCW_HELLO}>
+
+        <div class="<{$block.row}>">
+          <div class="<{$block.span}>6">
+            <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-<{$mini}> btn-warning btn-block""><{$smarty.const._MD_TCW_EXIT}></a>
+          </div>
+          <div class="<{$block.span}>6">
+            <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-<{$mini}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 <{else}>
 
   <{if $block.DefWebID}>

@@ -19,3 +19,4 @@ define('_MB_TCW_MEM_PASSWD', 'Student Password');
 define("_MB_TCW_PLEASE_INPUT", "Enter ");
 define('_MB_TCW_LOGIN', 'Login');
 define("_MB_TCW_ENABLE_PLUGIN", "Enable");
+define("_MB_TCW_HI", "Hi %s");

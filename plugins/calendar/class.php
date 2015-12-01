@@ -24,9 +24,11 @@ class tad_web_calendar
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='{$CalendarID}'";
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
-        // if (empty($total)) {
-        //     return $data['main_data'] = '';
-        // }
+        if (empty($total)) {
+            $calendar_data = '';
+        } else {
+            $calendar_data = $total;
+        }
 
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
         $fullcalendar = new fullcalendar();
@@ -37,11 +39,13 @@ class tad_web_calendar
         $fullcalendar_code = $fullcalendar->render('#calendar', 'get_event.php');
         if ($mode == "return") {
             $data['fullcalendar_code'] = $fullcalendar_code;
-            $data['main_data']         = '';
+            $data['main_data']         = $calendar_data;
+            $data['calendar_data']     = $calendar_data;
             return $data;
         } else {
             $xoopsTpl->assign('calendar', get_db_plugin($this->WebID, 'calendar'));
             $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
+            $xoopsTpl->assign('calendar_data', $calendar_data);
         }
 
     }

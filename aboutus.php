@@ -62,6 +62,20 @@ switch ($op) {
         $tad_web_aboutus->show_one('mem_adm');
         break;
 
+    //登入
+    case "mem_login":
+        $tad_web_aboutus->mem_login($_POST['MemUname'], $_POST['MemPasswd']);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    //登出
+    case "mem_logout":
+        $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = "";
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
     //預設動作
     default:
         if (empty($WebID)) {

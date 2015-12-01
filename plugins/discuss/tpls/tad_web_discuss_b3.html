@@ -116,7 +116,7 @@
     </form>
   <{/if}>
 
-<{else}>
+<{elseif $discuss_data}>
   <{$cate_menu}>
   <{$FooTableJS}>
   <div class="row">
@@ -125,4 +125,13 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_common_discuss_b3.html"}>
     </div>
   </div>
+<{else}>
+  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h1>
+  <{if $isMyWeb and $WebID}>
+    <a href="discuss.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
+  <{else}>
+    <div class="text-center">
+      <img src="images/empty.png" alt="<{$smarty.const._MD_TCW_EMPTY}>" title="<{$smarty.const._MD_TCW_EMPTY}>">
+    </div>
+  <{/if}>
 <{/if}>
