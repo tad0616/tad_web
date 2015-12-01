@@ -13,14 +13,21 @@ class tad_web_calendar
 
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $MyWebs;
 
-        $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-        $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php")) {
             redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1", 3, _TAD_NEED_TADTOOLS);
         }
+
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='{$CalendarID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $total  = $xoopsDB->getRowsNum($result);
+        // if (empty($total)) {
+        //     return $data['main_data'] = '';
+        // }
+
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
         $fullcalendar = new fullcalendar();
         //$fullcalendar->add_js_parameter('dayClick', "function(date, jsEvent, view) {alert('新增事件')}", false);
@@ -29,17 +36,12 @@ class tad_web_calendar
         }
         $fullcalendar_code = $fullcalendar->render('#calendar', 'get_event.php');
         if ($mode == "return") {
-            $data['fullcalendar_code']    = $fullcalendar_code;
-            $data['isMineCalendar']       = $isMyWeb;
-            $data['showWebTitleCalendar'] = $showWebTitle;
-            //$data['calendar']             = get_db_plugin($this->WebID, 'calendar');
+            $data['fullcalendar_code'] = $fullcalendar_code;
+            $data['main_data']         = '';
             return $data;
         } else {
-            $xoopsTpl->assign('isMineCalendar', $isMyWeb);
-            $xoopsTpl->assign('showWebTitleCalendar', $showWebTitle);
             $xoopsTpl->assign('calendar', get_db_plugin($this->WebID, 'calendar'));
             $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
-            return $total;
         }
 
     }
@@ -73,7 +75,6 @@ class tad_web_calendar
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $xoopsTpl->assign('isMineCalendar', $isMyWeb);
         $xoopsTpl->assign('CalendarName', $CalendarName);
         $xoopsTpl->assign('CalendarType', $CalendarType);
         $xoopsTpl->assign('CalendarDate', $CalendarDate);
@@ -86,6 +87,15 @@ class tad_web_calendar
         //取得單一分類資料
         // $cate = $this->web_cate->get_tad_web_cate($CateID);
         // $xoopsTpl->assign('cate', $cate);
+
+        //可愛刪除
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_calendar_func", "calendar.php?op=delete&WebID={$this->WebID}&CalendarID=", 'CalendarID');
+        $xoopsTpl->assign('sweet_delete_calendar_func_code', $sweet_alert_code);
     }
 
     //tad_web_calendar編輯表單
@@ -221,6 +231,32 @@ class tad_web_calendar
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='$CalendarID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select CalendarID,CateID from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($CalendarID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($CalendarID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
     }
 
     //新增tad_web_calendar計數器

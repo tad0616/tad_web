@@ -1,10 +1,9 @@
 <?php
 $blocksArr = '';
-$i         = 0;
 
-$blocksArr[$i]['name']   = _MD_TCW_FILES_BLOCK_LIST;
-$blocksArr[$i]['func']   = 'list_files';
-$blocksArr[$i]['tpl']    = 'list_files.html';
-$blocksArr[$i]['config'] = array('limit' => 5);
+$blocksArr['list_files']['name']            = _MD_TCW_FILES_BLOCK_LIST;
+$blocksArr['list_files']['tpl']             = 'list_files.html';
+$blocksArr['list_files']['config']['limit'] = 5;
+$blocksArr['list_files']['colset']['limit'] = array('label' => _MD_TCW_FILES_BLOCK_LIMIT, 'type' => 'text');
 
 $blockConfig['files'] = $blocksArr;

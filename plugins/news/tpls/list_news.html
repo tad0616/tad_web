@@ -1,136 +1,64 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.news_data}>
-  <{if $bc.isMineNews}>
-    <script>
-      function delete_news_func(NewsID){
-        var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-        if (!sure)  return;
-        location.href="news.php?op=delete&NewsID=" + NewsID;
-      }
-      </script>
+<{if $bc.main_data}>
+  <{if $isMyWeb}>
+    <{$sweet_delete_news_func_code}>
   <{/if}>
 
-  <{if $WebID}>
-    <div class="row">
-      <div class="col-md-12">
-        <{if $bc.news_data.0.NewsContent}>
-          <h3>
-            <{$bc.news_data.0.Date}>
-            <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.news_data.0.NewsID}>"><{$bc.news_data.0.NewsTitle}></a>
+  <div class="row">
+    <div class="col-md-12">
+      <{if $bc.main_data.0.NewsContent}>
+        <h3>
+          <{$bc.main_data.0.Date}>
+          <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.main_data.0.NewsID}>"><{$bc.main_data.0.NewsTitle}></a>
 
-            <{if !$bc.showWebTitleNews && $bc.isMineNews}>
-              <a href="javascript:delete_news_func(<{$bc.news_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-              <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
+          <{if $isMyWeb}>
+            <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
+          <{/if}>
+        </h3>
+        <div class="well" style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
+          <{if $bc.main_data.0.cate.CateID}>
+            <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$bc.main_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$bc.main_data.0.cate.CateName}></a></span>
+          <{/if}>
+          <{$bc.main_data.0.NewsContent}>
+        </div>
+      <{else}>
+        <div class="well" style="height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
+          <h3>
+            <{$bc.main_data.0.Date}>
+            <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.main_data.0.NewsID}>"><{$bc.main_data.0.NewsTitle}></a>
+
+            <{if $isMyWeb}>
+              <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </h3>
-          <div class="well" style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
-            <{if $bc.news_data.0.cate.CateID}>
-              <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$bc.news_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$bc.news_data.0.cate.CateName}></a></span>
-            <{/if}>
-            <{$bc.news_data.0.NewsContent}>
-          </div>
-        <{else}>
-          <div class="well" style="height: 100px; overflow: auto; line-height: 1.8; background: #FCFCFC url('images/news.png') right top no-repeat;">
-            <h3>
-              <{$bc.news_data.0.Date}>
-              <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.news_data.0.NewsID}>"><{$bc.news_data.0.NewsTitle}></a>
-
-              <{if !$bc.showWebTitleNews && $bc.isMineNews}>
-                <a href="javascript:delete_news_func(<{$bc.news_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
-              <{/if}>
-            </h3>
-          </div>
-        <{/if}>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <ul class="list-group">
-          <{foreach from=$bc.news_data key=i item=news}>
-            <{if $i > 0}>
-              <li class="list-group-item">
-              <span class="badge"><{$news.NewsCounter}></span>
-              <{$news.Date}>
-              <{if $news.cate.CateID}>
-                <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
-              <{/if}>
-              <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
-
-                <{if !$bc.showWebTitleNews && $bc.isMineNews}>
-                  <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                  <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
-                <{/if}>
-              </li>
-            <{/if}>
-          <{/foreach}>
-        </ul>
-      </div>
-    </div>
-  <{else}>
-
-    <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-      <h3><{$smarty.const._MD_TCW_NEWS_BLOCK_LIST}></h3>
-    <{/if}>
-
-    <table class="footable table common_table">
-      <thead>
-        <tr>
-          <th data-hide="phone" style="width:100px;text-align:center;">
-            <{$smarty.const._MD_TCW_NEWSDATE}>
-          </th>
-          <th data-class="expand">
-            <{$smarty.const._MD_TCW_NEWS}>
-          </th>
-          <th data-hide="phone" style="width:50px;text-align:center;">
-            <{$smarty.const._MD_TCW_NEWSCOUNTER}>
-          </th>
-          <{if $showWebTitleNews}>
-            <th data-hide="phone" style="width:150px;text-align:center;">
-              <{$smarty.const._MD_TCW_TEAMID}>
-            </th>
-          <{/if}>
-          <{if !$showWebTitleNews && $isMineNews}>
-            <th data-hide="phone" style="width:100px;text-align:center;">
-              <{$smarty.const._TAD_FUNCTION}>
-            </th>
-          <{/if}>
-        </tr>
-      </thead>
-      <{foreach from=$bc.news_data item=news}>
-        <tr>
-          <td class="text-center"><{$news.Date}></td>
-          <td>
-          <{if $news.cate.CateID}>
-            <span class="label label-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
-          <{/if}>
-          <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
-          <td class="text-center"><{$news.NewsCounter}></td>
-          <{if $bc.showWebTitleNews}><td class="text-center"><{$news.WebTitle}></td><{/if}>
-          <{if !$bc.showWebTitleNews && $bc.isMineNews}>
-          <td class="text-center">
-            <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
-            <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
-          </td>
-          <{/if}>
-        </tr>
-      <{/foreach}>
-    </table>
-
-  <{/if}>
-
-  <div style="text-align:right; margin-bottom: 10px;">
-    <{if $bc.news_bar==""}>
-      <{if $WebID==""}>
-        <a href="news.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
-      <{else}>
-        <a href="news.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+        </div>
       <{/if}>
-    <{/if}>
+    </div>
+  </div>
 
-    <{if $isMineNews and $WebID}>
-      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
-    <{/if}>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-group">
+        <{foreach from=$bc.main_data key=i item=news}>
+          <{if $i > 0}>
+            <li class="list-group-item">
+            <span class="badge"><{$news.NewsCounter}></span>
+            <{$news.Date}>
+            <{if $news.cate.CateID}>
+              <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+            <{/if}>
+            <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
+
+              <{if $news.isMyWeb}>
+                <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{/if}>
+            </li>
+          <{/if}>
+        <{/foreach}>
+      </ul>
+    </div>
   </div>
 <{/if}>

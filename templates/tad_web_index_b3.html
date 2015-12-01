@@ -1,19 +1,21 @@
 <{$FooTableJS}>
 
-<{foreach from=$show_arr item=dirname}>
-  <{if "$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`_b3.html"|file_exists}>
+<{if $web_display_mode=="home"}>
+  <{if $center_block1=='' and $center_block2=='' and $center_block3=='' and $center_block4=='' and $center_block5=='' and $center_block6==''}>
     <div class="row">
       <div class="col-md-12">
-        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`_b3.html"}>
+        <img src="<{$xoops_url}>/modules/tad_web/images/comingsoon.png" alt="coming soon" class="img-rounded img-responsive" >
       </div>
     </div>
   <{/if}>
-<{/foreach}>
-
-<{if $center_block1=='' and $center_block2=='' and$center_block3=='' and$center_block4=='' and$center_block5=='' and$center_block6=='' and$display_mode=='home'}>
-  <div class="row">
-    <div class="col-md-12">
-      <img src="<{$xoops_url}>/modules/tad_web/images/comingsoon.png" alt="coming soon" class="img-rounded img-responsive" >
-    </div>
-  </div>
+<{else}>
+  <{foreach from=$show_arr item=dirname}>
+    <{if "$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`_b3.html"|file_exists}>
+      <div class="row">
+        <div class="col-md-12">
+          <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`_b3.html"}>
+        </div>
+      </div>
+    <{/if}>
+  <{/foreach}>
 <{/if}>

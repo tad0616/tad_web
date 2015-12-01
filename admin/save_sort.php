@@ -1,7 +1,10 @@
 <?php
 include_once 'header.php';
 include_once "../function.php";
-$op   = isset($_REQUEST['op']) ? $_REQUEST['op'] : '';
+
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
+
 $sort = 1;
 
 $display_plugins = "";
@@ -12,7 +15,7 @@ if ($op == 'plugin') {
         $display_plugins[] = $dirname;
         $sort++;
     }
-    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), $WebID);
+    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), 0);
     mk_menu_var_file(0);
 } else {
 

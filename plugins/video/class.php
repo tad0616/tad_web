@@ -14,10 +14,9 @@ class tad_web_video
     //影片
     public function list_all($CateID = "", $limit = "", $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $MyWebs;
 
-        $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-        $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
@@ -30,6 +29,7 @@ class tad_web_video
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
+                $xoopsTpl->assign('VideoDefCateID', $CateID);
             }
         }
 
@@ -52,6 +52,8 @@ class tad_web_video
 
         $Webs = getAllWebInfo();
 
+        $cate = $this->web_cate->get_tad_web_cate_arr();
+
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount
             foreach ($all as $k => $v) {
@@ -61,26 +63,29 @@ class tad_web_video
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
-            $main_data[$i]['cate']     = $cate[$CateID];
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
             $i++;
         }
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_video_func", "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
+        $xoopsTpl->assign('sweet_delete_video_func_code', $sweet_alert_code);
+
         if ($mode == "return") {
-            $data['video_data']        = $main_data;
-            $data['video_bar']         = $show_bar;
-            $data['isMineVideo']       = $isMyWeb;
-            $data['showWebTitleVideo'] = $showWebTitle;
-            //$data['video']             = get_db_plugin($this->WebID, 'video');
-            $data['total'] = $total;
+            $data['main_data'] = $main_data;
+            $data['total']     = $total;
             return $data;
         } else {
             $xoopsTpl->assign('video_data', $main_data);
             $xoopsTpl->assign('video_bar', $show_bar);
-            $xoopsTpl->assign('isMineVideo', $isMyWeb);
-            $xoopsTpl->assign('showWebTitleVideo', $showWebTitle);
             $xoopsTpl->assign('video', get_db_plugin($this->WebID, 'video'));
             return $total;
         }
@@ -133,7 +138,6 @@ class tad_web_video
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $xoopsTpl->assign('isMineVideo', $isMyWeb);
         $xoopsTpl->assign('VideoName', $VideoName);
         $xoopsTpl->assign('VideoDate', $VideoDate);
         $xoopsTpl->assign('VideoPlace', $VideoPlace);
@@ -147,6 +151,14 @@ class tad_web_video
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_video_func", "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
+        $xoopsTpl->assign('sweet_delete_video_func_code', $sweet_alert_code);
     }
 
     //tad_web_video編輯表單
@@ -300,6 +312,32 @@ class tad_web_video
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select VideoID,CateID from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($VideoID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($VideoID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
     }
 
     //新增tad_web_video計數器

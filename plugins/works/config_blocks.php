@@ -1,22 +1,19 @@
 <?php
 $blocksArr = '';
-$i         = 0;
-$i++;
-$blocksArr[$i]['name']   = _MD_TCW_WORK_BLOCK_LIST;
-$blocksArr[$i]['func']   = 'list_work';
-$blocksArr[$i]['tpl']    = 'list_work.html';
-$blocksArr[$i]['config'] = array('limit' => 5);
 
-$i++;
-$blocksArr[$i]['name']   = _MD_TCW_WORK_BLOCK_RANDOM;
-$blocksArr[$i]['func']   = 'random_work';
-$blocksArr[$i]['tpl']    = 'random_work.html';
-$blocksArr[$i]['config'] = array();
+$blocksArr['list_work']['name']            = _MD_TCW_WORK_BLOCK_LIST;
+$blocksArr['list_work']['tpl']             = 'list_work.html';
+$blocksArr['list_work']['config']['limit'] = 5;
+$blocksArr['list_work']['colset']['limit'] = array('label' => _MD_TCW_WORK_BLOCK_LIMIT, 'type' => 'text');
 
-$i++;
-$blocksArr[$i]['name']   = _MD_TCW_WORK_BLOCK_LATEST;
-$blocksArr[$i]['func']   = 'latest_work';
-$blocksArr[$i]['tpl']    = 'latest_work.html';
-$blocksArr[$i]['config'] = array();
+$blocksArr['random_work']['name']            = _MD_TCW_WORK_BLOCK_RANDOM;
+$blocksArr['random_work']['tpl']             = 'random_work.html';
+$blocksArr['random_work']['config']['limit'] = 9;
+$blocksArr['random_work']['colset']['limit'] = array('label' => _MD_TCW_WORK_BLOCK_LIMIT, 'type' => 'text');
+
+$blocksArr['latest_work']['name']            = _MD_TCW_WORK_BLOCK_LATEST;
+$blocksArr['latest_work']['tpl']             = 'latest_work.html';
+$blocksArr['latest_work']['config']['limit'] = 9;
+$blocksArr['latest_work']['colset']['limit'] = array('label' => _MD_TCW_WORK_BLOCK_LIMIT, 'type' => 'text');
 
 $blockConfig['works'] = $blocksArr;

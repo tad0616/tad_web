@@ -1,10 +1,9 @@
 <?php
 $blocksArr = '';
-$i         = 0;
 
-$blocksArr[$i]['name']   = _MD_TCW_CALENDAR_BLOCK_LIST;
-$blocksArr[$i]['func']   = 'list_calendar';
-$blocksArr[$i]['tpl']    = 'list_calendar.html';
-$blocksArr[$i]['config'] = array();
+$blocksArr['list_calendar']['name'] = _MD_TCW_CALENDAR_BLOCK_LIST;
+$blocksArr['list_calendar']['tpl']  = 'list_calendar.html';
+//$blocksArr['list_calendar']['config']['limit'] = 5;
+//$blocksArr['list_calendar']['colset']['limit'] = array('label' => _MD_TCW_BLOCK_LIMIT, 'type' => 'text');
 
 $blockConfig['calendar'] = $blocksArr;

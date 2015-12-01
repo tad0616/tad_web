@@ -1,9 +1,6 @@
 <{assign var="bc" value=$block.BlockContent}>
-<h3><{$block.BlockTitle}> / <a href="video.php?WebID=<{$WebID}>&VideoID=<{$bc.VideoID}>"><{$bc.VideoName}></a></h3>
-
-<{$bc.latest_video}>
-
-<div class="text-right">
-  <a href="block.php?op=config&WebID=<{$WebID}>&BlockID=<{$block.BlockID}>" class="btn btn-warning btn-xs"><{$smarty.const._MD_TCW_BLOCKS_SETUP}></a>
-  <a href="video.php?WebID=<{$WebID}>" class="btn btn-info btn-xs"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
-</div>
+<{if $bc.main_data}>
+  <{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
+  <{$bc.main_data}>
+  <a href="video.php?WebID=<{$WebID}>&VideoID=<{$bc.VideoID}>"><{$bc.VideoName}></a>
+<{/if}>

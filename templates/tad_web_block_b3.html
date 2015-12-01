@@ -1,185 +1,262 @@
-  <style>
-  #sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side {
-    border: 1px dashed rgba(0, 0, 0, 0.3);
-    min-height: 40px;
-    list-style-type: none;
-    margin: 0;
-    padding: 5px 0 0 0;
-    margin-right: 10px;
-  }
-
-  #sort_uninstall li, #sort_block1 li, #sort_block2 li, #sort_block3 li, #sort_block4 li, #sort_block5 li, #sort_block6 li, #sort_side li {
-    margin: 0 5px 5px 5px;
-    padding: 5px;
-    font-size: 1.2em;
-  }
-  </style>
-  <script>
-  $(function() {
-    $( "#sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side" ).sortable({
-      connectWith: ".connectedSortable",
-      placeholder: "ui-state-highlight",
-      forcePlaceholderSize: true,
-      cursor: "move",
-      cursorAt: { left: 5 },
-      opacity: 0.5,
-      receive: function( event, ui ) {
-        $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: $(this).parent().attr("id"), BlockID: ui.item.attr("id")}, function(data) {
-            $("#msg").html(data);
-        });
-      },
-      update: function( event, ui ) {
-        var order = $(this).sortable('toArray', {attribute: 'id'});
-        $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", BlockID: ui.item.attr("id"), order_arr: order}, function(data) {
-            $("#msg").html(data);
-        });
-      }
-    }).disableSelection();
-  });
-
-  function enableBlock(BlockID){
-    var img_id="#"+BlockID+"_icon";
-    var now_status=$(img_id).attr('title');
-    if(now_status=='1'){
-      status=0;
-    }else{
-      status=1;
-    }
-    $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID}>", BlockEnable: status, BlockID: BlockID}, function(data) {
-            $("#msg").html(data);
-            $(img_id).attr("src","images/show"+status+".gif");
-            $(img_id).attr("title",status);
-        });
-  }
-  </script>
-
-<h1><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
-
-<{if $uninstall}>
-  <div id="uninstall" class="alert alert-danger">
-    <ul id="sort_uninstall" class="connectedSortable">
-        <{foreach from=$uninstall item=block}>
-          <li id="<{$block.BlockID}>" class="ui-state-highlight">
-            <{$block.icon}>
-            <{$block.BlockTitle}>
-          </li>
-        <{/foreach}>
-    </ul>
-  </div>
-<{/if}>
-
-<div id="msg"></div>
+<{if $op=="config"}>
 <div class="row">
-  <div class="col-md-8">
-    <div class="row">
-      <div class="col-md-12">
-        <div id="block1" class="alert alert-info" style="min-height: 100px;">
-          <ul id="sort_block1" class="connectedSortable">
-            <{if $block1}>
-              <{foreach from=$block1 item=block}>
-                <li id="<{$block.BlockID}>" class="ui-state-highlight">
-                  <{$block.icon}>
-                  <{$block.BlockTitle}>
-                </li>
-              <{/foreach}>
-            <{/if}>
-          </ul>
+  <div class="col-md-12">
+    <h1 class="text-center"><{$block.BlockTitle}></h1>
+    <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-md-4 control-label">
+          <{$smarty.const._MD_TCW_BLOCK_TITLE}>
+        </label>
+        <div class="col-md-8">
+          <input type="text" name="BlockTitle" value="<{$block.BlockTitle}>" class="form-control">
         </div>
       </div>
-    </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label">
+          <{$smarty.const._MD_TCW_BLOCK_SHOW_TITLE}>
+        </label>
+        <div class="col-md-8">
+          <div class="radio-inline">
+            <input type="radio" name="config[show_title]" value="1" <{if $block.config.show_title!='0'}>checked<{/if}>><{$smarty.const._YES}>
+          </div>
+          <div class="radio-inline">
+            <input type="radio" name="config[show_title]" value="0" <{if $config.show_title=='0'}>checked<{/if}>><{$smarty.const._NO}>
+          </div>
+        </div>
+      </div>
+      <{$form}>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div id="block2" class="alert alert-info" style="min-height: 100px;">
-          <ul id="sort_block2" class="connectedSortable">
-            <{if $block2}>
-              <{foreach from=$block2 item=block}>
-                <li id="<{$block.BlockID}>" class="ui-state-highlight">
-                  <{$block.icon}>
-                  <{$block.BlockTitle}>
-                </li>
-              <{/foreach}>
-            <{/if}>
-          </ul>
-        </div>
+      <div class="text-center">
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="op" value="save_block_config">
+        <input type="hidden" name="BlockID" value="<{$block.BlockID}>">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
       </div>
-      <div class="col-md-6">
-        <div id="block3" class="alert alert-info" style="min-height: 100px;">
-          <ul id="sort_block3" class="connectedSortable">
-            <{if $block3}>
-              <{foreach from=$block3 item=block}>
-                <li id="<{$block.BlockID}>" class="ui-state-highlight">
-                  <{$block.icon}>
-                  <{$block.BlockTitle}>
-                </li>
-              <{/foreach}>
-            <{/if}>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div id="block4" class="alert alert-info" style="min-height: 100px;">
-          <ul id="sort_block4" class="connectedSortable">
-            <{if $block4}>
-              <{foreach from=$block4 item=block}>
-                <li id="<{$block.BlockID}>" class="ui-state-highlight">
-                  <{$block.icon}>
-                  <{$block.BlockTitle}>
-                </li>
-              <{/foreach}>
-            <{/if}>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div id="block5" class="alert alert-info" style="min-height: 100px;">
-          <ul id="sort_block5" class="connectedSortable">
-            <{if $block5}>
-              <{foreach from=$block5 item=block}>
-                <li id="<{$block.BlockID}>" class="ui-state-highlight">
-                  <{$block.icon}>
-                  <{$block.BlockTitle}>
-                </li>
-              <{/foreach}>
-            <{/if}>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div id="block6" class="alert alert-info" style="min-height: 100px;">
-          <ul id="sort_block6" class="connectedSortable">
-            <{if $block6}>
-              <{foreach from=$block6 item=block}>
-                <li id="<{$block.BlockID}>" class="ui-state-highlight">
-                  <{$block.icon}>
-                  <{$block.BlockTitle}>
-                </li>
-              <{/foreach}>
-            <{/if}>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="col-md-4">
-    <div id="side" class="alert alert-success" style="min-height: 300px;">
-    <ul id="sort_side" class="connectedSortable">
-      <{if $side}>
-        <{foreach from=$side item=block}>
-          <li id="<{$block.BlockID}>" class="ui-state-highlight">
-            <{$block.icon}>
-            <{$block.BlockTitle}>
-          </li>
-        <{/foreach}>
-      <{/if}>
-    </ul>
-    </div>
+    </form>
   </div>
 </div>
+
+<{else}>
+  <style>
+    #sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side {
+      border: 1px dashed rgba(0, 0, 0, 0.3);
+      min-height: 40px;
+      list-style-type: none;
+      margin: 0;
+      padding: 5px 0 0 0;
+      margin-right: 10px;
+    }
+
+    #sort_uninstall li, #sort_block1 li, #sort_block2 li, #sort_block3 li, #sort_block4 li, #sort_block5 li, #sort_block6 li, #sort_side li {
+      margin: 0 auto 5px auto;
+      padding: 5px;
+      font-size: 1.2em;
+      max-width: 220px;
+    }
+  </style>
+  <script>
+    $(function() {
+      $( "#sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side" ).sortable({
+        connectWith: ".connectedSortable",
+        placeholder: "ui-state-highlight",
+        forcePlaceholderSize: true,
+        cursor: "move",
+        cursorAt: { left: 5 },
+        opacity: 0.5,
+        receive: function( event, ui ) {
+          $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: $(this).parent().attr("id"), BlockID: ui.item.attr("id")}, function(data) {
+              $("#msg").html(data);
+          });
+        },
+        update: function( event, ui ) {
+          var order = $(this).sortable('toArray', {attribute: 'id'});
+          $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", BlockID: ui.item.attr("id"), order_arr: order}, function(data) {
+              $("#msg").html(data);
+          });
+        }
+      }).disableSelection();
+    });
+
+    function enableBlock(BlockID){
+      var img_id="#"+BlockID+"_icon";
+      var now_status=$(img_id).attr('title');
+      if(now_status=='1'){
+        status=0;
+      }else{
+        status=1;
+      }
+      $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID}>", BlockEnable: status, BlockID: BlockID}, function(data) {
+              $("#msg").html(data);
+              $(img_id).attr("src","images/show"+status+".gif");
+              $(img_id).attr("title",status);
+          });
+    }
+  </script>
+
+  <h1><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
+
+  <{if $uninstall}>
+    <div id="uninstall" class="alert alert-danger">
+      <ul id="sort_uninstall" class="connectedSortable">
+          <{foreach from=$uninstall item=block}>
+            <li id="<{$block.BlockID}>" class="ui-state-highlight">
+              <{$block.icon}>
+              <{$block.BlockTitle}>
+</a>
+            </li>
+          <{/foreach}>
+      </ul>
+    </div>
+  <{/if}>
+
+  <div id="msg"></div>
+  <div class="row">
+    <{if $theme_side=="left"}>
+      <div class="col-md-4">
+          <div id="side" class="alert alert-success" style="min-height: 300px;">
+          <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
+            <ul id="sort_side" class="connectedSortable">
+              <{if $side}>
+                <{foreach from=$side item=block}>
+                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                    <{$block.icon}>
+                    <{$block.BlockTitle}>
+                  </li>
+                <{/foreach}>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+    <{/if}>
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="block1" class="alert alert-info" style="min-height: 100px;">
+            <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_CENTER_BLOCK}></div>
+            <ul id="sort_block1" class="connectedSortable">
+              <{if $block1}>
+                <{foreach from=$block1 item=block}>
+                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                    <{$block.icon}>
+                    <{$block.BlockTitle}>
+                  </li>
+                <{/foreach}>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div id="block2" class="alert alert-info" style="min-height: 100px;">
+            <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_LEFT_BLOCK}></div>
+            <ul id="sort_block2" class="connectedSortable">
+              <{if $block2}>
+                <{foreach from=$block2 item=block}>
+                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                    <{$block.icon}>
+                    <{$block.BlockTitle}>
+                  </li>
+                <{/foreach}>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div id="block3" class="alert alert-info" style="min-height: 100px;">
+            <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_RIGHT_BLOCK}></div>
+            <ul id="sort_block3" class="connectedSortable">
+              <{if $block3}>
+                <{foreach from=$block3 item=block}>
+                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                    <{$block.icon}>
+                    <{$block.BlockTitle}>
+                  </li>
+                <{/foreach}>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div id="block4" class="alert alert-info" style="min-height: 100px;">
+            <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_CENTER_BLOCK}></div>
+            <ul id="sort_block4" class="connectedSortable">
+              <{if $block4}>
+                <{foreach from=$block4 item=block}>
+                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                    <{$block.icon}>
+                    <{$block.BlockTitle}>
+                  </li>
+                <{/foreach}>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div id="block5" class="alert alert-info" style="min-height: 100px;">
+            <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_LEFT_BLOCK}></div>
+            <ul id="sort_block5" class="connectedSortable">
+              <{if $block5}>
+                <{foreach from=$block5 item=block}>
+                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                    <{$block.icon}>
+                    <{$block.BlockTitle}>
+                  </li>
+                <{/foreach}>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div id="block6" class="alert alert-info" style="min-height: 100px;">
+            <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_RIGHT_BLOCK}></div>
+            <ul id="sort_block6" class="connectedSortable">
+              <{if $block6}>
+                <{foreach from=$block6 item=block}>
+                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                    <{$block.icon}>
+                    <{$block.BlockTitle}>
+                  </li>
+                <{/foreach}>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <{if $theme_side!="left"}>
+      <div class="col-md-4">
+        <div id="side" class="alert alert-success" style="min-height: 300px;">
+          <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
+          <ul id="sort_side" class="connectedSortable">
+            <{if $side}>
+              <{foreach from=$side item=block}>
+                <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <{$block.icon}>
+                  <{$block.BlockTitle}>
+                </li>
+              <{/foreach}>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+    <{/if}>
+
+  </div>
+<{/if}>

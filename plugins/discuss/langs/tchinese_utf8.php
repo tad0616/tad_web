@@ -19,3 +19,4 @@ define("_MD_TCW_MEM_UNAME", "學生帳號");
 define("_MD_TCW_MEM_PASSWD", "學生密碼");
 define("_MD_TCW_PLEASE_INPUT", "請輸入");
 define("_MD_TCW_DISCUSS_BLOCK_LIST", "留言簿");
+define("_MD_TCW_DISCUSS_BLOCK_LIMIT", "顯示留言數量");

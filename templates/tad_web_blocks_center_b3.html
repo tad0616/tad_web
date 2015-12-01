@@ -1,16 +1,18 @@
-<{if $display_mode=="home"}>
-<{$xoops_contents}>
+<{if $web_display_mode=="home"}>
   <{if $center_block1}>
     <div class="row">
       <div class="col-md-12">
         <{foreach from=$center_block1 item=block}>
           <div class="tad_web_block">
             <{if $block.plugin=="xoops"}>
-                <{block id=$block.BlockName}>
+              <{block id=$block.BlockName}>
             <{else}>
               <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
                 <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
               <{/if}>
+            <{/if}>
+            <{if $isMyWeb and $WebID and $block.BlockContent.main_data}>
+              <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool_b3.html"}>
             <{/if}>
           </div>
         <{/foreach}>
@@ -25,11 +27,14 @@
           <{foreach from=$center_block2 item=block}>
             <div class="tad_web_block">
               <{if $block.plugin=="xoops"}>
-                  <{block id=$block.BlockName}>
+                <{block id=$block.BlockName}>
               <{else}>
                 <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
                   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
                 <{/if}>
+              <{/if}>
+              <{if $isMyWeb and $WebID and $block.BlockContent.main_data}>
+                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool_b3.html"}>
               <{/if}>
             </div>
           <{/foreach}>
@@ -41,11 +46,14 @@
           <{foreach from=$center_block3 item=block}>
             <div class="tad_web_block">
               <{if $block.plugin=="xoops"}>
-                  <{block id=$block.BlockName}>
+                <{block id=$block.BlockName}>
               <{else}>
                 <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
                   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
                 <{/if}>
+              <{/if}>
+              <{if $isMyWeb and $WebID and $block.BlockContent.main_data}>
+                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool_b3.html"}>
               <{/if}>
             </div>
           <{/foreach}>
@@ -60,11 +68,14 @@
         <{foreach from=$center_block4 item=block}>
           <div class="tad_web_block">
             <{if $block.plugin=="xoops"}>
-                <{block id=$block.BlockName}>
+              <{block id=$block.BlockName}>
             <{else}>
               <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
                 <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
               <{/if}>
+            <{/if}>
+            <{if $isMyWeb and $WebID and $block.BlockContent.main_data}>
+              <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool_b3.html"}>
             <{/if}>
           </div>
         <{/foreach}>
@@ -79,11 +90,14 @@
           <{foreach from=$center_block5 item=block}>
             <div class="tad_web_block">
               <{if $block.plugin=="xoops"}>
-                  <{block id=$block.BlockName}>
+                <{block id=$block.BlockName}>
               <{else}>
                 <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
                   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
                 <{/if}>
+              <{/if}>
+              <{if $isMyWeb and $WebID and $block.BlockContent.main_data}>
+                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool_b3.html"}>
               <{/if}>
             </div>
           <{/foreach}>
@@ -99,6 +113,9 @@
                 <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
                   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
                 <{/if}>
+              <{/if}>
+              <{if $isMyWeb and $WebID and $block.BlockContent.main_data}>
+                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool_b3.html"}>
               <{/if}>
             </div>
           <{/foreach}>

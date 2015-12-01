@@ -12,11 +12,14 @@ define("_MD_TCW_PEOPLE", "人");
 define("_MD_TCW_TOOLS", "設定");
 define("_MD_TCW_WEB_TOOLS", "網站設定");
 define("_MD_TCW_PLUGIN_TOOLS", "功能設定");
+define("_MD_TCW_ABOUT_PLUGIN_TOOLS", "<ul><li>底下項目可以直接拉動排序，拉動完即自動儲存。</li><li>排序僅會影響上方選單及選單區塊各功能項目的呈現順序。</li></ul>");
 define("_MD_TCW_HEAD_TOOLS", "標題設定");
 define("_MD_TCW_LOGO_TOOLS", "Logo 設定");
 define("_MD_TCW_BG_TOOLS", "背景圖設定");
 define("_MD_TCW_COLOR_TOOLS", "顏色設定");
 define("_MD_TCW_BLOCK_TOOLS", "區塊設定");
+define("_MD_TCW_BLOCK_TITLE", "區塊標題");
+define("_MD_TCW_BLOCK_SHOW_TITLE", "是否顯示區塊標題？");
 define("_MD_TCW_DATA_NOT_EXIST", "該資訊不存在");
 define("_MD_TCW_SAVED", "已儲存");
 
@@ -118,3 +121,14 @@ if (is_dir($dir)) {
         closedir($dh);
     }
 }
+define("_MD_TCW_BLOCK_LIMIT", "設定要顯示的資料數量");
+define("_MD_TCW_WEBTITLE", "正式名稱");
+define("_MD_TCW_WEBNAME", "網站名稱");
+
+define("_MD_TCW_SIDE_BLOCK", "側邊區塊");
+define("_MD_TCW_TOP_CENTER_BLOCK", "上中區塊");
+define("_MD_TCW_TOP_LEFT_BLOCK", "上中左區塊");
+define("_MD_TCW_TOP_RIGHT_BLOCK", "上中右區塊");
+define("_MD_TCW_BOTTOM_CENTER_BLOCK", "下中區塊");
+define("_MD_TCW_BOTTOM_LEFT_BLOCK", "下中左區塊");
+define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "側邊區塊");

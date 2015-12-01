@@ -1,25 +1,19 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.isMineSchedule}>
-  <script>
-    function delete_func(ScheduleID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="schedule.php?WebID=<{$WebID}>&op=delete&ScheduleID=" + ScheduleID;
-    }
-    </script>
+<{if $isMyWeb}>
+  <{$sweet_delete_schedule_func_code}>
 <{/if}>
 
-<{if $bc.schedule_data}>
+<{if $bc.main_data}>
   <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
   <{if $WebID==""}>
 
-    <{if $display_mode=='index' or $display_mode=='home'}>
-      <h3><{$smarty.const._MD_TCW_SCHEDULE_BLOCK_LIST}></h3>
+    <{if $web_display_mode=='index' or $web_display_mode=='home'}>
+      <{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
     <{/if}>
     <{assign var="i" value=0}>
     <{assign var="total" value=1}>
 
-    <{foreach item=act from=$bc.schedule_data}>
+    <{foreach item=act from=$bc.main_data}>
       <{if $i==0}>
       <div class="row">
       <{/if}>
@@ -35,7 +29,7 @@
     <{assign var="total" value=$total+1}>
     <{/foreach}>
   <{else}>
-    <{foreach item=act from=$bc.schedule_data}>
+    <{foreach item=act from=$bc.main_data}>
       <div style="margin: 8px auto;">
         <h2>
           <a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}>
@@ -44,8 +38,8 @@
           </a>
           <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i></a>
           <small>
-            <{if !$bc.showWebTitleSchedule && $bc.isMineSchedule}>
-              <a href="javascript:delete_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <{if $act.isMyWeb}>
+              <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </small>
@@ -55,12 +49,5 @@
     <{/foreach}>
   <{/if}>
   <div style="clear: both;"></div>
-
-  <div style="text-align:right; margin-bottom: 10px;">
-    <{if $bc.isMineSchedule and $WebID}>
-      <a href="block.php?op=config&WebID=<{$WebID}>&BlockID=<{$block.BlockID}>" class="btn btn-warning btn-xs"><{$smarty.const._MD_TCW_BLOCKS_SETUP}></a>
-      <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
-    <{/if}>
-  </div>
 <{/if}>
 

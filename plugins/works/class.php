@@ -14,10 +14,8 @@ class tad_web_works
     //作品分享
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $isMyWeb;
-
-        $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-        $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        global $xoopsDB, $xoopsTpl, $MyWebs;
+        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
@@ -29,6 +27,7 @@ class tad_web_works
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
+                $xoopsTpl->assign('WorksDefCateID', $CateID);
             }
         }
 
@@ -51,6 +50,8 @@ class tad_web_works
 
         $Webs = getAllWebInfo();
 
+        $cate = $this->web_cate->get_tad_web_cate_arr();
+
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $WorksID , $WorksName , $WorksDesc , $WorksDate , $WorksPlace , $uid , $WebID , $WorksCount
             foreach ($all as $k => $v) {
@@ -60,26 +61,29 @@ class tad_web_works
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
-            $main_data[$i]['cate']      = $cate[$CateID];
+            $main_data[$i]['cate']      = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle']  = "<a href='index.php?WebID=$WebID'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['isMyWeb']   = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['WorksDate'] = substr($WorksDate, 0, 10);
             $i++;
         }
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_works_func", "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
+        $xoopsTpl->assign('sweet_delete_works_func_code', $sweet_alert_code);
+
         if ($mode == "return") {
-            $data['works_data']        = $main_data;
-            $data['works_bar']         = $show_bar;
-            $data['isMineWorks']       = $isMyWeb;
-            $data['showWebTitleWorks'] = $showWebTitle;
-            //$data['works']             = get_db_plugin($this->WebID, 'works');
-            $data['total'] = $total;
+            $data['main_data'] = $main_data;
+            $data['total']     = $total;
             return $data;
         } else {
             $xoopsTpl->assign('works_data', $main_data);
             $xoopsTpl->assign('works_bar', $show_bar);
-            $xoopsTpl->assign('isMineWorks', $isMyWeb);
-            $xoopsTpl->assign('showWebTitleWorks', $showWebTitle);
             $xoopsTpl->assign('works', get_db_plugin($this->WebID, 'works'));
             return $total;
         }
@@ -115,7 +119,6 @@ class tad_web_works
         $uid_name  = XoopsUser::getUnameFromId($uid, 1);
         $WorksDate = str_replace(' 00:00:00', '', $WorksDate);
 
-        $xoopsTpl->assign('isMineWorks', $isMyWeb);
         $xoopsTpl->assign('WorkName', $WorkName);
         $xoopsTpl->assign('WorksDate', $WorksDate);
         $xoopsTpl->assign('WorkDesc', nl2br($WorkDesc));
@@ -128,6 +131,15 @@ class tad_web_works
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_works_func", "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
+        $xoopsTpl->assign('sweet_delete_works_func_code', $sweet_alert_code);
+
     }
 
     //tad_web_works編輯表單
@@ -268,6 +280,32 @@ class tad_web_works
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->del_files();
+    }
+
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select WorksID,CateID from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($WorksID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($WorksID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
     }
 
     //新增tad_web_works計數器

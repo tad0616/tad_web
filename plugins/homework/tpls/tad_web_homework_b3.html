@@ -83,14 +83,8 @@
   </div>
 <{elseif $op=="show_one"}>
 
-  <{if $isMine}>
-    <script>
-    function delete_homework_func(HomeworkID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="homework.php?op=delete&HomeworkID=" + HomeworkID;
-    }
-    </script>
+  <{if $isMyWeb}>
+    <{$sweet_delete_homework_func_code}>
   <{/if}>
 
   <h1><{$HomeworkTitle}></h1>
@@ -110,16 +104,14 @@
     <{$HomeworkFiles}>
   <{/if}>
 
-  <{if $isMine}>
+  <{if $isMyWeb}>
     <div class="text-right">
       <a href="javascript:delete_homework_func(<{$HomeworkID}>);" class='btn btn-danger'><{$smarty.const._TAD_DEL}></a>
-      <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
+      <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
       <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$HomeworkID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
-<{else}>
-
-  <h1><{$homework.PluginTitle}></h1>
+<{elseif $homework_data}>
 
   <{$cate_menu}>
 
@@ -127,4 +119,9 @@
   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework_b3.html"}>
   <div class="clearfix"></div>
   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
+<{else}>
+    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h1>
+    <{if $isMyWeb and $WebID}>
+      <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
+    <{/if}>
 <{/if}>

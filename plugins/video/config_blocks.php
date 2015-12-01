@@ -1,22 +1,19 @@
 <?php
 $blocksArr = '';
-$i         = 0;
 
-$blocksArr[$i]['name']   = _MD_TCW_VIDEO_BLOCK_LIST;
-$blocksArr[$i]['func']   = 'list_video';
-$blocksArr[$i]['tpl']    = 'list_video.html';
-$blocksArr[$i]['config'] = array('limit' => 5);
+$blocksArr['list_video']['name']            = _MD_TCW_VIDEO_BLOCK_LIST;
+$blocksArr['list_video']['tpl']             = 'list_video.html';
+$blocksArr['list_video']['config']['limit'] = 5;
+$blocksArr['list_video']['colset']['limit'] = array('label' => _MD_TCW_VIDEO_BLOCK_LIMIT, 'type' => 'text');
 
-$i++;
-$blocksArr[$i]['name']   = _MD_TCW_VIDEO_BLOCK_RANDOM;
-$blocksArr[$i]['func']   = 'random_video';
-$blocksArr[$i]['tpl']    = 'random_video.html';
-$blocksArr[$i]['config'] = array();
+$blocksArr['random_video']['name'] = _MD_TCW_VIDEO_BLOCK_RANDOM;
+$blocksArr['random_video']['tpl']  = 'random_video.html';
+//$blocksArr['random_video']['config']['limit'] = 5;
+//$blocksArr['random_video']['colset']['limit'] = array('label' => _MD_TCW_VIDEO_BLOCK_LIMIT, 'type' => 'text');
 
-$i++;
-$blocksArr[$i]['name']   = _MD_TCW_VIDEO_BLOCK_LATEST;
-$blocksArr[$i]['func']   = 'latest_video';
-$blocksArr[$i]['tpl']    = 'latest_video.html';
-$blocksArr[$i]['config'] = array();
+$blocksArr['latest_video']['name'] = _MD_TCW_VIDEO_BLOCK_LATEST;
+$blocksArr['latest_video']['tpl']  = 'latest_video.html';
+//$blocksArr['latest_video']['config']['limit'] = 5;
+//$blocksArr['latest_video']['colset']['limit'] = array('label' => _MD_TCW_VIDEO_BLOCK_LIMIT, 'type' => 'text');
 
 $blockConfig['video'] = $blocksArr;

@@ -1,16 +1,14 @@
-<{if $works_data}>
-  <{if $isMineWorks}>
-    <script>
-      function delete_works_func(WorksID){
-        var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-        if (!sure)  return;
-        location.href="works.php?WebID=<{$WebID}>&op=delete&WorksID=" + WorksID;
-      }
-      </script>
-  <{/if}>
+<{if $web_display_mode=='index' and $works_data}>
+  <h3><a href="<{$xoops_url}>/modules/tad_web/works.php"><{$works.PluginTitle}></a></h3>
+<{elseif $web_display_mode=='index_plugin'}>
+  <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h1>
+<{elseif $web_display_mode=='home_plugin'}>
+  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h1>
+<{/if}>
 
-  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-    <h1><{$works.PluginTitle}></h1>
+<{if $works_data}>
+  <{if $isMyWeb}>
+   <{$sweet_delete_works_func_code}>
   <{/if}>
 
   <table class="footable table common_table">
@@ -25,21 +23,16 @@
         <th data-hide="phone" style="width:50px;text-align:center;">
           <{$smarty.const._MD_TCW_WORKS_COUNT}>
         </th>
-        <{if $showWebTitleAction}>
+        <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
           <th data-hide="phone" style="width:150px;text-align:center;">
             <{$smarty.const._MD_TCW_TEAMID}>
-          </th>
-        <{/if}>
-        <{if !$showWebTitleAction && $isMineWorks}>
-          <th data-hide="phone" style="width:100px;text-align:center;">
-            <{$smarty.const._TAD_FUNCTION}>
           </th>
         <{/if}>
       </tr>
     </thead>
     <{foreach item=work from=$works_data}>
       <tr>
-        <td class="text-center">
+        <td style="text-align:center;">
           <{$work.WorksDate}>
         </td>
         <td>
@@ -47,20 +40,18 @@
             <span class="label label-info"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
           <{/if}>
           <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
+          <{if $work.isMyWeb}>
+            <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+          <{/if}>
         </td>
-        <td class="text-center">
+        <td style="text-align:center;">
           <{$work.WorksCount}>
         </td>
-        <{if $showWebTitleAction}>
-          <td class="text-center">
+        <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
+          <td style="text-align:center;">
             <{$work.WebTitle}>
           </td>
-        <{/if}>
-        <{if !$showWebTitleAction && $isMineWorks}>
-        <td class="text-center">
-          <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-          <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
-        </td>
         <{/if}>
       </tr>
     <{/foreach}>
@@ -68,16 +59,13 @@
 
   <{$works_bar}>
 
-  <div style="text-align:right; margin-bottom: 10px;">
-    <{if $works_bar==""}>
-      <{if $WebID==""}>
-        <a href="works.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
-      <{else}>
-        <a href="works.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
-      <{/if}>
+  <div style="text-align:right; margin: 30px 0px 10px;">
+    <{if $web_display_mode=='home' or $web_display_mode=='index' or $WorksDefCateID}>
+      <a href="works.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
     <{/if}>
-    <{if $isMineWorks and $WebID}>
-      <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
+
+    <{if $isMyWeb and $WebID}>
+      <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
     <{/if}>
   </div>
 <{/if}>

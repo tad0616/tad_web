@@ -1,7 +1,8 @@
 <?php
 include_once "header.php";
 
-$op = (!isset($_REQUEST['op'])) ? "" : $_REQUEST['op'];
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 if ($op == "save_sort") {
     $sort = 1;

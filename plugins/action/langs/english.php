@@ -11,3 +11,4 @@ define("_MD_TCW_ACTIONUID", "Author");
 define("_MD_TCW_ACTIONCOUNT", "Counter");
 define("_MD_TCW_ACTION_UPLOAD", "Upload Images");
 define("_MD_TCW_ACTION_BLOCK_LIST", "Gallery");
+define("_MD_TCW_ACTION_BLOCK_LIMIT", "Displays the number of Gallery");

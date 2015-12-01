@@ -54,7 +54,7 @@ $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
-$xoopsTpl->assign('op', $_REQUEST['op']);
+$xoopsTpl->assign('op', $op);
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/

@@ -19,3 +19,4 @@ define("_MD_TCW_NEWS_TODAY", "今日");
 define("_MD_TCW_NEWS_PREV_MONTH", "上個月");
 define("_MD_TCW_NEWS_NEXT_MONTH", "下個月");
 define("_MD_TCW_NEWS_BLOCK_LIST", "最新消息");
+define("_MD_TCW_NEWS_BLOCK_LIMIT", "顯示新聞數量");

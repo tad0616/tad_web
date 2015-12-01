@@ -248,10 +248,12 @@ class web_cate
     public function get_tad_web_cate_arr()
     {
         global $xoopsDB;
-        $counter = $this->tad_web_cate_data_counter();
-        $arr     = "";
-        $sql     = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' order by CateSort";
-        //echo $sql . '<br>';
+        $counter    = $this->tad_web_cate_data_counter();
+        $arr        = "";
+        $andWebID   = empty($this->WebID) ? '' : "and `WebID` = '{$this->WebID}'";
+        $andColName = empty($this->ColName) ? '' : "and `ColName`='{$this->ColName}'";
+        $sql        = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where 1 $andWebID $andColName order by CateSort";
+        // echo $sql . '<br>';
         $result = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchArray($result)) {
             $CateID          = $data['CateID'];

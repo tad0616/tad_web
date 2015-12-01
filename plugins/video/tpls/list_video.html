@@ -1,87 +1,46 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.video_data}>
-  <{if $bc.isMineVideo}>
-    <script type="text/javascript">
-    function delete_video_func(VideoID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="video.php?op=delete&VideoID=" + VideoID;
-    }
-    </script>
+<{if $bc.main_data}>
+  <{if $isMyWeb}>
+    <{$sweet_delete_video_func_code}>
   <{/if}>
-
-  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-    <h3><{$block.BlockTitle}></h3>
-  <{/if}>
+  <{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
 
   <table class="footable table common_table">
-  <thead>
-    <tr>
-      <th data-hide="phone" style="width:100px;text-align:center;">
-        <{$smarty.const._MD_TCW_VIDEODATE}>
-      </th>
-      <th data-class="expand">
-        <{$smarty.const._MD_TCW_VIDEONAME}>
-      </th>
-      <{if $bc.showWebTitleVideo}>
-        <th data-hide="phone" style="width:150px;text-align:center;">
-          <{$smarty.const._MD_TCW_TEAMID}>
+    <thead>
+      <tr>
+        <th data-class="expand" style="text-align:center;">
+          <{$smarty.const._MD_TCW_VIDEODATE}>
         </th>
-      <{/if}>
-      <{if !$bc.showWebTitleVideo && $bc.isMineVideo}>
-        <th data-hide="phone" style="width:100px;text-align:center;">
-          <{$smarty.const._TAD_FUNCTION}>
+        <th data-hide="phone">
+          <{$smarty.const._MD_TCW_VIDEONAME}>
         </th>
-      <{/if}>
-    </tr>
-  </thead>
-  <{foreach item=video from=$bc.video_data}>
-    <tr>
-      <td style="width:130px;">
-        <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>">
-          <img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/1.jpg" class="pull-left img-polaroid" style="margin-right:10px;" alt="<{$video.VideoName}>">
-        </a>
-      </td>
-
-      <td>
-        <{$video.VideoDate}>
-        <p>
-          <{if $video.cate.CateID}>
-            <span class="label label-info"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
-          <{/if}>
-          <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>"><{$video.VideoName}></a>
-        </p>
-        <p style="font-size:12px;">
-          <{$video.VideoCountInfo}>
-        </p>
-     </td>
-
-      <{if $bc.showWebTitleVideo}>
-        <td style="width:100px;text-align:center;">
-          <{$video.WebTitle}>
+      </tr>
+    </thead>
+    <{foreach item=video from=$bc.main_data}>
+      <tr>
+        <td style="min-width: 130px;">
+          <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>">
+            <img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/1.jpg" class="img-responsive img-rounded" style="width: 100%;" alt="<{$video.VideoName}>" title="<{$video.VideoName}>">
+          </a>
         </td>
-      <{/if}>
-      <{if !$bc.showWebTitleVideo && $bc.isMineVideo}>
-        <td style="width:100px;text-align:center;">
-          <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-          <a href="video.php?WebID=<{$video.WebID}>&op=edit_form&VideoID=<{$video.VideoID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
-        </td>
-      <{/if}>
-    </tr>
-  <{/foreach}>
+
+        <td>
+          <p>
+            <{$video.VideoDate}>
+            <{if $video.cate.CateID}>
+              <span class="label label-info"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
+            <{/if}>
+            <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>"><{$video.VideoName}></a>
+            <{if $video.isMyWeb}>
+              <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="video.php?WebID=<{$video.WebID}>&op=edit_form&VideoID=<{$video.VideoID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
+          </p>
+          <p style="font-size:12px;">
+            <{$video.VideoDesc}>
+          </p>
+       </td>
+      </tr>
+    <{/foreach}>
   </table>
-
-  <div style="text-align:right; margin-bottom: 10px;">
-    <{if $bc.video_bar==""}>
-      <{if $WebID==""}>
-        <a href="video.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
-      <{else}>
-        <a href="video.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
-      <{/if}>
-    <{/if}>
-    <{if $bc.isMineVideo and $WebID}>
-      <a href="block.php?op=config&WebID=<{$WebID}>&BlockID=<{$block.BlockID}>" class="btn btn-warning btn-xs"><{$smarty.const._MD_TCW_BLOCKS_SETUP}></a>
-      <a href="video.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
-    <{/if}>
-  </div>
 <{/if}>

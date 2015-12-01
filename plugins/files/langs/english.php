@@ -9,3 +9,4 @@ define('_MD_TCW_FILE_DATE', 'Date');
 define('_MD_TCW_FILENAME', 'Filename');
 define('_MD_TCW_FILES_UPLOAD', 'Upload file');
 define("_MD_TCW_FILES_BLOCK_LIST", "Downloads");
+define("_MD_TCW_FILES_BLOCK_LIMIT", "Displays the number of files");

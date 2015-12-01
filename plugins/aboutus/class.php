@@ -12,7 +12,7 @@ class tad_web_aboutus
     //所有網站列表
     public function list_all()
     {
-        global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $isMyWeb;
+        global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $MyWebs;
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by WebSort";
         $result = $xoopsDB->query($sql) or web_error($sql);
@@ -30,7 +30,6 @@ class tad_web_aboutus
 
         $xoopsTpl->assign('MyWebs', $MyWebs);
         $xoopsTpl->assign('data', $data);
-        $xoopsTpl->assign('isMyWeb', $isMyWeb);
 
         $xoopsTpl->assign('tad_web_cate', $this->get_tad_web_cate_all('tad_web'));
         $xoopsTpl->assign('aboutus', get_db_plugin($this->WebID, 'aboutus'));
@@ -50,6 +49,8 @@ class tad_web_aboutus
         $students1   = $students2   = "";
         $class_total = $class_boy = $class_girl = 0;
 
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         while ($all = $xoopsDB->fetchArray($result)) {
 
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
@@ -101,6 +102,9 @@ class tad_web_aboutus
 
             $i++;
         }
+
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col("WebOwner", $this->WebID, 1);
         $teacher_pic = $TadUpFiles->get_pic_file();
 
@@ -112,7 +116,6 @@ class tad_web_aboutus
 
         $xoopsTpl->assign('all_mems', $all_main);
         $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
-        $xoopsTpl->assign('isMine', $isMyWeb);
         $xoopsTpl->assign('teacher_pic', $teacher_pic);
         $xoopsTpl->assign('class_total', $class_total);
         $xoopsTpl->assign('class_boy', $class_boy);
@@ -195,6 +198,9 @@ class tad_web_aboutus
         $op = (empty($MemID)) ? "insert" : "update";
 
         $TadUpFiles->set_col("MemID", $MemID, 1);
+
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $pic_url = $TadUpFiles->get_pic_file('thumb');
 
         if (empty($pic_url)) {
@@ -224,14 +230,25 @@ class tad_web_aboutus
             $del_btn = "";
         }
 
+        //可愛刪除
+        // if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+        //     redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        // }
+        // include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        // $sweet_alert      = new sweet_alert();
+        // $sweet_alert_code = $sweet_alert->render("delete_student_func", "aboutus.php?op=delete&WebID={$this->WebID}&MemID=", 'MemID');
+        // $xoopsTpl->assign('sweet_delete_homework_func_code', $sweet_alert_code);
+
         $main = "
         $formValidator_code
+        <!--sweet_alert_code-->
+        {$sweet_alert_code}
         <script type='text/javascript' src='" . TADTOOLS_URL . "/My97DatePicker/WdatePicker.js'></script>
         <script type='text/javascript'>
         function delete_student_func(MemID){
           var sure = window.confirm('" . _TAD_DEL_CONFIRM . "');
           if (!sure)  return;
-          location.href=\"{$_SERVER['PHP_SELF']}?op=delete&MemID=\" + MemID;
+          location.href=\"{$_SERVER['PHP_SELF']}?op=delete&WebID={$WebID}&MemID=\" + MemID;
         }
         </script>
         <form action='{$_SERVER['PHP_SELF']}' method='post' id='myForm' enctype='multipart/form-data' class='form-horizontal' role='form'>
@@ -355,20 +372,22 @@ class tad_web_aboutus
         $MemSort = $this->max_sort($MyWebs);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_mems") . "
-  (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`,  `MemUname`, `MemPasswd`)
-  values('{$_POST['MemName']}' , '{$_POST['MemNickName']}', '{$_POST['MemSex']}', '{$_POST['MemUnicode']}', '{$_POST['MemBirthday']}', '{$_POST['MemUrl']}', '{$_POST['MemClassOrgan']}', '{$_POST['MemExpertises']}' ,'{$_POST['MemUname']}', '{$_POST['MemPasswd']}')";
+          (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`,  `MemUname`, `MemPasswd`)
+          values('{$_POST['MemName']}' , '{$_POST['MemNickName']}', '{$_POST['MemSex']}', '{$_POST['MemUnicode']}', '{$_POST['MemBirthday']}', '{$_POST['MemUrl']}', '{$_POST['MemClassOrgan']}', '{$_POST['MemExpertises']}' ,'{$_POST['MemUname']}', '{$_POST['MemPasswd']}')";
 
         $xoopsDB->queryF($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $MemID = $xoopsDB->getInsertId();
 
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col("MemID", $MemID, 1);
         $TadUpFiles->upload_file("upfile", 180, null, null, null, true);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . "
-  (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`)
-  values('{$MemID}' , '{$WebID}' , '{$_POST['MemNum']}' , '{$MemSort}' , '1' )";
+          (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`)
+          values('{$MemID}' , '{$WebID}' , '{$_POST['MemNum']}' , '{$MemSort}' , '1' )";
 
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -390,25 +409,27 @@ class tad_web_aboutus
         $_POST['MemNickName']   = $myts->addSlashes($_POST['MemNickName']);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_mems") . " set
-   `MemName` = '{$_POST['MemName']}' ,
-   `MemNickName` = '{$_POST['MemNickName']}',
-   `MemSex` = '{$_POST['MemSex']}',
-   `MemUnicode` = '{$_POST['MemUnicode']}',
-   `MemBirthday` = '{$_POST['MemBirthday']}',
-   `MemUrl` = '{$_POST['MemUrl']}',
-   `MemClassOrgan` = '{$_POST['MemClassOrgan']}',
-   `MemExpertises` = '{$_POST['MemExpertises']}',
-   `MemUname` = '{$_POST['MemUname']}',
-   `MemPasswd` = '{$_POST['MemPasswd']}'
-  where MemID ='$MemID'";
+           `MemName` = '{$_POST['MemName']}' ,
+           `MemNickName` = '{$_POST['MemNickName']}',
+           `MemSex` = '{$_POST['MemSex']}',
+           `MemUnicode` = '{$_POST['MemUnicode']}',
+           `MemBirthday` = '{$_POST['MemBirthday']}',
+           `MemUrl` = '{$_POST['MemUrl']}',
+           `MemClassOrgan` = '{$_POST['MemClassOrgan']}',
+           `MemExpertises` = '{$_POST['MemExpertises']}',
+           `MemUname` = '{$_POST['MemUname']}',
+           `MemPasswd` = '{$_POST['MemPasswd']}'
+          where MemID ='$MemID'";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set
-   `MemNum` = '{$_POST['MemNum']}' ,
-   `MemSort` = '{$_POST['MemSort']}'
-  where MemID ='$MemID'";
+           `MemNum` = '{$_POST['MemNum']}' ,
+           `MemSort` = '{$_POST['MemSort']}'
+          where MemID ='$MemID'";
         $xoopsDB->queryF($sql) or web_error($sql);
 
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col("MemID", $MemID);
         $TadUpFiles->upload_file("upfile", 180, null, null, null, true);
         return $uid;
@@ -417,9 +438,37 @@ class tad_web_aboutus
     //刪除tad_web_mems某筆資料資料
     public function delete($MemID = "")
     {
-        global $xoopsDB;
+        global $xoopsDB, $TadUpFiles;
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set MemEnable='0' where MemID ='$MemID'";
         $xoopsDB->queryF($sql) or web_error($sql);
+
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
+        $TadUpFiles->set_col("MemID", $MemID);
+        $TadUpFiles->del_files();
+    }
+
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+
+        $sql    = "select MemID from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$this->WebID}'";
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($MemID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($MemID);
+        }
+
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
     }
 
     //自動取得tad_web_mems的最新排序
@@ -543,9 +592,9 @@ class tad_web_aboutus
         global $xoopsDB, $xoopsUser, $TadUpFiles;
 
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set
-   `top` = '{$_POST['top']}' ,
-   `left` = '{$_POST['left']}'
-    where MemID='$MemID'";
+       `top` = '{$_POST['top']}' ,
+       `left` = '{$_POST['left']}'
+        where MemID='$MemID'";
         //die($sql);
         $xoopsDB->queryF($sql) or web_error($sql);
         return $MemID;

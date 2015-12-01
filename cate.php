@@ -56,6 +56,7 @@ array (
 )*/
 
     $xoopsTpl->assign('cate_opt_arr', $cate);
+    $xoopsTpl->assign('cate_arr', $cate);
     $xoopsTpl->assign('ColName', $ColName);
     $xoopsTpl->assign('WebID', $WebID);
 
@@ -108,7 +109,7 @@ $ColName = system_CleanVars($_REQUEST, 'ColName', '', 'string');
 $act     = system_CleanVars($_REQUEST, 'act', '', 'array');
 $table   = system_CleanVars($_REQUEST, 'table', '', 'table');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 

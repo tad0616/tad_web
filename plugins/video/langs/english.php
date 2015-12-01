@@ -14,3 +14,4 @@ define('_MD_TCW_VIDEOCOUNTINFO', 'People watched a total of %s');
 define("_MD_TCW_VIDEO_BLOCK_LIST", "List Video");
 define("_MD_TCW_VIDEO_BLOCK_RANDOM", "Random Video");
 define("_MD_TCW_VIDEO_BLOCK_LATEST", "Latest Video");
+define("_MD_TCW_VIDEO_BLOCK_LIMIT", "Displays the number of videos");

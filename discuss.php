@@ -14,7 +14,7 @@ $DiscussID = system_CleanVars($_REQUEST, 'DiscussID', 0, 'int');
 $WebID     = system_CleanVars($_REQUEST, 'WebID', $LoginWebID, 'int');
 $CateID    = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 

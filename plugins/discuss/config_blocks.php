@@ -1,10 +1,9 @@
 <?php
 $blocksArr = '';
-$i         = 0;
 
-$blocksArr[$i]['name']   = _MD_TCW_DISCUSS_BLOCK_LIST;
-$blocksArr[$i]['func']   = 'list_discuss';
-$blocksArr[$i]['tpl']    = 'list_discuss.html';
-$blocksArr[$i]['config'] = array('limit' => 5);
+$blocksArr['list_discuss']['name']            = _MD_TCW_DISCUSS_BLOCK_LIST;
+$blocksArr['list_discuss']['tpl']             = 'list_discuss.html';
+$blocksArr['list_discuss']['config']['limit'] = 5;
+$blocksArr['list_discuss']['colset']['limit'] = array('label' => _MD_TCW_DISCUSS_BLOCK_LIMIT, 'type' => 'text');
 
 $blockConfig['discuss'] = $blocksArr;

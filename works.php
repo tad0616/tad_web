@@ -13,7 +13,7 @@ $op      = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WorksID = system_CleanVars($_REQUEST, 'WorksID', 0, 'int');
 $CateID  = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 

@@ -39,3 +39,4 @@ define("_MD_TCW_HOMEWORK_DEFAULT", "
 </table>");
 
 define("_MD_TCW_HOMEWORK_BLOCK_LIST", "聯絡簿");
+define("_MD_TCW_HOMEWORK_BLOCK_LIMIT", "顯示聯絡簿數量");

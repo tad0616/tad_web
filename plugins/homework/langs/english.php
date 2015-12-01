@@ -39,3 +39,4 @@ define('_MD_TCW_HOMEWORK_DEFAULT', "
 </table>");
 
 define("_MD_TCW_HOMEWORK_BLOCK_LIST", "Contact book");
+define("_MD_TCW_HOMEWORK_BLOCK_LIMIT", "Displays the number of homeworks");

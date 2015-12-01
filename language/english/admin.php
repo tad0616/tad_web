@@ -13,7 +13,9 @@ define('_MA_TCW_TEAMTITLE', 'Official name');
 define('_MA_TCW_MAIN_TITLE', 'Personal Web Manager');
 define('_MA_TCW_GROUP_NAME', 'XOOPS personal page groups');
 define('_MA_TCW_GROUP_DESC', 'Do not change the group name, otherwise the module will not function correctly.');
-define('_MA_TCW_CREATE_BY_USER', 'New Batch');
+define('_MA_TCW_CREATE_BY_USER', 'Batch creat user website');
+define("_MA_TCW_ALL_USER_NO", "Yet have its own website users");
+define("_MA_TCW_ALL_USER_YES", "Users have their own website");
 define('_MA_TCW_SOMEBODY_WEB', '%s dedicated website');
 define('_MA_TCW_WILL_DEL', 'It will delete the following information:');
 define('_MA_TCW_DEL_MEM', 'Member information');
@@ -66,3 +68,6 @@ define('_MA_TCW_WEB_SCHEDULE_SUBJECT', 'Set subjects (for teachers optional)');
 define('_MA_TCW_WEB_SCHEDULE_SUBJECT_DESC', 'E.g:Writing;Reading;Math;Science;Art;Music');
 
 define('_MA_TCW_CO_ADMIN', 'Co-administrator');
+
+define('_MA_TADWEB_PLUGIN_TITLE', 'Plugin Title');
+define('_MA_TADWEB_PLUGIN_TOTAL', 'Total');

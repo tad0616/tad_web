@@ -10,6 +10,11 @@ function tad_web_setup_form()
     global $xoopsDB, $xoopsTpl, $isAdmin;
 
     $plugins = get_plugins(0, 'edit');
+
+    foreach ($plugins as $i => $plugin) {
+        $plugins[$i]['limit'] = get_web_config($plugin['dirname'] . '_limit', '0');
+    }
+    // die(var_export($plugins));
     $xoopsTpl->assign('plugins', $plugins);
     $web_plugin_display_arr = '';
     $web_setup_show         = get_web_config('web_plugin_display_arr', '0');
@@ -43,15 +48,18 @@ function save_plugins()
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], $WebID);
+        if ($_POST['plugin_limit'][$dirname] != 'none') {
+            save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], 0);
+        }
+
         if ($_POST['plugin_display'][$dirname] == '1') {
             $display_plugins[] = $dirname;
         }
         $i++;
     }
 
+    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), 0);
     mk_menu_var_file(0);
-    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), $WebID);
 
 }
 

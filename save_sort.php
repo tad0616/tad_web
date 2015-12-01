@@ -10,6 +10,6 @@ foreach ($_POST['tr'] as $dirname) {
     $display_plugins[] = $dirname;
     $sort++;
 }
-save_web_config('web_plugin_display_arr', implode(',', $display_plugins), $WebID);
+// save_web_config('web_plugin_display_arr', implode(',', $display_plugins), $WebID);
 mk_menu_var_file($WebID);
 echo _TAD_SORTED . "(" . date("Y-m-d H:i:s") . ")";

@@ -52,14 +52,8 @@
   </div>
 <{elseif $op=="show_one"}>
 
-  <{if $isMinePage}>
-  <script>
-    function delete_page_func(PageID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="page.php?WebID=<{$WebID}>&op=delete&PageID=" + PageID;
-    }
-  </script>
+  <{if $isMyWeb}>
+    <{$sweet_delete_page_func_code}>
   <{/if}>
 
   <h1><{$PageTitle}></h1>
@@ -71,26 +65,34 @@
   </ol>
 
   <{if $PageContent}>
-    <div style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FFFFFF url('<{$bg_pic}>') center center; border: 2px solid #AAC1DD; border-radius: 5px; margin:10px auto; padding: 20px; background-size:cover;"><{$PageContent}></div>
+    <div style="min-height: 100px; overflow: auto; line-height: 2; font-size:120%; background: #FFFFFF url('<{$bg_pic}>') center center; border-radius: 5px; margin:10px auto; padding: 20px; background-size:cover;"><{$PageContent}></div>
   <{/if}>
 
   <div class="row">
     <{$files}>
   </div>
 
-  <{if $isMinePage}>
-    <div class="text-right">
+  <div class="row">
+    <div class="col-md-6 text-left"><a href="page.php?WebID=<{$WebID}>&PageID=<{$prev_next.prev.PageID}>" class="btn btn-default btn-block"><i class="fa fa-chevron-left"></i> <{$prev_next.prev.PageTitle}></a></div>
+    <div class="col-md-6 text-right"><a href="page.php?WebID=<{$WebID}>&PageID=<{$prev_next.next.PageID}>" class="btn btn-default btn-block"><{$prev_next.next.PageTitle}> <i class="fa fa-chevron-right"></i></a></div>
+  </div>
+
+  <{if $isMyWeb}>
+    <div class="text-right" style="margin-top: 30px;">
       <a href="javascript:delete_page_func(<{$PageID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+      <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
       <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$PageID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
-<{else}>
-  <{if $PageDefCateID==""}>
-    <h1><{$page.PluginTitle}></h1>
-  <{/if}>
+<{elseif $page_data}>
   <div class="row">
     <div class="col-md-12">
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/page/tpls/tad_web_common_page_b3.html"}>
     </div>
   </div>
+<{else}>
+  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$page.PluginTitle}></h1>
+  <{if $isMyWeb and $WebID}>
+    <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+  <{/if}>
 <{/if}>

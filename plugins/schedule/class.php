@@ -15,10 +15,9 @@ class tad_web_schedule
     //課表
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $MyWebs;
 
-        $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-        $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = $andDisplay = "";
         if ($mode == "assign") {
@@ -33,6 +32,7 @@ class tad_web_schedule
             $cate = $this->web_cate->get_tad_web_cate($CateID);
             $xoopsTpl->assign('cate', $cate);
             $andCateID = "and a.`CateID`='$CateID'";
+            $xoopsTpl->assign('ScheduleDefCateID', $CateID);
         } else {
             $andDisplay = "and a.`ScheduleDisplay`='1'";
         }
@@ -42,9 +42,11 @@ class tad_web_schedule
 
         $main_data = "";
 
-        $i = 0;
+        $i = $total = 0;
 
         $Webs = getAllWebInfo();
+
+        $cate = $this->web_cate->get_tad_web_cate_arr();
 
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount , $ScheduleTime
@@ -55,26 +57,31 @@ class tad_web_schedule
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
-            $main_data[$i]['cate']     = $cate[$CateID];
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['schedule'] = $this->get_one_schedule($ScheduleID);
             $i++;
+            $total++;
         }
 
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
+        $xoopsTpl->assign('sweet_delete_schedule_func_code', $sweet_alert_code);
+
         if ($mode == "return") {
-            $data['schedule_amount']      = $i;
-            $data['schedule_data']        = $main_data;
-            $data['isMineSchedule']       = $isMyWeb;
-            $data['showWebTitleSchedule'] = $showWebTitle;
-            //$data['schedule']             = get_db_plugin($this->WebID, 'schedule');
+            $data['schedule_amount'] = $i;
+            $data['main_data']       = $main_data;
+            $data['total']           = $total;
             return $data;
         } else {
             $xoopsTpl->assign('schedule_amount', $i);
             $xoopsTpl->assign('schedule_data', $main_data);
-            $xoopsTpl->assign('isMineSchedule', $isMyWeb);
-            $xoopsTpl->assign('showWebTitleSchedule', $showWebTitle);
             $xoopsTpl->assign('schedule', get_db_plugin($this->WebID, 'schedule'));
             return $i;
         }
@@ -109,7 +116,6 @@ class tad_web_schedule
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $xoopsTpl->assign('isMineSchedule', $isMyWeb);
         $xoopsTpl->assign('ScheduleName', $ScheduleName);
         $xoopsTpl->assign('ScheduleDisplay', $ScheduleDisplay);
         $xoopsTpl->assign('uid_name', $uid_name);
@@ -124,6 +130,14 @@ class tad_web_schedule
 
         $schedule_template = $this->get_one_schedule($ScheduleID);
         $xoopsTpl->assign('schedule_template', $schedule_template);
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
+        $xoopsTpl->assign('sweet_delete_schedule_func_code', $sweet_alert_code);
+
     }
 
     //tad_web_schedule編輯表單
@@ -304,6 +318,32 @@ class tad_web_schedule
             web_error($sql);
         }
 
+    }
+
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select ScheduleID,CateID from " . $xoopsDB->prefix("tad_web_schedule") . " where WebID='{$this->WebID}'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($ScheduleID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_schedule") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
     }
 
     //新增tad_web_schedule計數器

@@ -71,14 +71,8 @@
   </div>
 <{elseif $op=="show_one"}>
 
-  <{if $isMineVideo}>
-    <script>
-    function delete_video_func(VideoID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="video.php?op=delete&VideoID=" + VideoID;
-    }
-    </script>
+  <{if $isMyWeb}>
+    <{$sweet_delete_video_func_code}>
   <{/if}>
 
   <h1><{$VideoName}></h1>
@@ -103,15 +97,13 @@
 
   <div style="text-align:right;color:#669900;font-size:11pt;"><{$VideoInfo}></div>
 
-  <{if $isMineVideo}>
+  <{if $isMyWeb}>
     <div class="text-right">
     <a href="javascript:delete_video_func(<{$VideoID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
     <a href="video.php?WebID=<{$WebID}>&op=edit_form&VideoID=<{$VideoID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
-<{else}>
-  <h1><{$video.PluginTitle}></h1>
-
+<{elseif $video_data}>
   <{$cate_menu}>
   <{$FooTableJS}>
   <div class="row">
@@ -119,4 +111,9 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/video/tpls/tad_web_common_video_b3.html"}>
     </div>
   </div>
+<{else}>
+    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h1>
+    <{if $isMyWeb and $WebID}>
+      <a href="video.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
+    <{/if}>
 <{/if}>

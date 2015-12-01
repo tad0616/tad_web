@@ -4,6 +4,7 @@ if (!function_exists('MyWebID')) {
     function MyWebID()
     {
         global $xoopsUser, $xoopsDB;
+        $MyWebs = array();
         if ($xoopsUser) {
             $uid    = $xoopsUser->uid();
             $sql    = "select WebID from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid'";

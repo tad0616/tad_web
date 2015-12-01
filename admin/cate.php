@@ -222,7 +222,7 @@ function tad_web_list_cate()
         $ColSN    = $myts->htmlSpecialChars($ColSN);
 
         $all_content[$i]['CateID']      = $CateID;
-        $all_content[$i]['WebID']       = $$WebID;
+        $all_content[$i]['WebID']       = $WebID;
         $all_content[$i]['CateName']    = $CateName;
         $all_content[$i]['ColName']     = $ColName;
         $all_content[$i]['ColSN']       = $ColSN;
@@ -230,11 +230,12 @@ function tad_web_list_cate()
         $all_content[$i]['CateEnable']  = $CateEnable;
         $all_content[$i]['CateCounter'] = $CateCounter;
         //die(var_export($web_cate[0]));
-        $all_content[$i]['repository']         = $web_cate[0];
-        $all_content[$i]['destination']        = $web_cate[$CateID];
-        $all_content[$i]['web_cate_arr_str']   = implode(",", $web_cate[$CateID]['WebID']);
-        $all_content[$i]['web_cate_blank_arr'] = implode(",", $web_cate[0]['WebID']);
-
+        if (is_array($web_cate)) {
+            $all_content[$i]['repository']         = isset($web_cate[0]) ? $web_cate[0] : '';
+            $all_content[$i]['destination']        = isset($web_cate[$CateID]) ? $web_cate[$CateID] : '';
+            $all_content[$i]['web_cate_arr_str']   = isset($web_cate[$CateID]) ? implode(",", $web_cate[$CateID]['WebID']) : '';
+            $all_content[$i]['web_cate_blank_arr'] = isset($web_cate[0]) ? implode(",", $web_cate[0]['WebID']) : '';
+        }
         $i++;
     }
 
@@ -249,7 +250,6 @@ function tad_web_list_cate()
     $xoopsTpl->assign('delete_tad_web_cate_func', $delete_tad_web_cate_func);
 
     $xoopsTpl->assign('tad_web_cate_jquery_ui', get_jquery(true));
-    $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('isAdmin', $isAdmin);
     $xoopsTpl->assign('all_content', $all_content);
@@ -273,7 +273,7 @@ $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
-$xoopsTpl->assign('op', $_REQUEST['op']);
+$xoopsTpl->assign('op', $op);
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/

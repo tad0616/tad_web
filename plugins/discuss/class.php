@@ -14,14 +14,13 @@ class tad_web_discuss
     //列出所有tad_web_discuss資料
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsUser, $xoopsTpl, $isMyWeb;
+        global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs;
 
         if (!$xoopsUser and empty($_SESSION['LoginMemID'])) {
             $xoopsTpl->assign('mode', 'need_login');
         } else {
 
-            $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-            $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+            $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
             $andCateID = "";
             if ($mode == "assign") {
@@ -34,6 +33,7 @@ class tad_web_discuss
                     $cate = $this->web_cate->get_tad_web_cate($CateID);
                     $xoopsTpl->assign('cate', $cate);
                     $andCateID = "and a.`CateID`='$CateID'";
+                    $xoopsTpl->assign('DiscussDefCateID', $CateID);
                 }
             }
 
@@ -56,6 +56,8 @@ class tad_web_discuss
 
             $Webs = getAllWebInfo();
 
+            $cate = $this->web_cate->get_tad_web_cate_arr();
+
             while ($all = $xoopsDB->fetchArray($result)) {
                 //`DiscussID`, `ReDiscussID`, `CateID`, `WebID`, `MemID`, `MemName`, `DiscussTitle`, `DiscussContent`, `DiscussDate`, `LastTime`, `DiscussCounter`
                 foreach ($all as $k => $v) {
@@ -65,10 +67,10 @@ class tad_web_discuss
                 $main_data[$i] = $all;
 
                 $this->web_cate->set_WebID($WebID);
-                $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
-                $main_data[$i]['cate']     = $cate[$CateID];
+                $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
                 $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+                $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
                 $renum       = $this->get_re_num($DiscussID);
                 $show_re_num = empty($renum) ? "" : " ({$renum}) ";
@@ -79,19 +81,23 @@ class tad_web_discuss
                 $i++;
             }
 
+            //可愛刪除
+            if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+                redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+            }
+            include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+            $sweet_alert      = new sweet_alert();
+            $sweet_alert_code = $sweet_alert->render("delete_discuss_func", "discuss.php?op=delete&WebID={$this->WebID}&DiscussID=", 'DiscussID');
+            $xoopsTpl->assign('sweet_delete_discuss_func_code', $sweet_alert_code);
+
             if ($mode == "return") {
-                $data['discuss_data']        = $main_data;
-                $data['discuss_bar']         = $show_bar;
-                $data['isMineDiscuss']       = $isMyWeb;
-                $data['showWebTitleDiscuss'] = $showWebTitle;
-                //$data['discuss']             = get_db_plugin($this->WebID, 'discuss');
-                $data['total'] = $total;
+                $data['main_data'] = $main_data;
+                $data['total']     = $total;
                 return $data;
             } else {
                 $xoopsTpl->assign('discuss_data', $main_data);
                 $xoopsTpl->assign('discuss_bar', $show_bar);
-                $xoopsTpl->assign('isMineDiscuss', $isMyWeb);
-                $xoopsTpl->assign('showWebTitleDiscuss', $showWebTitle);
+                $xoopsTpl->assign('isMineDiscuss', $this->isMineDiscuss($MemID, $this->WebID));
                 $xoopsTpl->assign('discuss', get_db_plugin($this->WebID, 'discuss'));
                 return $total;
             }
@@ -164,6 +170,14 @@ class tad_web_discuss
         $upform = $TadUpFiles->upform(false, 'upfile', null, false);
         $xoopsTpl->assign('upform', $upform);
 
+        //可愛刪除
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_discuss_func", "discuss.php?op=delete&WebID={$this->WebID}&DiscussID=", 'DiscussID');
+        $xoopsTpl->assign('sweet_delete_discuss_func_code', $sweet_alert_code);
     }
 
     //tad_web_discuss編輯表單
@@ -215,7 +229,6 @@ class tad_web_discuss
         $xoopsTpl->assign('MemID', $MemID);
         $xoopsTpl->assign('MemName', $MemName);
         $xoopsTpl->assign('WebID', $WebID);
-        $xoopsTpl->assign('isMyWeb', $isMyWeb);
 
         //設定「DiscussID」欄位預設值
         $DiscussID = (!isset($DBV['DiscussID'])) ? "" : $DBV['DiscussID'];
@@ -391,6 +404,32 @@ class tad_web_discuss
         $TadUpFiles->del_files();
     }
 
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select DiscussID,CateID from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='{$this->WebID}' and ReDiscussID='0'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($DiscussID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($DiscussID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
+    }
+
     //新增tad_web_discuss計數器
     public function add_counter($DiscussID = '')
     {
@@ -465,7 +504,7 @@ class tad_web_discuss
             }
 
             $fun = ($this->isMineDiscuss($MemID)) ? "<div style='font-size:12px;'>
-            <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID'>" . _TAD_EDIT . "</a> | <a href=\"javascript:delete_func($DiscussID);\">" . _TAD_DEL . "</a>
+            <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID'>" . _TAD_EDIT . "</a> | <a href=\"javascript:delete_discuss_func($DiscussID);\">" . _TAD_DEL . "</a>
             </div>" : "";
 
             $TadUpFiles->set_col("DiscussID", $DiscussID);

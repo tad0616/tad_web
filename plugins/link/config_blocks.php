@@ -1,10 +1,9 @@
 <?php
 $blocksArr = '';
-$i         = 0;
 
-$blocksArr[$i]['name']   = _MD_TCW_LINK_BLOCK_LIST;
-$blocksArr[$i]['func']   = 'list_link';
-$blocksArr[$i]['tpl']    = 'list_link.html';
-$blocksArr[$i]['config'] = array('limit' => 5);
+$blocksArr['list_link']['name']            = _MD_TCW_LINK_BLOCK_LIST;
+$blocksArr['list_link']['tpl']             = 'list_link.html';
+$blocksArr['list_link']['config']['limit'] = 5;
+$blocksArr['list_link']['colset']['limit'] = array('label' => _MD_TCW_LINK_BLOCK_LIMIT, 'type' => 'text');
 
 $blockConfig['link'] = $blocksArr;

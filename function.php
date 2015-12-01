@@ -30,7 +30,7 @@ function get_blocks($WebID)
 }
 
 //取得所有區塊設定
-function get_plugin_blocks()
+function get_dir_blocks()
 {
     global $xoopsConfig;
     $plugins = get_dir_plugins();
@@ -60,8 +60,6 @@ function get_all_blocks($value = 'title')
 
         if ($value == "plugin") {
             $block_option[$bid] = 'xoops';
-        } elseif ($value == "limit") {
-            $block_option[$bid] = '';
         } elseif ($value == "config") {
             $block_option[$bid] = array();
         } elseif ($value == "tpl") {
@@ -72,14 +70,11 @@ function get_all_blocks($value = 'title')
         }
     }
 
-    $allBlockConfig = get_plugin_blocks();
+    $allBlockConfig = get_dir_blocks();
     foreach ($allBlockConfig as $plugin => $blockConfig) {
-        foreach ($blockConfig as $i => $block) {
-            $func = $block['func'];
+        foreach ($blockConfig as $func => $block) {
             if ($value == "plugin") {
                 $block_option[$func] = $plugin;
-            } elseif ($value == "limit") {
-                $block_option[$func] = $block['config']['limit'];
             } elseif ($value == "config") {
                 $block_option[$func] = $block['config'];
             } elseif ($value == "tpl") {
@@ -127,51 +122,6 @@ function get_display_blocks($WebID, $BlockEnable = 1)
     return $Blocks;
 }
 
-//取得多人網頁的內部區塊(在footer.php執行)
-function get_tad_web_blocks($WebID = null, $mode = '')
-{
-    global $xoopsTpl, $xoopsDB;
-
-    $block_tpl        = get_all_blocks('tpl');
-    $dir              = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
-    $block            = '';
-    $andBlockPosition = $mode == 'home' ? '' : "and `BlockPosition`='side'";
-    //取得區塊位置
-    $sql = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' and `BlockEnable`='1' $andBlockPosition order by `BlockPosition`,`BlockSort`";
-    //die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-    while ($all = $xoopsDB->fetchArray($result)) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-        $blocks_arr = $all;
-        if ($plugin == "xoops") {
-            $blocks_arr['tpl'] = '';
-        } elseif ($plugin == "my") {
-            $blocks_arr['BlockContent'] = '';
-        } else {
-            if (file_exists("{$dir}{$plugin}/blocks.php")) {
-                include_once "{$dir}{$plugin}/blocks.php";
-            }
-            $blocks_arr['tpl']          = $block_tpl[$BlockName];
-            $blocks_arr['BlockContent'] = call_user_func($BlockName, $WebID, json_decode($BlockConfig, true));
-        }
-        $block[$BlockPosition][$BlockSort] = $blocks_arr;
-    }
-
-    //die(var_export($block['block2']));
-
-    $xoopsTpl->assign('center_block1', $block['block1']);
-    $xoopsTpl->assign('center_block2', $block['block2']);
-    $xoopsTpl->assign('center_block3', $block['block3']);
-    $xoopsTpl->assign('center_block4', $block['block4']);
-    $xoopsTpl->assign('center_block5', $block['block5']);
-    $xoopsTpl->assign('center_block6', $block['block6']);
-    $xoopsTpl->assign('side_block', $block['side']);
-
-}
-
 //取得角色陣列
 function get_web_roles($defWebID = '', $defRole = '')
 {
@@ -182,8 +132,8 @@ function get_web_roles($defWebID = '', $defRole = '')
     $andRole  = empty($defRole) ? "" : "and `role`='$defRole'";
     $sql      = "select uid from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
     $result   = $xoopsDB->queryF($sql) or web_error($sql);
-
-    $i = 0;
+    $users    = '';
+    $i        = 0;
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         $users[$i] = $uid;
         $i++;
@@ -204,11 +154,11 @@ function get_web_roles($defWebID = '', $defRole = '')
 //取得所有網站設定值
 function get_web_all_config($WebID = "")
 {
-    global $xoopsDB, $WebID;
+    global $xoopsDB;
+    //die('test...');
     if (empty($WebID)) {
         return;
     }
-
     if (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php")) {
         include XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php";
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
@@ -228,8 +178,10 @@ function get_web_all_config($WebID = "")
             copy(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}");
         }
 
+    } else {
+        web_error("Need to install 'for_tad_web_theme' theme.");
     }
-
+    //die(var_export($tad_web_config));
     $sql = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$WebID'";
 
     $result = $xoopsDB->queryF($sql) or web_error($sql);
@@ -271,9 +223,9 @@ function get_web_config($ConfigName = null, $defWebID = null)
 function save_web_config($ConfigName = "", $ConfigValue = "", $WebID)
 {
     global $xoopsDB, $xoopsUser, $isMyWeb;
-    if (!empty($WebID) and !$isMyWeb) {
-        return;
-    }
+    // if (!empty($WebID) and !$isMyWeb) { //這樣後台會有問題
+    //     return;
+    // }
 
     if (is_array($ConfigValue)) {
         $ConfigValue = implode(';', $ConfigValue);
@@ -284,38 +236,25 @@ function save_web_config($ConfigName = "", $ConfigValue = "", $WebID)
     $sql = "replace into " . $xoopsDB->prefix("tad_web_config") . "
       (`ConfigName`, `ConfigValue`, `WebID`)
       values('{$ConfigName}' , '{$ConfigValue}', '{$WebID}')";
-
+    // die($sql);
     $xoopsDB->queryF($sql) or web_error($sql);
 
 }
 
+//取得資料庫中的外掛資料
 function get_db_plugins($WebID = "", $only_enable = false)
 {
     global $xoopsDB;
     $andEnable = ($only_enable) ? "and PluginEnable='1'" : "";
 
-    $web_plugin_enable_arr  = get_web_config("web_plugin_enable_arr", $WebID);
-    $web_plugin_display_arr = get_web_config("web_plugin_display_arr", $WebID);
-    if (empty($web_plugin_enable_arr)) {
-        $plugin_enable_arr = get_dir_plugins();
-        save_web_config('web_plugin_enable_arr', implode(',', $plugin_enable_arr), $WebID);
-        save_web_config('web_plugin_display_arr', implode(',', $plugin_enable_arr), $WebID);
-        $plugin_display_arr = $plugin_enable_arr;
-    } else {
-        $plugin_display_arr = explode(',', $web_plugin_display_arr);
-    }
-
-    $sql = "select * from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' {$andEnable} order by PluginSort";
-    //die($sql);
+    //取得tad_web_plugins資料表中該網站所有設定值
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' {$andEnable} order by PluginSort";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         $dirname           = $all['PluginDirname'];
-        $all['limit']      = get_web_config($dirname . '_limit', $WebID);
-        $all['display']    = in_array($dirname, $plugin_display_arr) ? '1' : '0';
         $plugins[$dirname] = $all;
     }
-    //die(var_export($plugins));
     return $plugins;
 }
 
@@ -341,8 +280,9 @@ function get_dir_plugins()
                     if (substr($file, 0, 1) == '.') {
                         continue;
                     }
-
-                    $plugins[] = $file;
+                    if (!empty($file)) {
+                        $plugins[] = $file;
+                    }
                 }
             }
             closedir($dh);
@@ -358,17 +298,11 @@ function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
     global $TadUpFiles, $xoopsDB;
 
     $pluginsVal = get_db_plugins($WebID, $only_enable);
-    $config_arr = get_web_all_config($WebID);
-
-    $hide_function = array();
-    if (empty($pluginsVal)) {
-        $hide_function = explode(';', $config_arr['hide_function']);
-    }
 
     $dir         = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
     $dir_plugins = get_dir_plugins();
     foreach ($dir_plugins as $file) {
-        if ($only_enable and empty($pluginsVal) and in_array($file, $hide_function)) {
+        if ($only_enable and empty($pluginsVal)) {
             continue;
         }
 
@@ -380,23 +314,17 @@ function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
             $sort = plugins_max_sort($WebID, $file);
             $sql  = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$file}', '{$pluginConfig['name']}', '{$sort}', '1', '{$WebID}')";
             $xoopsDB->queryF($sql) or web_error($sql);
-            $config_arr['web_plugin_enable_arr'] .= ",{$file}";
-            save_web_config('web_plugin_enable_arr', $config_arr['web_plugin_enable_arr'], $WebID);
         }
 
-        if (!isset($config_arr[$file . '_limit'])) {
-            save_web_config($file . '_limit', $pluginConfig['limit'], $WebID);
-            //save_web_config($file . '_display', 1, $WebID);
-        }
         $pluginConfigs[$file] = $pluginConfig;
     }
 
-    $pluginsVal = get_db_plugins($WebID, $only_enable);
-    $i          = 0;
-    foreach ($pluginsVal as $dirname => $plugin) {
+    $new_pluginsVal = get_db_plugins($WebID, $only_enable);
+    $i              = 0;
+    foreach ($new_pluginsVal as $dirname => $plugin) {
         $plugins[$i]['dirname'] = $dirname;
         $plugins[$i]['config']  = $pluginConfigs[$dirname];
-        $plugins[$i]['db']      = $pluginsVal[$dirname];
+        $plugins[$i]['db']      = $new_pluginsVal[$dirname];
 
         if ($mode == 'edit') {
             // $plugins[$i]['upform'] = $TadUpFiles->upform(true, $dirname, '1', false);
@@ -422,9 +350,9 @@ function plugins_max_sort($WebID, $dirname)
 }
 
 //共同樣板部份
-function common_template($WebID)
+function common_template($WebID, $web_all_config = "")
 {
-    global $xoopsTpl, $TadUpFiles, $xoopsDB, $menu_var;
+    global $xoopsTpl;
 
     if ($WebID) {
         $xoopsTpl->assign('WebID', $WebID);
@@ -432,36 +360,22 @@ function common_template($WebID)
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png")) {
             output_head_file($WebID);
         }
+        if (empty($web_all_config)) {
+            $web_all_config = get_web_all_config($WebID);
+        }
 
-        /****網站設定值****/
-        $all = get_web_all_config($WebID);
-        foreach ($all as $ConfigName => $ConfigValue) {
+        foreach ($web_all_config as $ConfigName => $ConfigValue) {
             $xoopsTpl->assign($ConfigName, $ConfigValue);
-            $$ConfigName = $ConfigValue;
         }
     }
-
-    $display_blocks_arr = get_display_blocks($WebID);
-
-    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php";
-        $FooTable   = new FooTable();
-        $FooTableJS = $FooTable->render();
-    }
-    $xoopsTpl->assign('display_blocks_arr', $display_blocks_arr);
-
 }
 
 //製作選單
 function mk_menu_var_file($WebID = null)
 {
     global $xoopsDB;
-    $web_plugin_enable_arr = get_web_config("web_plugin_enable_arr", $WebID);
-    if (empty($web_plugin_enable_arr)) {
-        $plugin_enable_arr = get_dir_plugins();
-        save_web_config('web_plugin_enable_arr', implode(',', $plugin_enable_arr), $WebID);
-    } else {
-        $plugin_enable_arr = explode(',', $web_plugin_enable_arr);
+    if (empty($WebID)) {
+        return;
     }
 
     $all_plugins = get_plugins($WebID, 'show');
@@ -469,55 +383,64 @@ function mk_menu_var_file($WebID = null)
     $current = "<?php\n";
     $i       = 1;
     foreach ($all_plugins as $plugin) {
+        // die(var_export($plugin));
         $dirname = $plugin['dirname'];
-        if (!in_array($dirname, $plugin_enable_arr)) {
-            continue;
+        if ($plugin['db']['PluginEnable'] != '1') {
+            $current .= "if(defined('_SHOW_UNABLE') and _SHOW_UNABLE=='1'){\n";
         }
 
-        $current .= "\$menu_var[$i]['id']     = $i;\n";
-        $current .= "\$menu_var[$i]['title']  = '{$plugin['db']['PluginTitle']}';\n";
-        $current .= "\$menu_var[$i]['url']    = '{$dirname}.php?WebID={$WebID}';\n";
-        $current .= "\$menu_var[$i]['target'] = '_self';\n";
-        $current .= "\$menu_var[$i]['WebID']  = '{$WebID}';\n";
-        $current .= "\$menu_var[$i]['dirname']  = '{$dirname}';\n";
-        $current .= "\$menu_var[$i]['cate'] = '{$plugin['config']['cate']}';\n";
-        $current .= "\$menu_var[$i]['short']  = '{$plugin['config']['short']}';\n";
-        $current .= "\$menu_var[$i]['icon']   = '{$plugin['config']['icon']}';\n\n";
-        //$current .= "\$menu_var[$i]['new']  = {$new};\n";
+        $current .= "\$menu_var['{$dirname}']['id']     = $i;\n";
+        $current .= "\$menu_var['{$dirname}']['title']  = '{$plugin['db']['PluginTitle']}';\n";
+        $current .= "\$menu_var['{$dirname}']['url']    = '{$dirname}.php?WebID={$WebID}';\n";
+        $current .= "\$menu_var['{$dirname}']['target'] = '_self';\n";
+        $current .= "\$menu_var['{$dirname}']['WebID']  = '{$WebID}';\n";
+        $current .= "\$menu_var['{$dirname}']['dirname']  = '{$dirname}';\n";
+        $current .= "\$menu_var['{$dirname}']['cate'] = '{$plugin['config']['cate']}';\n";
+        $current .= "\$menu_var['{$dirname}']['short']  = '{$plugin['config']['short']}';\n";
+        $current .= "\$menu_var['{$dirname}']['icon']   = '{$plugin['config']['icon']}';\n";
+        $current .= "\$menu_var['{$dirname}']['enable']     = {$plugin['db']['PluginEnable']};\n";
+        if ($plugin['db']['PluginEnable'] != '1') {
+            $current .= "}\n\n";
+        } else {
+            $current .= "\n";
+        }
+
+        if ($plugin['db']['PluginEnable'] == '1') {
+            $plugin_enable_arr[] = $dirname;
+        }
 
         $i++;
     }
 
-    if (empty($WebID)) {
-        $file = XOOPS_ROOT_PATH . "/uploads/tad_web/menu_var.php";
-    } else {
+    if (!empty($WebID)) {
         $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
-    }
-    file_put_contents($file, $current);
-    $display_blocks_arr = get_display_blocks($WebID);
+        save_web_config('web_plugin_enable_arr', implode(',', $plugin_enable_arr), $WebID);
 
-    //將首頁轉為區塊
-    $web_plugin_display_arr_val = get_web_config("web_plugin_display_arr", $WebID);
-    $web_plugin_display_arr     = explode(',', $web_plugin_display_arr_val);
+    }
+
+    file_put_contents($file, $current);
+
+    $display_blocks_arr = get_display_blocks($WebID);
 
     if (empty($display_blocks_arr)) {
         //取得系統所有區塊
         $block_option = get_all_blocks();
         $block_plugin = get_all_blocks('plugin');
         $block_config = get_all_blocks('config');
-
+        // die(var_export($block_option));
         //存入既有設定
         $sort = 1;
         foreach ($block_option as $func => $name) {
 
-            if ($func == "list_{$block_plugin[$func]}" and empty($web_plugin_display_arr_val)) {
-                $BlockEnable   = 1;
+            $BlockEnable = 1;
+            if ($func == "list_{$block_plugin[$func]}") {
                 $BlockPosition = 'block4';
             } else {
-                $BlockEnable   = in_array($func, $Config) ? 1 : 0;
+                // $BlockEnable   = in_array($func, $Config) ? 1 : 0;
                 $BlockPosition = 'side';
             }
-            $BlockConfig = json_encode($block_config[$func], JSON_UNESCAPED_UNICODE);
+
+            $BlockConfig = (isset($block_config[$func]) and !empty($block_config[$func])) ? json_encode($block_config[$func]) : '';
 
             $sql = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$BlockConfig}', '$BlockPosition', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
             $xoopsDB->queryF($sql) or web_error($sql);
@@ -901,6 +824,11 @@ function get_tad_web_cate_menu_options($default_CateID = "0")
 function get_web_cate_arr()
 {
     global $xoopsDB, $isAdmin, $MyWebs;
+
+    if (!isset($MyWebs)) {
+        $MyWebs = MyWebID();
+    }
+
     $other_web_url_arr = get_web_config('other_web_url');
 
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web") . "` where WebEnable='1' and WebID > 0 order by WebSort,WebTitle";
@@ -938,9 +866,9 @@ function output_head_file($WebID)
 
     $width  = 1140;
     $height = 200;
-
+    //die('test2=' . $WebID);
     $all_config = get_web_all_config($WebID);
-
+    //die("<h1>$WebID</h1>" . var_export($all_config));
     foreach ($all_config as $k => $v) {
         $$k = $v;
     }

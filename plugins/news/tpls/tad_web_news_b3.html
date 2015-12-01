@@ -77,14 +77,8 @@
   </div>
 <{elseif $op=="show_one"}>
 
-  <{if $isMine}>
-    <script>
-    function delete_news_func(NewsID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="news.php?op=delete&NewsID=" + NewsID;
-    }
-    </script>
+  <{if $isMyWeb}>
+    <{$sweet_delete_news_func_code}>
   <{/if}>
 
   <h1><{$NewsTitle}></h1>
@@ -96,7 +90,7 @@
   </ol>
 
   <{if $NewsContent}>
-    <div class="well">
+    <div style="background-color: #fefefe; line-height: 2; font-size:120%; ">
      <{$NewsContent}>
     </div>
   <{/if}>
@@ -111,15 +105,14 @@
 
   <{$NewsFiles}>
 
-  <{if $isMine}>
+  <{if $isMyWeb}>
     <div class="text-right">
       <a href="javascript:delete_news_func(<{$NewsID}>);" class='btn btn-danger'><{$smarty.const._TAD_DEL}></a>
-      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$NewsID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
-<{else}>
-  <h1><{$news.PluginTitle}></h1>
+<{elseif $news_data}>
 
   <{$cate_menu}>
 
@@ -128,4 +121,10 @@
   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/news/tpls/tad_web_common_news_b3.html"}>
 
   <div class="clearfix"></div>
+
+<{else}>
+    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$news.PluginTitle}></h1>
+    <{if $isMyWeb and $WebID}>
+      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+    <{/if}>
 <{/if}>

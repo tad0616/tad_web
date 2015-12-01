@@ -113,7 +113,10 @@ function create_by_user()
     $sql    = "select uid from " . $xoopsDB->prefix("groups_users_link") . " where `groupid`='$groupid' order by uid";
     $result = $xoopsDB->query($sql) or web_error($sql);
     while (list($uid) = $xoopsDB->fetchRow($result)) {
-        $ok_uid[] = $uid;
+        if (!empty($uid)) {
+            $ok_uid[$uid] = $uid;
+        }
+
     }
     $WebOwnerUid = implode(',', $ok_uid);
 
@@ -130,56 +133,15 @@ function create_by_user()
         $uname = $myts->htmlSpecialChars($uname);
         $name  = empty($name) ? "" : " ({$name})";
         if (in_array($uid, $ok_uid)) {
-            $opt2 .= "<option value=\"$uid\">{$uname} {$name}</option>";
+            $opt2[$uid] = "{$uname} {$name}";
         } else {
-            $opt .= "<option value=\"$uid\">{$uname} {$name}</option>";
+            $opt[$uid] = "{$uname} {$name}";
         }
     }
 
-    $form = "
-  <script type=\"text/javascript\" src=\"" . XOOPS_URL . "/modules/tad_web/class/tmt_core.js\"></script>
-    <script type=\"text/javascript\" src=\"" . XOOPS_URL . "/modules/tad_web/class/tmt_spry_linkedselect.js\"></script>
-    <script type=\"text/javascript\">
-    function getOptions()
-    {
-
-    var values = [];
-    var sel = document.getElementById('destination');
-    for (var i=0, n=sel.options.length;i<n;i++) {
-      if (sel.options[i].value) values.push(sel.options[i].value);
-    }
-      document.getElementById('WebOwnerUid').value=values.join(',');
-      }
-    </script>
-
-  <table style='width:auto'>
-
-        <tr>
-        <td style='vertical-align:top;'>
-            <select name=\"repository\" id=\"repository\" size=\"12\" multiple=\"multiple\" tmt:linkedselect=\"true\" style='width: 300px;'>
-            $opt
-            </select>
-        </td>
-        <td style='vertical-align:middle'>
-        <img src=\"" . XOOPS_URL . "/modules/tad_web/images/right.png\" onclick=\"tmt.spry.linkedselect.util.moveOptions('repository', 'destination');getOptions();\"><br>
-        <img src=\"" . XOOPS_URL . "/modules/tad_web/images/left.png\" onclick=\"tmt.spry.linkedselect.util.moveOptions('destination' , 'repository');getOptions();\"><br><br>
-
-    <img src=\"" . XOOPS_URL . "/modules/tad_web/images/up.png\" onclick=\"tmt.spry.linkedselect.util.moveOptionUp('destination');getOptions();\"><br>
-        <img src=\"" . XOOPS_URL . "/modules/tad_web/images/down.png\" onclick=\"tmt.spry.linkedselect.util.moveOptionDown('destination');getOptions();\">
-        </td>
-        <td style='vertical-align:top;'>
-            <select id=\"destination\" size=\"12\" multiple=\"multiple\" tmt:linkedselect=\"true\" style='width: 300px;'>
-            $opt2
-            </select>
-        </td>
-    </tr>
-    <tr><td colspan=4>
-    <input type='hidden' name='WebOwnerUid' id='WebOwnerUid' value='$WebOwnerUid'>
-  </td></tr>
-    </table>
-    ";
-    $xoopsTpl->assign('op', 'create_by_user');
-    $xoopsTpl->assign('form', $form);
+    $xoopsTpl->assign('opt', $opt);
+    $xoopsTpl->assign('opt2', $opt2);
+    $xoopsTpl->assign('WebOwnerUid', $WebOwnerUid);
 }
 
 //檢查某人是否沒有網頁
@@ -223,28 +185,6 @@ function batch_add_class_by_user()
             $i++;
         }
     }
-}
-
-//大量開設個人網頁
-function create_by_amount()
-{
-    global $xoopsTpl;
-
-    //檢查有無班級網頁群組
-    $groupid = chk_tad_web_group(_MA_TCW_GROUP_NAME);
-
-    $xoopsTpl->assign('op', 'create_by_amount');
-}
-
-//快速開設班級網頁
-function create_by_class()
-{
-    global $xoopsTpl;
-
-    //檢查有無班級網頁群組
-    $groupid = chk_tad_web_group(_MA_TCW_GROUP_NAME);
-
-    $xoopsTpl->assign('op', 'create_by_class');
 }
 
 //檢查有無班級網頁群組
@@ -320,7 +260,7 @@ function tad_web_form($WebID = null)
     $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
-    $user_menu = "<select name='WebOwnerUid'>";
+    $user_menu = "<select name='WebOwnerUid' class='form-control'>";
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -343,7 +283,7 @@ function tad_web_form($WebID = null)
     $xoopsTpl->assign('WebSort', $WebSort);
     $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('next_op', $op);
-    $xoopsTpl->assign('jquery', $jquery);
+    // $xoopsTpl->assign('jquery', $jquery);
 
 }
 
@@ -388,13 +328,9 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
 
     //取得最後新增資料的流水編號
     $WebID = $xoopsDB->getInsertId();
-    mklogoPic($WebID);
-    $TadUpFilesLogo = TadUpFilesLogo($WebID);
-    $TadUpFilesLogo->set_col('logo', $WebID, 1);
-    $TadUpFilesLogo->del_files();
 
-    $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
-    output_head_file($WebID);
+    save_one_web_title($WebID, $WebTitle);
+
     return $WebID;
 }
 
@@ -403,30 +339,25 @@ function update_tad_web($WebID = "")
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts              = &MyTextSanitizer::getInstance();
-    $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
-    $_POST['WebTitle'] = $myts->addSlashes($_POST['WebTitle']);
+    $myts     = &MyTextSanitizer::getInstance();
+    $WebName  = $myts->addSlashes($_POST['WebName']);
+    $WebTitle = $myts->addSlashes($_POST['WebTitle']);
 
     $WebOwner = XoopsUser::getUnameFromId($_POST['WebOwnerUid'], 1);
     if (empty($WebOwner)) {
         $WebOwner = XoopsUser::getUnameFromId($_POST['WebOwnerUid'], 0);
     }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set
-    `WebName` = '{$_POST['WebName']}' ,
+    `WebName` = '{$WebName}' ,
     `WebSort` = '{$_POST['WebSort']}' ,
     `WebEnable` = '{$_POST['WebEnable']}' ,
     `WebOwner` = '{$WebOwner}' ,
     `WebOwnerUid` = '{$_POST['WebOwnerUid']}' ,
-    `WebTitle` = '{$_POST['WebTitle']}'
+    `WebTitle` = '{$WebTitle}'
     where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
-    mklogoPic($WebID);
-    $TadUpFilesLogo = TadUpFilesLogo($WebID);
-    $TadUpFilesLogo->set_col('logo', $WebID, 1);
-    $TadUpFilesLogo->del_files();
 
-    $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
-    output_head_file($WebID);
+    save_one_web_title($WebID, $WebTitle);
 
     return $WebID;
 }
@@ -436,70 +367,22 @@ function delete_tad_web_chk($WebID = "")
 {
     global $xoopsDB, $xoopsTpl;
 
-    $sql        = "select b.`MemName` from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.`MemID`=b.`MemID` where a.`WebID`='$WebID'";
-    $result     = $xoopsDB->query($sql) or web_error($sql);
-    $allMemName = "";
-    while (list($MemName) = $xoopsDB->fetchRow($result)) {
-        $allMemName .= "{$MemName} ,";
-    }
-    $xoopsTpl->assign('allMemName', $allMemName);
+    $pluginsVal = get_db_plugins($WebID);
+    $i          = 0;
+    foreach ($pluginsVal as $dirname => $plugin) {
+        $plugins[$i]['dirname']     = $dirname;
+        $plugins[$i]['PluginTitle'] = $plugin['PluginTitle'];
 
-    $sql          = "select LinkID,LinkTitle from " . $xoopsDB->prefix("tad_web_link") . " where WebID='$WebID'";
-    $result       = $xoopsDB->query($sql) or web_error($sql);
-    $allLinkTitle = "<ol>";
-    while (list($LinkID, $LinkTitle) = $xoopsDB->fetchRow($result)) {
-        $allLinkTitle .= "<li><a href='../link.php?WebID=$WebID&LinkID=$LinkID'>$LinkTitle</a></li>";
-    }
-    $allLinkTitle .= "</ol>";
-    $xoopsTpl->assign('allLinkTitle', $allLinkTitle);
+        include_once "../plugins/{$dirname}/class.php";
+        $plugin_name          = "tad_web_{$dirname}";
+        $$plugin_name         = new $plugin_name($WebID);
+        $plugins[$i]['total'] = $$plugin_name->get_total();
 
-    $sql          = "select NewsID,NewsTitle from " . $xoopsDB->prefix("tad_web_news") . " where WebID='$WebID'";
-    $result       = $xoopsDB->query($sql) or web_error($sql);
-    $allNewsTitle = "<ol>";
-    while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
-        $allNewsTitle .= "<li><a href='../news.php?WebID=$WebID&NewsID=$NewsID'>$NewsTitle</a></li>";
+        $i++;
     }
-    $allNewsTitle .= "</ol>";
-    $xoopsTpl->assign('allNewsTitle', $allNewsTitle);
 
-    $sql           = "select ActionID,ActionName from " . $xoopsDB->prefix("tad_web_action") . " where WebID='$WebID'";
-    $result        = $xoopsDB->query($sql) or web_error($sql);
-    $allActionName = "<ol>";
-    while (list($ActionID, $ActionName) = $xoopsDB->fetchRow($result)) {
-        $allActionName .= "<li><a href='../action.php?WebID=$WebID&ActionID=$ActionID'>$ActionName</a></li>";
-    }
-    $allActionName .= "</ol>";
-    $xoopsTpl->assign('allActionName', $allActionName);
-
-    $sql         = "select b.files_sn,b.description from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn where a.WebID='$WebID' and b.col_name='fsn'";
-    $result      = $xoopsDB->query($sql) or web_error($sql);
-    $allFileName = "<ol>";
-    while (list($files_sn, $file_name) = $xoopsDB->fetchRow($result)) {
-        $allFileName .= "<li><a href='../files.php?WebID=$WebID&fop=dl&files_sn={$files_sn}'>$file_name</a></li>";
-    }
-    $allFileName .= "</ol>";
-    $xoopsTpl->assign('allFileName', $allFileName);
-
-    $sql          = "select VideoID,VideoName from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID'";
-    $result       = $xoopsDB->query($sql) or web_error($sql);
-    $allVideoName = "<ol>";
-    while (list($VideoID, $VideoName) = $xoopsDB->fetchRow($result)) {
-        $allVideoName .= "<li><a href='../video.php?WebID=$WebID&VideoID=$VideoID'>$VideoName</a></li>";
-    }
-    $allLinkTitle .= "</ol>";
-    $xoopsTpl->assign('allVideoName', $allVideoName);
-
-    $sql             = "select DiscussID,DiscussTitle from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='$WebID'";
-    $result          = $xoopsDB->query($sql) or web_error($sql);
-    $allDiscussTitle = "<ol>";
-    while (list($DiscussID, $DiscussTitle) = $xoopsDB->fetchRow($result)) {
-        $allDiscussTitle .= "<li><a href='../discuss.php?WebID=$WebID&DiscussID=$DiscussID'>$DiscussTitle</a></li>";
-    }
-    $allDiscussTitle .= "</ol>";
-    $xoopsTpl->assign('allDiscussTitle', $allDiscussTitle);
-
+    $xoopsTpl->assign('plugins', $plugins);
     $xoopsTpl->assign('WebID', $WebID);
-    $xoopsTpl->assign('op', 'delete_tad_web_chk');
 
 }
 
@@ -507,100 +390,103 @@ function delete_tad_web_chk($WebID = "")
 function delete_tad_web($WebID = "")
 {
     global $xoopsDB, $TadUpFiles;
+    $pluginsVal = get_db_plugins($WebID);
+    $i          = 0;
+    foreach ($pluginsVal as $dirname => $plugin) {
+        $plugins[$i]['dirname']     = $dirname;
+        $plugins[$i]['PluginTitle'] = $plugin['PluginTitle'];
 
-    //刪除影片
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+        include_once "../plugins/{$dirname}/class.php";
+        $plugin_name  = "tad_web_{$dirname}";
+        $$plugin_name = new $plugin_name($WebID);
+        $$plugin_name->delete_all();
 
-    //刪除討論
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    //刪除連結
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_link") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    //刪除會員
-    $sql    = "select MemID from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-    while (list($MemID) = $xoopsDB->fetchRow($result)) {
-        $sql = "delete from " . $xoopsDB->prefix("tad_web_mems") . " where MemID='$MemID'";
-        $xoopsDB->queryF($sql) or web_error($sql);
-        $TadUpFiles->set_col("MemID", $MemID);
-        $TadUpFiles->del_files();
-    }
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    //刪除消息
-    $sql    = "select NewsID from " . $xoopsDB->prefix("tad_web_news") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-    while (list($NewsID) = $xoopsDB->fetchRow($result)) {
-        $TadUpFiles->set_col("NewsID", $NewsID);
-        $TadUpFiles->del_files();
-    }
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_news") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    //刪除活動
-    $sql    = "select ActionID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-    while (list($ActionID) = $xoopsDB->fetchRow($result)) {
-
-        $TadUpFiles->set_col("ActionID", $ActionID);
-        $TadUpFiles->del_files();
-    }
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_action") . " where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    //刪除檔案
-    $sql    = "select fsn from " . $xoopsDB->prefix("tad_web_files") . " where WebID='$WebID'";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-    while (list($fsn) = $xoopsDB->fetchRow($result)) {
-
-        $TadUpFiles->set_col("fsn", $fsn);
-        $TadUpFiles->del_files();
-
-        $sql = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $i++;
     }
 
-    //刪除網站
-    $sql               = "select WebOwnerUid from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID'";
-    $result            = $xoopsDB->queryF($sql) or web_error($sql);
-    list($WebOwnerUid) = $xoopsDB->fetchRow($result);
-
-    $sql = "delete from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID'";
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
-    $TadUpFiles->set_col("WebOwner", $WebOwnerUid);
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_roles") . " where WebID='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_cate") . " where WebID='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web") . " where WebID='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $TadUpFiles->set_col("WebOwner", $WebID);
     $TadUpFiles->del_files();
+
+    //刪除所有附檔
+    if (!delete_directory(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}")) {
+        web_error('無法刪除資料夾' . XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
+    }
+}
+
+function delete_directory($dirname)
+{
+    if (is_dir($dirname)) {
+        $dir_handle = opendir($dirname);
+    }
+
+    if (!$dir_handle) {
+        return false;
+    }
+
+    while ($file = readdir($dir_handle)) {
+        if ($file != "." && $file != "..") {
+            if (!is_dir($dirname . "/" . $file)) {
+                unlink($dirname . "/" . $file);
+            } else {
+                delete_directory($dirname . '/' . $file);
+            }
+
+        }
+    }
+    closedir($dir_handle);
+    rmdir($dirname);
+    return true;
 }
 
 function save_webs_title($webTitles = array(), $old_webTitle = array())
 {
     global $xoopsDB, $TadUpFiles;
 
-    $myts = &MyTextSanitizer::getInstance();
     foreach ($webTitles as $WebID => $WebTitle) {
         if ($old_webTitle[$WebID] != $WebTitle) {
-            $WebTitle = $myts->addSlashes($WebTitle);
-            $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
-            $xoopsDB->queryF($sql) or web_error($sql);
-
-            mklogoPic($WebID);
-            $TadUpFilesLogo = TadUpFilesLogo($WebID);
-            $TadUpFilesLogo->set_col('logo', $WebID, 1);
-            $TadUpFilesLogo->del_files();
-
-            $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
-            output_head_file($WebID);
-
-            mk_menu_var_file($WebID);
+            save_one_web_title($WebID, $WebTitle);
         }
     }
 
     return $WebID;
+}
+
+function save_one_web_title($WebID = '', $WebTitle = '')
+{
+    global $xoopsDB, $TadUpFiles;
+    $myts     = &MyTextSanitizer::getInstance();
+    $WebTitle = $myts->addSlashes($WebTitle);
+    $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    mk_menu_var_file($WebID);
+
+    mklogoPic($WebID);
+    $TadUpFilesLogo = TadUpFilesLogo($WebID);
+    $TadUpFilesLogo->set_col('logo', $WebID, 1);
+    $TadUpFilesLogo->del_files();
+
+    $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
+
+    output_head_file($WebID);
 }
 
 function save_webs_able($WebID = "", $able = "")
@@ -634,7 +520,7 @@ $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
-$xoopsTpl->assign('op', $_REQUEST['op']);
+$xoopsTpl->assign('op', $op);
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/

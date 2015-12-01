@@ -32,12 +32,10 @@ function list_all_web($defCateID = '')
 
         $space[$WebID] = $dir_size;
 
-        $i++;
     }
 
     //sort($space);
     arsort($space);
-    $xoopsTpl->assign('WebYear', $WebYear);
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('space', $space);
     $xoopsTpl->assign('free_space', get_free_space());
@@ -94,7 +92,7 @@ $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
-$xoopsTpl->assign('op', $_REQUEST['op']);
+$xoopsTpl->assign('op', $op);
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/

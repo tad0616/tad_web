@@ -1,20 +1,16 @@
-<{if $isMineSchedule}>
-  <script>
-    function delete_schedule_func(ScheduleID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="schedule.php?WebID=<{$WebID}>&op=delete&ScheduleID=" + ScheduleID;
-    }
-    </script>
+<{if $web_display_mode=='index' and $schedule_data}>
+  <h3><a href="<{$xoops_url}>/modules/tad_web/schedule.php"><{$schedule.PluginTitle}></a></h3>
+<{elseif $web_display_mode=='index_plugin'}>
+  <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h1>
+<{/if}>
+
+<{if $isMyWeb}>
+  <{$sweet_delete_schedule_func_code}>
 <{/if}>
 
 <{if $schedule_data}>
   <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
   <{if $WebID==""}>
-
-    <{if $display_mode=='index' or $display_mode=='home'}>
-    <h1><{$schedule.PluginTitle}></h1>
-    <{/if}>
     <{assign var="i" value=0}>
     <{assign var="total" value=1}>
 
@@ -43,7 +39,7 @@
           </a>
           <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i></a>
           <small>
-            <{if !$showWebTitleSchedule && $isMineSchedule}>
+            <{if $act.isMyWeb}>
               <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
@@ -55,9 +51,9 @@
   <{/if}>
   <div style="clear: both;"></div>
 
-  <div style="text-align:right; margin-bottom: 10px;">
-    <{if $isMineSchedule and $WebID}>
-      <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
+  <div style="text-align:right; margin: 30px 0px 10px;">
+    <{if $isMyWeb and $WebID}>
+      <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
     <{/if}>
   </div>
 <{/if}>

@@ -14,7 +14,7 @@ $files_sn = system_CleanVars($_REQUEST, 'files_sn', 0, 'int');
 $fsn      = system_CleanVars($_REQUEST, 'fsn', 0, 'int');
 $CateID   = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 
@@ -39,7 +39,7 @@ switch ($op) {
 
     //刪除資料
     case "delete":
-        $tad_web_files->delete($fsn);
+        $tad_web_files->delete($files_sn);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

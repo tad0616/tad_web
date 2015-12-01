@@ -14,10 +14,9 @@ class tad_web_homework
     //最新消息
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $isMyWeb;
-        //die('$limit:' . $limit);
-        $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-        $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb;
+
+        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
@@ -30,6 +29,7 @@ class tad_web_homework
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
+                $xoopsTpl->assign('HomeworkDefCateID', $CateID);
             }
         }
         $now = date("Y-m-d H:i:s");
@@ -55,6 +55,8 @@ class tad_web_homework
         $WebNames = getAllWebInfo('WebName');
         $cweek    = array(0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT);
 
+        $cate = $this->web_cate->get_tad_web_cate_arr();
+
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
             foreach ($all as $k => $v) {
@@ -64,11 +66,11 @@ class tad_web_homework
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
-            $main_data[$i]['cate']     = $cate[$CateID];
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebName']  = $WebNames[$WebID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
             if (empty($HomeworkTitle)) {
                 $HomeworkTitle = _MD_TCW_EMPTY_TITLE;
@@ -80,6 +82,15 @@ class tad_web_homework
             $main_data[$i]['Week']          = $cweek[$w];
             $i++;
         }
+
+        //可愛刪除
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
+        $xoopsTpl->assign('sweet_delete_homework_func_code', $sweet_alert_code);
 
         $yet_data = '';
         if ($isMyWeb) {
@@ -110,20 +121,14 @@ class tad_web_homework
         $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
 
         if ($mode == "return") {
-            $data['homework_data']        = $main_data;
-            $data['homework_bar']         = $show_bar;
-            $data['isMineHomework']       = $isMyWeb;
-            $data['showWebTitleHomework'] = $showWebTitle;
-            //$data['homework']             = get_db_plugin($this->WebID, 'homework');
-            $data['total'] = $total;
+            $data['main_data'] = $main_data;
+            $data['total']     = $total;
             return $data;
         } else {
             $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
             $xoopsTpl->assign('CalKind', 'homework');
             $xoopsTpl->assign('homework_data', $main_data);
             $xoopsTpl->assign('homework_bar', $show_bar);
-            $xoopsTpl->assign('isMineHomework', $isMyWeb);
-            $xoopsTpl->assign('showWebTitleHomework', $showWebTitle);
             $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
             return $total;
         }
@@ -163,7 +168,6 @@ class tad_web_homework
         $HomeworkFiles = $TadUpFiles->show_files('upfile', true, null, true);
         $xoopsTpl->assign('HomeworkFiles', $HomeworkFiles);
 
-        $xoopsTpl->assign('isMine', $isMyWeb);
         $xoopsTpl->assign('HomeworkTitle', $HomeworkTitle);
         $xoopsTpl->assign('HomeworkContent', $HomeworkContent);
         $xoopsTpl->assign('uid_name', $uid_name);
@@ -176,6 +180,15 @@ class tad_web_homework
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
+
+        //可愛刪除
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
+        $xoopsTpl->assign('sweet_delete_homework_func_code', $sweet_alert_code);
     }
 
     //tad_web_homework編輯表單
@@ -376,6 +389,32 @@ class tad_web_homework
 
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $TadUpFiles->del_files();
+    }
+
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select HomeworkID,CateID from " . $xoopsDB->prefix("tad_web_homework") . " where WebID='{$this->WebID}'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($HomeworkID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($HomeworkID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_homework") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
     }
 
     //新增tad_web_homework計數器

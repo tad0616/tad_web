@@ -100,7 +100,8 @@ function tad_web_menu($options)
 
     $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
     $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
-
+    $block['mini'] = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
+    define('_SHOW_UNABLE', '1');
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
     if (file_exists($file)) {
         include $file;

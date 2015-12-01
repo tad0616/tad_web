@@ -1,4 +1,4 @@
-<h3><{$smarty.const._MD_TCW_ABOUT_BLOCK_LIST_ADM}></h3>
+<{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
 <ul class="list-group">
   <{foreach from=$admin_arr item=admin}>
     <li class="list-group-item">

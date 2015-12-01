@@ -55,13 +55,10 @@
 <{elseif $op=="show_one"}>
 
   <link href="bubble.css" rel="stylesheet" type="text/css">
-  <script>
-  	function delete_discuss_func(DiscussID){
-  		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-  		if (!sure)	return;
-  		location.href="discuss.php?op=delete&DiscussID=" + DiscussID;
-  	}
-  </script>
+
+  <{if $isMyWeb}>
+      <{$sweet_delete_discuss_func_code}>
+  <{/if}>
 
   <h1><{$DiscussTitle}></h1>
 
@@ -120,8 +117,6 @@
   <{/if}>
 
 <{else}>
-  <h1><{$discuss.PluginTitle}></h1>
-
   <{$cate_menu}>
   <{$FooTableJS}>
   <div class="row">

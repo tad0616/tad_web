@@ -12,11 +12,13 @@ define('_MD_TCW_PEOPLE', 'People');
 define("_MD_TCW_TOOLS", "Setup");
 define("_MD_TCW_WEB_TOOLS", "Web");
 define("_MD_TCW_PLUGIN_TOOLS", "Plugins");
+define("_MD_TCW_ABOUT_PLUGIN_TOOLS", "<ul><li>You can directly drag the items are sorted, pulling finished automatically saved.</li><li>Sorting only affects the order of presentation over the menu and menu items of the functional blocks.</li></ul>");
 define("_MD_TCW_HEAD_TOOLS", "Header");
 define("_MD_TCW_LOGO_TOOLS", "Logo");
 define("_MD_TCW_BG_TOOLS", "Background");
 define("_MD_TCW_COLOR_TOOLS", "Color");
 define("_MD_TCW_BLOCK_TOOLS", "Blocks");
+define("_MD_TCW_BLOCK_TITLE", "Do you want to display the title block?");
 define("_MD_TCW_DATA_NOT_EXIST", "This information does not exis.");
 define("_MD_TCW_SAVED", "Saved");
 
@@ -122,3 +124,15 @@ if (is_dir($dir)) {
         closedir($dh);
     }
 }
+
+define("_MD_TCW_BLOCK_LIMIT", "Setting the number of data to be displayed");
+define("_MD_TCW_WEBTITLE", "Web Title");
+define("_MD_TCW_WEBNAME", "Web Name");
+
+define("_MD_TCW_SIDE_BLOCK", "Side block");
+define("_MD_TCW_TOP_CENTER_BLOCK", "Top center block");
+define("_MD_TCW_TOP_LEFT_BLOCK", "Top left block");
+define("_MD_TCW_TOP_RIGHT_BLOCK", "Top right block");
+define("_MD_TCW_BOTTOM_CENTER_BLOCK", "Bottom center block");
+define("_MD_TCW_BOTTOM_LEFT_BLOCK", "Bottom left block");
+define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "Bottom right block");

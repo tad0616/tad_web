@@ -15,20 +15,20 @@ class tad_web_page
     //文章剪影
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
-        $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-        $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         //取得tad_web_cate所有資料陣列
         $cate_arr = $this->web_cate->get_tad_web_cate_arr();
+
         $xoopsTpl->assign('cate_arr', $cate_arr);
         //die(var_export($cate_arr));
         $andCateID = "";
         if (!empty($CateID)) {
             //取得單一分類資料
-            $cate = $this->web_cate->get_tad_web_cate($CateID);
-            $xoopsTpl->assign('cate', $cate);
+            $cate_one = $this->web_cate->get_tad_web_cate($CateID);
+            $xoopsTpl->assign('cate', $cate_one);
             $andCateID = "and a.`CateID`='$CateID'";
             $xoopsTpl->assign('PageDefCateID', $CateID);
         }
@@ -38,7 +38,7 @@ class tad_web_page
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
 
-        $page_data = $cate_data = "";
+        $main_data = $cate_data = "";
 
         $i = 0;
 
@@ -50,33 +50,34 @@ class tad_web_page
                 $$k = $v;
             }
 
-            $page_data[$i] = $all;
+            $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
-            $page_data[$i]['cate']     = $cate[$CateID];
-            $page_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['cate']     = $cate_arr[$CateID];
+            $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $cate_data[$CateID][]      = $all;
             $i++;
         }
 
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
+        $xoopsTpl->assign('sweet_delete_page_func_code', $sweet_alert_code);
+
         if ($mode == "return") {
-            $data['cate_arr']         = $cate_arr;
-            $data['cate_data']        = $cate_data;
-            $data['page_data']        = $page_data;
-            $data['page_bar']         = $show_bar;
-            $data['isMinePage']       = $isMyWeb;
-            $data['showWebTitlePage'] = $showWebTitle;
-            //$data['page']             = get_db_plugin($this->WebID, 'page');
-            $data['total'] = $total;
+            $data['cate_arr']  = $cate_arr;
+            $data['cate_data'] = $cate_data;
+            $data['main_data'] = $main_data;
+            $data['total']     = $total;
             return $data;
         } else {
             $xoopsTpl->assign('cate_data', $cate_data);
-            $xoopsTpl->assign('page_data', $page_data);
-            $xoopsTpl->assign('page_bar', $show_bar);
-            $xoopsTpl->assign('isMinePage', $isMyWeb);
-            $xoopsTpl->assign('showWebTitlePage', $showWebTitle);
+            $xoopsTpl->assign('page_data', $main_data);
             $xoopsTpl->assign('page', get_db_plugin($this->WebID, 'page'));
             return $total;
         }
@@ -106,6 +107,8 @@ class tad_web_page
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
+        $prev_next = $this->get_prev_next($PageID, $CateID);
+        // die(var_export($prev_next));
         $TadUpFiles->set_col("PageID", $PageID);
         $files = $TadUpFiles->show_files('upfile', true, "", true, false, null, null, false, '');
 
@@ -114,7 +117,6 @@ class tad_web_page
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $xoopsTpl->assign('isMinePage', $isMyWeb);
         $xoopsTpl->assign('PageTitle', $PageTitle);
         $xoopsTpl->assign('PageDate', $PageDate);
         $xoopsTpl->assign('PageSort', $PageSort);
@@ -124,10 +126,19 @@ class tad_web_page
         $xoopsTpl->assign('files', $files);
         $xoopsTpl->assign('PageID', $PageID);
         $xoopsTpl->assign('PageInfo', sprintf(_MD_TCW_INFO, $uid_name, $PageDate, $PageCount));
+        $xoopsTpl->assign('prev_next', $prev_next);
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
+        $xoopsTpl->assign('sweet_delete_page_func_code', $sweet_alert_code);
     }
 
     //tad_web_page編輯表單
@@ -284,6 +295,32 @@ class tad_web_page
         $TadUpFiles->del_files();
     }
 
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select PageID,CateID from " . $xoopsDB->prefix("tad_web_page") . " where WebID='{$this->WebID}'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($PageID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($PageID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_page") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
+    }
+
     //新增tad_web_page計數器
     public function add_counter($PageID = '')
     {
@@ -314,5 +351,30 @@ class tad_web_page
         $result     = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
+    }
+
+    //取得上下頁
+    public function get_prev_next($DefPageID, $DefCateID)
+    {
+        global $xoopsDB;
+        $DefPageSort = $all = $main = '';
+        $sql         = "select PageID,PageTitle,PageSort from " . $xoopsDB->prefix("tad_web_page") . " where CateID='{$DefCateID}' order by PageSort";
+        // die($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        while (list($PageID, $PageTitle, $PageSort) = $xoopsDB->fetchRow($result)) {
+            $all[$PageSort]['PageID']    = $PageID;
+            $all[$PageSort]['PageTitle'] = $PageTitle;
+            if ($PageID == $DefPageID) {
+                $DefPageSort = $PageSort;
+            }
+        }
+        // die(var_export($all));
+        $prev = $DefPageSort - 1;
+        $next = $DefPageSort + 1;
+
+        $main['prev'] = $all[$prev];
+        $main['next'] = $all[$next];
+
+        return $main;
     }
 }

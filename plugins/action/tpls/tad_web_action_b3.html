@@ -71,14 +71,8 @@
   </div>
 <{elseif $op=="show_one"}>
 
-  <{if $isMineAction}>
-  <script>
-    function delete_action_func(ActionID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="action.php?WebID=<{$WebID}>&op=delete&ActionID=" + ActionID;
-    }
-  </script>
+  <{if $isMyWeb}>
+    <{$sweet_delete_action_func_code}>
   <{/if}>
 
   <h1><{$ActionName}></h1>
@@ -109,14 +103,13 @@
     <{$pics}>
   </div>
 
-  <{if $isMineAction}>
+  <{if $isMyWeb}>
     <div class="text-right">
       <a href="javascript:delete_action_func(<{$ActionID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$ActionID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     </div>
   <{/if}>
-<{else}>
-  <h1><{$action.PluginTitle}></h1>
+<{elseif $action_data}>
   <{$cate_menu}>
   <{$FooTableJS}>
   <div class="row">
@@ -124,4 +117,9 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/action/tpls/tad_web_common_action_b3.html"}>
     </div>
   </div>
+<{else}>
+  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$action.PluginTitle}></h1>
+  <{if $isMyWeb and $WebID}>
+    <a href="action.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+  <{/if}>
 <{/if}>

@@ -38,6 +38,10 @@ function random_video($WebID, $config = array())
         }
     }
 
+    if (empty($VideoPlace)) {
+        return;
+    }
+
     $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";
     $contents = file_get_contents($url);
     $contents = utf8_encode($contents);
@@ -56,9 +60,9 @@ function random_video($WebID, $config = array())
     $jw     = new JwPlayer("random_video_{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
     $player = $jw->render();
 
-    $block['random_video'] = $player;
-    $block['VideoID']      = $VideoID;
-    $block['VideoName']    = $VideoName;
+    $block['main_data'] = $player;
+    $block['VideoID']   = $VideoID;
+    $block['VideoName'] = $VideoName;
     return $block;
 
 }
@@ -85,6 +89,10 @@ function latest_video($WebID, $config = array())
         }
     }
 
+    if (empty($VideoPlace)) {
+        return;
+    }
+
     $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";
     $contents = file_get_contents($url);
     $contents = utf8_encode($contents);
@@ -103,8 +111,8 @@ function latest_video($WebID, $config = array())
     $jw     = new JwPlayer("latest_video_{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
     $player = $jw->render();
 
-    $block['latest_video'] = $player;
-    $block['VideoID']      = $VideoID;
-    $block['VideoName']    = $VideoName;
+    $block['main_data'] = $player;
+    $block['VideoID']   = $VideoID;
+    $block['VideoName'] = $VideoName;
     return $block;
 }

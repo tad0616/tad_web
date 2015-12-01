@@ -13,7 +13,9 @@ define("_MA_TCW_TEAMTITLE", "正式名稱");
 define("_MA_TCW_MAIN_TITLE", "個人網頁管理");
 define("_MA_TCW_GROUP_NAME", "XOOPS個人網頁群組");
 define("_MA_TCW_GROUP_DESC", "請勿修改群組名稱，否則會造成模組運作不正確。");
-define("_MA_TCW_CREATE_BY_USER", "批次新增");
+define("_MA_TCW_CREATE_BY_USER", "快速大量新增使用者網站");
+define("_MA_TCW_ALL_USER_NO", "尚未有自己網站的使用者");
+define("_MA_TCW_ALL_USER_YES", "允許有自己網站的使用者");
 define("_MA_TCW_SOMEBODY_WEB", "%s的專用網頁");
 define("_MA_TCW_WILL_DEL", "將刪除以下資料：");
 define("_MA_TCW_DEL_MEM", "成員資料");
@@ -69,3 +71,6 @@ define('_MA_TCW_WEB_SCHEDULE_SUBJECT_DESC', '國民小學教學科目：(11科)<
 國文;英語;數學;歷史;地理;生物;理化;地球科學;健康教育;認識臺灣;公民與道德;家政與生活科技;電腦;體育;音樂;美術;童軍教育;鄉土藝術活動;輔導活動;團體活動;選修科目');
 
 define('_MA_TCW_CO_ADMIN', '共同管理員');
+
+define('_MA_TADWEB_PLUGIN_TITLE', '外掛名稱');
+define('_MA_TADWEB_PLUGIN_TOTAL', '外掛資料數');

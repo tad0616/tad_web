@@ -1,12 +1,6 @@
 <{if $news_data}>
-  <{if $isMineNews}>
-    <script>
-      function delete_news_func(NewsID){
-        var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-        if (!sure)  return;
-        location.href="news.php?op=delete&NewsID=" + NewsID;
-      }
-      </script>
+  <{if $isMyWeb}>
+    <{$sweet_delete_news_func_code}>
   <{/if}>
 
   <{if $WebID}>
@@ -17,7 +11,7 @@
             <{$news_data.0.Date}>
             <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
-            <{if !$showWebTitleNews && $isMineNews}>
+            <{if $isMyWeb}>
               <a href="javascript:delete_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
@@ -34,7 +28,7 @@
               <{$news_data.0.Date}>
               <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news_data.0.NewsID}>"><{$news_data.0.NewsTitle}></a>
 
-              <{if !$showWebTitleNews && $isMineNews}>
+              <{if $isMyWeb}>
                 <a href="javascript:delete_news_func(<{$news.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                 <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
               <{/if}>
@@ -56,7 +50,7 @@
               <{/if}>
               <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a> (<{$news.NewsCounter}>)
 
-                <{if !$showWebTitleNews && $isMineNews}>
+                <{if $news.isMyWeb}>
                   <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
@@ -66,10 +60,12 @@
         </ul>
       </div>
     </div>
+    <{$news_bar}>
   <{else}>
-
-    <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-      <h1><{$news.PluginTitle}></h1>
+    <{if $web_display_mode=='index' and $news_data}>
+      <h3><a href="<{$xoops_url}>/modules/tad_web/news.php"><{$news.PluginTitle}></a></h3>
+    <{elseif $web_display_mode=='index_plugin'}>
+      <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$news.PluginTitle}></h1>
     <{/if}>
 
     <table class="footable table common_table">
@@ -84,33 +80,35 @@
           <th data-hide="phone" style="width:50px;text-align:center;">
             <{$smarty.const._MD_TCW_NEWSCOUNTER}>
           </th>
-          <{if $showWebTitleNews}>
+          <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
             <th data-hide="phone" style="width:150px;text-align:center;">
               <{$smarty.const._MD_TCW_TEAMID}>
-            </th>
-          <{/if}>
-          <{if !$showWebTitleNews && $isMineNews}>
-            <th data-hide="phone" style="width:100px;text-align:center;">
-              <{$smarty.const._TAD_FUNCTION}>
             </th>
           <{/if}>
         </tr>
       </thead>
       <{foreach from=$news_data item=news}>
         <tr>
-          <td class="text-center"><{$news.Date}></td>
-          <td>
-          <{if $news.cate.CateID}>
-            <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
-          <{/if}>
-          <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a></td>
-          <td class="text-center"><{$news.NewsCounter}></td>
-          <{if $showWebTitleNews}><td class="text-center"><{$news.WebTitle}></td><{/if}>
-          <{if !$showWebTitleNews && $isMineNews}>
-          <td class="text-center">
-            <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="btn btn-mini btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}></a>
-            <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="btn btn-mini btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}></a>
+          <td style="text-align:center;">
+            <{$news.Date}>
           </td>
+          <td>
+            <{if $news.cate.CateID}>
+              <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+            <{/if}>
+            <a href="<{$news.NewsKind}>.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
+            <{if $news.isMyWeb}>
+              <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
+          </td>
+          <td style="text-align:center;">
+            <{$news.NewsCounter}>
+          </td>
+          <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
+            <td style="text-align:center;">
+              <{$news.WebTitle}>
+            </td>
           <{/if}>
         </tr>
       <{/foreach}>
@@ -120,16 +118,12 @@
   <{/if}>
 
 
-  <div style="text-align:right; margin-bottom: 10px;">
-    <{if $news_bar==""}>
-      <{if $WebID==""}>
-        <a href="news.php" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
-      <{else}>
-        <a href="news.php?WebID=<{$WebID}>" class="btn btn-mini btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
-      <{/if}>
+  <div style="text-align:right; margin: 30px 0px 10px;">
+    <{if $web_display_mode=='home' or $web_display_mode=='index' or $NewsDefCateID}>
+      <a href="news.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-mini<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
     <{/if}>
-    <{if $isMineNews and $WebID}>
-      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-mini btn-info"><i class="fa fa-pencil"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+    <{if $isMyWeb and $WebID}>
+      <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
     <{/if}>
   </div>
 <{/if}>

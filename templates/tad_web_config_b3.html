@@ -1,4 +1,4 @@
-<{if $isMine}>
+<{if $isMyWeb}>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_core.js"></script>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_spry_linkedselect.js"></script>
@@ -140,36 +140,24 @@
         <h3>
           <{$smarty.const._MD_TCW_FCNCTION_SETUP}>
         </h3>
-
+        <div class="alert alert-info">
+          <{$smarty.const._MD_TCW_ABOUT_PLUGIN_TOOLS}>
+        </div>
         <div id="save_msg"><{$smarty.const._TAD_SORTABLE}></div>
         <table class="table">
           <tr>
             <th><{$smarty.const._MD_TCW_CATE_PLUGIN_ENABLE}></th>
             <th><{$smarty.const._MD_TCW_CATE_PLUGIN_TITLE}></th>
             <th><{$smarty.const._MD_TCW_CATE_PLUGIN_NEW_NAME}></th>
-            <th colspan="2"><{$smarty.const._MD_TCW_CATE_PLUGIN_IN_FRONTPAGE}></th>
-
           </tr>
           <tbody id="sort">
             <{foreach from=$plugins item=plugin}>
               <tr id="tr_<{$plugin.dirname}>">
-                <td>
-                  <label class="checkbox-inline"><input type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked="checked"<{elseif $plugin.db.PluginEnable=='0' or $plugin.dirname|in_array:$hide_function}><{else}>checked="checked"<{/if}>><{$plugin.dirname}></label>
+                <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>>
+                  <label class="checkbox-inline"><input type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked="checked"<{elseif $plugin.db.PluginEnable=='0'}><{else}>checked="checked"<{/if}>><{$plugin.dirname}></label>
                 </td>
-                <td><{$plugin.config.name}></td>
-                <td><input type="text" name="plugin_name[<{$plugin.dirname}>]" value="<{if $plugin.db.PluginTitle}><{$plugin.db.PluginTitle}><{else}><{$plugin.config.name}><{/if}>" class="form-control" style="width: 120px;"></td>
-                <td>
-                  <{if $plugin.config.common==1}>
-                    <label class="checkbox"><input type="checkbox" name="plugin_display[<{$plugin.dirname}>]" value="1" <{if $plugin.db.display=='1'}>checked="checked"<{/if}>></label>
-                  <{else}>
-                    <input type="hidden" name="plugin_display[<{$plugin.dirname}>]" value="0">
-                  <{/if}>
-                </td>
-                <td>
-                  <{if $plugin.config.limit!=''}>
-                    <input type="text" name="plugin_limit[<{$plugin.dirname}>]" value="<{if $plugin.db.limit}><{$plugin.db.limit}><{else}><{$plugin.config.limit}><{/if}>" class="form-control" style="width: 50px;">
-                  <{/if}>
-                </td>
+                <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>><{$plugin.config.name}></td>
+                <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>><input type="text" name="plugin_name[<{$plugin.dirname}>]" value="<{if $plugin.db.PluginTitle}><{$plugin.db.PluginTitle}><{else}><{$plugin.config.name}><{/if}>" class="form-control" style="width: 120px;"></td>
               </tr>
             <{/foreach}>
           </tbody>

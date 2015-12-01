@@ -1,18 +1,10 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.file_data}>
-  <{if $bc.isMineFiles}>
-    <script type="text/javascript">
-      function delete_files_func(fsn){
-        var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-        if (!sure)  return;
-        location.href="files.php?op=delete&fsn=" + fsn;
-      }
-    </script>
+<{if $bc.main_data}>
+  <{if $isMyWeb}>
+    <{$sweet_delete_files_func_code}>
   <{/if}>
 
-  <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-    <h3><{$block.BlockTitle}></h3>
-  <{/if}>
+  <{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
 
   <table class="footable table common_table">
     <thead>
@@ -23,19 +15,9 @@
         <th data-hide="phone" nowrap style="width:60px;">
           <{$smarty.const._MD_TCW_FILES_UID}>
         </th>
-        <{if $bc.showWebTitleFiles}>
-          <th data-hide="phone"  style="width:150px;text-align:center;">
-            <{$smarty.const._MD_TCW_TEAMID}>
-          </th>
-        <{/if}>
-        <{if !$bc.showWebTitleFiles && $bc.isMineFiles}>
-          <th data-hide="phone" style="width:100px;text-align:center;">
-            <{$smarty.const._TAD_FUNCTION}>
-          </th>
-        <{/if}>
       </tr>
     </thead>
-    <{foreach item=file from=$bc.file_data}>
+    <{foreach item=file from=$bc.main_data}>
       <tr>
         <td>
           <div style="word-wrap:break-word;">
@@ -43,39 +25,17 @@
             <span class="label label-info"><a href="files.php?WebID=<{$file.WebID}>&CateID=<{$file.cate.CateID}>" style="color: #FFFFFF;"><{$file.cate.CateName}></a></span>
           <{/if}>
           <{$file.showurl}>
+          <{if $file.isMyWeb}>
+            <a href="javascript:delete_files_func(<{$file.files_sn}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <a href="files.php?WebID=<{$file.WebID}>&op=edit_form&fsn=<{$file.fsn}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+          <{/if}>
           </div>
         </td>
-        <td class="text-center" nowrap>
+        <td style="text-align:center;" nowrap>
           <{$file.uid_name}>
         </td>
 
-        <{if $bc.showWebTitleFiles}>
-          <td style="width:100px;text-align:center;">
-            <{$file.WebTitle}>
-          </td>
-        <{/if}>
-
-        <{if !$bc.showWebTitleFiles && $bc.isMineFiles}>
-          <td class="text-center">
-            <a href="javascript:delete_files_func(<{$file.fsn}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-            <a href="files.php?WebID=<{$file.WebID}>&op=edit_form&fsn=<{$file.fsn}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
-          </td>
-        <{/if}>
       </tr>
     <{/foreach}>
   </table>
-
-  <div style="text-align:right; margin-bottom: 10px;">
-    <{if $bc.file_bar==""}>
-      <{if $WebID==""}>
-        <a href="files.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
-      <{else}>
-        <a href="files.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
-      <{/if}>
-    <{/if}>
-
-    <{if $bc.isMineFiles and $WebID}>
-      <a href="files.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
-    <{/if}>
-  </div>
 <{/if}>

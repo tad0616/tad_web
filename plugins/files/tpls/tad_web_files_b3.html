@@ -30,9 +30,8 @@
       </div>
     </form>
   </div>
-<{else}>
+<{elseif $file_data}>
   <h1><{$files.PluginTitle}></h1>
-
   <{$cate_menu}>
   <{$FooTableJS}>
   <div class="row">
@@ -40,5 +39,11 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/files/tpls/tad_web_common_files_b3.html"}>
     </div>
   </div>
+
+<{else}>
+    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h1>
+    <{if $isMyWeb and $WebID}>
+      <a href="files.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
+    <{/if}>
 <{/if}>
 

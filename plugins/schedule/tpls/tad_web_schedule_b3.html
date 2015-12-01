@@ -104,14 +104,8 @@
   </div>
 <{elseif $op=="show_one"}>
 
-  <{if $isMineSchedule}>
-  <script>
-    function delete_schedule_func(ScheduleID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="schedule.php?WebID=<{$WebID}>&op=delete&ScheduleID=" + ScheduleID;
-    }
-  </script>
+  <{if $isMyWeb}>
+    <{$sweet_delete_schedule_func_code}>
   <{/if}>
 
   <h1><{$ScheduleName}></h1>
@@ -125,7 +119,7 @@
   <{$schedule_template}>
 
   <div class="text-right">
-    <{if $isMineSchedule}>
+    <{if $isMyWeb}>
       <a href="javascript:delete_schedule_func(<{$ScheduleID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
       <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$ScheduleID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
     <{/if}>
@@ -203,7 +197,6 @@
     </div>
   </form>
 <{else}>
-  <h1><{$schedule.PluginTitle}></h1>
   <{$cate_menu}>
   <{$FooTableJS}>
   <div class="row">

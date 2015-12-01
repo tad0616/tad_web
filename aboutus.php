@@ -12,7 +12,7 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op    = system_CleanVars($_REQUEST, 'op', '', 'string');
 $MemID = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 

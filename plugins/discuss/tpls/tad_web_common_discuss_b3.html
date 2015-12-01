@@ -1,3 +1,11 @@
+<{if $web_display_mode=='index' and $discuss_data}>
+  <h3><a href="<{$xoops_url}>/modules/tad_web/discuss.php"><{$discuss.PluginTitle}></a></h3>
+<{elseif $web_display_mode=='index_plugin'}>
+  <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h1>
+<{elseif $web_display_mode=='home_plugin'}>
+  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h1>
+<{/if}>
+
 <{if $discuss_data}>
   <{if $mode=="need_login"}>
 
@@ -5,10 +13,9 @@
       <{$smarty.const._MD_TCW_NEED_LOGIN}>
     </div>
   <{else}>
-    <{if ($WebID=="" and $display_mode=='index') or $display_mode=='home'}>
-      <h1><{$discuss.PluginTitle}></h1>
+    <{if $isMyWeb}>
+        <{$sweet_delete_discuss_func_code}>
     <{/if}>
-
     <table class="footable table common_table">
       <thead>
         <tr>
@@ -24,30 +31,17 @@
           <th data-hide="phone" style="width:50px;text-align:center;">
             <{$smarty.const._MD_TCW_ACTIONCOUNT}>
           </th>
-          <{if $showWebTitleDiscuss}>
+          <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
             <th data-hide="phone" style="width:150px;text-align:center;">
               <{$smarty.const._MD_TCW_TEAMID}>
             </th>
           <{/if}>
-          <{if !$showWebTitleDiscuss && $isMineDiscuss}>
-            <th data-hide="phone" style="width:100px;text-align:center;">
-              <{$smarty.const._TAD_FUNCTION}>
-            </th>
-          <{/if}>
-        </tr>
       </thead>
       <{if $discuss_data}>
-        <script>
-        	function delete_discuss_func(DiscussID){
-        		var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-        		if (!sure)	return;
-        		location.href="discuss.php?WebID=<{$WebID}>&op=delete&DiscussID=" + DiscussID;
-        	}
-        </script>
 
         <{foreach item=discuss from=$discuss_data}>
           <tr>
-            <td class="text-center">
+            <td style="text-align:center;">
               <{$discuss.LastTime}>
             </td>
             <td>
@@ -56,22 +50,20 @@
             <{/if}>
               <a href="discuss.php?WebID=<{$discuss.WebID}>&DiscussID=<{$discuss.DiscussID}>"><{$discuss.DiscussTitle}></a>
               <{$discuss.show_re_num}>
+              <{if $isMineDiscuss}>
+                <a href="javascript:delete_discuss_func(<{$discuss.DiscussID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="discuss.php?WebID=<{$discuss.WebID}>&op=edit_form&DiscussID=<{$discuss.DiscussID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{/if}>
             </td>
-            <td class="text-center">
+            <td style="text-align:center;">
               <{$discuss.MemName}>
             </td>
-            <td class="text-center">
+            <td style="text-align:center;">
               <{$discuss.DiscussCounter}>
             </td>
-            <{if $showWebTitleDiscuss}>
-              <td class="text-center">
+            <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
+              <td style="text-align:center;">
                 <{$discuss.WebTitle}>
-              </td>
-            <{/if}>
-            <{if !$showWebTitleDiscuss && $isMineDiscuss}>
-              <td class="text-center">
-                <a href="javascript:delete_discuss_func(<{$discuss.DiscussID}>);" class="btn btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
-                <a href="discuss.php?WebID=<{$discuss.WebID}>&op=edit_form&DiscussID=<{$discuss.DiscussID}>" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
               </td>
             <{/if}>
           </tr>
@@ -89,16 +81,13 @@
       <{$discuss_bar}>
     <{/if}>
 
-    <div style="text-align:right; margin-bottom: 10px;">
-      <{if $discuss_bar==""}>
-        <{if $WebID==""}>
-          <a href="discuss.php" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
-        <{else}>
-          <a href="discuss.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
-        <{/if}>
+    <div style="text-align:right; margin: 30px 0px 10px;">
+      <{if $web_display_mode=='home' or $web_display_mode=='index' or $DiscussDefCateID}>
+        <a href="discuss.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
       <{/if}>
-      <{if $isMineDiscuss}>
-        <a href="discuss.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+
+      <{if $isMineDiscuss and $WebID}>
+        <a href="discuss.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
       <{/if}>
     </div>
   <{/if}>

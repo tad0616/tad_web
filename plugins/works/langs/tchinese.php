@@ -11,3 +11,4 @@ define("_MD_TCW_WORKS_COUNT", "人氣");
 define("_MD_TCW_WORK_BLOCK_LIST", "作品分享列表");
 define("_MD_TCW_WORK_BLOCK_RANDOM", "隨機作品分享");
 define("_MD_TCW_WORK_BLOCK_LATEST", "最新作品分享");
+define("_MD_TCW_WORK_BLOCK_LIMIT", "顯示作品數量");

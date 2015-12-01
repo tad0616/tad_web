@@ -1,5 +1,5 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.isMinePage}>
+<{if $isMyWeb}>
   <script type="text/javascript">
     $(document).ready(function(){
       <{foreach from=$bc.cate_arr item=cate}>
@@ -12,16 +12,11 @@
         });
       <{/foreach}>
     });
-
-    function delete_func(PageID){
-      var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-      if (!sure)  return;
-      location.href="page.php?WebID=<{$WebID}>&op=delete&PageID=" + PageID;
-    }
   </script>
+  <{$sweet_delete_page_func_code}>
 <{/if}>
 
-<{if $bc.page_data}>
+<{if $bc.main_data}>
 
   <{foreach from=$bc.cate_arr item=cate}>
     <{assign var="cid" value=$cate.CateID}>
@@ -30,16 +25,16 @@
         <{if $bc.cate_data.$cid}>
           <h3><a href="page.php?WebID=<{$WebID}>&CateID=<{$cid}>"><{$cate.CateName}></a></h3>
           <div id="page_sort_save_msg<{$cate.CateID}>"></div>
-          <ul id="page_sort<{$cate.CateID}>" class="list-group" style="max-height:300px; overflow: auto;">
+          <ul id="page_sort<{$cate.CateID}>" class="list-group">
             <{foreach from=$bc.cate_data.$cid item=page}>
               <li id="li_<{$page.PageID}>" class="list-group-item">
-                <{if !$bc.showWebTitlePage && $bc.isMinePage}>
+                <{if $isMyWeb}>
                   <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>"></i>
                 <{/if}>
                 <span class="badge"><{$page.PageCount}></span>
                 <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
-                <{if !$bc.showWebTitlePage && $bc.isMinePage}>
-                  <a href="javascript:delete_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <{if $isMyWeb}>
+                  <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
               </li>
@@ -51,15 +46,9 @@
   <{/foreach}>
 
   <{if $PageDefCateID}>
-    <div style="text-align:right; margin-bottom: 10px;">
-      <{if $display_mode=='home'}>
-        <a href="page.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
-      <{elseif $PageDefCateID}>
-        <a href="page.php?WebID=<{$WebID}>" class="btn btn-xs btn-primary"><{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
-      <{/if}>
-
-      <{if $bc.isMinePage and $WebID}>
-        <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+    <div style="text-align:right; margin: 30px 0px 10px;">
+      <{if $web_display_mode=='home' or $web_display_mode=='index' or $PageDefCateID}>
+        <a href="page.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
       <{/if}>
     </div>
   <{/if}>

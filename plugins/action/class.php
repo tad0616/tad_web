@@ -15,10 +15,8 @@ class tad_web_action
     //活動剪影
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
-
-        $showWebTitle = (empty($this->WebID)) ? 1 : 0;
-        $andWebID     = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
@@ -31,6 +29,7 @@ class tad_web_action
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
+                $xoopsTpl->assign('ActionDefCateID', $CateID);
             }
         }
 
@@ -53,6 +52,8 @@ class tad_web_action
 
         $Webs = getAllWebInfo();
 
+        $cate = $this->web_cate->get_tad_web_cate_arr();
+
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
             foreach ($all as $k => $v) {
@@ -62,33 +63,35 @@ class tad_web_action
             $main_data[$i] = $all;
 
             $this->web_cate->set_WebID($WebID);
-            $cate = ($mode == "assign") ? $this->web_cate->get_tad_web_cate_arr() : '';
 
-            $main_data[$i]['cate']     = $cate[$CateID];
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
+            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
             $subdir = isset($WebID) ? "/{$WebID}" : "";
             $TadUpFiles->set_dir('subdir', $subdir);
             $TadUpFiles->set_col("ActionID", $ActionID);
             $ActionPic = $TadUpFiles->get_pic_file('thumb');
-            //die('ActionPic:' . $ActionPic);
+            // die('ActionPic:' . $ActionPic);
             $main_data[$i]['ActionPic'] = $ActionPic;
             $i++;
         }
 
+        //可愛刪除
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_action_func", "action.php?op=delete&WebID={$this->WebID}&ActionID=", 'ActionID');
+        $xoopsTpl->assign('sweet_delete_action_func_code', $sweet_alert_code);
+
         if ($mode == "return") {
-            $data['action_data']        = $main_data;
-            $data['action_bar']         = $show_bar;
-            $data['isMineAction']       = $isMyWeb;
-            $data['showWebTitleAction'] = $showWebTitle;
-            //$data['action']             = get_db_plugin($this->WebID, 'action');
-            $data['total'] = $total;
+            $data['main_data'] = $main_data;
+            $data['total']     = $total;
             return $data;
         } else {
             $xoopsTpl->assign('action_data', $main_data);
-            $xoopsTpl->assign('action_bar', $show_bar);
-            $xoopsTpl->assign('isMineAction', $isMyWeb);
-            $xoopsTpl->assign('showWebTitleAction', $showWebTitle);
             $xoopsTpl->assign('action', get_db_plugin($this->WebID, 'action'));
             return $total;
         }
@@ -117,7 +120,8 @@ class tad_web_action
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
-
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col("ActionID", $ActionID);
         $pics = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
@@ -136,7 +140,6 @@ class tad_web_action
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $xoopsTpl->assign('isMineAction', $isMyWeb);
         $xoopsTpl->assign('ActionName', $ActionName);
         $xoopsTpl->assign('ActionDate', $ActionDate);
         $xoopsTpl->assign('ActionPlace', $ActionPlace);
@@ -150,6 +153,15 @@ class tad_web_action
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
+
+        //可愛刪除
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_action_func", "action.php?op=delete&WebID={$this->WebID}&ActionID=", 'ActionID');
+        $xoopsTpl->assign('sweet_delete_action_func_code', $sweet_alert_code);
     }
 
     //tad_web_action編輯表單
@@ -222,6 +234,8 @@ class tad_web_action
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID); //若 $show_list_del_file ==true 時一定要有
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
@@ -252,6 +266,8 @@ class tad_web_action
         //取得最後新增資料的流水編號
         $ActionID = $xoopsDB->getInsertId();
 
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
 
@@ -283,6 +299,8 @@ class tad_web_action
         where ActionID='$ActionID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
 
@@ -297,8 +315,36 @@ class tad_web_action
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
+        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+        // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->del_files();
+    }
+
+    //刪除所有資料
+    public function delete_all()
+    {
+        global $xoopsDB, $TadUpFiles;
+        $allCateID = array();
+        $sql       = "select ActionID,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        while (list($ActionID, $CateID) = $xoopsDB->fetchRow($result)) {
+            $this->delete($ActionID);
+            $allCateID[$CateID] = $CateID;
+        }
+        foreach ($allCateID as $CateID) {
+            $this->web_cate->delete_tad_web_cate($CateID);
+        }
+    }
+
+    //取得資料總數
+    public function get_total()
+    {
+        global $xoopsDB;
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        return $count;
     }
 
     //新增tad_web_action計數器

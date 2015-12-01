@@ -11,3 +11,4 @@ define('_MD_TCW_LINKUID', 'Link Author');
 define('_MD_TCW_LINKCOUNTER', 'Popular');
 define('_MD_TCW_LINK_AUTO_GET', 'Auto-screenshot');
 define("_MD_TCW_LINK_BLOCK_LIST", "Links");
+define("_MD_TCW_LINK_BLOCK_LIMIT", "Displays the number of links");

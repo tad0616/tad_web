@@ -1,10 +1,9 @@
 <?php
 $blocksArr = '';
-$i         = 0;
 
-$blocksArr[$i]['name']   = _MD_TCW_HOMEWORK_BLOCK_LIST;
-$blocksArr[$i]['func']   = 'list_homework';
-$blocksArr[$i]['tpl']    = 'list_homework.html';
-$blocksArr[$i]['config'] = array('limit' => 5);
+$blocksArr['list_homework']['name']            = _MD_TCW_HOMEWORK_BLOCK_LIST;
+$blocksArr['list_homework']['tpl']             = 'list_homework.html';
+$blocksArr['list_homework']['config']['limit'] = 5;
+$blocksArr['list_homework']['colset']['limit'] = array('label' => _MD_TCW_HOMEWORK_BLOCK_LIMIT, 'type' => 'text');
 
 $blockConfig['homework'] = $blocksArr;

@@ -44,7 +44,9 @@
             </td>
             <td>
               <{if $plugin.config.limit!=''}>
-                <input type="text" name="plugin_limit[<{$plugin.dirname}>]" value="<{if $plugin.db.limit}><{$plugin.db.limit}><{else}><{$plugin.config.limit}><{/if}>" class="form-control" style="width: 50px;">
+                <input type="text" name="plugin_limit[<{$plugin.dirname}>]" value="<{if $plugin.limit}><{$plugin.limit}><{else}><{$plugin.config.limit}><{/if}>" class="form-control" style="width: 50px;">
+              <{else}>
+                <input type="hidden" name="plugin_limit[<{$plugin.dirname}>]" value="none">
               <{/if}>
             </td>
           </tr>

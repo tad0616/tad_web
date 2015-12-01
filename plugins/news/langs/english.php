@@ -19,3 +19,4 @@ define('_MD_TCW_NEWS_TODAY', 'Today');
 define('_MD_TCW_NEWS_PREV_MONTH', 'Previous Month');
 define('_MD_TCW_NEWS_NEXT_MONTH', 'Next Month');
 define("_MD_TCW_NEWS_BLOCK_LIST", "News");
+define("_MD_TCW_NEWS_BLOCK_LIMIT", "Displays the number of news");

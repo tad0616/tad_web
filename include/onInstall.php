@@ -14,6 +14,7 @@ function chk_sql()
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $dir_plugins = get_dir_plugins();
     //die(var_export($dir_plugins));
+    $sort = 1;
     foreach ($dir_plugins as $dirname) {
         include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
         if (!empty($pluginConfig['sql'])) {
@@ -25,7 +26,12 @@ function chk_sql()
                 }
             }
         }
+        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$pluginConfig['name']}', '{$sort}', '1', '0')";
+        $xoopsDB->queryF($sql) or web_error($sql);
+        $sort++;
+        $display_plugins[] = $dirname;
     }
+    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), 0);
 }
 
 //擷取網站網址、名稱、站長信箱、多人網頁版本、子網站數等資訊以供統計或日後更新通知

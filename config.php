@@ -18,7 +18,6 @@ function tad_web_config($WebID)
     global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb;
 
     get_jquery(true);
-    $xoopsTpl->assign('isMine', $isMyWeb);
     $xoopsTpl->assign('config', true);
     $configs = get_web_all_config($WebID);
 
@@ -86,12 +85,12 @@ function tad_web_config($WebID)
 
     //管理員設定
     $web_admin_arr = get_web_roles($WebID, 'admin');
-    $web_admins    = implode(',', $web_admin_arr);
+    $web_admins    = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
     $sql           = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
     $result        = $xoopsDB->query($sql) or web_error($sql);
 
-    $myts = MyTextSanitizer::getInstance();
-    $opt  = "";
+    $myts    = MyTextSanitizer::getInstance();
+    $user_ok = $user_yet = "";
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -99,7 +98,7 @@ function tad_web_config($WebID)
         $name  = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
         $name  = empty($name) ? "" : " ({$name})";
-        if (in_array($uid, $web_admin_arr)) {
+        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr)) {
             $user_ok .= "<option value=\"$uid\">{$uname} {$name}</option>";
         } else {
             $user_yet .= "<option value=\"$uid\">{$uname} {$name}</option>";
@@ -149,34 +148,22 @@ function save_plugins($WebID)
 {
     global $xoopsDB;
     $plugins = get_plugins($WebID);
-    //echo var_export($plugins);
-    $myts = &MyTextSanitizer::getInstance();
-    $i    = 1;
+    $myts    = &MyTextSanitizer::getInstance();
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
-    $enable_plugins = $display_plugins = '';
     foreach ($plugins as $plugin) {
         $dirname      = $plugin['dirname'];
         $PluginTitle  = $myts->addSlashes($_POST['plugin_name'][$dirname]);
         $PluginEnable = ($_POST['plugin_enable'][$dirname] == '1') ? '1' : '0';
 
-        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$PluginEnable}', '{$WebID}')";
+        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$plugin['db']['PluginSort']}', '{$PluginEnable}', '{$WebID}')";
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], $WebID);
-        if ($PluginEnable == '1') {
-            $enable_plugins[] = $dirname;
-            if ($_POST['plugin_display'][$dirname] == '1') {
-                $display_plugins[] = $dirname;
-            }
-        }
-        $i++;
+        $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set BlockEnable='$PluginEnable' where `WebID`='{$WebID}' and `plugin`='{$dirname}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
-    //die(var_export($_POST['plugin_display']));
-    save_web_config('web_plugin_enable_arr', implode(',', $enable_plugins), $WebID);
-    save_web_config('web_plugin_display_arr', implode(',', $display_plugins), $WebID);
     mk_menu_var_file($WebID);
 
 }
@@ -215,6 +202,26 @@ function reset_logo($WebID)
     output_head_file($WebID);
 }
 
+function enabe_plugin($dirname = "", $WebID = "")
+{
+    global $xoopsDB;
+
+    $myts    = &MyTextSanitizer::getInstance();
+    $dirname = $myts->addSlashes($dirname);
+
+    $sql = "update " . $xoopsDB->prefix("tad_web_plugins") . " set
+   `PluginEnable` = '1'
+    where WebID ='{$WebID}' and `PluginDirname`='{$dirname}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set
+   `BlockEnable` = '1'
+    where WebID ='{$WebID}' and `plugin`='{$dirname}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    mk_menu_var_file($WebID);
+}
+
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -234,6 +241,7 @@ $other_web_url  = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
 $web_admins     = system_CleanVars($_REQUEST, 'web_admins', '', 'string');
 $menu_font_size = system_CleanVars($_REQUEST, 'menu_font_size', 12, 'int');
 $theme_side     = system_CleanVars($_REQUEST, 'theme_side', 'right', 'string');
+$dirname        = system_CleanVars($_REQUEST, 'dirname', '', 'string');
 
 switch ($op) {
 
@@ -314,6 +322,12 @@ switch ($op) {
         save_web_config('menu_font_size', $menu_font_size, $WebID);
         save_web_config('theme_side', $theme_side, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    case "enabe_plugin":
+        enabe_plugin($dirname, $WebID);
+        header("location: {$dirname}.php?WebID={$WebID}&op=edit_form");
         exit;
         break;
 
