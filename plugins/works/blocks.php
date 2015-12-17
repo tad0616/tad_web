@@ -23,10 +23,10 @@ function random_work($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block  = '';
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$WebID}' order by rand() limit 0,1";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $all    = $xoopsDB->fetchArray($result);
+    $block['main_data'] = $block['WorksID'] = $block['WorkName'] = '';
+    $sql                = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$WebID}' order by rand() limit 0,1";
+    $result             = $xoopsDB->query($sql) or web_error($sql);
+    $all                = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $WorksID , $WorkName , $WorkDesc , $WorksDate , $uid , $WebID , $WorksCount
     if ($all) {
@@ -52,7 +52,7 @@ function latest_work($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block = '';
+    $block['main_data'] = $block['WorksID'] = $block['WorkName'] = '';
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$WebID}' order by WorksDate desc limit 0,1";
     $result = $xoopsDB->query($sql) or web_error($sql);

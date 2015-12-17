@@ -8,11 +8,11 @@ function tad_web_image()
     if (empty($_GET['WebID'])) {
         $where_webid = "";
     } else {
-        $WebID       = intval($_GET['WebID']);
-        $where_webid = "where a.WebID='{$WebID}'";
+        $WebID     = intval($_GET['WebID']);
+        $and_webid = "and a.WebID='{$WebID}'  ";
     }
 
-    $sql = "select a.ActionName,a.ActionID,b.WebTitle,a.WebID from " . $xoopsDB->prefix("tad_web_action") . " as a join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID $where_webid order by rand() limit 0,1";
+    $sql = "select a.ActionName,a.ActionID,b.WebTitle,a.WebID from " . $xoopsDB->prefix("tad_web_action") . " as a join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $and_webid order by rand() limit 0,1";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
 

@@ -36,13 +36,18 @@ class web_cate
 {
     public $WebID = 0;
     public $ColName;
-    public $ColSN    = 0;
-    public $Tbl      = 0;
-    public $demo_txt = '';
+    public $ColSN               = 0;
+    public $table               = 0;
+    public $demo_txt            = '';
+    public $default_value       = '';
+    public $default_option_text = '';
+    public $label               = '';
+    public $label_col_md        = '2';
+    public $menu_col_md         = '3';
 
-    public function web_cate($WebID = "0", $ColName = "", $Tbl = "")
+    public function web_cate($WebID = "0", $ColName = "", $table = "")
     {
-        global $xoopsDB;
+
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
         }
@@ -51,8 +56,8 @@ class web_cate
             $this->set_ColName($ColName);
         }
 
-        if (!empty($Tbl)) {
-            $this->set_Tbl($Tbl);
+        if (!empty($table)) {
+            $this->set_table($table);
         }
 
     }
@@ -69,9 +74,9 @@ class web_cate
         $this->ColName = $ColName;
     }
 
-    public function set_Tbl($Tbl = "")
+    public function set_table($table = "")
     {
-        $this->Tbl = $Tbl;
+        $this->table = $table;
     }
 
     public function set_demo_txt($demo_txt = "")
@@ -79,18 +84,39 @@ class web_cate
         $this->demo_txt = $demo_txt;
     }
 
-    //分類選單
-    public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true)
+    public function set_default_value($default_value = "")
+    {
+        $this->default_value = $default_value;
+    }
+
+    public function set_default_option_text($default_option_text = "")
+    {
+        $this->default_option_text = $default_option_text;
+    }
+
+    public function set_label($label = "")
+    {
+        $this->label = $label;
+    }
+
+    public function set_col_md($label_md, $menu_md)
+    {
+        $this->label_col_md = $label_md;
+        $this->menu_col_md  = $menu_md;
+    }
+
+    //分類選單 $mode = "form" ,"menu","page"
+    public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     {
         global $xoopsDB;
 
-        if (empty($this->WebID)) {
-            return;
-        }
+        // if (empty($this->WebID)) {
+        //     return;
+        // }
 
         $option = "";
         $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
-        //echo $sql . '<hr>';
+        // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchArray($result)) {
             foreach ($data as $k => $v) {
@@ -105,19 +131,31 @@ class web_cate
         $form_group   = $_SESSION['bootstrap'] == '3' ? 'form-group' : 'control-group';
         $form_control = $_SESSION['bootstrap'] == '3' ? 'form-control' : 'span12';
 
-        $tools = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}' class='btn btn-warning' >" . _MD_TCW_CATE_TOOLS . "</a></div>" : "";
+        $tools = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}&table={$this->table}' class='btn btn-warning' >" . _MD_TCW_CATE_TOOLS . "</a></div>" : "";
+
+        $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
+
+        $validate = $required ? 'validate[required]' : '';
+        $def_opt  = $default_opt ? "<option value=''>$default_option_text</option>" : '';
+        $menu     = "<select name='CateID' id='CateID' class='{$validate} {$form_control}' >
+                    {$def_opt}
+                    {$option}
+                  </select>";
+
+        if ($mode == "menu") {
+            return $menu;
+        }
 
         if ($option and $show_select) {
             $cate_menu = "
-            <div class=\"{$span}3\">
-              <select name='CateID' id='CateID' class='{$form_control}'>
-                <option value=''>" . _MD_TCW_SELECT_CATE . "</option>
-                {$option}
-              </select>
+            <div id='cate_menu' class=\"{$span}{$this->menu_col_md}\">
+              $menu
             </div>
             ";
-        } else {
+        } elseif ($show_select) {
             $cate_menu = "";
+        } else {
+            return;
         }
 
         $demo_txt = "";
@@ -127,22 +165,29 @@ class web_cate
 
         if ($newCate) {
             $new_input = "
-            <div class=\"{$span}7\" id=\"newCate\">
-              <input type='text' name='newCateName' placeholder='" . _MD_TCW_NEW_CATE . " {$demo_txt}' class='{$form_control}'>
+            <div class=\"{$span}5\" id=\"newCateName\" style='display:none;'>
+              <input type='text' name='newCateName' placeholder='" . _MD_TCW_NEW_CATE . " {$demo_txt}' class='{$form_control}' value='{$this->default_value}'>
+            </div>
+            <div class=\"{$span}2\" id=\"newCate\">
+              <button type='button' class='btn btn-info' id=\"add_cate\">" . _MD_TCW_NEW_CATE . "</button>
+            </div>
+            <div class=\"{$span}2\" id=\"showMenu\" style='display:none;'>
+              <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_MENU . "</button>
             </div>";
         } else {
             $new_input = "";
         }
 
-        $label_title = ($show_select) ? _MD_TCW_SELECT_CATE : _MD_TCW_NEW_CATE;
+        $label_title    = ($show_select) ? $default_option_text : _MD_TCW_NEW_CATE;
+        $show_label_txt = empty($this->label) ? $label_title : $this->label;
 
-        $label = $show_label ? "<label class=\"{$span}2 control-label\">
-          {$label_title}
+        $label = $show_label ? "<label class=\"{$span}{$this->label_col_md} control-label\">
+          {$show_label_txt}
           </label>" : "";
 
         $row = ($mode == "form") ? $form_group : $row;
 
-        $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&CateID=' + $('#CateID').val();" : "";
+        $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op={$_REQUEST['op']}&CateID=' + $('#CateID').val();" : "";
 
         $newCate_js = ($mode == "form") ? "if(\$('#CateID').val()==''){\$('#newCate').show(); }else{ \$('#newCate').hide();}" : "";
 
@@ -156,6 +201,21 @@ class web_cate
                 {$change_page_js}
                 {$newCate_js}
             });
+
+            $('#add_cate').click(function(){
+                $('#cate_menu').hide();
+                $('#newCate').hide();
+                $('#newCateName').show();
+                $('#showMenu').show();
+            });
+            $('#show_menu').click(function(){
+                $('#cate_menu').show();
+                $('#newCate').show();
+                $('#newCateName').hide();
+                $('#showMenu').hide();
+            });
+
+
         });
         </script>
         <div class=\"{$row}\" style=\"margin-bottom: 10px;\">
@@ -173,11 +233,11 @@ class web_cate
     {
         global $xoopsDB, $xoopsUser;
         if (empty($newCateName)) {
-            return $_POST['CateID'];
+            return $CateID;
         }
 
         $myts     = MyTextSanitizer::getInstance();
-        $CateName = $myts->addSlashes($_POST['newCateName']);
+        $CateName = $myts->addSlashes($newCateName);
         $CateSort = $this->tad_web_cate_max_sort();
 
         $sql = "insert into `" . $xoopsDB->prefix("tad_web_cate") . "` (
@@ -216,6 +276,24 @@ class web_cate
         return ++$sort;
     }
 
+    //自動取得 tad_web_cate 的最新排序編號
+    public function tad_web_cate_max_id()
+    {
+        global $xoopsDB;
+
+        $sql    = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
+        $result = $xoopsDB->query($sql)
+        or web_error($sql);
+        list($sort) = $xoopsDB->fetchRow($result);
+
+        $sql    = "select `CateID` from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}' and CateSort='{$sort}'";
+        $result = $xoopsDB->query($sql)
+        or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+
+        return $CateID;
+    }
+
     //更新tad_web_cate某一筆資料
     public function update_tad_web_cate($CateID = '', $newCateName = '')
     {
@@ -245,10 +323,11 @@ class web_cate
     }
 
     //取得tad_web_cate所有資料陣列
-    public function get_tad_web_cate_arr()
+    public function get_tad_web_cate_arr($counter = true)
     {
         global $xoopsDB;
-        $counter    = $this->tad_web_cate_data_counter();
+
+        $counter    = $counter ? $this->tad_web_cate_data_counter() : '';
         $arr        = "";
         $andWebID   = empty($this->WebID) ? '' : "and `WebID` = '{$this->WebID}'";
         $andColName = empty($this->ColName) ? '' : "and `ColName`='{$this->ColName}'";
@@ -272,10 +351,10 @@ class web_cate
             return;
         }
 
-        if (empty($this->Tbl)) {
+        if (empty($this->table)) {
             $table = "tad_web_{$this->ColName}";
         } else {
-            $table = $this->Tbl;
+            $table = $this->table;
         }
 
         $sql = "update `" . $xoopsDB->prefix($table) . "` set
@@ -314,10 +393,10 @@ class web_cate
             return;
         }
 
-        if (empty($this->Tbl)) {
+        if (empty($this->table)) {
             $table = "tad_web_{$this->ColName}";
         } else {
-            $table = $this->Tbl;
+            $table = $this->table;
         }
 
         $sql = "delete from `" . $xoopsDB->prefix($table) . "`
@@ -331,10 +410,10 @@ class web_cate
     {
         global $xoopsDB;
 
-        if (empty($this->Tbl)) {
+        if (empty($this->table)) {
             $table = "tad_web_{$this->ColName}";
         } else {
-            $table = $this->Tbl;
+            $table = $this->table;
         }
         $counter = "";
         $sql     = "select count(*),CateID from `" . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";

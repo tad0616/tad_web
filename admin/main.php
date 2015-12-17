@@ -247,6 +247,9 @@ function tad_web_form($WebID = null)
     //設定「WebTitle」欄位預設值
     $WebTitle = (!isset($DBV['WebTitle'])) ? "" : $DBV['WebTitle'];
 
+    //設定「CateID」欄位預設值
+    $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+
     $op = (empty($WebID)) ? "insert_tad_web" : "update_tad_web";
     //$op="replace_tad_web";
 
@@ -283,8 +286,23 @@ function tad_web_form($WebID = null)
     $xoopsTpl->assign('WebSort', $WebSort);
     $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('next_op', $op);
+    $xoopsTpl->assign('CateID', $CateID);
     // $xoopsTpl->assign('jquery', $jquery);
 
+    $ys        = get_seme();
+    $last_year = $ys[0] - 1;
+    $next_year = $ys[0] + 1;
+    $xoopsTpl->assign('now_year', sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+    $xoopsTpl->assign('last_year', sprintf(_MD_TCW_SEME_CATE, $last_year));
+    $xoopsTpl->assign('next_year', sprintf(_MD_TCW_SEME_CATE, $next_year));
+
+    //網站設定
+    $web_cate = new web_cate(0, "web_cate", "tad_web");
+    $web_cate->set_col_md(3, 3);
+    //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
+    $cate_menu = $web_cate->cate_menu($CateID, 'page', false, false, false, false, true, true, false);
+
+    $xoopsTpl->assign('cate_menu', $cate_menu);
 }
 
 //自動取得tad_web的最新排序
@@ -298,7 +316,7 @@ function tad_web_max_sort()
 }
 
 //新增資料到tad_web中
-function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable = "", $WebOwner = "", $WebOwnerUid = "", $WebTitle = "", $WebYear = "")
+function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable = "", $WebOwner = "", $WebOwnerUid = "", $WebTitle = "", $WebYear = "", $year = "")
 {
     global $xoopsDB, $xoopsUser;
 
@@ -310,10 +328,13 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
 
     }
 
-    $myts     = &MyTextSanitizer::getInstance();
-    $WebName  = $myts->addSlashes($WebName);
-    $WebTitle = $myts->addSlashes($WebTitle);
+    $myts    = &MyTextSanitizer::getInstance();
+    $WebName = $myts->addSlashes($WebName);
+    // $WebTitle = $myts->addSlashes($WebTitle);
     $WebOwner = $myts->addSlashes($WebOwner);
+
+    $and_year = empty($year) ? '' : "{$year} ";
+    $WebTitle = $myts->addSlashes($and_year . $WebTitle);
 
     if (empty($WebYear)) {
         $WebYear = date('Y');
@@ -328,6 +349,10 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
 
     //取得最後新增資料的流水編號
     $WebID = $xoopsDB->getInsertId();
+
+    //新增一個預設班級
+    $web_cate    = new web_cate($WebID, "aboutus", "tad_web_link_mems");
+    $ClassCateID = $web_cate->save_tad_web_cate("", $WebTitle);
 
     save_one_web_title($WebID, $WebTitle);
 
@@ -360,100 +385,6 @@ function update_tad_web($WebID = "")
     save_one_web_title($WebID, $WebTitle);
 
     return $WebID;
-}
-
-//刪除tad_web某筆資料資料確認
-function delete_tad_web_chk($WebID = "")
-{
-    global $xoopsDB, $xoopsTpl;
-
-    $pluginsVal = get_db_plugins($WebID);
-    $i          = 0;
-    foreach ($pluginsVal as $dirname => $plugin) {
-        $plugins[$i]['dirname']     = $dirname;
-        $plugins[$i]['PluginTitle'] = $plugin['PluginTitle'];
-
-        include_once "../plugins/{$dirname}/class.php";
-        $plugin_name          = "tad_web_{$dirname}";
-        $$plugin_name         = new $plugin_name($WebID);
-        $plugins[$i]['total'] = $$plugin_name->get_total();
-
-        $i++;
-    }
-
-    $xoopsTpl->assign('plugins', $plugins);
-    $xoopsTpl->assign('WebID', $WebID);
-
-}
-
-//刪除tad_web某筆資料資料
-function delete_tad_web($WebID = "")
-{
-    global $xoopsDB, $TadUpFiles;
-    $pluginsVal = get_db_plugins($WebID);
-    $i          = 0;
-    foreach ($pluginsVal as $dirname => $plugin) {
-        $plugins[$i]['dirname']     = $dirname;
-        $plugins[$i]['PluginTitle'] = $plugin['PluginTitle'];
-
-        include_once "../plugins/{$dirname}/class.php";
-        $plugin_name  = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name($WebID);
-        $$plugin_name->delete_all();
-
-        $i++;
-    }
-
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_roles") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_cate") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    $sql = "delete from " . $xoopsDB->prefix("tad_web") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
-
-    $TadUpFiles->set_col("WebOwner", $WebID);
-    $TadUpFiles->del_files();
-
-    //刪除所有附檔
-    if (!delete_directory(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}")) {
-        web_error('無法刪除資料夾' . XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
-    }
-}
-
-function delete_directory($dirname)
-{
-    if (is_dir($dirname)) {
-        $dir_handle = opendir($dirname);
-    }
-
-    if (!$dir_handle) {
-        return false;
-    }
-
-    while ($file = readdir($dir_handle)) {
-        if ($file != "." && $file != "..") {
-            if (!is_dir($dirname . "/" . $file)) {
-                unlink($dirname . "/" . $file);
-            } else {
-                delete_directory($dirname . '/' . $file);
-            }
-
-        }
-    }
-    closedir($dir_handle);
-    rmdir($dirname);
-    return true;
 }
 
 function save_webs_title($webTitles = array(), $old_webTitle = array())
@@ -543,7 +474,7 @@ switch ($op) {
 
     //新增資料
     case "insert_tad_web":
-        $WebID = insert_tad_web(0, $_POST['WebName'], $_POST['WebSort'], '1', "", $_POST['WebOwnerUid'], $_POST['WebTitle']);
+        $WebID = insert_tad_web($CateID, $_POST['WebName'], $_POST['WebSort'], '1', "", $_POST['WebOwnerUid'], $_POST['WebTitle'], '', $_POST['year']);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;
@@ -584,7 +515,7 @@ switch ($op) {
         exit;
         break;
 
-    //以正式名稱排序
+    //以班級名稱排序
     case "order_by_teamtitle":
         order_by_teamtitle();
         header("location: {$_SERVER['PHP_SELF']}");

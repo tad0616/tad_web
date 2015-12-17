@@ -20,3 +20,7 @@ define('_MD_TCW_NEWS_PREV_MONTH', 'Previous Month');
 define('_MD_TCW_NEWS_NEXT_MONTH', 'Next Month');
 define("_MD_TCW_NEWS_BLOCK_LIST", "News");
 define("_MD_TCW_NEWS_BLOCK_LIMIT", "Displays the number of news");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE", "Display mode");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE1", "The latest one is complete, the rest of the news presented in a strip column");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE2", "All complete presentation");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE3", "All presented in a strip column");

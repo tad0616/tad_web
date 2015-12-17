@@ -15,7 +15,6 @@
             $("#open_login").show();
           }
         });
-
       });
     </script>
 
@@ -27,7 +26,7 @@
       <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login">
         <div class="<{$block.form_group}>">
           <label class="<{$block.span}>4 control-label">
-            XOOPS<{$smarty.const.TF_USER_S_ID}>
+            <{$smarty.const._MB_TCW_ID}>
           </label>
           <div class="<{$block.span}>8 contros">
             <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="<{$block.form_control}>" />
@@ -36,7 +35,7 @@
 
         <div class="<{$block.form_group}>">
           <label class="<{$block.span}>4 control-label">
-            XOOPS<{$smarty.const.TF_USER_S_PASS}>
+            <{$smarty.const._MB_TCW_PASSWD}>
           </label>
           <div class="<{$block.span}>8 contros">
           <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="<{$block.form_control}>" />
@@ -50,7 +49,7 @@
             <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
             <input type="hidden" name="rememberme" value="On" />
             <input type="hidden" name="op" value="login" />
-            <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}> XOOPS</button>
+            <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
           </div>
         </div>
       </form>
@@ -91,15 +90,13 @@
       </div>
       <div id="open_login">
         <{foreach from=$block.tlogin item=login}>
-          <a href="<{$login.link}>" class="btn">
+          <a href="<{$login.link}>" style="padding: 5px; margin: 5px; display: inline-block;">
             <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
-            <{$login.text}>
           </a>
         <{/foreach}>
       </div>
     </div>
   <{/if}>
-
 <{elseif $block.op=="mem"}>
   <div class="<{$block.row}>">
     <div class="<{$block.span}>12">
@@ -122,79 +119,108 @@
     </div>
   </div>
 <{else}>
-
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/bootstrap-progressbar/bootstrap-progressbar.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.progress .progress-bar').progressbar({display_text: 'fill'});
+    });
+  </script>
   <{if $block.DefWebID}>
     <h3><{$block.WebTitle}><small><{$smarty.const._MB_TCW_MENU}></small></h3>
   <{/if}>
+  <{if $block.defaltWebID}>
+    <div class="<{$block.row}>">
+      <div class="<{$block.span}>12">
+        <{if $block.web_num > 1}>
+          <select class="span12 form-control" onChange="location.href=this.value">
+            <{foreach from=$block.webs item=web}>
+              <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
+            <{/foreach}>
+          </select>
+        <{/if}>
 
-  <div class="<{$block.row}>">
-    <div class="<{$block.span}>12">
-      <{if $block.web_num > 1}>
-        <select class="span12 form-control" onChange="location.href=this.value">
-          <{foreach from=$block.webs item=web}>
-            <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
-          <{/foreach}>
-        </select>
-      <{/if}>
-
-      <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$block.defaltWebID}>" class="btn">
-        <i class="fa fa-home"></i>
-        <{$block.back_home}>
-      </a>
-    </div>
-  </div>
-
-  <div class="<{$block.row}>">
-    <div class="<{$block.span}>12 text-center">
-      <div class="btn-group">
-        <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$block.defaltWebID}>" class="btn btn-success">
-          <i class="fa fa-check-square-o"></i>
-          <{$smarty.const._MB_TCW_WEB_CONFIG}>
-        </a>
-        <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$block.defaltWebID}>" class="btn btn-info">
-          <i class="fa fa-check-square-o"></i>
-          <{$smarty.const._MB_TCW_WEB_BLOCK_CONFIG}>
+        <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$block.defaltWebID}>" class="btn">
+          <i class="fa fa-home"></i>
+          <{$block.back_home}>
         </a>
       </div>
     </div>
-  </div>
-  <table class="table">
-    <{foreach from=$block.plugins item=plugin}>
-      <{if $plugin.enable=='1'}>
-        <tr>
-          <td>
-            <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
-              <i class="fa <{$plugin.icon}>"></i>
-              <{$plugin.title}>
-            </a>
-          </td>
-          <td>
-            <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
-              <i class="fa fa-plus"></i>
-            </a>
-          </td>
-          <td>
-            <{if $plugin.cate=='1'}>
-              <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>"  title="<{$plugin.short}><{$smarty.const._MB_TCW_CATE_TOOLS}>">
-                <i class="fa fa-folder-open"></i>
-              </a>
-            <{/if}>
-          </td>
-        </tr>
-      <{else}>
-        <tr style="background-color: #dfdfdf;">
-          <td style="background-color: #dfdfdf; color:#5f5f5f;">
-              <i class="fa <{$plugin.icon}>"></i>
-              <{$plugin.title}>
-          </td>
-          <td colspan=2 style="background-color: #dfdfdf;">
-            <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-<{$block.mini}>"><{$smarty.const._MB_TCW_ENABLE_PLUGIN}></a>
-          </td>
-        </tr>
-      <{/if}>
-    <{/foreach}>
-  </table>
 
+    <div class="<{$block.row}>">
+      <div class="<{$block.span}>12 text-center">
+        <div class="btn-group">
+          <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$block.defaltWebID}>" class="btn btn-success">
+            <i class="fa fa-check-square-o"></i>
+            <{$smarty.const._MB_TCW_WEB_CONFIG}>
+          </a>
+          <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$block.defaltWebID}>" class="btn btn-info">
+            <i class="fa fa-check-square-o"></i>
+            <{$smarty.const._MB_TCW_WEB_BLOCK_CONFIG}>
+          </a>
+          <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$block.defaltWebID}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MB_TCW_BLOCK_ADD}>">
+            <i class="fa fa-plus"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <table class="table">
+      <{foreach from=$block.plugins item=plugin}>
+        <{if $plugin.enable=='1'}>
+          <tr>
+            <td>
+              <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
+                <i class="fa <{$plugin.icon}>"></i>
+                <{$plugin.title}>
+              </a>
+            </td>
+
+
+            <td>
+              <{if $plugin.setup=='1'}>
+                <a href="<{$xoops_url}>/modules/tad_web/setup.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>&op=plugin_setup" title="<{$smarty.const._MB_TCW_SETUP}><{$plugin.short}>">
+                  <i class="fa fa-wrench"></i>
+                </a>
+              <{/if}>
+            </td>
+
+            <td>
+              <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
+                <i class="fa fa-plus"></i>
+              </a>
+            </td>
+            <td>
+              <{if $plugin.cate=='1'}>
+                <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>&table=<{$plugin.cate_table}>"  title="<{$plugin.short}><{$smarty.const._MB_TCW_CATE_TOOLS}>">
+                  <i class="fa fa-folder-open"></i>
+                </a>
+              <{/if}>
+
+            </td>
+          </tr>
+        <{else}>
+          <tr style="background-color: #dfdfdf;">
+            <td style="background-color: #dfdfdf; color:#5f5f5f;">
+                <i class="fa <{$plugin.icon}>"></i>
+                <{$plugin.title}>
+            </td>
+            <td colspan=2 style="background-color: #dfdfdf;">
+              <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-<{$block.mini}>"><{$smarty.const._MB_TCW_ENABLE_PLUGIN}></a>
+            </td>
+          </tr>
+        <{/if}>
+      <{/foreach}>
+    </table>
+
+    <div class="<{$block.row}>">
+      <div class="<{$block.span}>12">
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-<{$block.progress_color}>" role="progressbar" data-transitiongoal="<{$block.quota}>"></div>
+        </div>
+      </div>
+    </div>
+
+  <{/if}>
   <div class="<{$block.row}>">
     <div class="<{$block.span}>12">
       <a href="<{$xoops_url}>/user.php?op=logout" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>

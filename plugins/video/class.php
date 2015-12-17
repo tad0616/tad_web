@@ -171,6 +171,7 @@ class tad_web_video
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($VideoID)) {
@@ -262,6 +263,7 @@ class tad_web_video
 
         //取得最後新增資料的流水編號
         $VideoID = $xoopsDB->getInsertId();
+        check_quota($this->WebID);
         return $VideoID;
     }
 
@@ -302,6 +304,7 @@ class tad_web_video
          `VideoPlace` = '{$VideoPlace}'
         where VideoID='$VideoID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
+        check_quota($this->WebID);
         return $VideoID;
     }
 
@@ -312,6 +315,7 @@ class tad_web_video
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -328,6 +332,7 @@ class tad_web_video
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

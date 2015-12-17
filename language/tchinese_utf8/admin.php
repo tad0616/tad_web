@@ -4,12 +4,13 @@ include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_com
 //main.php
 define("_MA_TCW_TEAMID", "編號");
 define("_MA_TCW_TEAMNAME", "網站名稱");
+define("_MA_TCW_TEAM", "網站");
 define("_MA_TCW_TEAMSORT", "排序");
 define("_MA_TCW_TEAMENABLE", "狀態");
 define("_MA_TCW_TEAMCOUNTER", "人氣");
 define("_MA_TCW_MEM_AMOUNT", "成員人數");
 define("_MA_TCW_TEAMLEADER", "擁有者");
-define("_MA_TCW_TEAMTITLE", "正式名稱");
+define("_MA_TCW_TEAMTITLE", "班級名稱");
 define("_MA_TCW_MAIN_TITLE", "個人網頁管理");
 define("_MA_TCW_GROUP_NAME", "XOOPS個人網頁群組");
 define("_MA_TCW_GROUP_DESC", "請勿修改群組名稱，否則會造成模組運作不正確。");
@@ -27,7 +28,7 @@ define("_MA_TCW_DEL_VIDEOS", "線上影片資料");
 define("_MA_TCW_DEL_DISCUSS", "留言討論資料");
 define("_MA_TCW_DELETE", "確定刪除（不刪就按別的連結離開即可）");
 define("_MA_TCW_UPLOAD_OWNER_PIC", "上傳首頁圖檔");
-define("_MA_TCW_ORDER_BY_TEAMTITLE", "依正式名稱排序");
+define("_MA_TCW_ORDER_BY_TEAMTITLE", "依班級名稱排序");
 
 //save_sort.php save.php
 define("_MA_TCW_UPDATE_FAIL", "更新失敗！");
@@ -53,8 +54,9 @@ define('_MA_TCW_SELECT_CATE', '不分類');
 define('_MA_TCW_DISK_TOTAL_SPACE_STATUS', '網站使用空間一覽');
 define('_MA_TCW_DISK_TOTAL_SPACE', '網站已使用空間');
 define('_MA_TCW_DISK_PATH', '個人網站存放目錄');
-define('_MA_TCW_DISK_SPACE_TOTAL', '已使用：');
-define('_MA_TCW_DISK_AVAILABLE_SPACE', '，可用空間：');
+define('_MA_TCW_DISK_SPACE_QUOTA', '每站可使用硬碟空間上限：');
+define('_MA_TCW_DISK_SPACE_TOTAL', '，全部已使用：');
+define('_MA_TCW_DISK_AVAILABLE_SPACE', '，主機可用空間：');
 
 define('_MA_TCW_WEB_SCHEDULE_TEMPLATE', '設定功課表樣板');
 define('_MA_TCW_WEB_SCHEDULE_TEMPLATE_DESC', '

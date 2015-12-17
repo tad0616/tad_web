@@ -65,7 +65,7 @@
                 <{/foreach}>
                 <li style="cursor: move; color: #CDCDCD; background-color: #FFFFFF;"><{$smarty.const._MD_TCW_SCHEDULE_BLANK}></li>
               </ul>
-              <div style="clear: both;" class="text-right"><a href="block.php?WebID=<{$WebID}>&op=setup_subject&ScheduleID=<{$ScheduleID}>" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></a></div>
+              <div style="clear: both;" class="text-right"><a href="schedule.php?WebID=<{$WebID}>&op=setup_subject&ScheduleID=<{$ScheduleID}>" class="btn btn-xs btn-info"><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></a></div>
             </div>
           </div>
         </div>
@@ -205,6 +205,9 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/tad_web_common_schedule_b3.html"}>
     </div>
   </div>
+<{elseif $op=="setup"}>
+
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup_b3.html"}>
 <{else}>
   <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h1>
   <{if $isMyWeb and $WebID}>

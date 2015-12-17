@@ -201,6 +201,7 @@ class tad_web_homework
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         $Class = getWebInfo($this->WebID);
 
@@ -330,6 +331,7 @@ class tad_web_homework
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
+        check_quota($this->WebID);
         return $HomeworkID;
     }
 
@@ -376,6 +378,7 @@ class tad_web_homework
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
+        check_quota($this->WebID);
         return $HomeworkID;
     }
 
@@ -389,6 +392,7 @@ class tad_web_homework
 
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $TadUpFiles->del_files();
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -405,6 +409,7 @@ class tad_web_homework
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

@@ -10,6 +10,7 @@ function list_news($WebID, $config = array())
 
     $tad_web_news = new tad_web_news($WebID);
 
-    $block = $tad_web_news->list_all("", $config['limit'], 'return');
+    $block = $tad_web_news->list_all("", $config['limit'], 'return', $config['show_mode']);
+    // die(var_export($block));
     return $block;
 }

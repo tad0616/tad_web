@@ -86,7 +86,7 @@
   <{if $isMyWeb}>
     <div class="text-right" style="margin: 30px 0px;">
       <a href="javascript:delete_works_func(<{$WorksID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
-      <a href="work.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
+      <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
       <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$WorksID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
     </div>
   <{/if}>
@@ -98,11 +98,13 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/works/tpls/tad_web_common_works_b3.html"}>
     </div>
   </div>
+<{elseif $op=="setup"}>
 
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup_b3.html"}>
 <{else}>
     <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h1>
     <{if $isMyWeb and $WebID}>
-      <a href="work.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
+      <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
     <{else}>
       <div class="text-center">
         <img src="images/empty.png" alt="<{$smarty.const._MD_TCW_EMPTY}>" title="<{$smarty.const._MD_TCW_EMPTY}>">

@@ -1,0 +1,132 @@
+<{$formValidator_code}>
+<{$sweet_alert_code}>
+
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+
+<h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$setup_stud}></h3>
+
+
+<div class="row">
+
+  <div class="col-md-8">
+    <form action="aboutus.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+      <!--學生相片-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$pic}></label>
+        <div class="col-md-8">
+          <h1><{$MemName}></h1>
+          <input type="file" name="upfile[]"  maxlength="1" accept="gif|jpg|png|GIF|JPG|PNG">
+        </div>
+      </div>
+
+      <!--學生姓名-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_NAME}></label>
+        <div class="col-md-8">
+          <input type="text" name="MemName" value="<{$MemName}>" id="MemName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NAME}>">
+        </div>
+      </div>
+
+      <!--座號-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_NUM}></label>
+        <div class="col-md-8">
+          <input type="text" name="MemNum" value="<{$MemNum}>" id="MemNum" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NUM}>">
+        </div>
+      </div>
+
+      <!--學號-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_UNICODE}></label>
+        <div class="col-md-8">
+          <input type="text" name="MemUnicode" value="<{$MemUnicode}>" id="MemUnicode" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNICODE}>">
+        </div>
+      </div>
+
+      <!--性別-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_SEX}></label>
+        <div class="col-md-8">
+          <select name="MemSex" class="form-control">
+            <option value="1" <{if $MemSex!='0'}>selected<{/if}>><{$smarty.const._MD_TCW_BOY}></option>
+            <option value="0" <{if $MemSex=='0'}>selected<{/if}>><{$smarty.const._MD_TCW_GIRL}></option>
+          </select>
+        </div>
+      </div>
+
+      <!--生日-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></label>
+        <div class="col-md-8">
+          <input type="text" name="MemBirthday" value="<{$MemBirthday}>" id="MemBirthday" class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MD_TCW_MEM_BIRTHDAY}>">
+        </div>
+      </div>
+
+      <!--是否還在班上-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_STATUS}></label>
+        <div class="col-md-8">
+          <select name="MemEnable" id="MemEnable" class="form-control">
+            <option value="1" <{if $MemEnable!='0'}>selected<{/if}>><{$smarty.const._MD_TCW_MEM_ENABLE}></option>
+            <option value="0" <{if $MemEnable=='0'}>selected<{/if}>><{$smarty.const._MD_TCW_MEM_UNABLE}></option>
+          </select>
+        </div>
+      </div>
+
+      <!--學生暱稱-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_NICKNAME}></label>
+        <div class="col-md-8">
+          <input type="text" name="MemNickName" value="<{$MemNickName}>" id="MemNickName" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NICKNAME}>">
+        </div>
+      </div>
+
+      <!--帳號-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_UNAME}></label>
+        <div class="col-md-8">
+          <input type="text" name="MemUname" value="<{$MemUname}>" id="MemUname" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNAME}>">
+        </div>
+      </div>
+
+      <!--密碼-->
+      <div class="form-group">
+        <label class="col-md-4 control-label"><{$smarty.const._MD_TCW_MEM_PASSWD}></label>
+        <div class="col-md-8">
+          <input type="text" name="MemPasswd" value="<{$MemPasswd}>" id="MemPasswd" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_PASSWD}>">
+        </div>
+      </div>
+
+      <div class="text-center">
+        <{$del_btn}>
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="MemID" value="<{$MemID}>">
+        <input type="hidden" name="CateID" value="<{$cate.CateID}>">
+        <input type="hidden" name="op" value="<{$next_op}>">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-4">
+    <table class="table table-striped table-bordered table-hover table-condensed">
+      <tr>
+        <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NUM}></th>
+        <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NAME}></th>
+        <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_UNICODE}></th>
+        <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_SEX}></th>
+      </tr>
+      <{foreach from=$students item=stud}>
+      <tr>
+        <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemNum}></a></td>
+        <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemName}></a></td>
+        <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemUnicode}></a></td>
+        <td style="text-align: center; color: <{$stud.color}>;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><{$stud.MemSex}></td>
+      </tr>
+      <{/foreach}>
+    </table>
+    <div class="text-center">
+      <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_stu" class="btn btn-primary"><{$add_stud}></a>
+    </div>
+  </div>
+</div>

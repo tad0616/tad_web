@@ -20,3 +20,7 @@ define("_MB_TCW_PLEASE_INPUT", "Enter ");
 define('_MB_TCW_LOGIN', 'Login');
 define("_MB_TCW_ENABLE_PLUGIN", "Enable");
 define("_MB_TCW_HI", "Hi %s");
+define("_MB_TCW_BLOCK_ADD", "Add New Block");
+define("_MB_TCW_OPENID_LOGIN", "login by %s");
+define("_MB_TCW_ID", "ID");
+define("_MB_TCW_PASSWD", "Passwd");

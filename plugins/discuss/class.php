@@ -188,6 +188,7 @@ class tad_web_discuss
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($DiscussID)) {
@@ -330,6 +331,7 @@ class tad_web_discuss
             return $_POST['ReDiscussID'];
         }
 
+        check_quota($this->WebID);
         return $DiscussID;
     }
 
@@ -376,6 +378,7 @@ class tad_web_discuss
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
+        check_quota($this->WebID);
         return $DiscussID;
     }
 
@@ -403,6 +406,7 @@ class tad_web_discuss
 
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->del_files();
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -419,6 +423,7 @@ class tad_web_discuss
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

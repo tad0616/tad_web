@@ -92,18 +92,23 @@ if ($isMyWeb) {
     $i++;
 }
 
-$menu_var[$i]['id']     = $i;
-$menu_var[$i]['title']  = _MD_TCW_HOME;
-$menu_var[$i]['url']    = "index.php";
-$menu_var[$i]['target'] = "_self";
-$menu_var[$i]['icon']   = "fa-share-square-o";
+$interface_menu[_TAD_TO_MOD] = "index.php";
+$menu_var[$i]['id']          = $i;
+$menu_var[$i]['title']       = _MD_TCW_HOME;
+$menu_var[$i]['url']         = "index.php";
+$menu_var[$i]['target']      = "_self";
+$menu_var[$i]['icon']        = "fa-share-square-o";
 $i++;
 
 if ($isAdmin) {
-    $menu_var[$i]['id']     = $i;
-    $menu_var[$i]['title']  = _MD_TCW_ADMIN;
-    $menu_var[$i]['url']    = "admin/index.php";
-    $menu_var[$i]['target'] = "_self";
-    $menu_var[$i]['icon']   = "fa-check-square-o";
+    $interface_menu[_MD_TADNEWS_TO_ADMIN] = "admin/main.php";
+    $menu_var[$i]['id']                   = $i;
+    $menu_var[$i]['title']                = _MD_TCW_ADMIN;
+    $menu_var[$i]['url']                  = "admin/index.php";
+    $menu_var[$i]['target']               = "_self";
+    $menu_var[$i]['icon']                 = "fa-check-square-o";
     $i++;
+
 }
+
+// die(var_export($_SESSION));

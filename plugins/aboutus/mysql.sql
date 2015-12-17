@@ -1,12 +1,13 @@
 CREATE TABLE `tad_web_link_mems` (
-  `MemID` mediumint(8) unsigned NOT NULL COMMENT 'MemID',
-  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+  `MemID` mediumint(8) unsigned NOT NULL default 0 COMMENT 'MemID',
+  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬網站',
+  `CateID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
   `MemNum` tinyint(3) unsigned NOT NULL default 0 COMMENT '座號',
   `MemSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
   `MemEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
   `top` smallint(6) NOT NULL default 0,
   `left` smallint(6) NOT NULL default 0,
-PRIMARY KEY (`MemID`,`WebID`)
+PRIMARY KEY (`MemID`,`CateID`)
 ) ENGINE=MyISAM;
 
 

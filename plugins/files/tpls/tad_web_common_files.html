@@ -1,5 +1,9 @@
 <{if $web_display_mode=='index' and $file_data}>
-  <h3><a href="<{$xoops_url}>/modules/tad_web/files.php"><{$files.PluginTitle}></a></h3>
+  <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
+    <img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$files.PluginTitle}>">
+  <{else}>
+    <h3><a href="<{$xoops_url}>/modules/tad_web/files.php"><{$files.PluginTitle}></a></h3>
+  <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
   <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h1>
 <{elseif $web_display_mode=='home_plugin'}>
@@ -21,7 +25,7 @@
           <{$smarty.const._MD_TCW_FILES_UID}>
         </th>
         <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
-          <th data-hide="phone"  style="width:150px;text-align:center;">
+          <th data-hide="phone"  class="common_team" style="text-align: center;">
             <{$smarty.const._MD_TCW_TEAMID}>
             </th>
         <{/if}>
@@ -46,7 +50,7 @@
         </td>
 
         <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
-          <td style="width:100px;text-align:center;">
+          <td style="text-align:center;" class="common_team_content">
             <{$file.WebTitle}>
           </td>
         <{/if}>

@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
-$modversion['version']     = 1.64;
+$modversion['version']     = 1.65;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author']      = _MI_TCW_AUTHOR;
 $modversion['credits']     = _MI_TCW_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2015/12/01';
+$modversion['release_date']        = '2015/12/17';
 $modversion['module_website_url']  = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -42,6 +42,7 @@ $modversion['tables'][]         = "tad_web_config";
 $modversion['tables'][]         = "tad_web_plugins";
 $modversion['tables'][]         = "tad_web_roles";
 $modversion['tables'][]         = "tad_web_blocks";
+$modversion['tables'][]         = "tad_web_plugins_setup";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;
@@ -140,8 +141,16 @@ $modversion['templates'][$i]['file']        = 'tad_web_block_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_block_b3.html';
 
 $i++;
+$modversion['templates'][$i]['file']        = 'tad_web_block_custom_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_block_custom_b3.html';
+
+$i++;
 $modversion['templates'][$i]['file']        = 'tad_web_unable_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_unable_b3.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_plugin_setup_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_plugin_setup_b3.html';
 
 //---區塊設定---//
 $i                                       = 1;
@@ -216,3 +225,20 @@ $modversion['config'][$i]['formtype']    = 'select_multi';
 $modversion['config'][$i]['valuetype']   = 'array';
 $modversion['config'][$i]['default']     = array('all', 'web', 'news', 'homework');
 $modversion['config'][$i]['options']     = array(_MI_TADWEB_CAL_COLS_KEY1 => 'all', _MI_TADWEB_CAL_COLS_KEY2 => 'web', _MI_TADWEB_CAL_COLS_KEY3 => 'news', _MI_TADWEB_CAL_COLS_KEY4 => 'homework');
+
+$i++;
+$modversion['config'][$i]['name']        = 'user_space_quota';
+$modversion['config'][$i]['title']       = '_MI_TADWEB_USER_SPACE_QUOTA';
+$modversion['config'][$i]['description'] = '_MI_TADWEB_USER_SPACE_QUOTA_DESC';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default']     = '500';
+
+$i++;
+$modversion['config'][$i]['name']        = 'list_web_order';
+$modversion['config'][$i]['title']       = '_MI_TCW_LIST_WEB_TEXT';
+$modversion['config'][$i]['description'] = '_MI_TCW_LIST_WEB_DESC';
+$modversion['config'][$i]['formtype']    = 'select';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default']     = 'WebSort';
+$modversion['config'][$i]['options']     = array(_MI_TCW_LIST_WEB_OPT1 => 'WebSort', _MI_TCW_LIST_WEB_OPT2 => 'WebCounter', _MI_TCW_LIST_WEB_OPT3 => 'WebCounter desc', _MI_TCW_LIST_WEB_OPT4 => 'CreatDate', _MI_TCW_LIST_WEB_OPT5 => 'CreatDate desc');

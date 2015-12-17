@@ -71,6 +71,23 @@ function tad_web_menu($options)
             $block['plugins'] = $menu_var;
         }
 
+        $modhandler        = &xoops_gethandler('module');
+        $xoopsModule       = &$modhandler->getByDirname("tad_web");
+        $config_handler    = &xoops_gethandler('config');
+        $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+
+        $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
+        $size  = get_web_config("used_size", $defaltWebID);
+
+        $percentage     = round($size / $quota, 2) * 100;
+        $block['quota'] = $percentage;
+        if ($percentage <= 70) {
+            $block['progress_color'] = 'success';
+        } elseif ($percentage <= 90) {
+            $block['progress_color'] = 'warning';
+        } elseif ($percentage > 90) {
+            $block['progress_color'] = 'danger';
+        }
         return $block;
     } elseif (!empty($_SESSION['LoginMemID'])) {
         $block['op']               = 'mem';
@@ -91,6 +108,7 @@ function tad_web_menu($options)
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
             $tad_login['facebook'] = facebook_login('return');
+            $tad_login['google']   = google_login('return');
 
             $config_handler = &xoops_gethandler('config');
             $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
@@ -100,10 +118,12 @@ function tad_web_menu($options)
 
             foreach ($auth_method as $method) {
                 $method_const = "_" . strtoupper($method);
-                $loginTitle   = sprintf(_TAD_LOGIN_BY, constant($method_const));
+                $loginTitle   = sprintf(_MB_TCW_OPENID_LOGIN, constant($method_const));
 
                 if ($method == "facebook") {
                     $tlogin[$i]['link'] = $tad_login['facebook'];
+                } elseif ($method == "google") {
+                    $tlogin[$i]['link'] = $tad_login['google'];
                 } else {
                     $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
                 }

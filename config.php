@@ -25,8 +25,19 @@ function tad_web_config($WebID)
         $xoopsTpl->assign($ConfigName, $ConfigValue);
     }
 
+    $Web = get_tad_web($WebID, true);
+
     //網站設定
-    $Web = get_tad_web($WebID);
+    $web_cate = new web_cate(0, "web_cate", "tad_web");
+    $web_cate->set_col_md(3, 7);
+    //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
+    $cate_menu = $web_cate->cate_menu($Web['CateID'], 'page', false, false, true, false, true, true, false);
+
+    $xoopsTpl->assign('cate_menu', $cate_menu);
+
+    // die(var_export($Web));
+    $WebOwnerUid = intval($Web['WebOwnerUid']);
+    $xoopsTpl->assign('Web', $Web);
     $xoopsTpl->assign('WebName', $Web['WebName']);
 
     $TadUpFiles->set_col("WebOwner", $WebID, 1);
@@ -35,6 +46,15 @@ function tad_web_config($WebID)
 
     $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
     $xoopsTpl->assign('upform_teacher', $upform);
+
+    //可愛刪除
+    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+    }
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+    $sweet_alert      = new sweet_alert();
+    $sweet_alert_code = $sweet_alert->render("delete_my_web", "config.php?WebID=$WebID&op=delete_tad_web_chk&delWebID=", 'WebID');
+    $xoopsTpl->assign('sweet_delete_action_func_code', $sweet_alert_code);
 
     //功能設定
     $plugins = get_plugins($WebID, 'edit');
@@ -98,10 +118,10 @@ function tad_web_config($WebID)
         $name  = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
         $name  = empty($name) ? "" : " ({$name})";
-        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr)) {
-            $user_ok .= "<option value=\"$uid\">{$uname} {$name}</option>";
+        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr) or $uid == $WebOwnerUid) {
+            $user_ok .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
         } else {
-            $user_yet .= "<option value=\"$uid\">{$uname} {$name}</option>";
+            $user_yet .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
         }
     }
     $xoopsTpl->assign('user_ok', $user_ok);
@@ -118,10 +138,9 @@ function update_tad_web()
 
     $myts             = &MyTextSanitizer::getInstance();
     $_POST['WebName'] = $myts->addSlashes($_POST['WebName']);
+    $CateID           = intval($_POST['CateID']);
 
-    $sql = "update " . $xoopsDB->prefix("tad_web") . " set
-   `WebName` = '{$_POST['WebName']}'
-    where WebID ='{$WebID}'";
+    $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$_POST['WebName']}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
     $TadUpFilesLogo = TadUpFilesLogo($WebID);
@@ -222,6 +241,30 @@ function enabe_plugin($dirname = "", $WebID = "")
     mk_menu_var_file($WebID);
 }
 
+//刪除網站
+// function delete_my_web($WebID)
+// {
+//     global $xoopsDB, $isMyWeb;
+//     if (empty($WebID) or !$isMyWeb) {
+//         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+//     }
+
+//     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '0' where WebID ='{$WebID}'";
+//     $xoopsDB->queryF($sql) or web_error($sql);
+// }
+
+//關閉網站
+function unable_my_web($WebID)
+{
+    global $xoopsDB, $isMyWeb;
+    if (empty($WebID) or !$isMyWeb) {
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+    }
+
+    $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '0' where WebID ='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+}
+
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -242,6 +285,7 @@ $web_admins     = system_CleanVars($_REQUEST, 'web_admins', '', 'string');
 $menu_font_size = system_CleanVars($_REQUEST, 'menu_font_size', 12, 'int');
 $theme_side     = system_CleanVars($_REQUEST, 'theme_side', 'right', 'string');
 $dirname        = system_CleanVars($_REQUEST, 'dirname', '', 'string');
+$delWebID       = system_CleanVars($_REQUEST, 'delWebID', 0, 'int');
 
 switch ($op) {
 
@@ -328,6 +372,31 @@ switch ($op) {
     case "enabe_plugin":
         enabe_plugin($dirname, $WebID);
         header("location: {$dirname}.php?WebID={$WebID}&op=edit_form");
+        exit;
+        break;
+
+    case "unable_my_web":
+        unable_my_web($WebID);
+        header("location: index.php");
+        exit;
+        break;
+
+    //刪除資料
+    case "delete_tad_web_chk":
+        if (empty($delWebID) or !$isMyWeb) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+        common_template($WebID);
+        delete_tad_web_chk($delWebID);
+        break;
+
+    //刪除資料
+    case "delete_tad_web":
+        if (empty($WebID) or !$isMyWeb) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+        delete_tad_web($WebID);
+        header("location: index.php");
         exit;
         break;
 

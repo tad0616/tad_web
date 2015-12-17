@@ -4,12 +4,13 @@ include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_com
 //main.php
 define('_MA_TCW_TEAMID', 'Number');
 define('_MA_TCW_TEAMNAME', 'Site name');
+define("_MA_TCW_TEAM", "Site");
 define('_MA_TCW_TEAMSORT', 'Sorting');
 define('_MA_TCW_TEAMENABLE', 'State');
 define('_MA_TCW_TEAMCOUNTER', 'Popular');
 define('_MA_TCW_MEM_AMOUNT', 'Number of members');
 define('_MA_TCW_TEAMLEADER', 'Owner');
-define('_MA_TCW_TEAMTITLE', 'Official name');
+define('_MA_TCW_TEAMTITLE', 'Class name');
 define('_MA_TCW_MAIN_TITLE', 'Personal Web Manager');
 define('_MA_TCW_GROUP_NAME', 'XOOPS personal page groups');
 define('_MA_TCW_GROUP_DESC', 'Do not change the group name, otherwise the module will not function correctly.');
@@ -25,7 +26,7 @@ define('_MA_TCW_DEL_ACTION', 'Activities silhouette Materials');
 define('_MA_TCW_DEL_FILES', 'File Download');
 define('_MA_TCW_DEL_VIDEOS', 'Online video data');
 define('_MA_TCW_DEL_DISCUSS', 'Message Discussion Materials');
-define('_MA_TCW_DELETE', 'OK to delete (do not delete it by leaving to other link)');
+define('_MA_TCW_DELETE', 'Yes! I want to delete it! ');
 define('_MA_TCW_UPLOAD_OWNER_PIC', 'Upload page image file');
 
 //save_sort.php save.php
@@ -53,7 +54,8 @@ define('_MA_TCW_SELECT_CATE', 'All Category');
 define('_MA_TCW_DISK_TOTAL_SPACE_STATUS', 'Disk total space');
 define('_MA_TCW_DISK_TOTAL_SPACE', 'Disk total space');
 define('_MA_TCW_DISK_PATH', 'WebSite Dir');
-define('_MA_TCW_DISK_SPACE_TOTAL', 'Used space:');
+define('_MA_TCW_DISK_SPACE_QUOTA', 'Space quota:');
+define('_MA_TCW_DISK_SPACE_TOTAL', ', Server used space:');
 define('_MA_TCW_DISK_AVAILABLE_SPACE', ', Available space');
 
 define('_MA_TCW_WEB_SCHEDULE_TEMPLATE', 'Edit schedule table template');

@@ -2,6 +2,8 @@
   <div class="tad_web_block">
     <{if $block.plugin=="xoops"}>
         <{block id=$block.BlockName}>
+    <{elseif $block.plugin=="custom"}>
+      <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_custom_b3.html"}>
     <{else}>
       <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
         <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
@@ -12,5 +14,3 @@
     <{/if}>
   </div>
 <{/foreach}>
-
-

@@ -109,10 +109,11 @@ class tad_web_calendar
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl;
 
         if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($CalendarID)) {
@@ -199,6 +200,7 @@ class tad_web_calendar
         //取得最後新增資料的流水編號
         $CalendarID = $xoopsDB->getInsertId();
 
+        check_quota($this->WebID);
         return $CalendarID;
     }
 
@@ -226,6 +228,7 @@ class tad_web_calendar
         where CalendarID='$CalendarID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
+        check_quota($this->WebID);
         return $CalendarID;
     }
 
@@ -236,6 +239,7 @@ class tad_web_calendar
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='$CalendarID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -252,6 +256,7 @@ class tad_web_calendar
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

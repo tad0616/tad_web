@@ -3,18 +3,27 @@ class tad_web_aboutus
 {
 
     public $WebID = 0;
+    public $web_cate;
+    public $setup;
 
     public function tad_web_aboutus($WebID)
     {
-        $this->WebID = $WebID;
+        $this->WebID    = $WebID;
+        $this->web_cate = new web_cate($WebID, "aboutus", "tad_web_link_mems");
+        $this->setup    = get_plugin_setup_values($WebID, "aboutus");
     }
 
     //所有網站列表
     public function list_all()
     {
-        global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $MyWebs;
+        global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $MyWebs, $xoopsModuleConfig;
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by WebSort";
+        $list_web_order = $xoopsModuleConfig['list_web_order'];
+        if (empty($list_web_order)) {
+            $list_web_order = 'WebSort';
+        }
+
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by {$list_web_order}";
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $data = "";
@@ -37,12 +46,41 @@ class tad_web_aboutus
     }
 
     //以流水號秀出某筆tad_web_mems資料內容
-    public function show_one($mode = '')
+    public function show_one($DefCateID = "")
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb;
-        $Web = get_tad_web($this->WebID);
+        $Web = get_tad_web($this->WebID, true);
+        $xoopsTpl->assign('CateID', $DefCateID);
 
-        $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1'";
+        $mode = ($isMyWeb and $MyWebs) ? "mem_adm" : "";
+
+        // $TadUpFiles->set_col("WebOwner", $this->WebID, 1);
+        // $teacher_pic = $TadUpFiles->get_pic_file();
+
+        // $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
+        // $xoopsTpl->assign('upform_teacher', $upform);
+
+        //班級圖片
+        $TadUpFiles->set_col("ClassPic", $DefCateID, 1);
+        $class_pic_thumb = $TadUpFiles->get_pic_file("thumb");
+        $xoopsTpl->assign('class_pic_thumb', $class_pic_thumb);
+        $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
+        $xoopsTpl->assign('upform_class', $upform);
+
+        $ys = get_seme();
+        $xoopsTpl->assign('ys', $ys);
+
+        $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->web_cate->set_col_md(3, 12);
+        //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false)
+        $cate_menu = $this->web_cate->cate_menu($DefCateID, 'page', false, true, false, false);
+        $cate      = $this->web_cate->get_tad_web_cate($DefCateID);
+        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate', $cate);
+
+        $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
         $result = $xoopsDB->query($sql) or web_error($sql);
         $i      = 0;
 
@@ -86,8 +124,245 @@ class tad_web_aboutus
 
             $MemName = empty($MemName) ? "---" : $MemName;
 
-            $StuID  = ($mode == "mem_adm") ? $MemID : $MemNum;
-            $StuUrl = ($mode == "mem_adm") ? "javascript:edit_stu({$MemID});" : '#';
+            $StuUrl = ($mode == "mem_adm") ? "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu" : '#';
+
+            $students = "<div id='{$MemNum}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size:11px;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
+
+            //$students = "<div id='{$StuID}' class='draggable'>{$MemName}</a></p></div>";
+
+            if (empty($top) and empty($left)) {
+                $students2 .= $students;
+            } else {
+                $students1 .= $students;
+            }
+            $class_total++;
+
+            $i++;
+        }
+
+        if ($mode == "mem_adm") {
+            $xoopsTpl->assign('mode', 'mem_adm');
+        }
+
+        $xoopsTpl->assign('all_mems', $all_main);
+        $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
+        $xoopsTpl->assign('class_total', $class_total);
+        $xoopsTpl->assign('class_boy', $class_boy);
+        $xoopsTpl->assign('class_girl', $class_girl);
+        $xoopsTpl->assign('students1', $students1);
+        $xoopsTpl->assign('students2', $students2);
+
+        $sql             = "select min(`MemNum`) as min , max(`MemNum`) as max from " . $xoopsDB->prefix("tad_web_link_mems") . " where `CateID` = '{$DefCateID}' and MemEnable='1' and `MemNum` > 0";
+        $result          = $xoopsDB->query($sql) or web_error($sql);
+        list($min, $max) = $xoopsDB->fetchRow($result);
+
+        $xoopsTpl->assign('min', $min);
+        $xoopsTpl->assign('max', $max);
+        if (empty($all_main)) {
+            $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_MEM, $this->setup['student_title']));
+            $xoopsTpl->assign('no_student', sprintf(_MD_TCW_NO_MEM, $this->setup['student_title']));
+        }
+        $xoopsTpl->assign('class_pic', sprintf(_MD_TCW_CLASS_PIC, $this->setup['class_title']));
+        $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('import_excel', sprintf(_MD_TCW_IMPORT_EXCEL, $this->setup['student_title']));
+        $xoopsTpl->assign('student_amount', sprintf(_MD_TCW_MEM_AMOUNT, $this->setup['student_title']));
+        $xoopsTpl->assign('class_setup', sprintf(_MD_TCW_CLASS_SETUP, $this->setup['class_title']));
+        $xoopsTpl->assign('no_class_photo', sprintf(_MD_TCW_NO_CLASS_PIC, $this->setup['class_title']));
+        $xoopsTpl->assign('edit_student', sprintf(_MD_TCW_EDIT_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('teacher_name', sprintf(_MD_TCW_OWNER_NAME, $this->setup['teacher_title']));
+        $xoopsTpl->assign('add_class', sprintf(_MD_TCW_ADD_CLASS, $this->setup['class_title']));
+
+    }
+
+    //班級管理
+    public function edit_form($DefCateID = "")
+    {
+
+        global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb, $xoopsUser;
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+
+        $xoopsTpl->assign('class_pic', sprintf(_MD_TCW_CLASS_PIC, $this->setup['class_title']));
+
+        //班級圖片
+        $TadUpFiles->set_col("ClassPic", $DefCateID, 1);
+        $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
+        $xoopsTpl->assign('upform_class', $upform);
+        $class_pic_thumb = $TadUpFiles->get_pic_file("thumb");
+        $xoopsTpl->assign('class_pic_thumb', $class_pic_thumb);
+
+        $ys        = get_seme();
+        $last_year = $ys[0] - 1;
+        $next_year = $ys[0] + 1;
+        $xoopsTpl->assign('now_year', sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        $xoopsTpl->assign('last_year', sprintf(_MD_TCW_SEME_CATE, $last_year));
+        $xoopsTpl->assign('next_year', sprintf(_MD_TCW_SEME_CATE, $next_year));
+
+        //所有曾經的班級
+        $cate = $this->web_cate->get_tad_web_cate_arr();
+        // die(var_export($cate));
+        foreach ($cate as $key => $value) {
+            // _MD_TCW_STUDENT_COPY
+            $old_cate[$key]                 = $value;
+            $old_cate[$key]['CateNameMem']  = sprintf(_MD_TCW_STUDENT_COPY, $value['CateName'], $this->setup['student_title']);
+            $old_cate[$key]['CateMemCount'] = $this->get_total($value['CateID']);
+
+        }
+        $xoopsTpl->assign('old_cate', $old_cate);
+
+        //目前欲編輯的班級
+        if ($DefCateID) {
+            $now_cate = $this->web_cate->get_tad_web_cate($DefCateID);
+            $xoopsTpl->assign('now_cate', $now_cate);
+            $xoopsTpl->assign('CateID', $DefCateID);
+            $xoopsTpl->assign('next_op', "update_class");
+        } else {
+            $xoopsTpl->assign('next_op', "insert_class");
+        }
+
+        //我的所有班級
+        $xoopsTpl->assign('class_list', sprintf(_MD_TCW_CLASS_LIST, $this->setup['class_title']));
+        $xoopsTpl->assign('class_title', sprintf(_MD_TCW_CLASS_TITLE, $this->setup['class_title']));
+        $xoopsTpl->assign('student_amount', sprintf(_MD_TCW_MEM_AMOUNT, $this->setup['student_title']));
+        $xoopsTpl->assign('edit_student', sprintf(_MD_TCW_EDIT_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('add_class', sprintf(_MD_TCW_ADD_CLASS, $this->setup['class_title']));
+        $xoopsTpl->assign('class_setup', sprintf(_MD_TCW_CLASS_SETUP, $this->setup['class_title']));
+        $xoopsTpl->assign('no_class_photo', sprintf(_MD_TCW_NO_CLASS_PIC, $this->setup['class_title']));
+        $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
+        $xoopsTpl->assign('edit_class_title', sprintf(_MD_TCW_EDIT_CLASS_TITLE, $this->setup['class_title']));
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("del_class", "aboutus.php?op=del_class&WebID={$this->WebID}&CateID=", 'CateID');
+        $xoopsTpl->assign('sweet_alert_code', $sweet_alert_code);
+    }
+
+    //新增班級
+    public function insert_class($year = "", $newCateName = "")
+    {
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
+
+        $myts        = MyTextSanitizer::getInstance();
+        $and_year    = empty($year) ? '' : "{$year} ";
+        $newCateName = $myts->addSlashes($and_year . $newCateName);
+        $CateID      = $this->web_cate->save_tad_web_cate("", $newCateName);
+        $TadUpFiles->set_col("ClassPic", $CateID, 1);
+        $TadUpFiles->upload_file("upfile", 1280, 300, null, null, true);
+
+        if ($_POST['default_class'] == '1') {
+            save_web_config("default_class", $CateID, $this->WebID);
+            $this->update_web_title($newCateName);
+        }
+
+        if (!empty($_POST['form_CateID'])) {
+            $form_CateID = intval($_POST['form_CateID']);
+            $sql         = "select * from " . $xoopsDB->prefix("tad_web_link_mems") . " where CateID='{$form_CateID}'";
+            $result      = $xoopsDB->query($sql) or web_error($sql);
+            while ($all = $xoopsDB->fetchArray($result)) {
+                $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . "
+              (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable` , `top` ,`left`)
+              values('{$all['MemID']}' , '{$this->WebID}' , '{$CateID}', '{$all['MemNum']}' , '{$all['MemSort']}' , '{$all['MemEnable']}' , '{$all['top']}' , '{$all['left']}' )";
+
+                $xoopsDB->queryF($sql) or web_error($sql);
+            }
+        }
+
+        return $CateID;
+    }
+
+    //更新班級
+    public function update_class($CateID = '', $year = "", $newCateName = "")
+    {
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
+
+        $myts        = MyTextSanitizer::getInstance();
+        $and_year    = empty($year) ? '' : "{$year} ";
+        $newCateName = $myts->addSlashes($and_year . $newCateName);
+        $TadUpFiles->set_col("ClassPic", $CateID, 1);
+        $TadUpFiles->upload_file("upfile", 1280, 300, null, null, true);
+        $this->web_cate->update_tad_web_cate($CateID, $newCateName);
+
+        if ($_POST['default_class'] == '1') {
+            save_web_config("default_class", $CateID, $this->WebID);
+            $this->update_web_title($newCateName);
+        }
+    }
+
+    //刪除班級
+    public function del_class($CateID = '')
+    {
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
+
+        //刪除學生連結
+        $this->delete('', $CateID);
+
+        //刪除照片
+        $TadUpFiles->set_col("ClassPic", $CateID);
+        $TadUpFiles->del_files();
+
+        //刪除班級
+        $this->web_cate->delete_tad_web_cate($CateID);
+    }
+
+    //排座位
+    public function edit_position($DefCateID = '')
+    {
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs) or empty($DefCateID)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+        get_quota($this->WebID);
+        // $Web = get_tad_web($this->WebID);
+        $xoopsTpl->assign('CateID', $DefCateID);
+        $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
+
+        $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $i      = 0;
+
+        $students1   = $students2   = "";
+        $class_total = $class_boy = $class_girl = 0;
+
+        while ($all = $xoopsDB->fetchArray($result)) {
+
+            //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
+            foreach ($all as $k => $v) {
+                $$k               = $v;
+                $all_main[$i][$k] = $v;
+            }
+
+            $TadUpFiles->set_col("MemID", $MemID, 1);
+            $pic_url = $TadUpFiles->get_pic_file('thumb');
+
+            if (empty($pic_url) or !$isMyWeb) {
+                $pic   = ($MemSex == '1') ? "images/boy.gif" : "images/girl.gif";
+                $cover = "";
+            } else {
+                $pic   = $pic_url;
+                $cover = "background-size: cover;";
+            }
+
+            if (!$isMyWeb) {
+                $MemName = empty($MemNickName) ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemNickName;
+            }
+
+            $color  = ($MemSex == '1') ? "#006699" : "#CC3300";
+            $color2 = ($MemSex == '1') ? "#000066" : "#660000";
+
+            $style = (empty($top) and empty($left)) ? "float:left;" : "top:{$top}px;left:{$left}px;";
+
+            $MemName = empty($MemName) ? "---" : $MemName;
+
+            $StuID  = $MemID;
+            $StuUrl = "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu";
 
             $students = "<div id='{$StuID}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size:11px;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
 
@@ -102,45 +377,133 @@ class tad_web_aboutus
 
             $i++;
         }
-
-        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
-        // $TadUpFiles->set_dir('subdir', $subdir);
-        $TadUpFiles->set_col("WebOwner", $this->WebID, 1);
-        $teacher_pic = $TadUpFiles->get_pic_file();
-
-        //$teacher_pic=empty($pic_url)?"":"<div style='background:transparent url($pic_url) no-repeat center center;width:325px;height:249px;'><img src='images/photo.png'></div>";
-
-        if ($mode == "mem_adm") {
-            $xoopsTpl->assign('mode', 'mem_adm');
-        }
-
-        $xoopsTpl->assign('all_mems', $all_main);
-        $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
-        $xoopsTpl->assign('teacher_pic', $teacher_pic);
-        $xoopsTpl->assign('class_total', $class_total);
-        $xoopsTpl->assign('class_boy', $class_boy);
-        $xoopsTpl->assign('class_girl', $class_girl);
         $xoopsTpl->assign('students1', $students1);
         $xoopsTpl->assign('students2', $students2);
 
-        $sql             = "select min(`MemNum`) as min , max(`MemNum`) as max from " . $xoopsDB->prefix("tad_web_link_mems") . " where `WebID` = '{$this->WebID}' and MemEnable='1' and `MemNum` > 0";
-        $result          = $xoopsDB->query($sql) or web_error($sql);
-        list($min, $max) = $xoopsDB->fetchRow($result);
+        $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('no_student', sprintf(_MD_TCW_NO_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('import_excel', sprintf(_MD_TCW_IMPORT_EXCEL, $this->setup['student_title']));
 
-        $xoopsTpl->assign('min', $min);
-        $xoopsTpl->assign('max', $max);
-
+        // $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->web_cate->set_col_md(2, 10);
+        $cate_menu = $this->web_cate->cate_menu($DefCateID, 'page', false, true, true, false, true, false, false);
+        $cate      = $this->web_cate->get_tad_web_cate($DefCateID);
+        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('cate', $cate);
     }
 
-    //tad_students編輯表單
-    public function edit_stu($MemID = "0")
+    //編輯班級學生
+    public function edit_class_stu($DefCateID = '')
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+        get_quota($this->WebID);
+        // $Web = get_tad_web($this->WebID);
+        $xoopsTpl->assign('CateID', $DefCateID);
+        $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
+
+        $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $i      = 0;
+
+        $students = "";
+
+        while ($all = $xoopsDB->fetchArray($result)) {
+
+            //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
+            foreach ($all as $k => $v) {
+                $$k               = $v;
+                $students[$i][$k] = $v;
+            }
+
+            $TadUpFiles->set_col("MemID", $MemID, 1);
+            $pic_url = $TadUpFiles->get_pic_file('thumb');
+
+            if (empty($pic_url) or !$isMyWeb) {
+                $students[$i]['pic'] = ($MemSex == '1') ? "images/boy.gif" : "images/girl.gif";
+            } else {
+                $students[$i]['pic'] = $pic_url;
+            }
+
+            $students[$i]['MemSex'] = ($MemSex == '1') ? _MD_TCW_BOY : _MD_TCW_GIRL;
+
+            $i++;
+        }
+        $xoopsTpl->assign('students', $students);
+        $xoopsTpl->assign('edit_student', sprintf(_MD_TCW_EDIT_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('no_student', sprintf(_MD_TCW_NO_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('import_excel', sprintf(_MD_TCW_IMPORT_EXCEL, $this->setup['student_title']));
+        // $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_STUDENT, $this->setup['student_title']));
+
+        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $xoopsTpl->assign('cate', $cate);
+    }
+
+    //顯示某個學生
+    public function show_stu($MemID = "0", $DefCateID = '')
+    {
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl, $isMyWeb, $MyWebs;
+        if (empty($MemID)) {
+            return;
+        }
+        $mem       = get_tad_web_mems($MemID);
+        $class_mem = get_tad_web_link_mems($MemID, $DefCateID);
+
+        $TadUpFiles->set_col("MemID", $MemID, 1);
+        $pic_url = $TadUpFiles->get_pic_file();
+
+        if (empty($pic_url)) {
+            $pic = ($mem['MemSex'] == '1') ? XOOPS_URL . "/modules/tad_web/images/boy.gif" : XOOPS_URL . "/modules/tad_web/images/girl.gif";
+        } else {
+            $pic = $pic_url;
+        }
+        $mem['MemSex'] = ($mem['MemSex'] == '1') ? _MD_TCW_BOY : _MD_TCW_GIRL;
+
+        $xoopsTpl->assign('pic', $pic);
+        $xoopsTpl->assign('CateID', $DefCateID);
+        $xoopsTpl->assign('mem', $mem);
+        $xoopsTpl->assign('class_mem', $class_mem);
+        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $xoopsTpl->assign('cate', $cate);
+
+        //所有學生
+        $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $i      = 0;
+
+        $students = "";
+        while ($all = $xoopsDB->fetchArray($result)) {
+            $students[$i]           = $all;
+            $students[$i]['color']  = ($all['MemSex'] == '1') ? 'blue' : 'red';
+            $students[$i]['MemSex'] = ($all['MemSex'] == '1') ? _MD_TCW_BOY : _MD_TCW_GIRL;
+            $i++;
+        }
+        $xoopsTpl->assign('students', $students);
+    }
+
+    //tad_students編輯表單 $mode='return', 'assign'
+    public function edit_stu($MemID = "0", $DefCateID = '')
+    {
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl, $isMyWeb, $MyWebs;
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+
+        // $ys = get_seme();
 
         //抓取預設值
         if (!empty($MemID)) {
             $DBV  = get_tad_web_mems($MemID);
-            $DBV2 = get_tad_web_link_mems($MemID);
+            $DBV2 = get_tad_web_link_mems($MemID, $DefCateID);
         } else {
             $DBV = $DBV2 = array();
         }
@@ -189,6 +552,15 @@ class tad_web_aboutus
         //設定「MemEnable」欄位預設值
         $MemEnable = (!isset($DBV2['MemEnable'])) ? "" : $DBV2['MemEnable'];
 
+        //設定「CateID」欄位預設值
+        $CateID = (!isset($DBV2['CateID'])) ? $DefCateID : $DBV2['CateID'];
+
+        // $this->web_cate->set_label(sprintf(_MD_TCW_SELECT_CLASS, $this->setup['class_title']));
+        // $this->web_cate->set_col_md(3, 9);
+        // $cate_menu = $this->web_cate->cate_menu($CateID, 'menu', true, false, true, false, true, true, false);
+        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $xoopsTpl->assign('cate', $cate);
+
         //設定「top」欄位預設值
         $top = (!isset($DBV['top'])) ? "" : $DBV['top'];
 
@@ -217,147 +589,71 @@ class tad_web_aboutus
           <div id='{$MemID}' style='padding: 5px;font-size: 12px; border:0px dotted gray;width:60px;height:50px;background:transparent url($pic) top center no-repeat;margin:0px auto;{$cover}'>
           </div>" : "";
 
-        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
-            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
-        }
-        include_once TADTOOLS_PATH . "/formValidator.php";
-        $formValidator      = new formValidator("#myForm", true);
-        $formValidator_code = $formValidator->render();
-
         if (!empty($MemID)) {
             $del_btn = "<a href=\"javascript:delete_student_func($MemID);\" class='btn btn-danger'>" . _TAD_DEL . "</a>";
         } else {
             $del_btn = "";
         }
 
-        //可愛刪除
-        // if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        //     redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
-        // }
-        // include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        // $sweet_alert      = new sweet_alert();
-        // $sweet_alert_code = $sweet_alert->render("delete_student_func", "aboutus.php?op=delete&WebID={$this->WebID}&MemID=", 'MemID');
-        // $xoopsTpl->assign('sweet_delete_homework_func_code', $sweet_alert_code);
+        $xoopsTpl->assign('MemName', $MemName);
+        $xoopsTpl->assign('MemNickName', $MemNickName);
+        $xoopsTpl->assign('pic', $pic);
+        $xoopsTpl->assign('MemSex', $MemSex);
+        $xoopsTpl->assign('MemBirthday', $MemBirthday);
+        $xoopsTpl->assign('MemUnicode', $MemUnicode);
+        $xoopsTpl->assign('MemNum', $MemNum);
+        $xoopsTpl->assign('MemEnable', $MemEnable);
+        $xoopsTpl->assign('MemUname', $MemUname);
+        $xoopsTpl->assign('MemPasswd', $MemPasswd);
+        $xoopsTpl->assign('MemID', $MemID);
+        $xoopsTpl->assign('next_op', $op);
+        $xoopsTpl->assign('del_btn', $del_btn);
 
-        $main = "
-        $formValidator_code
-        <!--sweet_alert_code-->
-        {$sweet_alert_code}
-        <script type='text/javascript' src='" . TADTOOLS_URL . "/My97DatePicker/WdatePicker.js'></script>
-        <script type='text/javascript'>
-        function delete_student_func(MemID){
-          var sure = window.confirm('" . _TAD_DEL_CONFIRM . "');
-          if (!sure)  return;
-          location.href=\"{$_SERVER['PHP_SELF']}?op=delete&WebID={$this->WebID}&MemID=\" + MemID;
+        $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
+        $xoopsTpl->assign('select_class', sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_MEM, $this->setup['student_title']));
+
+        //所有學生
+        $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $i      = 0;
+
+        $students = "";
+        while ($all = $xoopsDB->fetchArray($result)) {
+            $students[$i]           = $all;
+            $students[$i]['color']  = ($all['MemSex'] == '1') ? 'blue' : 'red';
+            $students[$i]['MemSex'] = ($all['MemSex'] == '1') ? _MD_TCW_BOY : _MD_TCW_GIRL;
+            $i++;
         }
-        </script>
-        <form action='{$_SERVER['PHP_SELF']}' method='post' id='myForm' enctype='multipart/form-data' class='form-horizontal' role='form'>
-          <fieldset>
-            <legend>" . _MD_TCW_STUDENT_SETUP . "</legend>
+        $xoopsTpl->assign('students', $students);
 
-            <!--學生姓名-->
-            <div class='form-group'>
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_NAME . "</label>
-              <div class='col-md-2'>
-                <input type='text' name='MemName' value='{$MemName}' id='MemName' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_NAME . "'>
-              </div>
+        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once TADTOOLS_PATH . "/formValidator.php";
+        $formValidator      = new formValidator("#myForm", true);
+        $formValidator_code = $formValidator->render();
+        $xoopsTpl->assign('formValidator_code', $formValidator_code);
 
-              <!--學生暱稱-->
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_NICKNAME . "</label>
-              <div class='col-md-2'>
-                <input type='text' name='MemNickName' value='{$MemNickName}' id='MemNickName' class='form-control' placeholder='" . _MD_TCW_MEM_NICKNAME . "'>
-              </div>
-
-              <div class='col-md-4'>
-                $pic
-              </div>
-            </div>
-
-
-            <div class='form-group'>
-              <!--性別-->
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_SEX . "</label>
-              <div class='col-md-2'>
-                <select name='MemSex' class='form-control'>
-                  <option value='1' " . chk($MemSex, '1', '1', 'selected') . ">" . _MD_TCW_BOY . "</option>
-                  <option value='0' " . chk($MemSex, '0', '0', 'selected') . ">" . _MD_TCW_GIRL . "</option>
-                </select>
-              </div>
-
-              <!--生日-->
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_BIRTHDAY . "</label>
-              <div class='col-md-2'>
-                <input type='text' name='MemBirthday' value='{$MemBirthday}' id='MemBirthday' class='form-control' onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}'})\" placeholder='" . _MD_TCW_MEM_BIRTHDAY . "'>
-              </div>
-
-              <label class='col-md-1 control-label'>" . _MD_TCW_UPLOAD_MEM_PHOTO . "</label>
-              <div class='col-md-3'>
-                <input type='file' name='upfile[]' class='form-control' maxlength='1' accept='gif|jpg|png|GIF|JPG|PNG'>
-              </div>
-            </div>
-
-
-            <div class='form-group'>
-
-              <!--學號-->
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_UNICODE . "</label>
-              <div class='col-md-2'>
-                <input type='text' name='MemUnicode' value='{$MemUnicode}' id='MemUnicode' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_UNICODE . "'>
-              </div>
-
-              <!--座號-->
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_NUM . "</label>
-              <div class='col-md-2'>
-                <input type='text' name='MemNum' value='{$MemNum}' id='MemNum' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_NUM . "'>
-              </div>
-
-
-              <!--是否還在班上-->
-              <label class='col-md-1 control-label'>" . _MD_TCW_MEM_STATUS . "</label>
-              <div class='col-md-3'>
-                <select name='MemEnable' id='MemEnable' class='form-control'>
-                  <option value='1'  " . chk($MemEnable, '1', '1', 'selected') . ">" . _MD_TCW_MEM_ENABLE . "</option>
-                  <option value='0'  " . chk($MemEnable, '0', '', 'selected') . ">" . _MD_TCW_MEM_UNABLE . "</option>
-                </select>
-              </div>
-
-            </div>
-
-
-            <div class='form-group'>
-
-              <!--帳號-->
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_UNAME . "</label>
-              <div class='col-md-2'>
-                <input type='text' name='MemUname' value='{$MemUname}' id='MemUname' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_UNAME . "'>
-              </div>
-
-              <!--密碼-->
-              <label class='col-md-2 control-label'>" . _MD_TCW_MEM_PASSWD . "</label>
-              <div class='col-md-2'>
-                <input type='text' name='MemPasswd' value='{$MemPasswd}' id='MemPasswd' class='validate[required] form-control' placeholder='" . _MD_TCW_MEM_PASSWD . "'>
-              </div>
-
-              <div class='col-md-4 text-right'>
-                $del_btn
-                <input type='hidden' name='WebID' value='{$this->WebID}'>
-                <input type='hidden' name='MemID' value='{$MemID}'>
-                <input type='hidden' name='op' value='{$op}'>
-                <button type='submit' class='btn btn-primary'>" . _TAD_SAVE . "</button>
-              </div>
-            </div>
-
-          </fieldset>
-        </form>
-        ";
-
-        return $main;
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("delete_student_func", "aboutus.php?op=delete&WebID={$this->WebID}&CateID={$DefCateID}&MemID=", 'MemID');
+        $xoopsTpl->assign('sweet_alert_code', $sweet_alert_code);
     }
 
     //新增資料到tad_web_mems中
     public function insert()
     {
-        global $xoopsDB, $xoopsUse, $MyWebs, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $TadUpFiles, $isMyWeb, $MyWebs;
+
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
 
         //tad_web_link_mems:`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
         //tad_web_mems:`MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`
@@ -369,11 +665,13 @@ class tad_web_aboutus
         $_POST['MemName']       = $myts->addSlashes($_POST['MemName']);
         $_POST['MemNickName']   = $myts->addSlashes($_POST['MemNickName']);
 
-        $MemSort = $this->max_sort($MyWebs);
+        $CateID = intval($_POST['CateID']);
+
+        $MemSort = $this->max_sort($CateID);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_mems") . "
           (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`,  `MemUname`, `MemPasswd`)
-          values('{$_POST['MemName']}' , '{$_POST['MemNickName']}', '{$_POST['MemSex']}', '{$_POST['MemUnicode']}', '{$_POST['MemBirthday']}', '{$_POST['MemUrl']}', '{$_POST['MemClassOrgan']}', '{$_POST['MemExpertises']}' ,'{$_POST['MemUname']}', '{$_POST['MemPasswd']}')";
+          values( '{$_POST['MemName']}' , '{$_POST['MemNickName']}', '{$_POST['MemSex']}', '{$_POST['MemUnicode']}', '{$_POST['MemBirthday']}', '{$_POST['MemUrl']}', '{$_POST['MemClassOrgan']}', '{$_POST['MemExpertises']}' ,'{$_POST['MemUname']}', '{$_POST['MemPasswd']}')";
 
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -386,18 +684,24 @@ class tad_web_aboutus
         $TadUpFiles->upload_file("upfile", 180, null, null, null, true);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . "
-          (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`)
-          values('{$MemID}' , '{$this->WebID}' , '{$_POST['MemNum']}' , '{$MemSort}' , '1' )";
+          (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable`)
+          values('{$MemID}' , '{$this->WebID}' , '{$CateID}', '{$_POST['MemNum']}' , '{$MemSort}' , '1' )";
 
         $xoopsDB->queryF($sql) or web_error($sql);
-
+        check_quota($this->WebID);
         return $MemID;
     }
 
     //更新tad_web_mems某一筆資料
     public function update($MemID = "")
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $isMyWeb, $MyWebs;
+
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
         //tad_web_link_mems:`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
         //tad_web_mems:`MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`
 
@@ -432,20 +736,35 @@ class tad_web_aboutus
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col("MemID", $MemID);
         $TadUpFiles->upload_file("upfile", 180, null, null, null, true);
+        check_quota($this->WebID);
         return $uid;
     }
 
     //刪除tad_web_mems某筆資料資料
-    public function delete($MemID = "")
+    public function delete($MemID = "", $CateID = "")
     {
-        global $xoopsDB, $TadUpFiles;
-        $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set MemEnable='0' where MemID ='$MemID'";
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $isMyWeb, $MyWebs;
+
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        }
+
+        $whereCateID = $whereMemID = "";
+        if (!empty($CateID)) {
+            $whereCateID = "CateID ='{$CateID}'";
+        } elseif (!empty($MemID)) {
+            $whereMemID = "MemID ='{$MemID}'";
+        }
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_link_mems") . " where {$whereCateID} {$whereMemID}";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col("MemID", $MemID);
         $TadUpFiles->del_files();
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -459,36 +778,52 @@ class tad_web_aboutus
             $this->delete($MemID);
         }
 
+        check_quota($this->WebID);
     }
 
     //取得資料總數
-    public function get_total()
+    public function get_total($CateID = "")
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$this->WebID}'";
+
+        $andCateID   = !empty($CateID) ? "and CateID='{$CateID}'" : "";
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$this->WebID}' {$andCateID}";
         $result      = $xoopsDB->query($sql) or web_error($sql);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
 
     //自動取得tad_web_mems的最新排序
-    public function max_sort($WebID)
+    public function max_sort($CateID)
     {
         global $xoopsDB;
-        $sql        = "select max(`MemSort`) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='$WebID'";
+        $sql        = "select max(`MemSort`) from " . $xoopsDB->prefix("tad_web_link_mems") . " where CateID='$CateID'";
         $result     = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
 
+    //匯入 excel 界面
+    public function import_excel_form($DefCateID = "")
+    {
+        global $xoopsDB, $xoopsTpl;
+        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $xoopsTpl->assign('cate', $cate);
+        $xoopsTpl->assign('edit_student', sprintf(_MD_TCW_EDIT_MEM, $this->setup['student_title']));
+        $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
+        $xoopsTpl->assign('import_excel', sprintf(_MD_TCW_IMPORT_EXCEL, $this->setup['student_title']));
+    }
+
     //匯入 excel
-    public function import_excel($file = "")
+    public function import_excel($file = "", $CateID = "")
     {
         global $xoopsDB, $xoopsTpl;
 
         if (empty($file) or empty($file)) {
             return;
         }
+
+        // $cate=get_tad_web_cate($CateID);
 
         $myts = MyTextSanitizer::getInstance();
 
@@ -551,12 +886,14 @@ class tad_web_aboutus
         }
 
         $xoopsTpl->assign('stud_chk_table', $main);
+        $xoopsTpl->assign('CateID', $CateID);
     }
 
-//匯入資料庫
-    public function import2DB()
+    //匯入資料庫
+    public function import2DB($CateID = '')
     {
         global $xoopsDB;
+
         $i    = 0;
         $j    = 6;
         $myts = MyTextSanitizer::getInstance();
@@ -573,7 +910,7 @@ class tad_web_aboutus
             //取得最後新增資料的流水編號
             $MemID = $xoopsDB->getInsertId();
 
-            $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . " (`MemID`, `WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`) values('{$MemID}','{$this->WebID}','{$col[0]}','{$col[0]}','1','{$top}','{$left}')";
+            $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . " (`MemID`, `WebID`,`CateID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`) values('{$MemID}','{$this->WebID}','{$CateID}','{$col[0]}','{$col[0]}','1','{$top}','{$left}')";
             $xoopsDB->queryF($sql) or web_error($sql);
 
             $j++;
@@ -583,7 +920,32 @@ class tad_web_aboutus
 
         }
 
+        check_quota($this->WebID);
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$this->WebID}", 3, _MD_TCW_IMPORT_OK);
+    }
+
+    //重製位置
+    public function reset_position($CateID = '')
+    {
+
+        global $xoopsDB;
+
+        $i      = 0;
+        $j      = 6;
+        $myts   = MyTextSanitizer::getInstance();
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_link_mems") . " where CateID='{$CateID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        while ($all = $xoopsDB->fetchArray($result)) {
+            $top  = 80 + $i * 90;
+            $left = 65 + ($j % 6) * 90;
+            $sql  = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set `top`='{$top}', `left`='{$left}' where MemID='{$all['MemID']}' and WebID='{$this->WebID}' and CateID='{$CateID}'";
+
+            $xoopsDB->queryF($sql) or web_error($sql);
+            $j++;
+            if ($j % 6 == 0) {
+                $i++;
+            }
+        }
     }
 
     //儲存位置
@@ -637,5 +999,13 @@ class tad_web_aboutus
             $_SESSION['LoginWebID']       = $WebID;
         }
         return true;
+    }
+
+    //修改網站預設全銜
+    public function update_web_title($WebTitle = "")
+    {
+        global $xoopsDB;
+        $sql = "update  " . $xoopsDB->prefix("tad_web") . " set WebTitle='{$WebTitle}' where `WebID`='{$this->WebID}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 }

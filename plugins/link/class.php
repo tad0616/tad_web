@@ -123,6 +123,7 @@ class tad_web_link
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($LinkID)) {
@@ -211,6 +212,7 @@ class tad_web_link
 
         //取得最後新增資料的流水編號
         $LinkID = $xoopsDB->getInsertId();
+        check_quota($this->WebID);
         return $LinkID;
     }
 
@@ -238,6 +240,7 @@ class tad_web_link
        `WebID` = '{$_POST['WebID']}'
         where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
+        check_quota($this->WebID);
         return $LinkID;
     }
 
@@ -250,6 +253,7 @@ class tad_web_link
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -266,6 +270,7 @@ class tad_web_link
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

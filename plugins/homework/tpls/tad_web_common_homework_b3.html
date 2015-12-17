@@ -67,7 +67,11 @@
     </div>
   <{else}>
     <{if $web_display_mode=='index' and $homework_data}>
-      <h3><a href="<{$xoops_url}>/modules/tad_web/homework.php"><{$homework.PluginTitle}></a></h3>
+      <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
+        <img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$homework.PluginTitle}>">
+      <{else}>
+        <h3><a href="<{$xoops_url}>/modules/tad_web/homework.php"><{$homework.PluginTitle}></a></h3>
+      <{/if}>
     <{elseif $web_display_mode=='index_plugin'}>
       <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h1>
     <{elseif $web_display_mode=='home_plugin'}>
@@ -80,11 +84,11 @@
           <th data-class="expand">
             <{$smarty.const._MD_TCW_HOMEWORK}>
           </th>
-          <th data-hide="phone" style="width:50px;text-align:center;">
+          <th data-hide="phone" class="common_counter" style="text-align: center;">
             <{$smarty.const._MD_TCW_HOMEWORKCOUNTER}>
           </th>
           <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
-            <th data-hide="phone" style="width:150px;text-align:center;">
+            <th data-hide="phone" class="common_team" style="text-align: center;">
               <{$smarty.const._MD_TCW_TEAMID}>
             </th>
           <{/if}>
@@ -103,7 +107,7 @@
             <span class="badge"><{$homework.HomeworkCounter}></span>
           </td>
           <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
-            <td style="text-align:center;">
+            <td style="text-align:center;" class="common_team_content">
               <{$homework.WebTitle}>
             </td>
           <{/if}>

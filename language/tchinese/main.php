@@ -5,7 +5,6 @@ define('_TAD_NEED_TADTOOLS', '需要 tadtools 模組，可至<a href="http://campus-xoo
 define("_MD_TCW_HOME", "回總覽");
 define("_MD_TCW_CLASS_HOME", "首頁");
 define("_MD_TCW_ADMIN", "管理");
-define("_MD_TCW_ADMIN_MEM", "管理成員");
 define("_MD_TCW_CLEAR", "清除");
 define("_MD_TCW_TOTAL", "共");
 define("_MD_TCW_PEOPLE", "人");
@@ -21,7 +20,13 @@ define("_MD_TCW_BLOCK_TOOLS", "區塊設定");
 define("_MD_TCW_BLOCK_TITLE", "區塊標題");
 define("_MD_TCW_BLOCK_SHOW_TITLE", "是否顯示區塊標題？");
 define("_MD_TCW_DATA_NOT_EXIST", "該資訊不存在");
+define("_MD_TCW_WEB_NOT_EXIST", "該網站不存在");
 define("_MD_TCW_SAVED", "已儲存");
+define("_MD_TCW_DEL_WEB", "刪除此網站");
+define("_MD_TCW_DEL_WEB_DESC", "刪除後，會將該網站的所有資料從資料庫移除，並刪除所有上傳的檔案。一旦刪除就無法復原，請慎重執行之。");
+define("_MD_TCW_WILL_DEL", "將刪除以下資料：");
+define("_MD_TCW_PLUGIN_TOTAL", "資料數");
+define("_MD_TCW_DELETE", "確定刪除（不刪就按別的連結離開即可）");
 
 //header.php
 define("_MD_TCW_ALL_CLASS", "網站列表");
@@ -40,7 +45,7 @@ define("_MD_TCW_INFO", "%s 於 %s 發布，已有 %s 人次閱讀過");
 define("_MD_TCW_MKPIC_ERROR", "無法建立GD圖片");
 define("_MD_TCW_EMPTY_TITLE", "無標題");
 
-define("_MD_TCW_CLASS_SETUP", "班級名稱設定");
+define("_MD_TCW_WEB_NAME_SETUP", "網站名稱設定");
 define("_MD_TCW_FCNCTION_SETUP", "功能設定");
 define("_MD_TCW_SELECT_TO_CANCEL", "請將想要隱藏的功能打勾");
 define("_MD_TCW_CLICK_TO_CHANG", "點選下圖以切換圖片，並可拖動上方底圖或logo圖，以調整喜歡的位置。");
@@ -92,6 +97,7 @@ define("_MD_TCW_ADD", "新增");
 define("_MD_TCW_ADMIN_SETUP", "共同管理員設定");
 define("_MD_TCW_USER_LIST", "所有使用者");
 define("_MD_TCW_USER_SELECTED", "已設為共同管理員");
+define("_MD_TCW_DEFAULT_ADMIN", "目前網頁預設管理員：");
 
 define("_MD_TCW_THEME_TOOLS", "佈景設定");
 define("_MD_TCW_THEME_TOOLS_THEME_SIDE", "側邊欄的位置：");
@@ -115,21 +121,33 @@ if (is_dir($dir)) {
                 if (substr($file, 0, 1) == '.') {
                     continue;
                 }
-                include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/tchinese_utf8.php";
+                include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/tchinese_utf8.php";
             }
         }
         closedir($dh);
     }
 }
-
 define("_MD_TCW_BLOCK_LIMIT", "設定要顯示的資料數量");
-define("_MD_TCW_WEBTITLE", "正式名稱");
+define("_MD_TCW_WEBTITLE", "班級名稱");
 define("_MD_TCW_WEBNAME", "網站名稱");
 
+define("_MD_TCW_BLOCK_ADD", "新增自由區塊");
+define("_MD_TCW_BLOCK_POSITION", "區塊呈現位置");
+define("_MD_TCW_BLOCK_CONTENT", "區塊內容種類");
+define("_MD_TCW_BLOCK_HTML", "直接輸入內容");
+define("_MD_TCW_BLOCK_JS", "貼入JS或崁入語法");
+define("_MD_TCW_BLOCK_JS_DESC", "請貼入JS或崁入語法");
+define("_MD_TCW_BLOCK_IFRAME", "iframe 內崁網址");
+define("_MD_TCW_BLOCK_IFRAME_DESC", "請貼上網址");
+define("_MD_TCW_BLOCK_SHARE", "分享區塊");
+define("_MD_TCW_BLOCK_SHARE_DESC", "若選是，別人也可以看見並使用此區塊。");
 define("_MD_TCW_SIDE_BLOCK", "側邊區塊");
 define("_MD_TCW_TOP_CENTER_BLOCK", "上中區塊");
 define("_MD_TCW_TOP_LEFT_BLOCK", "上中左區塊");
 define("_MD_TCW_TOP_RIGHT_BLOCK", "上中右區塊");
 define("_MD_TCW_BOTTOM_CENTER_BLOCK", "下中區塊");
 define("_MD_TCW_BOTTOM_LEFT_BLOCK", "下中左區塊");
-define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "側邊區塊");
+define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "下中右區塊");
+define("_MD_TCW_UNINSTALL_BLOCK", "未安裝區塊");
+define("_MD_TCW_NO_SPACE", "您已使用 %s MB的硬碟空間，已達上限 %s MB，無法再新增資料。");
+define("_MD_TCW_MENU", "回到選單");

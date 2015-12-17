@@ -8,3 +8,4 @@ $pluginConfig['limit']  = '5';
 $pluginConfig['cate']   = true;
 $pluginConfig['common'] = true;
 $pluginConfig['sql']    = array('tad_web_discuss');
+$pluginConfig['setup']  = false;

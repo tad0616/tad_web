@@ -4,6 +4,7 @@ include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_com
 //main.php
 define("_MA_TCW_TEAMID", "編號");
 define("_MA_TCW_TEAMNAME", "網站名稱");
+define("_MA_TCW_TEAM", "網站");
 define("_MA_TCW_TEAMSORT", "排序");
 define("_MA_TCW_TEAMENABLE", "狀態");
 define("_MA_TCW_TEAMCOUNTER", "人氣");
@@ -53,8 +54,9 @@ define('_MA_TCW_SELECT_CATE', '不分類');
 define('_MA_TCW_DISK_TOTAL_SPACE_STATUS', '網站使用空間一覽');
 define('_MA_TCW_DISK_TOTAL_SPACE', '網站已使用空間');
 define('_MA_TCW_DISK_PATH', '個人網站存放目錄');
-define('_MA_TCW_DISK_SPACE_TOTAL', '已使用：');
-define('_MA_TCW_DISK_AVAILABLE_SPACE', '，可用空間：');
+define('_MA_TCW_DISK_SPACE_QUOTA', '每站可使用硬碟空間上限：');
+define('_MA_TCW_DISK_SPACE_TOTAL', '，全部已使用：');
+define('_MA_TCW_DISK_AVAILABLE_SPACE', '，主機可用空間：');
 
 define('_MA_TCW_WEB_SCHEDULE_TEMPLATE', '設定功課表樣板');
 define('_MA_TCW_WEB_SCHEDULE_TEMPLATE_DESC', '

@@ -55,6 +55,7 @@ function save_plugins()
         if ($_POST['plugin_display'][$dirname] == '1') {
             $display_plugins[] = $dirname;
         }
+        mkTitlePic(0, $dirname, $PluginTitle);
         $i++;
     }
 

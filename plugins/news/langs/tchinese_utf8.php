@@ -20,3 +20,7 @@ define("_MD_TCW_NEWS_PREV_MONTH", "上個月");
 define("_MD_TCW_NEWS_NEXT_MONTH", "下個月");
 define("_MD_TCW_NEWS_BLOCK_LIST", "最新消息");
 define("_MD_TCW_NEWS_BLOCK_LIMIT", "顯示新聞數量");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE", "區塊顯示模式");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE1", "最新一則完整，其餘條列");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE2", "全部完整呈現");
+define("_MD_TCW_NEWS_BLOCK_SHOW_MODE3", "全部條列呈現");

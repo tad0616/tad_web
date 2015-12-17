@@ -12,9 +12,30 @@
               <td><input type="text" name="WebName"  value="<{$WebName}>" id="WebName" class="validate[required] form-control"></td>
             </tr>
 
+            <{if $cate_menu}>
+              <tr>
+                <td nowrap><{$smarty.const._MA_TADWEB_CATENAME}></td>
+                <td><{$cate_menu}></td>
+              </tr>
+            <{/if}>
+
             <tr>
               <td nowrap><{$smarty.const._MA_TCW_TEAMTITLE}></td>
-              <td><input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required] form-control"></td>
+              <td>
+                <div class="row-fluid">
+                  <div class="span3">
+                    <select name="year" class="form-control">
+                      <option value=""></option>
+                      <option value="<{$last_year}>"><{$last_year}></option>
+                      <option value="<{$now_year}>"><{$now_year}></option>
+                      <option value="<{$next_year}>"><{$next_year}></option>
+                    </select>
+                  </div>
+                  <div class="span9">
+                    <input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required] form-control">
+                  </div>
+                </div>
+              </td>
             </tr>
 
             <tr>
@@ -151,7 +172,7 @@
     <!--{$jeditable_set}-->
 
     <div>
-      <a href="main.php?op=tad_web_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ABOUTUS_SHORT}></a>
+      <a href="main.php?op=tad_web_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MA_TCW_TEAM}></a>
       <a href="main.php?op=create_by_user" class="btn btn-primary"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
       <a href="main.php?op=order_by_teamtitle" class="btn btn-success"><{$smarty.const._MA_TCW_ORDER_BY_TEAMTITLE}></a>
     </div>

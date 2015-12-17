@@ -5,7 +5,6 @@ define('_TAD_NEED_TADTOOLS', 'This module needs TadTools module. You can downloa
 define('_MD_TCW_HOME', 'List');
 define("_MD_TCW_CLASS_HOME", "Home");
 define('_MD_TCW_ADMIN', 'Management');
-define("_MD_TCW_ADMIN_MEM", "Member management");
 define('_MD_TCW_CLEAR', 'Clear');
 define('_MD_TCW_TOTAL', 'Total');
 define('_MD_TCW_PEOPLE', 'People');
@@ -19,8 +18,15 @@ define("_MD_TCW_BG_TOOLS", "Background");
 define("_MD_TCW_COLOR_TOOLS", "Color");
 define("_MD_TCW_BLOCK_TOOLS", "Blocks");
 define("_MD_TCW_BLOCK_TITLE", "Do you want to display the title block?");
-define("_MD_TCW_DATA_NOT_EXIST", "This information does not exis.");
+define("_MD_TCW_DATA_NOT_EXIST", "This information does not exist.");
+define("_MD_TCW_WEB_NOT_EXIST", "The webdite does not exist.");
 define("_MD_TCW_SAVED", "Saved");
+define("_MD_TCW_DEL_WEB", "Remove this site");
+define("_MD_TCW_DEL_WEB_DESC", "After removal, all the information the site will be removed from the database, and delete all uploaded files.
+Once you delete can not be restored, please carefully execute it.");
+define("_MD_TCW_WILL_DEL", "It will delete the following information:");
+define("_MD_TCW_PLUGIN_TOTAL", "Total");
+define("_MD_TCW_DELETE", "Yes! I want to delete it! ");
 
 //header.php
 define('_MD_TCW_ALL_CLASS', 'Class List');
@@ -41,7 +47,7 @@ define('_MD_TCW_EMPTY_TITLE', 'Untitled');
 
 //aboutus.php
 
-define('_MD_TCW_CLASS_SETUP', 'Class title setup');
+define('_MD_TCW_WEB_NAME_SETUP', 'Web Name');
 define('_MD_TCW_FCNCTION_SETUP', 'Function setting');
 define('_MD_TCW_SELECT_TO_CANCEL', 'Please select the function you want to hide.');
 define('_MD_TCW_CLICK_TO_CHANG', 'Click on a picture to change image. You can drag background image and logo to anywhere.');
@@ -95,6 +101,7 @@ define("_MD_TCW_ADD", "Add");
 define("_MD_TCW_ADMIN_SETUP", "Co-administrator settings");
 define("_MD_TCW_USER_LIST", "Users list");
 define("_MD_TCW_USER_SELECTED", "Co-administrator");
+define("_MD_TCW_DEFAULT_ADMIN", "Current Default Administrator:");
 
 define("_MD_TCW_THEME_TOOLS", "Theme Set");
 define("_MD_TCW_THEME_TOOLS_THEME_SIDE", "Side Position:");
@@ -118,7 +125,7 @@ if (is_dir($dir)) {
                 if (substr($file, 0, 1) == '.') {
                     continue;
                 }
-                include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/english.php";
+                include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/english.php";
             }
         }
         closedir($dh);
@@ -126,13 +133,26 @@ if (is_dir($dir)) {
 }
 
 define("_MD_TCW_BLOCK_LIMIT", "Setting the number of data to be displayed");
-define("_MD_TCW_WEBTITLE", "Web Title");
+define("_MD_TCW_WEBTITLE", "Class Name");
 define("_MD_TCW_WEBNAME", "Web Name");
 
-define("_MD_TCW_SIDE_BLOCK", "Side block");
-define("_MD_TCW_TOP_CENTER_BLOCK", "Top center block");
-define("_MD_TCW_TOP_LEFT_BLOCK", "Top left block");
-define("_MD_TCW_TOP_RIGHT_BLOCK", "Top right block");
-define("_MD_TCW_BOTTOM_CENTER_BLOCK", "Bottom center block");
-define("_MD_TCW_BOTTOM_LEFT_BLOCK", "Bottom left block");
-define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "Bottom right block");
+define("_MD_TCW_BLOCK_ADD", "Add New Block");
+define("_MD_TCW_BLOCK_POSITION", "Block Position");
+define("_MD_TCW_BLOCK_CONTENT", "Block Content Type");
+define("_MD_TCW_BLOCK_HTML", "Block Content");
+define("_MD_TCW_BLOCK_JS", "JS Code or Embed Code");
+define("_MD_TCW_BLOCK_JS_DESC", "JS Code or Embed Code");
+define("_MD_TCW_BLOCK_IFRAME", "iframe");
+define("_MD_TCW_BLOCK_IFRAME_DESC", "iframe URL");
+define("_MD_TCW_BLOCK_SHARE", "Share Block");
+define("_MD_TCW_BLOCK_SHARE_DESC", "If selected, the others can see and use this block.");
+define("_MD_TCW_SIDE_BLOCK", "Side blocks");
+define("_MD_TCW_TOP_CENTER_BLOCK", "Top center blocks");
+define("_MD_TCW_TOP_LEFT_BLOCK", "Top left blocks");
+define("_MD_TCW_TOP_RIGHT_BLOCK", "Top right blocks");
+define("_MD_TCW_BOTTOM_CENTER_BLOCK", "Bottom center blocks");
+define("_MD_TCW_BOTTOM_LEFT_BLOCK", "Bottom left blocks");
+define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "Bottom right blocks");
+define("_MD_TCW_UNINSTALL_BLOCK", "Uninstall blocks");
+define("_MD_TCW_NO_SPACE", "You have used %s MB of hard disk space has reached the upper limit of  %s MB, can not add data.");
+define("_MD_TCW_MENU", "Menu");

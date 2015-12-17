@@ -125,15 +125,15 @@ class tad_web_action
         $TadUpFiles->set_col("ActionID", $ActionID);
         $pics = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
-        $TadUpFiles->set_col("ActionID", $ActionID, 1);
-        $bg_pic = $TadUpFiles->get_file_for_smarty();
+        // $TadUpFiles->set_col("ActionID", $ActionID, 1);
+        // $bg_pic = $TadUpFiles->get_file_for_smarty();
         //die(var_export($bg_pic));
-        $new_name = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg";
-        if (!file_exists($new_name)) {
-            $this->mk_blur_pic($bg_pic[0]['path'], $new_name);
-        }
+        // $new_name = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg";
+        // if (!file_exists($new_name)) {
+        //     $this->mk_blur_pic($bg_pic[0]['path'], $new_name);
+        // }
 
-        $xoopsTpl->assign('bg_pic', XOOPS_URL . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg");
+        // $xoopsTpl->assign('bg_pic', XOOPS_URL . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg");
 
         $uid_name = XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
@@ -170,10 +170,11 @@ class tad_web_action
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
 
         if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($ActionID)) {
@@ -271,6 +272,7 @@ class tad_web_action
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
 
+        check_quota($this->WebID);
         return $ActionID;
     }
 
@@ -304,6 +306,7 @@ class tad_web_action
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
 
+        check_quota($this->WebID);
         return $ActionID;
     }
 
@@ -319,6 +322,7 @@ class tad_web_action
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->del_files();
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -335,6 +339,7 @@ class tad_web_action
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

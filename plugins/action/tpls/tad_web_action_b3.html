@@ -83,25 +83,30 @@
     <li><{$ActionInfo}></li>
   </ol>
 
-  <div class="alert alert-default">
-    <div class="row">
-      <{if $ActionDate}>
-        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
-      <{/if}>
+  <div class="row" style="margin:10px 0px;">
+    <{if $ActionDate}>
+      <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
+    <{/if}>
 
-      <{if $ActionPlace}>
-        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
-      <{/if}>
-    </div>
+    <{if $ActionPlace}>
+      <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
+    <{/if}>
   </div>
 
-  <{if $ActionDesc}>
-    <div style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FFFFFF url('<{$bg_pic}>') center center; border: 2px solid #AAC1DD; border-radius: 5px; margin:10px auto; padding: 20px; background-size:cover;"><{$ActionDesc}></div>
-  <{/if}>
 
   <div class="row">
     <{$pics}>
   </div>
+
+  <{if $ActionDesc}>
+    <hr>
+    <div class="row">
+      <div class="col-md-12">
+        <div style="line-height: 1.8; font-size: 120%;"><{$ActionDesc}></div>
+      </div>
+    </div>
+    <hr>
+  <{/if}>
 
   <{if $isMyWeb}>
     <div class="text-right" style="margin: 30px 0px;">
@@ -118,6 +123,10 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/action/tpls/tad_web_common_action_b3.html"}>
     </div>
   </div>
+
+<{elseif $op=="setup"}>
+
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup_b3.html"}>
 <{else}>
   <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$action.PluginTitle}></h1>
   <{if $isMyWeb and $WebID}>

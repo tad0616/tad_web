@@ -1,5 +1,9 @@
 <{if $web_display_mode=='index' and $data}>
-  <h3><a href="<{$xoops_url}>/modules/tad_web/aboutus.php"><{$aboutus.PluginTitle}></a></h3>
+  <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
+    <img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$aboutus.PluginTitle}>">
+  <{else}>
+    <h3><a href="<{$xoops_url}>/modules/tad_web/aboutus.php"><{$aboutus.PluginTitle}></a></h3>
+  <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
   <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$aboutus.PluginTitle}></h1>
 <{elseif $web_display_mode=='home_plugin'}>
@@ -40,17 +44,14 @@
          });
       });
     </script>
-    <h1><{$module_title}></h1>
     <div id="list_all_web"></div>
   <{/if}>
   <div class="clearfix"></div>
 <{elseif $isMyWeb}>
-  <h1><{$module_title}></h1>
   <div class="alert alert-danger">
     <a href="<{$xoops_url}>/modules/tad_web/admin/main.php?op=create_by_user"><{$smarty.const._MD_TCW_NO_WEB_ADMIN}></a>
   </div>
 <{else}>
-  <h1><{$module_title}></h1>
   <div class="alert alert-info">
     <{$smarty.const._MD_TCW_NO_WEB}>
   </div>

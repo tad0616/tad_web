@@ -1,7 +1,9 @@
 <{if $isMyWeb and $WebID}>
   <div class="text-right" style="margin: 4px 0px 20px 0px;">
     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="btn btn-warning btn-xs"><{$smarty.const._MD_TCW_BLOCKS_SETUP}></a>
-    <a href="<{$block.plugin}>.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info btn-xs"><{$smarty.const._MD_TCW_ADD}></a>
-    <a href="<{$block.plugin}>.php?WebID=<{$WebID}>" class="btn btn-success btn-xs"><{$smarty.const._MD_TCW_MORE}></a>
+    <{if $block.plugin!='custom'}>
+      <a href="<{$block.plugin}>.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info btn-xs"><{$smarty.const._MD_TCW_ADD}></a>
+      <a href="<{$block.plugin}>.php?WebID=<{$WebID}>" class="btn btn-success btn-xs"><{$smarty.const._MD_TCW_MORE}></a>
+    <{/if}>
   </div>
 <{/if}>

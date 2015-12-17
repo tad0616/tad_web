@@ -81,6 +81,9 @@
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
     </div>
   </div>
+<{elseif $op=="setup"}>
+
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup_b3.html"}>
 <{else}>
   <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$calendar.PluginTitle}></h1>
   <{if $isMyWeb and $WebID}>

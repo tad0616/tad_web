@@ -12,7 +12,7 @@ class tad_web_news
     }
 
     //最新消息
-    public function list_all($CateID = "", $limit = null, $mode = "assign")
+    public function list_all($CateID = "", $limit = null, $mode = "assign", $show_mode = '')
     {
         global $xoopsDB, $xoopsTpl, $MyWebs;
 
@@ -164,6 +164,7 @@ class tad_web_news
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($NewsID)) {
@@ -280,6 +281,7 @@ class tad_web_news
         $TadUpFiles->set_col("NewsID", $NewsID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
+        check_quota($this->WebID);
         return $NewsID;
     }
 
@@ -320,6 +322,7 @@ class tad_web_news
         $TadUpFiles->set_col("NewsID", $NewsID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
+        check_quota($this->WebID);
         return $NewsID;
     }
 
@@ -333,6 +336,7 @@ class tad_web_news
 
         $TadUpFiles->set_col("NewsID", $NewsID);
         $TadUpFiles->del_files();
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -349,6 +353,7 @@ class tad_web_news
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數
@@ -366,6 +371,7 @@ class tad_web_news
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_news") . " set `NewsCounter`=`NewsCounter`+1 where `NewsID`='{$NewsID}'";
+        // echo $sql . time() . "<br>";
         $xoopsDB->queryF($sql) or web_error($sql);
     }
 

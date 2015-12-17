@@ -1,3 +1,16 @@
+Tad Web 1.6.5 release（2015-12-17 release)
+====================================================
+1. The new free block function
+2. Fixed Link in works share
+3. Fixed joint administrators can not manage site issues
+4. Add the user to set the upper limit of the available space
+5. You can see the details of the case of a user-uploaded file from space management
+6. Adjust the login block
+7. The new class and student management function
+8. Add the delete function on their own website
+
+
+
 Tad Web 1.6.4 release（2015-12-01 release)
 ====================================================
 1. Fixed bug Students can not add a message on the message or viewing

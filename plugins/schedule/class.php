@@ -146,7 +146,7 @@ class tad_web_schedule
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $WebName, $xoopsModuleConfig;
 
         if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
@@ -192,7 +192,7 @@ class tad_web_schedule
         //設定「CateID」欄位預設值
         $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
 
-        $ys = $this->get_seme();
+        $ys = get_seme();
         $xoopsTpl->assign('ys', $ys);
 
         $this->web_cate->set_demo_txt(sprintf(_MD_TCW_SCHEDULE_CATE_DEMO, $ys[0], $ys[1]));
@@ -267,6 +267,7 @@ class tad_web_schedule
         //取得最後新增資料的流水編號
         $ScheduleID = $xoopsDB->getInsertId();
 
+        check_quota($this->WebID);
         return $ScheduleID;
     }
 
@@ -301,6 +302,7 @@ class tad_web_schedule
             $xoopsDB->queryF($sql) or web_error($sql);
         }
 
+        check_quota($this->WebID);
         return $ScheduleID;
     }
 
@@ -317,6 +319,7 @@ class tad_web_schedule
         } else {
             web_error($sql);
         }
+        check_quota($this->WebID);
 
     }
 
@@ -334,6 +337,7 @@ class tad_web_schedule
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數
@@ -366,26 +370,6 @@ class tad_web_schedule
         $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
-    }
-
-    //取得目前的學年學期陣列
-    public function get_seme()
-    {
-        global $xoopsDB;
-        $y = date("Y");
-        $m = date("n");
-        $d = date("j");
-        if ($m >= 8) {
-            $ys[0] = $y - 1911;
-            $ys[1] = 1;
-        } elseif ($m >= 2) {
-            $ys[0] = $y - 1912;
-            $ys[1] = 2;
-        } else {
-            $ys[0] = $y - 1912;
-            $ys[1] = 1;
-        }
-        return $ys;
     }
 
     //取得某一個功課表
@@ -457,10 +441,11 @@ class tad_web_schedule
     {
         global $xoopsModuleConfig, $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser;
         if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         $xoopsTpl->assign('ScheduleID', $ScheduleID);
 

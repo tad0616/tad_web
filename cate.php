@@ -17,14 +17,14 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
 //分類設定
-function list_all_cate($WebID = "", $ColName = "")
+function list_all_cate($WebID = "", $ColName = "", $table = "")
 {
     global $xoopsTpl;
     if (empty($WebID) or empty($ColName)) {
         return;
     }
 
-    $web_cate = new web_cate($WebID, $ColName);
+    $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
     $cate           = $web_cate->get_tad_web_cate_arr();
     $cate_menu_form = $web_cate->cate_menu($CateID, "form", true, false, true, false, false);
@@ -76,7 +76,7 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
     if (empty($WebID) or empty($ColName)) {
         return;
     }
-    $$table   = "tad_web_{$ColName}";
+
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
     //新增分類
@@ -107,7 +107,7 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
 $op      = system_CleanVars($_REQUEST, 'op', '', 'string');
 $ColName = system_CleanVars($_REQUEST, 'ColName', '', 'string');
 $act     = system_CleanVars($_REQUEST, 'act', '', 'array');
-$table   = system_CleanVars($_REQUEST, 'table', '', 'table');
+$table   = system_CleanVars($_REQUEST, 'table', '', 'string');
 
 common_template($WebID, $web_all_config);
 
@@ -120,7 +120,7 @@ switch ($op) {
         break;
 
     default:
-        list_all_cate($WebID, $ColName);
+        list_all_cate($WebID, $ColName, $table);
         break;
 }
 

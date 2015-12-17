@@ -148,10 +148,11 @@ class tad_web_works
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
 
         if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($WorksID)) {
@@ -240,6 +241,7 @@ class tad_web_works
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
 
+        check_quota($this->WebID);
         return $WorksID;
     }
 
@@ -267,6 +269,7 @@ class tad_web_works
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
 
+        check_quota($this->WebID);
         return $WorksID;
     }
 
@@ -280,6 +283,7 @@ class tad_web_works
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->del_files();
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -296,6 +300,7 @@ class tad_web_works
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

@@ -117,6 +117,7 @@ class tad_web_files
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
+        get_quota($this->WebID);
 
         //抓取預設值
         if (!empty($fsn)) {
@@ -190,6 +191,7 @@ class tad_web_files
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('fsn', $fsn);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
+        check_quota($this->WebID);
         return $fsn;
     }
 
@@ -218,6 +220,7 @@ class tad_web_files
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('fsn', $fsn);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
+        check_quota($this->WebID);
         return $fsn;
     }
 
@@ -233,6 +236,7 @@ class tad_web_files
         // $TadUpFiles->set_dir('subdir', $subdir);
         // $TadUpFiles->set_col("fsn", $fsn);
         $TadUpFiles->del_files($files_sn);
+        check_quota($this->WebID);
     }
 
     //刪除所有資料
@@ -249,6 +253,7 @@ class tad_web_files
         foreach ($allCateID as $CateID) {
             $this->web_cate->delete_tad_web_cate($CateID);
         }
+        check_quota($this->WebID);
     }
 
     //取得資料總數

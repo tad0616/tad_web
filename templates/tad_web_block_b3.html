@@ -1,45 +1,148 @@
-<{if $op=="config"}>
-<div class="row">
-  <div class="col-md-12">
-    <h1 class="text-center"><{$block.BlockTitle}></h1>
-    <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
-      <div class="form-group">
-        <label class="col-md-4 control-label">
-          <{$smarty.const._MD_TCW_BLOCK_TITLE}>
-        </label>
-        <div class="col-md-8">
-          <input type="text" name="BlockTitle" value="<{$block.BlockTitle}>" class="form-control">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-4 control-label">
-          <{$smarty.const._MD_TCW_BLOCK_SHOW_TITLE}>
-        </label>
-        <div class="col-md-8">
-          <div class="radio-inline">
-            <input type="radio" name="config[show_title]" value="1" <{if $block.config.show_title!='0'}>checked<{/if}>><{$smarty.const._YES}>
+<{if $op=="config" or $op=="add_block"}>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#content_type').change(function(event) {
+        var content_type=$('#content_type').val();
+        if(content_type=="js"){
+          $('#html_editor').hide();
+          $('#js_editor').show();
+          $('#iframe_editor').hide();
+        }else if(content_type=="iframe"){
+          $('#html_editor').hide();
+          $('#js_editor').hide();
+          $('#iframe_editor').show();
+        }else{
+          $('#html_editor').show();
+          $('#js_editor').hide();
+          $('#iframe_editor').hide();
+        }
+      });
+    });
+  </script>
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="text-center"><{$block.BlockTitle}></h1>
+      <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+        <div class="form-group">
+          <label class="col-md-3 control-label">
+            <{$smarty.const._MD_TCW_BLOCK_TITLE}>
+          </label>
+          <div class="col-md-9">
+            <input type="text" name="BlockTitle" value="<{$block.BlockTitle}>" class="form-control">
           </div>
-          <div class="radio-inline">
-            <input type="radio" name="config[show_title]" value="0" <{if $config.show_title=='0'}>checked<{/if}>><{$smarty.const._NO}>
-          </div>
         </div>
-      </div>
-      <{$form}>
 
-      <div class="text-center">
-        <input type="hidden" name="WebID" value="<{$WebID}>">
-        <input type="hidden" name="op" value="save_block_config">
-        <input type="hidden" name="BlockID" value="<{$block.BlockID}>">
-        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-      </div>
-    </form>
+        <div class="form-group">
+          <label class="col-md-3 control-label">
+            <{$smarty.const._MD_TCW_BLOCK_SHOW_TITLE}>
+          </label>
+          <div class="col-md-9">
+            <div class="radio-inline">
+              <input type="radio" name="config[show_title]" value="1" <{if $block.config.show_title!='0'}>checked<{/if}>><{$smarty.const._YES}>
+            </div>
+            <div class="radio-inline">
+              <input type="radio" name="config[show_title]" value="0" <{if $block.config.show_title=='0'}>checked<{/if}>><{$smarty.const._NO}>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label">
+            <{$smarty.const._MD_TCW_BLOCK_POSITION}>
+          </label>
+          <div class="col-md-9">
+            <select name="BlockPosition" id="BlockPosition" class="form-control">
+              <option value="block1" <{if $block.BlockPosition=="block1"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_CENTER_BLOCK}></option>
+              <option value="block2" <{if $block.BlockPosition=="block2"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_LEFT_BLOCK}></option>
+              <option value="block3" <{if $block.BlockPosition=="block3"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_RIGHT_BLOCK}></option>
+              <option value="block4" <{if $block.BlockPosition=="block4"}>selected<{/if}>><{$smarty.const._MD_TCW_BOTTOM_CENTER_BLOCK}></option>
+              <option value="block5" <{if $block.BlockPosition=="block5"}>selected<{/if}>><{$smarty.const._MD_TCW_BOTTOM_LEFT_BLOCK}></option>
+              <option value="block6" <{if $block.BlockPosition=="block6"}>selected<{/if}>><{$smarty.const._MD_TCW_BOTTOM_RIGHT_BLOCK}></option>
+              <option value="side" <{if $block.BlockPosition=="side"}>selected<{/if}>><{$smarty.const._MD_TCW_SIDE_BLOCK}></option>
+            </select>
+          </div>
+        </div>
+
+        <{if $form}>
+          <hr>
+          <{$form}>
+          <hr>
+        <{/if}>
+
+        <{if $block.plugin=="custom" or $op=="add_block"}>
+          <div class="form-group">
+            <label class="col-md-3 control-label">
+              <{$smarty.const._MD_TCW_BLOCK_CONTENT}>
+            </label>
+            <div class="col-md-9">
+              <select name="config[content_type]" id="content_type" class="form-control">
+                <option value="html" <{if $block.config.content_type=="html"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_HTML}></option>
+                <option value="js" <{if $block.config.content_type=="js"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_JS}></option>
+                <option value="iframe" <{if $block.config.content_type=="iframe"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_IFRAME}></option>
+              </select>
+            </div>
+          </div>
+
+          <div id="html_editor" <{if $block.config.content_type!="html" and $block.config.content_type!=""}>style="display:none;"<{/if}>>
+            <{$editor}>
+          </div>
+
+          <div id="js_editor" <{if $block.config.content_type!="js"}>style="display:none;"<{/if}>>
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                <{$smarty.const._MD_TCW_BLOCK_JS_DESC}>
+              </label>
+              <div class="col-md-9">
+                <textarea name="BlockContent[js]"  rows="10" class="form-control"><{$block.BlockContent}></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div id="iframe_editor" <{if $block.config.content_type!="iframe"}>style="display:none;"<{/if}>>
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                <{$smarty.const._MD_TCW_BLOCK_IFRAME_DESC}>
+              </label>
+              <div class="col-md-9">
+                <input type="text" name="BlockContent[iframe]"  class="form-control" placeholder="http://" value="<{$iframeContent}>">
+              </div>
+            </div>
+          </div>
+
+          <{if $shareBlockID==""}>
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                <{$smarty.const._MD_TCW_BLOCK_SHARE}><{$block.BlockShare}>
+              </label>
+              <div class="col-md-9">
+                <div class="radio-inline">
+                  <input type="radio" name="BlockShare" value="1" <{if $block.BlockShare=='1'}>checked<{/if}>><{$smarty.const._YES}>
+                </div>
+                <div class="radio-inline">
+                  <input type="radio" name="BlockShare" value="0" <{if $block.BlockShare!='1'}>checked<{/if}>><{$smarty.const._NO}>
+                </div>
+              </div>
+            </div>
+          <{else}>
+            <input type="hidden" name="BlockShare" value="0">
+          <{/if}>
+        <{/if}>
+
+        <div class="text-center" stye="margin-top: 30px;">
+          <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="op" value="save_block_config">
+          <input type="hidden" name="BlockName" value="<{$block.BlockName}>">
+          <input type="hidden" name="BlockID" value="<{$block.BlockID}>">
+          <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
 <{else}>
   <style>
     #sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side {
-      border: 1px dashed rgba(0, 0, 0, 0.3);
+      border: 1px dotted rgba(0, 0, 0, 0.3);
       min-height: 40px;
       list-style-type: none;
       margin: 0;
@@ -53,10 +156,14 @@
       font-size: 1.2em;
       max-width: 220px;
     }
+    .custom_block{
+      background: #FCEFFC url('<{$xoops_url}>/modules/tad_web/images/custom_block.png') right bottom no-repeat;
+      border: 1px dashed #CE75CE;
+    }
   </style>
   <script>
     $(function() {
-      $( "#sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side" ).sortable({
+      $( "#sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side,#sort_uninstall" ).sortable({
         connectWith: ".connectedSortable",
         placeholder: "ui-state-highlight",
         forcePlaceholderSize: true,
@@ -64,13 +171,16 @@
         cursorAt: { left: 5 },
         opacity: 0.5,
         receive: function( event, ui ) {
-          $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: $(this).parent().attr("id"), BlockID: ui.item.attr("id")}, function(data) {
+          var position=$(this).parent().attr("id");
+          var order = $(this).sortable('toArray', {attribute: 'id'});
+          $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: position, BlockID: ui.item.attr("id"), plugin: ui.item.attr("title"), order_arr: order}, function(data) {
               $("#msg").html(data);
           });
         },
         update: function( event, ui ) {
+          var position=$(this).parent().attr("id");
           var order = $(this).sortable('toArray', {attribute: 'id'});
-          $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", BlockID: ui.item.attr("id"), order_arr: order}, function(data) {
+          $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", PositionName: position, BlockID: ui.item.attr("id"), plugin: ui.item.attr("title"), order_arr: order}, function(data) {
               $("#msg").html(data);
           });
         }
@@ -92,17 +202,24 @@
           });
     }
   </script>
+  <div class="row">
+    <div class="col-md-6">
+      <h1><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
+    </div>
+    <div class="col-md-6 text-right">
+      <a href="block.php?WebID=<{$WebID}>&op=add_block" class="btn btn-primary"><{$smarty.const._MD_TCW_BLOCK_ADD}></a>
+    </div>
+  </div>
 
-  <h1><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
 
   <{if $uninstall}>
     <div id="uninstall" class="alert alert-danger">
+      <div class="text-danger text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_UNINSTALL_BLOCK}></div>
       <ul id="sort_uninstall" class="connectedSortable">
           <{foreach from=$uninstall item=block}>
-            <li id="<{$block.BlockID}>" class="ui-state-highlight">
+            <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
               <{$block.icon}>
               <{$block.BlockTitle}>
-</a>
             </li>
           <{/foreach}>
       </ul>
@@ -114,11 +231,11 @@
     <{if $theme_side=="left"}>
       <div class="col-md-4">
           <div id="side" class="alert alert-success" style="min-height: 300px;">
-          <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
+            <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
             <ul id="sort_side" class="connectedSortable">
               <{if $side}>
                 <{foreach from=$side item=block}>
-                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
@@ -137,7 +254,7 @@
             <ul id="sort_block1" class="connectedSortable">
               <{if $block1}>
                 <{foreach from=$block1 item=block}>
-                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
@@ -156,7 +273,7 @@
             <ul id="sort_block2" class="connectedSortable">
               <{if $block2}>
                 <{foreach from=$block2 item=block}>
-                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
@@ -172,7 +289,7 @@
             <ul id="sort_block3" class="connectedSortable">
               <{if $block3}>
                 <{foreach from=$block3 item=block}>
-                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
@@ -191,7 +308,7 @@
             <ul id="sort_block4" class="connectedSortable">
               <{if $block4}>
                 <{foreach from=$block4 item=block}>
-                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
@@ -210,7 +327,7 @@
             <ul id="sort_block5" class="connectedSortable">
               <{if $block5}>
                 <{foreach from=$block5 item=block}>
-                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
@@ -226,7 +343,7 @@
             <ul id="sort_block6" class="connectedSortable">
               <{if $block6}>
                 <{foreach from=$block6 item=block}>
-                  <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
@@ -246,7 +363,7 @@
           <ul id="sort_side" class="connectedSortable">
             <{if $side}>
               <{foreach from=$side item=block}>
-                <li id="<{$block.BlockID}>" class="ui-state-highlight">
+                <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
                     <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
                   <{$block.icon}>
                   <{$block.BlockTitle}>
@@ -257,6 +374,5 @@
         </div>
       </div>
     <{/if}>
-
   </div>
 <{/if}>

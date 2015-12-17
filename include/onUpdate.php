@@ -51,6 +51,14 @@ function xoops_module_update_tad_web(&$module, $old_version)
         go_update12();
     }
 
+    if (chk_chk13()) {
+        go_update13();
+    }
+
+    if (chk_chk14()) {
+        go_update14();
+    }
+
     chk_sql();
     chk_newblock();
     go_update_var();
@@ -189,7 +197,7 @@ function chk_sql()
 
         $update_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/onUpdate.php";
         if (file_exists($update_file)) {
-            include $update_file;
+            include_once $update_file;
         }
     }
 }
@@ -713,6 +721,54 @@ function go_update12()
     $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='web_plugin_enable_arr' and WebID=0";
     $xoopsDB->queryF($sql);
 
+}
+
+//新增分享區塊設訂
+function chk_chk13()
+{
+    global $xoopsDB;
+    $sql    = "select count(`BlockShare`) from " . $xoopsDB->prefix("tad_web_blocks");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update13()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " ADD `BlockShare` varchar(255) NOT NULL COMMENT '分享區塊' AFTER `BlockSort`";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    return true;
+}
+
+//新增外掛偏好設定表格
+function chk_chk14()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_plugins_setup");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update14()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_plugins_setup") . "` (
+      `WebID` smallint(5) unsigned NOT NULL default 0 COMMENT '所屬網站',
+      `plugin` varchar(100) NOT NULL default '' COMMENT '所屬外掛',
+      `name` varchar(100) NOT NULL default '' COMMENT '設定名稱',
+      `type` varchar(255) NOT NULL default '' COMMENT '欄位類型',
+      `value` text NOT NULL COMMENT '設定值',
+      PRIMARY KEY  (`WebID`,`plugin`,`name`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
 }
 
 //建立目錄

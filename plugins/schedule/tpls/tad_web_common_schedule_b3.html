@@ -1,5 +1,9 @@
 <{if $web_display_mode=='index' and $schedule_data}>
-  <h3><a href="<{$xoops_url}>/modules/tad_web/schedule.php"><{$schedule.PluginTitle}></a></h3>
+  <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
+    <img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$schedule.PluginTitle}>">
+  <{else}>
+    <h3><a href="<{$xoops_url}>/modules/tad_web/schedule.php"><{$schedule.PluginTitle}></a></h3>
+  <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
   <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h1>
 <{/if}>

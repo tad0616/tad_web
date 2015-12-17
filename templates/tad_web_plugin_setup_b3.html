@@ -1,0 +1,85 @@
+<h1>功能設定</h1>
+
+<form action="setup.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+  <{if $plugin_setup}>
+    <{foreach from=$plugin_setup item=setup}>
+      <div class="row">
+        <div class="col-md-2 text-right">
+          <{$setup.text}>
+        </div>
+        <div class="col-md-5">
+          <{if $setup.type=="text"}>
+            <input type="text" name="<{$setup.name}>" value="<{$setup.value}>" class="form-control">
+          <{elseif $setup.type=="select"}>
+            <select name="<{$setup.name}>" id="<{$setup.name}>" class="form-control">
+              <{foreach from=$setup.options key=title item=value}>
+                <option value="<{$value}>" <{if $setup.value==$value}>selected<{/if}>><{$title}> <{$value}></option>
+              <{/foreach}>
+            </select>
+          <{elseif $setup.type=="color"}>
+            <input type="text" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$setup.value}>" class="col-md-8" data-hex="true" >
+          <{elseif $setup.type=="array"}>
+            <textarea name="<{$setup.name}>" class="form-control" rows=4 style="font-size:0.8em;"><{$setup.value}></textarea>
+          <{elseif $setup.type=="textarea"}>
+            <textarea name="<{$setup.name}>" class="form-control" rows=4 style="font-size:0.8em;"><{$setup.value}></textarea>
+          <{elseif $setup.type=="yesno"}>
+            <label class="radio inline">
+              <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>1" value="1" <{if $setup.value==1}>checked<{/if}> ><{$smarty.const._YES}>
+            </label>
+            <label class="radio inline">
+              <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>0" value="0" <{if $setup.value==0}>checked<{/if}> ><{$smarty.const._NO}>
+            </label>
+          <{elseif $setup.type=="file"}>
+            <{$setup.form}>
+          <{/if}>
+        </div>
+
+        <{if $setup.type=="file"}>
+          <div class="col-md-5">
+            <{if $setup.list}>
+
+              <div style="width:60px; height:86px; display:inline-block; margin:4px;">
+                <label for="<{$setup.name}>0" style="width:60px; height:60px;border:1px dotted gray;" >
+                  <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>0" value="" <{if $setup.value==""}>checked<{/if}>>
+                  <{$smarty.const._MA_TADTHEMES_NONE}>
+                </label>
+              </div>
+
+              <div style="width:60px; height:86px; display:inline-block; margin:4px;">
+                <label for="<{$setup.name}>" style="width:60px; height:60px; background:#000000 url(<{$setup.default}>);background-repeat:no-repeat;background-position:left center;border:1px solid gray;background-size: cover;" >
+                  <input type="radio" name="<{$setup.name}>" id="<{$setup.name}><{$file.files_sn}>" value="<{$setup.default}>"  <{if $setup.value==$setup.default}>checked<{/if}>>
+                </label>
+                  <label class="checkbox" style="font-size:11px;">
+                    <{$smarty.const._MA_TADTHEMES_DEFAULT}>
+                  </label>
+
+              </div>
+
+              <{foreach from=$setup.list item=file}>
+                <div style="width:60px; height:86px; display:inline-block; margin:4px;">
+                  <label for="<{$setup.name}><{$file.files_sn}>" style="width:60px; height:60px; background:#000000 url(<{$file.tb_path}>);background-position:left center;border:1px solid gray;" >
+                    <input type="radio" name="<{$setup.name}>" id="<{$setup.name}><{$file.files_sn}>" value="<{$file.path}>" onChange="$('.del_<{$setup.name}>').show(); $('#del_<{$setup.name}><{$file.files_sn}>').hide();" <{if $setup.value==$file.path}>checked<{/if}>>
+                  </label>
+                  <label class="checkbox del_<{$setup.name}>" style="font-size:11px;" id="del_<{$setup.name}><{$file.files_sn}>">
+                    <input type="checkbox" value="<{$file.files_sn}>" name="del_file[<{$file.files_sn}>]"> <{$smarty.const._TAD_DEL}>
+                  </label>
+                </div>
+              <{/foreach}>
+              <div style="clear:both;"></div>
+            <{/if}>
+          </div>
+        <{else}>
+          <div class="col-md-5 alert alert-info">
+            <{$setup.desc}>
+          </div>
+        <{/if}>
+      </div>
+    <{/foreach}>
+  <{/if}>
+  <div class="text-center">
+    <input type="hidden" name="plugin" value="<{$plugin}>">
+    <input type="hidden" name="WebID" value="<{$WebID}>">
+    <input type="hidden" name="op" value="save_plugin_setup">
+    <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+  </div>
+</form>

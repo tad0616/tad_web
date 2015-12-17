@@ -4,7 +4,7 @@ if (homework_onUpdate1_chk()) {
     homework_onUpdate1_go();
 }
 
-//修改討論區計數欄位名稱
+//修改聯絡簿計數欄位名稱
 function homework_onUpdate1_chk()
 {
     global $xoopsDB;

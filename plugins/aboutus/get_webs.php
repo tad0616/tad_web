@@ -35,7 +35,12 @@ while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule_title[$WebID] = $ScheduleName;
 }
 
-$sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' and CateID='{$CateID}' order by WebSort";
+$list_web_order = $xoopsModuleConfig['list_web_order'];
+if (empty($list_web_order)) {
+    $list_web_order = 'WebSort';
+}
+
+$sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' and CateID='{$CateID}' order by {$list_web_order}";
 $result = $xoopsDB->query($sql) or web_error($sql);
 
 $web_tr = '';
@@ -66,7 +71,7 @@ while ($web = $xoopsDB->fetchArray($result)) {
 
     if (empty($web_plugin_enable_arr) or strpos($web_plugin_enable_arr, 'schedule') !== false) {
         $no_schedule   = $isMyWeb ? "<a href=\"" . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_SCHEDULE . "</a>" : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_SCHEDULE . "</span>";
-        $have_schedule = (isset($schedule[$WebID]) and !empty($schedule[$WebID])) ? "<a href=\"" . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&ScheduleID={$schedule[$WebID]}\" target=\"_blank\" style='color: #6F8232;'><i class='fa fa-table'> {$schedule_title[$WebID]}</i></a>" : $no_schedule;
+        $have_schedule = (isset($schedule[$WebID]) and !empty($schedule[$WebID])) ? "<a href=\"" . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&ScheduleID={$schedule[$WebID]}\" target=\"_blank\" style='color: #6F8232;'><i class='fa fa-table'> " . _MD_TCW_ABOUTUS_SCHEDULE . "</i></a>" : $no_schedule;
     } else {
         $have_schedule = '';
     }
@@ -107,4 +112,5 @@ $content = $FooTableJS . '
   </tbody>
 </table>';
 
-echo html5($content, false, false, $_SESSION['bootstrap']);
+die($content);
+// echo html5($content, false, false, $_SESSION['bootstrap']);

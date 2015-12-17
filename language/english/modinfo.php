@@ -176,3 +176,14 @@ define('_MI_TADWEB_CAL_COLS_KEY1', 'Web Events');
 define('_MI_TADWEB_CAL_COLS_KEY2', 'Sub-web Events');
 define('_MI_TADWEB_CAL_COLS_KEY3', 'News Events');
 define('_MI_TADWEB_CAL_COLS_KEY4', 'Homework');
+
+define('_MI_TADWEB_USER_SPACE_QUOTA', 'Users website hard disk space quota');
+define('_MI_TADWEB_USER_SPACE_QUOTA_DESC', 'Units of MB, you can enter the number');
+
+define('_MI_TCW_LIST_WEB_TEXT', 'Website Sort by');
+define('_MI_TCW_LIST_WEB_DESC', 'Sort the overview page of your site list');
+define('_MI_TCW_LIST_WEB_OPT1', 'According to the specified sort order');
+define('_MI_TCW_LIST_WEB_OPT2', 'Sort ascending according to the counter');
+define('_MI_TCW_LIST_WEB_OPT3', 'Sort by descending to the counter');
+define('_MI_TCW_LIST_WEB_OPT4', 'Website sorted according to date from the old to new');
+define('_MI_TCW_LIST_WEB_OPT5', 'Website sorted according to date from the new to old');

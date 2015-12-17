@@ -2,3 +2,15 @@ table.common_table{
 	background-color: #FFFFFF;
 }
 
+.common_counter{
+  width: 60px;
+}
+
+.common_team{
+  width: 150px;
+}
+
+.common_team_content{
+  font-size: 12px;
+}
+

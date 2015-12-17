@@ -27,6 +27,8 @@ if ($WebID) {
     $xoopsTpl->assign('xoops_sitename', $WebName);
     $xoopsTpl->assign('logo_img', XOOPS_URL . "/uploads/tad_web/{$WebID}/header.png");
     $xoopsTpl->assign('fb_description', $WebName);
+} else {
+    $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
 }
 
 if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
@@ -43,6 +45,7 @@ get_tad_web_blocks($WebID, _DISPLAY_MODE);
 function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 {
     global $xoopsTpl, $xoopsDB;
+    $myts            = &MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = array();
 
     $block_tpl = get_all_blocks('tpl');
@@ -58,17 +61,24 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
         foreach ($all as $k => $v) {
             $$k = $v;
         }
-        $blocks_arr = $all;
+
+        $blocks_arr           = $all;
+        $config               = json_decode($BlockConfig, true);
+        $blocks_arr['config'] = $config;
+
         if ($plugin == "xoops") {
             $blocks_arr['tpl'] = '';
-        } elseif ($plugin == "my") {
-            $blocks_arr['BlockContent'] = '';
+        } elseif ($plugin == "custom") {
+            if ($config['content_type'] == "iframe") {
+                $blocks_arr['BlockContent'] = "<iframe src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
+            } else {
+                $blocks_arr['BlockContent'] = $myts->displayTarea($BlockContent, 1);
+            }
         } else {
             if (file_exists("{$dir}{$plugin}/blocks.php")) {
                 include_once "{$dir}{$plugin}/blocks.php";
             }
 
-            $config                     = json_decode($BlockConfig, true);
             $blocks_arr['tpl']          = $block_tpl[$BlockName];
             $blocks_arr['BlockContent'] = call_user_func($BlockName, $WebID, $config);
             $blocks_arr['config']       = $config;
@@ -76,7 +86,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
         $block[$BlockPosition][$BlockSort] = $blocks_arr;
     }
 
-    // die(var_export($block));
+    // die(var_export($block['block1']));
 
     $xoopsTpl->assign('center_block1', $block['block1']);
     $xoopsTpl->assign('center_block2', $block['block2']);

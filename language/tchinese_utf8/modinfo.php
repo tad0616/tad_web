@@ -176,3 +176,13 @@ define('_MI_TADWEB_CAL_COLS_KEY1', '母站事件');
 define('_MI_TADWEB_CAL_COLS_KEY2', '子站事件');
 define('_MI_TADWEB_CAL_COLS_KEY3', '新聞事件');
 define('_MI_TADWEB_CAL_COLS_KEY4', '聯絡簿');
+define('_MI_TADWEB_USER_SPACE_QUOTA', '子網站可使用硬碟空間上限');
+define('_MI_TADWEB_USER_SPACE_QUOTA_DESC', '單位為MB，填入數字即可');
+
+define('_MI_TCW_LIST_WEB_TEXT', '網站列表排序依據');
+define('_MI_TCW_LIST_WEB_DESC', '總覽頁網站列表的排序依據');
+define('_MI_TCW_LIST_WEB_OPT1', '按照指定順序');
+define('_MI_TCW_LIST_WEB_OPT2', '按照人氣由小到大');
+define('_MI_TCW_LIST_WEB_OPT3', '按照人氣由大到小');
+define('_MI_TCW_LIST_WEB_OPT4', '按照建站日期由舊到新');
+define('_MI_TCW_LIST_WEB_OPT5', '按照建站日期由新到舊');
