@@ -117,7 +117,9 @@
   <{/if}>
 
 <{elseif $discuss_data}>
-  <{$cate_menu}>
+  <{if $WebID}>
+    <{$cate_menu}>
+  <{/if}>
   <{$FooTableJS}>
   <div class="row">
     <div class="col-md-12">

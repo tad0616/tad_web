@@ -14,7 +14,6 @@ $MemID       = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
 $year        = system_CleanVars($_REQUEST, 'year', '', 'string');
 $newCateName = system_CleanVars($_REQUEST, 'newCateName', '', 'string');
 $CateID      = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-
 common_template($WebID, $web_all_config);
 
 switch ($op) {

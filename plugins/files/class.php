@@ -40,11 +40,10 @@ class tad_web_files
         $to_limit = empty($limit) ? 20 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar  = getPageBar($sql, $to_limit, 10);
-        $bar      = $PageBar['bar'];
-        $sql      = $PageBar['sql'];
-        $total    = $PageBar['total'];
-        $show_bar = empty($limit) ? $bar : "";
+        $PageBar = getPageBar($sql, $to_limit, 10);
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
@@ -95,7 +94,7 @@ class tad_web_files
             return $data;
         } else {
             $xoopsTpl->assign('file_data', $main_data);
-            $xoopsTpl->assign('file_bar', $show_bar);
+            $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('files', get_db_plugin($this->WebID, 'files'));
             return $total;
         }

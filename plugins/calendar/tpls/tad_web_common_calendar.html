@@ -8,7 +8,10 @@
 <div id="calendar"></div>
 
 <div style="text-align:right; margin: 30px 0px 10px;">
-  <{if $web_display_mode=='home' or $web_display_mode=='index' or $CalendarDefCateID}>
+
+  <{if $web_display_mode=='index'}>
+    <a href="calendar.php" class="btn btn-primary <{if $web_display_mode=='index'}>btn-mini<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
+  <{elseif $web_display_mode=='home' or $CalendarDefCateID}>
     <a href="calendar.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-mini<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
   <{/if}>
   <{if $isMyWeb and $WebID}>

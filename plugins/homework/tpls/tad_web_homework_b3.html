@@ -112,9 +112,9 @@
     </div>
   <{/if}>
 <{elseif $homework_data}>
-
-  <{$cate_menu}>
-
+  <{if $WebID}>
+    <{$cate_menu}>
+  <{/if}>
   <{$FooTableJS}>
   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework_b3.html"}>
   <div class="clearfix"></div>

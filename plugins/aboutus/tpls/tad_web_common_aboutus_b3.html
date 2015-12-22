@@ -1,6 +1,6 @@
 <{if $web_display_mode=='index' and $data}>
   <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
-    <img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$aboutus.PluginTitle}>">
+    <a href="<{$xoops_url}>/modules/tad_web/<{$dirname}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$aboutus.PluginTitle}>"></a>
   <{else}>
     <h3><a href="<{$xoops_url}>/modules/tad_web/aboutus.php"><{$aboutus.PluginTitle}></a></h3>
   <{/if}>
@@ -11,42 +11,49 @@
 <{/if}>
 
 <{if $WebID=="" and $data}>
-  <{if $tad_web_cate}>
 
-    <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
-
-    <script type="text/javascript">
-      $(function() {
-        $("#tad_web_cate_tabs").tabs({
-          active   : $.cookie('activetab'),
-          activate : function( event, ui ){
-              $.cookie( 'activetab', ui.newTab.index(),{
-                  expires : 30
-              });
-          }
-        });
-      });
-    </script>
-
-    <div id="tad_web_cate_tabs">
-      <ul>
-        <{foreach from=$tad_web_cate key=i item=cate}>
-          <li><a href="<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_webs.php?CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>
-        <{/foreach}>
-      </ul>
-    </div>
+  <{if $xoops_url=="http://class.tn.edu.tw" and $web_version=="all"}>
+      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_all.html"}>
   <{else}>
-    <script type="text/javascript">
-      $(function() {
-        $.get("<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_webs.php", { CateID: ""},
-         function(data){
-           $('#list_all_web').html(data);
-         });
-      });
-    </script>
-    <div id="list_all_web"></div>
+    <{if $tad_web_cate}>
+
+      <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
+
+      <script type="text/javascript">
+        $(function() {
+          $("#tad_web_cate_tabs").tabs({
+            active   : $.cookie('activetab'),
+            activate : function( event, ui ){
+                $.cookie( 'activetab', ui.newTab.index(),{
+                    expires : 30
+                });
+            }
+          });
+        });
+      </script>
+
+      <div id="tad_web_cate_tabs">
+        <ul>
+          <{foreach from=$tad_web_cate key=i item=cate}>
+            <li><a href="<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_webs.php?CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>
+          <{/foreach}>
+        </ul>
+      </div>
+    <{else}>
+      <script type="text/javascript">
+        $(function() {
+          $.get("<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_webs.php", { CateID: ""},
+           function(data){
+             $('#list_all_web').html(data);
+           });
+        });
+      </script>
+      <div id="list_all_web"></div>
+    <{/if}>
+    <div class="clearfix"></div>
   <{/if}>
-  <div class="clearfix"></div>
+
+
 <{elseif $isMyWeb}>
   <div class="alert alert-danger">
     <a href="<{$xoops_url}>/modules/tad_web/admin/main.php?op=create_by_user"><{$smarty.const._MD_TCW_NO_WEB_ADMIN}></a>

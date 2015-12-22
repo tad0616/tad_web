@@ -38,11 +38,10 @@ class tad_web_news
         $to_limit = empty($limit) ? 10 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar  = getPageBar($sql, $to_limit, 10);
-        $bar      = $PageBar['bar'];
-        $sql      = $PageBar['sql'];
-        $total    = $PageBar['total'];
-        $show_bar = empty($limit) ? $bar : "";
+        $PageBar = getPageBar($sql, $to_limit, 10);
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
@@ -92,7 +91,7 @@ class tad_web_news
             return $data;
         } else {
             $xoopsTpl->assign('news_data', $main_data);
-            $xoopsTpl->assign('news_bar', $show_bar);
+            $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('news', get_db_plugin($this->WebID, 'news'));
             return $total;
         }

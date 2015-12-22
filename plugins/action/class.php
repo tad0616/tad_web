@@ -33,16 +33,15 @@ class tad_web_action
             }
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionDate desc";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionID desc";
 
         $to_limit = empty($limit) ? 20 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar  = getPageBar($sql, $to_limit, 10);
-        $bar      = $PageBar['bar'];
-        $sql      = $PageBar['sql'];
-        $total    = $PageBar['total'];
-        $show_bar = empty($limit) ? $bar : "";
+        $PageBar = getPageBar($sql, $to_limit, 10);
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
@@ -91,6 +90,7 @@ class tad_web_action
             $data['total']     = $total;
             return $data;
         } else {
+            $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('action_data', $main_data);
             $xoopsTpl->assign('action', get_db_plugin($this->WebID, 'action'));
             return $total;

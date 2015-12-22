@@ -25,10 +25,18 @@ class tad_web_calendar
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
 
-        if (empty($total)) {
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_homework") . " where WebID='{$this->WebID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $total2 = $xoopsDB->getRowsNum($result);
+
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_news") . " where WebID='{$this->WebID}' and toCal!='0000-00-00 00:00:00'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $total3 = $xoopsDB->getRowsNum($result);
+
+        if (empty($total) and empty($total2) and empty($total3)) {
             $calendar_data = '';
         } else {
-            $calendar_data = $total;
+            $calendar_data = $total + $total2 + $total3;
         }
 
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";

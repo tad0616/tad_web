@@ -16,33 +16,120 @@ class tad_web_aboutus
     //所有網站列表
     public function list_all()
     {
-        global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $MyWebs, $xoopsModuleConfig;
-
+        global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $MyWebs, $xoopsModuleConfig, $isAdmin;
         $list_web_order = $xoopsModuleConfig['list_web_order'];
         if (empty($list_web_order)) {
             $list_web_order = 'WebSort';
         }
+        //全國版
+        if (XOOPS_URL == "http://class.tn.edu.tw") {
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by {$list_web_order}";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+            $def_county     = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $def_city       = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $def_SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
 
-        $data = "";
-        $i    = 0;
-        while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
-            foreach ($all as $k => $v) {
-                $data[$i][$k] = $v;
+            $and_county     = empty($def_county) ? "" : "and b.county='{$def_county}'";
+            $and_city       = empty($def_city) ? "" : "and b.city='{$def_city}'";
+            $and_SchoolName = empty($def_SchoolName) ? "" : "and b.SchoolName='{$def_SchoolName}'";
+
+            $sql       = "select a.*,b.* from " . $xoopsDB->prefix("tad_web") . " as a left join " . $xoopsDB->prefix("apply") . " as b on a.WebOwnerUid=b.uid where a.`WebEnable`='1' {$and_county} {$and_city} {$and_SchoolName} order by b.zip, {$list_web_order}";
+            $result    = $xoopsDB->query($sql) or web_error($sql);
+            $total_web = 0;
+            $all_webs  = "";
+            while ($all = $xoopsDB->fetchArray($result)) {
+                //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
+                foreach ($all as $k => $v) {
+                    $$k = $v;
+                }
+
+                if (!empty($def_SchoolName)) {
+                    $all_webs[$WebID] = "{$WebTitle}-{$WebName}";
+                    $county_counter[$WebID]++;
+                } elseif (!empty($def_city)) {
+                    $all_webs[$SchoolName] = $SchoolName;
+                    $county_counter[$SchoolName]++;
+                } elseif (!empty($def_county)) {
+                    $all_webs[$city] = $city;
+                    $county_counter[$city]++;
+                } else {
+                    $all_webs[$county] = $county;
+                    $county_counter[$county]++;
+                }
+                $total_web++;
             }
 
-            $i++;
+            $data = "";
+            $i    = 0;
+            if (!empty($def_SchoolName)) {
+                foreach ($all_webs as $key => $item) {
+                    $data[$i]['WebID']    = $key;
+                    $data[$i]['WebTitle'] = $item;
+                    $data[$i]['counter']  = $county_counter[$key];
+                    $i++;
+                }
+                $xoopsTpl->assign('get_mode', 'web');
+                $xoopsTpl->assign('def_SchoolName', $def_SchoolName);
+                $xoopsTpl->assign('def_city', $def_city);
+                $xoopsTpl->assign('def_county', $def_county);
+            } else
+            if (!empty($def_city)) {
+                foreach ($all_webs as $key => $item) {
+                    $data[$i]['SchoolName'] = $item;
+                    $data[$i]['counter']    = $county_counter[$key];
+                    $i++;
+                }
+                $xoopsTpl->assign('get_mode', 'school');
+                $xoopsTpl->assign('def_city', $def_city);
+                $xoopsTpl->assign('def_county', $def_county);
+            } elseif (!empty($def_county)) {
+                foreach ($all_webs as $key => $item) {
+                    $data[$i]['city']    = $item;
+                    $data[$i]['counter'] = $county_counter[$key];
+                    $i++;
+                }
+
+                $xoopsTpl->assign('get_mode', 'city');
+                $xoopsTpl->assign('def_county', $def_county);
+            } else {
+                foreach ($all_webs as $key => $item) {
+                    $data[$i]['county']  = $item;
+                    $data[$i]['counter'] = $county_counter[$key];
+                    $i++;
+                }
+                $xoopsTpl->assign('get_mode', 'all');
+            }
+
+            // die(var_export($data));
+            $xoopsTpl->assign('count', sizeof($all_webs));
+            $xoopsTpl->assign('web_version', 'all');
+            $xoopsTpl->assign('data', $data);
+            $xoopsTpl->assign('MyWebs', $MyWebs);
+            $xoopsTpl->assign('total_web', $total_web);
+
+        } else {
+
+            $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by {$list_web_order}";
+            $result = $xoopsDB->query($sql) or web_error($sql);
+
+            $data = "";
+            $i    = 0;
+            while ($all = $xoopsDB->fetchArray($result)) {
+                //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
+                foreach ($all as $k => $v) {
+                    $data[$i][$k] = $v;
+                }
+
+                $i++;
+            }
+
+            $xoopsTpl->assign('MyWebs', $MyWebs);
+            $xoopsTpl->assign('data', $data);
+
+            $xoopsTpl->assign('tad_web_cate', $this->get_tad_web_cate_all('tad_web'));
+            $xoopsTpl->assign('aboutus', get_db_plugin($this->WebID, 'aboutus'));
+            $xoopsTpl->assign('web_version', 'normal');
         }
-
-        $xoopsTpl->assign('MyWebs', $MyWebs);
-        $xoopsTpl->assign('data', $data);
-
-        $xoopsTpl->assign('tad_web_cate', $this->get_tad_web_cate_all('tad_web'));
-        $xoopsTpl->assign('aboutus', get_db_plugin($this->WebID, 'aboutus'));
-
     }
 
     //以流水號秀出某筆tad_web_mems資料內容
@@ -241,6 +328,9 @@ class tad_web_aboutus
         $sweet_alert      = new sweet_alert();
         $sweet_alert_code = $sweet_alert->render("del_class", "aboutus.php?op=del_class&WebID={$this->WebID}&CateID=", 'CateID');
         $xoopsTpl->assign('sweet_alert_code', $sweet_alert_code);
+
+        $default_class = get_web_config('default_class', $this->WebID);
+        $xoopsTpl->assign('default_class', $default_class);
     }
 
     //新增班級
@@ -1007,5 +1097,10 @@ class tad_web_aboutus
         global $xoopsDB;
         $sql = "update  " . $xoopsDB->prefix("tad_web") . " set WebTitle='{$WebTitle}' where `WebID`='{$this->WebID}'";
         $xoopsDB->queryF($sql) or web_error($sql);
+        mklogoPic($this->WebID);
+        $TadUpFilesLogo = TadUpFilesLogo($this->WebID);
+        $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
+        output_head_file($this->WebID);
+        return;
     }
 }

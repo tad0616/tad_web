@@ -1,6 +1,6 @@
 <{if $web_display_mode=='index' and $file_data}>
   <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
-    <img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$files.PluginTitle}>">
+    <a href="<{$xoops_url}>/modules/tad_web/<{$dirname}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$files.PluginTitle}>"></a>
   <{else}>
     <h3><a href="<{$xoops_url}>/modules/tad_web/files.php"><{$files.PluginTitle}></a></h3>
   <{/if}>
@@ -58,10 +58,16 @@
     <{/foreach}>
   </table>
 
-  <{$file_bar}>
+  <{if $file_data}>
+    <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
+      <{$bar}>
+    <{/if}>
+  <{/if}>
 
   <div style="text-align:right; margin: 30px 0px 10px;">
-    <{if $web_display_mode=='home' or $web_display_mode=='index' or $FilesDefCateID}>
+    <{if $web_display_mode=='index'}>
+      <a href="files.php" class="btn btn-primary <{if $web_display_mode=='index'}>btn-mini<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
+    <{elseif $web_display_mode=='home' or $FilesDefCateID}>
       <a href="files.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-mini<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
     <{/if}>
 

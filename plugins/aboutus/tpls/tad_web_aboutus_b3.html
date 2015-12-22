@@ -179,7 +179,7 @@
             </label>
             <div class="col-md-9">
               <label class="checkbox-inline">
-                <input type="checkbox" name="default_class" value='1'>
+                <input type="checkbox" name="default_class" value='1' <{if $default_class==$CateID}>checked<{/if}>>
                 點入「關於我們」後，以此為預設呈現的班級
               </label>
             </div>
@@ -449,7 +449,7 @@
   <{$FooTableJS}>
   <div class="row">
     <div class="col-md-12">
-      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_b3.html"}>
+       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_b3.html"}>
     </div>
   </div>
 <{/if}>

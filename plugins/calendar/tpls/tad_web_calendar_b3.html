@@ -75,7 +75,9 @@
     </div>
   <{/if}>
 <{elseif $calendar_data}>
-  <{$cate_menu}>
+  <{if $WebID}>
+    <{$cate_menu}>
+  <{/if}>
   <div class="row">
     <div class="col-md-12">
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
