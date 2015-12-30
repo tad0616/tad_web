@@ -163,6 +163,7 @@ function delete_web_config($ConfigName = "")
 
 }
 
+//儲存外掛
 function save_plugins($WebID)
 {
     global $xoopsDB;
@@ -263,6 +264,20 @@ function unable_my_web($WebID)
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '0' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
+}
+
+//恢復顏色預設值
+function default_color($WebID = "")
+{
+    global $xoopsDB, $isMyWeb;
+    if (empty($WebID) or !$isMyWeb) {
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+    }
+    $del_item = array('bg_color', 'container_bg_color', 'side_bg_color', 'center_text_color', 'center_link_color', 'center_hover_color', 'center_header_color', 'center_border_color', 'side_text_color', 'side_link_color', 'side_hover_color', 'side_header_color', 'side_border_color', 'navbar_bg_top', 'navbar_color', 'navbar_hover', 'navbar_color_hover');
+    foreach ($del_item as $ConfigName) {
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID ='{$WebID}' and ConfigName='{$ConfigName}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+    }
 }
 
 /*-----------執行動作判斷區----------*/
@@ -397,6 +412,13 @@ switch ($op) {
         }
         delete_tad_web($WebID);
         header("location: index.php");
+        exit;
+        break;
+
+    //恢復顏色預設值
+    case "default_color":
+        default_color($WebID);
+        header("location: config.php?WebID={$WebID}");
         exit;
         break;
 

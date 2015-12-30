@@ -4,7 +4,7 @@
 <{/if}>
 
 <{if $bc.main_data}>
-  <{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title_b3.html"}>
   <{foreach item=act from=$bc.main_data}>
     <div style="width: 156px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
       <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>

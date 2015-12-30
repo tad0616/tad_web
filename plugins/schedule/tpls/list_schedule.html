@@ -8,7 +8,7 @@
   <{if $WebID==""}>
 
     <{if $web_display_mode=='index' or $web_display_mode=='home'}>
-      <{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
+      <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title_b3.html"}>
     <{/if}>
     <{assign var="i" value=0}>
     <{assign var="total" value=1}>

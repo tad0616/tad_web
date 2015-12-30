@@ -192,6 +192,7 @@
       </div>
     <{/if}>
 
+    <{$bar}>
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
       <div id="save_msg"></div>
       <table class="table table-striped table-hover" style="width:auto;">
@@ -203,60 +204,66 @@
           <th><{$smarty.const._MA_TCW_CO_ADMIN}></th>
           <th><{$smarty.const._MA_TCW_MEM_AMOUNT}></th>
           <th><{$smarty.const._MA_TCW_TEAMCOUNTER}></th>
+          <th><{$smarty.const._MA_TCW_LAST_ACCESSED}></th>
           <th><{$smarty.const._TAD_FUNCTION}></th>
         </tr>
         <tbody id="sort">
         <{foreach item=class from=$data}>
-        <tr id="tr_<{$class.WebID}>">
-          <td>
-            <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
-          </td>
-          <td>
-
-          <{if $class.WebEnable=='1'}>
-            <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=0"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
-          <{else}>
-            <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=1"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
-          <{/if}>
-
-            <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
-          </td>
-          <td>
-            <input type="text" name="webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>" class="form-control">
-            <input type="hidden" name="old_webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>">
-          </td>
-          </td>
-          <td>
-             <{$class.WebOwner}> (<{$class.uname}>)
-          </td>
+          <tr id="tr_<{$class.WebID}>">
             <td>
-              <{if $class.admin_arr}>
-                <{foreach from=$class.admin_arr item=admin}>
-                  <{$admin.name}> (<{$admin.uname}>),
-                <{/foreach}>
-              <{/if}>
+              <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk" class="btn btn-mini btn-danger"><{$smarty.const._TAD_DEL}></a>
             </td>
-          <td>
-            <{$class.memAmount}>
-          </td>
-          <td>
-            <{$class.WebCounter}>
-          </td>
-          <td>
-            <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_EDIT}></a>
+            <td>
 
-          </td>
-        </tr>
+            <{if $class.WebEnable=='1'}>
+              <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=0"><img src="../images/show1.gif" alt="<{$smarty.const._TAD_ENABLE}>"></a>
+            <{else}>
+              <a href="main.php?WebID=<{$class.WebID}>&op=save_webs_able&able=1"><img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>"></a>
+            <{/if}>
+
+              <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
+            </td>
+            <td style="width: 300px;">
+              <input type="text" name="webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>" class="form-control">
+              <input type="hidden" name="old_webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>">
+            </td>
+            </td>
+            <td>
+               <{$class.WebOwner}> (<{$class.uname}>)
+            </td>
+              <td>
+                <{if $class.admin_arr}>
+                  <{foreach from=$class.admin_arr item=admin}>
+                    <{$admin.name}> (<{$admin.uname}>),
+                  <{/foreach}>
+                <{/if}>
+              </td>
+            <td>
+              <{$class.memAmount}>
+            </td>
+            <td>
+              <{$class.WebCounter}>
+            </td>
+            <td>
+              <{$class.last_accessed}>
+            </td>
+            <td>
+              <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-mini btn-info"><{$smarty.const._TAD_EDIT}></a>
+
+            </td>
+          </tr>
         <{/foreach}>
         </tbody>
 
         <tr>
           <td colspan=8 style="text-align: center;">
             <input type="hidden" name="op" value="save_webs_title">
+            <input type="hidden" name="g2p" value="<{$g2p}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
           </td>
         </tr>
       </table>
     </form>
+    <{$bar}>
   <{/if}>
 </div>

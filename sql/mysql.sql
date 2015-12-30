@@ -10,6 +10,8 @@ CREATE TABLE `tad_web` (
   `WebTitle` varchar(255) NOT NULL default '' COMMENT '全銜',
   `CreatDate` datetime NOT NULL default '0000-00-00 00:00:00',
   `WebYear` year(4) NOT NULL default '0000',
+  `used_size` int(10) unsigned NOT NULL default 0 COMMENT '已使用空間',
+  `last_accessed` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '最後被拜訪時間',
   PRIMARY KEY (`WebID`)
 ) ENGINE=MyISAM;
 

@@ -33,8 +33,20 @@ class tad_web_page
             $xoopsTpl->assign('PageDefCateID', $CateID);
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
+        if (_IS_EZCLASS and !empty($_GET['county'])) {
+            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.PageSort";
+        } else {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
+        }
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
 
@@ -67,7 +79,6 @@ class tad_web_page
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert      = new sweet_alert();
         $sweet_alert_code = $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
-        $xoopsTpl->assign('sweet_delete_page_func_code', $sweet_alert_code);
 
         if ($mode == "return") {
             $data['cate_arr']  = $cate_arr;
@@ -138,7 +149,15 @@ class tad_web_page
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert      = new sweet_alert();
         $sweet_alert_code = $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
-        $xoopsTpl->assign('sweet_delete_page_func_code', $sweet_alert_code);
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jquery-print-preview.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/jquery-print-preview.php";
+        $print_preview      = new print_preview('a.print-preview');
+        $print_preview_code = $print_preview->render();
+
+        $xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/page/print.css" type="text/css" media="print" />');
     }
 
     //tad_web_page編輯表單
@@ -217,6 +236,9 @@ class tad_web_page
         $xoopsTpl->assign('upform', $upform);
 
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/image");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/file");
         $ck = new CKEditor("tad_web", "PageContent", $PageContent);
         $ck->setHeight(500);
         $editor = $ck->render();

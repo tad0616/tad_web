@@ -35,8 +35,20 @@ class tad_web_files
 
         $data = $title = "";
 
-        $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' and b.col_name='fsn' $andWebID $andCateID order by a.file_date desc";
+        if (_IS_EZCLASS and !empty($_GET['county'])) {
+            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and d.county='{$county}'" : "";
+            $andCity       = !empty($city) ? "and d.city='{$city}'" : "";
+            $andSchoolName = !empty($SchoolName) ? "and d.SchoolName='{$SchoolName}'" : "";
 
+            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid where c.`WebEnable`='1' and b.col_name='fsn' $andCounty $andCity $andSchoolName order by a.file_date desc";
+        } else {
+            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' and b.col_name='fsn' $andWebID $andCateID order by a.file_date desc";
+        }
         $to_limit = empty($limit) ? 20 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);

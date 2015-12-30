@@ -57,7 +57,7 @@ switch ($op) {
             $tad_web_news->list_all($CateID);
         } else {
             $op = 'show_one';
-            $tad_web_news->show_one($NewsID, _SHOW_NEWS_PLACE, _NEWS_NL2BR);
+            $tad_web_news->show_one($NewsID);
         }
         break;
 

@@ -30,9 +30,20 @@ class tad_web_works
                 $xoopsTpl->assign('WorksDefCateID', $CateID);
             }
         }
+        if (_IS_EZCLASS and !empty($_GET['county'])) {
+            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.WorksDate desc";
-
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.WorksDate desc";
+        } else {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.WorksDate desc";
+        }
         $to_limit = empty($limit) ? 20 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);

@@ -71,6 +71,9 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
         } elseif ($plugin == "custom") {
             if ($config['content_type'] == "iframe") {
                 $blocks_arr['BlockContent'] = "<iframe src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
+            } elseif ($config['content_type'] == "js") {
+                $blocks_arr['BlockContent'] = $BlockContent;
+
             } else {
                 $blocks_arr['BlockContent'] = $myts->displayTarea($BlockContent, 1);
             }

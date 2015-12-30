@@ -19,6 +19,7 @@
       });
     });
   </script>
+  <{$sweet_delete_block_func_code}>
   <div class="row">
     <div class="col-md-12">
       <h1 class="text-center"><{$block.BlockTitle}></h1>
@@ -93,7 +94,7 @@
                 <{$smarty.const._MD_TCW_BLOCK_JS_DESC}>
               </label>
               <div class="col-md-9">
-                <textarea name="BlockContent[js]"  rows="10" class="form-control"><{$block.BlockContent}></textarea>
+                <textarea name="BlockContent[js]"  rows="10" class="form-control" style="background: #11190E; color: #90E86A; "><{$block.BlockContent}></textarea>
               </div>
             </div>
           </div>
@@ -109,20 +110,21 @@
             </div>
           </div>
 
-          <{if $shareBlockID==""}>
+          <{if $shareBlockID=="" or $shareWebID==$WebID}>
             <div class="form-group">
               <label class="col-md-3 control-label">
-                <{$smarty.const._MD_TCW_BLOCK_SHARE}><{$block.BlockShare}>
+                <{$smarty.const._MD_TCW_BLOCK_SHARE}>
               </label>
               <div class="col-md-9">
                 <div class="radio-inline">
-                  <input type="radio" name="BlockShare" value="1" <{if $block.BlockShare=='1'}>checked<{/if}>><{$smarty.const._YES}>
+                  <input type="radio" name="BlockShare" value="1" <{if $shareWebID==$WebID}>checked<{/if}>><{$smarty.const._YES}>
                 </div>
                 <div class="radio-inline">
-                  <input type="radio" name="BlockShare" value="0" <{if $block.BlockShare!='1'}>checked<{/if}>><{$smarty.const._NO}>
+                  <input type="radio" name="BlockShare" value="0" <{if $shareWebID!=$WebID}>checked<{/if}>><{$smarty.const._NO}>
                 </div>
               </div>
             </div>
+            <input type="hidden" name="shareBlockID" value="<{$shareBlockID}>">
           <{else}>
             <input type="hidden" name="BlockShare" value="0">
           <{/if}>
@@ -133,9 +135,23 @@
           <input type="hidden" name="op" value="save_block_config">
           <input type="hidden" name="BlockName" value="<{$block.BlockName}>">
           <input type="hidden" name="BlockID" value="<{$block.BlockID}>">
+          <{if $block.plugin=="custom"}>
+            <a href="javascript:delete_block_func('<{$block.BlockID}>');" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+          <{/if}>
           <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
       </form>
+
+      <{if $use_share_web}>
+        <h3><{$shareBlockCount}></h3>
+        <div class="alert alert-info">
+          <ul>
+            <{foreach from=$use_share_web item=web}>
+              <li><a href="index.php?WebID=<{$web.WebID}>" target="_blank"><{$web.WebTitle}></a></li>
+            <{/foreach}>
+          </ul>
+        </div>
+      <{/if}>
     </div>
   </div>
 
@@ -218,6 +234,7 @@
       <ul id="sort_uninstall" class="connectedSortable">
           <{foreach from=$uninstall item=block}>
             <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
+              <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
               <{$block.icon}>
               <{$block.BlockTitle}>
             </li>
@@ -375,4 +392,56 @@
       </div>
     <{/if}>
   </div>
+
+  <hr>
+  <h2><{$smarty.const._MD_TCW_BLOCK_TITLE_PIC}></h2>
+  <{$mColorPicker_code}>
+  <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <div class="form-group">
+      <label class="col-md-2 control-label">
+        <{$smarty.const._MD_TCW_BLOCK_PIC_COLOR}>
+      </label>
+      <div class="col-md-3">
+        <input type="text" name="block_pic[block_pic_text_color]" value="<{$block_pic_text_color}>" class="form-control color" value="<{$block_pic_text_color}>" id="block_pic_text_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
+      </div>
+      <label class="col-md-2 control-label">
+        <{$smarty.const._MD_TCW_BLOCK_PIC_BORDER_COLOR}>
+      </label>
+      <div class="col-md-3">
+        <input type="text" name="block_pic[block_pic_border_color]" value="<{$block_pic_border_color}>" class="form-control color" value="<{$block_pic_border_color}>" id="block_pic_border_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-2 control-label">
+        <{$smarty.const._MD_TCW_BLOCK_PIC_SIZE}>
+      </label>
+      <div class="col-md-3">
+        <input type="text" name="block_pic[block_pic_text_size]" value="<{$block_pic_text_size}>" class="form-control">
+      </div>
+      <label class="col-md-2 control-label">
+        <{$smarty.const._MD_TCW_BLOCK_PIC_FONT}>
+      </label>
+      <div class="col-md-3">
+        <select name="block_pic[block_pic_font]" class="form-control">
+        <option value="font.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_PIC_FONT1}></option>
+        <option value="DroidSansFallback.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>>DroidSansFallback<{$smarty.const._MD_TCW_BLOCK_PIC_FONT2}></option>
+        </select>
+      </div>
+    </div>
+
+    <div class="alert alert-success">
+      <label class="checkbox-inline">
+        <input type="checkbox" name="use_block_pic" value="1" <{if $use_block_pic=="1"}>checked<{/if}>>
+        <{$smarty.const._MD_TCW_BLOCK_TITLE_USE_PIC}>
+      </label>
+    </div>
+
+    <div class="text-center" stye="margin-top: 30px;">
+      <input type="hidden" name="WebID" value="<{$WebID}>">
+      <input type="hidden" name="op" value="mk_block_pic">
+      <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+    </div>
+  </form>
+
 <{/if}>

@@ -1,6 +1,6 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $bc.main_data}>
-  <{if $block.config.show_title!='0'}><h3><{$block.BlockTitle}></h3><{/if}>
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title_b3.html"}>
   <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <{foreach from=$bc.page_list item=page}>
       <div class="panel panel-default">

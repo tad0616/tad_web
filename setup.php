@@ -53,6 +53,7 @@ function plugin_setup($WebID, $plugin)
     $xoopsTpl->assign('plugin_setup', $pluginSetup);
     $xoopsTpl->assign('plugin', $plugin);
     $xoopsTpl->assign('WebID', $WebID);
+    $xoopsTpl->assign('plugin_arr', $menu_var[$ColName]);
 }
 
 //儲存額外設定值

@@ -10,3 +10,5 @@ $pluginConfig['cate_table'] = 'tad_web_news';
 $pluginConfig['common']     = true;
 $pluginConfig['sql']        = array('tad_web_news');
 $pluginConfig['setup']      = false;
+$pluginConfig['add']        = true;
+$pluginConfig['menu']       = true;

@@ -59,13 +59,39 @@ function xoops_module_update_tad_web(&$module, $old_version)
         go_update14();
     }
 
+    if (chk_chk15()) {
+        go_update15();
+    }
+
     chk_sql();
     chk_newblock();
     go_update_var();
+    chk_plugin_update();
     add_log('update');
     return true;
 }
 
+//新增外掛的sql檔
+function chk_sql()
+{
+    global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $dir_plugins = get_dir_plugins();
+    foreach ($dir_plugins as $dirname) {
+        include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
+        if (!empty($pluginConfig['sql'])) {
+            foreach ($pluginConfig['sql'] as $sql_name) {
+                $sql    = "select count(*) from " . $xoopsDB->prefix($sql_name);
+                $result = $xoopsDB->query($sql);
+                if (empty($result)) {
+                    $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
+                }
+            }
+        }
+    }
+}
+
+//檢查是否有新區塊，若有安裝之。
 function chk_newblock()
 {
     global $xoopsDB;
@@ -84,12 +110,32 @@ function chk_newblock()
         $allWebID[] = $WebID;
     }
 
-    //找出目前已安裝的區塊
-    $sql    = "select BlockID,BlockName,BlockConfig from " . $xoopsDB->prefix("tad_web_blocks") . " ";
+    //修正分享區塊名稱
+    $sql    = "select BlockID,BlockName,BlockTitle,WebID,BlockShare from " . $xoopsDB->prefix("tad_web_blocks") . " where plugin='share' ";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
-    while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
+    while (list($BlockID, $BlockName, $BlockTitle, $WebID, $BlockShare) = $xoopsDB->fetchRow($result)) {
+
+        $new_name = str_replace('custom_block_', "share_{$WebID}_", $BlockName);
+        //修改自己
+        $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='{$new_name}' where `BlockID`='{$BlockID}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+        //修改已經分享的
+        $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='{$new_name}' where `BlockName`='{$BlockName}' and BlockTitle='{$BlockTitle}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
+    //找出目前已安裝的區塊
+    $sql    = "select BlockID,BlockName,BlockConfig,plugin,WebID,BlockShare from " . $xoopsDB->prefix("tad_web_blocks") . " ";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    while (list($BlockID, $BlockName, $BlockConfig, $plugin, $WebID, $BlockShare) = $xoopsDB->fetchRow($result)) {
         $db_blocks[$BlockName]                  = $BlockName;
         $db_blocks_config[$BlockName][$BlockID] = $BlockConfig;
+        //修正自訂區塊
+        if ($plugin == "custom") {
+            $new_name = str_replace('custom_block_', "custom_{$WebID}_", $BlockName);
+            $sql      = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='{$new_name}' where `BlockID`='{$BlockID}'";
+            $xoopsDB->queryF($sql) or web_error($sql);
+        }
     }
 
     //安裝新區塊
@@ -129,6 +175,36 @@ function chk_newblock()
 
 }
 
+//重作選單快取檔
+function go_update_var()
+{
+    global $xoopsDB;
+
+    $sql = "update " . $xoopsDB->prefix('tad_web_config') . " set `ConfigName`='web_plugin_display_arr' WHERE `ConfigName` = 'web_setup_show_arr'";
+    $xoopsDB->queryF($sql);
+
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+
+    $Webs = getAllWebInfo('WebTitle');
+    foreach ($Webs as $WebID => $WebTitle) {
+        mk_menu_var_file($WebID);
+    }
+}
+
+//執行各外掛更新
+function chk_plugin_update()
+{
+    global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $dir_plugins = get_dir_plugins();
+    foreach ($dir_plugins as $dirname) {
+        $update_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/onUpdate.php";
+        if (file_exists($update_file)) {
+            include_once $update_file;
+        }
+    }
+}
+
 //擷取網站網址、名稱、站長信箱、多人網頁版本、子網站數等資訊以供統計或日後更新通知
 function add_log($status)
 {
@@ -162,46 +238,6 @@ function add_log($status)
         fclose($handle);
     }
 }
-
-function go_update_var()
-{
-    global $xoopsDB;
-
-    $sql = "update " . $xoopsDB->prefix('tad_web_config') . " set `ConfigName`='web_plugin_display_arr' WHERE `ConfigName` = 'web_setup_show_arr'";
-    $xoopsDB->queryF($sql);
-
-    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
-
-    $Webs = getAllWebInfo('WebTitle');
-    foreach ($Webs as $WebID => $WebTitle) {
-        mk_menu_var_file($WebID);
-    }
-}
-
-function chk_sql()
-{
-    global $xoopsDB;
-    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
-    $dir_plugins = get_dir_plugins();
-    foreach ($dir_plugins as $dirname) {
-        include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
-        if (!empty($pluginConfig['sql'])) {
-            foreach ($pluginConfig['sql'] as $sql_name) {
-                $sql    = "select count(*) from " . $xoopsDB->prefix($sql_name);
-                $result = $xoopsDB->query($sql);
-                if (empty($result)) {
-                    $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
-                }
-            }
-        }
-
-        $update_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/onUpdate.php";
-        if (file_exists($update_file)) {
-            include_once $update_file;
-        }
-    }
-}
-
 //刪除錯誤的重複欄位及樣板檔
 function chk_tad_web_block()
 {
@@ -769,6 +805,40 @@ function go_update14()
       PRIMARY KEY  (`WebID`,`plugin`,`name`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
+}
+
+//新增已使用空間
+function chk_chk15()
+{
+    global $xoopsDB;
+    $sql    = "select count(`used_size`) from " . $xoopsDB->prefix("tad_web");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update15()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web") . " ADD `used_size` int(10) unsigned NOT NULL default 0 COMMENT '已使用空間', ADD `last_accessed` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '最後被拜訪時間'";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+
+    $dir = XOOPS_ROOT_PATH . "/uploads/tad_web/";
+
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $sql    = "select WebID from `" . $xoopsDB->prefix("tad_web") . "`";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    while (list($WebID) = $xoopsDB->fetchRow($result)) {
+        $dir_size = get_dir_size("{$dir}{$WebID}/");
+
+        $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
+    return true;
 }
 
 //建立目錄

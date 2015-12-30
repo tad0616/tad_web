@@ -30,9 +30,9 @@
   </thead>
   <{foreach item=video from=$video_data}>
     <tr>
-      <td style="width:130px;">
+      <td style="width: 200px;">
         <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>">
-          <img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/1.jpg" class="img-responsive img-rounded" style="width: 100%;" alt="<{$video.VideoName}>" title="<{$video.VideoName}>">
+          <img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/0.jpg" class="img-responsive img-rounded" style="width: 100%;" alt="<{$video.VideoName}>" title="<{$video.VideoName}>">
         </a>
 
         <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
@@ -48,13 +48,13 @@
           <{if $video.cate.CateID}>
             <span class="label label-info"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
           <{/if}>
-          <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>"><{$video.VideoName}></a>
+          <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>" style="font-size: 120%; margin-bottom: 10px;"><{$video.VideoName}></a>
             <{if $video.isMyWeb}>
               <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="video.php?WebID=<{$video.WebID}>&op=edit_form&VideoID=<{$video.VideoID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
         </p>
-        <p style="font-size:12px;">
+        <p  style="line-height: 1.6;">
           <{$video.VideoDesc}>
         </p>
      </td>

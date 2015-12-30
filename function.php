@@ -48,29 +48,29 @@ function get_dir_blocks()
 function get_all_blocks($value = 'title')
 {
     global $xoopsDB;
-    $sql    = "select bid,name,title from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    // $sql    = "select bid,name,title from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
+    // $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts = MyTextSanitizer::getInstance();
-    //來自系統的區塊
-    while ($all = $xoopsDB->fetchArray($result)) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
+    // //來自系統的區塊
+    // while ($all = $xoopsDB->fetchArray($result)) {
+    //     foreach ($all as $k => $v) {
+    //         $$k = $v;
+    //     }
 
-        if ($value == "plugin") {
-            $block_option[$bid] = 'xoops';
-        } elseif ($value == "config") {
-            $block_option[$bid] = array();
-        } elseif ($value == "tpl") {
-            $block_option[$bid] = '';
-        } elseif ($value == "position") {
-            $block_option[$bid] = 'side';
-        } else {
-            $name               = $myts->htmlSpecialChars($name);
-            $block_option[$bid] = $name;
-        }
-    }
+    //     if ($value == "plugin") {
+    //         $block_option[$bid] = 'xoops';
+    //     } elseif ($value == "config") {
+    //         $block_option[$bid] = array();
+    //     } elseif ($value == "tpl") {
+    //         $block_option[$bid] = '';
+    //     } elseif ($value == "position") {
+    //         $block_option[$bid] = 'side';
+    //     } else {
+    //         $name               = $myts->htmlSpecialChars($name);
+    //         $block_option[$bid] = $name;
+    //     }
+    // }
 
     //來自plugin的區塊
     $allBlockConfig = get_dir_blocks();
@@ -397,6 +397,8 @@ function common_template($WebID, $web_all_config = "")
             $xoopsTpl->assign($ConfigName, $ConfigValue);
         }
     }
+
+    $xoopsTpl->assign('_IS_EZCLASS', _IS_EZCLASS);
 }
 
 //製作選單
@@ -414,6 +416,11 @@ function mk_menu_var_file($WebID = null)
     foreach ($all_plugins as $plugin) {
         // die(var_export($plugin));
         $dirname = $plugin['dirname'];
+
+        if ($dirname == "system") {
+            continue;
+        }
+
         if ($plugin['db']['PluginEnable'] != '1') {
             $current .= "if(defined('_SHOW_UNABLE') and _SHOW_UNABLE=='1'){\n";
         }
@@ -430,6 +437,8 @@ function mk_menu_var_file($WebID = null)
         $current .= "\$menu_var['{$dirname}']['icon']   = '{$plugin['config']['icon']}';\n";
         $current .= "\$menu_var['{$dirname}']['enable']     = {$plugin['db']['PluginEnable']};\n";
         $current .= "\$menu_var['{$dirname}']['setup']   = '{$plugin['config']['setup']}';\n";
+        $current .= "\$menu_var['{$dirname}']['add']   = '{$plugin['config']['add']}';\n";
+        $current .= "\$menu_var['{$dirname}']['menu']   = '{$plugin['config']['menu']}';\n";
         if ($plugin['db']['PluginEnable'] != '1') {
             $current .= "}\n\n";
         } else {
@@ -649,19 +658,19 @@ function mklogoPic($WebID = "")
         $n = strlen($WebName) / 3;
     }
     //$width=50*$n+35;
-    $size = round(450 / $n, 0);
+    $size = round(600 / $n, 0);
     if ($size > 70) {
         $size  = 70;
         $x     = $size + 10;
         $size2 = 20;
     } else {
-        $x     = round(450 / $n, 0) + 10;
+        $x     = round(600 / $n, 0) + 10;
         $size2 = 17;
     }
     $y = $size + 55;
 
     header('Content-type: image/png');
-    $im = @imagecreatetruecolor(520, 140) or die(_MD_TCW_MKPIC_ERROR);
+    $im = @imagecreatetruecolor(600, 140) or die(_MD_TCW_MKPIC_ERROR);
     imagesavealpha($im, true);
 
     $white = imagecolorallocate($im, 255, 255, 255);
@@ -716,55 +725,59 @@ function mklogoPic($WebID = "")
 }
 
 //製作logo圖
-function mkTitlePic($WebID = "", $plugin = "", $title = "", $color = "#86B8E8", $border_color = "#FFFFFF")
+function mkTitlePic($WebID = "", $filename = "", $title = "", $color = "#ABBF6B", $border_color = "#FFFFFF", $size = "30", $font = "font.ttf")
 {
-
-    if (function_exists('mb_strwidth')) {
-        $n = mb_strwidth($title) / 2;
+    if (function_exists('mb_strlen')) {
+        $n = mb_strlen($title);
     } else {
         $n = strlen($title) / 3;
     }
-    //$width=50*$n+35;
-    $size = 30;
-    $x    = 70;
-    $y    = 55;
+    if (empty($size)) {
+        return;
+    }
+    $width  = ($size + 2) * $n;
+    $height = $size * 3;
+
+    $x = 2;
+    $y = $size * 2;
+
+    list($color_r, $color_g, $color_b)                      = sscanf($color, "#%02x%02x%02x");
+    list($border_color_r, $border_color_g, $border_color_b) = sscanf($border_color, "#%02x%02x%02x");
 
     header('Content-type: image/png');
-    $im = @imagecreatetruecolor(520, 100) or die(_MD_TCW_MKPIC_ERROR);
+    $im = @imagecreatetruecolor($width, $height) or die(_MD_TCW_MKPIC_ERROR);
     imagesavealpha($im, true);
 
-    $white = imagecolorallocate($im, 255, 255, 255);
-
-    //$trans_colour = imagecolorallocatealpha($im, 157,211,223, 127);
     $trans_colour = imagecolorallocatealpha($im, 255, 255, 255, 127);
     imagefill($im, 0, 0, $trans_colour);
 
-    $text_color  = imagecolorallocate($im, 171, 191, 107);
-    $text_color2 = imagecolorallocatealpha($im, 255, 255, 255, 50);
+    $text_color        = imagecolorallocate($im, $color_r, $color_g, $color_b);
+    $text_border_color = imagecolorallocatealpha($im, $border_color_r, $border_color_g, $border_color_b, 50);
 
     $gd = gd_info();
     if ($gd['JIS-mapped Japanese Font Support']) {
         $title = iconv("UTF-8", "shift_jis", $title);
     }
 
-    imagettftext($im, $size, 0, 0, $x, $text_color, XOOPS_ROOT_PATH . "/modules/tad_web/class/font.ttf", $title);
-    imagettftextoutline(
-        $im, // image location ( you should use a variable )
-        $size, // font size
-        0, // angle in °
-        0, // x
-        $x, // y
-        $text_color,
-        $white,
-        XOOPS_ROOT_PATH . "/modules/tad_web/class/font.ttf",
-        $title, // pattern
-        2// outline width
-    );
-
+    imagettftext($im, $size, 0, $x, $y, $text_color, XOOPS_ROOT_PATH . "/modules/tad_web/class/{$font}", $title);
+    if ($border_color != "transparent") {
+        imagettftextoutline(
+            $im, // image location ( you should use a variable )
+            $size, // font size
+            0, // angle in °
+            $x, // x
+            $y, // y
+            $text_color,
+            $text_border_color,
+            XOOPS_ROOT_PATH . "/modules/tad_web/class/{$font}",
+            $title, // pattern
+            2// outline width
+        );
+    }
     mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/");
     mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/image/");
 
-    imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/image/{$plugin}.png");
+    imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/image/{$filename}.png");
     imagedestroy($im);
 
 }
@@ -1057,13 +1070,16 @@ function delete_directory($dirname)
 //寫入已使用空間
 function check_quota($WebID = "")
 {
-    global $xoopsModuleConfig;
+    global $xoopsModuleConfig, $xoopsDB;
     $data = "";
     $dir  = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
     $dir_size = get_dir_size("{$dir}{$WebID}/");
     $size     = size2mb($dir_size);
     save_web_config("used_size", $size, $WebID);
+
+    $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
 
 }
 
@@ -1127,7 +1143,7 @@ function get_plugin_setup_values($WebID = "", $plugin = "", $mode = '')
     $myts       = MyTextSanitizer::getInstance();
     $setup_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
     if (file_exists($setup_file)) {
-        require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+        require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
         require $setup_file;
     }
 
@@ -1205,6 +1221,9 @@ function delete_tad_web($WebID = "")
     $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins_setup") . " where WebID='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -1227,4 +1246,43 @@ function delete_tad_web($WebID = "")
     if (!delete_directory(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}")) {
         web_error('無法刪除資料夾' . XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
     }
+}
+
+//更新最後被拜訪日期
+function update_last_accessed($WebID = "")
+{
+    global $xoopsDB;
+    $last_accessed = date("Y-m-d H:i:s");
+    $sql           = "update `" . $xoopsDB->prefix("tad_web") . "` set `last_accessed`='{$last_accessed}' where `WebID`='{$WebID}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+}
+
+/**  * 獲取文章內容(當前分頁)
+ * @param string $content 文章內容
+ * @param integer $page 頁數
+ * @return array
+ */
+
+function get_article_content($content, $page = 1)
+{
+
+    $page = $page ? intval($page) :
+
+    $article = array('info' => array(), 'pages' => 1);
+
+    if (!empty($content)) {
+
+        $pattern  = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
+        $contents = preg_split($pattern, $content);
+
+        $article['pages'] = count($contents);
+
+        ($page > $article['pages']) && $page = $article['pages'];
+
+        $article['info'] = $contents[$page - 1];
+
+    }
+
+    return $article;
+
 }

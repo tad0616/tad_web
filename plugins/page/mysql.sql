@@ -3,7 +3,7 @@ CREATE TABLE `tad_web_page` (
   `CateID` smallint(6) unsigned NOT NULL default 0,
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
   `PageTitle` varchar(255) NOT NULL default '' COMMENT '文章標題',
-  `PageContent` text NOT NULL COMMENT '文章內容',
+  `PageContent` longtext NOT NULL COMMENT '文章內容',
   `PageDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布日期',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
   `PageCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',

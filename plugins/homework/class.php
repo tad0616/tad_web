@@ -34,8 +34,20 @@ class tad_web_homework
         }
         $now = date("Y-m-d H:i:s");
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkPostDate desc";
+        if (_IS_EZCLASS and !empty($_GET['county'])) {
+            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.HomeworkPostDate desc";
+        } else {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by a.HomeworkPostDate desc";
+        }
         $to_limit = empty($limit) ? 20 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -277,6 +289,9 @@ class tad_web_homework
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
 
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/image");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/file");
         $ck = new CKEditor("tad_web", "HomeworkContent", $HomeworkContent);
         $ck->setHeight(300);
         $editor = $ck->render();

@@ -19,14 +19,15 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //分類設定
 function list_all_cate($WebID = "", $ColName = "", $table = "")
 {
-    global $xoopsTpl;
+    global $xoopsTpl, $menu_var;
     if (empty($WebID) or empty($ColName)) {
         return;
     }
 
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
-    $cate           = $web_cate->get_tad_web_cate_arr();
+    $cate = $web_cate->get_tad_web_cate_arr();
+
     $cate_menu_form = $web_cate->cate_menu($CateID, "form", true, false, true, false, false);
     $xoopsTpl->assign('cate_menu_form', $cate_menu_form);
 /*
@@ -59,6 +60,7 @@ array (
     $xoopsTpl->assign('cate_arr', $cate);
     $xoopsTpl->assign('ColName', $ColName);
     $xoopsTpl->assign('WebID', $WebID);
+    $xoopsTpl->assign('plugin', $menu_var[$ColName]);
 
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
         redirect_header("index.php", 3, _MD_NEED_TADTOOLS);

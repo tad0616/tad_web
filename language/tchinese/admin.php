@@ -76,3 +76,4 @@ define('_MA_TCW_CO_ADMIN', '恨瞶');
 
 define('_MA_TADWEB_PLUGIN_TITLE', '本嘿');
 define('_MA_TADWEB_PLUGIN_TOTAL', '本戈计');
+define('_MA_TCW_LAST_ACCESSED', '程丁');

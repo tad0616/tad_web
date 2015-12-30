@@ -22,7 +22,7 @@ class tad_web_aboutus
             $list_web_order = 'WebSort';
         }
         //全國版
-        if (XOOPS_URL == "http://class.tn.edu.tw") {
+        if (_IS_EZCLASS) {
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 
             $def_county     = system_CleanVars($_REQUEST, 'county', '', 'string');
@@ -530,7 +530,6 @@ class tad_web_aboutus
         $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_MEM, $this->setup['student_title']));
         $xoopsTpl->assign('no_student', sprintf(_MD_TCW_NO_MEM, $this->setup['student_title']));
         $xoopsTpl->assign('import_excel', sprintf(_MD_TCW_IMPORT_EXCEL, $this->setup['student_title']));
-        // $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_STUDENT, $this->setup['student_title']));
 
         $cate = $this->web_cate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate', $cate);

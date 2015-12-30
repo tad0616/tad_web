@@ -10,3 +10,5 @@ $pluginConfig['cate_table'] = 'tad_web_action';
 $pluginConfig['common']     = true;
 $pluginConfig['sql']        = array('tad_web_action');
 $pluginConfig['setup']      = false;
+$pluginConfig['add']        = true;
+$pluginConfig['menu']       = true;

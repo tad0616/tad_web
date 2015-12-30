@@ -11,7 +11,13 @@ function list_all_web($defCateID = '')
 {
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
-    $sql = "select * from " . $xoopsDB->prefix("tad_web") . "  order by WebSort";
+    $sql = "select * from " . $xoopsDB->prefix("tad_web") . "  order by used_size desc";
+
+    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+    $PageBar = getPageBar($sql, 50, 10);
+    $bar     = $PageBar['bar'];
+    $sql     = $PageBar['sql'];
+    $total   = $PageBar['total'];
 
     $result            = $xoopsDB->query($sql) or web_error($sql);
     $_SESSION['quota'] = '';
@@ -52,6 +58,7 @@ function list_all_web($defCateID = '')
 
     //sort($space);
     arsort($space);
+    $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('space', $space);
     $xoopsTpl->assign('free_space', get_free_space());

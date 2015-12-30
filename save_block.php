@@ -25,8 +25,19 @@ switch ($op) {
             //複製一份給目前網站
 
             $BlockSort = max_blocks_sort($WebID, $PositionName);
-            $sql       = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `BlockShare`, `WebID`, `plugin`) values('{$block['BlockName']}', '0', '{$block['BlockTitle']}', '{$block['BlockContent']}', '1', '{$block['BlockConfig']}', '{$PositionName}', '0', '0', '{$WebID}', 'custom')";
-            // $log .= "<div>$sql</div>";
+            $myts      = MyTextSanitizer::getInstance();
+
+            $BlockTitle   = $myts->addSlashes($block['BlockTitle']);
+            $BlockContent = $myts->addSlashes($block['BlockContent']);
+            $BlockConfig  = $myts->addSlashes($block['BlockConfig']);
+            $BlockName    = $myts->addSlashes($block['BlockName']);
+            $sql          = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `BlockShare`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '{$BlockContent}', '1', '{$BlockConfig}', '{$PositionName}', '0', '0', '{$WebID}', 'custom')";
+
+            $text_color   = get_web_config('block_pic_text_color', $WebID);
+            $border_color = get_web_config('block_pic_border_color', $WebID);
+            $text_size    = get_web_config('block_pic_text_size', $WebID);
+            $font         = get_web_config('block_pic_font', $WebID);
+            mkTitlePic($WebID, "block_{$BlockName}", $BlockTitle, $text_color, $border_color, $text_size, $font);
             $xoopsDB->queryF($sql) or web_error($sql);
         } else {
 
@@ -63,7 +74,6 @@ switch ($op) {
                     $BlockID = $copyBlockID;
                 }
                 $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockSort`='{$sort}' where `BlockID`='{$BlockID}'";
-                // $log .= "<div>$sql</div>";
                 $xoopsDB->queryF($sql) or web_error($sql);
                 $sort++;
             }
@@ -77,7 +87,11 @@ switch ($op) {
         $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockEnable`='{$BlockEnable}' where `BlockID`='{$BlockID}'";
         // $log .= "<div>$sql</div>";
         $xoopsDB->queryF($sql) or web_error($sql);
-        // die($log);
+        $text_color   = get_web_config('block_pic_text_color', $WebID);
+        $border_color = get_web_config('block_pic_border_color', $WebID);
+        $text_size    = get_web_config('block_pic_text_size', $WebID);
+        $font         = get_web_config('block_pic_font', $WebID);
+        mkTitlePic($WebID, "block_{$BlockName}", $BlockTitle, $text_color, $border_color, $text_size, $font);
         echo _MD_TCW_SAVED . " (" . date("Y-m-d H:i:s") . ")";
         break;
 }

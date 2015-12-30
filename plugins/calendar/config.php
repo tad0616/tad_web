@@ -8,3 +8,7 @@ $pluginConfig['limit']  = '';
 $pluginConfig['cate']   = false;
 $pluginConfig['common'] = true;
 $pluginConfig['sql']    = array('tad_web_calendar');
+$pluginConfig['add']    = true;
+$pluginConfig['menu']   = true;
+$pluginConfig['add']    = true;
+$pluginConfig['menu']   = true;

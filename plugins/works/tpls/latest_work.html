@@ -1,6 +1,7 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $bc.main_data}>
-  <h3><{if $block.config.show_title!='0'}><{$block.BlockTitle}> / <{/if}><a href="works.php?WebID=<{$WebID}>&WorksID=<{$bc.WorksID}>"><{$bc.WorkName}></a></h3>
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title_b3.html"}>
+  <h3><a href="works.php?WebID=<{$WebID}>&WorksID=<{$bc.WorksID}>"><{$bc.WorkName}></a></h3>
   <div class="text-center">
     <{$bc.main_data}>
   </div>

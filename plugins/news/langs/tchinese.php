@@ -9,7 +9,6 @@ define("_MD_TCW_TOCAL", "加到行事曆");
 define("_MD_TCW_NEWSPLACE", "地點");
 define("_MD_TCW_NEWSMASTER", "主持人");
 define("_MD_TCW_NEWSURL", "相關連結");
-define("_MD_TCW_NEWSKIND", "文章種類");
 define("_MD_TCW_NEWSCOUNTER", "人氣");
 define("_MD_TCW_NEWS_ADD", "發布消息");
 define("_MD_TCW_NEWS_TO_CAL", "填上日期，即可將此消息加到行事曆中");

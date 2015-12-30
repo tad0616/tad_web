@@ -5,6 +5,9 @@ $WebID = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
 include_once "function.php";
 include_once "class/cate.php";
 
+$is_ezclass = XOOPS_URL == "http://class.tn.edu.tw" ? true : false;
+define(_IS_EZCLASS, $is_ezclass);
+
 //判斷是否對該模組有管理權限
 $isAdmin    = false;
 $LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = '';
@@ -35,6 +38,7 @@ if ($xoopsUser) {
 
 if (!empty($WebID)) {
     $Web = getWebInfo($WebID);
+    update_last_accessed($WebID);
     if ($Web) {
         $WebName  = $Web['WebName'];
         $WebTitle = $Web['WebTitle'];

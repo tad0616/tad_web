@@ -10,3 +10,5 @@ $pluginConfig['cate_table'] = 'tad_web_schedule';
 $pluginConfig['common']     = true;
 $pluginConfig['sql']        = array('tad_web_schedule', 'tad_web_schedule_data');
 $pluginConfig['setup']      = false;
+$pluginConfig['add']        = true;
+$pluginConfig['menu']       = true;

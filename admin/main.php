@@ -40,9 +40,15 @@ function list_all_web($defCateID = '')
 
     $and_cate = empty($defCateID) ? "" : "and CateID='{$defCateID}'";
 
-    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where 1 $and_cate order by WebSort";
+    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where 1 $and_cate order by WebSort, last_accessed desc ,CreatDate desc";
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+    $PageBar = getPageBar($sql, 50, 10);
+    $bar     = $PageBar['bar'];
+    $sql     = $PageBar['sql'];
+    $total   = $PageBar['total'];
+    $result  = $xoopsDB->query($sql) or web_error($sql);
+    $xoopsTpl->assign('bar', $bar);
 
     $data = "";
     $i    = 1;
@@ -408,6 +414,13 @@ function save_one_web_title($WebID = '', $WebTitle = '')
     $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    //修改班級名稱
+    $default_class = get_web_config('default_class', $WebID);
+    if (!empty($WebID) and !empty($default_class)) {
+        $sql = "update " . $xoopsDB->prefix("tad_web_cate") . " set `CateName` = '{$WebTitle}' where `CateID`='{$default_class}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
     mk_menu_var_file($WebID);
 
     mklogoPic($WebID);
@@ -450,8 +463,10 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$g2p    = system_CleanVars($_REQUEST, 'g2p', 0, 'int');
 
 $xoopsTpl->assign('op', $op);
+$xoopsTpl->assign('g2p', $g2p);
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/
@@ -468,7 +483,7 @@ switch ($op) {
 
     case "save_webs_title":
         save_webs_title($_POST['webTitle'], $_POST['old_webTitle']);
-        header("location: {$_SERVER['PHP_SELF']}");
+        header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
         exit;
         break;
 
@@ -482,7 +497,7 @@ switch ($op) {
     //更新資料
     case "update_tad_web":
         update_tad_web($WebID);
-        header("location: {$_SERVER['PHP_SELF']}");
+        header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
         exit;
         break;
 
@@ -504,7 +519,7 @@ switch ($op) {
     //刪除資料
     case "delete_tad_web":
         delete_tad_web($WebID);
-        header("location: {$_SERVER['PHP_SELF']}");
+        header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
         exit;
         break;
 

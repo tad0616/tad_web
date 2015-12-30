@@ -73,3 +73,4 @@ define('_MA_TCW_CO_ADMIN', 'Co-administrator');
 
 define('_MA_TADWEB_PLUGIN_TITLE', 'Plugin Title');
 define('_MA_TADWEB_PLUGIN_TOTAL', 'Total');
+define('_MA_TCW_LAST_ACCESSED', 'Last access');

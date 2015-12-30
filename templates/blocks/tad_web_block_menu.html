@@ -138,11 +138,12 @@
             <{/foreach}>
           </select>
         <{/if}>
-
-        <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$block.defaltWebID}>" class="btn">
-          <i class="fa fa-home"></i>
-          <{$block.back_home}>
-        </a>
+        <div style="margin:10px 0px;">
+          <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$block.defaltWebID}>">
+            <i class="fa fa-home"></i>
+            <{$block.back_home}>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -166,48 +167,52 @@
 
     <table class="table">
       <{foreach from=$block.plugins item=plugin}>
-        <{if $plugin.enable=='1'}>
-          <tr>
-            <td>
-              <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
-                <i class="fa <{$plugin.icon}>"></i>
-                <{$plugin.title}>
-              </a>
-            </td>
-
-
-            <td>
-              <{if $plugin.setup=='1'}>
-                <a href="<{$xoops_url}>/modules/tad_web/setup.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>&op=plugin_setup" title="<{$smarty.const._MB_TCW_SETUP}><{$plugin.short}>">
-                  <i class="fa fa-wrench"></i>
+        <{if $plugin.menu=='1'}>
+          <{if $plugin.enable=='1'}>
+            <tr>
+              <td>
+                <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
+                  <i class="fa <{$plugin.icon}>"></i>
+                  <{$plugin.title}>
                 </a>
-              <{/if}>
-            </td>
+              </td>
 
-            <td>
-              <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
-                <i class="fa fa-plus"></i>
-              </a>
-            </td>
-            <td>
-              <{if $plugin.cate=='1'}>
-                <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>&table=<{$plugin.cate_table}>"  title="<{$plugin.short}><{$smarty.const._MB_TCW_CATE_TOOLS}>">
-                  <i class="fa fa-folder-open"></i>
-                </a>
-              <{/if}>
 
-            </td>
-          </tr>
-        <{else}>
-          <tr style="background-color: #dfdfdf;">
-            <td style="background-color: #dfdfdf; color:#5f5f5f;">
-                <i class="fa <{$plugin.icon}>"></i>
-                <{$plugin.title}>
-            </td>
-            <td colspan=2 style="background-color: #dfdfdf;">
-              <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-<{$block.mini}>"><{$smarty.const._MB_TCW_ENABLE_PLUGIN}></a>
-            </td>
-          </tr>
+              <td>
+                <{if $plugin.setup=='1'}>
+                  <a href="<{$xoops_url}>/modules/tad_web/setup.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>&op=plugin_setup" title="<{$smarty.const._MB_TCW_SETUP}><{$plugin.short}>">
+                    <i class="fa fa-wrench"></i>
+                  </a>
+                <{/if}>
+              </td>
+
+              <td>
+                <{if $plugin.add=='1'}>
+                  <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                <{/if}>
+              </td>
+              <td>
+                <{if $plugin.cate=='1'}>
+                  <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>&table=<{$plugin.cate_table}>"  title="<{$plugin.short}><{$smarty.const._MB_TCW_CATE_TOOLS}>">
+                    <i class="fa fa-folder-open"></i>
+                  </a>
+                <{/if}>
+
+              </td>
+            </tr>
+          <{else}>
+            <tr style="background-color: #dfdfdf;">
+              <td style="background-color: #dfdfdf; color:#5f5f5f;">
+                  <i class="fa <{$plugin.icon}>"></i>
+                  <{$plugin.title}>
+              </td>
+              <td colspan=2 style="background-color: #dfdfdf;">
+                <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-<{$block.mini}>"><{$smarty.const._MB_TCW_ENABLE_PLUGIN}></a>
+              </td>
+            </tr>
+          <{/if}>
         <{/if}>
       <{/foreach}>
     </table>

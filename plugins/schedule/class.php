@@ -36,8 +36,21 @@ class tad_web_schedule
         } else {
             $andDisplay = "and a.`ScheduleDisplay`='1'";
         }
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID $andDisplay order by b.WebSort";
 
+        if (_IS_EZCLASS and !empty($_GET['county'])) {
+            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
+
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by b.WebSort";
+        } else {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID $andDisplay order by b.WebSort";
+        }
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $main_data = "";

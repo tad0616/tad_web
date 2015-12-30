@@ -33,8 +33,20 @@ class tad_web_news
             }
         }
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by NewsDate desc";
+        if (_IS_EZCLASS and !empty($_GET['county'])) {
+            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.NewsDate desc";
+        } else {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.NewsDate desc";
+        }
         $to_limit = empty($limit) ? 10 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -54,7 +66,7 @@ class tad_web_news
         $cate = $this->web_cate->get_tad_web_cate_arr();
 
         while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal , $NewsPlace , $NewsMaster , $NewsUrl , $WebID , $NewsKind , $NewsCounter
+            //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal  , $NewsUrl , $WebID  , $NewsCounter
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
@@ -63,6 +75,14 @@ class tad_web_news
 
             $this->web_cate->set_WebID($WebID);
 
+            $Content = get_article_content($NewsContent);
+
+            if ($Content['pages'] > 1) {
+                $main_data[$i]['NewsContent'] = $Content['info'];
+                $main_data[$i]['more']        = true;
+            } else {
+                $main_data[$i]['more'] = false;
+            }
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
 
@@ -83,7 +103,6 @@ class tad_web_news
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert      = new sweet_alert();
         $sweet_alert_code = $sweet_alert->render("delete_news_func", "news.php?op=delete&WebID={$this->WebID}&NewsID=", 'NewsID');
-        $xoopsTpl->assign('sweet_delete_news_func_code', $sweet_alert_code);
 
         if ($mode == "return") {
             $data['main_data'] = $main_data;
@@ -98,12 +117,13 @@ class tad_web_news
     }
 
     //以流水號秀出某筆tad_web_news資料內容
-    public function show_one($NewsID = "")
+    public function show_one($NewsID = "", $mode = "assign")
     {
         global $xoopsDB, $WebID, $isAdmin, $xoopsTpl, $TadUpFiles, $isMyWeb;
         if (empty($NewsID)) {
             return;
         }
+
         $NewsID = intval($NewsID);
         $this->add_counter($NewsID);
 
@@ -111,7 +131,7 @@ class tad_web_news
         $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal , $NewsPlace , $NewsMaster , $NewsUrl , $WebID , $NewsKind , $NewsCounter ,$uid
+        //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal  , $NewsUrl , $WebID , $NewsCounter ,$uid
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -129,16 +149,28 @@ class tad_web_news
 
         $TadUpFiles->set_col("NewsID", $NewsID);
         $NewsFiles = $TadUpFiles->show_files('upfile', true, "", true, false, null, null, false, '');
-
-        $xoopsTpl->assign('NewsTitle', $NewsTitle);
-        $xoopsTpl->assign('NewsUrlTxt', $NewsUrlTxt);
-        $xoopsTpl->assign('NewsContent', $NewsContent);
-        $xoopsTpl->assign('uid_name', $uid_name);
-        $xoopsTpl->assign('NewsDate', $NewsDate);
-        $xoopsTpl->assign('NewsCounter', $NewsCounter);
-        $xoopsTpl->assign('NewsFiles', $NewsFiles);
-        $xoopsTpl->assign('NewsID', $NewsID);
-        $xoopsTpl->assign('NewsInfo', sprintf(_MD_TCW_INFO, $uid_name, $NewsDate, $NewsCounter));
+        if ($mode == "return") {
+            $data['NewsTitle']   = $NewsTitle;
+            $data['NewsUrlTxt']  = $NewsUrlTxt;
+            $data['NewsContent'] = $NewsContent;
+            $data['uid_name']    = $uid_name;
+            $data['NewsDate']    = $NewsDate;
+            $data['NewsCounter'] = $NewsCounter;
+            $data['NewsFiles']   = $NewsFiles;
+            $data['NewsID']      = $NewsID;
+            $data['NewsInfo']    = sprintf(_MD_TCW_INFO, $uid_name, $NewsDate, $NewsCounter);
+            return $data;
+        } else {
+            $xoopsTpl->assign('NewsTitle', $NewsTitle);
+            $xoopsTpl->assign('NewsUrlTxt', $NewsUrlTxt);
+            $xoopsTpl->assign('NewsContent', $NewsContent);
+            $xoopsTpl->assign('uid_name', $uid_name);
+            $xoopsTpl->assign('NewsDate', $NewsDate);
+            $xoopsTpl->assign('NewsCounter', $NewsCounter);
+            $xoopsTpl->assign('NewsFiles', $NewsFiles);
+            $xoopsTpl->assign('NewsID', $NewsID);
+            $xoopsTpl->assign('NewsInfo', sprintf(_MD_TCW_INFO, $uid_name, $NewsDate, $NewsCounter));
+        }
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
@@ -150,7 +182,15 @@ class tad_web_news
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert      = new sweet_alert();
         $sweet_alert_code = $sweet_alert->render("delete_news_func", "news.php?op=delete&WebID={$WebID}&NewsID=", 'NewsID');
-        $xoopsTpl->assign('sweet_delete_news_func_code', $sweet_alert_code);
+
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jquery-print-preview.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/jquery-print-preview.php";
+        $print_preview      = new print_preview('a.print-preview');
+        $print_preview_code = $print_preview->render();
+
+        $xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print" />');
     }
 
     //tad_web_news編輯表單
@@ -196,14 +236,6 @@ class tad_web_news
         }
         $xoopsTpl->assign('toCal', $toCal);
 
-        //設定「NewsPlace」欄位預設值
-        $NewsPlace = (!isset($DBV['NewsPlace'])) ? "" : $DBV['NewsPlace'];
-        $xoopsTpl->assign('NewsPlace', $NewsPlace);
-
-        //設定「NewsMaster」欄位預設值
-        $NewsMaster = (!isset($DBV['NewsMaster'])) ? "" : $DBV['NewsMaster'];
-        $xoopsTpl->assign('NewsMaster', $NewsMaster);
-
         //設定「NewsUrl」欄位預設值
         $NewsUrl = (!isset($DBV['NewsUrl'])) ? "" : $DBV['NewsUrl'];
         $xoopsTpl->assign('NewsUrl', $NewsUrl);
@@ -211,10 +243,6 @@ class tad_web_news
         //設定「WebID」欄位預設值
         $WebID = (!isset($DBV['WebID'])) ? $this->WebID : $DBV['WebID'];
         $xoopsTpl->assign('WebID', $WebID);
-
-        //設定「NewsKind」欄位預設值
-        $NewsKind = (!isset($DBV['NewsKind'])) ? "news" : $DBV['NewsKind'];
-        $xoopsTpl->assign('NewsKind', $NewsKind);
 
         //設定「NewsCounter」欄位預設值
         $NewsCounter = (!isset($DBV['NewsCounter'])) ? "" : $DBV['NewsCounter'];
@@ -236,7 +264,10 @@ class tad_web_news
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
 
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
-        $ck = new CKEditor("tad_web", "NewsContent", $NewsContent);
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/image");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/file");
+        $ck = new CKEditor("tad_web/{$this->WebID}/news", "NewsContent", $NewsContent);
         $ck->setHeight(300);
         $editor = $ck->render();
         $xoopsTpl->assign('NewsContent_editor', $editor);
@@ -257,8 +288,6 @@ class tad_web_news
 
         $myts                 = &MyTextSanitizer::getInstance();
         $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
-        $_POST['NewsPlace']   = $myts->addSlashes($_POST['NewsPlace']);
-        $_POST['NewsMaster']  = $myts->addSlashes($_POST['NewsMaster']);
         $_POST['NewsUrl']     = $myts->addSlashes($_POST['NewsUrl']);
         $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);
         $_POST['CateID']      = intval($_POST['CateID']);
@@ -270,8 +299,8 @@ class tad_web_news
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_news") . "
-        (`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsPlace` , `NewsMaster` , `NewsUrl` , `WebID` , `NewsKind` , `NewsCounter` , `uid`)
-        values('{$CateID}','{$_POST['NewsTitle']}' , '{$_POST['NewsContent']}' , '{$_POST['NewsDate']}' , '{$_POST['toCal']}' , '{$_POST['NewsPlace']}' , '{$_POST['NewsMaster']}' , '{$_POST['NewsUrl']}' , '{$_POST['WebID']}' , '{$_POST['NewsKind']}' , '0' , '{$uid}')";
+        (`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsUrl` , `WebID` , `NewsCounter` , `uid`)
+        values('{$CateID}','{$_POST['NewsTitle']}' , '{$_POST['NewsContent']}' , '{$_POST['NewsDate']}' , '{$_POST['toCal']}' , '{$_POST['NewsUrl']}' , '{$_POST['WebID']}'  , '0' , '{$uid}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -291,8 +320,6 @@ class tad_web_news
 
         $myts                 = &MyTextSanitizer::getInstance();
         $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
-        $_POST['NewsPlace']   = $myts->addSlashes($_POST['NewsPlace']);
-        $_POST['NewsMaster']  = $myts->addSlashes($_POST['NewsMaster']);
         $_POST['NewsUrl']     = $myts->addSlashes($_POST['NewsUrl']);
         $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);
         $_POST['CateID']      = intval($_POST['CateID']);
@@ -312,8 +339,6 @@ class tad_web_news
          `NewsContent` = '{$_POST['NewsContent']}' ,
          `NewsDate` = '{$_POST['NewsDate']}' ,
          `toCal` = '{$_POST['toCal']}' ,
-         `NewsPlace` = '{$_POST['NewsPlace']}' ,
-         `NewsMaster` = '{$_POST['NewsMaster']}' ,
          `NewsUrl` = '{$_POST['NewsUrl']}'
         where NewsID='$NewsID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
@@ -387,5 +412,4 @@ class tad_web_news
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
-
 }

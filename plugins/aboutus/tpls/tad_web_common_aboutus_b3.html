@@ -12,7 +12,7 @@
 
 <{if $WebID=="" and $data}>
 
-  <{if $xoops_url=="http://class.tn.edu.tw" and $web_version=="all"}>
+  <{if $_IS_EZCLASS and $web_version=="all"}>
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_all.html"}>
   <{else}>
     <{if $tad_web_cate}>

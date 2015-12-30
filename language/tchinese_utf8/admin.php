@@ -76,3 +76,4 @@ define('_MA_TCW_CO_ADMIN', '共同管理員');
 
 define('_MA_TADWEB_PLUGIN_TITLE', '外掛名稱');
 define('_MA_TADWEB_PLUGIN_TOTAL', '外掛資料數');
+define('_MA_TCW_LAST_ACCESSED', '最後存取時間');

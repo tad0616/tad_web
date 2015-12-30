@@ -1,7 +1,9 @@
 <{foreach from=$side_block item=block}>
   <div class="tad_web_block">
+
     <{if $block.plugin=="xoops"}>
-        <{block id=$block.BlockName}>
+      <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title_b3.html"}>
+      <{block id=$block.BlockName}>
     <{elseif $block.plugin=="custom"}>
       <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_custom_b3.html"}>
     <{else}>
@@ -9,6 +11,7 @@
         <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
       <{/if}>
     <{/if}>
+
     <{if $isMyWeb and $WebID and $block.BlockContent.main_data}>
       <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool_b3.html"}>
     <{/if}>

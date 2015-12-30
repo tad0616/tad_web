@@ -22,7 +22,6 @@
             <tr>
               <td nowrap><{$smarty.const._MA_TCW_TEAMTITLE}></td>
               <td>
-
                 <div class="row">
                   <div class="col-md-3">
                     <select name="year" class="form-control">
@@ -78,6 +77,7 @@
       <input type="submit" value="<{$smarty.const._TAD_SAVE}>">
     </form>
   <{elseif $op=="create_web"}>
+
     <a href="main.php?op=create_by_user" class="btn btn-large btn-info"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
   <{elseif $op=="create_by_user"}>
     <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_core.js"></script>
@@ -194,6 +194,7 @@
       </div>
     <{/if}>
 
+    <{$bar}>
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
       <div id="save_msg"></div>
       <table class="table table-striped table-hover" style="width:auto;">
@@ -205,6 +206,7 @@
           <th><{$smarty.const._MA_TCW_CO_ADMIN}></th>
           <th><{$smarty.const._MA_TCW_MEM_AMOUNT}></th>
           <th><{$smarty.const._MA_TCW_TEAMCOUNTER}></th>
+          <th><{$smarty.const._MA_TCW_LAST_ACCESSED}></th>
           <th><{$smarty.const._TAD_FUNCTION}></th>
         </tr>
         <tbody id="sort">
@@ -223,7 +225,7 @@
 
               <a href="../index.php?WebID=<{$class.WebID}>" target="_blank"><{$class.WebName}></a>
             </td>
-            <td>
+            <td style="width: 300px;">
               <input type="text" name="webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>" class="form-control">
               <input type="hidden" name="old_webTitle[<{$class.WebID}>]" value="<{$class.WebTitle}>">
             </td>
@@ -244,6 +246,9 @@
               <{$class.WebCounter}>
             </td>
             <td>
+              <{$class.last_accessed}>
+            </td>
+            <td>
               <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-xs btn-info"><{$smarty.const._TAD_EDIT}></a>
 
             </td>
@@ -253,10 +258,12 @@
         <tr>
           <td colspan=8 style="text-align: center;">
             <input type="hidden" name="op" value="save_webs_title">
+            <input type="hidden" name="g2p" value="<{$g2p}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
           </td>
         </tr>
       </table>
     </form>
+    <{$bar}>
   <{/if}>
 </div>

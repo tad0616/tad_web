@@ -26,54 +26,60 @@
   });
 </script>
 
-<h1><{$smarty.const._MD_TCW_CATE_TOOLS}></h1>
+<h1><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_TOOLS}></h1>
 
-<form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
-  <{$cate_menu_form}>
-  <hr>
+<{if $cate_arr}>
+  <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <{$cate_menu_form}>
+    <hr>
 
-  <{foreach from=$cate_opt_arr item=cate}>
-    <!--<{$cate.CateName}>-->
-    <div class="form-group">
-      <label class="col-md-2 control-label">
-        <span class="label label-success"><{$cate.counter}></span>
-        <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
-      </label>
-      <div class="col-md-4">
-        <select name="act[<{$cate.CateID}>]" id="<{$cate.CateID}>" class="form-control act">
-          <option value=""><{$smarty.const._MD_TCW_CATE_NONE}></option>
-          <option value="move"><{$smarty.const._MD_TCW_CATE_MOVE}></option>
-          <option value="rename"><{$smarty.const._MD_TCW_CATE_MODIFY}></option>
-          <option value="delete"><{$smarty.const._MD_TCW_DEL_CATE_MOVE_TO}></option>
-          <option value="del_all"><{$smarty.const._MD_TCW_DEL_CATE_ALL}></option>
-        </select>
-      </div>
-      <div class="col-md-6">
-        <input type="text" name="newName[<{$cate.CateID}>]" value="<{$cate.CateName}>" id="new_name_col<{$cate.CateID}>" class="validate[required] form-control new_name_col" style="display: none;">
-        <select name="move2[<{$cate.CateID}>]" id="move2<{$cate.CateID}>" class="form-control move2" style="display: none;">
-          <{foreach from=$cate_arr item=other}>
-            <{if $other.CateID!=$cate.CateID}>
-              <option value="<{$other.CateID}>"><{$other.CateName}></option>
-            <{/if}>
-          <{/foreach}>
-        </select>
-        <div id="del_alert<{$cate.CateID}>" class="del_alert" style="color: red; display: none;">
-          <label class="checkbox">
-            <input type="checkbox" name="alert[<{$cate.CateID}>]" value="yes">
-            <{$smarty.const._MD_TCW_DEL_CATE_ALL_ALERT}>
-          </label>
+    <{foreach from=$cate_opt_arr item=cate}>
+      <!--<{$cate.CateName}>-->
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <span class="label label-success"><{$cate.counter}></span>
+          <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
+        </label>
+        <div class="col-md-4">
+          <select name="act[<{$cate.CateID}>]" id="<{$cate.CateID}>" class="form-control act">
+            <option value=""><{$smarty.const._MD_TCW_CATE_NONE_OPT}></option>
+            <option value="move"><{$smarty.const._MD_TCW_CATE_MOVE}></option>
+            <option value="rename"><{$smarty.const._MD_TCW_CATE_MODIFY}></option>
+            <option value="delete"><{$smarty.const._MD_TCW_DEL_CATE_MOVE_TO}></option>
+            <option value="del_all"><{$smarty.const._MD_TCW_DEL_CATE_ALL}></option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <input type="text" name="newName[<{$cate.CateID}>]" value="<{$cate.CateName}>" id="new_name_col<{$cate.CateID}>" class="validate[required] form-control new_name_col" style="display: none;">
+          <select name="move2[<{$cate.CateID}>]" id="move2<{$cate.CateID}>" class="form-control move2" style="display: none;">
+            <{foreach from=$cate_arr item=other}>
+              <{if $other.CateID!=$cate.CateID}>
+                <option value="<{$other.CateID}>"><{$other.CateName}></option>
+              <{/if}>
+            <{/foreach}>
+          </select>
+          <div id="del_alert<{$cate.CateID}>" class="del_alert" style="color: red; display: none;">
+            <label class="checkbox">
+              <input type="checkbox" name="alert[<{$cate.CateID}>]" value="yes">
+              <{$smarty.const._MD_TCW_DEL_CATE_ALL_ALERT}>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-  <{/foreach}>
+    <{/foreach}>
 
 
-  <div class="form-group">
-    <div class="col-md-12 text-center">
-      <input type="hidden" name="ColName" value="<{$ColName}>">
-      <input type="hidden" name="WebID" value="<{$WebID}>">
-      <input type="hidden" name="op" value="save_cate">
-      <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+    <div class="form-group">
+      <div class="col-md-12 text-center">
+        <input type="hidden" name="ColName" value="<{$ColName}>">
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="op" value="save_cate">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+      </div>
     </div>
+  </form>
+<{else}>
+  <div class="jumbotron">
+    <h1><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_NONE}></h1>
   </div>
-</form>
+<{/if}>

@@ -32,9 +32,20 @@ class tad_web_video
                 $xoopsTpl->assign('VideoDefCateID', $CateID);
             }
         }
+        if (_IS_EZCLASS and !empty($_GET['county'])) {
+            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.VideoDate desc , a.VideoID desc";
-
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.VideoDate desc , a.VideoID desc";
+        } else {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.VideoDate desc , a.VideoID desc";
+        }
         $to_limit = empty($limit) ? 20 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -66,6 +77,14 @@ class tad_web_video
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            if (empty($VideoPlace)) {
+                $VideoPlace = $this->tad_web_getYTid($Youtube);
+                if (!empty($VideoPlace)) {
+                    $main_data[$i]['VideoPlace'] = $VideoPlace;
+                    $sql                         = "update " . $xoopsDB->prefix("tad_web_video") . " set `VideoPlace` = '{$VideoPlace}' where VideoID='{$VideoID}'";
+                    $xoopsDB->queryF($sql) or web_error($sql);
+                }
+            }
 
             $i++;
         }
@@ -271,6 +290,8 @@ class tad_web_video
     {
         if (substr($ytURL, 0, 16) == 'http://youtu.be/') {
             return substr($ytURL, 16);
+        } elseif (substr($ytURL, 0, 17) == 'https://youtu.be/') {
+            return substr($ytURL, 17);
         } else {
             parse_str(parse_url($ytURL, PHP_URL_QUERY), $params);
             return $params['v'];

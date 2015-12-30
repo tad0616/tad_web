@@ -65,8 +65,6 @@
 
 
       <div class="text-center">
-        <!--文章種類-->
-        <input type="hidden" name="NewsKind" value="news">
         <!--編號-->
         <input type="hidden" name="NewsID" value="<{$NewsID}>">
         <input type="hidden" name="WebID" value="<{$WebID}>">
@@ -76,10 +74,6 @@
     </form>
   </div>
 <{elseif $op=="show_one"}>
-
-  <{if $isMyWeb}>
-    <{$sweet_delete_news_func_code}>
-  <{/if}>
 
   <h1><{$NewsTitle}></h1>
 
@@ -104,14 +98,15 @@
   <{/if}>
 
   <{$NewsFiles}>
-
-  <{if $isMyWeb}>
-    <div class="text-right" style="margin: 30px 0px;">
+  <div id="adm_bar" class="text-right" style="margin: 30px 0px;">
+    <{if $isMyWeb}>
       <a href="javascript:delete_news_func(<{$NewsID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$NewsID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
-    </div>
-  <{/if}>
+    <{/if}>
+
+    <a class="btn btn-success print-preview"><i class="fa fa-print"></i> <{$smarty.const._MD_TCW_PRINT}></a>
+  </div>
 <{elseif $news_data}>
   <{if $WebID}>
     <{$cate_menu}>
