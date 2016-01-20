@@ -11,7 +11,6 @@ function list_page($WebID, $config = array())
     $tad_web_page = new tad_web_page($WebID);
 
     $block = $tad_web_page->list_all("", $config['limit'], 'return');
-    //die(var_export($block));
     return $block;
 }
 

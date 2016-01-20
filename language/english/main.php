@@ -1,7 +1,8 @@
 <?php
 //需加入模組語系
-define('_TAD_NEED_TADTOOLS', 'This module needs TadTools module. You can download TadTools from <a href="http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1" target="_blank">XOOPS EasyGO</a>.');
-
+if (!defined('_TAD_NEED_TADTOOLS')) {
+    define('_TAD_NEED_TADTOOLS', 'This module needs TadTools module. You can download TadTools from <a href="http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1" target="_blank">XOOPS EasyGO</a>.');
+}
 define('_MD_TCW_HOME', 'List');
 define("_MD_TCW_CLASS_HOME", "Home");
 define('_MD_TCW_ADMIN', 'Management');
@@ -18,6 +19,8 @@ define("_MD_TCW_BG_TOOLS", "Background");
 define("_MD_TCW_COLOR_TOOLS", "Color");
 define("_MD_TCW_BLOCK_TOOLS", "Blocks");
 define("_MD_TCW_BLOCK_TITLE", "Do you want to display the title block?");
+define("_MD_TCW_BLOCK_SHOW_TITLE", "Does display block title?");
+define("_MD_TCW_BLOCK_ENABLE", "Does enable this block?");
 define("_MD_TCW_DATA_NOT_EXIST", "This information does not exist.");
 define("_MD_TCW_WEB_NOT_EXIST", "The webdite does not exist.");
 define("_MD_TCW_SAVED", "Saved");
@@ -57,8 +60,8 @@ define('_MD_TCW_RAND_IMAGE', 'Select random background');
 define('_MD_TCW_BG_TOP', 'Ton');
 define('_MD_TCW_BG_CENTER', 'Medium');
 define('_MD_TCW_BG_BOTTOM', 'Bottom');
-define('_MD_TCW_BG_POSITION', 'Picture Location:');
-define('_MD_TCW_HELLO', 'Hello, welcome to use the Forums! Please pay attention to manners!!');
+define("_MD_TCW_LOGIN", "Login");
+define('_MD_TCW_HELLO', 'Hello!');
 define('_MD_TCW_EXIT', 'Exit');
 
 //calendar.php
@@ -178,3 +181,52 @@ define("_MD_TCW_BLOCK_TITLE_USE_PIC", "Use the block image replace text");
 define("_MD_TCW_SEARCH_RESULT", "Search Result");
 define("_MD_TCW_READ_MORE", "(more...)");
 define("_MD_TCW_PRINT", "Print");
+define("_MD_TCW_THEME_TOOLS_DEFAULT_THEME", "Default Theme");
+define("_MD_TCW_CLOSE_WEB", "Close Web");
+define("_MD_TCW_CLOSE_WEB_DESC", "After closing the site, the site list will not see the site, even if connected to the site will display a message that has been closed, only after login, from the menu to start it again.");
+define("_MD_TCW_OPEN_WEB", "Enable Web");
+define("_MD_TCW_OPEN_WEB_DESC", "Your site is currently closed, and you want to enable it?");
+define("_MD_TCW_SETUP", "Setup ");
+
+define("_MD_TCW_BG_REPEAT", "background-repeat");
+define("_MD_TCW_BG_REPEAT_NORMAL", "repeat");
+define("_MD_TCW_BG_REPEAT_X", "repeat_x");
+define("_MD_TCW_BG_REPEAT_Y", "repeat_y");
+define("_MD_TCW_BG_NO_REPEAT", "no_repeat");
+define("_MD_TCW_BG_ATTACHMENT", "background-attachment");
+define("_MD_TCW_BG_ATTACHMENT_SCROLL", "scroll");
+define("_MD_TCW_BG_ATTACHMENT_FIXED", "fixed");
+define("_MD_TCW_BG_POSITION", "background-postiton");
+define("_MD_TCW_BG_POSITION_LT", "left top");
+define("_MD_TCW_BG_POSITION_RT", "right top");
+define("_MD_TCW_BG_POSITION_LB", "left bottom");
+define("_MD_TCW_BG_POSITION_RB", "right bottom");
+define("_MD_TCW_BG_POSITION_CC", "center center");
+define("_MD_TCW_BG_POSITION_CT", "center top");
+define("_MD_TCW_BG_POSITION_CB", "center bottom");
+define("_MD_TCW_BG_SIZE", "background-size");
+define("_MD_TCW_BG_SIZE_NONE", "none");
+define("_MD_TCW_BG_SIZE_COVER", "cover");
+define("_MD_TCW_BG_SIZE_CONTAIN", "contain");
+define('_MD_TCW_MENU_BOOKS', 'Manual');
+define('_MD_TCW_MENU_DISCUSS', 'Discuss');
+define('_MD_TCW_MENU_SUGGEST', 'Suggest');
+define('_MD_TCW_LINKTO', 'Link');
+define('_MD_TCW_ADMINER', 'Adminer');
+define('_MD_TCW_ADMINPAGE', 'Admin Page');
+
+define('_MD_TCW_USE_FB_COMMENT_TEXT', 'Do you want to use FaceBook Comments box?');
+define('_MD_TCW_USE_FB_COMMENT_DESC', '"Yes" to display a FaceBook Comments box in a single page.');
+
+define('_MD_TCW_POWER_FOR', 'Who can read?');
+define('_MD_TCW_POWER_FOR_ALL', 'All users');
+define('_MD_TCW_POWER_FOR_USERS', 'All login users');
+define('_MD_TCW_POWER_FOR_WEB_USERS', 'Only my web users');
+define('_MD_TCW_POWER_FOR_WEB_ADMIN', 'Only my web admin');
+define('_MD_TCW_NOW_READ_POWER', 'No permission to read this content');
+define('_MD_TCW_TAGS', 'Tags');
+define('_MD_TCW_INPUT_TAGS', 'Please enter new tags, if more than one tag with a lowercase comma "," separated');
+define('_MD_TCW_UNABLE', 'Unabale');
+
+define('_MD_TCW_PLUGIN_MENU', 'Main Menu');
+define('_MD_TCW_USER_SIMPLE_MENU', 'Simplified menu');

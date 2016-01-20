@@ -6,10 +6,11 @@ define("_MD_TCW_ALL_WEB_COUNTER", "人氣");
 define("_MD_TCW_ALL_WEB_OWNER", "擁有者");
 define("_MD_TCW_ABOUTUS_SHORT", "成員");
 define("_MD_TCW_UID", "成員");
-define("_MD_TCW_MEMSCHOOLORGAN", "學校職稱");
-define("_MD_TCW_MEMEXPERTISES", "專長");
+define("_MD_TCW_MEM_CLASSORGAN", "職稱");
+define("_MD_TCW_MEM_EXPERTISES", "專長");
 define("_MD_TCW_MEMURL", "個人網頁");
 define("_MD_TCW_MEMTEAMORGAN", "團隊職稱");
+define("_MD_TCW_MEM_ABOUTME", "介紹");
 define("_MD_TCW_MEMORDER", "排序");
 define("_MD_TCW_MEMENABLE", "狀態");
 define("_MD_TCW_UPLOAD_MY_PHOTO", "管理者照片");
@@ -33,8 +34,8 @@ define("_MD_TCW_DEMO_NAME", "吳弘凱");
 define("_MD_TCW_BOY", "男");
 define("_MD_TCW_GIRL", "女");
 define("_MD_TCW_IMPORT_OK", "匯入完成");
-define("_MD_TCW_MEM_ENABLE", "在班上");
-define("_MD_TCW_MEM_UNABLE", "不在班上");
+define("_MD_TCW_MEM_ENABLE", "正常");
+define("_MD_TCW_MEM_UNABLE", "已不在");
 define("_MD_TCW_GET_SOMEONE", "抽幾個幸運兒吧！");
 define("_MD_TCW_IMPORT_PREVIEW", "匯入結果預覽");
 define("_MD_TCW_IMPORT_DESCRIPT", "
@@ -98,10 +99,31 @@ define('_MD_TCW_ABOUTUS_S2_DEFAULT', '班級');
 define('_MD_TCW_ABOUTUS_S3_TEXT', '將「學生」改為');
 define('_MD_TCW_ABOUTUS_S3_DESC', '將「學生」改為欲呈現的字串，例如：成員、組員、社員...等。');
 define('_MD_TCW_ABOUTUS_S3_DEFAULT', '學生');
-define('_MD_TCW_ABOUTUS_S4_TEXT', '網站列表排序依據');
-define('_MD_TCW_ABOUTUS_S4_DESC', '總覽頁網站列表的排序依據');
-define('_MD_TCW_ABOUTUS_S4_OPT1', '按照指定順序');
-define('_MD_TCW_ABOUTUS_S4_OPT2', '按照人氣由小到大');
-define('_MD_TCW_ABOUTUS_S4_OPT3', '按照人氣由大到小');
-define('_MD_TCW_ABOUTUS_S4_OPT4', '按照建站日期由舊到新');
-define('_MD_TCW_ABOUTUS_S4_OPT5', '按照建站日期由新到舊');
+
+define("_MD_TCW_ABOUT_RESET", "重排座位");
+
+define('_MD_TCW_ABOUTUS_S4_TEXT', '成員呈現方式');
+define('_MD_TCW_ABOUTUS_S4_DESC', '「關於我們」下方的成員呈現方式');
+define('_MD_TCW_ABOUTUS_S4_OPT1', '教室座位圖');
+define('_MD_TCW_ABOUTUS_S4_OPT2', '表格列表');
+define('_MD_TCW_ABOUTUS_S4_OPT3', '詳細介紹');
+
+define('_MD_TCW_ABOUTUS_S5_TEXT', '欲使用欄位');
+define('_MD_TCW_ABOUTUS_S5_DESC', '隨著不同的網站類型，可能需要不同欄位，請勾選需要的欄位。');
+define('_MD_TCW_ABOUTUS_S5_OPT1', '暱稱');
+define('_MD_TCW_ABOUTUS_S5_OPT2', '學號（或編號）');
+define('_MD_TCW_ABOUTUS_S5_OPT3', '生日');
+define('_MD_TCW_ABOUTUS_S5_OPT4', '專長');
+define('_MD_TCW_ABOUTUS_S5_OPT5', '座號');
+define('_MD_TCW_ABOUTUS_S5_OPT6', '幹部（或職稱）');
+define('_MD_TCW_ABOUTUS_S5_OPT7', '自我介紹（或職掌）');
+
+define('_MD_TCW_ABOUTUS_DEFAULT_CLASS', '預設班級');
+define('_MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC', '點入「關於我們」後，以此為預設呈現的班級');
+define('_MD_TCW_ABOUTUS_EDIT_ACCOUNT', '修改我的資料');
+define('_MD_TCW_ABOUTUS_READ_DISCUSS', '觀看留言簿');
+define('_MD_TCW_ABOUTUS_MY_ACCOUNT', '我的資料頁面');
+
+define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', '繳交作品');
+define('_MD_TCW_ABOUTUS_UPLOAD_NOW', '立即繳交');
+define('_MD_TCW_ABOUTUS_UPLOADED', '已於 %s 繳交');

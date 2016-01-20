@@ -10,6 +10,7 @@ function list_calendar($WebID, $config = array())
 
     $tad_web_calendar = new tad_web_calendar($WebID);
 
-    $block = $tad_web_calendar->list_all("", $config['limit'], 'return');
+    $block              = $tad_web_calendar->list_all("", $config['limit'], 'return');
+    $block['main_data'] = true;
     return $block;
 }

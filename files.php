@@ -27,7 +27,7 @@ switch ($op) {
 
     //更新資料
     case "update":
-        $fsn = $tad_web_files->update($files_sn);
+        $fsn = $tad_web_files->update($fsn);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -39,7 +39,7 @@ switch ($op) {
 
     //刪除資料
     case "delete":
-        $tad_web_files->delete($files_sn);
+        $tad_web_files->delete($fsn);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

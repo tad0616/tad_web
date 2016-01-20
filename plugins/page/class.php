@@ -4,16 +4,19 @@ class tad_web_page
 
     public $WebID = 0;
     public $web_cate;
+    public $setup;
 
     public function tad_web_page($WebID)
     {
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
         $this->web_cate = new web_cate($WebID, "page", "tad_web_page");
+        $this->tags     = new tags($WebID);
+        $this->setup    = get_plugin_setup_values($WebID, "page");
     }
 
     //文章剪影
-    public function list_all($CateID = "", $limit = null, $mode = "assign")
+    public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
@@ -44,6 +47,8 @@ class tad_web_page
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.PageSort";
+        } elseif (!empty($tag)) {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='PageID' and c.col_sn=a.PageID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.PageID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
         }
@@ -77,8 +82,8 @@ class tad_web_page
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
 
         if ($mode == "return") {
             $data['cate_arr']  = $cate_arr;
@@ -119,6 +124,7 @@ class tad_web_page
         }
 
         $prev_next = $this->get_prev_next($PageID, $CateID);
+        $xoopsTpl->assign('prev_next', $prev_next);
         // die(var_export($prev_next));
         $TadUpFiles->set_col("PageID", $PageID);
         $files = $TadUpFiles->show_files('upfile', true, "", true, false, null, null, false, '');
@@ -127,6 +133,10 @@ class tad_web_page
         if (empty($uid_name)) {
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
+
+        //取消換頁符號
+        $pattern     = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
+        $PageContent = preg_replace($pattern, '', $PageContent);
 
         $xoopsTpl->assign('PageTitle', $PageTitle);
         $xoopsTpl->assign('PageDate', $PageDate);
@@ -137,7 +147,9 @@ class tad_web_page
         $xoopsTpl->assign('files', $files);
         $xoopsTpl->assign('PageID', $PageID);
         $xoopsTpl->assign('PageInfo', sprintf(_MD_TCW_INFO, $uid_name, $PageDate, $PageCount));
-        $xoopsTpl->assign('prev_next', $prev_next);
+
+        $xoopsTpl->assign('xoops_pagetitle', $PageTitle);
+        $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($PageContent), 0, 300));
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
@@ -147,17 +159,21 @@ class tad_web_page
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jquery-print-preview.php")) {
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/jquery-print-preview.php";
-        $print_preview      = new print_preview('a.print-preview');
-        $print_preview_code = $print_preview->render();
+        $print_preview = new print_preview('a.print-preview');
+        $print_preview->render();
 
         $xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/page/print.css" type="text/css" media="print" />');
+        $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
+
+        $xoopsTpl->assign("tags", $this->tags->list_tags("PageID", $PageID, 'page'));
+
     }
 
     //tad_web_page編輯表單
@@ -239,10 +255,14 @@ class tad_web_page
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/image");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/file");
-        $ck = new CKEditor("tad_web", "PageContent", $PageContent);
+        $ck = new CKEditor("tad_web/{$this->WebID}/page", "PageContent", $PageContent);
         $ck->setHeight(500);
         $editor = $ck->render();
         $xoopsTpl->assign('PageContent_editor', $editor);
+
+        $tags_form = $this->tags->tags_menu("PageID", $PageID);
+        $xoopsTpl->assign('tags_form', $tags_form);
+
     }
 
     //新增資料到tad_web_page中
@@ -272,8 +292,9 @@ class tad_web_page
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
-
         check_quota($this->WebID);
+        //儲存標籤
+        $this->tags->save_tags("PageID", $PageID, $_POST['tag_name'], $_POST['tags']);
         return $PageID;
     }
 
@@ -303,8 +324,9 @@ class tad_web_page
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
-
         check_quota($this->WebID);
+        //儲存標籤
+        $this->tags->save_tags("PageID", $PageID, $_POST['tag_name'], $_POST['tags']);
         return $PageID;
     }
 
@@ -319,6 +341,8 @@ class tad_web_page
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->del_files();
         check_quota($this->WebID);
+        //刪除標籤
+        $this->tags->delete_tags("PageID", $PageID);
     }
 
     //刪除所有資料

@@ -42,29 +42,6 @@
       </div>
     </div>
 
-
-    <div class="row">
-      <div class="col-md-12">
-        <ul class="list-group">
-          <{foreach from=$yet_data key=i item=homework}>
-            <{if $i > 0}>
-              <li class="list-group-item">
-                <span class="badge"><{$homework.HomeworkCounter}></span>
-
-                <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
-
-                <{if $homework.isMyWeb}>
-                  <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                  <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
-                <{/if}>
-
-                <span style="color: #840707;"><{$homework.display_at}></span>
-              </li>
-            <{/if}>
-          <{/foreach}>
-        </ul>
-      </div>
-    </div>
   <{else}>
     <{if $web_display_mode=='index' and $homework_data}>
       <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
@@ -130,5 +107,28 @@
     <{if $isMyWeb and $WebID}>
       <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
     <{/if}>
+  </div>
+<{/if}>
+
+<{if $yet_data and $isMyWeb}>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-group">
+        <{foreach from=$yet_data key=i item=homework}>
+          <li class="list-group-item">
+            <span class="badge"><{$homework.HomeworkCounter}></span>
+
+            <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
+
+            <{if $homework.isMyWeb}>
+              <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
+
+            <span style="color: #840707;"><{$homework.display_at}></span>
+          </li>
+        <{/foreach}>
+      </ul>
+    </div>
   </div>
 <{/if}>

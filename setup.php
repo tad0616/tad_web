@@ -3,8 +3,6 @@
 include_once "header.php";
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
     $xoopsOption['template_main'] = 'tad_web_plugin_setup_b3.html';
-} elseif (!$isMyWeb and $MyWebs) {
-    redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
 } else {
     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
 }
@@ -15,7 +13,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //外掛設定功能
 function plugin_setup($WebID, $plugin)
 {
-    global $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser, $xoopsConfig;
+    global $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser, $xoopsConfig, $menu_var;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=setup", 3, _MD_TCW_AUTO_TO_HOME);
@@ -30,10 +28,16 @@ function plugin_setup($WebID, $plugin)
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
         require $setup_file;
     }
-    $setup_db_values         = get_plugin_setup_values($WebID);
+    $setup_db_values = get_plugin_setup_values($WebID, $plugin);
+    // if (isset($_GET['test'])) {
+    //     die(var_export($setup_db_values));
+    // }
     $TadUpFiles_plugin_setup = TadUpFiles_plugin_setup($WebID, $plugin);
     foreach ($plugin_setup as $k => $setup) {
-        $value = isset($setup_db_values[$setup['name']]) ? $myts->htmlSpecialChars($setup_db_values[$setup['name']]) : $setup['default'];
+        $value = $setup_db_values[$setup['name']];
+        // if (isset($_GET['test']) and $setup['name'] == 'mem_column') {
+        //     die(var_export($value));
+        // }
 
         $pluginSetup[$k]['name']    = $setup['name'];
         $pluginSetup[$k]['text']    = $setup['text'];
@@ -48,12 +52,19 @@ function plugin_setup($WebID, $plugin)
             $TadUpFiles_plugin_setup->set_col("{$plugin}_{$setup['name']}", $WebID);
             $pluginSetup[$k]['form'] = $TadUpFiles_plugin_setup->upform(false, "{$plugin}_{$setup['name']}", null, false);
             $pluginSetup[$k]['list'] = $TadUpFiles_plugin_setup->get_file_for_smarty();
+        } elseif ($setup['type'] == "checkbox") {
+            if (is_array($pluginSetup[$k]['value'])) {
+                $pluginSetup[$k]['value'] = $value;
+            } else {
+                $pluginSetup[$k]['value'] = explode(',', $pluginSetup[$k]['value']);
+            }
         }
     }
     $xoopsTpl->assign('plugin_setup', $pluginSetup);
     $xoopsTpl->assign('plugin', $plugin);
     $xoopsTpl->assign('WebID', $WebID);
-    $xoopsTpl->assign('plugin_arr', $menu_var[$ColName]);
+    // die(var_export($menu_var));
+    $xoopsTpl->assign('plugin_arr', $menu_var[$plugin]);
 }
 
 //儲存額外設定值
@@ -61,15 +72,19 @@ function save_plugin_setup($WebID = "", $plugin = "")
 {
     global $xoopsDB, $xoopsConfig;
 
-    //額外佈景設定
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php")) {
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
 
         $myts = &MyTextSanitizer::getInstance();
         foreach ($plugin_setup as $k => $setup) {
-            $name  = $setup['name'];
-            $value = isset($_POST[$name]) ? $myts->addSlashes($_POST[$name]) : $setup['default'];
+            $name = $setup['name'];
+            if ($setup['type'] == "checkbox") {
+                $value = isset($_POST[$name]) ? $myts->addSlashes(implode(',', $_POST[$name])) : implode(',', $setup['default']);
+
+            } else {
+                $value = isset($_POST[$name]) ? $myts->addSlashes($_POST[$name]) : $setup['default'];
+            }
 
             $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins_setup") . " (`WebID`, `plugin`, `name`, `type`, `value`) values($WebID, '{$plugin}','{$setup['name']}' , '{$setup['type']}' , '{$value}')";
             $xoopsDB->queryF($sql) or web_error($sql);
@@ -91,7 +106,7 @@ $op     = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 

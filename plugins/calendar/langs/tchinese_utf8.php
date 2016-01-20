@@ -13,3 +13,5 @@ define("_MD_TCW_CALENDARUID", "發布者");
 define("_MD_TCW_CALENDARCOUNT", "人氣");
 define("_MD_TCW_CALENDAR_TYPE_GLOBAL", "此事件為全域事件，會顯示到所有子網站的行事曆中");
 define("_MD_TCW_CALENDAR_BLOCK_LIST", "行事曆");
+define("_MD_TCW_CALENDAR_S1_TEXT", "是否顯示全域事件？");
+define("_MD_TCW_CALENDAR_S1_DESC", "「全域事件」是指其他網站若在新增事件時有勾選為「全域事件」的事件");

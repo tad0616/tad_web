@@ -4,7 +4,11 @@ if (aboutus_onUpdate1_chk()) {
     aboutus_onUpdate1_go();
 }
 
-//修改討論區計數欄位名稱
+if (aboutus_onUpdate2_chk()) {
+    aboutus_onUpdate2_go();
+}
+
+//修改欄位名稱
 function aboutus_onUpdate1_chk()
 {
     global $xoopsDB;
@@ -55,4 +59,29 @@ function get_seme_year()
         $year = $y - 1912;
     }
     return $year;
+}
+
+//修改欄位名稱
+function aboutus_onUpdate2_chk()
+{
+    global $xoopsDB;
+    $sql    = "select count(`MemClassOrgan`) from " . $xoopsDB->prefix("tad_web_link_mems");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function aboutus_onUpdate2_go()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_link_mems") . " ADD `MemClassOrgan` varchar(255) NOT NULL DEFAULT '' COMMENT '職稱' , ADD `AboutMem` text NOT NULL DEFAULT '' COMMENT '介紹'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_mems") . " DROP `MemUrl`, DROP `MemClassOrgan`";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    return true;
 }

@@ -4,11 +4,13 @@ class tad_web_homework
 
     public $WebID = 0;
     public $web_cate;
+    public $setup;
 
     public function tad_web_homework($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "homework", "tad_web_homework");
+        $this->setup    = get_plugin_setup_values($WebID, "homework");
     }
 
     //最新消息
@@ -44,9 +46,9 @@ class tad_web_homework
             $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.HomeworkPostDate desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where  b.`WebEnable`='1' and a.HomeworkPostDate <= '{$now}' $andCounty $andCity $andSchoolName order by a.HomeworkPostDate desc";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate <= '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by a.HomeworkPostDate desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.HomeworkPostDate <= '{$now}' $andWebID $andCateID order by a.HomeworkPostDate desc";
         }
         $to_limit = empty($limit) ? 20 : $limit;
 
@@ -67,7 +69,7 @@ class tad_web_homework
         $cweek    = array(0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT);
 
         $cate = $this->web_cate->get_tad_web_cate_arr();
-
+        $yet  = "";
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
             foreach ($all as $k => $v) {
@@ -99,10 +101,10 @@ class tad_web_homework
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
-        $xoopsTpl->assign('sweet_delete_homework_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
 
+        //找出尚未發布的聯絡簿
         $yet_data = '';
         if ($isMyWeb) {
             $i      = 0;
@@ -114,9 +116,13 @@ class tad_web_homework
                 $w                          = date("w", strtotime($toCal));
                 $yet_data[$i]['Week']       = $cweek[$w];
                 $i++;
+                $total++;
             }
         }
-        $xoopsTpl->assign('yet_data', $yet_data);
+
+        // if ($_GET['test'] == 1) {
+        //     die(var_export($yet_data));
+        // }
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php")) {
             redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1", 3, _TAD_NEED_TADTOOLS);
@@ -133,12 +139,14 @@ class tad_web_homework
 
         if ($mode == "return") {
             $data['main_data'] = $main_data;
+            $data['yet_data']  = $yet_data;
             $data['total']     = $total;
             return $data;
         } else {
             $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
             $xoopsTpl->assign('CalKind', 'homework');
             $xoopsTpl->assign('homework_data', $main_data);
+            $xoopsTpl->assign('yet_data', $yet_data);
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
             return $total;
@@ -188,6 +196,9 @@ class tad_web_homework
         $xoopsTpl->assign('HomeworkID', $HomeworkID);
         $xoopsTpl->assign('HomeworkInfo', sprintf(_MD_TCW_INFO, $uid_name, $HomeworkDate, $HomeworkCounter));
 
+        $xoopsTpl->assign('xoops_pagetitle', $HomeworkTitle);
+        $xoopsTpl->assign('fb_description', $HomeworkDate . xoops_substr(strip_tags($HomeworkContent), 0, 300));
+
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
@@ -197,9 +208,9 @@ class tad_web_homework
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
-        $xoopsTpl->assign('sweet_delete_homework_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
+        $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
     }
 
     //tad_web_homework編輯表單
@@ -292,7 +303,7 @@ class tad_web_homework
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/image");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/file");
-        $ck = new CKEditor("tad_web", "HomeworkContent", $HomeworkContent);
+        $ck = new CKEditor("tad_web/{$this->WebID}/homework", "HomeworkContent", $HomeworkContent);
         $ck->setHeight(300);
         $editor = $ck->render();
         $xoopsTpl->assign('HomeworkContent_editor', $editor);

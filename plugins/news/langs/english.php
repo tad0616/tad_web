@@ -23,3 +23,12 @@ define("_MD_TCW_NEWS_BLOCK_SHOW_MODE", "Display mode");
 define("_MD_TCW_NEWS_BLOCK_SHOW_MODE1", "The latest one is complete, the rest of the news presented in a strip column");
 define("_MD_TCW_NEWS_BLOCK_SHOW_MODE2", "All complete presentation");
 define("_MD_TCW_NEWS_BLOCK_SHOW_MODE3", "All presented in a strip column");
+define("_MD_TCW_NEWS_ENABLE", "Post now?");
+define("_MD_TCW_NEWS_DRAFT", "draft");
+
+define('_MD_TCW_NEWS_BLOCK_RSS', 'News RSS widget');
+define('_MD_TCW_NEWS_BLOCK_RSS_HEIGHT', 'Widget Height');
+define('_MD_TCW_NEWS_BLOCK_RSS_LINK', 'News RSS Url');
+define('_MD_TCW_NEWS_BLOCK_RSS_DISPLAY', 'Display Content');
+define('_MD_TCW_NEWS_BLOCK_RSS_DISPLAY_ALL', 'Title and content');
+define('_MD_TCW_NEWS_BLOCK_RSS_DISPLAY_TITLE', 'Only title');

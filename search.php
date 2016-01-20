@@ -34,15 +34,13 @@ $op             = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID          = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $search_keyword = system_CleanVars($_REQUEST, 'search_keyword', '', 'string');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 
     //新增資料
-    case "save_plugin_setup":
-        save_plugin_setup($WebID, $plugin);
-        header("location: {$plugin}.php?WebID={$WebID}");
-        exit;
+    case "tag":
+        search_web($WebID, $search_keyword);
         break;
 
     //預設動作

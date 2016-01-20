@@ -1,6 +1,6 @@
 <{if $isMyWeb and $WebID}>
   <div class="text-right" style="margin: 4px 0px 20px 0px;">
-    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="btn btn-warning btn-xs" title="<{$smarty.const._MD_TCW_BLOCKS_SETUP}>"><i class="fa fa-wrench"></i>
+    <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="btn btn-warning btn-xs" title="<{$smarty.const._MD_TCW_BLOCKS_SETUP}>"><i class="fa fa-wrench"></i>
 </a>
 
     <{assign var="block_plugin" value=$block.plugin}>

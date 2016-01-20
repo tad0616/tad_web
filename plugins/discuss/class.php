@@ -97,9 +97,8 @@ class tad_web_discuss
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_discuss_func", "discuss.php?op=delete&WebID={$this->WebID}&DiscussID=", 'DiscussID');
-        $xoopsTpl->assign('sweet_delete_discuss_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_discuss_func", "discuss.php?op=delete&WebID={$this->WebID}&DiscussID=", 'DiscussID');
 
         if ($mode == "return") {
             $data['main_data'] = $main_data;
@@ -108,7 +107,7 @@ class tad_web_discuss
         } else {
             $xoopsTpl->assign('discuss_data', $main_data);
             $xoopsTpl->assign('bar', $bar);
-            $xoopsTpl->assign('isMineDiscuss', $this->isMineDiscuss($MemID, $this->WebID));
+            // $xoopsTpl->assign('isMineDiscuss', $this->isMineDiscuss($MemID, $this->WebID));
             $xoopsTpl->assign('discuss', get_db_plugin($this->WebID, 'discuss'));
             return $total;
         }
@@ -174,6 +173,9 @@ class tad_web_discuss
         $xoopsTpl->assign('re', $this->get_re($DiscussID));
         $xoopsTpl->assign('LoginMemID', $_SESSION['LoginMemID']);
 
+        $xoopsTpl->assign('xoops_pagetitle', $DiscussTitle);
+        $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($DiscussContent), 0, 300));
+
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
@@ -186,9 +188,8 @@ class tad_web_discuss
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_discuss_func", "discuss.php?op=delete&WebID={$this->WebID}&DefDiscussID={$DiscussID}&DiscussID=", 'DiscussID');
-        $xoopsTpl->assign('sweet_delete_discuss_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_discuss_func", "discuss.php?op=delete&WebID={$this->WebID}&DefDiscussID={$DiscussID}&DiscussID=", 'DiscussID');
     }
 
     //tad_web_discuss編輯表單

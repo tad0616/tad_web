@@ -44,7 +44,8 @@
         </div>
       </div>
 
-
+      <{$power_form}>
+      <{$tags_form}>
 
       <!--上傳圖檔-->
       <div class="form-group">
@@ -70,17 +71,13 @@
     </form>
   </div>
 <{elseif $op=="show_one"}>
-
-  <{if $isMyWeb}>
-    <{$sweet_delete_action_func_code}>
-  <{/if}>
-
   <h1><{$ActionName}></h1>
 
   <ol class="breadcrumb">
     <li><a href="action.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_ACTION}></a></li>
-    <{if $cate.CateID}><li><a href="action.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <{if isset($cate.CateID)}><li><a href="action.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
     <li><{$ActionInfo}></li>
+    <{if $tags}><li><{$tags}></li><{/if}>
   </ol>
 
   <div class="row" style="margin:10px 0px;">
@@ -107,6 +104,8 @@
     </div>
     <hr>
   <{/if}>
+
+  <{$fb_comments}>
 
   <{if $isMyWeb}>
     <div class="text-right" style="margin: 30px 0px;">

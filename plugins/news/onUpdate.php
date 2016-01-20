@@ -8,6 +8,10 @@ if (news_onUpdate2_chk()) {
     news_onUpdate2_go();
 }
 
+if (news_onUpdate3_chk()) {
+    news_onUpdate3_go();
+}
+
 //修改欄位
 function news_onUpdate1_chk()
 {
@@ -48,6 +52,27 @@ function news_onUpdate2_go()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_news") . " DROP `NewsKind`";
+    $xoopsDB->queryF($sql);
+    return true;
+}
+
+//新增狀態欄位
+function news_onUpdate3_chk()
+{
+    global $xoopsDB;
+    $sql    = "select count(NewsEnable) from " . $xoopsDB->prefix("tad_web_news");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function news_onUpdate3_go()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_news") . " ADD `NewsEnable` enum('1','0')  NOT NULL default '1' COMMENT '狀態' after `NewsCounter`";
     $xoopsDB->queryF($sql);
     return true;
 }

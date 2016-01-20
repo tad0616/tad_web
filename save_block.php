@@ -15,15 +15,15 @@ $WebID        = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 switch ($op) {
     case 'save_position':
-        // $log = "<h3>save_position <small>{$status}</small></h3>";
+        // 安裝共享區塊
+        $newBlockID = '';
         if ($plugin == "share" and $PositionName != 'uninstall') {
             //讀出共享區塊內容
-            $sql = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}'";
-            // $log .= "<div>$sql</div>";
+            $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql);
             $block  = $xoopsDB->fetchArray($result);
-            //複製一份給目前網站
 
+            //複製一份給目前網站
             $BlockSort = max_blocks_sort($WebID, $PositionName);
             $myts      = MyTextSanitizer::getInstance();
 
@@ -31,14 +31,16 @@ switch ($op) {
             $BlockContent = $myts->addSlashes($block['BlockContent']);
             $BlockConfig  = $myts->addSlashes($block['BlockConfig']);
             $BlockName    = $myts->addSlashes($block['BlockName']);
-            $sql          = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `BlockShare`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '{$BlockContent}', '1', '{$BlockConfig}', '{$PositionName}', '0', '0', '{$WebID}', 'custom')";
+            $sql          = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$BlockName}', '0', '{$BlockTitle}', '{$BlockContent}', '1', '{$BlockConfig}', '{$PositionName}', '$BlockSort', '{$WebID}', 'custom','{$block['BlockID']}')";
 
             $text_color   = get_web_config('block_pic_text_color', $WebID);
             $border_color = get_web_config('block_pic_border_color', $WebID);
             $text_size    = get_web_config('block_pic_text_size', $WebID);
             $font         = get_web_config('block_pic_font', $WebID);
-            mkTitlePic($WebID, "block_{$BlockName}", $BlockTitle, $text_color, $border_color, $text_size, $font);
+            mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
             $xoopsDB->queryF($sql) or web_error($sql);
+            //取得最後新增資料的流水編號
+            $newBlockID = $xoopsDB->getInsertId();
         } else {
 
             $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockPosition`='{$PositionName}' where `BlockID`='{$BlockID}'";
@@ -56,17 +58,18 @@ switch ($op) {
                 $BlockID = $copyBlockID;
             }
             $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockSort`='{$sort}' where `BlockID`='{$BlockID}'";
-            // $log .= "<div>$sql</div>";
             $xoopsDB->queryF($sql) or web_error($sql);
             $sort++;
         }
-        // die($log);
-        echo _MD_TCW_SAVED . " (" . date("Y-m-d H:i:s") . ")";
+
+        if (!empty($newBlockID)) {
+            echo $newBlockID;
+        } else {
+            echo _MD_TCW_SAVED . " (" . date("Y-m-d H:i:s") . ")";
+        }
         break;
 
     case 'save_sort':
-        // $log = "<h3>save_sort <small>{$status}</small></h3>";
-
         $sort = 1;
         if ($plugin != "share") {
             foreach ($order_arr as $BlockID) {
@@ -78,20 +81,20 @@ switch ($op) {
                 $sort++;
             }
         }
-        // die($log);
         echo _MD_TCW_SAVED . " (" . date("Y-m-d H:i:s") . ")";
         break;
 
     case 'save_enable':
-        // $log = "<h3>save_enable <small>{$status}</small></h3>";
         $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockEnable`='{$BlockEnable}' where `BlockID`='{$BlockID}'";
-        // $log .= "<div>$sql</div>";
         $xoopsDB->queryF($sql) or web_error($sql);
-        $text_color   = get_web_config('block_pic_text_color', $WebID);
-        $border_color = get_web_config('block_pic_border_color', $WebID);
-        $text_size    = get_web_config('block_pic_text_size', $WebID);
-        $font         = get_web_config('block_pic_font', $WebID);
-        mkTitlePic($WebID, "block_{$BlockName}", $BlockTitle, $text_color, $border_color, $text_size, $font);
+        $text_color       = get_web_config('block_pic_text_color', $WebID);
+        $border_color     = get_web_config('block_pic_border_color', $WebID);
+        $text_size        = get_web_config('block_pic_text_size', $WebID);
+        $font             = get_web_config('block_pic_font', $WebID);
+        $sql              = "select BlockTitle from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}'";
+        $result           = $xoopsDB->queryF($sql) or web_error($sql);
+        list($BlockTitle) = $xoopsDB->fetchRow($result);
+        mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
         echo _MD_TCW_SAVED . " (" . date("Y-m-d H:i:s") . ")";
         break;
 }
@@ -100,11 +103,7 @@ switch ($op) {
 function get_share_to_custom_blockid($BlockID, $WebID)
 {
     global $xoopsDB;
-    $sql             = "select BlockName from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}' and `plugin`='share'";
-    $result          = $xoopsDB->queryF($sql) or web_error($sql);
-    list($BlockName) = $xoopsDB->fetchRow($result);
-
-    $sql           = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='{$BlockName}' and `WebID`='{$WebID}' and `plugin`='custom'";
+    $sql           = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where `ShareFrom`='{$BlockID}' and `WebID`='{$WebID}' and `plugin`='custom'";
     $result        = $xoopsDB->queryF($sql) or web_error($sql);
     list($BlockID) = $xoopsDB->fetchRow($result);
     return $BlockID;

@@ -14,7 +14,7 @@ function ClassHome($WebID = "")
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs;
 
-    $web = get_tad_web($WebID, true);
+    $web = get_tad_web($WebID);
 
     define('_DISPLAY_MODE', 'home');
 
@@ -79,7 +79,7 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op    = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 if (!empty($WebID)) {
     ClassHome($WebID);

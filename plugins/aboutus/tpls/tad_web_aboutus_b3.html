@@ -33,7 +33,6 @@
       </div>
 
       <{if $all_mems}>
-
         <style>
           .draggable {padding: 5px; margin: 0 10px 10px 0; font-size: 12px; border:0px dotted gray;position:absolute;}
           #snaptarget {width:640px;height: 540px; border:1px solid black;background:#CC6633 url('images/classroom2.png') center center no-repeat;position:relative;}
@@ -97,16 +96,175 @@
       </div>
     </div>
 
-    <div class="demo">
-      <div id="snaptarget">
-        <{$students1}>
+    <{if $mem_list_mode=="table"}>
+      <table class="table table-striped table-bordered table-hover table-condensed">
+        <tr>
+          <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NAME}></th>
+          <th style="text-align: center;" style="text-align: center;"><{$smarty.const._MD_TCW_MEM_SEX}></th>
+          <{if 'MemNickName'|in_array:$mem_column}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NICKNAME}></th>
+          <{/if}>
+          <{if 'MemExpertises'|in_array:$mem_column}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_EXPERTISES}></th>
+          <{/if}>
+          <{if 'MemClassOrgan'|in_array:$mem_column}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_CLASSORGAN}></th>
+          <{/if}>
+          <{if 'AboutMem'|in_array:$mem_column}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_ABOUTME}></th>
+          <{/if}>
+          <{if $isMyWeb}>
+            <{if 'MemUnicode'|in_array:$mem_column}>
+              <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_UNICODE}></th>
+            <{/if}>
+            <{if 'MemBirthday'|in_array:$mem_column}>
+              <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></th>
+            <{/if}>
+            <th style="text-align: center;"><{$smarty.const._TAD_FUNCTION}></th>
+          <{/if}>
+        </tr>
+        <{foreach from=$all_mems item=stud}>
+          <tr>
+            <td>
+              <div class="well" style="width: 60px; height: 60px; background: transparent url('<{$stud.pic}>') top center no-repeat; <{$stud.style}>; <{$stud.cover}> padding: 0px; float: left; margin-right:4px;"></div>
+
+              <{if 'MemNum'|in_array:$mem_column}>
+                <div><{$smarty.const._MD_TCW_MEM_NUM}>: <{$stud.MemNum}></div>
+              <{/if}>
+              <div>
+              <{if $isMyWeb}>
+                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
+              <{else}>
+                <{$stud.MemName}>
+              <{/if}>
+              </div>
+              <div style="clear: both;"></div>
+            </td>
+            <td style="text-align: center;"><{$stud.MemSexTitle}></td>
+            <{if 'MemNickName'|in_array:$mem_column}>
+              <td style="text-align: center;"><{$stud.MemNickName}></td>
+            <{/if}>
+            <{if 'MemExpertises'|in_array:$mem_column}>
+              <td style="text-align: center;"><{$stud.MemExpertises}></td>
+            <{/if}>
+            <{if 'MemClassOrgan'|in_array:$mem_column}>
+              <td style="text-align: center;"><{$stud.MemClassOrgan}></td>
+            <{/if}>
+            <{if 'AboutMem'|in_array:$mem_column}>
+              <td><{$stud.AboutMem}></td>
+            <{/if}>
+            <{if $isMyWeb}>
+              <{if 'MemUnicode'|in_array:$mem_column}>
+                <td style="text-align: center;"><{$stud.MemUnicode}></td>
+              <{/if}>
+              <{if 'MemBirthday'|in_array:$mem_column}>
+                <td style="text-align: center;"><{$stud.MemBirthday}></td>
+              <{/if}>
+              <td style="text-align: center;"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a></td>
+            <{/if}>
+          </tr>
+        <{/foreach}>
+      </table>
+    <{elseif $mem_list_mode=="mem_detail"}>
+
+      <{foreach from=$all_mems item=stud}>
+        <div class="well">
+        <div class="row">
+          <div class="col-sm-2">
+            <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"">
+              <img src="<{$stud.pic}>" alt="<{$stud.MemName}>" class="img-responsive img-rounded">
+            </a>
+          </div>
+          <div class="col-sm-3">
+
+            <{if 'MemNum'|in_array:$mem_column}>
+              <div style="margin: 2px;">
+                <span class="label label-default"><{$smarty.const._MD_TCW_MEM_NUM}></span>
+                <{$stud.MemNum}>
+              </div>
+            <{/if}>
+
+            <div style="margin: 2px;">
+              <span class="label label-default"><{$smarty.const._MD_TCW_MEM_NAME}></span>
+              <{if $isMyWeb}>
+                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
+                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+              <{else}>
+                <{$stud.MemName}>
+              <{/if}>
+            </div>
+
+            <div style="margin: 2px;">
+              <span class="label label-default"><{$smarty.const._MD_TCW_MEM_SEX}></span>
+              <{$stud.MemSexTitle}>
+            </div>
+
+            <{if 'MemNickName'|in_array:$mem_column}>
+              <div style="margin: 2px;">
+                <span class="label label-default"><{$smarty.const._MD_TCW_MEM_NICKNAME}></span>
+                <{$stud.MemNickName}>
+              </div>
+            <{/if}>
+
+            <{if $isMyWeb}>
+              <{if 'MemUnicode'|in_array:$mem_column}>
+                <div style="margin: 2px;">
+                  <span class="label label-danger"><{$smarty.const._MD_TCW_MEM_UNICODE}></span>
+                  <{$stud.MemUnicode}>
+                </div>
+              <{/if}>
+
+              <{if 'MemBirthday'|in_array:$mem_column}>
+                <div style="margin: 2px;">
+                  <span class="label label-danger"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></span>
+                  <{$stud.MemBirthday}>
+                </div>
+              <{/if}>
+
+              <{if 'MemExpertises'|in_array:$mem_column}>
+                <div style="margin: 2px;">
+                  <span class="label label-default"><{$smarty.const._MD_TCW_MEM_EXPERTISES}></span>
+                  <{$stud.MemExpertises}>
+                </div>
+              <{/if}>
+            <{/if}>
+          </div>
+          <div class="col-sm-7">
+
+            <{if 'MemClassOrgan'|in_array:$mem_column}>
+              <div style="margin: 2px;">
+                <span class="label label-default"><{$smarty.const._MD_TCW_MEM_CLASSORGAN}></span>
+                <{$stud.MemClassOrgan}>
+              </div>
+            <{/if}>
+
+
+            <{if 'AboutMem'|in_array:$mem_column}>
+              <div style="margin: 2px;">
+                <span class="label label-default"><{$smarty.const._MD_TCW_MEM_ABOUTME}></span>
+                <{$stud.AboutMem}>
+              </div>
+            <{/if}>
+
+
+          </div>
+        </div>
+
+
+        </div>
+      <{/foreach}>
+    <{else}>
+      <div class="demo">
+        <div id="snaptarget">
+          <{$students1}>
+        </div>
+
+        <br style="clear:both;" />
+        <{$students2}>
+
+        <br style="clear:both;" />
       </div>
-
-      <br style="clear:both;" />
-      <{$students2}>
-
-      <br style="clear:both;" />
-    </div>
+    <{/if}>
   <{else}>
 
     <div class="jumbotron">
@@ -130,14 +288,14 @@
   <{/if}>
 
 <{elseif ($op=="edit_form" or $op=="new_class") and $isMyWeb}>
-  <{$sweet_alert_code}>
+
   <{if $op=="new_class" or $now_cate}>
     <form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
       <h3><{$class_setup}></h3>
       <div class="row">
         <div class="col-md-4">
           <{if $class_pic_thumb}>
-            <div class="well" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
+            <div class="well" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size: contain;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
           <{else}>
             <div class="well" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
           <{/if}>
@@ -175,12 +333,12 @@
 
           <div class="form-group">
             <label class="col-md-3 control-label">
-              預設班級
+              <{$smarty.const._MD_TCW_ABOUTUS_DEFAULT_CLASS}>
             </label>
             <div class="col-md-9">
               <label class="checkbox-inline">
                 <input type="checkbox" name="default_class" value='1' <{if $default_class==$CateID}>checked<{/if}>>
-                點入「關於我們」後，以此為預設呈現的班級
+                <{$smarty.const._MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC}>
               </label>
             </div>
           </div>
@@ -313,95 +471,166 @@
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_mem_form_b3.html"}>
 <{elseif $op=="show_stu"}>
 
+  <h2><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></h2>
+  <div style="font-size: 2em; margin: 30px auto;">
+    <{if 'MemNum'|in_array:$mem_column}>
+      <label class="label label-primary"><{$class_mem.MemNum}></label>
+    <{/if}>
+    <{$mem.MemName}>
+    <{if 'MemUnicode'|in_array:$mem_column}>
+      (<{$mem.MemUnicode}>)
+    <{/if}>
+  </div>
+
   <div class="row">
 
     <div class="col-md-8">
-
-      <h2><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></h2>
       <div class="row">
-        <div class="col-md-7">
-          <div style="font-size: 2em; margin: 30px auto;">
-            <label class="label label-primary"><{$class_mem.MemNum}></label>
-            <{$mem.MemName}> (<{$mem.MemUnicode}>)
-          </div>
+        <div class="col-md-8">
 
           <!--性別-->
           <div class="row">
-            <label class="col-md-6"><{$smarty.const._MD_TCW_MEM_SEX}></label>
-            <div class="col-md-6">
+            <label class="col-xs-3"><{$smarty.const._MD_TCW_MEM_SEX}></label>
+            <div class="col-xs-9">
               <{$mem.MemSex}>
-            </div>
-          </div>
-
-          <!--生日-->
-          <div class="row">
-            <label class="col-md-6"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></label>
-            <div class="col-md-6">
-              <{$mem.MemBirthday}>
             </div>
           </div>
 
           <!--是否還在班上-->
           <div class="row">
-            <label class="col-md-6"><{$smarty.const._MD_TCW_MEM_STATUS}></label>
-            <div class="col-md-6">
+            <label class="col-xs-3"><{$smarty.const._MD_TCW_MEM_STATUS}></label>
+            <div class="col-xs-9">
               <{$class_mem.MemEnable}>
             </div>
           </div>
 
+
+          <!--生日-->
+          <{if 'MemBirthday'|in_array:$mem_column}>
+            <div class="row">
+              <label class="col-xs-3"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></label>
+              <div class="col-xs-9">
+                <{$mem.MemBirthday}>
+              </div>
+            </div>
+          <{/if}>
+
           <!--學生暱稱-->
-          <div class="row">
-            <label class="col-md-6"><{$smarty.const._MD_TCW_MEM_NICKNAME}></label>
-            <div class="col-md-6">
-              <{$mem.MemNickName}>
+          <{if 'MemNickName'|in_array:$mem_column}>
+            <div class="row">
+              <label class="col-xs-3"><{$smarty.const._MD_TCW_MEM_NICKNAME}></label>
+              <div class="col-xs-9">
+                <{$mem.MemNickName}>
+              </div>
             </div>
-          </div>
+          <{/if}>
 
-          <!--帳號-->
-          <div class="row">
-            <label class="col-md-6"><{$smarty.const._MD_TCW_MEM_UNAME}></label>
-            <div class="col-md-6">
-              <{$mem.MemUname}>
+          <!--專長-->
+          <{if 'MemExpertises'|in_array:$mem_column}>
+            <div class="row">
+              <label class="col-xs-3"><{$smarty.const._MD_TCW_MEM_EXPERTISES}></label>
+              <div class="col-xs-9">
+                <{$mem.MemExpertises}>
+              </div>
             </div>
-          </div>
+          <{/if}>
 
-          <!--密碼-->
-          <div class="row">
-            <label class="col-md-6"><{$smarty.const._MD_TCW_MEM_PASSWD}></label>
-            <div class="col-md-6">
-              <{$mem.MemPasswd}>
+          <!--職稱-->
+          <{if 'MemClassOrgan'|in_array:$mem_column}>
+            <div class="row">
+              <label class="col-xs-3"><{$smarty.const._MD_TCW_MEM_CLASSORGAN}></label>
+              <div class="col-xs-9">
+                <{$class_mem.MemClassOrgan}>
+              </div>
             </div>
-          </div>
+          <{/if}>
         </div>
-        <div class="col-md-5 text-center">
-          <div style="margin-top: 40px; width: 100%; height: 180px; background: transparent url('<{$pic}>') center top no-repeat; border-radius: 5px; border: 1px solid gray; background-size: cover;"></div>
+
+        <div class="col-md-4 text-center">
+          <img src="<{$pic}>" alt="<{$mem.MemName}>" class="img-responsive img-rounded">
         </div>
       </div>
 
-    <div class="text-center" style="margin: 30px auto;">
-      <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$mem.MemID}>&op=edit_stu" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
-    </div>
+      <!--自我介紹-->
+      <{if 'AboutMem'|in_array:$mem_column}>
+        <div class="row">
+          <label class="col-md-2"><{$smarty.const._MD_TCW_MEM_ABOUTME}></label>
+          <div class="col-md-10">
+            <{$class_mem.AboutMem}>
+          </div>
+        </div>
+      <{/if}>
+
+
+
+    <{if $isMyWeb}>
+      <div class="text-center" style="margin: 30px auto;">
+        <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$mem.MemID}>&op=edit_stu" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+      </div>
+    <{/if}>
 
     </div>
     <div class="col-md-4">
-      <table class="table table-striped table-bordered table-hover table-condensed">
-        <tr>
-          <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NUM}></th>
-          <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NAME}></th>
-          <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_UNICODE}></th>
-          <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_SEX}></th>
-        </tr>
-        <{foreach from=$students item=stud}>
-        <tr>
-          <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemNum}></a></td>
-          <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a></td>
-          <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemUnicode}></a></td>
-          <td style="text-align: center; color: <{$stud.color}>;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><{$stud.MemSex}></td>
-        </tr>
-        <{/foreach}>
-      </table>
+      <{if $im_student}>
+       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.html"}>
+      <{else}>
+        <table class="table table-striped table-bordered table-hover table-condensed">
+          <tr>
+          <{if 'MemNum'|in_array:$mem_column}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NUM}></th>
+          <{/if}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_NAME}></th>
+          <{if 'MemUnicode'|in_array:$mem_column}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_UNICODE}></th>
+          <{/if}>
+            <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_SEX}></th>
+          </tr>
+          <{foreach from=$students item=stud}>
+          <tr>
+          <{if 'MemNum'|in_array:$mem_column}>
+            <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemNum}></a></td>
+          <{/if}>
+            <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a></td>
+          <{if 'MemUnicode'|in_array:$mem_column}>
+            <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemUnicode}></a></td>
+          <{/if}>
+            <td style="text-align: center; color: <{$stud.color}>;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><{$stud.MemSex}></td>
+          </tr>
+          <{/foreach}>
+        </table>
+      <{/if}>
     </div>
   </div>
+
+  <{if $stud_works.main_data}>
+    <h2><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_WORKS}></h2>
+    <{foreach from=$stud_works.main_data item=work}>
+      <div class="well">
+        <div class="row">
+          <div class="col-md-8">
+            <span style="font-size: 2em;">
+              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>"><{$work.WorkName}></a>
+            </span>
+          </div>
+          <div class="col-md-4">
+            <{if $work.mem_upload_content.UploadDate!=""}>
+              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
+            <{else}>
+              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_NOW}></a>
+            <{/if}>
+          </div>
+        </div>
+
+        <ol class="breadcrumb">
+          <li><{$smarty.const._MD_TCW_WORKS_END_DATE}>: <{$work.WorksDate}></li>
+        </ol>
+
+        <{if $work.WorkDesc}>
+          <{$work.WorkDesc}>
+        <{/if}>
+      </div>
+    <{/foreach}>
+  <{/if}>
 <{elseif $op=="import_excel_form"}>
   <h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$edit_student}></h3>
   <div class="well">

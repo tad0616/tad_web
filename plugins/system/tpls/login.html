@@ -5,28 +5,39 @@
   <{if $LoginMemNickName==""}>
     <script type="text/javascript">
       $(document).ready(function() {
-        $("#tad_web_login").hide();
-        $("#stu_login").click(function() {
-          var x = document.getElementById("stu_login").checked;
-          if(x){
-            $("#tad_web_login").show();
+
+        $("#login_method").change(function(event) {
+          var opt=$("#login_method").val();
+          if(opt=="openid_login"){
+            $("#openid_login").show();
+            $("#student_login").hide();
             $("#xoops_login").hide();
-            $("#open_login").hide();
+          }else if(opt=="student_login"){
+            $("#openid_login").hide();
+            $("#student_login").show();
+            $("#xoops_login").hide();
           }else{
-            $("#tad_web_login").hide();
+            $("#openid_login").hide();
+            $("#student_login").hide();
             $("#xoops_login").show();
-            $("#open_login").show();
           }
         });
       });
     </script>
 
-    <{if $bc.DefWebID}>
-      <h3><{$smarty.const._MD_TCW_LOGIN}></h3>
-    <{/if}>
 
     <div class="well">
-      <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login">
+
+      <select id="login_method" class="form-control" style="margin-bottom: 10px;">
+        <{if $bc.openid=='1'}>
+          <option value="openid_login"><{$smarty.const._MD_TCW_LOGIN_BY_OPENID}></option>
+        <{/if}>
+        <option value="xoops_login"><{$smarty.const._MD_TCW_LOGIN_BY_XOOPS}></option>
+        <option value="student_login"><{$bc.student_title}><{$smarty.const._MD_TCW_LOGIN_BY_MEM}></option>
+      </select>
+
+
+      <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login" <{if $bc.openid=='1'}>style="display: none;"<{/if}>>
         <div class="form-group">
           <label class="col-md-4 control-label">
             <{$smarty.const._MD_TCW_ID}>
@@ -57,21 +68,21 @@
         </div>
       </form>
 
-      <form action="aboutus.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="tad_web_login">
+      <form action="aboutus.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="student_login" style="display: none;">
         <div class="form-group">
           <label class="col-md-4 control-label">
-            <{$smarty.const._MD_TCW_MEM_UNAME}>
+            <{$bc.student_title}><{$smarty.const._MD_TCW_ID}>
           </label>
           <div class="col-md-8 controls">
-            <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_UNAME}>">
+            <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$bc.student_title}><{$smarty.const._MD_TCW_ID}>">
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-4 control-label">
-            <{$smarty.const._MD_TCW_MEM_PASSWD}>
+            <{$bc.student_title}><{$smarty.const._MD_TCW_PASSWD}>
           </label>
           <div class="col-md-8 controls">
-            <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_MEM_PASSWD}>">
+            <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$bc.student_title}><{$smarty.const._MD_TCW_PASSWD}>">
           </div>
         </div>
 
@@ -79,25 +90,22 @@
           <label class="col-md-4 control-label">
           </label>
           <div class="col-md-8">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$bc.WebID}>">
             <input type="hidden" name="op" value="mem_login">
             <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
           </div>
         </div>
       </form>
 
-      <div class="text-center">
-        <label class="checkbox">
-          <input type="checkbox" id="stu_login" value="stu_login"><{$smarty.const._MD_TCW_IM_MEM}>
-        </label>
-      </div>
-      <div id="open_login">
-        <{foreach from=$bc.tlogin item=login}>
-          <a href="<{$login.link}>" style="padding: 5px; margin: 5px; display: inline-block;">
-            <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
-          </a>
-        <{/foreach}>
-      </div>
+      <{if $bc.openid=='1'}>
+        <div id="openid_login" style="margin: 0px auto;">
+          <{foreach from=$bc.tlogin item=login}>
+            <a href="<{$login.link}>" style="padding: 3px; margin: 5px; display: inline-block;">
+              <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
+            </a>
+          <{/foreach}>
+        </div>
+      <{/if}>
     </div>
   <{/if}>
 <{/if}>

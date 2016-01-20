@@ -9,6 +9,6 @@ $pluginConfig['cate']       = true;
 $pluginConfig['cate_table'] = 'tad_web_works';
 $pluginConfig['common']     = true;
 $pluginConfig['sql']        = array('tad_web_works');
-$pluginConfig['setup']      = false;
+$pluginConfig['setup']      = true;
 $pluginConfig['add']        = true;
 $pluginConfig['menu']       = true;

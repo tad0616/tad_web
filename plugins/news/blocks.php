@@ -2,7 +2,7 @@
 function list_news($WebID, $config = array())
 {
 
-    global $xoopsDB, $xoopsTpl, $TadUpFiles;
+    global $xoopsDB;
     if (empty($WebID)) {
         retuen;
     }
@@ -10,7 +10,19 @@ function list_news($WebID, $config = array())
 
     $tad_web_news = new tad_web_news($WebID);
 
-    $block = $tad_web_news->list_all("", $config['limit'], 'return', $config['show_mode']);
-    // die(var_export($block));
+    $block = $tad_web_news->list_all("", $config['limit'], 'return');
+
+    return $block;
+}
+
+function news_rss($WebID, $config = array())
+{
+
+    global $xoopsDB;
+
+    $block['main_data'] = true;
+    $block['WebID']     = $WebID;
+    $block['config']    = $config;
+
     return $block;
 }

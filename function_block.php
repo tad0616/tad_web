@@ -1,20 +1,21 @@
 <?php
 //是否為網站擁有者
 if (!function_exists('MyWebID')) {
-    function MyWebID()
+    function MyWebID($WebEnable = '1')
     {
         global $xoopsUser, $xoopsDB;
         $MyWebs = array();
         if ($xoopsUser) {
-            $uid    = $xoopsUser->uid();
-            $sql    = "select WebID from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' and `WebEnable`='1'";
-            $result = $xoopsDB->query($sql) or web_error($sql);
+            $uid          = $xoopsUser->uid();
+            $andWebEnable = $WebEnable == 'all' ? "" : "and `WebEnable`='{$WebEnable}'";
+            $sql          = "select WebID from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' {$andWebEnable}";
+            $result       = $xoopsDB->query($sql) or web_error($sql);
 
             while (list($WebID) = $xoopsDB->fetchRow($result)) {
                 $MyWebs[$WebID] = $WebID;
             }
 
-            $sql    = "select WebID from " . $xoopsDB->prefix("tad_web_roles") . " where uid='$uid'";
+            $sql    = "select a.WebID from " . $xoopsDB->prefix("tad_web_roles") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.uid='$uid' and b.WebEnable='{$WebEnable}'";
             $result = $xoopsDB->query($sql) or web_error($sql);
             while (list($WebID) = $xoopsDB->fetchRow($result)) {
                 $MyWebs[$WebID] = $WebID;

@@ -123,7 +123,12 @@ function get_all_event($start, $end, $WebID)
 {
     global $xoopsDB;
 
-    //$andWebID = empty($WebID) ? "" : "and `WebID`='{$WebID}'";
+    if ($WebID) {
+        $calendar_setup = get_plugin_setup_values($WebID, "calendar");
+        if ($calendar_setup['show_global_event'] != '1') {
+            return;
+        }
+    }
 
     $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' and CalendarDate <= '$end' and CalendarType='all' order by CalendarDate";
     $result = $xoopsDB->queryF($sql) or die($sql);

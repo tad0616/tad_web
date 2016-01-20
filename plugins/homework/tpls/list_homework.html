@@ -42,24 +42,25 @@
     </div>
   </div>
 
+<{/if}>
+
+<{if $bc.yet_data and $isMyWeb}>
   <div class="row">
     <div class="col-md-12">
       <ul class="list-group">
         <{foreach from=$bc.yet_data key=i item=homework}>
-          <{if $i > 0}>
-            <li class="list-group-item">
-              <span class="badge"><{$homework.HomeworkCounter}></span>
+          <li class="list-group-item">
+            <span class="badge"><{$homework.HomeworkCounter}></span>
 
-              <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
+            <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-              <{if $homework.isMyWeb}>
-                <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
-              <{/if}>
+            <{if $homework.isMyWeb}>
+              <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
 
-              <span style="color: #840707;"><{$homework.display_at}></span>
-            </li>
-          <{/if}>
+            <span style="color: #840707;"><{$homework.display_at}></span>
+          </li>
         <{/foreach}>
       </ul>
     </div>

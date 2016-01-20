@@ -53,13 +53,27 @@
         </div>
       </div>
 
+      <{$power_form}>
+      <{$tags_form}>
+
       <!--相關附件-->
       <div class="form-group">
         <label class="col-md-2 control-label">
           <{$smarty.const._MD_TCW_NEWS_FILES}>
         </label>
-        <div class="col-md-10">
+        <div class="col-md-4">
           <{$upform}>
+        </div>
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_NEWS_ENABLE}>
+        </label>
+        <div class="col-md-4">
+          <label class="radio-inline">
+            <input type="radio" name="NewsEnable" value="1" <{if $NewsEnable!='0'}>checked<{/if}>><{$smarty.const._YES}>
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="NewsEnable" value="0" <{if $NewsEnable=='0'}>checked<{/if}>><{$smarty.const._NO}>
+          </label>
         </div>
       </div>
 
@@ -74,13 +88,19 @@
     </form>
   </div>
 <{elseif $op=="show_one"}>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('img').css('width','').css('height','').addClass('img-responsive');
+    });
+  </script>
 
-  <h1><{$NewsTitle}></h1>
+  <h1><{$NewsTitle}><{if $NewsEnable!=1}><small>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]</small><{/if}></h1>
 
   <ol class="breadcrumb">
     <li><a href="news.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_NEWS}></a></li>
-    <{if $cate.CateID}><li><a href="news.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <{if isset($cate.CateID)}><li><a href="news.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
     <li><{$NewsInfo}></li>
+    <{if $tags}><li><{$tags}></li><{/if}>
   </ol>
 
   <{if $NewsContent}>
@@ -98,6 +118,14 @@
   <{/if}>
 
   <{$NewsFiles}>
+
+  <div class="row" id="News_tool">
+    <div class="col-md-6 text-left"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.prev.NewsID}>" class="btn btn-default btn-block"><i class="fa fa-chevron-left"></i> <{$prev_next.prev.NewsTitle}></a></div>
+    <div class="col-md-6 text-right"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.next.NewsID}>" class="btn btn-default btn-block"><{$prev_next.next.NewsTitle}> <i class="fa fa-chevron-right"></i></a></div>
+  </div>
+
+  <{$fb_comments}>
+
   <div id="adm_bar" class="text-right" style="margin: 30px 0px;">
     <{if $isMyWeb}>
       <a href="javascript:delete_news_func(<{$NewsID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>

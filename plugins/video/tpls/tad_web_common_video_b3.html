@@ -45,7 +45,7 @@
       <td>
         <p>
           <{$video.VideoDate}>
-          <{if $video.cate.CateID}>
+          <{if isset($video.cate.CateID)}>
             <span class="label label-info"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
           <{/if}>
           <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>" style="font-size: 120%; margin-bottom: 10px;"><{$video.VideoName}></a>

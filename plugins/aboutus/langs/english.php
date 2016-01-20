@@ -6,10 +6,11 @@ define('_MD_TCW_ALL_WEB_COUNTER', 'Popular');
 define('_MD_TCW_ALL_WEB_OWNER', 'Owner');
 define('_MD_TCW_ABOUTUS_SHORT', 'Members');
 define('_MD_TCW_UID', 'Members');
-define('_MD_TCW_MEMSCHOOLORGAN', 'School title');
-define('_MD_TCW_MEMEXPERTISES', 'Specialty');
+define('_MD_TCW_MEM_CLASSORGAN', 'School title');
+define('_MD_TCW_MEM_EXPERTISES', 'Specialty');
 define('_MD_TCW_MEMURL', 'Personal page');
 define('_MD_TCW_MEMTEAMORGAN', 'Team title');
+define("_MD_TCW_MEM_ABOUTME", "About");
 define('_MD_TCW_MEMORDER', 'Sorting');
 define('_MD_TCW_MEMENABLE', 'State');
 define('_MD_TCW_UPLOAD_MY_PHOTO', 'Admin photo');
@@ -33,8 +34,8 @@ define('_MD_TCW_DEMO_NAME', 'Wu Hongkai');
 define('_MD_TCW_BOY', 'Male');
 define('_MD_TCW_GIRL', 'Female');
 define('_MD_TCW_IMPORT_OK', 'Import completed');
-define('_MD_TCW_MEM_ENABLE', 'In the class');
-define('_MD_TCW_MEM_UNABLE', 'Not in the class');
+define('_MD_TCW_MEM_ENABLE', 'Enable');
+define('_MD_TCW_MEM_UNABLE', 'Unable');
 define('_MD_TCW_GET_SOMEONE', 'A few lucky draw it!');
 define('_MD_TCW_IMPORT_PREVIEW', 'Preview Import Results');
 define('_MD_TCW_IMPORT_DESCRIPT', '
@@ -98,3 +99,31 @@ define('_MD_TCW_ABOUTUS_S2_DESC', 'The "class" is replaced by the new string, fo
 define('_MD_TCW_ABOUTUS_S2_DEFAULT', 'class');
 define('_MD_TCW_ABOUTUS_S3_TEXT', 'The "student" to');
 define('_MD_TCW_ABOUTUS_S3_DESC', 'The "student" to the new string, for example: members, players and so on。');
+
+define("_MD_TCW_ABOUT_RESET", "Reset");
+
+define('_MD_TCW_ABOUTUS_S4_TEXT', 'Display Mode');
+define('_MD_TCW_ABOUTUS_S4_DESC', 'How to display members?');
+define('_MD_TCW_ABOUTUS_S4_OPT1', 'Classroom');
+define('_MD_TCW_ABOUTUS_S4_OPT2', 'Table');
+define('_MD_TCW_ABOUTUS_S4_OPT3', 'Detail');
+
+define('_MD_TCW_ABOUTUS_S5_TEXT', 'To use field');
+define('_MD_TCW_ABOUTUS_S5_DESC', 'With different types of sites, you may need a different field, select the required fields.');
+define('_MD_TCW_ABOUTUS_S5_OPT1', 'Nickname');
+define('_MD_TCW_ABOUTUS_S5_OPT2', 'Student ID (or Number)');
+define('_MD_TCW_ABOUTUS_S5_OPT3', 'Birthday');
+define('_MD_TCW_ABOUTUS_S5_OPT4', 'Special skill');
+define('_MD_TCW_ABOUTUS_S5_OPT5', 'Seat Number');
+define('_MD_TCW_ABOUTUS_S5_OPT6', 'Title');
+define('_MD_TCW_ABOUTUS_S5_OPT7', 'Self-introduction (or Charge)');
+
+define('_MD_TCW_ABOUTUS_DEFAULT_CLASS', 'Default Class');
+define('_MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC', 'As a pre-presented classes');
+define('_MD_TCW_ABOUTUS_EDIT_ACCOUNT', 'Edit my account');
+define('_MD_TCW_ABOUTUS_READ_DISCUSS', 'View discuss');
+define('_MD_TCW_ABOUTUS_MY_ACCOUNT', 'My Page');
+
+define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', 'Upload works');
+define('_MD_TCW_ABOUTUS_UPLOAD_NOW', 'Upload now');
+define('_MD_TCW_ABOUTUS_UPLOADED', 'Has been uploaded in %s');

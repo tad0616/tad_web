@@ -89,9 +89,8 @@ class tad_web_link
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_link_func", "link.php?op=delete&WebID={$this->WebID}&LinkID=", 'LinkID');
-        $xoopsTpl->assign('sweet_delete_link_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_link_func", "link.php?op=delete&WebID={$this->WebID}&LinkID=", 'LinkID');
 
         if ($mode == "return") {
             $data['main_data'] = $main_data;

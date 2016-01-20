@@ -2,24 +2,30 @@
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 
-if (!empty($_REQUEST['WebID']) and $isMyWeb) {
+if ($_REQUEST['op'] == "enable_my_web") {
     $xoopsOption['template_main'] = 'tad_web_config_b3.html';
-} elseif (!$isMyWeb and $MyWebs) {
-    redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
 } else {
-    redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
+    if (!empty($_REQUEST['WebID']) and $isMyWeb) {
+        $xoopsOption['template_main'] = 'tad_web_config_b3.html';
+    } elseif (!$isMyWeb and $MyWebs) {
+        redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
+    } else {
+        redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
+    }
 }
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
 //網站設定
-function tad_web_config($WebID)
+function tad_web_config($WebID, $configs)
 {
     global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb;
 
     get_jquery(true);
     $xoopsTpl->assign('config', true);
-    $configs = get_web_all_config($WebID);
+    if (empty($configs)) {
+        $configs = get_web_all_config($WebID);
+    }
 
     foreach ($configs as $ConfigName => $ConfigValue) {
         $xoopsTpl->assign($ConfigName, $ConfigValue);
@@ -52,9 +58,15 @@ function tad_web_config($WebID)
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert      = new sweet_alert();
-    $sweet_alert_code = $sweet_alert->render("delete_my_web", "config.php?WebID=$WebID&op=delete_tad_web_chk&delWebID=", 'WebID');
-    $xoopsTpl->assign('sweet_delete_action_func_code', $sweet_alert_code);
+    $sweet_alert = new sweet_alert();
+    $sweet_alert->render("delete_my_web", "config.php?WebID=$WebID&op=delete_tad_web_chk&delWebID=", 'WebID');
+
+    if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+    }
+    include_once TADTOOLS_PATH . "/formValidator.php";
+    $formValidator = new formValidator(".myForm", true);
+    $formValidator->render();
 
     //功能設定
     $plugins = get_plugins($WebID, 'edit');
@@ -266,6 +278,21 @@ function unable_my_web($WebID)
     $xoopsDB->queryF($sql) or web_error($sql);
 }
 
+//啟動網站
+function enable_my_web($WebID)
+{
+    global $xoopsDB, $isAdmin;
+    $MyWebs  = MyWebID('0');
+    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
+    if (empty($WebID) or !$isMyWeb) {
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+    }
+
+    $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '1' where WebID ='{$WebID}'";
+    // die($sql);
+    $xoopsDB->queryF($sql) or web_error($sql);
+}
+
 //恢復顏色預設值
 function default_color($WebID = "")
 {
@@ -282,25 +309,31 @@ function default_color($WebID = "")
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op             = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID          = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$MemID          = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
-$color_setup    = system_CleanVars($_REQUEST, 'color_setup', '', 'array');
-$filename       = system_CleanVars($_REQUEST, 'filename', '', 'string');
-$ConfigValue    = system_CleanVars($_REQUEST, 'ConfigValue', '', 'array');
-$head_top       = system_CleanVars($_REQUEST, 'head_top', '', 'string');
-$head_left      = system_CleanVars($_REQUEST, 'head_left', '', 'string');
-$logo_top       = system_CleanVars($_REQUEST, 'logo_top', '', 'string');
-$logo_left      = system_CleanVars($_REQUEST, 'logo_left', '', 'string');
-$col_name       = system_CleanVars($_REQUEST, 'col_name', '', 'string');
-$col_val        = system_CleanVars($_REQUEST, 'col_val', '', 'string');
-$display_blocks = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
-$other_web_url  = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
-$web_admins     = system_CleanVars($_REQUEST, 'web_admins', '', 'string');
-$menu_font_size = system_CleanVars($_REQUEST, 'menu_font_size', 12, 'int');
-$theme_side     = system_CleanVars($_REQUEST, 'theme_side', 'right', 'string');
-$dirname        = system_CleanVars($_REQUEST, 'dirname', '', 'string');
-$delWebID       = system_CleanVars($_REQUEST, 'delWebID', 0, 'int');
+$op              = system_CleanVars($_REQUEST, 'op', '', 'string');
+$WebID           = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$MemID           = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
+$color_setup     = system_CleanVars($_REQUEST, 'color_setup', '', 'array');
+$filename        = system_CleanVars($_REQUEST, 'filename', '', 'string');
+$ConfigValue     = system_CleanVars($_REQUEST, 'ConfigValue', '', 'array');
+$head_top        = system_CleanVars($_REQUEST, 'head_top', '', 'string');
+$head_left       = system_CleanVars($_REQUEST, 'head_left', '', 'string');
+$logo_top        = system_CleanVars($_REQUEST, 'logo_top', '', 'string');
+$logo_left       = system_CleanVars($_REQUEST, 'logo_left', '', 'string');
+$col_name        = system_CleanVars($_REQUEST, 'col_name', '', 'string');
+$col_val         = system_CleanVars($_REQUEST, 'col_val', '', 'string');
+$display_blocks  = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
+$other_web_url   = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
+$web_admins      = system_CleanVars($_REQUEST, 'web_admins', '', 'string');
+$menu_font_size  = system_CleanVars($_REQUEST, 'menu_font_size', 12, 'int');
+$theme_side      = system_CleanVars($_REQUEST, 'theme_side', 'right', 'string');
+$dirname         = system_CleanVars($_REQUEST, 'dirname', '', 'string');
+$delWebID        = system_CleanVars($_REQUEST, 'delWebID', 0, 'int');
+$defalut_theme   = system_CleanVars($_REQUEST, 'defalut_theme', '', 'string');
+$bg_repeat       = system_CleanVars($_REQUEST, 'bg_repeat', '', 'string');
+$bg_attachment   = system_CleanVars($_REQUEST, 'bg_attachment', '', 'string');
+$bg_postiton     = system_CleanVars($_REQUEST, 'bg_postiton', '', 'string');
+$bg_size         = system_CleanVars($_REQUEST, 'bg_size', '', 'string');
+$use_simple_menu = system_CleanVars($_REQUEST, 'use_simple_menu', 0, 'int');
 
 switch ($op) {
 
@@ -329,7 +362,11 @@ switch ($op) {
     case "upload_head":
         $TadUpFilesHead = TadUpFilesHead($WebID);
         $TadUpFilesHead->set_col('head', $WebID);
-        $TadUpFilesHead->upload_file('head', null, null, null, "", true);
+        $file_name = $TadUpFilesHead->upload_file('head', null, null, null, "", true);
+        if ($file_name) {
+            save_web_config("web_head", $file_name, $WebID);
+            output_head_file($WebID);
+        }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -337,7 +374,11 @@ switch ($op) {
     case "upload_logo":
         $TadUpFilesLogo = TadUpFilesLogo($WebID);
         $TadUpFilesLogo->set_col('logo', $WebID);
-        $TadUpFilesLogo->upload_file('logo', null, null, null, "", true);
+        $file_name = $TadUpFilesLogo->upload_file('logo', null, null, null, "", true);
+        if ($file_name) {
+            save_web_config("web_logo", $file_name, $WebID);
+            output_head_file($WebID);
+        }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -345,7 +386,14 @@ switch ($op) {
     case "upload_bg":
         $TadUpFilesBg = TadUpFilesBg($WebID);
         $TadUpFilesBg->set_col('bg', $WebID);
-        $TadUpFilesBg->upload_file('bg', null, null, null, "", true);
+        $file_name = $TadUpFilesBg->upload_file('bg', null, null, null, "", true);
+        if ($file_name) {
+            save_web_config("web_bg", $file_name, $WebID);
+        }
+        save_web_config("bg_repeat", $bg_repeat, $WebID);
+        save_web_config("bg_attachment", $bg_attachment, $WebID);
+        save_web_config("bg_postiton", $bg_postiton, $WebID);
+        save_web_config("bg_size", $bg_size, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -380,6 +428,9 @@ switch ($op) {
     case "save_theme_config":
         save_web_config('menu_font_size', $menu_font_size, $WebID);
         save_web_config('theme_side', $theme_side, $WebID);
+        save_web_config('defalut_theme', $defalut_theme, $WebID);
+        save_web_config('use_simple_menu', $use_simple_menu, $WebID);
+
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -396,12 +447,18 @@ switch ($op) {
         exit;
         break;
 
+    case "enable_my_web":
+        enable_my_web($WebID);
+        header("location: index.php?WebID={$WebID}");
+        exit;
+        break;
+
     //刪除資料
     case "delete_tad_web_chk":
         if (empty($delWebID) or !$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
-        common_template($WebID);
+        common_template($WebID, $web_all_config);
         delete_tad_web_chk($delWebID);
         break;
 
@@ -428,8 +485,8 @@ switch ($op) {
             header("location: index.php");
             exit;
         } else {
-            common_template($WebID);
-            tad_web_config($WebID);
+            common_template($WebID, $web_all_config);
+            tad_web_config($WebID, $web_all_config);
         }
         break;
 

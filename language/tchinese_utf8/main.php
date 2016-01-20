@@ -1,7 +1,8 @@
 <?php
 //需加入模組語系
-define('_TAD_NEED_TADTOOLS', '需要 tadtools 模組，可至<a href="http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1" target="_blank">XOOPS輕鬆架</a>下載。');
-
+if (!defined('_TAD_NEED_TADTOOLS')) {
+    define('_TAD_NEED_TADTOOLS', '需要 tadtools 模組，可至<a href="http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1" target="_blank">XOOPS輕鬆架</a>下載。');
+}
 define("_MD_TCW_HOME", "回總覽");
 define("_MD_TCW_CLASS_HOME", "首頁");
 define("_MD_TCW_ADMIN", "管理");
@@ -19,6 +20,7 @@ define("_MD_TCW_COLOR_TOOLS", "顏色設定");
 define("_MD_TCW_BLOCK_TOOLS", "區塊設定");
 define("_MD_TCW_BLOCK_TITLE", "區塊標題");
 define("_MD_TCW_BLOCK_SHOW_TITLE", "是否顯示區塊標題？");
+define("_MD_TCW_BLOCK_ENABLE", "是否啟用此區塊？");
 define("_MD_TCW_DATA_NOT_EXIST", "該資訊不存在");
 define("_MD_TCW_WEB_NOT_EXIST", "該網站不存在");
 define("_MD_TCW_SAVED", "已儲存");
@@ -55,9 +57,8 @@ define("_MD_TCW_RAND_IMAGE", "回復成隨機背景");
 define("_MD_TCW_BG_TOP", "上");
 define("_MD_TCW_BG_CENTER", "中");
 define("_MD_TCW_BG_BOTTOM", "下");
-define("_MD_TCW_BG_POSITION", "圖片位置：");
 define("_MD_TCW_LOGIN", "登入");
-define("_MD_TCW_HELLO", "您好！歡迎使用討論區，請注意禮貌喔！");
+define("_MD_TCW_HELLO", "您好！");
 define("_MD_TCW_EXIT", "離開");
 
 define("_MD_TCW_CONFIG_NONE", "無");
@@ -177,3 +178,52 @@ define("_MD_TCW_BLOCK_TITLE_USE_PIC", "使用區塊標題圖片取代文字");
 define("_MD_TCW_SEARCH_RESULT", "搜尋結果");
 define("_MD_TCW_READ_MORE", "（繼續閱讀...）");
 define("_MD_TCW_PRINT", "友善列印");
+define("_MD_TCW_THEME_TOOLS_DEFAULT_THEME", "套用版型");
+define("_MD_TCW_CLOSE_WEB", "關閉此網站");
+define("_MD_TCW_CLOSE_WEB_DESC", "關閉網站後，在網站列表中就看不到網站，直接輸入網址也會呈現網站關閉的訊息，唯有登入後，直接從選單才能再次啟動之。");
+define("_MD_TCW_OPEN_WEB", "啟動此網站");
+define("_MD_TCW_OPEN_WEB_DESC", "您的網站目前關閉中，要重新啟動之嗎？");
+define("_MD_TCW_SETUP", "設定");
+
+define("_MD_TCW_BG_REPEAT", "背景重複");
+define("_MD_TCW_BG_REPEAT_NORMAL", "一般重複");
+define("_MD_TCW_BG_REPEAT_X", "僅橫向重複");
+define("_MD_TCW_BG_REPEAT_Y", "僅垂直重複");
+define("_MD_TCW_BG_NO_REPEAT", "不重複");
+define("_MD_TCW_BG_ATTACHMENT", "背景模式");
+define("_MD_TCW_BG_ATTACHMENT_SCROLL", "隨畫面捲動");
+define("_MD_TCW_BG_ATTACHMENT_FIXED", "固定不捲動");
+define("_MD_TCW_BG_POSITION", "背景位置");
+define("_MD_TCW_BG_POSITION_LT", "左上");
+define("_MD_TCW_BG_POSITION_RT", "右上");
+define("_MD_TCW_BG_POSITION_LB", "左下");
+define("_MD_TCW_BG_POSITION_RB", "右下");
+define("_MD_TCW_BG_POSITION_CC", "正中");
+define("_MD_TCW_BG_POSITION_CT", "上中");
+define("_MD_TCW_BG_POSITION_CB", "下中");
+define("_MD_TCW_BG_SIZE", "背景尺寸");
+define("_MD_TCW_BG_SIZE_NONE", "原尺寸");
+define("_MD_TCW_BG_SIZE_COVER", "背景圖放大至畫面的大小");
+define("_MD_TCW_BG_SIZE_CONTAIN", "背景圖縮小至畫面的大小");
+define('_MD_TCW_MENU_BOOKS', '操作教學');
+define('_MD_TCW_MENU_DISCUSS', '發問討論區');
+define('_MD_TCW_MENU_SUGGEST', '功能許願池');
+define('_MD_TCW_LINKTO', '連結');
+define('_MD_TCW_ADMINER', '資料庫管理');
+define('_MD_TCW_ADMINPAGE', '後台管理');
+
+define('_MD_TCW_USE_FB_COMMENT_TEXT', '是否使用 FaceBook 留言框？');
+define('_MD_TCW_USE_FB_COMMENT_DESC', '若是選「是」即可在單一資料的頁面下呈現FaceBook留言框互動工具');
+
+define('_MD_TCW_POWER_FOR', '可閱讀對象');
+define('_MD_TCW_POWER_FOR_ALL', '全部開放');
+define('_MD_TCW_POWER_FOR_USERS', '僅登入者（含其他子網站）');
+define('_MD_TCW_POWER_FOR_WEB_USERS', '僅本網站成員');
+define('_MD_TCW_POWER_FOR_WEB_ADMIN', '僅本網站管理員');
+define('_MD_TCW_NOW_READ_POWER', '沒有閱讀此內容的權限');
+define('_MD_TCW_TAGS', '標籤設定');
+define('_MD_TCW_INPUT_TAGS', '請輸入新標籤，若有多個標籤請用小寫逗號「,」隔開');
+define('_MD_TCW_UNABLE', '關閉中');
+
+define('_MD_TCW_PLUGIN_MENU', '功能選單');
+define('_MD_TCW_USER_SIMPLE_MENU', '簡化選單');

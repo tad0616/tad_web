@@ -4,6 +4,10 @@ function action_search($WebID, $queryarray, $limit = 10)
 {
     global $xoopsDB;
 
+    //起始函數
+    include_once XOOPS_ROOT_PATH . "/class/power.php";
+    $power = new power($WebID);
+
     $plugin      = 'action';
     $plugin_tbl  = 'tad_web_action';
     $id_col      = 'ActionID';
@@ -34,6 +38,10 @@ function action_search($WebID, $queryarray, $limit = 10)
     $ret    = array();
     $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
+        $power_result = $power->check_power("read", $id_col, $myrow[$id_col]);
+        if (!$power_result) {
+            continue;
+        }
         $ret[$i]['link']  = "{$plugin}.php?WebID=" . $myrow['WebID'] . "&{$id_col}=" . $myrow[$id_col];
         $ret[$i]['title'] = $myrow[$title_col];
         $ret[$i]['time']  = substr($myrow[$date_col], 0, 10);

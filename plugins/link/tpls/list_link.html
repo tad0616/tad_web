@@ -21,7 +21,7 @@
       <tr>
         <td>
           <i class="fa fa-external-link"></i>
-          <{if $link.cate.CateID}>
+          <{if isset($link.cate.CateID)}>
             <span class="label label-info"><a href="link.php?WebID=<{$link.WebID}>&CateID=<{$link.cate.CateID}>" style="color: #FFFFFF;"><{$link.cate.CateName}></a></span>
           <{/if}>
           <a href="link.php?WebID=<{$link.WebID}>&LinkID=<{$link.LinkID}>" target="_blank"><{$link.LinkTitle}></a>

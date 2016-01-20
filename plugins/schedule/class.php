@@ -83,9 +83,8 @@ class tad_web_schedule
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
-        $xoopsTpl->assign('sweet_delete_schedule_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
         if ($mode == "return") {
             $data['schedule_amount'] = $i;
@@ -137,6 +136,8 @@ class tad_web_schedule
         $xoopsTpl->assign('ScheduleID', $ScheduleID);
         $xoopsTpl->assign('ScheduleInfo', sprintf(_MD_TCW_INFO, $uid_name, $ScheduleTime, $ScheduleCount));
 
+        $xoopsTpl->assign('xoops_pagetitle', $ScheduleName);
+        $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($ScheduleName), 0, 300));
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
@@ -147,9 +148,8 @@ class tad_web_schedule
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
-        $xoopsTpl->assign('sweet_delete_schedule_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
     }
 

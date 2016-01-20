@@ -9,9 +9,13 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
-$PageID = system_CleanVars($_REQUEST, 'PageID', 0, 'int');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$op            = system_CleanVars($_REQUEST, 'op', '', 'string');
+$PageID        = system_CleanVars($_REQUEST, 'PageID', 0, 'int');
+$CateID        = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$fb_action_ids = system_CleanVars($_REQUEST, 'fb_action_ids', 0, 'int');
+$comment_id    = system_CleanVars($_REQUEST, 'comment_id', 0, 'int');
+$fb_comment_id = system_CleanVars($_REQUEST, 'fb_comment_id', '', 'string');
+$tag           = system_CleanVars($_REQUEST, 'tag', '', 'string');
 
 common_template($WebID, $web_all_config);
 
@@ -54,9 +58,13 @@ switch ($op) {
     default:
         if (empty($PageID)) {
             $op = 'list_all';
-            $tad_web_page->list_all($CateID);
+            $tad_web_page->list_all($CateID, null, null, $tag);
         } else {
             $op = 'show_one';
+            if (!empty($fb_action_ids) or !empty($fb_comment_id) or !empty($comment_id)) {
+                header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&PageID={$PageID}");
+                exit;
+            }
             $tad_web_page->show_one($PageID);
         }
         break;

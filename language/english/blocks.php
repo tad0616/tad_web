@@ -24,3 +24,4 @@ define("_MB_TCW_OPENID_LOGIN", "login by %s");
 define("_MB_TCW_ID", "ID");
 define("_MB_TCW_PASSWD", "Passwd");
 define("_MB_TCW_SETUP", "Setup ");
+define("_MB_TCW_ENABLE", "Enable ");

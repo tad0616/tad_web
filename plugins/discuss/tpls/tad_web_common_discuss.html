@@ -50,7 +50,7 @@
               <{$discuss.LastTime}>
             </td>
             <td>
-            <{if $discuss.cate.CateID}>
+            <{if isset($discuss.cate.CateID)}>
               <span class="label label-info"><a href="discuss.php?WebID=<{$discuss.WebID}>&CateID=<{$discuss.cate.CateID}>" style="color: #FFFFFF;"><{$discuss.cate.CateName}></a></span>
             <{/if}>
               <a href="discuss.php?WebID=<{$discuss.WebID}>&DiscussID=<{$discuss.DiscussID}>"><{$discuss.DiscussTitle}></a>

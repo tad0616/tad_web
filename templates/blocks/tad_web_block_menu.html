@@ -108,7 +108,7 @@
 
         <div class="<{$block.row}>">
           <div class="<{$block.span}>6">
-            <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-<{$mini}> btn-warning btn-block""><{$smarty.const._MD_TCW_EXIT}></a>
+            <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-<{$mini}> btn-warning btn-block"><{$smarty.const._MD_TCW_EXIT}></a>
           </div>
           <div class="<{$block.span}>6">
             <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-<{$mini}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
@@ -208,7 +208,7 @@
                   <i class="fa <{$plugin.icon}>"></i>
                   <{$plugin.title}>
               </td>
-              <td colspan=2 style="background-color: #dfdfdf;">
+              <td colspan=3 style="background-color: #dfdfdf;">
                 <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-<{$block.mini}>"><{$smarty.const._MB_TCW_ENABLE_PLUGIN}></a>
               </td>
             </tr>
@@ -226,9 +226,19 @@
     </div>
 
   <{/if}>
+
+  <{if $block.closed_webs}>
+    <div class="<{$block.row}>">
+      <div class="<{$block.span}>12">
+        <{foreach from=$block.closed_webs item=web}>
+          <a href="<{$web.url}>" class="btn btn-default btn-block"><{$smarty.const._MB_TCW_ENABLE}> <{$web.name}></a>
+        <{/foreach}>
+      </div>
+    </div>
+  <{/if}>
   <div class="<{$block.row}>">
     <div class="<{$block.span}>12">
-      <a href="<{$xoops_url}>/user.php?op=logout" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+      <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
     </div>
   </div>
 

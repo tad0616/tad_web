@@ -1,13 +1,14 @@
 <h1><a href="<{$plugin_arr.url}>"><{$plugin_arr.title}></a><{$smarty.const._MD_TCW_PLUGIN_TOOLS}></h1>
 
 <form action="setup.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+  <hr>
   <{if $plugin_setup}>
     <{foreach from=$plugin_setup item=setup}>
-      <div class="row">
-        <div class="col-md-2 text-right">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
           <{$setup.text}>
-        </div>
-        <div class="col-md-5">
+        </label>
+        <div class="col-md-4">
           <{if $setup.type=="text"}>
             <input type="text" name="<{$setup.name}>" value="<{$setup.value}>" class="form-control">
           <{elseif $setup.type=="select"}>
@@ -16,18 +17,30 @@
                 <option value="<{$value}>" <{if $setup.value==$value}>selected<{/if}>><{$title}> <{$value}></option>
               <{/foreach}>
             </select>
+          <{elseif $setup.type=="radio"}>
+              <{foreach from=$setup.options key=title item=value}>
+                <label class="radio-inline">
+                  <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$value}>" <{if $setup.value==$value}>checked<{/if}>><{$title}>
+                </label>
+              <{/foreach}>
+          <{elseif $setup.type=="checkbox"}>
+              <{foreach from=$setup.options key=title item=value}>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="<{$setup.name}>[]" id="<{$setup.name}>_<{$value}>" value="<{$value}>" <{if $value|in_array:$setup.value}>checked<{/if}>><{$title}>
+                </label>
+              <{/foreach}>
           <{elseif $setup.type=="color"}>
-            <input type="text" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$setup.value}>" class="col-md-8" data-hex="true" >
+            <input type="text" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$setup.value}>" class="form-control" data-hex="true" >
           <{elseif $setup.type=="array"}>
             <textarea name="<{$setup.name}>" class="form-control" rows=4 style="font-size:0.8em;"><{$setup.value}></textarea>
           <{elseif $setup.type=="textarea"}>
             <textarea name="<{$setup.name}>" class="form-control" rows=4 style="font-size:0.8em;"><{$setup.value}></textarea>
           <{elseif $setup.type=="yesno"}>
-            <label class="radio inline">
-              <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>1" value="1" <{if $setup.value==1}>checked<{/if}> ><{$smarty.const._YES}>
+            <label class="radio-inline">
+              <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>1" value="1" <{if $setup.value=='1'}>checked<{/if}> ><{$smarty.const._YES}>
             </label>
-            <label class="radio inline">
-              <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>0" value="0" <{if $setup.value==0}>checked<{/if}> ><{$smarty.const._NO}>
+            <label class="radio-inline">
+              <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>0" value="0" <{if $setup.value!='1'}>checked<{/if}> ><{$smarty.const._NO}>
             </label>
           <{elseif $setup.type=="file"}>
             <{$setup.form}>
@@ -69,13 +82,16 @@
             <{/if}>
           </div>
         <{else}>
-          <div class="col-md-5 alert alert-info">
-            <{$setup.desc}>
+          <div class="col-md-5">
+            <div class="alert alert-info">
+              <{$setup.desc}>
+            </div>
           </div>
         <{/if}>
       </div>
     <{/foreach}>
   <{/if}>
+  <hr>
   <div class="text-center">
     <input type="hidden" name="plugin" value="<{$plugin}>">
     <input type="hidden" name="WebID" value="<{$WebID}>">

@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
-$modversion['version']     = 1.65;
+$modversion['version']     = 1.67;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author']      = _MI_TCW_AUTHOR;
 $modversion['credits']     = _MI_TCW_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2015/12/17';
+$modversion['release_date']        = '2016/01/20';
 $modversion['module_website_url']  = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -43,6 +43,7 @@ $modversion['tables'][]         = "tad_web_plugins";
 $modversion['tables'][]         = "tad_web_roles";
 $modversion['tables'][]         = "tad_web_blocks";
 $modversion['tables'][]         = "tad_web_plugins_setup";
+$modversion['tables'][]         = "tad_web_power";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;

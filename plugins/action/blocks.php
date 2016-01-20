@@ -19,12 +19,20 @@ function list_action($WebID, $config = array())
 function action_slide($WebID, $config = array())
 {
     global $xoopsDB;
+    $power = new power($WebID);
 
-    $sql = "select ActionName,ActionID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$WebID}' order by rand() limit 0,1";
+    $sql = "select ActionName,ActionID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$WebID}' order by rand()";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
-
-    list($ActionName, $ActionID) = $xoopsDB->fetchRow($result);
+    while (list($ActionName, $ActionID) = $xoopsDB->fetchRow($result)) {
+        //檢查權限
+        $the_power = $power->check_power("read", "ActionID", $ActionID);
+        if (!$the_power) {
+            continue;
+        } else {
+            break;
+        }
+    }
 
     if (empty($ActionID)) {
         $block['main_data'] = $block['ActionID'] = $block['ActionName'] = '';

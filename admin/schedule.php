@@ -12,9 +12,12 @@ function schedule_template()
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
+    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/schedule");
+    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/schedule/image");
+    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/schedule/file");
     $schedule_template = $xoopsModuleConfig['schedule_template'];
 
-    $ck = new CKEditor("tad_web", "schedule_template", $schedule_template);
+    $ck = new CKEditor("tad_web/schedule", "schedule_template", $schedule_template);
     $ck->setHeight(300);
     $ck->setContentCss(XOOPS_URL . "/modules/tad_web/plugins/schedule/schedule.css");
     $editor = $ck->render();

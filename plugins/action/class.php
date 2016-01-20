@@ -4,15 +4,19 @@ class tad_web_action
 
     public $WebID = 0;
     public $web_cate;
+    public $setup;
 
     public function tad_web_action($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "action", "tad_web_action");
+        $this->power    = new power($WebID);
+        $this->tags     = new tags($WebID);
+        $this->setup    = get_plugin_setup_values($WebID, "action");
     }
 
     //活動剪影
-    public function list_all($CateID = "", $limit = null, $mode = "assign")
+    public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
@@ -44,6 +48,8 @@ class tad_web_action
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.ActionID desc";
+        } elseif (!empty($tag)) {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='ActionID' and c.col_sn=a.ActionID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.ActionID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionID desc";
         }
@@ -70,6 +76,11 @@ class tad_web_action
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
+            //檢查權限
+            $power = $this->power->check_power("read", "ActionID", $ActionID);
+            if (!$power) {
+                continue;
+            }
 
             $main_data[$i] = $all;
 
@@ -93,9 +104,8 @@ class tad_web_action
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_action_func", "action.php?op=delete&WebID={$this->WebID}&ActionID=", 'ActionID');
-        $xoopsTpl->assign('sweet_delete_action_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_action_func", "action.php?op=delete&WebID={$this->WebID}&ActionID=", 'ActionID');
 
         if ($mode == "return") {
             $data['main_data'] = $main_data;
@@ -112,9 +122,15 @@ class tad_web_action
     //以流水號秀出某筆tad_web_action資料內容
     public function show_one($ActionID = "")
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb, $xoopsUser;
         if (empty($ActionID)) {
             return;
+        }
+
+        //檢查權限
+        $power = $this->power->check_power("read", "ActionID", $ActionID);
+        if (!$power) {
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
         $ActionID = intval($ActionID);
@@ -162,6 +178,9 @@ class tad_web_action
         $xoopsTpl->assign('ActionID', $ActionID);
         $xoopsTpl->assign('ActionInfo', sprintf(_MD_TCW_INFO, $uid_name, $ActionDate, $ActionCount));
 
+        $xoopsTpl->assign('xoops_pagetitle', $ActionName);
+        $xoopsTpl->assign('fb_description', $ActionPlace . $ActionDate . xoops_substr(strip_tags($ActionDesc), 0, 300));
+
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
@@ -171,9 +190,11 @@ class tad_web_action
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_action_func", "action.php?op=delete&WebID={$this->WebID}&ActionID=", 'ActionID');
-        $xoopsTpl->assign('sweet_delete_action_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_action_func", "action.php?op=delete&WebID={$this->WebID}&ActionID=", 'ActionID');
+        $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
+
+        $xoopsTpl->assign("tags", $this->tags->list_tags("ActionID", $ActionID, 'action'));
     }
 
     //tad_web_action編輯表單
@@ -252,6 +273,12 @@ class tad_web_action
         $TadUpFiles->set_col('ActionID', $ActionID); //若 $show_list_del_file ==true 時一定要有
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
+
+        $power_form = $this->power->power_menu('read', "ActionID", $ActionID);
+        $xoopsTpl->assign('power_form', $power_form);
+
+        $tags_form = $this->tags->tags_menu("ActionID", $ActionID);
+        $xoopsTpl->assign('tags_form', $tags_form);
     }
 
     //新增資料到tad_web_action中
@@ -283,8 +310,12 @@ class tad_web_action
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
-
         check_quota($this->WebID);
+
+        //儲存權限
+        $this->power->save_power("ActionID", $ActionID, 'read');
+        //儲存標籤
+        $this->tags->save_tags("ActionID", $ActionID, $_POST['tag_name'], $_POST['tags']);
         return $ActionID;
     }
 
@@ -317,8 +348,13 @@ class tad_web_action
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
-
         check_quota($this->WebID);
+
+        //儲存權限
+        $read = $myts->addSlashes($_POST['read']);
+        $this->power->save_power("ActionID", $ActionID, 'read', $read);
+        //儲存標籤
+        $this->tags->save_tags("ActionID", $ActionID, $_POST['tag_name'], $_POST['tags']);
         return $ActionID;
     }
 
@@ -335,6 +371,10 @@ class tad_web_action
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->del_files();
         check_quota($this->WebID);
+
+        $this->power->delete_power("ActionID", $ActionID, 'read');
+        //刪除標籤
+        $this->tags->delete_tags("ActionID", $ActionID);
     }
 
     //刪除所有資料

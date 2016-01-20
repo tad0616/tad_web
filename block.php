@@ -11,21 +11,19 @@ if (!empty($_REQUEST['WebID']) and $isMyWeb) {
 
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
-function config_block($WebID, $BlockID, $mode = "config")
+function config_block($WebID, $BlockID, $plugin, $mode = "config")
 {
     global $xoopsDB, $xoopsTpl;
-    $shareBlockID = $shareBlockCount = $webs = '';
+    $shareBlockCount = $webs = '';
+    $shareBlockID    = get_share_block_id($BlockID);
+
     if ($BlockID) {
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}'";
+
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         $block  = $xoopsDB->fetchArray($result);
 
-        //查詢否為分享區塊
-        $sql    = "select BlockID, WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='{$block['BlockName']}' and plugin='share'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-        list($shareBlockID, $shareWebID) = $xoopsDB->fetchRow($result);
-
+        //若為分享區塊，找出目前有在使用的單位
         if (!empty($shareBlockID)) {
 
             $sql = "select b.* from " . $xoopsDB->prefix("tad_web_blocks") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.`BlockName`='{$block['BlockName']}' and a.plugin='custom' and a.BlockEnable='1' and a.BlockPosition!='' and a.BlockPosition!='uninstall'";
@@ -41,35 +39,42 @@ function config_block($WebID, $BlockID, $mode = "config")
     }
 
     $form = $editor = '';
+    //新增
     if ($mode == "add") {
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/image");
+        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/file");
         if (!isset($block)) {
             $block['BlockTitle']   = '';
             $block['BlockID']      = '';
             $block['BlockContent'] = '';
             $config['show_title']  = '1';
         }
-        $ck = new CKEditor("tad_web", "BlockContent[html]", $block['BlockContent']);
+        $ck = new CKEditor("tad_web/{$WebID}/block", "BlockContent[html]", $block['BlockContent']);
         $ck->setHeight(250);
         $editor = $ck->render();
     } else {
+        //修改
+        $block_plugin = isset($block['plugin']) ? $block['plugin'] : $plugin;
+        $config       = isset($block['plugin']) ? json_decode($block['BlockConfig'], true) : '';
 
-        $func   = $block['BlockName'];
-        $config = json_decode($block['BlockConfig'], true);
-        include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block['plugin']}/config_blocks.php";
-        //die($block['BlockName'] . var_export($config));
-        if ($block['plugin'] == 'custom') {
+        if ($block_plugin == 'custom') {
             include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
-            $ck = new CKEditor("tad_web", "BlockContent[html]", $block['BlockContent']);
+            $ck = new CKEditor("tad_web/{$WebID}/block", "BlockContent[html]", $block['BlockContent']);
             $ck->setHeight(250);
-            $editor = $ck->render();
+            $editor        = $ck->render();
+            $iframeContent = strip_tags($block['BlockContent']);
         } else {
-            $form = array2form($blockConfig[$block['plugin']][$func]['colset'], $config);
+            $func = isset($block['BlockName']) ? $block['BlockName'] : '';
+            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
+            $form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
         }
-        $iframeContent = strip_tags($block['BlockContent']);
     }
     $block['config'] = $config;
-    // die($form);
+    if ($_GET['test'] == '1') {
+        die(var_export($config));
+    }
     $xoopsTpl->assign('form', $form);
     $xoopsTpl->assign('editor', $editor);
     $xoopsTpl->assign('block', $block);
@@ -77,7 +82,6 @@ function config_block($WebID, $BlockID, $mode = "config")
     // $xoopsTpl->assign('block_config', $config);
     $xoopsTpl->assign('mode', $mode);
     $xoopsTpl->assign('shareBlockID', $shareBlockID);
-    $xoopsTpl->assign('shareWebID', $shareWebID);
     $xoopsTpl->assign('shareBlockCount', sprintf(_MD_TCW_USE_BLOCK_SITE, $shareBlockCount));
     $xoopsTpl->assign('use_share_web', $webs);
 
@@ -85,14 +89,17 @@ function config_block($WebID, $BlockID, $mode = "config")
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert      = new sweet_alert();
-    $sweet_alert_code = $sweet_alert->render("delete_block_func", "block.php?WebID={$WebID}&op=delete_block&BlockID=", 'BlockID');
-    $xoopsTpl->assign('sweet_delete_block_func_code', $sweet_alert_code);
+    $sweet_alert = new sweet_alert();
+    $sweet_alert->render("delete_block_func", "block.php?WebID={$WebID}&op=delete_block&BlockID=", 'BlockID');
 }
 
+//區塊設定表單
 function array2form($form_arr = array(), $config = array())
 {
-    //die(var_export($config));
+    // if ($_GET['test'] == '1') {
+    //     // die(var_export($form_arr));
+    // }
+
     if (empty($form_arr)) {
         return;
     }
@@ -114,12 +121,28 @@ function array2form($form_arr = array(), $config = array())
                 $form_code .= '</select>';
                 break;
 
+            case 'checkbox':
+                // die(var_export($form['options']));
+                foreach ($form['options'] as $title => $value) {
+                    $checked = in_array($value, $config[$config_name]) ? 'checked' : '';
+                    $form_code .= '<label class="checkbox"><input type="checkbox" name="config[' . $config_name . '][]" value="' . $value . '" ' . $checked . '>' . $title . '</label>';
+                }
+                break;
+
             case 'radio':
-                $form_code .= '<input type="radio" name="config[' . $config_name . ']" class="form-control" value="' . $config[$config_name] . '">' . $form['value'] . '';
+                foreach ($form['options'] as $title => $value) {
+                    $checked = $value == $config[$config_name] ? 'checked' : '';
+                    $form_code .= '<label class="radio"><input type="radio" name="config[' . $config_name . ']" value="' . $value . '" ' . $checked . '>' . $title . '</label>';
+                }
                 break;
 
             case 'textarea':
                 $form_code .= '<textarea name="config[' . $config_name . ']" class="form-control">' . $config[$config_name] . '</textarea>';
+                break;
+
+            case 'datetime':
+                $form_code .= '<script type="text/javascript" src="' . XOOPS_URL . '/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+                <input type="text" name="config[' . $config_name . ']" class="form-control" onClick="WdatePicker({dateFmt:\'MM/dd/yyyy HH:mm:ss\', startDate:\'%y-%M-%d\'})" value="' . $config[$config_name] . '">';
                 break;
 
             default:
@@ -133,16 +156,18 @@ function array2form($form_arr = array(), $config = array())
     return $form_code;
 }
 
-function save_block_config($WebID = "", $BlockID = "", $BlockName = "", $BlockTitle = "", $BlockPosition = "", $config = "", $BlockShare = "", $shareBlockID = "")
+function save_block_config($WebID = "", $BlockID = "", $BlockName = "", $BlockTitle = "", $BlockPosition = "", $config = "", $BlockShare = "", $shareBlockID = "", $BlockEnable = "", $ShareFrom = "")
 {
     global $xoopsDB;
-    $myts             = MyTextSanitizer::getInstance();
-    $BlockTitle       = $myts->addSlashes($BlockTitle);
-    $BlockPosition    = $myts->addSlashes($BlockPosition);
+    $myts          = MyTextSanitizer::getInstance();
+    $BlockTitle    = $myts->addSlashes($BlockTitle);
+    $BlockPosition = $myts->addSlashes($BlockPosition);
+    $BlockEnable   = $myts->addSlashes($BlockEnable);
+
     $content_type     = $config['content_type'];
     $BlockContent     = $myts->addSlashes($_POST['BlockContent'][$content_type]);
     $BlockName        = $myts->addSlashes($BlockName);
-    $new_block_config = json_encode($config);
+    $new_block_config = json_encode($config, JSON_UNESCAPED_UNICODE);
 
     $text_color   = get_web_config('block_pic_text_color', $WebID);
     $border_color = get_web_config('block_pic_border_color', $WebID);
@@ -150,71 +175,58 @@ function save_block_config($WebID = "", $BlockID = "", $BlockName = "", $BlockTi
     $font         = get_web_config('block_pic_font', $WebID);
 
     //新增的話
+    //原始自訂區塊名稱 custom_{$WebID}_{$BlockID}
+    //分享區塊名稱 share_{$WebID}_{$BlockID}
+
+    //新增
     if (empty($BlockID)) {
         $BlockSort = max_blocks_sort($WebID, $BlockPosition);
-        $num       = max_custom_block_num($WebID);
-        $BlockName = ($BlockShare == '1') ? "share_{$WebID}_{$num}" : "custom_{$WebID}_{$num}";
-        $sql       = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `BlockShare`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '{$BlockContent}', '0', '{$new_block_config}', '{$BlockPosition}', '{$BlockSort}', '{$BlockShare}', '{$WebID}', 'custom')";
+        $sql       = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('custom_{$WebID}', '0', '{$BlockTitle}', '{$BlockContent}', '{$BlockEnable}', '{$new_block_config}', '{$BlockPosition}', '{$BlockSort}', '{$WebID}', 'custom','')";
 
         $xoopsDB->queryF($sql) or web_error($sql);
         //取得最後新增資料的流水編號
         $BlockID = $xoopsDB->getInsertId();
 
+        //更新原有區塊名稱
+        $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='custom_{$WebID}_{$BlockID}' where `BlockID`='{$BlockID}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+
         //共享區塊
         if ($BlockShare == '1') {
-            $sql = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `BlockShare`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '{$BlockContent}', '0', '{$new_block_config}', '', '{$BlockSort}', '1', '{$WebID}', 'share')";
+            $sql = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('share_{$WebID}_{$BlockID}', '0', '{$BlockTitle}', '{$BlockContent}', '0', '{$new_block_config}', '', '{$BlockSort}', '{$WebID}', 'share', '{$BlockID}')";
             $xoopsDB->queryF($sql) or web_error($sql);
             //取得最後新增資料的流水編號
             $shareBlockID = $xoopsDB->getInsertId();
+
+            //更新共享區塊名稱
+            $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='share_{$WebID}_{$shareBlockID}' where `BlockID`='{$shareBlockID}'";
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
     } else {
         //更新區塊
-        $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockConfig`='{$new_block_config}' , `BlockTitle`='{$BlockTitle}' , `BlockPosition`='{$BlockPosition}' , `BlockContent`='{$BlockContent}'  where `BlockID`='{$BlockID}'";
+        $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockConfig`='{$new_block_config}' , `BlockTitle`='{$BlockTitle}' , `BlockPosition`='{$BlockPosition}' , `BlockEnable`='{$BlockEnable}' , `BlockContent`='{$BlockContent}'  where `BlockID`='{$BlockID}' and WebID='{$WebID}'";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         //共享區塊若不再共享（直接刪除之）
         if (!empty($shareBlockID) and $BlockShare != '1') {
-            //取得共享區塊資訊
-            $sql        = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where BlockID='{$shareBlockID}'";
-            $result     = $xoopsDB->query($sql) or web_error($sql);
-            $shareBlock = $xoopsDB->fetchArray($result);
 
-            //刪除共享資訊
-            $sql = "delete from `" . $xoopsDB->prefix("tad_web_blocks") . "` where `BlockID`='{$shareBlockID}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            delete_share_block($shareBlockID, $WebID);
 
-            //把已經共享的區塊改名字
-            $sql    = "select BlockID,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where BlockName='{$shareBlock['BlockName']}'";
-            $result = $xoopsDB->queryF($sql) or web_error($sql);
-            while (list($BlockID, $WebID) = $xoopsDB->fetchRow($result)) {
-                $num = max_custom_block_num($WebID);
-                $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='custom_{$WebID}_{$num}' where `BlockID`='{$BlockID}'";
-                $xoopsDB->queryF($sql) or web_error($sql);
-            }
-
-            //共享區塊若改為共享
         } elseif (empty($shareBlockID) and $BlockShare == '1') {
-            //取得原區塊資訊
-            $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where BlockID='{$BlockID}'";
-            $result = $xoopsDB->query($sql) or web_error($sql);
-            $Block  = $xoopsDB->fetchArray($result);
-
-            //新增共享區塊
-            $BlockName    = str_replace('custom_', 'share_', $Block['BlockName']);
-            $BlockTitle   = $myts->addSlashes($Block['BlockTitle']);
-            $BlockContent = $myts->addSlashes($Block['BlockContent']);
-            $BlockConfig  = $myts->addSlashes($Block['BlockConfig']);
-            $sql          = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `BlockShare`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '{$BlockContent}', '0', '{$BlockConfig}', '', '{$Block['BlockSort']}', '1', '{$Block['WebID']}', 'share')";
+            //自訂區塊若改為共享
+            $sql = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('share_{$WebID}_{$BlockID}', '0', '{$BlockTitle}', '{$BlockContent}', '0', '{$new_block_config}', 'uninstall', '0', '{$WebID}', 'share', '{$BlockID}')";
             $xoopsDB->queryF($sql) or web_error($sql);
 
-            //更新原有區塊名稱
-            $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='{$BlockName}' where `BlockID`='{$BlockID}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            //取得最後新增資料的流水編號
+            $shareBlockID = $xoopsDB->getInsertId();
 
+            //更新共享區塊名稱
+            $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='share_{$WebID}_{$shareBlockID}' where `BlockID`='{$shareBlockID}'";
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
     }
 
-    mkTitlePic($WebID, "block_{$BlockName}", $BlockTitle, $text_color, $border_color, $text_size, $font);
+    mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
 }
 
 //自動取得tad_web_blocks的最新排序
@@ -239,8 +251,7 @@ function mk_block_pic($WebID = "", $block_pic = array(), $use_block_pic = '')
     $result = $xoopsDB->queryF($sql) or web_error($sql);
 
     while (list($BlockID, $BlockName, $BlockTitle) = $xoopsDB->fetchRow($result)) {
-        $filename = "block_{$BlockName}";
-        mkTitlePic($WebID, $filename, $BlockTitle, $block_pic['block_pic_text_color'], $block_pic['block_pic_border_color'], $block_pic['block_pic_text_size'], $block_pic['block_pic_font']);
+        mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $block_pic['block_pic_text_color'], $block_pic['block_pic_border_color'], $block_pic['block_pic_text_size'], $block_pic['block_pic_font']);
     }
 }
 
@@ -280,10 +291,79 @@ function delete_block($BlockID, $WebID)
     if (!$isAdmin and !in_array($WebID, $MyWebs)) {
         return;
     }
+    //若有分享區塊，先刪除之
+    $share_block_id = get_share_block_id($BlockID);
+    if ($share_block_id) {
+        delete_share_block($share_block_id, $WebID);
+    }
+
+    //刪除自己
     $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where BlockID='{$BlockID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 }
 
+//刪除分享區塊
+function delete_share_block($BlockID, $WebID)
+{
+    global $xoopsDB, $MyWebs, $isAdmin;
+    if (!$isAdmin and !in_array($WebID, $MyWebs)) {
+        return;
+    }
+
+    //刪除自己
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where BlockID='{$BlockID}' and plugin='share'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    //刪除別人的分享紀錄
+    $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set ShareFrom='' where ShareFrom='{$BlockID}' and plugin='custom'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+}
+
+//取得某區塊是否有分享的區塊ID
+function get_share_block_id($BlockID)
+{
+    global $xoopsDB;
+    $share_blocks  = '';
+    $sql           = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where `ShareFrom`='{$BlockID}'";
+    $result        = $xoopsDB->queryF($sql) or web_error($sql);
+    list($BlockID) = $xoopsDB->fetchRow($result);
+    return $BlockID;
+}
+
+//複製區塊
+function copy_block($BlockID, $plugin, $WebID)
+{
+    global $xoopsDB;
+    $sql                   = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}'";
+    $result                = $xoopsDB->queryF($sql) or web_error($sql);
+    $block                 = $xoopsDB->fetchArray($result);
+    $myts                  = MyTextSanitizer::getInstance();
+    $block['BlockTitle']   = $myts->addSlashes($block['BlockTitle']);
+    $block['BlockContent'] = $myts->addSlashes($block['BlockContent']);
+    $block['BlockConfig']  = $myts->addSlashes($block['BlockConfig']);
+
+    $BlockCopy = max_blocks_copy($WebID, $block['BlockName']);
+    $BlockSort = max_blocks_sort($WebID, $block['BlockPosition']);
+
+    $block['BlockTitle'] = $block['BlockTitle'] . "-" . $BlockCopy;
+
+    $sql = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$block['BlockName']}', '{$BlockCopy}', '{$block['BlockTitle']}', '{$block['BlockContent']}', '{$block['BlockEnable']}', '{$block['BlockConfig']}', '{$block['BlockPosition']}', '{$BlockSort}', '{$WebID}', '{$block['plugin']}','{$block['ShareFrom']}')";
+    $xoopsDB->queryF($sql) or web_error($sql);
+    //取得最後新增資料的流水編號
+    $BlockID = $xoopsDB->getInsertId();
+    return $BlockID;
+}
+
+//自動取得tad_web_blocks的最新排序
+function max_blocks_copy($WebID, $BlockName)
+{
+    global $xoopsDB;
+    $sql             = "select max(`BlockCopy`) from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='$WebID' and BlockName='{$BlockName}'";
+    $result          = $xoopsDB->query($sql) or web_error($sql);
+    list($BlockCopy) = $xoopsDB->fetchRow($result);
+    return ++$BlockCopy;
+}
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op            = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -294,36 +374,48 @@ $config        = system_CleanVars($_REQUEST, 'config', '', 'array');
 $BlockTitle    = system_CleanVars($_REQUEST, 'BlockTitle', '', 'string');
 $BlockName     = system_CleanVars($_REQUEST, 'BlockName', '', 'string');
 $BlockPosition = system_CleanVars($_REQUEST, 'BlockPosition', '', 'string');
-$BlockShare    = system_CleanVars($_REQUEST, 'BlockShare', '', 'string');
+$BlockShare    = system_CleanVars($_REQUEST, 'BlockShare', 0, 'int');
 $block_pic     = system_CleanVars($_REQUEST, 'block_pic', '', 'array');
 $use_block_pic = system_CleanVars($_REQUEST, 'use_block_pic', '', 'string');
+$BlockEnable   = system_CleanVars($_REQUEST, 'BlockEnable', '', 'int');
+$plugin        = system_CleanVars($_REQUEST, 'plugin', '', 'string');
+$ShareFrom     = system_CleanVars($_REQUEST, 'ShareFrom', '', 'int');
 
-common_template($WebID);
+common_template($WebID, $web_all_config);
 
 switch ($op) {
 
     //新增資料
     case "save_block_config":
-        save_block_config($WebID, $BlockID, $BlockName, $BlockTitle, $BlockPosition, $config, $BlockShare, $shareBlockID);
+        save_block_config($WebID, $BlockID, $BlockName, $BlockTitle, $BlockPosition, $config, $BlockShare, $shareBlockID, $BlockEnable, $ShareFrom);
         header("location: block.php?WebID={$WebID}");
         exit;
         break;
 
     case "config":
-        config_block($WebID, $BlockID);
+        config_block($WebID, $BlockID, $plugin);
         break;
 
     case "add_block":
-        config_block($WebID, $BlockID, "add");
+        config_block($WebID, $BlockID, $plugin, "add");
         break;
 
     case "mk_block_pic":
         mk_block_pic($WebID, $block_pic, $use_block_pic);
         header("location: block.php?WebID={$WebID}");
+        exit;
         break;
+
     case "delete_block":
         delete_block($BlockID, $WebID);
         header("location: block.php?WebID={$WebID}");
+        exit;
+        break;
+
+    case "copy":
+        $newBlockID = copy_block($BlockID, $plugin, $WebID);
+        header("location: block.php?WebID={$WebID}&op=config&plugin={$plugin}&BlockID={$newBlockID}");
+        exit;
         break;
     //預設動作
     default:

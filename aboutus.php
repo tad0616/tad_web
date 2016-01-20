@@ -14,13 +14,14 @@ $MemID       = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
 $year        = system_CleanVars($_REQUEST, 'year', '', 'string');
 $newCateName = system_CleanVars($_REQUEST, 'newCateName', '', 'string');
 $CateID      = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+
 common_template($WebID, $web_all_config);
 
 switch ($op) {
 
     //新增學生資料
     case "insert":
-        $tad_web_aboutus->insert();
+        $MemID = $tad_web_aboutus->insert();
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}&MemID={$MemID}&op=show_stu");
         exit;
         break;
@@ -105,14 +106,28 @@ switch ($op) {
 
     //登入
     case "mem_login":
-        $tad_web_aboutus->mem_login($_POST['MemUname'], $_POST['MemPasswd']);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        $login = $tad_web_aboutus->mem_login($WebID, $_POST['MemUname'], $_POST['MemPasswd']);
+        if ($login) {
+            header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&MemID={$_SESSION['LoginMemID']}&op=show_stu");
+        } else {
+            header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+
+        }
         exit;
         break;
 
     //登出
     case "mem_logout":
         $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = "";
+        $GLOBALS["sess_handler"]->regenerate_id(true);
+        $_SESSION = array();
+        setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
+        setcookie($xoopsConfig['usercookie'], 0, -1, '/');
+        // clear entry from online users table
+        if (is_object($xoopsUser)) {
+            $online_handler = &xoops_gethandler('online');
+            $online_handler->destroy($xoopsUser->getVar('uid'));
+        }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -136,15 +151,21 @@ switch ($op) {
             $tad_web_aboutus->list_all();
             $op = 'list_all';
         } else {
-            if (empty($CateID)) {
-                $CateID = get_web_config('default_class', $WebID);
-                if (empty($CateID)) {
-                    $CateID = $tad_web_aboutus->web_cate->tad_web_cate_max_id();
-                }
+            if (!empty($MemID)) {
+                $tad_web_aboutus->show_stu($MemID);
+                $op = 'show_stu';
+            } else {
+
+                $default_class = get_web_config('default_class', $WebID);
+                // if (empty($CateID)) {
+                //     $CateID = $tad_web_aboutus->web_cate->tad_web_cate_max_id();
+                // }
+
+                $tad_web_aboutus->show_one($default_class);
+                $op = 'show_one';
             }
-            $tad_web_aboutus->show_one($CateID);
-            $op = 'show_one';
         }
+
         break;
 
 }

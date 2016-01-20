@@ -53,19 +53,19 @@ function list_web_student($WebID, $config = array())
         $DefCateID = $web_cate->tad_web_cate_max_id();
     }
 
-    $cate = $web_cate->get_tad_web_cate($DefCateID);
-    $xoopsTpl->assign('cate', $cate);
-    $xoopsTpl->assign('CateID', $DefCateID);
+    $cate            = $web_cate->get_tad_web_cate($DefCateID);
+    $block['cate']   = $cate;
+    $block['CateID'] = $DefCateID;
 
     $mode = "";
 
     //班級圖片
     $TadUpFiles->set_col("ClassPic", $DefCateID, 1);
-    $class_pic_thumb = $TadUpFiles->get_pic_file("thumb");
-    $xoopsTpl->assign('class_pic_thumb', $class_pic_thumb);
+    $class_pic_thumb          = $TadUpFiles->get_pic_file("thumb");
+    $block['class_pic_thumb'] = $class_pic_thumb;
 
-    $ys = get_seme();
-    $xoopsTpl->assign('ys', $ys);
+    $ys          = get_seme();
+    $block['ys'] = $ys;
 
     $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
     $result = $xoopsDB->query($sql) or web_error($sql);
@@ -91,11 +91,12 @@ function list_web_student($WebID, $config = array())
         $i++;
     }
 
-    $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
-    $xoopsTpl->assign('class_total', $class_total);
-    $xoopsTpl->assign('class_boy', $class_boy);
-    $xoopsTpl->assign('class_girl', $class_girl);
-    $xoopsTpl->assign('student_amount', sprintf(_MD_TCW_MEM_AMOUNT, $setup['student_title']));
-    $xoopsTpl->assign('teacher_name', sprintf(_MD_TCW_OWNER_NAME, $setup['teacher_title']));
-
+    $block['WebOwner']       = $Web['WebOwner'];
+    $block['class_total']    = $class_total;
+    $block['class_boy']      = $class_boy;
+    $block['class_girl']     = $class_girl;
+    $block['student_amount'] = sprintf(_MD_TCW_MEM_AMOUNT, $setup['student_title']);
+    $block['teacher_name']   = sprintf(_MD_TCW_OWNER_NAME, $setup['teacher_title']);
+    $block['main_data']      = true;
+    return $block;
 }

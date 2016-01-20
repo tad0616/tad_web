@@ -1,3 +1,29 @@
+Tad Web 1.6.6 release（2016-01-04 release)
+====================================================
+ 1. Fixed Paging Toolbar
+ 2. Fix classification
+ 3. Fixed the problem can not get video thumbnail
+ 4. Fixed free block
+ 5. Add a variety of color adjustment function
+ 6. Add the block title turn into a picture function
+ 7. complete freedom blocks sharing
+ 8. Adjust block Toolbar
+ 9. Add "Search", "QRCode", "social tools", "Chinese Dictionary", "Dr.eye English Dictionary", "Wikipedia", etc. block
+10. The new "block delete" function
+11. Added "Print Preview" function
+12. Add "site closed" function
+13. The second new theme
+14. New "FB message box" function
+15. New background setting options
+16. Modify Login block presentation
+17. Added "File download" link external file function
+18. The new permission mechanism
+19. The new draft features
+20. Fixed the "File Download" to remove the incorrect question
+21. New tab features
+
+
+
 Tad Web 1.6.5 release（2015-12-17 release)
 ====================================================
 1. The new free block function

@@ -244,10 +244,9 @@ function tad_web_list_cate()
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-    $sweet_alert_obj          = new sweet_alert();
-    $delete_tad_web_cate_func = $sweet_alert_obj->render('delete_tad_web_cate_func',
+    $sweet_alert_obj = new sweet_alert();
+    $sweet_alert_obj->render('delete_tad_web_cate_func',
         "{$_SERVER['PHP_SELF']}?op=delete_tad_web_cate&CateID=", "CateID");
-    $xoopsTpl->assign('delete_tad_web_cate_func', $delete_tad_web_cate_func);
 
     $xoopsTpl->assign('tad_web_cate_jquery_ui', get_jquery(true));
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);

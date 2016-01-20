@@ -18,7 +18,7 @@ $xoopsTpl->assign('cate', $cate);
 
 <ol class="breadcrumb">
 <li><a href="news.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_NEWS}></a> <span class="divider">/</span></li>
-<{if $cate.CateID}><li><a href="news.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <span class="divider">/</span></li><{/if}>
+<{if isset($cate.CateID)}><li><a href="news.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <span class="divider">/</span></li><{/if}>
 <li><{$NewsInfo}></li>
 </ol>
 
@@ -27,7 +27,7 @@ $web_cate = new web_cate($WebID, "news","tad_web_news");
 $web_cate->set_WebID($WebID);
 $cate = $web_cate->get_tad_web_cate_arr();
 
-<{if $news.cate.CateID}>
+<{if isset($news.cate.CateID)}>
 <span class="label label-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
 <{/if}>
  */

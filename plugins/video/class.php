@@ -4,11 +4,13 @@ class tad_web_video
 
     public $WebID = 0;
     public $web_cate;
+    public $setup;
 
     public function tad_web_video($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "video", "tad_web_video");
+        $this->setup    = get_plugin_setup_values($WebID, "video");
     }
 
     //影片
@@ -93,9 +95,8 @@ class tad_web_video
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_video_func", "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
-        $xoopsTpl->assign('sweet_delete_video_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_video_func", "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
 
         if ($mode == "return") {
             $data['main_data'] = $main_data;
@@ -166,6 +167,9 @@ class tad_web_video
         $xoopsTpl->assign('VideoID', $VideoID);
         $xoopsTpl->assign('VideoInfo', sprintf(_MD_TCW_INFO, $uid_name, $VideoDate, $VideoCount));
 
+        $xoopsTpl->assign('xoops_pagetitle', $VideoName);
+        $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($VideoDesc), 0, 300));
+
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
         $xoopsTpl->assign('cate', $cate);
@@ -174,9 +178,9 @@ class tad_web_video
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_video_func", "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
-        $xoopsTpl->assign('sweet_delete_video_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_video_func", "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
+        $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
     }
 
     //tad_web_video編輯表單

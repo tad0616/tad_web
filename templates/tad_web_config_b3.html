@@ -1,7 +1,7 @@
 <{if $isMyWeb}>
   <{if $op=="delete_tad_web_chk"}>
     <h2><{$smarty.const._MD_TCW_WILL_DEL}></h2>
-    <form action="config.php" method="post">
+    <form action="config.php" method="post" class="myForm">
       <table class="table table-striped table-bordered table-hover" style="width:auto;">
         <tr><th><{$smarty.const._MD_TCW_CATE_PLUGIN_TITLE}></th><th><{$smarty.const._MD_TCW_PLUGIN_TOTAL}></th></tr>
         <{foreach from=$plugins item=plugin}>
@@ -65,7 +65,7 @@
       <div id='tad_web_config_tab-1'>
         <div class="row">
           <div class="col-md-7">
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <h3><{$smarty.const._MD_TCW_WEB_NAME_SETUP}></h3>
               <{$cate_menu}>
               <div class="form-group">
@@ -80,7 +80,7 @@
               </div>
             </form>
 
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <h3><{$smarty.const._MD_TCW_UPLOAD_MY_PHOTO}></h3>
               <div class="form-group">
                 <div class="col-md-10">
@@ -94,7 +94,7 @@
               </div>
             </form>
 
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <h3><{$smarty.const._MD_TCW_OTHER_CLASS_SETUP}></h3>
               <div class="form-group">
                 <div class="col-md-10">
@@ -115,8 +115,32 @@
           </div>
         </div>
 
-        <form action="config.php" method="post" class="form-horizontal" role="form">
+        <form action="config.php" method="post" class="form-horizontal myForm" role="form">
           <h3><{$smarty.const._MD_TCW_THEME_TOOLS}></h3>
+          <div class="row">
+            <label class="col-md-2 control-label">
+              <{$smarty.const._MD_TCW_THEME_TOOLS_DEFAULT_THEME}>
+            </label>
+            <div class="col-md-4">
+              <select name="defalut_theme" id="defalut_theme" class="form-control">
+                <option value="for_tad_web_theme" <{if $defalut_theme=="for_tad_web_theme"}>selected<{/if}>>for_tad_web_theme</option>
+                <option value="for_tad_web_theme_2" <{if $defalut_theme=="for_tad_web_theme_2"}>selected<{/if}>>for_tad_web_theme_2</option>
+              </select>
+            </div><label class="col-md-2 control-label">
+              <{$smarty.const._MD_TCW_USER_SIMPLE_MENU}>
+            </label>
+            <div class="col-md-4">
+              <label class="radio-inline">
+                <input type="radio" name="use_simple_menu" value="1" <{if $use_simple_menu=='1'}>checked<{/if}>>
+                <{$smarty.const._YES}>
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="use_simple_menu" value="0" <{if $use_simple_menu!='1'}>checked<{/if}>>
+                <{$smarty.const._NO}>
+              </label>
+            </div>
+          </div>
+
           <div class="row">
             <label class="col-md-2 control-label">
               <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE}>
@@ -152,16 +176,35 @@
         </form>
 
         <hr>
-        <{$sweet_delete_action_func_code}>
-        <h3><{$smarty.const._MD_TCW_DEL_WEB}></h3>
-        <div class="alert alert-danger">
-          <p><{$smarty.const._MD_TCW_DEL_WEB_DESC}></p>
-          <a href="javascript:delete_my_web('<{$WebID}>')" class="btn btn-danger"><{$smarty.const._MD_TCW_DEL_WEB}></a>
-        </div>
+
+        <{if $Web.WebEnable=='1'}>
+          <h3><{$smarty.const._MD_TCW_CLOSE_WEB}></h3>
+          <div class="alert alert-warning">
+            <p><{$smarty.const._MD_TCW_CLOSE_WEB_DESC}></p>
+            <a href="config.php?WebID=<{$WebID}>&op=unable_my_web" class="btn btn-warning"><{$smarty.const._MD_TCW_CLOSE_WEB}></a>
+          </div>
+          <hr>
+        <{else}>
+          <h3><{$smarty.const._MD_TCW_OPEN_WEB}></h3>
+          <div class="alert alert-warning">
+            <p><{$smarty.const._MD_TCW_OPEN_WEB_DESC}></p>
+            <a href="config.php?WebID=<{$WebID}>&op=enable_my_web" class="btn btn-success"><{$smarty.const._MD_TCW_OPEN_WEB}></a>
+          </div>
+          <hr>
+        <{/if}>
+
+
+        <{if $Web.WebEnable!='1'}>
+          <h3><{$smarty.const._MD_TCW_DEL_WEB}></h3>
+          <div class="alert alert-danger">
+            <p><{$smarty.const._MD_TCW_DEL_WEB_DESC}></p>
+            <a href="javascript:delete_my_web('<{$WebID}>')" class="btn btn-danger"><{$smarty.const._MD_TCW_DEL_WEB}></a>
+          </div>
+        <{/if}>
       </div>
 
       <div id='tad_web_config_tab-2'>
-        <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+        <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
           <h3>
             <{$smarty.const._MD_TCW_FCNCTION_SETUP}>
           </h3>
@@ -174,6 +217,7 @@
               <th><{$smarty.const._MD_TCW_CATE_PLUGIN_ENABLE}></th>
               <th><{$smarty.const._MD_TCW_CATE_PLUGIN_TITLE}></th>
               <th><{$smarty.const._MD_TCW_CATE_PLUGIN_NEW_NAME}></th>
+              <th><{$smarty.const._MD_TCW_SETUP}></th>
             </tr>
             <tbody id="sort">
               <{foreach from=$plugins item=plugin}>
@@ -187,6 +231,11 @@
                     </td>
                     <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>><{$plugin.config.name}></td>
                     <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>><input type="text" name="plugin_name[<{$plugin.dirname}>]" value="<{if $plugin.db.PluginTitle}><{$plugin.db.PluginTitle}><{else}><{$plugin.config.name}><{/if}>" class="form-control" style="width: 120px;"></td>
+                    <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>>
+                      <{if $plugin.config.setup}>
+                        <a href="setup.php?WebID=<{$WebID}>&plugin=<{$plugin.dirname}>" class="btn btn-success"><i class="fa fa-wrench"></i> <{$smarty.const._MD_TCW_SETUP}></a>
+                      <{/if}>
+                    </td>
                   </tr>
                 <{/if}>
               <{/foreach}>
@@ -223,7 +272,7 @@
               </small>
             </h3>
 
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
                 <div class="col-md-12">
                   <{$upform_head}>
@@ -283,7 +332,7 @@
               <{$logo_desc}>
             </div>
 
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
                 <div class="col-md-12">
                   <{$upform_logo}>
@@ -345,13 +394,63 @@
                 <{$smarty.const._MD_TCW_CLICK_TO_CHANG}>
               </small>
             </h3>
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
                 <div class="col-md-12">
                   <{$upform_bg}>
                 </div>
               </div>
+              <hr>
+              <div class="form-group">
+                <label class="col-md-2 control-label">
+                  <{$smarty.const._MD_TCW_BG_REPEAT}>
+                </label>
+                <div class="col-md-4">
+                  <select name="bg_repeat" id="bg_repeat" class="form-control">
+                    <option value="" <{if $bg_repeat==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_NORMAL}></option>
+                    <option value="repeat-x" <{if $bg_repeat=="repeat-x"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_X}></option>
+                    <option value="repeat-y" <{if $bg_repeat=="repeat-y"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_Y}></option>
+                    <option value="no-repeat" <{if $bg_repeat=="no-repeat"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_NO_REPEAT}></option>
+                  </select>
+                </div>
+                <label class="col-md-2 control-label">
+                  <{$smarty.const._MD_TCW_BG_ATTACHMENT}>
+                </label>
+                <div class="col-md-4">
+                  <select name="bg_attachment" id="bg_attachment" class="form-control">
+                    <option value="" <{if $bg_attachment==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_ATTACHMENT_SCROLL}></option>
+                    <option value="fixed" <{if $bg_attachment=="fixed"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_ATTACHMENT_FIXED}></option>
+                  </select>
+                </div>
+              </div>
 
+              <div class="form-group">
+                <label class="col-md-2 control-label">
+                  <{$smarty.const._MD_TCW_BG_POSITION}>
+                </label>
+                <div class="col-md-4">
+                  <select name="bg_postiton" id="bg_postiton" class="form-control">
+                    <option value="left top" <{if $bg_postiton=="left top"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_LT}></option>
+                    <option value="right top" <{if $bg_postiton=="right top"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_RT}></option>
+                    <option value="left bottom" <{if $bg_postiton=="left bottom"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_LB}></option>
+                    <option value="right bottom" <{if $bg_postiton=="right bottom"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_RB}></option>
+                    <option value="center center" <{if $bg_postiton=="center center"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_CC}></option>
+                    <option value="center top" <{if $bg_postiton=="center top"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_CT}></option>
+                    <option value="center bottom" <{if $bg_postiton=="center bottom"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_CB}></option>
+                  </select>
+                </div>
+                <label class="col-md-2 control-label">
+                  <{$smarty.const._MD_TCW_BG_SIZE}>
+                </label>
+                <div class="col-md-4">
+                  <select name="bg_size" id="bg_size" class="form-control">
+                    <option value="" <{if $bg_size==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_NONE}></option>
+                    <option value="cover" <{if $bg_size=="cover"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_COVER}></option>
+                    <option value="contain" <{if $bg_size=="contain"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_CONTAIN}></option>
+                  </select>
+                </div>
+              </div>
+              <hr>
               <div class="form-group">
                 <div class="col-md-12">
                   <div style="width:100px; height:96px; display:inline-block; margin:4px;">
@@ -425,7 +524,7 @@
             <h3>
               <{$smarty.const._MD_TCW_COLOR_TOOLS}>
             </h3>
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
                 <label class="col-md-3 control-label">
                   <{$smarty.const._MD_TCW_MAIN_NAV_TOP_COLOR}>
@@ -667,7 +766,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <form action="config.php" method="post" class="form-horizontal" role="form">
+            <form action="config.php" method="post" class="form-horizontal myForm" role="form">
             <div class="row">
               <div class="col-md-5">
                 <select name="adm_repository" id="adm_repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">

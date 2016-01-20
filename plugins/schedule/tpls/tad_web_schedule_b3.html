@@ -112,7 +112,7 @@
 
   <ol class="breadcrumb">
     <li><a href="schedule.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_SCHEDULE}></a></li>
-    <{if $cate.CateID}><li><a href="schedule.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <{if isset($cate.CateID)}><li><a href="schedule.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
     <li><{$ScheduleInfo}></li>
   </ol>
 

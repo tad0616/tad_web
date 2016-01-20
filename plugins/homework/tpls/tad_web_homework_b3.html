@@ -90,7 +90,7 @@
   <h1><{$HomeworkTitle}></h1>
   <ol class="breadcrumb">
     <li><a href="homework.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_HOMEWORK}></a></li>
-    <{if $cate.CateID}><li><a href="homework.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <{if isset($cate.CateID)}><li><a href="homework.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
     <li><{$HomeworkInfo}></li>
   </ol>
 
@@ -104,6 +104,8 @@
     <{$HomeworkFiles}>
   <{/if}>
 
+  <{$fb_comments}>
+
   <{if $isMyWeb}>
     <div class="text-right" style="margin: 30px 0px;">
       <a href="javascript:delete_homework_func(<{$HomeworkID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
@@ -111,7 +113,7 @@
       <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$HomeworkID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
     </div>
   <{/if}>
-<{elseif $homework_data}>
+<{elseif $homework_data or $yet_data}>
   <{if $WebID}>
     <{$cate_menu}>
   <{/if}>

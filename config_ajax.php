@@ -58,7 +58,7 @@ switch ($op) {
     //標題設定
     case "save_bg":
         save_web_config("web_bg", $filename, $WebID);
-        output_head_file($WebID);
+        // output_head_file($WebID);
         exit;
         break;
 

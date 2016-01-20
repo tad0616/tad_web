@@ -23,23 +23,11 @@ function random_work($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block['main_data'] = $block['WorksID'] = $block['WorkName'] = '';
-    $sql                = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$WebID}' order by rand() limit 0,1";
-    $result             = $xoopsDB->query($sql) or web_error($sql);
-    $all                = $xoopsDB->fetchArray($result);
 
-    //以下會產生這些變數： $WorksID , $WorkName , $WorkDesc , $WorksDate , $uid , $WebID , $WorksCount
-    if ($all) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-        $TadUpFiles->set_col("WorksID", $WorksID);
-        $pics = $TadUpFiles->show_files('upfile', true, null, true, null, $config['limit']); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+    include_once "class.php";
 
-        $block['main_data'] = $pics;
-        $block['WorksID']   = $WorksID;
-        $block['WorkName']  = $WorkName;
-    }
+    $tad_web_works = new tad_web_works($WebID);
+    $block         = $tad_web_works->list_all("", 1, 'return', '', 'order by rand()', $config['limit']);
     return $block;
 }
 
@@ -52,23 +40,9 @@ function latest_work($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block['main_data'] = $block['WorksID'] = $block['WorkName'] = '';
+    include_once "class.php";
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$WebID}' order by WorksDate desc limit 0,1";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $all    = $xoopsDB->fetchArray($result);
-
-    //以下會產生這些變數： $WorksID , $WorkName , $WorkDesc , $WorksDate , $uid , $WebID , $WorksCount
-    if ($all) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-        $TadUpFiles->set_col("WorksID", $WorksID);
-        $pics = $TadUpFiles->show_files('upfile', true, null, true, null, $config['limit']); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-
-        $block['main_data'] = $pics;
-        $block['WorksID']   = $WorksID;
-        $block['WorkName']  = $WorkName;
-    }
+    $tad_web_works = new tad_web_works($WebID);
+    $block         = $tad_web_works->list_all("", 1, 'return', '', 'order by WorksDate desc', $config['limit']);
     return $block;
 }

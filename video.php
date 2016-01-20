@@ -9,9 +9,12 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
-$VideoID = system_CleanVars($_REQUEST, 'VideoID', 0, 'int');
-$CateID  = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$op            = system_CleanVars($_REQUEST, 'op', '', 'string');
+$VideoID       = system_CleanVars($_REQUEST, 'VideoID', 0, 'int');
+$CateID        = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$fb_action_ids = system_CleanVars($_REQUEST, 'fb_action_ids', 0, 'int');
+$comment_id    = system_CleanVars($_REQUEST, 'comment_id', 0, 'int');
+$fb_comment_id = system_CleanVars($_REQUEST, 'fb_comment_id', '', 'string');
 
 common_template($WebID, $web_all_config);
 
@@ -49,6 +52,10 @@ switch ($op) {
             $tad_web_video->list_all($CateID);
         } else {
             $op = 'show_one';
+            if (!empty($fb_action_ids) or !empty($fb_comment_id) or !empty($comment_id)) {
+                header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&VideoID={$VideoID}");
+                exit;
+            }
             $tad_web_video->show_one($VideoID);
         }
         break;

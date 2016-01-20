@@ -19,7 +19,7 @@
       });
     });
   </script>
-  <{$sweet_delete_block_func_code}>
+
   <div class="row">
     <div class="col-md-12">
       <h1 class="text-center"><{$block.BlockTitle}></h1>
@@ -46,6 +46,22 @@
             </div>
           </div>
         </div>
+
+
+        <div class="form-group">
+          <label class="col-md-3 control-label">
+            <{$smarty.const._MD_TCW_BLOCK_ENABLE}>
+          </label>
+          <div class="col-md-9">
+            <div class="radio-inline">
+              <input type="radio" name="BlockEnable" value="1" <{if $block.BlockEnable!='0'}>checked<{/if}>><{$smarty.const._YES}>
+            </div>
+            <div class="radio-inline">
+              <input type="radio" name="BlockEnable" value="0" <{if $block.BlockEnable=='0'}>checked<{/if}>><{$smarty.const._NO}>
+            </div>
+          </div>
+        </div>
+
 
         <div class="form-group">
           <label class="col-md-3 control-label">
@@ -74,6 +90,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label">
               <{$smarty.const._MD_TCW_BLOCK_CONTENT}>
+              <{$block.config.content_type}>
             </label>
             <div class="col-md-9">
               <select name="config[content_type]" id="content_type" class="form-control">
@@ -110,32 +127,33 @@
             </div>
           </div>
 
-          <{if $shareBlockID=="" or $shareWebID==$WebID}>
+          <{if $block.ShareFrom > 0}>
+            <input type="hidden" name="BlockShare" value="0">
+          <{else}>
             <div class="form-group">
               <label class="col-md-3 control-label">
                 <{$smarty.const._MD_TCW_BLOCK_SHARE}>
               </label>
               <div class="col-md-9">
                 <div class="radio-inline">
-                  <input type="radio" name="BlockShare" value="1" <{if $shareWebID==$WebID}>checked<{/if}>><{$smarty.const._YES}>
+                  <input type="radio" name="BlockShare" value="1" <{if $shareBlockID > 0}>checked<{/if}>><{$smarty.const._YES}>
                 </div>
                 <div class="radio-inline">
-                  <input type="radio" name="BlockShare" value="0" <{if $shareWebID!=$WebID}>checked<{/if}>><{$smarty.const._NO}>
+                  <input type="radio" name="BlockShare" value="0" <{if $shareBlockID == 0 or $block.BlockID==""}>checked<{/if}>><{$smarty.const._NO}>
                 </div>
               </div>
             </div>
             <input type="hidden" name="shareBlockID" value="<{$shareBlockID}>">
-          <{else}>
-            <input type="hidden" name="BlockShare" value="0">
           <{/if}>
         <{/if}>
 
         <div class="text-center" stye="margin-top: 30px;">
           <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="ShareFrom" value="<{$block.ShareFrom}>">
           <input type="hidden" name="op" value="save_block_config">
           <input type="hidden" name="BlockName" value="<{$block.BlockName}>">
           <input type="hidden" name="BlockID" value="<{$block.BlockID}>">
-          <{if $block.plugin=="custom"}>
+          <{if $block.plugin=="custom" or $block.BlockCopy!="0"}>
             <a href="javascript:delete_block_func('<{$block.BlockID}>');" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
           <{/if}>
           <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
@@ -176,6 +194,10 @@
       background: #FCEFFC url('<{$xoops_url}>/modules/tad_web/images/custom_block.png') right bottom no-repeat;
       border: 1px dashed #CE75CE;
     }
+    .share_block{
+      background: #FFFF00 url('<{$xoops_url}>/modules/tad_web/images/share_block.png') right bottom no-repeat;
+      border: 1px dashed #CE75CE;
+    }
   </style>
   <script>
     $(function() {
@@ -189,14 +211,46 @@
         receive: function( event, ui ) {
           var position=$(this).parent().attr("id");
           var order = $(this).sortable('toArray', {attribute: 'id'});
-          $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: position, BlockID: ui.item.attr("id"), plugin: ui.item.attr("title"), order_arr: order}, function(data) {
-              $("#msg").html(data);
+          var block_id = ui.item.attr("id");
+          var new_block_id = ui.item.attr("id");
+          var chang_id=false;
+
+          $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("title"), order_arr: order}, function(data) {
+              if(!isNaN(data)){
+                // location.reload();
+                var new_block_id =data;
+                var new_block_plugin='custom';
+                var chang_id=true;
+              }else{
+                var new_block_plugin=ui.item.attr("title");
+                var new_block_id = ui.item.attr("id");
+              }
+
+              if(position!="uninstall"){
+                $("#"+block_id).css('display','');
+                $("#"+block_id).append('<span id="blktool_'+block_id+'"><a href="block.php?WebID=<{$WebID}>&op=config&plugin='+new_block_plugin+'&BlockID='+new_block_id+'" class="pull-right text-danger"><i class="fa fa-pencil"></i></a></span>');
+                $("#"+block_id+"_icon").attr('src','images/show1.gif');
+
+                if(chang_id){
+                  $("#"+block_id).attr('title','custom');
+                  $("#"+block_id).attr('id',new_block_id);
+                  $("#"+block_id+"_icon").attr('onclick',"enableBlock('"+new_block_id+"')");
+                  $("#"+block_id+"_icon").attr('id',new_block_id+"_icon");
+                  $("#blktool_"+block_id).attr('id',"#blktool_"+new_block_id);
+                }
+              }else{
+                $("#"+block_id).css('display','inline-block');
+                $("#blktool_"+block_id).hide();
+                $("#blktool_"+block_id).remove();
+              }
           });
         },
         update: function( event, ui ) {
           var position=$(this).parent().attr("id");
           var order = $(this).sortable('toArray', {attribute: 'id'});
-          $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", PositionName: position, BlockID: ui.item.attr("id"), plugin: ui.item.attr("title"), order_arr: order}, function(data) {
+          var block_id = ui.item.attr("id");
+
+          $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("title"), order_arr: order}, function(data) {
               $("#msg").html(data);
           });
         }
@@ -233,8 +287,7 @@
       <div class="text-danger text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_UNINSTALL_BLOCK}></div>
       <ul id="sort_uninstall" class="connectedSortable">
           <{foreach from=$uninstall item=block}>
-            <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-              <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+            <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
               <{$block.icon}>
               <{$block.BlockTitle}>
             </li>
@@ -252,8 +305,8 @@
             <ul id="sort_side" class="connectedSortable">
               <{if $side}>
                 <{foreach from=$side item=block}>
-                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
                   </li>
@@ -271,8 +324,8 @@
             <ul id="sort_block1" class="connectedSortable">
               <{if $block1}>
                 <{foreach from=$block1 item=block}>
-                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
                   </li>
@@ -290,8 +343,8 @@
             <ul id="sort_block2" class="connectedSortable">
               <{if $block2}>
                 <{foreach from=$block2 item=block}>
-                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
                   </li>
@@ -306,8 +359,8 @@
             <ul id="sort_block3" class="connectedSortable">
               <{if $block3}>
                 <{foreach from=$block3 item=block}>
-                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
                   </li>
@@ -325,8 +378,8 @@
             <ul id="sort_block4" class="connectedSortable">
               <{if $block4}>
                 <{foreach from=$block4 item=block}>
-                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
                   </li>
@@ -344,8 +397,8 @@
             <ul id="sort_block5" class="connectedSortable">
               <{if $block5}>
                 <{foreach from=$block5 item=block}>
-                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
                   </li>
@@ -360,8 +413,8 @@
             <ul id="sort_block6" class="connectedSortable">
               <{if $block6}>
                 <{foreach from=$block6 item=block}>
-                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                  <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
                     <{$block.BlockTitle}>
                   </li>
@@ -380,8 +433,8 @@
           <ul id="sort_side" class="connectedSortable">
             <{if $side}>
               <{foreach from=$side item=block}>
-                <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.plugin=="custom" or $block.plugin=="share"}>custom_block<{/if}>">
-                    <a href="block.php?WebID=<{$WebID}>&op=config&BlockID=<{$block.BlockID}>" class="pull-right text-danger"><i class="fa fa-pencil"></i></a>
+                <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
+                    <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                   <{$block.icon}>
                   <{$block.BlockTitle}>
                 </li>

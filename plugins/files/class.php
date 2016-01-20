@@ -45,9 +45,9 @@ class tad_web_files
             $andCity       = !empty($city) ? "and d.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and d.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid where c.`WebEnable`='1' and b.col_name='fsn' $andCounty $andCity $andSchoolName order by a.file_date desc";
+            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid where c.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.file_date desc";
         } else {
-            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' and b.col_name='fsn' $andWebID $andCateID order by a.file_date desc";
+            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
         }
         $to_limit = empty($limit) ? 20 : $limit;
 
@@ -61,7 +61,8 @@ class tad_web_files
 
         $main_data = "";
 
-        $i = 0;
+        $i        = 0;
+        $need_del = $no_need_del = array();
 
         $Webs = getAllWebInfo();
 
@@ -75,6 +76,13 @@ class tad_web_files
                 $$k = $v;
             }
 
+            //偵測是否有已刪儲檔案，但tad_web_files未刪的檔案
+            if (!empty($fsn) and empty($files_sn) and empty($file_link)) {
+                $need_del[$fsn] = $fsn;
+            } else {
+                $no_need_del[$fsn] = $fsn;
+            }
+
             $main_data[$i] = $all;
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
@@ -84,7 +92,7 @@ class tad_web_files
             $uid_name  = XoopsUser::getUnameFromId($uid, 1);
             $file_date = substr($file_date, 0, 10);
 
-            $showurl = "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn' class='iconize'>{$description}</a>";
+            $showurl = empty($file_link) ? "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn#{$original_filename}' class='iconize'>{$description}</a>" : "<a href='{$file_link}' class='iconize'>{$file_description}</a>";
 
             $main_data[$i]['showurl']  = $showurl;
             $main_data[$i]['uid_name'] = $uid_name;
@@ -96,9 +104,18 @@ class tad_web_files
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
-        $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_files_func", "files.php?op=delete&WebID={$this->WebID}&files_sn=", 'files_sn');
-        $xoopsTpl->assign('sweet_delete_files_func_code', $sweet_alert_code);
+        $sweet_alert = new sweet_alert();
+        $sweet_alert->render("delete_files_func", "files.php?op=delete&WebID={$this->WebID}&fsn={$fsn}&files_sn=", 'files_sn');
+
+        //刪除檔案
+        if (is_array($need_del)) {
+            foreach ($need_del as $fsn) {
+                if (!in_array($fsn, $no_need_del)) {
+                    // echo "<div>del:{$fsn}</div>";
+                    $this->delete($fsn);
+                }
+            }
+        }
 
         if ($mode == "return") {
             $data['main_data'] = $main_data;
@@ -161,6 +178,14 @@ class tad_web_files
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
+        //設定「file_link」欄位預設值
+        $file_link = (!isset($DBV['file_link'])) ? '' : $DBV['file_link'];
+        $xoopsTpl->assign('file_link', $file_link);
+
+        //設定「file_description」欄位預設值
+        $file_description = (!isset($DBV['file_description'])) ? '' : $DBV['file_description'];
+        $xoopsTpl->assign('file_description', $file_description);
+
         $op = (empty($fsn)) ? "insert" : "update";
 
         $xoopsTpl->assign('next_op', $op);
@@ -171,6 +196,14 @@ class tad_web_files
 
         $upform = $TadUpFiles->upform(true, 'upfile', '1', true);
         $xoopsTpl->assign('upform', $upform);
+
+        //套用formValidator驗證機制
+        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+            redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
+        }
+        include_once TADTOOLS_PATH . "/formValidator.php";
+        $formValidator = new formValidator("#myForm", true);
+        $formValidator->render();
 
     }
 
@@ -184,25 +217,27 @@ class tad_web_files
 
         $myts = &MyTextSanitizer::getInstance();
 
-        $_POST['CateID'] = intval($_POST['CateID']);
-        $_POST['WebID']  = intval($_POST['WebID']);
+        $CateID           = intval($_POST['CateID']);
+        $WebID            = intval($_POST['WebID']);
+        $file_link        = $myts->addSlashes($_POST['file_link']);
+        $file_description = $myts->addSlashes($_POST['file_description']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_files") . "
-          (`uid` , `CateID` , `file_date`  , `WebID`)
-          values('{$uid}' , '{$CateID}' , now()  , '{$_POST['WebID']}')";
+          (`uid` , `CateID` , `file_date`  , `WebID` , `file_link` , `file_description`)
+          values('{$uid}' , '{$CateID}' , now()  , '{$WebID}' , '{$file_link}' , '{$file_description}')";
 
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $fsn = $xoopsDB->getInsertId();
+        if ($_POST['file_method'] == "upload_file") {
+            $TadUpFiles->set_col('fsn', $fsn);
+            $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
+            check_quota($this->WebID);
 
-        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
-        // $TadUpFiles->set_dir('subdir', $subdir);
-        $TadUpFiles->set_col('fsn', $fsn);
-        $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
-        check_quota($this->WebID);
+        }
         return $fsn;
     }
 
@@ -213,40 +248,43 @@ class tad_web_files
 
         $myts = &MyTextSanitizer::getInstance();
 
-        $_POST['CateID'] = intval($_POST['CateID']);
-        $_POST['WebID']  = intval($_POST['WebID']);
+        $CateID           = intval($_POST['CateID']);
+        $WebID            = intval($_POST['WebID']);
+        $file_link        = $myts->addSlashes($_POST['file_link']);
+        $file_description = $myts->addSlashes($_POST['file_description']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
-
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
+        // die('CateID=' . $CateID);
         $anduid = onlyMine();
 
         $sql = "update " . $xoopsDB->prefix("tad_web_files") . " set
         `CateID` = '{$CateID}' ,
         `file_date` = now() ,
-        `WebID` = '{$_POST['WebID']}'
+        `WebID` = '{$WebID}' ,
+        `file_link` = '{$file_link}' ,
+        `file_description` = '{$file_description}'
         where fsn='$fsn' $anduid";
+        // die($sql);
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
-        // $TadUpFiles->set_dir('subdir', $subdir);
-        $TadUpFiles->set_col('fsn', $fsn);
-        $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
-        check_quota($this->WebID);
+        if ($_POST['file_method'] == "upload_file") {
+            $TadUpFiles->set_col('fsn', $fsn);
+            $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
+            check_quota($this->WebID);
+        }
         return $fsn;
     }
 
     //刪除tad_web_files某筆資料資料
-    public function delete($files_sn = "")
+    public function delete($fsn = "")
     {
         global $xoopsDB, $TadUpFiles;
         $anduid = onlyMine();
-        // $sql    = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn' $anduid";
-        // $xoopsDB->queryF($sql) or web_error($sql);
+        $sql    = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn' $anduid";
+        $xoopsDB->queryF($sql) or web_error($sql);
 
-        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
-        // $TadUpFiles->set_dir('subdir', $subdir);
-        // $TadUpFiles->set_col("fsn", $fsn);
-        $TadUpFiles->del_files($files_sn);
+        $TadUpFiles->set_col('fsn', $fsn);
+        $TadUpFiles->del_files();
         check_quota($this->WebID);
     }
 

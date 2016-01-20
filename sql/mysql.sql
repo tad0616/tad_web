@@ -38,7 +38,7 @@ CREATE TABLE `tad_web_config` (
 ) ENGINE = MYISAM ;
 
 CREATE TABLE `tad_web_files_center` (
-  `files_sn` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
+  `files_sn` int(10) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
   `col_name` varchar(255) NOT NULL default '' COMMENT '欄位名稱',
   `col_sn` smallint(5) unsigned NOT NULL default 0 COMMENT '欄位編號',
   `sort` smallint(5) unsigned NOT NULL default 0 COMMENT '排序',
@@ -75,7 +75,7 @@ PRIMARY KEY (`WebID`,`uid`,`role`)
 ) ENGINE=MyISAM;
 
 CREATE TABLE `tad_web_blocks` (
-  `BlockID` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '編號',
+  `BlockID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '區塊流水號',
   `BlockName` varchar(100) NOT NULL COMMENT '區塊名稱',
   `BlockCopy` tinyint(3) NOT NULL COMMENT '區塊份數',
   `BlockTitle` varchar(255) NOT NULL COMMENT '區塊標題',
@@ -84,10 +84,11 @@ CREATE TABLE `tad_web_blocks` (
   `BlockConfig` text NOT NULL default '' COMMENT '區塊設定值',
   `BlockPosition` varchar(255) NOT NULL COMMENT '區塊位置',
   `BlockSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
-  `BlockShare` varchar(255) NOT NULL COMMENT '分享區塊',
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬網站',
-  `plugin` varchar(255) NOT NULL COMMENT '所屬外掛',
-PRIMARY KEY (`BlockID`)
+  `plugin` varchar(100) NOT NULL COMMENT '所屬外掛',
+  `ShareFrom` int(10) unsigned NOT NULL COMMENT '分享自',
+  PRIMARY KEY (`BlockID`),
+  UNIQUE KEY `BlockName_BlockCopy_WebID_plugin` (`BlockName`,`BlockCopy`,`WebID`,`plugin`)
 ) ENGINE=MyISAM;
 
 
@@ -98,4 +99,25 @@ CREATE TABLE `tad_web_plugins_setup` (
   `type` varchar(255) NOT NULL default '' COMMENT '欄位類型',
   `value` text NOT NULL COMMENT '設定值',
   PRIMARY KEY  (`WebID`,`plugin`,`name`)
+)  ENGINE=MyISAM;
+
+
+
+CREATE TABLE `tad_web_power` (
+  `WebID` smallint(5) unsigned NOT NULL default 0 COMMENT '所屬網站',
+  `col_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
+  `col_sn` mediumint(8) unsigned NOT NULL default 0 COMMENT '對應編號',
+  `power_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
+  `power_val` varchar(255) NOT NULL COMMENT '權限設定',
+  PRIMARY KEY (`col_name`,`col_sn`,`power_name`)
+)  ENGINE=MyISAM;
+
+
+
+CREATE TABLE `tad_web_tags` (
+  `WebID` smallint(5) unsigned NOT NULL  COMMENT '所屬網站',
+  `col_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
+  `col_sn` mediumint(8) unsigned NOT NULL default 0 COMMENT '對應編號',
+  `tag_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
+  PRIMARY KEY  (`col_name`,`col_sn`,`tag_name`)
 )  ENGINE=MyISAM;

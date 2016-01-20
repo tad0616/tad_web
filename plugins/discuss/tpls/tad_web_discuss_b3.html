@@ -64,7 +64,7 @@
 
   <ol class="breadcrumb">
     <li><a href="discuss.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_DISCUSS}></a></li>
-    <{if $cate.CateID}><li><a href="discuss.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
+    <{if isset($cate.CateID)}><li><a href="discuss.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
     <li><{$DiscussInfo}></li>
   </ol>
 
