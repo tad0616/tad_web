@@ -122,8 +122,9 @@ define('_MD_TCW_ABOUTUS_DEFAULT_CLASS', '預設班級');
 define('_MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC', '點入「關於我們」後，以此為預設呈現的班級');
 define('_MD_TCW_ABOUTUS_EDIT_ACCOUNT', '修改我的資料');
 define('_MD_TCW_ABOUTUS_READ_DISCUSS', '觀看留言簿');
-define('_MD_TCW_ABOUTUS_MY_ACCOUNT', '我的資料頁面');
+define('_MD_TCW_ABOUTUS_MY_ACCOUNT', '我的專屬頁面');
 
 define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', '繳交作品');
 define('_MD_TCW_ABOUTUS_UPLOAD_NOW', '立即繳交');
 define('_MD_TCW_ABOUTUS_UPLOADED', '已於 %s 繳交');
+define('_MD_TCW_ABOUTUS_UPLOADED_WORKS', '已繳交作品');

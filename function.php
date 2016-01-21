@@ -1028,7 +1028,7 @@ function output_head_file($WebID)
     imagedestroy($im);
 }
 
-function delete_directory($dirname)
+function delete_tad_web_directory($dirname)
 {
     if (is_dir($dirname)) {
         $dir_handle = opendir($dirname);
@@ -1043,7 +1043,7 @@ function delete_directory($dirname)
             if (!is_dir($dirname . "/" . $file)) {
                 unlink($dirname . "/" . $file);
             } else {
-                delete_directory($dirname . '/' . $file);
+                delete_tad_web_directory($dirname . '/' . $file);
             }
 
         }
@@ -1237,7 +1237,7 @@ function delete_tad_web($WebID = "")
     $TadUpFiles->del_files();
 
     //刪除所有附檔
-    if (!delete_directory(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}")) {
+    if (!delete_tad_web_directory(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}")) {
         web_error('無法刪除資料夾' . XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
     }
 }

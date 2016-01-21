@@ -604,8 +604,9 @@ class tad_web_aboutus
         //作品分享
         if (strpos($web_all_config['web_plugin_enable_arr'], 'works') !== false) {
             include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/works/class.php";
-            $works      = new tad_web_works($this->WebID);
-            $stud_works = $works->list_all("", null, "return", 'list_mem_upload');
+            $works = new tad_web_works($this->WebID);
+            //未繳交的
+            $stud_works = $works->list_all("", null, "return", 'list_mem_need_upload');
             foreach ($stud_works['main_data'] as $key => $work) {
                 $mem_upload_content = $works->get_mem_upload_content($work['WorksID'], $MemID);
 
@@ -619,6 +620,22 @@ class tad_web_aboutus
 
             }
             $xoopsTpl->assign('stud_works', $stud_works);
+
+            //已繳交的
+            $stud_scores = $works->list_all("", null, "return", 'list_mem_upload');
+            foreach ($stud_scores['main_data'] as $key => $work) {
+                $mem_upload_content = $works->get_mem_upload_content($work['WorksID'], $MemID);
+
+                $mem_upload_date = "";
+
+                if ($mem_upload_content['UploadDate']) {
+                    $mem_upload_date = sprintf(_MD_TCW_ABOUTUS_UPLOADED, $mem_upload_content['UploadDate']);
+                }
+                $mem_upload_content['mem_upload_date']                = $mem_upload_date;
+                $stud_scores['main_data'][$key]['mem_upload_content'] = $mem_upload_content;
+
+            }
+            $xoopsTpl->assign('stud_scores', $stud_scores);
         }
 
     }

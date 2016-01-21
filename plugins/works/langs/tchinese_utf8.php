@@ -22,4 +22,6 @@ define("_MD_TCW_WORKS_DESCRIPTION", "作品描述");
 define("_MD_TCW_WORKS_AUTHOR", "上傳者");
 define("_MD_TCW_WORKS_DISPLAY_DATE", "預計 %s 開放");
 define("_MD_TCW_WORKS_UPLOADED_WORKS", "已上傳檔案");
-define("_MD_TCW_WORKS_WORKS_SCORE", "作品評分");
+define("_MD_TCW_WORKS_WORKS_SCORE_FORM", "作品評分");
+define("_MD_TCW_WORKS_WORKS_SCORE", "分數");
+define("_MD_TCW_WORKS_WORKS_JUDGMENT", "評語");

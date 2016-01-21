@@ -127,3 +127,4 @@ define('_MD_TCW_ABOUTUS_MY_ACCOUNT', 'My Page');
 define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', 'Upload works');
 define('_MD_TCW_ABOUTUS_UPLOAD_NOW', 'Upload now');
 define('_MD_TCW_ABOUTUS_UPLOADED', 'Has been uploaded in %s');
+define('_MD_TCW_ABOUTUS_UPLOADED_WORKS', 'Uploaded works');

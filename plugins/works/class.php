@@ -36,8 +36,10 @@ class tad_web_works
         $now  = date("Y-m-d H:i:s");
         $time = time();
         //列出學生可上傳的
-        if ($kind == "list_mem_upload") {
+        if ($kind == "list_mem_need_upload") {
             $andWorksKind = "and a.WorksKind !='' and a.WorksDate >= '{$now}'";
+        } elseif ($kind == "list_mem_upload") {
+            $andWorksKind = "and a.WorksKind !='' and a.WorksDate < '{$now}'";
         } else {
             $andWorksKind = $isMyWeb ? '' : "and ((a.WorksKind ='mem_after_end' and a.WorksDate < '$now') or a.WorksKind!='mem_after_end')";
         }

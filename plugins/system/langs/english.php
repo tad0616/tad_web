@@ -15,6 +15,7 @@ define('_MD_TCW_TO_MY_WEB', 'back to my "%s"');
 define('_MD_TCW_WEB_CONFIG', 'Web Config');
 define("_MD_TCW_WEB_BLOCK_CONFIG", "Block Config");
 define("_MD_TCW_ENABLE_PLUGIN", "Enable");
+define("_MD_TCW_ENABLE", "Enable");
 define("_MD_TCW_SEARCH", "Search");
 define("_MD_TCW_LOGIN", "Login");
 define("_MD_TCW_ID", "ID");

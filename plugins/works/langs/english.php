@@ -22,4 +22,6 @@ define("_MD_TCW_WORKS_DESCRIPTION", "Description");
 define("_MD_TCW_WORKS_AUTHOR", "Author");
 define("_MD_TCW_WORKS_DISPLAY_DATE", "Display after %s");
 define("_MD_TCW_WORKS_UPLOADED_WORKS", "Uploaded Files");
-define("_MD_TCW_WORKS_WORKS_SCORE", "Works Comments");
+define("_MD_TCW_WORKS_WORKS_SCORE_FORM", "Works Comments");
+define("_MD_TCW_WORKS_WORKS_SCORE", "Works Score");
+define("_MD_TCW_WORKS_WORKS_JUDGMENT", "Works Comments");

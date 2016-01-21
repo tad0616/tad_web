@@ -15,6 +15,7 @@ define("_MD_TCW_TO_MY_WEB", "連回「%s」");
 define("_MD_TCW_WEB_CONFIG", "網站設定");
 define("_MD_TCW_WEB_BLOCK_CONFIG", "區塊設定");
 define("_MD_TCW_ENABLE_PLUGIN", "啟用此功能");
+define("_MD_TCW_ENABLE", "啟用");
 define("_MD_TCW_SEARCH", "搜尋");
 define("_MD_TCW_ID", "帳號");
 define("_MD_TCW_PASSWD", "密碼");

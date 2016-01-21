@@ -1,3 +1,20 @@
+Tad Web 1.6.7 release（2016-01-20 release)
+====================================================
+1. Fixed block sharing mechanism
+2. New "About Us" presentation set
+3. Add "News RSS ticker," "external albums embedding", "countdown", "chat rooms", "suspended particulate (pm2.5) forecast", "air quality (PSI) forecast," and other blocks
+4. Fixed site shut down, the administrator himself unable to restart problem
+5. Fixed guestbook student permission issues
+6. New "block copy" feature
+7. Modify block setting new mechanisms to make it smarter
+8. enhance student-related functions
+9. The works share new students upload function works
+10. Fixed problem site can not be deleted
+11. Fixed module not properly uninstall problems
+
+
+
+
 Tad Web 1.6.6 release（2016-01-04 release)
 ====================================================
  1. Fixed Paging Toolbar

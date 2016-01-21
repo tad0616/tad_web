@@ -631,6 +631,24 @@
       </div>
     <{/foreach}>
   <{/if}>
+
+  <{if $stud_scores.main_data}>
+    <h2><{$smarty.const._MD_TCW_ABOUTUS_UPLOADED_WORKS}></h2>
+    <table class="table">
+      <tr>
+        <th><{$smarty.const._MD_TCW_WORKS_NAME}></th>
+        <th><{$smarty.const._MD_TCW_WORKS_WORKS_SCORE}></th>
+        <th><{$smarty.const._MD_TCW_WORKS_WORKS_JUDGMENT}></th>
+      </tr>
+    <{foreach from=$stud_scores.main_data item=work}>
+      <tr>
+        <td><a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>"><{$work.WorkName}></a></td>
+        <td><{$work.mem_upload_content.WorkScore}></td>
+        <td><{$work.mem_upload_content.WorkJudgment}></td>
+      </tr>
+    <{/foreach}>
+    </table>
+  <{/if}>
 <{elseif $op=="import_excel_form"}>
   <h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$edit_student}></h3>
   <div class="well">
