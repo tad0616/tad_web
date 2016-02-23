@@ -140,6 +140,7 @@ function tad_web_config($WebID, $configs)
     $xoopsTpl->assign('user_yet', $user_yet);
     $xoopsTpl->assign('web_admins', $web_admins);
     $xoopsTpl->assign('logo_desc', sprintf(_MD_TCW_GOOD_LOGO_SITE, $WebID));
+    $xoopsTpl->assign('bg_desc', sprintf(_MD_TCW_GOOD_BG_SITE, $WebID));
 
 }
 
@@ -221,7 +222,7 @@ function save_adm($web_admins, $WebID)
 
 }
 
-//儲存使用者
+//重置logo圖位置
 function reset_logo($WebID)
 {
     global $xoopsDB;
@@ -231,6 +232,19 @@ function reset_logo($WebID)
 
     save_web_config('logo_left', '41.7', $WebID);
     save_web_config('logo_top', '53.8', $WebID);
+    output_head_file($WebID);
+}
+
+//重置標題圖位置
+function reset_head($WebID)
+{
+    global $xoopsDB;
+    if (empty($WebID)) {
+        return;
+    }
+
+    save_web_config('head_left', '0', $WebID);
+    save_web_config('head_top', '-371', $WebID);
     output_head_file($WebID);
 }
 
@@ -421,6 +435,12 @@ switch ($op) {
 
     case "reset_logo":
         reset_logo($WebID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    case "reset_head":
+        reset_head($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

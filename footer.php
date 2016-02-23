@@ -43,7 +43,6 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
 
 //區塊
 if ($WebID and _DISPLAY_MODE == 'no') {
-
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' and `BlockName`='login'";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
@@ -132,7 +131,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
         $block[$BlockPosition][$BlockSort] = $blocks_arr;
     }
 
-    // die(var_export($block['block1']));
+    // die(var_export($block['side']));
 
     $xoopsTpl->assign('center_block1', $block['block1']);
     $xoopsTpl->assign('center_block2', $block['block2']);

@@ -15,8 +15,9 @@ if (!function_exists('MyWebID')) {
                 $MyWebs[$WebID] = $WebID;
             }
 
-            $sql    = "select a.WebID from " . $xoopsDB->prefix("tad_web_roles") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.uid='$uid' and b.WebEnable='{$WebEnable}'";
-            $result = $xoopsDB->query($sql) or web_error($sql);
+            $andWebEnable = $WebEnable == 'all' ? "" : "and b.`WebEnable`='{$WebEnable}'";
+            $sql          = "select a.WebID from " . $xoopsDB->prefix("tad_web_roles") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.uid='$uid' {$andWebEnable}";
+            $result       = $xoopsDB->query($sql) or web_error($sql);
             while (list($WebID) = $xoopsDB->fetchRow($result)) {
                 $MyWebs[$WebID] = $WebID;
             }

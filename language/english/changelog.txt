@@ -1,3 +1,16 @@
+Tad Web 1.6.8 release（2016-02-23 release)
+====================================================
+1. Add account book plugin
+2. improve video load performance
+3. The discuss box features added emoticons
+4. Fixed update bug
+5. Add common administrator filtering capabilities
+6. Fixed administrators can not manage the common website problems
+7. Fixed works display is not normal block problem
+8. Fixed PHP Hosting 5.3 or less can not set the correct block
+
+
+
 Tad Web 1.6.7 release（2016-01-20 release)
 ====================================================
 1. Fixed block sharing mechanism

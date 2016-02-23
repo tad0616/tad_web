@@ -79,6 +79,7 @@
             <{if $isMyWeb}>
               <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_position"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
               <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_class_stu"><{$edit_student}></a>
+              <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=export_config">匯出設定</a>
             <{/if}>
             <button id="clear" class="btn btn-danger"><{$smarty.const._MD_TCW_CLEAR}></button>
             <button id="getit" class="btn btn-primary"><{$smarty.const._MD_TCW_GET_SOMEONE}></button>
@@ -692,6 +693,8 @@
     <input type="hidden" name="newCateName" value="<{$newCateName}>">
     <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_IMPORT}></button>
   </form>
+<{elseif $op=="export_config"}>
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_export_config.html"}>
 <{else}>
   <{$FooTableJS}>
   <div class="row">

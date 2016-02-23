@@ -13,7 +13,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //外掛設定功能
 function plugin_setup($WebID, $plugin)
 {
-    global $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser, $xoopsConfig, $menu_var;
+    global $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser, $xoopsConfig;
 
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=setup", 3, _MD_TCW_AUTO_TO_HOME);
@@ -63,8 +63,11 @@ function plugin_setup($WebID, $plugin)
     $xoopsTpl->assign('plugin_setup', $pluginSetup);
     $xoopsTpl->assign('plugin', $plugin);
     $xoopsTpl->assign('WebID', $WebID);
-    // die(var_export($menu_var));
-    $xoopsTpl->assign('plugin_arr', $menu_var[$plugin]);
+    // if (isset($_GET['test'])) {
+    //     die(var_export(get_db_plugin($WebID, $plugin)));
+    // }
+
+    $xoopsTpl->assign('plugin_arr', get_db_plugin($WebID, $plugin));
 }
 
 //儲存額外設定值

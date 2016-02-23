@@ -26,8 +26,7 @@ function random_video($WebID, $config = array())
     }
     $block = '';
 
-    $sql = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by rand() limit 0,1";
-    //die($sql);
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by rand() limit 0,1";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
 
@@ -42,25 +41,7 @@ function random_video($WebID, $config = array())
         return;
     }
 
-    $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";
-    $contents = file_get_contents($url);
-    $contents = utf8_encode($contents);
-
-    $results = json_decode($contents, false);
-    foreach ($results as $k => $v) {
-        $$k = htmlspecialchars($v);
-    }
-
-    $rate = round($height / $width, 2);
-
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {
-        redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
-    $jw     = new JwPlayer("random_video_{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
-    $player = $jw->render();
-
-    $block['main_data'] = $player;
+    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
     $block['VideoID']   = $VideoID;
     $block['VideoName'] = $VideoName;
     return $block;
@@ -76,9 +57,8 @@ function latest_video($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block = '';
-    $sql   = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by VideoDate desc limit 0,1";
-    //die($sql);
+    $block  = '';
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by VideoDate desc , VideoID desc limit 0,1";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
 
@@ -93,25 +73,7 @@ function latest_video($WebID, $config = array())
         return;
     }
 
-    $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";
-    $contents = file_get_contents($url);
-    $contents = utf8_encode($contents);
-
-    $results = json_decode($contents, false);
-    foreach ($results as $k => $v) {
-        $$k = htmlspecialchars($v);
-    }
-
-    $rate = round($height / $width, 2);
-
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {
-        redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
-    $jw     = new JwPlayer("latest_video_{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
-    $player = $jw->render();
-
-    $block['main_data'] = $player;
+    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
     $block['VideoID']   = $VideoID;
     $block['VideoName'] = $VideoName;
     return $block;

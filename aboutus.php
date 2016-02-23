@@ -145,6 +145,11 @@ switch ($op) {
         $tad_web_aboutus->edit_form();
         break;
 
+    //匯出設定
+    case "export_config":
+        $tad_web_aboutus->export_config();
+        break;
+
     //預設動作
     default:
         if (empty($WebID)) {

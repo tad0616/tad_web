@@ -12,3 +12,4 @@ $pluginConfig['sql']        = array('tad_web_files');
 $pluginConfig['setup']      = false;
 $pluginConfig['add']        = true;
 $pluginConfig['menu']       = true;
+$pluginConfig['export']     = true;

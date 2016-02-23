@@ -12,3 +12,4 @@ $pluginConfig['sql']        = array('tad_web_link_mems', 'tad_web_mems');
 $pluginConfig['setup']      = true;
 $pluginConfig['add']        = true;
 $pluginConfig['menu']       = true;
+$pluginConfig['export']     = false;

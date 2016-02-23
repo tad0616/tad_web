@@ -175,45 +175,104 @@ function chk_newblock()
             $db_blocks_config[$WebID][$BlockName][$BlockID] = $BlockConfig;
         }
     }
+
+    //區塊的設定值
+    // die(var_export($block_config));
+    // array (
+    //   'list_web_adm' => NULL,
+    //   'list_web_student' => NULL,
+    //   'list_account' => array ('limit' => 10)
+    // )
+
+    //現有區塊資料（含不在資料庫中的）
+    // die(var_export($all_blocks));
+
+    //所有的網站編號陣列
+    // die(var_export($allWebID));
+
+    //資料庫中，已經有哪些網站，有了哪些區塊資訊
+    // die(var_export($db_blocks));
+
+    //資料庫中，個個網站已存在的區塊設定
     // die(var_export($db_blocks_config));
+
+    // echo "<h1>" . PHP_VERSION_ID . "</h1>";
+
+    // die('$JSON_UNESCAPED_UNICODE=' . $JSON_UNESCAPED_UNICODE);
     //安裝新區塊
     foreach ($all_blocks as $BlockName => $BlockTitle) {
         foreach ($allWebID as $WebID) {
+            //若該區塊還沒有安裝在該網站
             if (!in_array($BlockName, $db_blocks[$WebID])) {
-                $config = ($block_config[$BlockName]) ? json_encode($block_config[$BlockName], JSON_UNESCAPED_UNICODE) : '';
+
+                if (is_array($block_config[$BlockName])) {
+                    if (PHP_VERSION_ID >= 50400) {
+                        $config = json_encode($block_config[$BlockName], JSON_UNESCAPED_UNICODE);
+                    } else {
+                        array_walk_recursive($block_config[$BlockName], function (&$value, $key) {
+                            if (is_string($value)) {
+                                $value = urlencode($value);
+                            }
+                        });
+                        $config = urldecode(json_encode($block_config[$BlockName]));
+                    }
+                } else {
+                    $config = '';
+                }
                 $config = str_replace('{{WebID}}', $WebID, $config);
                 $sql    = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
                 $xoopsDB->queryF($sql) or web_error($sql);
             } else {
                 //檢查區塊設定值是否需要更新
-                //該區塊預設值陣列
 
-                if (is_array($block_config[$BlockName])) {
-                    foreach ($db_blocks_config[$WebID][$BlockName] as $BlockID => $BlockConfig) {
+                //找出某區塊安裝在該網站的 $BlockID 以及現有設定
+                foreach ($db_blocks_config[$WebID][$BlockName] as $BlockID => $BlockConfig) {
 
-                        $new_config = $db_config = '';
-                        //已安裝區塊的設定值陣列
-                        $db_config = json_decode($BlockConfig, true);
+                    $new_config = $db_config = '';
+
+                    //已安裝區塊的設定值陣列
+                    $db_config = json_decode($BlockConfig, true);
+
+                    if (is_array($block_config[$BlockName])) {
+                        // echo "<h3>$BlockName</h3>";
                         foreach ($block_config[$BlockName] as $config_name => $def_value) {
-                            if (isset($db_config[$config_name])) {
+                            // echo "<h4>{$config_name}：{$def_value} (\$db_config[\$config_name]={$db_config[$config_name]})</h4>";
+                            if (isset($db_config[$config_name]) and $db_config[$config_name] != '') {
+                                // echo "有預設值：{$db_config[$config_name]}<br>";
                                 $new_config[$config_name] = $db_config[$config_name];
                             } else {
+                                // echo "沒有預設值：{$def_value}<br>";
                                 $new_config[$config_name] = $def_value;
                             }
                         }
-
-                        //更新設定值
-                        $new_block_config = json_encode($new_config, JSON_UNESCAPED_UNICODE);
-                        $new_block_config = str_replace('{{WebID}}', $WebID, $new_block_config);
-                        $sql              = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockConfig`='{$new_block_config}' where `BlockID`='{$BlockID}'";
-                        $xoopsDB->queryF($sql) or web_error($sql);
                     }
+
+                    // echo "新設定值為：" . var_export($new_config, true) . "<br>";
+                    //更新設定值
+
+                    if (PHP_VERSION_ID >= 50400) {
+                        $new_block_config = json_encode($new_config, JSON_UNESCAPED_UNICODE);
+                    } else {
+                        array_walk_recursive($new_config, function (&$value, $key) {
+                            if (is_string($value)) {
+                                $value = urlencode($value);
+                            }
+                        });
+                        $new_block_config = urldecode(json_encode($new_config));
+                    }
+
+                    // echo "新設定：" . $new_block_config . "<br>";
+
+                    $new_block_config = str_replace('{{WebID}}', $WebID, $new_block_config);
+                    $sql              = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockConfig`='{$new_block_config}' where `BlockID`='{$BlockID}'";
+                    // echo "<div>$sql</div>";
+                    $xoopsDB->queryF($sql) or web_error($sql);
                 }
 
             }
         }
     }
-
+    // exit;
 }
 
 //重作選單快取檔
@@ -733,7 +792,7 @@ function go_update12()
       `BlockSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
       `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬網站',
       `plugin` varchar(100) NOT NULL COMMENT '所屬外掛',
-      `ShareFrom` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分享自',
+      `ShareFrom` int(10) unsigned NOT NULL COMMENT '分享自',
       PRIMARY KEY (`BlockID`),
       UNIQUE KEY `BlockName_BlockCopy_WebID_plugin` (`BlockName`,`BlockCopy`,`WebID`,`plugin`)
     ) ENGINE=MyISAM;";
@@ -759,7 +818,20 @@ function go_update12()
             }
             $BlockEnable = in_array($func, $Config) ? 1 : 0;
 
-            $config = ($block_config[$func]) ? json_encode($block_config[$func], JSON_UNESCAPED_UNICODE) : '';
+            if ($block_config[$func]) {
+                if (PHP_VERSION_ID >= 50400) {
+                    $config = json_encode($block_config[$func], JSON_UNESCAPED_UNICODE);
+                } else {
+                    array_walk_recursive($block_config[$func], function (&$value, $key) {
+                        if (is_string($value)) {
+                            $value = urlencode($value);
+                        }
+                    });
+                    $config = urldecode(json_encode($block_config[$func]));
+                }
+            } else {
+                $config = '';
+            }
             $config = str_replace('{{WebID}}', $WebID, $config);
             $sql    = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
             $xoopsDB->queryF($sql) or web_error($sql);
@@ -775,7 +847,21 @@ function go_update12()
 
         $sort = 1;
         foreach ($web_plugin_display_arr as $plugin) {
-            $config = ($block_config["list_{$plugin}"]) ? json_encode($block_config["list_{$plugin}"], JSON_UNESCAPED_UNICODE) : '';
+
+            if ($block_config["list_{$plugin}"]) {
+                if (PHP_VERSION_ID >= 50400) {
+                    $config = json_encode($block_config["list_{$plugin}"], JSON_UNESCAPED_UNICODE);
+                } else {
+                    array_walk_recursive($block_config["list_{$plugin}"], function (&$value, $key) {
+                        if (is_string($value)) {
+                            $value = urlencode($value);
+                        }
+                    });
+                    $config = urldecode(json_encode($block_config["list_{$plugin}"]));
+                }
+            } else {
+                $config = '';
+            }
 
             $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockEnable`='1',`BlockPosition`='block4',`BlockConfig`='{$config}',`BlockSort`='{$sort}' where `BlockName`='list_{$plugin}' and `WebID`='{$WebID}'";
             $xoopsDB->queryF($sql) or web_error($sql);

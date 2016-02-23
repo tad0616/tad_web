@@ -164,10 +164,20 @@ function save_block_config($WebID = "", $BlockID = "", $BlockName = "", $BlockTi
     $BlockPosition = $myts->addSlashes($BlockPosition);
     $BlockEnable   = $myts->addSlashes($BlockEnable);
 
-    $content_type     = $config['content_type'];
-    $BlockContent     = $myts->addSlashes($_POST['BlockContent'][$content_type]);
-    $BlockName        = $myts->addSlashes($BlockName);
-    $new_block_config = json_encode($config, JSON_UNESCAPED_UNICODE);
+    $content_type = $config['content_type'];
+    $BlockContent = $myts->addSlashes($_POST['BlockContent'][$content_type]);
+    $BlockName    = $myts->addSlashes($BlockName);
+
+    if (PHP_VERSION_ID >= 50400) {
+        $new_block_config = json_encode($config, JSON_UNESCAPED_UNICODE);
+    } else {
+        array_walk_recursive($config, function (&$value, $key) {
+            if (is_string($value)) {
+                $value = urlencode($value);
+            }
+        });
+        $new_block_config = urldecode(json_encode($config));
+    }
 
     $text_color   = get_web_config('block_pic_text_color', $WebID);
     $border_color = get_web_config('block_pic_border_color', $WebID);

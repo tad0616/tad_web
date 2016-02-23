@@ -204,7 +204,7 @@ class tad_web_action
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
@@ -514,5 +514,30 @@ class tad_web_action
     public function ImageFillAlpha($image, $color)
     {
         imagefilledrectangle($image, 0, 0, imagesx($image), imagesy($image), $color);
+    }
+
+    //匯出資料
+    public function export_data($start_date = "", $end_date = "", $CateID = "")
+    {
+
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? "" : "and ActionDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? "" : "and ActionDate <= '{$end_date}'";
+
+        $sql    = "select ActionID,ActionName,ActionDate,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by ActionDate";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        $i         = 0;
+        $main_data = '';
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+            $main_data[$i]['ID']     = $ID;
+            $main_data[$i]['CateID'] = $CateID;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
+
+            $i++;
+        }
+        return $main_data;
     }
 }

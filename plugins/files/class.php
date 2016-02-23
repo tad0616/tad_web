@@ -142,7 +142,7 @@ class tad_web_files
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
@@ -327,6 +327,32 @@ class tad_web_files
         $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
+    }
+
+    //匯出資料
+    public function export_data($start_date, $end_date, $CateID = "")
+    {
+
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? "" : "and file_date >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? "" : "and file_date <= '{$end_date}'";
+
+        $sql    = "select fsn,file_description,file_date,CateID from " . $xoopsDB->prefix("tad_web_files") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by file_date";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        $i         = 0;
+        $main_data = '';
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+            $main_data[$i]['ID']     = $ID;
+            $main_data[$i]['CateID'] = $CateID;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
+
+            $i++;
+        }
+
+        return $main_data;
     }
 
 }

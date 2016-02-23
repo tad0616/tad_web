@@ -159,6 +159,9 @@ class tad_web_discuss
         $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
         //$xoopsTpl->assign('DiscussFiles', $DiscussFiles);
 
+        $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
+        $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
+
         $xoopsTpl->assign('isMineDiscuss', $this->isMineDiscuss($MemID, $WebID));
         $xoopsTpl->assign('DiscussTitle', $DiscussTitle);
         $xoopsTpl->assign('MemID', $MemID);
@@ -190,6 +193,25 @@ class tad_web_discuss
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert = new sweet_alert();
         $sweet_alert->render("delete_discuss_func", "discuss.php?op=delete&WebID={$this->WebID}&DefDiscussID={$DiscussID}&DiscussID=", 'DiscussID');
+
+        //找出表情圖
+        $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/discuss/smiles/";
+        if (is_dir($dir)) {
+            if ($dh = opendir($dir)) {
+                while (($file = readdir($dh)) !== false) {
+                    if (substr($file, 0, 1) == "." or substr($file, 0, 1) != "e") {
+                        continue;
+                    }
+
+                    $key              = substr($file, 1, -4);
+                    $smile_pics[$key] = $file;
+                }
+                closedir($dh);
+            }
+        }
+        // die(var_export($smile_pics));
+        sort($smile_pics);
+        $xoopsTpl->assign('smile_pics', $smile_pics);
     }
 
     //tad_web_discuss編輯表單
@@ -293,6 +315,25 @@ class tad_web_discuss
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $upform = $TadUpFiles->upform();
         $xoopsTpl->assign('upform', $upform);
+
+        //找出表情圖
+        $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/discuss/smiles/";
+        if (is_dir($dir)) {
+            if ($dh = opendir($dir)) {
+                while (($file = readdir($dh)) !== false) {
+                    if (substr($file, 0, 1) == "." or substr($file, 0, 1) != "e") {
+                        continue;
+                    }
+
+                    $key              = substr($file, 1, -4);
+                    $smile_pics[$key] = $file;
+                }
+                closedir($dh);
+            }
+        }
+        // die(var_export($smile_pics));
+        sort($smile_pics);
+        $xoopsTpl->assign('smile_pics', $smile_pics);
     }
 
     //新增資料到tad_web_discuss中
@@ -528,6 +569,8 @@ class tad_web_discuss
             $TadUpFiles->set_col("DiscussID", $DiscussID);
             $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
 
+            $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
+            $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
             $DiscussContent = nl2br($DiscussContent);
             $DiscussContent = $this->bubble($DiscussContent . $DiscussFiles);
             $re_data .= "<tr><td style='line-height:180%;'>
@@ -578,5 +621,31 @@ class tad_web_discuss
           <em></em><span></span>
           </div>";
         return $main;
+    }
+
+    //匯出資料
+    public function export_data($start_date, $end_date, $CateID = "")
+    {
+
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? "" : "and DiscussDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? "" : "and DiscussDate <= '{$end_date}'";
+
+        $sql    = "select DiscussID,DiscussTitle,DiscussDate,CateID from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='{$this->WebID}' and ReDiscussID=0 {$andStart} {$andEnd} {$andCateID} order by DiscussDate";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        $i         = 0;
+        $main_data = '';
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+            $main_data[$i]['ID']     = $ID;
+            $main_data[$i]['CateID'] = $CateID;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
+
+            $i++;
+        }
+
+        return $main_data;
     }
 }

@@ -274,7 +274,7 @@ class tad_web_aboutus
         global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb, $xoopsUser;
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -495,7 +495,7 @@ class tad_web_aboutus
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
@@ -648,7 +648,7 @@ class tad_web_aboutus
 
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -817,7 +817,7 @@ class tad_web_aboutus
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -864,7 +864,7 @@ class tad_web_aboutus
 
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -911,7 +911,7 @@ class tad_web_aboutus
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
 
@@ -1177,5 +1177,55 @@ class tad_web_aboutus
         $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
         output_head_file($this->WebID);
         return;
+    }
+
+    //匯出設定
+    public function export_config()
+    {
+        global $xoopsTpl, $xoopsDB;
+        $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/menu_var.php";
+        if (file_exists($file)) {
+            include $file;
+        }
+
+        //取得所有分類
+        $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `CateEnable`='1' order by CateSort";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        while ($data = $xoopsDB->fetchArray($result)) {
+            $plugin_name                  = $data['ColName'];
+            $CateID                       = $data['CateID'];
+            $cates[$plugin_name][$CateID] = $data;
+        }
+
+        $i                 = 0;
+        $config_plugin_arr = '';
+        foreach ($menu_var as $k => $plugin) {
+            // die(var_export($plugin));
+            $dirname = $plugin['dirname'];
+            if ($dirname == 'aboutus') {
+                $aboutus['cates'] = $cates['aboutus'];
+            }
+            if ($plugin['export'] != '1') {
+                continue;
+            }
+            $plugin['cates'] = $cates[$dirname];
+
+            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
+
+            $plugin_name          = "tad_web_{$dirname}";
+            $$plugin_name         = new $plugin_name($this->WebID);
+            $content[$dirname][0] = $$plugin_name->export_data($start_date, $end_date, 0);
+            foreach ($cates[$dirname] as $CateID => $Cate) {
+                $content[$dirname][$CateID] = $$plugin_name->export_data($start_date, $end_date, $CateID);
+            }
+
+            $plugin['content'] = $content[$dirname];
+
+            $config_plugin_arr[$i] = $plugin;
+            $i++;
+        }
+        // die(var_export($config_plugin_arr));
+        $xoopsTpl->assign('config_plugin_arr', $config_plugin_arr);
+        $xoopsTpl->assign('aboutus', $aboutus);
     }
 }

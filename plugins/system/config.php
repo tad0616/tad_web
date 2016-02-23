@@ -12,3 +12,4 @@ $pluginConfig['sql']        = array();
 $pluginConfig['setup']      = false;
 $pluginConfig['add']        = false;
 $pluginConfig['menu']       = false;
+$pluginConfig['export']     = false;

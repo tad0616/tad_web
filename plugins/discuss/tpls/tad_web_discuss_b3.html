@@ -4,6 +4,21 @@
   <{else}>
 
     <{$formValidator_code}>
+    <script type="text/javascript">
+
+      function typeInTextarea(Field, newText) {
+        var el=document.getElementById(Field);
+        var start = el.selectionStart
+        var end = el.selectionEnd
+        var text = el.value
+        var before = text.substring(0, start)
+        var after  = text.substring(end, text.length)
+        el.value = (before + newText + after)
+        el.selectionStart = el.selectionEnd = start + newText.length
+        el.focus()
+      }
+    </script>
+
     <h1><{$smarty.const._MD_TCW_DISCUSS_ADD}></h1>
     <div class="well">
       <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
@@ -25,6 +40,14 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <div class="col-md-12">
+          <{foreach from=$smile_pics item=file}>
+            <img src="<{$xoops_url}>/modules/tad_web/plugins/discuss/smiles/<{$file}>" alt="<{$file}>" onClick="typeInTextarea('DiscussContent','[<{$file}>]');" style="margin:1px;">
+          <{/foreach}>
+        </div>
+      </div>
+
       <!--相關附件-->
       <div class="form-group">
         <label class="col-md-2 control-label">
@@ -34,6 +57,7 @@
           <{$upform}>
         </div>
       </div>
+
 
       <div class="form-group">
         <div class="col-md-12 text-center">
@@ -69,6 +93,22 @@
   </ol>
 
   <{if $DiscussContent}>
+
+    <script type="text/javascript">
+
+      function typeInTextarea(Field, newText) {
+        var el=document.getElementById(Field);
+        var start = el.selectionStart
+        var end = el.selectionEnd
+        var text = el.value
+        var before = text.substring(0, start)
+        var after  = text.substring(end, text.length)
+        el.value = (before + newText + after)
+        el.selectionStart = el.selectionEnd = start + newText.length
+        el.focus()
+      }
+    </script>
+
     <{$DiscussContent}>
     <img src="<{$pic}>" alt="<{$MemName}>" style="max-width:120px;max-height:120px;margin:0px 15px 0px 30px;float:left;">
     <div style="line-height:1.5em;">
@@ -92,6 +132,14 @@
       <div class="form-group">
         <div class="col-md-12">
           <textarea name="DiscussContent" class="form-control" rows=8 id="DiscussContent" class="validate[required , length[10,9999]]"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-12">
+          <{foreach from=$smile_pics item=file}>
+            <img src="<{$xoops_url}>/modules/tad_web/plugins/discuss/smiles/<{$file}>" alt="<{$file}>" onClick="typeInTextarea('DiscussContent','[<{$file}>]');" style="margin:1px;">
+          <{/foreach}>
         </div>
       </div>
 

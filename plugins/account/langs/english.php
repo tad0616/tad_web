@@ -1,0 +1,20 @@
+<?php
+define("_MD_TCW_ACCOUNT", "Account Book");
+define("_MD_TCW_ACCOUNT_ADD", "Add");
+define("_MD_TCW_ACCOUNT_SHORT", "Account");
+define("_MD_TCW_ACCOUNT_BOOK", "Account Book");
+define("_MD_TCW_ACCOUNT_BOOK_TOOL", "Account Book Tool");
+define("_MD_TCW_ACCOUNT_SELECT_BOOK", "Select an account Book");
+define("_MD_TCW_ACCOUNT_MONEY", "Money");
+define("_MD_TCW_ACCOUNT_TOTAL", "Total");
+define("_MD_TCW_ACCOUNT_ID", "Account ID");
+define("_MD_TCW_ACCOUNT_TITLE", "Title");
+define("_MD_TCW_ACCOUNT_DESC", "Note");
+define("_MD_TCW_ACCOUNT_DATE", "Date");
+define("_MD_TCW_ACCOUNT_INCOME", "Income");
+define("_MD_TCW_ACCOUNT_OUTGOINGS", "Outgoings");
+define("_MD_TCW_ACCOUNT_UID", "Author");
+define("_MD_TCW_ACCOUNT_COUNT", "Count");
+define("_MD_TCW_ACCOUNT_UPLOAD", "Upload");
+define("_MD_TCW_ACCOUNT_BLOCK_LIST", "list accounts");
+define("_MD_TCW_ACCOUNT_BLOCK_LIMIT", "Select an account book");

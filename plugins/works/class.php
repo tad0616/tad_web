@@ -220,7 +220,7 @@ class tad_web_works
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
@@ -411,6 +411,9 @@ class tad_web_works
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_works_content") . " where WorksID='$WorksID'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->del_files();
         check_quota($this->WebID);
@@ -543,5 +546,31 @@ class tad_web_works
             $xoopsDB->queryF($sql) or web_error($sql);
         }
 
+    }
+
+    //匯出資料
+    public function export_data($start_date, $end_date, $CateID = "")
+    {
+
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? "" : "and WorksDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? "" : "and WorksDate <= '{$end_date}'";
+
+        $sql    = "select WorksID,WorkName,WorksDate,CateID from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by WorksDate";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        $i         = 0;
+        $main_data = '';
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+            $main_data[$i]['ID']     = $ID;
+            $main_data[$i]['CateID'] = $CateID;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
+
+            $i++;
+        }
+
+        return $main_data;
     }
 }

@@ -12,3 +12,4 @@ $pluginConfig['sql']        = array('tad_web_homework');
 $pluginConfig['setup']      = true;
 $pluginConfig['add']        = true;
 $pluginConfig['menu']       = true;
+$pluginConfig['export']     = false;

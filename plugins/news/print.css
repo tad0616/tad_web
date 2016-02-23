@@ -3,3 +3,8 @@
 #tad_sf_menu , #head_bg , #web_side_block, #tad_web_footer, #adm_bar, .sweet-overlay, .sweet-alert, #goog-gt-tt, #fb-root, .fb-comments{
   display: none;
 }
+
+
+#News_tool{
+  display: none;
+}

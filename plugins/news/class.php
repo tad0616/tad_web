@@ -161,7 +161,10 @@ class tad_web_news
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
-        $prev_next = $this->get_prev_next($NewsID, $CateID);
+        $prev_next = $this->get_prev_next($NewsID);
+        // if (isset($_GET['test'])) {
+        //     die(var_export($prev_next));
+        // }
         $xoopsTpl->assign('prev_next', $prev_next);
 
         if (empty($uid)) {
@@ -239,7 +242,7 @@ class tad_web_news
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
@@ -481,12 +484,15 @@ class tad_web_news
     }
 
     //取得上下頁
-    public function get_prev_next($DefNewsID, $DefCateID)
+    public function get_prev_next($DefNewsID)
     {
-        global $xoopsDB;
+        global $xoopsDB, $isMyWeb;
         $DefNewsSort = $all = $main = '';
-        $sql         = "select NewsID,NewsTitle from " . $xoopsDB->prefix("tad_web_news") . " where CateID='{$DefCateID}' order by NewsDate desc";
-
+        $andEnable   = $isMyWeb ? "" : "and `NewsEnable`='1'";
+        $sql         = "select NewsID,NewsTitle from " . $xoopsDB->prefix("tad_web_news") . " where `WebID`='{$this->WebID}' $andEnable order by NewsDate desc";
+        // if (isset($_GET['test'])) {
+        //     die(var_export($sql));
+        // }
         $result = $xoopsDB->query($sql) or web_error($sql);
         $i      = 0;
         while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
@@ -498,7 +504,7 @@ class tad_web_news
             }
 
             $all[$i]['NewsID']    = $NewsID;
-            $all[$i]['NewsTitle'] = $NewsTitle;
+            $all[$i]['NewsTitle'] = xoops_substr($NewsTitle, 0, 60);
             if ($NewsID == $DefNewsID) {
                 $DefNewsSort = $i;
             }
@@ -511,5 +517,31 @@ class tad_web_news
         $main['next'] = $all[$next];
 
         return $main;
+    }
+
+    //匯出資料
+    public function export_data($start_date, $end_date, $CateID = "")
+    {
+
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? "" : "and NewsDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? "" : "and NewsDate <= '{$end_date}'";
+
+        $sql    = "select NewsID,NewsTitle,NewsDate,CateID from " . $xoopsDB->prefix("tad_web_news") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by NewsDate";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        $i         = 0;
+        $main_data = '';
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+            $main_data[$i]['ID']     = $ID;
+            $main_data[$i]['CateID'] = $CateID;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
+
+            $i++;
+        }
+
+        return $main_data;
     }
 }

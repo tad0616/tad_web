@@ -1,43 +1,16 @@
 <?php
 include_once "../../mainfile.php";
-//勿必要在function.php之前，因為function.php會用到$WebID。
+//務必要在function.php之前，因為function.php會用到$WebID。
 $WebID = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
 include_once "function.php";
 
 $is_ezclass = XOOPS_URL == "http://class.tn.edu.tw" ? true : false;
 define('_IS_EZCLASS', $is_ezclass);
 
-//判斷是否對該模組有管理權限
-$isAdmin    = false;
-$LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = '';
-if ($xoopsUser) {
-    if (!$xoopsModule) {
-        $modhandler  = &xoops_gethandler('module');
-        $xoopsModule = &$modhandler->getByDirname("tad_web");
-    }
-    $module_id = $xoopsModule->getVar('mid');
-    $isAdmin   = $xoopsUser->isAdmin($module_id);
-} else {
-    $LoginMemID       = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
-    $LoginMemName     = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
-    $LoginMemNickName = isset($_SESSION['LoginMemNickName']) ? $_SESSION['LoginMemNickName'] : null;
-    $LoginWebID       = isset($_SESSION['LoginWebID']) ? $_SESSION['LoginWebID'] : null;
-}
-
 //目前觀看的班級
-$Web     = $WebName     = $WebTitle     = $WebOwner     = $menu_var     = "";
-$MyWebs  = array();
-$isMyWeb = false;
-$i       = 0;
+$Web = $WebName = $WebTitle = $WebOwner = $menu_var = "";
 
-if ($xoopsUser) {
-    //我的班級ID（陣列）
-    $MyWebs = MyWebID('all');
-
-    //目前瀏覽的是否是我的班級？
-    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
-}
-
+$i = 0;
 if (!empty($WebID)) {
     $Web            = getWebInfo($WebID);
     $web_all_config = get_web_all_config($WebID);

@@ -1,0 +1,16 @@
+<{assign var="bc" value=$block.BlockContent}>
+<{if $bc.main_data}>
+  <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title_b3.html"}>
+  <ul class="list-group">
+  <{foreach from=$bc.cate_menu item=cate}>
+    <li  class="list-group-item">
+      <span class="badge"><{$cate.PageCount}></span>
+      <{if $isMyWeb}>
+      <a href='account.php?WebID=<{$cate.WebID}>&CateID=<{$cate.CateID}>'><{$cate.CateName}></a>
+      <{else}>
+      <{$cate.CateName}>
+      <{/if}>
+    </li>
+  <{/foreach}>
+  </ul>
+<{/if}>

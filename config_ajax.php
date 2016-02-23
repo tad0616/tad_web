@@ -23,6 +23,7 @@ $col_name       = system_CleanVars($_REQUEST, 'col_name', '', 'string');
 $col_val        = system_CleanVars($_REQUEST, 'col_val', '', 'string');
 $display_blocks = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
 $other_web_url  = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
+$keyman         = system_CleanVars($_REQUEST, 'keyman', '', 'string');
 
 switch ($op) {
 
@@ -67,4 +68,38 @@ switch ($op) {
         save_web_config($col_name, $col_val, $WebID);
         exit;
         break;
+
+    //篩選使用者
+    case "keyman":
+        die(keyman($WebID, $keyman));
+        exit;
+        break;
+}
+
+function keyman($WebID, $keyman)
+{
+    global $xoopsDB;
+    $web_admin_arr = get_web_roles($WebID, 'admin');
+    $web_admins    = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
+    $where         = !empty($keyman) ? "where name like '%{$keyman}%' or uname like '%{$keyman}%'" : "";
+
+    $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " $where order by uname";
+    $result = $xoopsDB->query($sql) or web_error($sql);
+
+    $myts    = MyTextSanitizer::getInstance();
+    $user_ok = $user_yet = "";
+    while ($all = $xoopsDB->fetchArray($result)) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+        $name  = $myts->htmlSpecialChars($name);
+        $uname = $myts->htmlSpecialChars($uname);
+        $name  = empty($name) ? "" : " ({$name})";
+        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr) or $uid == $WebOwnerUid) {
+            $user_ok .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
+        } else {
+            $user_yet .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
+        }
+    }
+    return $user_yet;
 }

@@ -41,6 +41,7 @@ class web_cate
     public $demo_txt            = '';
     public $default_value       = '';
     public $default_option_text = '';
+    public $button_value        = '';
     public $label               = '';
     public $label_col_md        = '2';
     public $menu_col_md         = '3';
@@ -99,6 +100,10 @@ class web_cate
         $this->label = $label;
     }
 
+    public function set_button_value($button_value = "")
+    {
+        $this->button_value = $button_value;
+    }
     public function set_col_md($label_md, $menu_md)
     {
         $this->label_col_md = $label_md;
@@ -131,7 +136,8 @@ class web_cate
         $form_group   = $_SESSION['bootstrap'] == '3' ? 'form-group' : 'control-group';
         $form_control = $_SESSION['bootstrap'] == '3' ? 'form-control' : 'span12';
 
-        $tools = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}&table={$this->table}' class='btn btn-warning' >" . _MD_TCW_CATE_TOOLS . "</a></div>" : "";
+        $button_value = empty($this->button_value) ? _MD_TCW_CATE_TOOLS : $this->button_value;
+        $tools        = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}&table={$this->table}' class='btn btn-warning' >$button_value</a></div>" : "";
 
         $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
 
@@ -163,13 +169,15 @@ class web_cate
             $demo_txt = ", {$this->demo_txt}";
         }
 
+        $new_cate = empty($this->label) ? _MD_TCW_NEW_CATE : sprintf(_MD_TCW_NEW_SOMETHING, $this->label);
+
         if ($newCate) {
             $new_input = "
             <div class=\"{$span}5\" id=\"newCateName\" style='display:none;'>
-              <input type='text' name='newCateName' placeholder='" . _MD_TCW_NEW_CATE . " {$demo_txt}' class='{$form_control}' value='{$this->default_value}'>
+              <input type='text' name='newCateName' placeholder='{$new_cate} {$demo_txt}' class='{$form_control}' value='{$this->default_value}'>
             </div>
             <div class=\"{$span}2\" id=\"newCate\">
-              <button type='button' class='btn btn-info' id=\"add_cate\">" . _MD_TCW_NEW_CATE . "</button>
+              <button type='button' class='btn btn-info' id=\"add_cate\">{$new_cate}</button>
             </div>
             <div class=\"{$span}2\" id=\"showMenu\" style='display:none;'>
               <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_MENU . "</button>
@@ -232,15 +240,13 @@ class web_cate
     public function save_tad_web_cate($CateID = "", $newCateName = "")
     {
         global $xoopsDB, $xoopsUser;
-        if (empty($newCateName)) {
-            return $CateID;
-        }
+        if (!empty($newCateName) and empty($CateID)) {
 
-        $myts     = MyTextSanitizer::getInstance();
-        $CateName = $myts->addSlashes($newCateName);
-        $CateSort = $this->tad_web_cate_max_sort();
+            $myts     = MyTextSanitizer::getInstance();
+            $CateName = $myts->addSlashes($newCateName);
+            $CateSort = $this->tad_web_cate_max_sort();
 
-        $sql = "insert into `" . $xoopsDB->prefix("tad_web_cate") . "` (
+            $sql = "insert into `" . $xoopsDB->prefix("tad_web_cate") . "` (
           `WebID`,
           `CateName`,
           `ColName`,
@@ -257,10 +263,11 @@ class web_cate
           '1',
           0
         )";
-        $xoopsDB->query($sql) or web_error($sql);
+            $xoopsDB->query($sql) or web_error($sql);
 
-        //取得最後新增資料的流水編號
-        $CateID = $xoopsDB->getInsertId();
+            //取得最後新增資料的流水編號
+            $CateID = $xoopsDB->getInsertId();
+        }
 
         return $CateID;
     }

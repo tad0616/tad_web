@@ -271,6 +271,9 @@
                 <{$smarty.const._MD_TCW_CLICK_TO_CHANG}>
               </small>
             </h3>
+            <div class="alert alert-info">
+              <{$bg_desc}>
+            </div>
 
             <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
@@ -751,7 +754,15 @@
         </div>
       </div>
 
-
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $('#keyman').change(function(event) {
+            $.post("config_ajax.php", {op: "keyman" , keyman: $('#keyman').val(), WebID: <{$WebID}>}, function(theResponse){
+                $('#adm_repository').html(theResponse);
+            });
+          });
+        });
+      </script>
 
       <div id="tad_web_config_tab-7">
         <{$smarty.const._MD_TCW_DEFAULT_ADMIN}><{$Web.WebOwnerUid}> <{$Web.WebOwner}>
@@ -769,7 +780,17 @@
             <form action="config.php" method="post" class="form-horizontal myForm" role="form">
             <div class="row">
               <div class="col-md-5">
-                <select name="adm_repository" id="adm_repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
+
+                <div class="input-group">
+                  <input type="text" name="keyman" id="keyman" placeholder="<{$smarty.const._MD_TCW_KEYWORD_TO_SELECT_USER}>" class="form-control">
+                  <span class="input-group-btn">
+                    <a href="#" class="btn btn-success"><{$smarty.const._MD_TCW_SELETC_USER}></a>
+                  </span>
+                </div>
+
+
+
+                <select name="adm_repository" id="adm_repository" size="10" multiple="multiple" tmt:linkedselect="true" class="form-control">
                 <{$user_yet}>
                 </select>
               </div>

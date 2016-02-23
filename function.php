@@ -18,6 +18,34 @@ require_once "function_block.php";
 include_once XOOPS_ROOT_PATH . "/modules/tad_web/class/cate.php";
 include_once XOOPS_ROOT_PATH . "/modules/tad_web/class/power.php";
 include_once XOOPS_ROOT_PATH . "/modules/tad_web/class/tags.php";
+
+//判斷是否對該模組有管理權限
+$isAdmin    = false;
+$LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = '';
+if ($xoopsUser) {
+    if (!$xoopsModule) {
+        $modhandler  = &xoops_gethandler('module');
+        $xoopsModule = &$modhandler->getByDirname("tad_web");
+    }
+    $module_id = $xoopsModule->getVar('mid');
+    $isAdmin   = $xoopsUser->isAdmin($module_id);
+} else {
+    $LoginMemID       = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
+    $LoginMemName     = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
+    $LoginMemNickName = isset($_SESSION['LoginMemNickName']) ? $_SESSION['LoginMemNickName'] : null;
+    $LoginWebID       = isset($_SESSION['LoginWebID']) ? $_SESSION['LoginWebID'] : null;
+}
+$MyWebs  = array();
+$isMyWeb = false;
+
+if ($xoopsUser) {
+    //我的班級ID（陣列）
+    $MyWebs = MyWebID('all');
+
+    //目前瀏覽的是否是我的班級？
+    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
+}
+
 /********************* 自訂函數 *********************/
 //取得已安裝的區塊
 function get_blocks($WebID)
@@ -382,6 +410,7 @@ function common_template($WebID, $web_all_config = "")
     }
 
     $xoopsTpl->assign('_IS_EZCLASS', _IS_EZCLASS);
+    // return $web_all_config;
 }
 
 //製作選單
@@ -422,6 +451,7 @@ function mk_menu_var_file($WebID = null)
         $current .= "\$menu_var['{$dirname}']['setup']   = '{$plugin['config']['setup']}';\n";
         $current .= "\$menu_var['{$dirname}']['add']   = '{$plugin['config']['add']}';\n";
         $current .= "\$menu_var['{$dirname}']['menu']   = '{$plugin['config']['menu']}';\n";
+        $current .= "\$menu_var['{$dirname}']['export']   = '{$plugin['config']['export']}';\n";
         if ($plugin['db']['PluginEnable'] != '1') {
             $current .= "}\n\n";
         } else {
@@ -458,7 +488,21 @@ function mk_menu_var_file($WebID = null)
 
             $BlockEnable = 1;
 
-            $BlockConfig = (isset($block_config[$func]) and !empty($block_config[$func])) ? json_encode($block_config[$func], JSON_UNESCAPED_UNICODE) : '';
+            if (isset($block_config[$func]) and !empty($block_config[$func])) {
+                if (PHP_VERSION_ID >= 50400) {
+                    $BlockConfig = json_encode($block_config[$func], JSON_UNESCAPED_UNICODE);
+                } else {
+                    array_walk_recursive($block_config[$func], function (&$value, $key) {
+                        if (is_string($value)) {
+                            $value = urlencode($value);
+                        }
+                    });
+                    $BlockConfig = urldecode(json_encode($block_config[$func]));
+                }
+            } else {
+                $BlockConfig = '';
+            }
+
             $BlockConfig = str_replace('{{WebID}}', $WebID, $BlockConfig);
             $sql         = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$BlockConfig}', '{$block_position[$func]}', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
             $xoopsDB->queryF($sql) or web_error($sql);

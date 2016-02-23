@@ -134,23 +134,23 @@ class tad_web_video
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";
-        $contents = file_get_contents($url);
-        $contents = utf8_encode($contents);
+        // $url      = "http://www.youtube.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D{$VideoPlace}&format=json";
+        // $contents = file_get_contents($url);
+        // $contents = utf8_encode($contents);
 
-        $results = json_decode($contents, false);
-        foreach ($results as $k => $v) {
-            $$k = htmlspecialchars($v);
-        }
+        // $results = json_decode($contents, false);
+        // foreach ($results as $k => $v) {
+        //     $$k = htmlspecialchars($v);
+        // }
 
-        $rate = round($height / $width, 2);
+        // $rate = round($height / $width, 2);
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {
-            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
-        }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
-        $jw     = new JwPlayer("video{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
-        $player = $jw->render();
+        // if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {
+        //     redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+        // }
+        // include_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
+        // $jw     = new JwPlayer("video{$VideoID}", $Youtube, "http://i3.ytimg.com/vi/{$VideoPlace}/0.jpg", '100%', $rate);
+        // $player = $jw->render();
 
         $uid_name = XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
@@ -163,7 +163,7 @@ class tad_web_video
         $xoopsTpl->assign('VideoDesc', nl2br($VideoDesc));
         $xoopsTpl->assign('uid_name', $uid_name);
         $xoopsTpl->assign('VideoCountInfo', sprintf(_MD_TCW_VIDEOCOUNTINFO, $VideoCount));
-        $xoopsTpl->assign('player', $player);
+        // $xoopsTpl->assign('player', $player);
         $xoopsTpl->assign('VideoID', $VideoID);
         $xoopsTpl->assign('VideoInfo', sprintf(_MD_TCW_INFO, $uid_name, $VideoDate, $VideoCount));
 
@@ -190,7 +190,7 @@ class tad_web_video
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs)) {
+        } elseif (!$isMyWeb) {
             redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
@@ -389,6 +389,32 @@ class tad_web_video
         $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
+    }
+
+    //匯出資料
+    public function export_data($start_date, $end_date, $CateID = "")
+    {
+
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? "" : "and VideoDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? "" : "and VideoDate <= '{$end_date}'";
+
+        $sql    = "select VideoID,VideoName,VideoDate,CateID from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by VideoDate";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        $i         = 0;
+        $main_data = '';
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+            $main_data[$i]['ID']     = $ID;
+            $main_data[$i]['CateID'] = $CateID;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
+
+            $i++;
+        }
+
+        return $main_data;
     }
 
 }

@@ -51,7 +51,7 @@ switch ($op) {
     default:
         if (empty($ActionID)) {
             $op = 'list_all';
-            $tad_web_action->list_all($CateID, null, null, $tag);
+            $tad_web_action->list_all($CateID, null, "assign", $tag);
         } else {
             $op = 'show_one';
             if (!empty($fb_action_ids) or !empty($fb_comment_id) or !empty($comment_id)) {
