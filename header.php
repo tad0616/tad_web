@@ -8,7 +8,7 @@ $is_ezclass = XOOPS_URL == "http://class.tn.edu.tw" ? true : false;
 define('_IS_EZCLASS', $is_ezclass);
 
 //目前觀看的班級
-$Web = $WebName = $WebTitle = $WebOwner = $menu_var = "";
+$Web = $WebName = $WebTitle = $WebOwner = $menu_var = $plugin_menu_var = "";
 
 $i = 0;
 if (!empty($WebID)) {
@@ -43,6 +43,14 @@ if (!empty($WebID)) {
                 mk_menu_var_file($WebID);
             }
             include_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+            $plugin_menu_var = $menu_var;
+
+            $menu_var[100]['id']     = $i;
+            $menu_var[100]['title']  = _MD_TCW_TAG;
+            $menu_var[100]['url']    = "tag.php?WebID={$WebID}";
+            $menu_var[100]['target'] = "_self";
+            $menu_var[100]['icon']   = "fa-tags";
+
             $simple_menu[$i]['submenu'] = $menu_var;
             $i++;
             $menu_var = $simple_menu;
@@ -59,6 +67,14 @@ if (!empty($WebID)) {
                 mk_menu_var_file($WebID);
             }
             include_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+            $plugin_menu_var = $menu_var;
+
+            $menu_var[100]['id']     = $i;
+            $menu_var[100]['title']  = _MD_TCW_TAG;
+            $menu_var[100]['url']    = "tag.php?WebID={$WebID}";
+            $menu_var[100]['target'] = "_self";
+            $menu_var[100]['icon']   = "fa-tags";
+
         }
     } elseif ($Web and $Web['WebEnable'] != '1' and $isMyWeb) {
         $WebName  = "[" . _MD_TCW_UNABLE . "] " . $Web['WebName'];
@@ -81,11 +97,11 @@ if (!empty($WebID)) {
             mk_menu_var_file($WebID);
         }
         include_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+        $plugin_menu_var = $menu_var;
     } else {
         define('_DISPLAY_MODE', 'no');
     }
 }
-
 $i = sizeof($menu_var);
 
 if ($isMyWeb) {
@@ -104,6 +120,7 @@ if ($isMyWeb) {
     $sub_menu_var[$j]['target'] = "_self";
     $sub_menu_var[$j]['icon']   = "fa-check-square-o";
     $j++;
+
     $sub_menu_var[$j]['id']     = $j;
     $sub_menu_var[$j]['title']  = _MD_TCW_BLOCK_TOOLS;
     $sub_menu_var[$j]['url']    = "block.php?WebID={$WebID}";
@@ -130,6 +147,13 @@ $sub_menu_var[$j]['title']  = _MD_TCW_HOME;
 $sub_menu_var[$j]['url']    = "index.php";
 $sub_menu_var[$j]['target'] = "_blank";
 $sub_menu_var[$j]['icon']   = "fa-share-square-o";
+$j++;
+
+$sub_menu_var[$j]['id']     = $j;
+$sub_menu_var[$j]['title']  = _MD_TCW_LEADERBOARD;
+$sub_menu_var[$j]['url']    = "top.php";
+$sub_menu_var[$j]['target'] = "_blank";
+$sub_menu_var[$j]['icon']   = "fa-bar-chart";
 $j++;
 
 $sub_menu_var[$j]['id']     = $j;

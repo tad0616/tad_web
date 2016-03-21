@@ -2,46 +2,6 @@
 $blocksArr = '';
 global $WebID;
 
-$blocksArr['my_menu']['name']     = _MD_TCW_SYSTEM_BLOCK_MY_MENU;
-$blocksArr['my_menu']['tpl']      = 'my_menu.html';
-$blocksArr['my_menu']['position'] = 'side';
-
-// $login_method   = '';
-$modhandler     = &xoops_gethandler('module');
-$config_handler = &xoops_gethandler('config');
-
-$TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
-if ($TadLoginXoopsModule) {
-    global $xoopsConfig;
-    include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
-
-    $config_handler = &xoops_gethandler('config');
-    $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
-
-    $auth_method = $modConfig['auth_method'];
-    // if ($_GET['test'] == '1') {
-    //     die(var_export($auth_method));
-    // }
-    foreach ($auth_method as $method) {
-        $method_const = "_" . strtoupper($method);
-        $loginTitle   = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
-        // if ($_GET['test'] == '1') {
-        //     echo _MD_TCW_OPENID_LOGIN . "-{$loginTitle}-{$method}-{$method_const}-<br>";
-        // }
-        $login_defval[]            = $method;
-        $login_method[$loginTitle] = $method;
-
-    }
-}
-
-$blocksArr['login']['name']     = _MD_TCW_SYSTEM_BLOCK_LOGIN;
-$blocksArr['login']['tpl']      = 'login.html';
-$blocksArr['login']['position'] = 'side';
-if ($TadLoginXoopsModule) {
-    $blocksArr['login']['config']['login_method'] = $login_defval;
-    $blocksArr['login']['colset']['login_method'] = array('label' => _MD_TCW_NEWS_BLOCK_LOGIN_METHOD, 'type' => 'checkbox', 'options' => $login_method);
-}
-
 $blocksArr['search']['name']     = _MD_TCW_SYSTEM_BLOCK_SEARCH;
 $blocksArr['search']['tpl']      = 'search.html';
 $blocksArr['search']['position'] = 'side';
@@ -105,5 +65,13 @@ $blocksArr['flickrit']['config']['flickrit_kind']  = 'setId';
 $blocksArr['flickrit']['colset']['flickrit_kind']  = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND, 'type' => 'select', 'options' => array(_MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND_SETID => 'setId', _MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND_USERID => 'userId'));
 $blocksArr['flickrit']['config']['flickrit_setid'] = '110168492315217261022/Flickrit';
 $blocksArr['flickrit']['colset']['flickrit_setid'] = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_SETID, 'type' => 'text');
+
+$blocksArr['tags']['name']                 = _MD_TCW_SYSTEM_BLOCK_TAGS;
+$blocksArr['tags']['tpl']                  = 'tags.html';
+$blocksArr['tags']['position']             = 'side';
+$blocksArr['tags']['config']['tags_mode']  = 'list';
+$blocksArr['tags']['colset']['tags_mode']  = array('label' => _MD_TCW_SYSTEM_BLOCK_TAGS_MODE, 'type' => 'radio', 'options' => array(_MD_TCW_SYSTEM_BLOCK_TAGS_MODE_LIST => 'list', _MD_TCW_SYSTEM_BLOCK_TAGS_MODE_CLOUD => 'cloud'));
+$blocksArr['tags']['config']['min_height'] = '250';
+$blocksArr['tags']['colset']['min_height'] = array('label' => _MD_TCW_SYSTEM_BLOCK_MIN_HEIGHT, 'type' => 'text');
 
 $blockConfig['system'] = $blocksArr;

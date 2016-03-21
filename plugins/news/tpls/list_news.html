@@ -25,6 +25,11 @@
       </div>
     </div>
   <{elseif $block.config.show_mode=="full"}>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('img').css('height','').addClass('img-responsive');
+    });
+  </script>
     <{foreach from=$bc.main_data key=i item=news}>
       <div class="row">
         <div class="col-md-12">
@@ -66,6 +71,11 @@
       </div>
     <{/foreach}>
   <{else}>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('img').css('height','').addClass('img-responsive');
+      });
+    </script>
     <div class="row">
       <div class="col-md-12">
         <{if $bc.main_data.0.NewsContent}>

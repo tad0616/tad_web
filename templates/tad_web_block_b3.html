@@ -172,7 +172,6 @@
       <{/if}>
     </div>
   </div>
-
 <{else}>
   <style>
     #sort_uninstall, #sort_block1, #sort_block2, #sort_block3, #sort_block4, #sort_block5, #sort_block6, #sort_side {
@@ -289,7 +288,11 @@
           <{foreach from=$uninstall item=block}>
             <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
               <{$block.icon}>
-              <{$block.BlockTitle}>
+              <{if $block.BlockTitle}>
+                <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+              <{else}>
+                <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+              <{/if}>
             </li>
           <{/foreach}>
       </ul>
@@ -308,7 +311,11 @@
                   <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
-                    <{$block.BlockTitle}>
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                   </li>
                 <{/foreach}>
               <{/if}>
@@ -327,7 +334,12 @@
                   <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
-                    <{$block.BlockTitle}>
+
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                   </li>
                 <{/foreach}>
               <{/if}>
@@ -346,7 +358,12 @@
                   <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
-                    <{$block.BlockTitle}>
+
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                   </li>
                 <{/foreach}>
               <{/if}>
@@ -362,7 +379,12 @@
                   <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
-                    <{$block.BlockTitle}>
+
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                   </li>
                 <{/foreach}>
               <{/if}>
@@ -381,7 +403,12 @@
                   <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
-                    <{$block.BlockTitle}>
+
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                   </li>
                 <{/foreach}>
               <{/if}>
@@ -400,7 +427,12 @@
                   <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
-                    <{$block.BlockTitle}>
+
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                   </li>
                 <{/foreach}>
               <{/if}>
@@ -416,7 +448,12 @@
                   <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                     <{$block.icon}>
-                    <{$block.BlockTitle}>
+
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                   </li>
                 <{/foreach}>
               <{/if}>
@@ -436,7 +473,12 @@
                 <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>">
                     <span id="blktool_<{$block.BlockID}>" class="pull-right"><{if $block.plugin!="custom" and $block.plugin!="share" and $block.BlockCopy==0}><a href="block.php?WebID=<{$WebID}>&op=copy&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-green"><i class="fa fa-files-o"></i></a><{/if}> <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$block.plugin}>&BlockID=<{$block.BlockID}>" class="text-danger"><i class="fa fa-pencil"></i></a></span>
                   <{$block.icon}>
-                  <{$block.BlockTitle}>
+
+                    <{if $block.BlockTitle}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                    <{else}>
+                      <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                    <{/if}>
                 </li>
               <{/foreach}>
             <{/if}>

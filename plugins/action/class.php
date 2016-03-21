@@ -18,15 +18,19 @@ class tad_web_action
     //活動剪影
     public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
+            if (!empty($plugin_menu_var)) {
+                $this->web_cate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+            }
 
             if (!empty($CateID)) {
                 //取得單一分類資料
@@ -49,7 +53,7 @@ class tad_web_action
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.ActionID desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='ActionID' and c.col_sn=a.ActionID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.ActionID desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='ActionID' and c.col_sn=a.ActionID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.ActionID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionID desc";
         }
@@ -200,7 +204,7 @@ class tad_web_action
     //tad_web_action編輯表單
     public function edit_form($ActionID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -252,7 +256,10 @@ class tad_web_action
         $xoopsTpl->assign('ActionCount', $ActionCount);
 
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+
+        $this->web_cate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 

@@ -120,7 +120,7 @@ function tad_web_menu($options)
         $block['LoginMemName']     = $_SESSION['LoginMemName'];
         $block['LoginMemNickName'] = $_SESSION['LoginMemNickName'];
         $block['LoginWebID']       = $_SESSION['LoginWebID'];
-        $block['say_hi']           = sprintf(_MB_TCW_HI, $_SESSION['LoginMemName']);
+        $block['say_hi']           = sprintf(_MD_TCW_HI, $_SESSION['LoginMemName']);
 
         return $block;
     } else {

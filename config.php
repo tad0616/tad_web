@@ -28,6 +28,9 @@ function tad_web_config($WebID, $configs)
     }
 
     foreach ($configs as $ConfigName => $ConfigValue) {
+        if ($ConfigName == "login_config") {
+            $ConfigValue = explode(';', $ConfigValue);
+        }
         $xoopsTpl->assign($ConfigName, $ConfigValue);
     }
 
@@ -68,9 +71,38 @@ function tad_web_config($WebID, $configs)
     $formValidator = new formValidator(".myForm", true);
     $formValidator->render();
 
+    //登入設定
+    // $login_method   = '';
+    $modhandler     = &xoops_gethandler('module');
+    $config_handler = &xoops_gethandler('config');
+
+    $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+    $login_method        = $login_defval        = "";
+    if ($TadLoginXoopsModule) {
+        global $xoopsConfig;
+        include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+
+        $config_handler = &xoops_gethandler('config');
+        $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+
+        $auth_method = $modConfig['auth_method'];
+        foreach ($auth_method as $method) {
+            $method_const = "_" . strtoupper($method);
+            $loginTitle   = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
+
+            $login_defval[]            = $method;
+            $login_method[$loginTitle] = $method;
+
+        }
+    }
+
+    $xoopsTpl->assign('login_method_count', sizeof($login_defval));
+    $xoopsTpl->assign('login_defval', $login_defval);
+    $xoopsTpl->assign('login_method', $login_method);
+
     //功能設定
     $plugins = get_plugins($WebID, 'edit');
-    //die(var_export($plugins));
+    // die(var_export($plugins));
     $xoopsTpl->assign('plugins', $plugins);
 
     //背景圖設定
@@ -348,6 +380,7 @@ $bg_attachment   = system_CleanVars($_REQUEST, 'bg_attachment', '', 'string');
 $bg_postiton     = system_CleanVars($_REQUEST, 'bg_postiton', '', 'string');
 $bg_size         = system_CleanVars($_REQUEST, 'bg_size', '', 'string');
 $use_simple_menu = system_CleanVars($_REQUEST, 'use_simple_menu', 0, 'int');
+$login_method    = system_CleanVars($_REQUEST, 'login_method', '', 'array');
 
 switch ($op) {
 
@@ -495,6 +528,13 @@ switch ($op) {
     //恢復顏色預設值
     case "default_color":
         default_color($WebID);
+        header("location: config.php?WebID={$WebID}");
+        exit;
+        break;
+
+    //儲存OpenID
+    case "save_login_config":
+        save_web_config('login_config', implode(';', $login_method), $WebID);
         header("location: config.php?WebID={$WebID}");
         exit;
         break;

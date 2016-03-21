@@ -80,6 +80,7 @@ define("_MD_TCW_BLOCKS_SETUP", "設定區塊");
 define("_MD_TCW_NEW_CATE", "建立新分類");
 define("_MD_TCW_NEW_SOMETHING", "建立新%s");
 define("_MD_TCW_SELECT_CATE", "選擇分類");
+define("_MD_TCW_SELECT_PLUGIN_CATE", "選擇%s分類");
 define("_MD_TCW_CATE_TOOLS", "分類管理");
 define("_MD_TCW_DEL_CATE_MOVE_TO", "刪除分類並將底下資料移至：");
 define("_MD_TCW_DEL_CATE_ALL", "刪除分類（含底下所有資料）");
@@ -224,6 +225,8 @@ define('_MD_TCW_POWER_FOR_WEB_USERS', '僅本網站成員');
 define('_MD_TCW_POWER_FOR_WEB_ADMIN', '僅本網站管理員');
 define('_MD_TCW_NOW_READ_POWER', '沒有閱讀此內容的權限');
 define('_MD_TCW_TAGS', '標籤設定');
+define('_MD_TCW_TAG', '標籤');
+define('_MD_TCW_TAGS_LIST', '所有標籤');
 define('_MD_TCW_INPUT_TAGS', '請輸入新標籤，若有多個標籤請用小寫逗號「,」隔開');
 define('_MD_TCW_UNABLE', '關閉中');
 
@@ -232,3 +235,8 @@ define('_MD_TCW_USER_SIMPLE_MENU', '簡化選單');
 
 define('_MD_TCW_KEYWORD_TO_SELECT_USER', '輸入關鍵字以篩選');
 define('_MD_TCW_SELETC_USER', '篩選');
+define('_MD_TCW_LEADERBOARD', '排行榜');
+define('_MD_TCW_LEADERBOARD_RANK', '綜合排名');
+define('_MD_TCW_WEB_COUNTER', '網站人氣');
+define('_MD_TCW_WEB_BLOCK', '區塊應用');
+define("_MD_TCW_HI", "嗨！%s 您好！");

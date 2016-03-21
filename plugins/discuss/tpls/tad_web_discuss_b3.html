@@ -1,6 +1,6 @@
 <{if $op=="edit_form"}>
-  <{if $LoginMemID=="" and !$isMyWeb}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_discuss_login_b3.html"}>
+  <{if $LoginMemID=="" and $LoginParentID=="" and !$isMyWeb}>
+    請先登入
   <{else}>
 
     <{$formValidator_code}>
@@ -48,6 +48,8 @@
         </div>
       </div>
 
+      <{$tags_form}>
+
       <!--相關附件-->
       <div class="form-group">
         <label class="col-md-2 control-label">
@@ -90,6 +92,7 @@
     <li><a href="discuss.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_DISCUSS}></a></li>
     <{if isset($cate.CateID)}><li><a href="discuss.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
     <li><{$DiscussInfo}></li>
+    <{if $tags}><li><{$tags}></li><{/if}>
   </ol>
 
   <{if $DiscussContent}>
@@ -125,7 +128,7 @@
 
   <{$re}>
 
-  <{if $LoginMemID or $isMineDiscuss}>
+  <{if $LoginMemID or $LoginParentID or $isMineDiscuss}>
     <div style="clear: both;"></div>
     <h3><{$smarty.const._MD_TCW_DISCUSS_REPLY}></h3>
     <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form" style="margin-top:16px;">
@@ -171,7 +174,6 @@
   <{$FooTableJS}>
   <div class="row">
     <div class="col-md-12">
-      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_discuss_login_b3.html"}>
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_common_discuss_b3.html"}>
     </div>
   </div>

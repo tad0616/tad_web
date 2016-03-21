@@ -1,6 +1,6 @@
 <?php
 define("_MD_TCW_ABOUTUS", "關於我們");
-define("_MD_TCW_ALL_WEB_TITLE", "正式名稱");
+define("_MD_TCW_ALL_WEB_TITLE", "班級名稱");
 define("_MD_TCW_ALL_WEB_NAME", "網頁名稱");
 define("_MD_TCW_ALL_WEB_COUNTER", "人氣");
 define("_MD_TCW_ALL_WEB_OWNER", "擁有者");
@@ -8,9 +8,9 @@ define("_MD_TCW_ABOUTUS_SHORT", "成員");
 define("_MD_TCW_UID", "成員");
 define("_MD_TCW_MEM_CLASSORGAN", "職稱");
 define("_MD_TCW_MEM_EXPERTISES", "專長");
+define("_MD_TCW_MEM_ABOUTME", "介紹");
 define("_MD_TCW_MEMURL", "個人網頁");
 define("_MD_TCW_MEMTEAMORGAN", "團隊職稱");
-define("_MD_TCW_MEM_ABOUTME", "介紹");
 define("_MD_TCW_MEMORDER", "排序");
 define("_MD_TCW_MEMENABLE", "狀態");
 define("_MD_TCW_UPLOAD_MY_PHOTO", "管理者照片");
@@ -54,6 +54,7 @@ define("_MD_TCW_IMPORT_LINK", "
   <li><a href='import.xls'>成員資料Excel匯入檔範例</a></li>
   <li style='color:red;'>僅支援 xls 格式（csv、xlsx 均不支援）</li>
 </ul>");
+
 define("_MD_TCW_NO_WEB", "目前尚無任何的個人網站，等待管理員建立中。");
 define("_MD_TCW_NO_WEB_ADMIN", "目前沒有任何的個人網站，請管理員儘速至後台指定可以擁有個人網站的使用者。");
 
@@ -118,6 +119,9 @@ define('_MD_TCW_ABOUTUS_S5_OPT5', '座號');
 define('_MD_TCW_ABOUTUS_S5_OPT6', '幹部（或職稱）');
 define('_MD_TCW_ABOUTUS_S5_OPT7', '自我介紹（或職掌）');
 
+define('_MD_TCW_ABOUTUS_S6_TEXT', '是否使用家長功能');
+define('_MD_TCW_ABOUTUS_S6_DESC', '家長可註冊、登入並使用相關功能。');
+
 define('_MD_TCW_ABOUTUS_DEFAULT_CLASS', '預設班級');
 define('_MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC', '點入「關於我們」後，以此為預設呈現的班級');
 define('_MD_TCW_ABOUTUS_EDIT_ACCOUNT', '修改我的資料');
@@ -128,3 +132,41 @@ define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', '繳交作品');
 define('_MD_TCW_ABOUTUS_UPLOAD_NOW', '立即繳交');
 define('_MD_TCW_ABOUTUS_UPLOADED', '已於 %s 繳交');
 define('_MD_TCW_ABOUTUS_UPLOADED_WORKS', '已繳交作品');
+define('_MD_TCW_ABOUTUS_IM_PARENT', '我是「%s」的家長');
+define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', '繳交作品');
+define('_MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED', '本站已關閉家長註冊');
+define('_MD_TCW_ABOUTUS_WRONG_BIRTHDAY', '生日錯誤，請重新輸入生日');
+define('_MD_TCW_ABOUTUS_ENABLE_PARENT_ACCOUNT', '啟動家長帳號通知');
+define('_MD_TCW_ABOUTUS_ENABLE_PARENT_EMAIL', '「%s」的「%s」您好：<p>您於 %s 申請了家長帳號，請點選以下連結以啟動之。</p><p>%s</p><p align="right"><a href="%s">%s</a> 敬上</p>');
+define('_MD_TCW_ABOUTUS_SELECT_CLASS', '請先選擇班級');
+define('_MD_TCW_ABOUTUS_SELECT_MEM', '請選擇身份');
+define('_MD_TCW_ABOUTUS_THE_STUDENT', '該學生');
+define('_MD_TCW_ABOUTUS_THE_STUDENT_BIRTHDAY', '的生日');
+define('_MD_TCW_ABOUTUS_VERIFY_BIRTHDAY', '請輸入該學生生日以驗證之，如：');
+define('_MD_TCW_ABOUTUS_REATIONSHIP_DESC', '如：父親、母親、爺爺、姑姑、大伯、叔叔...等');
+define('_MD_TCW_ABOUTUS_YOUR_ARE', '您是');
+define('_MD_TCW_ABOUTUS_S', '的');
+define('_MD_TCW_ABOUTUS_PARENT_EMAIL_DESC', '請輸入您的電子信箱');
+define('_MD_TCW_ABOUTUS_PARENT_EMAIL', 'Email設定');
+define('_MD_TCW_ABOUTUS_PARENT_PASSWD', '密碼設定');
+define('_MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD', '修改密碼');
+define('_MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC', '有需要修改密碼才需要填寫');
+define('_MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED', '登入失敗！請重新登入！');
+define('_MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT', '該生並沒有家長帳號，請直接註冊新帳號。');
+define('_MD_TCW_ABOUTUS_SEND_PARENT_PASSWD', '已將您的密碼寄至 %s');
+define('_MD_TCW_ABOUTUS_YOUR_PASSWD', '密碼通知');
+define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', '「%s」的「%s」您好：<p>您於 %s 查詢了您的家長帳號密碼，您的密碼如下：</p><p style="font-size: 24px; color:red;">%s</p><p align="right"><a href="%s">%s</a> 敬上</p>');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE', '家長啟動成功通知信');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_CONTENT', '%s老師您好：<p>%s的%s已於 %s 成功註冊家長帳號，在此通知您一聲。</p>');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL', '記得收信以進行啟動帳號');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL_CONTENT', '%s的%s您好：<p>系統已於 %s 寄發一封通知信到您的信箱 %s ，請至該信箱收信，並點擊信中啟動連結，以啟用您的帳號。</p><p>若是一直沒收到信，請<a href="%s">點此重新寄發啟用信</a>。</p>');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS', '帳號啟動成功');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS_CONTENT', '您的帳號已經啟動，請從登入區塊，選擇「家長登入」以登入網站。');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED', '帳號啟動失敗');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED_CONTENT', '<p>您的帳號啟動失敗！請重新註冊或啟動試試。</p>
+      <p>若是沒收到信件，也可以<a href="%s">點此重新寄發啟用信</a>。</p>');
+define('_MD_TCW_ABOUTUS_RE_SENDMAIL_TO', '重寄確認信給');

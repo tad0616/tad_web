@@ -292,6 +292,12 @@ function block_setup($WebID = "")
     $xoopsTpl->assign('block_pic_border_color', $block_pic_border_color);
     $xoopsTpl->assign('block_pic_text_size', $block_pic_text_size);
     $xoopsTpl->assign('block_pic_font', $block_pic_font);
+    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php")) {
+        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+    }
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
+    $fancybox = new fancybox('.edit_block', '480px');
+    $fancybox->render(false);
 }
 
 //刪除區塊
@@ -374,6 +380,56 @@ function max_blocks_copy($WebID, $BlockName)
     list($BlockCopy) = $xoopsDB->fetchRow($result);
     return ++$BlockCopy;
 }
+
+//展示區塊
+function demo_block($BlockID, $WebID)
+{
+    global $xoopsDB, $xoopsTpl, $plugin_menu_var;
+
+    $myts      = MyTextSanitizer::getInstance();
+    $block_tpl = get_all_blocks('tpl');
+    $dir       = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
+
+    $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockID`='{$BlockID}'";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $all    = $xoopsDB->fetchArray($result);
+    foreach ($all as $k => $v) {
+        $$k = $v;
+    }
+
+    // die(var_export($all));
+    $blocks_arr           = $all;
+    $config               = json_decode($BlockConfig, true);
+    $blocks_arr['config'] = $config;
+    // die(var_export($blocks_arr));
+    if ($plugin == "custom" or $plugin == "share") {
+        if ($config['content_type'] == "iframe") {
+            $blocks_arr['BlockContent'] = "<iframe src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
+        } elseif ($config['content_type'] == "js") {
+            $blocks_arr['BlockContent'] = $BlockContent;
+        } else {
+            $blocks_arr['BlockContent'] = $myts->displayTarea($BlockContent, 1);
+        }
+    } else {
+        if (file_exists("{$dir}{$plugin}/blocks.php")) {
+            include_once "{$dir}{$plugin}/blocks.php";
+        }
+        $blocks_arr['tpl']          = $block_tpl[$BlockName];
+        $blocks_arr['BlockContent'] = $BlockContent = call_user_func($BlockName, $WebID, $config);
+        $blocks_arr['config']       = $config;
+        $blocks_arr['plugin']       = $plugin_menu_var[$plugin];
+
+    }
+    // die(var_export($plugin_menu_var));
+
+    if ($plugin == "share") {
+        $info = get_tad_web($blocks_arr['WebID']);
+        $xoopsTpl->assign('share_info', $info);
+    }
+
+    $xoopsTpl->assign('theme_display_mode', 'blank');
+    $xoopsTpl->assign('block', $blocks_arr);
+}
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op            = system_CleanVars($_REQUEST, 'op', '', 'string');
@@ -427,6 +483,11 @@ switch ($op) {
         header("location: block.php?WebID={$WebID}&op=config&plugin={$plugin}&BlockID={$newBlockID}");
         exit;
         break;
+
+    case "demo":
+        demo_block($BlockID, $WebID);
+        break;
+
     //預設動作
     default:
         //die(var_export(get_all_blocks('limit')));

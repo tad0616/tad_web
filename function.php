@@ -21,7 +21,9 @@ include_once XOOPS_ROOT_PATH . "/modules/tad_web/class/tags.php";
 
 //判斷是否對該模組有管理權限
 $isAdmin    = false;
-$LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = '';
+$LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = $LoginParentID = $LoginParentName = $LoginParentMemID = '';
+$MyWebs     = array();
+$isMyWeb    = false;
 if ($xoopsUser) {
     if (!$xoopsModule) {
         $modhandler  = &xoops_gethandler('module');
@@ -29,21 +31,20 @@ if ($xoopsUser) {
     }
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin   = $xoopsUser->isAdmin($module_id);
-} else {
-    $LoginMemID       = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
-    $LoginMemName     = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
-    $LoginMemNickName = isset($_SESSION['LoginMemNickName']) ? $_SESSION['LoginMemNickName'] : null;
-    $LoginWebID       = isset($_SESSION['LoginWebID']) ? $_SESSION['LoginWebID'] : null;
-}
-$MyWebs  = array();
-$isMyWeb = false;
-
-if ($xoopsUser) {
     //我的班級ID（陣列）
     $MyWebs = MyWebID('all');
 
     //目前瀏覽的是否是我的班級？
     $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
+} else {
+    $LoginMemID       = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
+    $LoginMemName     = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
+    $LoginMemNickName = isset($_SESSION['LoginMemNickName']) ? $_SESSION['LoginMemNickName'] : null;
+    $LoginWebID       = isset($_SESSION['LoginWebID']) ? $_SESSION['LoginWebID'] : null;
+
+    $LoginParentID    = isset($_SESSION['LoginParentID']) ? $_SESSION['LoginParentID'] : null;
+    $LoginParentName  = isset($_SESSION['LoginParentName']) ? $_SESSION['LoginParentName'] : null;
+    $LoginParentMemID = isset($_SESSION['LoginParentMemID']) ? $_SESSION['LoginParentMemID'] : null;
 }
 
 /********************* 自訂函數 *********************/
@@ -106,7 +107,7 @@ function get_all_blocks($value = 'title')
 
 function get_position_blocks($WebID, $BlockPosition)
 {
-    global $xoopsDB;
+    global $xoopsDB, $plugin_menu_var;
     if ($BlockPosition == 'uninstall') {
         //找出這個網站已經安裝的分享區塊
         $share_blocks_id  = get_share_blocks($WebID);
@@ -121,13 +122,21 @@ function get_position_blocks($WebID, $BlockPosition)
     $Blocks = '';
     $i      = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
+        $plugin = $all['plugin'];
+        if ($plugin != 'custom' and $plugin != 'share' and $plugin != 'system') {
+            if (empty($plugin_menu_var[$plugin])) {
+                continue;
+            }
+
+        }
+
         $Blocks[$i]               = $all;
         $Blocks[$i]['BlockShare'] = !empty($all['ShareFrom']) ? 1 : 0;
-        $BlockEnable              = $all['BlockEnable'] == 1 ? '0' : '1';
+        $BlockEnable              = $all['BlockEnable'] == 1 ? '1' : '0';
         $config                   = json_decode($all['BlockConfig'], true);
         $Blocks[$i]['config']     = $config;
 
-        $Blocks[$i]['icon'] = "<img src=\"images/show{$all['BlockEnable']}.gif\" id=\"{$all['BlockID']}_icon\" alt=\"{$all['BlockTitle']}\" title=\"{$all['BlockEnable']}\" style=\"cursor: pointer;\" onClick=\"enableBlock('{$all['BlockID']}')\" >";
+        $Blocks[$i]['icon'] = "<img src=\"images/show{$BlockEnable}.gif\" id=\"{$all['BlockID']}_icon\" alt=\"{$all['BlockTitle']}\" title=\"{$BlockEnable}\" style=\"cursor: pointer;\" onClick=\"enableBlock('{$all['BlockID']}')\" >";
         $i++;
     }
     return $Blocks;
@@ -390,6 +399,9 @@ function common_template($WebID, $web_all_config = "")
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png")) {
             output_head_file($WebID);
         }
+        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png")) {
+            output_head_file_480($WebID);
+        }
         if (empty($web_all_config)) {
             $web_all_config = get_web_all_config($WebID);
         }
@@ -405,6 +417,9 @@ function common_template($WebID, $web_all_config = "")
         }
         // die(var_export($web_all_config));
         foreach ($web_all_config as $ConfigName => $ConfigValue) {
+            if ($ConfigName == "login_config") {
+                $ConfigValue = explode(';', $ConfigValue);
+            }
             $xoopsTpl->assign($ConfigName, $ConfigValue);
         }
     }
@@ -452,6 +467,7 @@ function mk_menu_var_file($WebID = null)
         $current .= "\$menu_var['{$dirname}']['add']   = '{$plugin['config']['add']}';\n";
         $current .= "\$menu_var['{$dirname}']['menu']   = '{$plugin['config']['menu']}';\n";
         $current .= "\$menu_var['{$dirname}']['export']   = '{$plugin['config']['export']}';\n";
+        $current .= "\$menu_var['{$dirname}']['tag']   = '{$plugin['config']['tag']}';\n";
         if ($plugin['db']['PluginEnable'] != '1') {
             $current .= "}\n\n";
         } else {
@@ -517,6 +533,17 @@ function get_tad_web_mems($MemID)
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_mems") . " where MemID='{$MemID}'";
     $result = $xoopsDB->query($sql) or web_error($sql);
+    $all    = $xoopsDB->fetchArray($result);
+    return $all;
+}
+
+function get_tad_web_parent($ParentID = "", $code = "")
+{
+    global $xoopsDB;
+    $andCode = !empty($code) ? "and `code`='{$code}'" : "";
+    $sql     = "select * from " . $xoopsDB->prefix("tad_web_mem_parents") . " where `ParentID`='{$ParentID}' {$andCode}";
+    // die($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
     return $all;
 }
@@ -1069,6 +1096,107 @@ function output_head_file($WebID)
 
     header('Content-type: image/png');
     imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png");
+    imagedestroy($im);
+}
+
+//製作文字圖片
+function output_head_file_480($WebID)
+{
+    global $xoopsUser;
+    if (empty($WebID)) {
+        return;
+    }
+    //先刪掉舊檔
+    $filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png";
+    if (file_exists($filename)) {
+        unlink($filename);
+    }
+
+    $width  = 400;
+    $height = 200;
+    //die('test2=' . $WebID);
+    $all_config = get_web_all_config($WebID);
+    //die("<h1>$WebID</h1>" . var_export($all_config));
+    foreach ($all_config as $k => $v) {
+        $$k = $v;
+    }
+
+    $im = @imagecreatetruecolor($width, $height);
+    imagecolortransparent($im, imagecolorallocatealpha($im, 0, 0, 0, 127));
+    imagealphablending($im, true);
+    imagesavealpha($im, true);
+
+    $bg_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}";
+    if (file_exists($bg_filename)) {
+        list($bg_width, $bg_height) = getimagesize($bg_filename);
+
+        //縮放比例
+        $rate          = round($width / $bg_width, 2);
+        $new_bg_height = round($bg_height * $rate, 0);
+        $bg_top        = round($head_top * $rate, 0);
+        $new_bg_width  = $width;
+
+        $type = strtolower(substr(strrchr($bg_filename, "."), 1));
+        if ($type == 'jpeg') {
+            $type = 'jpg';
+        }
+
+        switch ($type) {
+            case 'bmp':$bg_im = imagecreatefromwbmp($bg_filename);
+                break;
+            case 'gif':$bg_im = imagecreatefromgif($bg_filename);
+                break;
+            case 'jpg':$bg_im = imagecreatefromjpeg($bg_filename);
+                break;
+            case 'png':$bg_im = imagecreatefrompng($bg_filename);
+                break;
+            default:return "Unsupported picture type!";
+        }
+
+        // $head_top = abs($head_top);
+        // $bg_top   = round($head_top * $rate, 0);
+
+        //背景圖
+        // die("$rate, $bg_top, $bg_width, $bg_height, $bg_width, $bg_height");
+        imagecopyresampled($im, $bg_im, 0, 0, 0, 0, $new_bg_width, $new_bg_height, $bg_width, $bg_height);
+    }
+
+    $logo_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$web_logo}";
+    if (file_exists($logo_filename)) {
+        list($logo_width, $logo_height) = getimagesize($logo_filename);
+
+        $new_logo_height = round($logo_height * (380 / $logo_width), 0);
+        $new_logo_width  = 380;
+
+        $type = strtolower(substr(strrchr($logo_filename, "."), 1));
+        if ($type == 'jpeg') {
+            $type = 'jpg';
+        }
+
+        switch ($type) {
+            case 'bmp':$logo_im = imagecreatefromwbmp($logo_filename);
+                break;
+            case 'gif':$logo_im = imagecreatefromgif($logo_filename);
+                break;
+            case 'jpg':$logo_im = imagecreatefromjpeg($logo_filename);
+                break;
+            case 'png':$logo_im = imagecreatefrompng($logo_filename);
+                imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
+                imagealphablending($logo_im, true);
+                imagesavealpha($logo_im, true);
+                break;
+            default:return "Unsupported picture type!";
+        }
+
+        $logo_left = ($width - $new_logo_width) / 2;
+        $logo_top  = ($height - $new_logo_height) / 2;
+
+        //logo圖
+        imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $new_logo_width, $new_logo_height, $logo_width, $logo_height);
+    }
+
+    header('Content-type: image/png');
+    imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png");
     imagedestroy($im);
 }
 

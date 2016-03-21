@@ -14,6 +14,10 @@ $MemID       = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
 $year        = system_CleanVars($_REQUEST, 'year', '', 'string');
 $newCateName = system_CleanVars($_REQUEST, 'newCateName', '', 'string');
 $CateID      = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$chk_code    = system_CleanVars($_REQUEST, 'chk_code', '', 'string');
+$ParentID    = system_CleanVars($_REQUEST, 'ParentID', 0, 'int');
+$Reationship = system_CleanVars($_REQUEST, 'Reationship', '', 'string');
+$result      = system_CleanVars($_REQUEST, 'result', 0, 'int');
 
 common_template($WebID, $web_all_config);
 
@@ -110,15 +114,14 @@ switch ($op) {
         if ($login) {
             header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&MemID={$_SESSION['LoginMemID']}&op=show_stu");
         } else {
-            header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-
+            redirect_header("aboutus.php?WebID={$WebID}", 3, _MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED);
         }
         exit;
         break;
 
     //登出
     case "mem_logout":
-        $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = "";
+        $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = "";
         $GLOBALS["sess_handler"]->regenerate_id(true);
         $_SESSION = array();
         setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
@@ -148,6 +151,90 @@ switch ($op) {
     //匯出設定
     case "export_config":
         $tad_web_aboutus->export_config();
+        break;
+
+    //註冊家長帳號表單
+    case "parents_account":
+        $tad_web_aboutus->parents_account();
+        break;
+
+    //註冊家長帳號
+    case "parents_signup":
+        $tad_web_aboutus->parents_signup();
+        break;
+
+    //提醒收信通知
+    case "show_parents_signup":
+        $tad_web_aboutus->show_parents_signup($ParentID, $chk_code);
+        break;
+
+    //啟用註冊家長帳號
+    case "enable_parent":
+        $result = $tad_web_aboutus->enable_parent($ParentID, $chk_code);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=show_enable_parent&ParentID=$ParentID&result={$result}&chk_code={$chk_code}");
+        exit;
+        break;
+
+    //提醒收信通知
+    case "show_enable_parent":
+        $tad_web_aboutus->show_enable_parent($ParentID, $result, $chk_code);
+        break;
+
+    //寄發通知信
+    case "send_signup_mail":
+        $tad_web_aboutus->send_signup_mail($ParentID, $chk_code);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=show_parents_signup&ParentID={$ParentID}&chk_code={$chk_code}");
+        exit;
+        break;
+
+    //家長登入
+    case "parent_login":
+        $login = $tad_web_aboutus->parent_login($WebID, $MemID, $_POST['ParentPasswd']);
+        if ($login) {
+            header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&ParentID={$_SESSION['LoginParentID']}&op=show_parent");
+        } else {
+            redirect_header("aboutus.php?WebID={$WebID}", 3, _MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED);
+
+        }
+        exit;
+        break;
+
+    case "show_parent":
+        $tad_web_aboutus->show_parent($ParentID, $CateID);
+        break;
+
+    //儲存註冊家長帳號
+    case "save_parent":
+        $tad_web_aboutus->save_parent($ParentID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&ParentID={$_SESSION['LoginParentID']}&op=show_parent");
+        exit;
+        break;
+
+    //登出
+    case "parent_logout":
+        $_SESSION['LoginParentID'] = $_SESSION['LoginParentName'] = $_SESSION['LoginParentMemID'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = "";
+        $GLOBALS["sess_handler"]->regenerate_id(true);
+        $_SESSION = array();
+        setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
+        setcookie($xoopsConfig['usercookie'], 0, -1, '/');
+        // clear entry from online users table
+        if (is_object($xoopsUser)) {
+            $online_handler = &xoops_gethandler('online');
+            $online_handler->destroy($xoopsUser->getVar('uid'));
+        }
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        exit;
+        break;
+
+    //忘記密碼
+    case "forget_parent_passwd":
+        $tad_web_aboutus->forget_parent_passwd();
+        break;
+
+    //送出密碼
+    case "send_parents_passwd":
+        $email = $tad_web_aboutus->send_parents_passwd($MemID, $Reationship);
+        redirect_header("aboutus.php?WebID={$WebID}", 3, sprintf(_MD_TCW_ABOUTUS_SEND_PARENT_PASSWD, $email));
         break;
 
     //預設動作

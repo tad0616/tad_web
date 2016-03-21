@@ -118,6 +118,9 @@ define('_MD_TCW_ABOUTUS_S5_OPT5', 'Seat Number');
 define('_MD_TCW_ABOUTUS_S5_OPT6', 'Title');
 define('_MD_TCW_ABOUTUS_S5_OPT7', 'Self-introduction (or Charge)');
 
+define('_MD_TCW_ABOUTUS_S6_TEXT', 'Enable student parents?');
+define('_MD_TCW_ABOUTUS_S6_DESC', 'Student parents can register, login and use the related functions.');
+
 define('_MD_TCW_ABOUTUS_DEFAULT_CLASS', 'Default Class');
 define('_MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC', 'As a pre-presented classes');
 define('_MD_TCW_ABOUTUS_EDIT_ACCOUNT', 'Edit my account');
@@ -128,3 +131,43 @@ define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', 'Upload works');
 define('_MD_TCW_ABOUTUS_UPLOAD_NOW', 'Upload now');
 define('_MD_TCW_ABOUTUS_UPLOADED', 'Has been uploaded in %s');
 define('_MD_TCW_ABOUTUS_UPLOADED_WORKS', 'Uploaded works');
+define('_MD_TCW_ABOUTUS_IM_PARENT', 'I\'m %s\'s parents.');
+define('_MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED', 'Stopped parents registered');
+define('_MD_TCW_ABOUTUS_WRONG_BIRTHDAY', 'Birthday error, please re-enter a birthday');
+define('_MD_TCW_ABOUTUS_ENABLE_PARENT_ACCOUNT', 'Start Parent Account');
+define('_MD_TCW_ABOUTUS_ENABLE_PARENT_EMAIL', 'Hi %s\'s %s:<p>You sign up for a parent account in %s, please click the link below to start it.</p><p>%s</p><p align="right">from <a href="%s">%s</a></p>');
+define('_MD_TCW_ABOUTUS_SELECT_CLASS', 'Please select a class');
+define('_MD_TCW_ABOUTUS_SELECT_MEM', 'Please select a account');
+define('_MD_TCW_ABOUTUS_THE_STUDENT', 'the student');
+define('_MD_TCW_ABOUTUS_THE_STUDENT_BIRTHDAY', '\'s birthday');
+define('_MD_TCW_ABOUTUS_VERIFY_BIRTHDAY', 'Enter the student\'s date of birth in order to verify, such as:');
+define('_MD_TCW_ABOUTUS_REATIONSHIP_DESC', 'Such as: father, mother, grandfather, aunt, uncle, etc ...');
+define('_MD_TCW_ABOUTUS_YOUR_ARE', 'You are ');
+define('_MD_TCW_ABOUTUS_S', '\s');
+define('_MD_TCW_ABOUTUS_PARENT_EMAIL_DESC', 'Please enter your e-mail');
+define('_MD_TCW_ABOUTUS_PARENT_EMAIL', 'Email');
+define('_MD_TCW_ABOUTUS_PARENT_PASSWD', 'Password');
+define('_MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD', 'Change Password');
+define('_MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC', 'To modify the password to fill in');
+define('_MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED', 'Login failed! Please sign in again!');
+define('_MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT', 'The student do not have a parents account, please register for a new account.');
+define('_MD_TCW_ABOUTUS_SEND_PARENT_PASSWD', 'Your password has been sent to %s');
+define('_MD_TCW_ABOUTUS_YOUR_PASSWD', 'Your Password');
+define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', 'Hi %s\'s %s:<p>You sign up for a parent account in %s, please click the link below to start it.</p><p>%s</p><p align="right">from <a href="%s">%s</a></p>');
+define('_MD_TCW_ABOUTUS_YOUR_PASSWD', 'Password notification');
+define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', 'Hi %s\'s %s :<p>You query your parent account password on %s, your password is as follows:</p><p style="font-size: 24px; color:red;">%s</p><p align="right">From <a href="%s">%s</a></p>');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE', 'Parents account the successful launch notification');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_CONTENT', 'Hi %s:<p>%s\'s %s registered a parents account on %s.</p>');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL', 'Remember recipient for start-up account');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL_CONTENT', 'Hi %s\'s %s :<p>System has sent a notification letter on %s to your mailbox %s, remember receivers, and click inside the Start link to activate your account. </p><p>If it has not received a letter, <a href="%s">please click here to re-send the letter</a>.</p>');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS', 'Account successfully started');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS_CONTENT', 'Your account has been activated, please find the login block and choose "Parents Login" to access the site.');
+
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED', 'Account failed to start');
+define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED_CONTENT', '<p>Your account fails to start! Please try to re-register or re-start.</p>
+      <p>If it did not receive a letter, you can also <a href="%s">click here to re-send a letter</a>.</p>');
+
+define('_MD_TCW_ABOUTUS_RE_SENDMAIL_TO', 'Re-send confirmation letter to ');

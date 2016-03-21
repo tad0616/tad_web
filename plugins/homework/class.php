@@ -16,15 +16,19 @@ class tad_web_homework
     //最新消息
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
+            if (!empty($plugin_menu_var)) {
+                $this->web_cate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+            }
 
             if (!empty($CateID)) {
                 //取得單一分類資料
@@ -34,6 +38,7 @@ class tad_web_homework
                 $xoopsTpl->assign('HomeworkDefCateID', $CateID);
             }
         }
+
         $now = date("Y-m-d H:i:s");
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
@@ -46,9 +51,9 @@ class tad_web_homework
             $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where  b.`WebEnable`='1' and a.HomeworkPostDate <= '{$now}' $andCounty $andCity $andSchoolName order by a.HomeworkPostDate desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where  b.`WebEnable`='1' and a.HomeworkPostDate <= '{$now}' $andCounty $andCity $andSchoolName order by a.toCal desc";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.HomeworkPostDate <= '{$now}' $andWebID $andCateID order by a.HomeworkPostDate desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.HomeworkPostDate <= '{$now}' $andWebID $andCateID order by a.toCal desc";
         }
         $to_limit = empty($limit) ? 20 : $limit;
 
@@ -141,6 +146,7 @@ class tad_web_homework
             $data['main_data'] = $main_data;
             $data['yet_data']  = $yet_data;
             $data['total']     = $total;
+            $data['today']     = date("Y-m-d");
             return $data;
         } else {
             $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
@@ -148,6 +154,7 @@ class tad_web_homework
             $xoopsTpl->assign('homework_data', $main_data);
             $xoopsTpl->assign('yet_data', $yet_data);
             $xoopsTpl->assign('bar', $bar);
+            $xoopsTpl->assign('today', date("Y-m-d"));
             $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
             return $total;
         }
@@ -216,7 +223,7 @@ class tad_web_homework
     //tad_web_homework編輯表單
     public function edit_form($HomeworkID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -251,8 +258,8 @@ class tad_web_homework
         $xoopsTpl->assign('HomeworkDate', $HomeworkDate);
 
         //設定「HomeworkPostDate」欄位預設值
-        $HomeworkPostDate = (!isset($DBV['HomeworkPostDate'])) ? date("Y-m-d 12:00:00") : $DBV['HomeworkPostDate'];
-        $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
+        // $HomeworkPostDate = (!isset($DBV['HomeworkPostDate'])) ? date("Y-m-d 12:00:00") : $DBV['HomeworkPostDate'];
+        // $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
 
         //設定「toCal」欄位預設值
         if (!isset($DBV['toCal'])) {
@@ -279,13 +286,17 @@ class tad_web_homework
             } elseif (strrpos($DBV['HomeworkPostDate'], "16:00:00") !== false) {
                 $HomeworkPostDate = 16;
             } else {
-                $HomeworkPostDate = date("Y-m-d H:i:s");
+                $HomeworkPostDate = $DBV['HomeworkPostDate'];
             }
+        } else {
+            $HomeworkPostDate = date("Y-m-d H:i:s");
         }
         $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
 
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $this->web_cate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
@@ -340,7 +351,8 @@ class tad_web_homework
         } elseif ($_POST['HomeworkPostDate'] == 16) {
             $HomeworkPostDate = $_POST['toCal'] . " 16:00:00";
         } else {
-            $HomeworkPostDate = date("Y-m-d H:i:s");
+            // $HomeworkPostDate = $_POST['toCal'] . " 00:00:00";
+            $HomeworkPostDate = $HomeworkDate;
         }
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
@@ -383,7 +395,8 @@ class tad_web_homework
         } elseif ($_POST['HomeworkPostDate'] == 16) {
             $HomeworkPostDate = $_POST['toCal'] . " 16:00:00";
         } else {
-            $HomeworkPostDate = date("Y-m-d H:i:s");
+            // $HomeworkPostDate = $_POST['toCal'] . " 00:00:00";
+            $HomeworkPostDate = $HomeworkDate;
         }
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);

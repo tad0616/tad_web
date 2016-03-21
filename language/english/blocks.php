@@ -10,7 +10,7 @@ define('_MB_TCW_MENU', 'Special menu');
 define("_MB_TCW_LOGIN", "User Login");
 define("_MB_TCW_ALL_WEBS", "Web List");
 define("_MB_TCW_EMPTY_DISCUSS", "None");
-define("_MB_TCW_IM_MEM", "I'm member (only for fourm)");
+define("_MB_TCW_IM_MEM", "I'm member");
 define("_MB_TCW_ADD", "Add");
 define("_MB_TCW_CATE_TOOLS", "Category Tools");
 define("_MB_TCW_HOME", "Home");

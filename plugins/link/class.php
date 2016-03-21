@@ -9,20 +9,25 @@ class tad_web_link
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "link", "tad_web_link");
+        $this->tags     = new tags($WebID);
     }
 
     //好站連結
-    public function list_all($CateID = "", $limit = "", $mode = "assign")
+    public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '')
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
+            if (!empty($plugin_menu_var)) {
+                $this->web_cate->set_button_value($plugin_menu_var['link']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['link']['short']));
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+            }
 
             if (!empty($CateID)) {
                 //取得單一分類資料
@@ -44,6 +49,8 @@ class tad_web_link
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.LinkID desc";
+        } elseif (!empty($tag)) {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='LinkID' and c.col_sn=a.LinkID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.LinkID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.LinkID desc";
         }
@@ -126,7 +133,7 @@ class tad_web_link
     //tad_web_link編輯表單
     public function edit_form($LinkID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $plugin_menu_var;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -177,7 +184,9 @@ class tad_web_link
         $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
 
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $this->web_cate->set_button_value($plugin_menu_var['link']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['link']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
@@ -193,6 +202,9 @@ class tad_web_link
 
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
+
+        $tags_form = $this->tags->tags_menu("LinkID", $LinkID);
+        $xoopsTpl->assign('tags_form', $tags_form);
 
     }
 
@@ -223,6 +235,9 @@ class tad_web_link
         //取得最後新增資料的流水編號
         $LinkID = $xoopsDB->getInsertId();
         check_quota($this->WebID);
+
+        //儲存標籤
+        $this->tags->save_tags("LinkID", $LinkID, $_POST['tag_name'], $_POST['tags']);
         return $LinkID;
     }
 
@@ -251,6 +266,9 @@ class tad_web_link
         where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
         check_quota($this->WebID);
+
+        //儲存標籤
+        $this->tags->save_tags("LinkID", $LinkID, $_POST['tag_name'], $_POST['tags']);
         return $LinkID;
     }
 
@@ -264,6 +282,9 @@ class tad_web_link
         $sql = "delete from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
         check_quota($this->WebID);
+
+        //儲存標籤
+        $this->tags->save_tags("LinkID", $LinkID, $_POST['tag_name'], $_POST['tags']);
     }
 
     //刪除所有資料

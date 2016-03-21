@@ -606,7 +606,7 @@ class tad_web_aboutus
             include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/works/class.php";
             $works = new tad_web_works($this->WebID);
             //未繳交的
-            $stud_works = $works->list_all("", null, "return", 'list_mem_need_upload');
+            $stud_works = $works->list_all("", null, "return", null, 'list_mem_need_upload');
             foreach ($stud_works['main_data'] as $key => $work) {
                 $mem_upload_content = $works->get_mem_upload_content($work['WorksID'], $MemID);
 
@@ -622,7 +622,7 @@ class tad_web_aboutus
             $xoopsTpl->assign('stud_works', $stud_works);
 
             //已繳交的
-            $stud_scores = $works->list_all("", null, "return", 'list_mem_upload');
+            $stud_scores = $works->list_all("", null, "return", null, 'list_mem_upload');
             foreach ($stud_scores['main_data'] as $key => $work) {
                 $mem_upload_content = $works->get_mem_upload_content($work['WorksID'], $MemID);
 
@@ -1162,8 +1162,10 @@ class tad_web_aboutus
             $_SESSION['LoginMemNickName'] = $MemNickName;
             $_SESSION['LoginWebID']       = $WebID;
             $_SESSION['LoginCateID']      = $CateID;
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     //修改網站預設全銜
@@ -1227,5 +1229,341 @@ class tad_web_aboutus
         // die(var_export($config_plugin_arr));
         $xoopsTpl->assign('config_plugin_arr', $config_plugin_arr);
         $xoopsTpl->assign('aboutus', $aboutus);
+    }
+
+    //家長註冊
+    public function parents_account()
+    {
+
+        global $xoopsTpl;
+
+        if ($this->setup['mem_parents'] != '1') {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
+        }
+
+        $ys = get_seme();
+        $xoopsTpl->assign('ys', $ys);
+
+        $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        // $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->web_cate->set_col_md(3, 12);
+        $this->web_cate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_mems', WebID: '{$this->WebID}', CateID: $('#CateID').val()}, function(data){
+                  $('#list_mems').html(data);
+              });");
+        //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false)
+        $cate_menu = $this->web_cate->cate_menu('', 'page', false, false, false);
+        $xoopsTpl->assign('cate_menu', $cate_menu);
+        // $xoopsTpl->assign('cate', $cate);
+        $xoopsTpl->assign('cate_label', sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+
+        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once TADTOOLS_PATH . "/formValidator.php";
+        $formValidator      = new formValidator("#myForm", true);
+        $formValidator_code = $formValidator->render();
+
+    }
+
+    //家長註冊存到資料庫
+    public function parents_signup()
+    {
+        global $xoopsDB;
+
+        if ($this->setup['mem_parents'] != '1') {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
+        }
+
+        $MemID = intval($_POST['MemID']);
+        $mem   = get_tad_web_mems($MemID);
+
+        if ($_POST['MemBirthday'] != $mem['MemBirthday']) {
+            redirect_header("aboutus.php?WebID={$this->WebID}&op=parents_account", 3, _MD_TCW_ABOUTUS_WRONG_BIRTHDAY);
+        }
+
+        $myts = MyTextSanitizer::getInstance();
+
+        $Reationship  = $myts->addSlashes($_POST['Reationship']);
+        $ParentEmail  = $myts->addSlashes($_POST['ParentEmail']);
+        $ParentPasswd = $myts->addSlashes($_POST['ParentPasswd']);
+        $code         = randStr(16);
+
+        $sql = "insert into " . $xoopsDB->prefix("tad_web_mem_parents") . "
+              (`MemID`, `Reationship`, `ParentEmail`, `ParentPasswd`, `ParentEnable` ,`code`)
+              values('{$MemID}', '{$Reationship}' , '{$ParentEmail}' , '{$ParentPasswd}' , '0' , '{$code}')";
+
+        $xoopsDB->queryF($sql) or web_error($sql);
+
+        //取得最後新增資料的流水編號
+        $ParentID = $xoopsDB->getInsertId();
+        // die('ParentID:' . $ParentID . ',code:' . $code);
+        $this->send_signup_mail($ParentID, $code);
+
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op=show_parents_signup&ParentID={$ParentID}&chk_code={$code}");
+        exit;
+    }
+
+    //寄發啟動信
+    public function send_signup_mail($ParentID = "", $code = "")
+    {
+        global $xoopsDB, $WebName;
+        // die('ParentID:' . $ParentID . ',code:' . $code);
+        $parent = get_tad_web_parent($ParentID, $code);
+        // die(var_export($parent));
+        if (empty($parent['ParentID'])) {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        }
+        $mem     = get_tad_web_mems($parent['MemID']);
+        $today   = date("Y-m-d H:i:s");
+        $title   = $WebName . _MD_TCW_ABOUTUS_ENABLE_PARENT_ACCOUNT;
+        $content = sprintf(_MD_TCW_ABOUTUS_ENABLE_PARENT_EMAIL, $mem['MemName'], $parent['Reationship'], $today, XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$this->WebID}&op=enable_parent&ParentID={$ParentID}&chk_code={$parent['code']}", XOOPS_URL . "/modules/tad_web/index.php?WebID={$this->WebID}", $WebName);
+
+        send_now($parent['ParentEmail'], $title, $content);
+        send_now('tad0616@gmail.com', $title, $content);
+        return $parent['code'];
+    }
+
+    public function show_parents_signup($ParentID = "", $code = "")
+    {
+        global $xoopsTpl;
+        $parent = get_tad_web_parent($ParentID, $code);
+        if (empty($parent['ParentID'])) {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        }
+        $mem = get_tad_web_mems($parent['MemID']);
+        $xoopsTpl->assign('parent', $parent);
+        $today        = date("Y-m-d H:i:s");
+        $mail_content = sprintf(_MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL_CONTENT, $mem['MemName'], $parent['Reationship'], $today, $parent['ParentEmail'], XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$this->WebID}&op=send_signup_mail&ParentID={$ParentID}&chk_code={$code}");
+        $xoopsTpl->assign('mail_content', $mail_content);
+    }
+
+    public function enable_parent($ParentID, $code = "")
+    {
+        global $xoopsDB, $WebName;
+
+        if ($this->setup['mem_parents'] != '1') {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
+        }
+        $sql = "update " . $xoopsDB->prefix("tad_web_mem_parents") . " set `ParentEnable` ='1' where `ParentID`='{$ParentID}' and `code`='{$code}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+        $AffectedRows = $xoopsDB->getAffectedRows();
+        if ($AffectedRows > 0) {
+            $today  = date("Y-m-d H:i:s");
+            $parent = get_tad_web_parent($ParentID);
+            $mem    = get_tad_web_mems($parent['MemID']);
+
+            $sql                = "SELECT b.`name`,b.`email` FROM `" . $xoopsDB->prefix("tad_web") . "` as a join `" . $xoopsDB->prefix("users") . "` as b on a.`WebOwnerUid`=b.`uid` WHERE a.`WebID` = '{$this->WebID}'";
+            $result             = $xoopsDB->query($sql) or web_error($sql);
+            list($name, $email) = $xoopsDB->fetchRow($result);
+
+            $title   = $WebName . _MD_TCW_ABOUTUS_PARENT_ENABLE;
+            $content = sprintf(_MD_TCW_ABOUTUS_PARENT_ENABLE_CONTENT, $name, $mem['MemName'], $parent['Reationship'], $today);
+
+            send_now($email, $title, $content);
+            send_now('tad0616@gmail.com', $title, $content);
+            return 1;
+        }
+        return 0;
+    }
+
+    public function show_enable_parent($ParentID = "", $result = "", $code = "")
+    {
+        global $xoopsTpl;
+        $parent = get_tad_web_parent($ParentID, $code);
+        if (empty($parent['ParentID'])) {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        }
+        $xoopsTpl->assign('parent', $parent);
+        $xoopsTpl->assign('result', $result);
+        $xoopsTpl->assign('ParentID', $ParentID);
+        $xoopsTpl->assign('failed_content', sprintf(_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED_CONTENT, XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$this->WebID}&op=send_signup_mail&ParentID={$ParentID}&chk_code={$code}"));
+    }
+
+    //家長登入檢查
+    public function parent_login($WebID, $MemID, $ParentPasswd)
+    {
+        global $xoopsDB, $xoopsUser;
+        if (empty($MemID) or empty($ParentPasswd)) {
+            return false;
+        }
+
+        $sql    = "select a.`ParentID` , a.`MemID` , a.`Reationship`, a.`ParentEnable`, a.`code` , b.`WebID` , b.`CateID`,c.MemName from " . $xoopsDB->prefix("tad_web_mem_parents") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID`  left join " . $xoopsDB->prefix("tad_web_mems") . " as c on a.`MemID`=c.`MemID` where a.`MemID`='$MemID' and a.`ParentPasswd`='$ParentPasswd' and b.WebID='{$WebID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        list($ParentID, $MemID, $Reationship, $ParentEnable, $code, $WebID, $CateID, $MemName) = $xoopsDB->fetchRow($result);
+
+        if (!empty($ParentID) and $ParentEnable == '1') {
+            $_SESSION['LoginParentID']    = $ParentID;
+            $_SESSION['LoginParentName']  = $MemName . _MD_TCW_ABOUTUS_S . $Reationship;
+            $_SESSION['LoginParentMemID'] = $MemID;
+            $_SESSION['LoginWebID']       = $WebID;
+            $_SESSION['LoginCateID']      = $CateID;
+            return true;
+        } elseif (!empty($ParentID) and $ParentEnable == '0') {
+            header("location:aboutus.php?WebID={$this->WebID}&op=show_enable_parent&ParentID={$ParentID}&result=0&chk_code={$code}");
+            exit;
+        } else {
+            return false;
+        }
+    }
+
+    //顯示某個學生家長
+    public function show_parent($ParentID = "0", $DefCateID = '')
+    {
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl, $isMyWeb, $MyWebs, $isAdmin, $web_all_config;
+        if (empty($ParentID)) {
+            return;
+        }
+
+        if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginParentID'])) {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        } elseif (!empty($_SESSION['LoginParentID']) and $ParentID != $_SESSION['LoginParentID']) {
+            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&ParentID={$_SESSION['LoginParentID']}&op=show_parent", 3, _MD_TCW_NOT_OWNER);
+        }
+
+        $mem                   = get_tad_web_mems($_SESSION['LoginParentMemID']);
+        $parent                = get_tad_web_parent($ParentID);
+        $class_mem             = get_tad_web_link_mems($_SESSION['LoginParentMemID'], $DefCateID);
+        $class_mem['AboutMem'] = nl2br($class_mem['AboutMem']);
+
+        // die(var_export($class_mem));
+        $TadUpFiles->set_col("ParentID", $ParentID, 1);
+        $pic_url = $TadUpFiles->get_pic_file();
+
+        if (empty($pic_url)) {
+            $pic = XOOPS_URL . "/modules/tad_web/images/nobody.png";
+        } else {
+            $pic = $pic_url;
+        }
+
+        $xoopsTpl->assign('pic', $pic);
+        $xoopsTpl->assign('CateID', $DefCateID);
+        $xoopsTpl->assign('ParentID', $ParentID);
+        $xoopsTpl->assign('MemID', $_SESSION['LoginParentMemID']);
+        $xoopsTpl->assign('mem', $mem);
+        $xoopsTpl->assign('parent', $parent);
+        $xoopsTpl->assign('class_mem', $class_mem);
+        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $xoopsTpl->assign('cate', $cate);
+
+        //作品分享
+        if (strpos($web_all_config['web_plugin_enable_arr'], 'works') !== false) {
+            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/works/class.php";
+            $works = new tad_web_works($this->WebID);
+            //已繳交的
+            $stud_scores = $works->list_all("", null, "return", null, 'list_mem_upload');
+            // die(var_export($stud_scores));
+            foreach ($stud_scores['main_data'] as $key => $work) {
+                $mem_upload_content = $works->get_mem_upload_content($work['WorksID'], $_SESSION['LoginParentMemID']);
+
+                $mem_upload_date = "";
+
+                if ($mem_upload_content['UploadDate']) {
+                    $mem_upload_date = sprintf(_MD_TCW_ABOUTUS_UPLOADED, $mem_upload_content['UploadDate']);
+                }
+                $mem_upload_content['mem_upload_date']                = $mem_upload_date;
+                $stud_scores['main_data'][$key]['mem_upload_content'] = $mem_upload_content;
+
+            }
+            $xoopsTpl->assign('stud_scores', $stud_scores);
+        }
+
+    }
+
+    //家長註冊存到資料庫
+    public function save_parent($ParentID = "")
+    {
+        global $xoopsDB, $TadUpFiles;
+
+        if ($this->setup['mem_parents'] != '1') {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
+        }
+
+        if (empty($_SESSION['LoginParentID']) or $ParentID != $_SESSION['LoginParentID']) {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        }
+
+        $myts = MyTextSanitizer::getInstance();
+
+        $Reationship = $myts->addSlashes($_POST['Reationship']);
+        $ParentEmail = $myts->addSlashes($_POST['ParentEmail']);
+
+        $and_passwd = "";
+        if (!empty($_POST['ParentPasswd'])) {
+            $ParentPasswd = $myts->addSlashes($_POST['ParentPasswd']);
+            $and_passwd   = ", `ParentPasswd` ='{$ParentPasswd}'";
+        }
+
+        $sql = "update " . $xoopsDB->prefix("tad_web_mem_parents") . " set
+              `Reationship` ='{$Reationship}', `ParentEmail` ='{$ParentEmail}' {$and_passwd} where `ParentID`='{$ParentID}'";
+
+        $xoopsDB->queryF($sql) or web_error($sql);
+
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $isMyWeb, $MyWebs;
+
+        $xoopsDB->queryF($sql) or web_error($sql);
+
+        $TadUpFiles->set_col("ParentID", $ParentID, 1);
+        $TadUpFiles->upload_file("upfile", 180, null, null, null, true);
+        check_quota($this->WebID);
+        return $uid;
+    }
+
+    //家長忘記密碼
+    public function forget_parent_passwd()
+    {
+
+        global $xoopsTpl;
+
+        if ($this->setup['mem_parents'] != '1') {
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
+        }
+
+        $ys = get_seme();
+        $xoopsTpl->assign('ys', $ys);
+
+        $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        // $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->web_cate->set_col_md(3, 12);
+        $this->web_cate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_mems', WebID: '{$this->WebID}', CateID: $('#CateID').val()}, function(data){
+                  $('#list_mems').html(data);
+              });");
+        //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false)
+        $cate_menu = $this->web_cate->cate_menu('', 'page', false, false, false);
+        $xoopsTpl->assign('cate_menu', $cate_menu);
+        // $xoopsTpl->assign('cate', $cate);
+        $xoopsTpl->assign('cate_label', sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+
+        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once TADTOOLS_PATH . "/formValidator.php";
+        $formValidator      = new formValidator("#myForm", true);
+        $formValidator_code = $formValidator->render();
+
+    }
+
+    //寄出密碼
+    public function send_parents_passwd($MemID = "", $Reationship = "")
+    {
+        global $xoopsDB, $xoopsUser, $WebName;
+        if (empty($MemID) or empty($Reationship)) {
+            return false;
+        }
+
+        $sql    = "select a.`ParentID` , a.`MemID` , a.`Reationship` , a.`ParentPasswd` , a.`ParentEmail` , b.`WebID` , b.`CateID`,c.MemName from " . $xoopsDB->prefix("tad_web_mem_parents") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID`  left join " . $xoopsDB->prefix("tad_web_mems") . " as c on a.`MemID`=c.`MemID` where a.`MemID`='$MemID' and a.`Reationship`='$Reationship' and a.`ParentEnable`='1' and b.WebID='{$this->WebID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        list($ParentID, $MemID, $Reationship, $ParentPasswd, $ParentEmail, $WebID, $CateID, $MemName) = $xoopsDB->fetchRow($result);
+
+        $today   = date("Y-m-d H:i:s");
+        $title   = $WebName . _MD_TCW_ABOUTUS_YOUR_PASSWD;
+        $content = sprintf(_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL, $MemName, $Reationship, $today, $ParentPasswd, XOOPS_URL . "/modules/tad_web/index.php?WebID={$this->WebID}", $WebName);
+
+        send_now($ParentEmail, $title, $content);
+        send_now('tad0616@gmail.com', $title, $content);
+        return $ParentEmail;
     }
 }

@@ -86,6 +86,7 @@ define("_MD_TCW_BLOCKS_SETUP", "Setup block");
 define("_MD_TCW_NEW_CATE", "New Categories");
 define("_MD_TCW_NEW_SOMETHING", "New %s");
 define("_MD_TCW_SELECT_CATE", "Select Category");
+define("_MD_TCW_SELECT_PLUGIN_CATE", "Select %s Category");
 define("_MD_TCW_CATE_TOOLS", "Category Tools");
 define("_MD_TCW_DEL_CATE_MOVE_TO", "Delete category and move files to ");
 define("_MD_TCW_DEL_CATE_ALL", "Delete category and all files.");
@@ -226,6 +227,8 @@ define('_MD_TCW_POWER_FOR_WEB_USERS', 'Only my web users');
 define('_MD_TCW_POWER_FOR_WEB_ADMIN', 'Only my web admin');
 define('_MD_TCW_NOW_READ_POWER', 'No permission to read this content');
 define('_MD_TCW_TAGS', 'Tags');
+define('_MD_TCW_TAG', 'Tag');
+define('_MD_TCW_TAGS_LIST', 'All Tags');
 define('_MD_TCW_INPUT_TAGS', 'Please enter new tags, if more than one tag with a lowercase comma "," separated');
 define('_MD_TCW_UNABLE', 'Unabale');
 
@@ -234,3 +237,8 @@ define('_MD_TCW_USER_SIMPLE_MENU', 'Simplified menu');
 
 define('_MD_TCW_KEYWORD_TO_SELECT_USER', 'Enter a keyword to filter user');
 define('_MD_TCW_SELETC_USER', 'Filter');
+define('_MD_TCW_LEADERBOARD', 'Leaderboard');
+define('_MD_TCW_LEADERBOARD_RANK', 'Rank');
+define('_MD_TCW_WEB_COUNTER', 'Web Counter');
+define('_MD_TCW_WEB_BLOCK', 'Blocks');
+define("_MD_TCW_HI", "Hi %s!");

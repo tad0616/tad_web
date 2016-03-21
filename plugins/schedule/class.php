@@ -15,15 +15,19 @@ class tad_web_schedule
     //課表
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = $andDisplay = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
+            if (!empty($plugin_menu_var)) {
+                $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+            }
 
         }
 
@@ -156,7 +160,7 @@ class tad_web_schedule
     //tad_web_schedule編輯表單
     public function edit_form($ScheduleID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $WebName, $xoopsModuleConfig;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $WebName, $xoopsModuleConfig, $plugin_menu_var;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -209,6 +213,8 @@ class tad_web_schedule
         $xoopsTpl->assign('ys', $ys);
 
         $this->web_cate->set_demo_txt(sprintf(_MD_TCW_SCHEDULE_CATE_DEMO, $ys[0], $ys[1]));
+        $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 

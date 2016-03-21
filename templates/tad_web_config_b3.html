@@ -172,8 +172,40 @@
               <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
           </div>
-
         </form>
+
+        <{if $login_method}>
+          <{if $login_config==''}>
+            <{assign var="login_config" value=$login_defval}>
+          <{/if}>
+          <h3>OpenID登入設定</h3>
+          <form action="config.php" method="post" class="form-horizontal myForm" role="form">
+            <{assign var="i" value=0}>
+            <{assign var="total" value=1}>
+            <{foreach from=$login_method key=title item=openid}>
+              <{if $i==0}>
+                <div class="row">
+              <{/if}>
+              <div class="col-md-4">
+                <label class="checkbox">
+                  <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}><{$openid}>
+                </label>
+              </div>
+              <{assign var="i" value=$i+1}>
+              <{if $i == 3 || $total==$login_method_count}>
+                </div>
+                <{assign var="i" value=0}>
+              <{/if}>
+              <{assign var="total" value=$total+1}>
+            <{/foreach}>
+
+            <div class="text-center">
+              <input type="hidden" name="WebID" value="<{$WebID}>">
+              <input type="hidden" name="op" value="save_login_config">
+              <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            </div>
+          </form>
+        <{/if}>
 
         <hr>
 

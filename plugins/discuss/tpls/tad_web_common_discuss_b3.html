@@ -94,8 +94,8 @@
         <a href="discuss.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
       <{/if}>
 
-      <{if $isMyWeb}>
-        <a href="discuss.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+      <{if $isMyWeb or $LoginMemID or $LoginParentID}>
+        <a href="discuss.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
       <{/if}>
     </div>
   <{/if}>

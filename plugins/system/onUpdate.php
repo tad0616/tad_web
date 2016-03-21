@@ -4,7 +4,9 @@ if (system_onUpdate1_chk()) {
     system_onUpdate1_go();
 }
 
-system_onUpdate2_go();
+if (system_onUpdate2_chk()) {
+    system_onUpdate2_go();
+}
 
 //修改欄位
 function system_onUpdate1_chk()
@@ -57,13 +59,34 @@ function system_onUpdate1_go()
     return true;
 }
 
-//加入登入區塊預設值
+//移除 login 及 my_menu 區塊
+function system_onUpdate2_chk()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login' or `BlockName`='my_menu'";
+    $result = $xoopsDB->query($sql);
+    if (!empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+//轉移設定後刪除
 function system_onUpdate2_go()
 {
     global $xoopsDB;
 
-    $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockConfig`='{\"show_title\":\"1\",\"login_method\":[\"facebook\",\"google\",\"yahoo\",\"kl\",\"ntpc\",\"tyc\",\"hcc\",\"hc\",\"mlc\",\"tc\",\"chc\",\"ntct\",\"ylc\",\"cyc\",\"cy\",\"tn\",\"kh\",\"ptc\",\"ilc\",\"hlc\",\"ttct\",\"km\",\"phc\",\"mt\"]}'  where `plugin`='system' and BlockName='login' and BlockConfig=''";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $sql    = "select `BlockConfig`,`WebID` from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login'";
+    $result = $xoopsDB->query($sql);
+    while (list($BlockConfig, $WebID) = $xoopsDB->fetchRow($result)) {
+        $BlockConfig  = json_decode($BlockConfig, true);
+        $login_method = implode(';', $BlockConfig['login_method']);
 
-    return true;
+        $sql = "replace into " . $xoopsDB->prefix("tad_web_config") . " (`ConfigName`, `ConfigValue`, `ConfigSort`, `CateID`, `WebID`) values('login_config' ,'{$login_method}',0,0,$WebID)";
+        $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login' or `BlockName`='my_menu'";
+    $xoopsDB->queryF($sql) or web_error($sql);
 }

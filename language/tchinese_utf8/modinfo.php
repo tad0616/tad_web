@@ -19,6 +19,7 @@ define('_MI_TCW_ADMENU2', '網站分類');
 define('_MI_TCW_ADMENU3', '首頁設定');
 define('_MI_TCW_ADMENU4', '使用空間');
 define('_MI_TCW_ADMENU5', '課表樣板');
+define('_MI_TCW_ADMENU6', '全域通知');
 
 define("_MI_TCW_BNAME1", "網頁列表選單");
 define("_MI_TCW_BDESC1", "列出所有個人網頁的選單");

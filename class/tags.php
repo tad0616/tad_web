@@ -13,7 +13,7 @@ $tad_web_news->list_all($CateID, null, null, $tag);
 list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
 
 } elseif (!empty($tag)) {
-$sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.NewsID desc";
+$sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.NewsID desc";
 
 //show_one 取得標籤
 $xoopsTpl->assign("tags", $this->tags->list_tags("NewsID", $NewsID, 'news'));
@@ -79,19 +79,20 @@ class tags
     {
         global $xoopsDB;
 
-        $tag_name = '';
-        $tag_arr  = $this->get_tags($col_name, $col_sn);
+        $tag_name       = '';
+        $plugin_tag_arr = $this->get_tags($col_name, $col_sn);
+        $tag_arr        = array_keys($plugin_tag_arr);
         if (!empty($col_sn)) {
             $tag_name = implode(',', $tag_arr);
         }
 
         $tags_select = '';
         $tag_all_arr = $this->get_tags();
-        foreach ($tag_all_arr as $tag) {
+        foreach ($tag_all_arr as $tag => $count) {
             $checked = (in_array($tag, $tag_arr) and !empty($tag_name)) ? 'checked' : '';
             $tags_select .= "
             <label class='checkbox-inline'>
-                <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>{$tag}
+                <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>{$tag} <span class='badge'>{$count}</span>
             </label>";
         }
 
@@ -178,9 +179,9 @@ class tags
         global $xoopsDB;
         $tags_arr  = $this->get_tags($col_name, $col_sn);
         $list_tags = '';
-        foreach ($tags_arr as $tag) {
-            $tags_link[] = "<a href='{$plugin}.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
-            // $tags_link[] = "<a href='search.php?WebID={$this->WebID}&search_keyword={$tag}&op=tag'>{$tag}</a>";
+        foreach ($tags_arr as $tag => $count) {
+            // $tags_link[] = "<a href='{$plugin}.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
+            $tags_link[] = "<a href='tag.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
         }
         $list_tags = implode(' , ', $tags_link);
         return $list_tags;
@@ -193,10 +194,11 @@ class tags
         $tags_arr     = array();
         $and_col_name = empty($col_name) ? '' : "and `col_name`='{$col_name}'";
         $and_col_sn   = empty($col_sn) ? '' : "and `col_sn`='{$col_sn}'";
-        $sql          = "select tag_name from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
-        while (list($tag_name) = $xoopsDB->fetchRow($result)) {
-            $tags_arr[$tag_name] = $tag_name;
+        $sql          = "select tag_name , count(*) from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
+
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        while (list($tag_name, $count) = $xoopsDB->fetchRow($result)) {
+            $tags_arr[$tag_name] = $count;
         }
 
         return $tags_arr;

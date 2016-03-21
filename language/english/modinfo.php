@@ -19,6 +19,7 @@ define('_MI_TCW_ADMENU2', 'Site category');
 define('_MI_TCW_ADMENU3', 'Site setup');
 define('_MI_TCW_ADMENU4', 'Disk space');
 define('_MI_TCW_ADMENU5', 'Schedule template');
+define('_MI_TCW_ADMENU6', 'Notice');
 
 define('_MI_TCW_BNAME1', 'Page menu list');
 define('_MI_TCW_BDESC1', 'Lists all the individual pages of the menu');

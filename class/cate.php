@@ -45,6 +45,9 @@ class web_cate
     public $label               = '';
     public $label_col_md        = '2';
     public $menu_col_md         = '3';
+    public $custom_change_js;
+    public $menu_name = 'CateID';
+    public $menu_id   = 'CateID';
 
     public function web_cate($WebID = "0", $ColName = "", $table = "")
     {
@@ -110,6 +113,16 @@ class web_cate
         $this->menu_col_md  = $menu_md;
     }
 
+    public function set_custom_change_js($change_js)
+    {
+        $this->custom_change_js = $change_js;
+    }
+
+    public function set_var($var = "", $val = "")
+    {
+        $this->$var = $val;
+    }
+
     //分類選單 $mode = "form" ,"menu","page"
     public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     {
@@ -143,7 +156,7 @@ class web_cate
 
         $validate = $required ? 'validate[required]' : '';
         $def_opt  = $default_opt ? "<option value=''>$default_option_text</option>" : '';
-        $menu     = "<select name='CateID' id='CateID' class='{$validate} {$form_control}' >
+        $menu     = "<select name='{$this->menu_name}' id='{$this->menu_id}' class='{$validate} {$form_control}' >
                     {$def_opt}
                     {$option}
                   </select>";
@@ -205,9 +218,10 @@ class web_cate
         <script>
         $(function() {
             {$hide_newCate_js}
-            $('#CateID').change(function(){
+            $('#{$this->menu_id}').change(function(){
                 {$change_page_js}
                 {$newCate_js}
+                {$this->custom_change_js}
             });
 
             $('#add_cate').click(function(){

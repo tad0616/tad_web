@@ -37,8 +37,8 @@
           <ul id="page_sort<{$cate.CateID}>" class="list-group">
             <{foreach from=$cate_data.$cid item=page}>
               <li id="li_<{$page.PageID}>" class="list-group-item">
-                <{if $page.isMyWeb}>
-                  <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>"></i>
+                <{if $isMyWeb}>
+                  <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}> <{$page.PageSort}>"></i>
                 <{/if}>
                 <span class="badge"><{$page.PageCount}></span>
                 <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
@@ -54,6 +54,33 @@
     </div>
   <{/foreach}>
 
+
+  <{if $cate_data.0}>
+    <div class="row">
+      <div class="col-md-12">
+        <h3><a href="page.php?WebID=<{$WebID}>&CateID=0">未分類文章</a></h3>
+        <div id="page_sort_save_msg<{$cate.CateID}>"></div>
+        <ul id="page_sort<{$cate.CateID}>" class="list-group">
+          <{foreach from=$cate_data.0 item=page}>
+            <li id="li_<{$page.PageID}>" class="list-group-item">
+              <{if $isMyWeb}>
+                <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}> <{$page.PageSort}>"></i>
+              <{/if}>
+              <span class="badge"><{$page.PageCount}></span>
+              <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
+              <{if $page.isMyWeb}>
+                <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{/if}>
+            </li>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
+  <{/if}>
+
+
+
   <div style="text-align:right; margin: 30px 0px 10px;">
     <{if $web_display_mode=='index'}>
       <a href="page.php" class="btn btn-primary <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
@@ -62,7 +89,7 @@
     <{/if}>
 
     <{if $isMyWeb and $WebID}>
-      <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
+      <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
     <{/if}>
   </div>
 <{/if}>

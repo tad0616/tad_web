@@ -1,7 +1,9 @@
-@import url('http://class.tn.edu.tw/modules/tadtools/bootstrap3/css/bootstrap.css');
-
-#tad_sf_menu , #head_bg , #web_side_block, #tad_web_footer, #adm_bar, .sweet-overlay, .sweet-alert, #goog-gt-tt, #fb-root, .fb-comments{
+#tad_sf_menu , #head_bg , #web_side_block, #tad_web_footer, #adm_bar, .sweet-overlay, .sweet-alert, #goog-gt-tt, #fb-root, .fb-comments, .fb_ltr, .fb_iframe_widget_lift ,.breadcrumb{
   display: none;
+}
+
+img{
+  max-width: 100%;
 }
 
 #page_tool{

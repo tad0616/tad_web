@@ -6,26 +6,53 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h3>
-        <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$bc.main_data.0.HomeworkID}>"><{$bc.main_data.0.toCal}> (<{$bc.main_data.0.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
+      <ul class="list-group">
+        <{foreach from=$bc.main_data key=i item=homework}>
+          <{if $homework.toCal > $bc.today }>
+            <li class="list-group-item">
+              <span class="badge"><{$homework.HomeworkCounter}></span>
 
-        <{if $isMyWeb}>
-          <a href="javascript:delete_homework_func(<{$bc.main_data.0.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+              <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-          <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$bc.main_data.0.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
-        <{/if}>
-      </h3>
-      <div style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FFFFFF ; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
-        <{$bc.main_data.0.HomeworkContent}>
-      </div>
+              <{if $homework.isMyWeb}>
+                <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{/if}>
+            </li>
+          <{/if}>
+        <{/foreach}>
+      </ul>
     </div>
   </div>
+
+
+  <{foreach from=$bc.main_data key=i item=homework}>
+    <{if $homework.toCal ==$bc.today}>
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
+
+            <{if $isMyWeb}>
+              <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+
+              <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+            <{/if}>
+          </h3>
+          <div style="min-height: 100px; overflow: auto; line-height: 1.8; background: #FFFFFF ; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
+            <{$homework.HomeworkContent}>
+          </div>
+        </div>
+      </div>
+
+    <{/if}>
+  <{/foreach}>
 
   <div class="row">
     <div class="col-md-12">
       <ul class="list-group">
         <{foreach from=$bc.main_data key=i item=homework}>
-          <{if $i > 0}>
+          <{if $homework.toCal < $bc.today}>
             <li class="list-group-item">
               <span class="badge"><{$homework.HomeworkCounter}></span>
 

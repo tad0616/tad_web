@@ -38,11 +38,6 @@ common_template($WebID, $web_all_config);
 
 switch ($op) {
 
-    //新增資料
-    case "tag":
-        search_web($WebID, $search_keyword);
-        break;
-
     //預設動作
     default:
         search_web($WebID, $search_keyword);

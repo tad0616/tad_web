@@ -9,12 +9,13 @@ class tad_web_discuss
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "discuss", "tad_web_discuss");
+        $this->tags     = new tags($WebID);
     }
 
     //列出所有tad_web_discuss資料
-    public function list_all($CateID = "", $limit = null, $mode = "assign")
+    public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
-        global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs;
+        global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         // if (!$xoopsUser and empty($_SESSION['LoginMemID'])) {
         //     $xoopsTpl->assign('mode', 'need_login');
@@ -25,8 +26,12 @@ class tad_web_discuss
         $andCateID = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
+            if (!empty($plugin_menu_var)) {
+                $this->web_cate->set_button_value($plugin_menu_var['discuss']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['discuss']['short']));
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+            }
 
             if (!empty($CateID)) {
                 //取得單一分類資料
@@ -48,6 +53,8 @@ class tad_web_discuss
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' and a.ReDiscussID='0' $andCounty $andCity $andSchoolName order by a.LastTime desc";
+        } elseif (!empty($tag)) {
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='DiscussID' and c.col_sn=a.DiscussID where b.`WebEnable`='1' and a.ReDiscussID='0' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.LastTime desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.ReDiscussID='0' $andWebID $andCateID order by a.LastTime desc";
         }
@@ -89,6 +96,19 @@ class tad_web_discuss
 
             $main_data[$i]['show_re_num'] = $show_re_num;
             $main_data[$i]['LastTime']    = $LastTime;
+            if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
+                if ($MemID) {
+                    $main_data[$i]['MemName'] = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
+                } elseif ($ParentID) {
+                    $main_data[$i]['MemName'] = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS;
+                } else {
+                    $main_data[$i]['MemName'] = $MemName;
+                }
+
+            } else {
+                $main_data[$i]['MemName'] = $MemName;
+            }
+
             $i++;
         }
 
@@ -107,7 +127,6 @@ class tad_web_discuss
         } else {
             $xoopsTpl->assign('discuss_data', $main_data);
             $xoopsTpl->assign('bar', $bar);
-            // $xoopsTpl->assign('isMineDiscuss', $this->isMineDiscuss($MemID, $this->WebID));
             $xoopsTpl->assign('discuss', get_db_plugin($this->WebID, 'discuss'));
             return $total;
         }
@@ -117,7 +136,7 @@ class tad_web_discuss
     //以流水號秀出某筆tad_web_discuss資料內容
     public function show_one($DiscussID = "")
     {
-        global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl, $TadUpFiles, $isMyWeb;
         if (empty($DiscussID)) {
             return;
         }
@@ -145,13 +164,23 @@ class tad_web_discuss
                 $pic = "images/nobody.png";
             }
 
-        } else {
+            $isMineDiscuss = $isMyWeb ? true : false;
+
+        } elseif ($MemID) {
             $TadUpFiles->set_col("MemID", $MemID, "1");
             $pic = $TadUpFiles->get_pic_file("thumb");
             $M   = get_tad_web_mems($MemID);
             if (empty($pic)) {
                 $pic = ($M['MemSex'] == '1') ? XOOPS_URL . "/modules/tad_web/images/boy.gif" : XOOPS_URL . "/modules/tad_web/images/girl.gif";
             }
+            $isMineDiscuss = $this->isMineDiscuss('LoginMemID', $MemID, $WebID);
+        } elseif ($ParentID) {
+            $TadUpFiles->set_col("ParentID", $ParentID, "1");
+            $pic = $TadUpFiles->get_pic_file("thumb");
+            if (empty($pic)) {
+                $pic = XOOPS_URL . "/modules/tad_web/images/nobody.png";
+            }
+            $isMineDiscuss = $this->isMineDiscuss('LoginParentID', $ParentID, $WebID);
         }
         $xoopsTpl->assign('pic', $pic);
 
@@ -159,15 +188,31 @@ class tad_web_discuss
         $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
         //$xoopsTpl->assign('DiscussFiles', $DiscussFiles);
 
-        $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
-        $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
+        preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
+        foreach ($smile_pic[1] as $pic_name) {
+            $new_pic_name   = strtolower($pic_name);
+            $DiscussContent = str_replace("[$pic_name]", "<img src=\"" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/$new_pic_name\" alt=\"{$pic_name}\" hspace=2 align='absmiddle'>", $DiscussContent);
+        }
 
-        $xoopsTpl->assign('isMineDiscuss', $this->isMineDiscuss($MemID, $WebID));
+        // $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
+        // $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
+
+        $xoopsTpl->assign('isMineDiscuss', $isMineDiscuss);
         $xoopsTpl->assign('DiscussTitle', $DiscussTitle);
         $xoopsTpl->assign('MemID', $MemID);
+        $xoopsTpl->assign('ParentID', $ParentID);
         $xoopsTpl->assign('DiscussContent', $this->bubble(nl2br($DiscussContent) . $DiscussFiles));
         $xoopsTpl->assign('DiscussDate', $DiscussDate);
         $xoopsTpl->assign('LastTime', $LastTime);
+        if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
+            if ($MemID) {
+                $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
+            } elseif ($ParentID) {
+                $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS;
+            } else {
+                $MemName = $MemName;
+            }
+        }
         $xoopsTpl->assign('MemName', $MemName);
         $xoopsTpl->assign('WebID', $WebID);
         $xoopsTpl->assign('DiscussCounter', $DiscussCounter);
@@ -175,6 +220,7 @@ class tad_web_discuss
         $xoopsTpl->assign('DiscussInfo', sprintf(_MD_TCW_INFO, $MemName, $DiscussDate, $DiscussCounter));
         $xoopsTpl->assign('re', $this->get_re($DiscussID));
         $xoopsTpl->assign('LoginMemID', $_SESSION['LoginMemID']);
+        $xoopsTpl->assign('LoginParentID', $_SESSION['LoginParentID']);
 
         $xoopsTpl->assign('xoops_pagetitle', $DiscussTitle);
         $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($DiscussContent), 0, 300));
@@ -212,14 +258,16 @@ class tad_web_discuss
         // die(var_export($smile_pics));
         sort($smile_pics);
         $xoopsTpl->assign('smile_pics', $smile_pics);
+
+        $xoopsTpl->assign("tags", $this->tags->list_tags("DiscussID", $DiscussID, 'discuss'));
     }
 
     //tad_web_discuss編輯表單
     public function edit_form($DiscussID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
-        if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
+        if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID'])) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
         }
         get_quota($this->WebID);
@@ -241,6 +289,9 @@ class tad_web_discuss
             //設定「MemID」欄位預設值
             $MemID = (!isset($DBV['MemID'])) ? 0 : $DBV['MemID'];
 
+            //設定「ParentID」欄位預設值
+            $ParentID = (!isset($DBV['ParentID'])) ? 0 : $DBV['ParentID'];
+
             //設定「LoginMemName」欄位預設值
             $MemName = (!isset($DBV['MemName'])) ? $xoopsUser->name() : $DBV['MemName'];
 
@@ -250,18 +301,31 @@ class tad_web_discuss
 
             //設定「uid」欄位預設值
             $uid = (!isset($DBV['uid'])) ? 0 : $DBV['uid'];
+            if ($_SESSION['LoginMemID']) {
+                //設定「MemID」欄位預設值
+                $MemID = (!isset($DBV['MemID'])) ? $_SESSION['LoginMemID'] : $DBV['MemID'];
 
-            //設定「MemID」欄位預設值
-            $MemID = (!isset($DBV['MemID'])) ? $LoginMemID : $DBV['MemID'];
+                //設定「ParentID」欄位預設值
+                $ParentID = (!isset($DBV['ParentID'])) ? 0 : $DBV['ParentID'];
 
-            //設定「LoginMemName」欄位預設值
-            $MemName = (!isset($DBV['MemName'])) ? $LoginMemName : $DBV['MemName'];
+                //設定「LoginMemName」欄位預設值
+                $MemName = (!isset($DBV['MemName'])) ? $_SESSION['LoginMemName'] : $DBV['MemName'];
+            } elseif ($_SESSION['LoginParentID']) {
+                //設定「MemID」欄位預設值
+                $MemID = (!isset($DBV['MemID'])) ? 0 : $DBV['MemID'];
 
+                //設定「ParentID」欄位預設值
+                $ParentID = (!isset($DBV['ParentID'])) ? $_SESSION['ParentID'] : $DBV['ParentID'];
+
+                //設定「LoginMemName」欄位預設值
+                $MemName = (!isset($DBV['MemName'])) ? $_SESSION['LoginParentName'] : $DBV['MemName'];
+            }
             //設定「WebID」欄位預設值
             $WebID = (!isset($DBV['WebID'])) ? $_SESSION['LoginWebID'] : $DBV['WebID'];
         }
         $xoopsTpl->assign('uid', $uid);
         $xoopsTpl->assign('MemID', $MemID);
+        $xoopsTpl->assign('ParentID', $ParentID);
         $xoopsTpl->assign('MemName', $MemName);
         $xoopsTpl->assign('WebID', $WebID);
 
@@ -296,7 +360,10 @@ class tad_web_discuss
         //設定「CateID」欄位預設值
         $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
 
-        $new_cate  = empty($_SESSION['LoginMemID']) ? true : false;
+        $new_cate = $isMyWeb ? true : false;
+
+        $this->web_cate->set_button_value($plugin_menu_var['discuss']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['discuss']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID, 'form', $new_cate);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
@@ -334,6 +401,9 @@ class tad_web_discuss
         // die(var_export($smile_pics));
         sort($smile_pics);
         $xoopsTpl->assign('smile_pics', $smile_pics);
+
+        $tags_form = $this->tags->tags_menu("DiscussID", $DiscussID);
+        $xoopsTpl->assign('tags_form', $tags_form);
     }
 
     //新增資料到tad_web_discuss中
@@ -341,7 +411,7 @@ class tad_web_discuss
     {
         global $xoopsDB, $xoopsUser, $WebID, $isMyWeb, $isAdmin, $TadUpFiles;
 
-        if (empty($_SESSION['LoginMemID']) and !$isMyWeb and $isAdmin) {
+        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $isAdmin) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
         }
 
@@ -353,19 +423,27 @@ class tad_web_discuss
         $_POST['ReDiscussID']    = intval($_POST['ReDiscussID']);
 
         if ($isMyWeb) {
-            $uid     = $xoopsUser->uid();
-            $MemID   = 0;
-            $MemName = $xoopsUser->name();
-        } else {
-            $uid     = 0;
-            $MemID   = $_SESSION['LoginMemID'];
-            $MemName = $_SESSION['LoginMemName'];
-            $WebID   = $_SESSION['LoginWebID'];
+            $uid      = $xoopsUser->uid();
+            $MemID    = 0;
+            $ParentID = 0;
+            $MemName  = $xoopsUser->name();
+        } elseif ($_SESSION['LoginMemID']) {
+            $uid      = 0;
+            $ParentID = 0;
+            $MemID    = $_SESSION['LoginMemID'];
+            $MemName  = $_SESSION['LoginMemName'];
+            $WebID    = $_SESSION['LoginWebID'];
+        } elseif ($_SESSION['LoginParentID']) {
+            $uid      = 0;
+            $MemID    = 0;
+            $ParentID = $_SESSION['LoginParentID'];
+            $MemName  = $_SESSION['LoginParentName'];
+            $WebID    = $_SESSION['LoginWebID'];
         }
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
-        $sql    = "insert into " . $xoopsDB->prefix("tad_web_discuss") . "  (`CateID`,`ReDiscussID` , `uid` , `MemID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
-        values('{$CateID}'  ,'{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
+        $sql    = "insert into " . $xoopsDB->prefix("tad_web_discuss") . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
+        values('{$CateID}'  ,'{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -385,6 +463,8 @@ class tad_web_discuss
         }
 
         check_quota($this->WebID);
+        //儲存標籤
+        $this->tags->save_tags("DiscussID", $DiscussID, $_POST['tag_name'], $_POST['tags']);
         return $DiscussID;
     }
 
@@ -393,21 +473,27 @@ class tad_web_discuss
     {
         global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
 
-        if (empty($_SESSION['LoginMemID']) and !$isMyWeb and $isAdmin) {
+        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $isAdmin) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
         }
 
         if ($isMyWeb) {
             $uid     = $xoopsUser->uid();
-            $MemID   = 0;
+            $MemID   = $ParentID   = 0;
             $MemName = $xoopsUser->name();
             $anduid  = ($isAdmin) ? "" : "and `WebID`='{$this->WebID}'";
-        } else {
-            $uid     = 0;
+        } elseif ($_SESSION['LoginMemID']) {
+            $uid     = $ParentID     = 0;
             $MemID   = $_SESSION['LoginMemID'];
             $MemName = $_SESSION['LoginMemName'];
             $WebID   = $_SESSION['LoginWebID'];
             $anduid  = "and `MemID`='{$MemID}'";
+        } elseif ($_SESSION['LoginParentID']) {
+            $uid      = $MemID      = 0;
+            $ParentID = $_SESSION['LoginParentID'];
+            $MemName  = $_SESSION['LoginParentName'];
+            $WebID    = $_SESSION['LoginWebID'];
+            $anduid   = "and `ParentID`='{$ParentID}'";
         }
 
         $myts                    = MyTextSanitizer::getInstance();
@@ -432,6 +518,8 @@ class tad_web_discuss
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
         check_quota($this->WebID);
+        //儲存標籤
+        $this->tags->save_tags("DiscussID", $DiscussID, $_POST['tag_name'], $_POST['tags']);
         return $DiscussID;
     }
 
@@ -440,14 +528,16 @@ class tad_web_discuss
     {
         global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
 
-        if (empty($_SESSION['LoginMemID']) and !$isMyWeb and $isAdmin) {
+        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $isAdmin) {
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
         }
 
         if ($isMyWeb) {
             $anduid = ($isAdmin) ? "" : "and `WebID`='{$this->WebID}'";
-        } else {
+        } elseif ($_SESSION['LoginMemID']) {
             $anduid = "and `MemID`='{$_SESSION['LoginMemID']}'";
+        } elseif ($_SESSION['LoginParentID']) {
+            $anduid = "and `ParentID`='{$_SESSION['LoginParentID']}'";
         }
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where `DiscussID`='$DiscussID' $anduid";
@@ -460,6 +550,8 @@ class tad_web_discuss
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->del_files();
         check_quota($this->WebID);
+        //刪除標籤
+        $this->tags->delete_tags("DiscussID", $DiscussID);
     }
 
     //刪除所有資料
@@ -512,11 +604,11 @@ class tad_web_discuss
     }
 
     //是否有管理權（或由自己發布的），判斷是否要秀出管理工具
-    public function isMineDiscuss($DiscussMemID = null, $DiscussWebID = null)
+    public function isMineDiscuss($col_name = '', $col_sn = '', $DiscussWebID = null)
     {
         global $isMyWeb, $isAdmin;
 
-        if (!empty($DiscussMemID) and $_SESSION['LoginMemID'] == $DiscussMemID) {
+        if (!empty($col_name) and $_SESSION[$col_name] == $col_sn) {
             return true;
         } elseif (!empty($DiscussWebID) and $isMyWeb) {
             return true;
@@ -530,7 +622,7 @@ class tad_web_discuss
     //回覆的留言
     public function get_re($DiscussID = "")
     {
-        global $xoopsDB, $isMyWeb, $TadUpFiles;
+        global $xoopsDB, $isMyWeb, $TadUpFiles, $xoopsUser;
         if (empty($DiscussID)) {
             return;
         }
@@ -552,27 +644,52 @@ class tad_web_discuss
                 if (empty($pic)) {
                     $pic = "images/nobody.png";
                 }
+                $isMineDiscuss = $isMyWeb ? true : false;
 
-            } else {
+            } elseif ($MemID) {
                 $TadUpFiles->set_col("MemID", $MemID, "1");
                 $pic = $TadUpFiles->get_pic_file("thumb");
                 $M   = get_tad_web_mems($MemID);
                 if (empty($pic)) {
                     $pic = ($M['MemSex'] == '1') ? XOOPS_URL . "/modules/tad_web/images/boy.gif" : XOOPS_URL . "/modules/tad_web/images/girl.gif";
                 }
+
+                $isMineDiscuss = $this->isMineDiscuss('LoginMemID', $MemID, $WebID);
+            } elseif ($ParentID) {
+                $TadUpFiles->set_col("ParentID", $ParentID, "1");
+                $pic = $TadUpFiles->get_pic_file("thumb");
+                if (empty($pic)) {
+                    $pic = XOOPS_URL . "/modules/tad_web/images/nobody.png";
+                }
+                $isMineDiscuss = $this->isMineDiscuss('LoginParentID', $ParentID, $WebID);
             }
 
-            $fun = ($this->isMineDiscuss($MemID)) ? "<div style='font-size:12px;'>
+            $fun = $isMineDiscuss ? "<div style='font-size:12px;'>
             <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID'>" . _TAD_EDIT . "</a> | <a href=\"javascript:delete_discuss_func($DiscussID);\">" . _TAD_DEL . "</a>
-            </div>" : "";
+            </div>" : '';
 
             $TadUpFiles->set_col("DiscussID", $DiscussID);
             $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
 
-            $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
-            $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
+            preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
+            foreach ($smile_pic[1] as $pic_name) {
+                $new_pic_name   = strtolower($pic_name);
+                $DiscussContent = str_replace("[$pic_name]", "<img src=\"" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/$new_pic_name\" alt=\"{$pic_name}\" hspace=2 align='absmiddle'>", $DiscussContent);
+            }
+
+            // $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
+            // $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
             $DiscussContent = nl2br($DiscussContent);
             $DiscussContent = $this->bubble($DiscussContent . $DiscussFiles);
+            if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
+                if ($MemID) {
+                    $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
+                } elseif ($ParentID) {
+                    $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS;
+                } else {
+                    $MemName = $MemName;
+                }
+            }
             $re_data .= "<tr><td style='line-height:180%;'>
             {$DiscussContent}
             <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='max-width: 120px; max-height: 120px; margin: 0px 15px 0px 30px; float: left;' class='img-rounded img-polaroid'>
@@ -615,7 +732,7 @@ class tad_web_discuss
         $main = "<div class='xsnazzy'>
           <b class='xb1'></b><b class='xb2'></b><b class='xb3'></b><b class='xb4'></b><b class='xb5'></b><b class='xb6'></b><b class='xb7'></b>
           <div class='xboxcontent'>
-          <p>$content</p>
+          <p style='word-break: break-all;'>$content</p>
           </div>
           <b class='xb7'></b><b class='xb6'></b><b class='xb5'></b><b class='xb4'></b><b class='xb3'></b><b class='xb2'></b><b class='xb1'></b>
           <em></em><span></span>

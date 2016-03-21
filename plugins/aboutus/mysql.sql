@@ -26,3 +26,16 @@ CREATE TABLE `tad_web_mems` (
   `MemPasswd` varchar(255) NOT NULL DEFAULT '' COMMENT '密碼',
   PRIMARY KEY `uid` (`MemID`)
 ) ENGINE=MyISAM;
+
+
+CREATE TABLE `tad_web_mem_parents` (
+  `ParentID` mediumint(8) unsigned NOT NULL auto_increment COMMENT 'ParentID',
+  `MemID` mediumint(8) unsigned NOT NULL COMMENT 'MemID',
+  `Reationship` varchar(255) NOT NULL DEFAULT '' COMMENT '關係',
+  `ParentEmail` varchar(255) NOT NULL DEFAULT '' COMMENT 'Email',
+  `ParentPasswd` varchar(255) NOT NULL DEFAULT '' COMMENT '密碼',
+  `ParentEnable` enum('1','0') NOT NULL DEFAULT '1' COMMENT '啟用狀態',
+  `code` varchar(255) NOT NULL DEFAULT '' COMMENT '啟用碼',
+  PRIMARY KEY (`ParentID`),
+  UNIQUE KEY `MemID_ParentEmail` (`MemID`,`ParentEmail`)
+) ENGINE=MyISAM;

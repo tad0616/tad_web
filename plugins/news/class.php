@@ -18,15 +18,19 @@ class tad_web_news
     //最新消息
     public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
+            if (!empty($plugin_menu_var)) {
+                $this->web_cate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+            }
 
             if (!empty($CateID)) {
                 //取得單一分類資料
@@ -51,7 +55,7 @@ class tad_web_news
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' {$andEnable} $andCounty $andCity $andSchoolName order by a.NewsDate desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' {$andEnable} $andWebID $andCateID order by a.NewsDate desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' {$andEnable} $andWebID $andCateID order by a.NewsDate desc";
             // die($sql);
 
         } else {
@@ -238,7 +242,7 @@ class tad_web_news
     //tad_web_news編輯表單
     public function edit_form($NewsID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -291,7 +295,9 @@ class tad_web_news
         $xoopsTpl->assign('NewsCounter', $NewsCounter);
 
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $this->web_cate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 

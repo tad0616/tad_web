@@ -39,6 +39,12 @@ $adminmenu[$i]['desc']  = _MI_TCW_ADMENU4;
 $adminmenu[$i]['icon']  = "{$icon_dir}pie.png";
 
 $i++;
+$adminmenu[$i]['title'] = _MI_TCW_ADMENU6;
+$adminmenu[$i]['link']  = "admin/notice.php";
+$adminmenu[$i]['desc']  = _MI_TCW_ADMENU6;
+$adminmenu[$i]['icon']  = "{$icon_dir}mail_notice.png";
+
+$i++;
 $adminmenu[$i]['title'] = _MI_TAD_ADMIN_ABOUT;
 $adminmenu[$i]['link']  = 'admin/about.php';
 $adminmenu[$i]['desc']  = _MI_TAD_ADMIN_ABOUT_DESC;

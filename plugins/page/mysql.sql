@@ -7,6 +7,6 @@ CREATE TABLE `tad_web_page` (
   `PageDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布日期',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
   `PageCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-  `PageSort` varchar(255) NOT NULL default '' COMMENT '排序',
+  `PageSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
 PRIMARY KEY (`PageID`)
 ) ENGINE=MyISAM;

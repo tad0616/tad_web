@@ -287,7 +287,6 @@
       <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-warning"><{$class_setup}></a>
     </div>
   <{/if}>
-
 <{elseif ($op=="edit_form" or $op=="new_class") and $isMyWeb}>
 
   <{if $op=="new_class" or $now_cate}>
@@ -610,14 +609,14 @@
         <div class="row">
           <div class="col-md-8">
             <span style="font-size: 2em;">
-              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>"><{$work.WorkName}></a>
+              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a>
             </span>
           </div>
           <div class="col-md-4">
             <{if $work.mem_upload_content.UploadDate!=""}>
-              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
+              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
             <{else}>
-              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_NOW}></a>
+              <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_NOW}></a>
             <{/if}>
           </div>
         </div>
@@ -643,7 +642,7 @@
       </tr>
     <{foreach from=$stud_scores.main_data item=work}>
       <tr>
-        <td><a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>"><{$work.WorkName}></a></td>
+        <td><a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a></td>
         <td><{$work.mem_upload_content.WorkScore}></td>
         <td><{$work.mem_upload_content.WorkJudgment}></td>
       </tr>
@@ -694,7 +693,241 @@
     <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_IMPORT}></button>
   </form>
 <{elseif $op=="export_config"}>
+
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_export_config.html"}>
+<{elseif $op=="parents_account"}>
+
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#list_mems").change(function(event) {
+        var mem_name=$("#list_mems option:selected").prop('label');
+        $.post("<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_mems.php", { op: 'chk_unable', MemID: $('#list_mems').val(), WebID: '<{$WebID}>' , MemName:mem_name }, function(data){
+            $('#unable').html(data);
+        });
+
+        $('.mem_name').html(mem_name);
+        $('#step2').show();
+      });
+    });
+  </script>
+  <h3><{$smarty.const._MD_TCW_REGIST_BY_PARENTS}></h3>
+
+  <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <{$cate_label}>
+      </label>
+      <div class="col-md-4">
+        <{$cate_menu}>
+      </div>
+      <div class="col-md-5">
+        <select name='MemID' id='list_mems' class='form-control'>
+          <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
+        </select>
+      </div>
+    </div>
+    <div id="step2" style="display:none;">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <span class="mem_name"><{$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT}></span><{$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT_BIRTHDAY}>
+        </label>
+        <div class="col-md-9">
+          <input type="text" name="MemBirthday" id="MemBirthday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_VERIFY_BIRTHDAY}>2010-01-10">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
+        </label>
+        <div class="col-md-9">
+          <input type="text" name="Reationship" id="Reationship" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_REATIONSHIP_DESC}>">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL}>
+        </label>
+        <div class="col-md-9">
+          <input type="text" name="ParentEmail" id="ParentEmail" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL_DESC}>">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <{$smarty.const._MD_TCW_ABOUTUS_PARENT_PASSWD}>
+        </label>
+        <div class="col-md-9">
+          <input type="text" name="ParentPasswd" id="ParentPasswd" class="validate[required] form-control">
+        </div>
+      </div>
+
+      <div class="text-center">
+        <span id="unable"></span>
+        <input type="hidden" name="op" value="parents_signup">
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_NEXT}></button>
+      </div>
+    </div>
+  </form>
+<{elseif $op=="show_parents_signup"}>
+  <h1><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL}></h1>
+  <div class="alert alert-info">
+    <{$mail_content}>
+  </div>
+<{elseif $op=="show_enable_parent"}>
+  <{if $result=='1'}>
+    <h1><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS}></h1>
+    <div class="alert alert-success">
+      <p><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS_CONTENT}></p>
+    </div>
+  <{else}>
+    <h1><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED}></h1>
+    <div class="alert alert-danger">
+      <{$failed_content}>
+    </div>
+  <{/if}>
+<{elseif $op=="forget_parent_passwd"}>
+
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#list_mems").change(function(event) {
+        var mem_name=$("#list_mems option:selected").prop('label');
+        $('.mem_name').html(mem_name);
+        $('#step3').show();
+        $.post("<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_mems.php", { op: 'get_reationship', MemID: $('#list_mems').val()}, function(data){
+            $('#Reationship').html(data);
+            if(data==''){
+              $('#submit_btn').hide();
+              $('#no_account').show();
+            }else{
+              $('#submit_btn').show();
+              $('#no_account').hide();
+
+            }
+        });
+      });
+    });
+  </script>
+  <h3><{$smarty.const._MD_TCW_FORGET_PARENTS_PASSWD}></h3>
+
+  <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <{$cate_label}>
+      </label>
+      <div class="col-md-4">
+        <{$cate_menu}>
+      </div>
+      <div class="col-md-5">
+        <select name='MemID' id='list_mems' class='form-control'>
+          <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="step3" style="display:none;">
+      <label class="col-md-3 control-label">
+        <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
+      </label>
+      <div class="col-md-4">
+        <select name="Reationship" id="Reationship" class='form-control'>
+        </select>
+      </div>
+      <div class="col-md-5">
+        <input type="hidden" name="op" value="send_parents_passwd">
+        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <button type="submit" class="btn btn-primary" id="submit_btn"><{$smarty.const._TAD_SUBMIT}></button>
+        <div class="alert alert-info" id="no_account" style="display:none;">
+          <a href="aboutus.php?WebID=<{$WebID}>&op=parents_account"><{$smarty.const._MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT}></a>
+        </div>
+      </div>
+    </div>
+
+  </form>
+<{elseif $op=="show_parent"}>
+
+  <h2><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></h2>
+  <div style="font-size: 2em; margin: 30px auto;">
+    <{if 'MemNum'|in_array:$mem_column}>
+      <label class="label label-primary"><{$class_mem.MemNum}></label>
+    <{/if}>
+    <{$mem.MemName}>
+    <{if 'MemUnicode'|in_array:$mem_column}>
+      (<{$mem.MemUnicode}>)
+    <{/if}>
+    <{$smarty.const._MD_TCW_ABOUTUS_S}><{$parent.Reationship}>
+  </div>
+
+  <form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+    <div class="row">
+
+      <div class="col-md-3">
+        <img src="<{$pic}>" alt="<{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_S}><{$parent.Reationship}>" class="img-responsive img-rounded">
+        <br>
+        <input type="file" name="upfile[]"  maxlength="1" accept="gif|jpg|png|GIF|JPG|PNG">
+      </div>
+      <div class="col-md-6">
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">
+              <{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL}>
+            </label>
+            <div class="col-md-8">
+              <input type="text" name="ParentEmail"  class="form-control" value="<{$parent.ParentEmail}>">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">
+              <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_S}>
+            </label>
+            <div class="col-md-8">
+              <input type="text" name="Reationship"  class="form-control" value="<{$parent.Reationship}>">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label">
+              <{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD}>
+            </label>
+            <div class="col-md-8">
+              <input type="text" name="ParentPasswd"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC}>">
+            </div>
+          </div>
+
+          <div class="text-center">
+            <input type="hidden" name="ParentID" value="<{$ParentID}>">
+            <input type="hidden" name="op" value="save_parent">
+            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+          </div>
+      </div>
+      <div class="col-md-3">
+         <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/parent_toolbar.html"}>
+      </div>
+    </div>
+  </form>
+
+  <{if $stud_scores.main_data}>
+    <h2><{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_UPLOADED_WORKS}></h2>
+    <table class="table">
+      <tr>
+        <th><{$smarty.const._MD_TCW_WORKS_NAME}></th>
+        <th><{$smarty.const._MD_TCW_WORKS_WORKS_SCORE}></th>
+        <th><{$smarty.const._MD_TCW_WORKS_WORKS_JUDGMENT}></th>
+      </tr>
+    <{foreach from=$stud_scores.main_data item=work}>
+      <tr>
+        <td><a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a></td>
+        <td><{$work.mem_upload_content.WorkScore}></td>
+        <td><{$work.mem_upload_content.WorkJudgment}></td>
+      </tr>
+    <{/foreach}>
+    </table>
+  <{/if}>
 <{else}>
   <{$FooTableJS}>
   <div class="row">

@@ -8,6 +8,10 @@ if (aboutus_onUpdate2_chk()) {
     aboutus_onUpdate2_go();
 }
 
+if (aboutus_onUpdate3_chk()) {
+    aboutus_onUpdate3_go();
+}
+
 //修改欄位名稱
 function aboutus_onUpdate1_chk()
 {
@@ -84,4 +88,34 @@ function aboutus_onUpdate2_go()
     $xoopsDB->queryF($sql) or web_error($sql);
 
     return true;
+}
+
+//新增家長表格
+function aboutus_onUpdate3_chk()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_mem_parents");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function aboutus_onUpdate3_go()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_mem_parents") . "` (
+      `ParentID` mediumint(8) unsigned NOT NULL auto_increment COMMENT 'ParentID',
+      `MemID` mediumint(8) unsigned NOT NULL COMMENT 'MemID',
+      `Reationship` varchar(255) NOT NULL DEFAULT '' COMMENT '關係',
+      `ParentEmail` varchar(255) NOT NULL DEFAULT '' COMMENT 'Email',
+      `ParentPasswd` varchar(255) NOT NULL DEFAULT '' COMMENT '密碼',
+      `ParentEnable` enum('1','0') NOT NULL DEFAULT '1' COMMENT '啟用狀態',
+      `code` varchar(255) NOT NULL DEFAULT '' COMMENT '啟用碼',
+      PRIMARY KEY (`ParentID`),
+      UNIQUE KEY `MemID_ParentEmail` (`MemID`,`ParentEmail`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql) or web_error($sql);
 }

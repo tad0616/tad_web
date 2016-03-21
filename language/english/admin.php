@@ -74,3 +74,15 @@ define('_MA_TCW_CO_ADMIN', 'Co-administrator');
 define('_MA_TADWEB_PLUGIN_TITLE', 'Plugin Title');
 define('_MA_TADWEB_PLUGIN_TOTAL', 'Total');
 define('_MA_TCW_LAST_ACCESSED', 'Last access');
+
+define('_MA_TCW_WEB_NOTICE', 'Notice');
+define('_MA_TADWEB_NOTICEWHO_DEF', 'Web Master');
+define('_MA_TADWEB_NOTICEID', 'Notice ID');
+define('_MA_TADWEB_NOTICETITLE', 'Notice TITLE');
+define('_MA_TADWEB_NOTICECONTENT', 'Notice Content');
+define('_MA_TADWEB_NOTICEWEB', 'Notice Webs');
+define('_MA_TADWEB_NOTICEWHO', 'Notice whom');
+define('_MA_TADWEB_NOTICEWHO_DEF0', 'Web Master');
+define('_MA_TADWEB_NOTICEWHO_DEF1', 'Web Members');
+define('_MA_TADWEB_NOTICEWHO_DEF2', 'Member Parents');
+define('_MA_TADWEB_NOTICEDATE', 'Notice Date');

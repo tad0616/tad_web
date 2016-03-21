@@ -48,7 +48,7 @@ class tad_web_page
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.PageSort";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='PageID' and c.col_sn=a.PageID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.PageID desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='PageID' and c.col_sn=a.PageID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.PageID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
         }
@@ -100,7 +100,7 @@ class tad_web_page
     }
 
     //以流水號秀出某筆tad_web_page資料內容
-    public function show_one($PageID = "")
+    public function show_one($PageID = "", $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
         if (empty($PageID)) {
@@ -113,6 +113,10 @@ class tad_web_page
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_page") . " where PageID='{$PageID}'";
         $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
+
+        if ($mode == "return") {
+            return $all;
+        }
 
         //以下會產生這些變數： $PageID , $PageTitle , $PageContent , $PageDate , $PageSort , $uid , $WebID , $PageCount
         foreach ($all as $k => $v) {
@@ -179,7 +183,7 @@ class tad_web_page
     //tad_web_page編輯表單
     public function edit_form($PageID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -231,9 +235,13 @@ class tad_web_page
         $xoopsTpl->assign('PageCount', $PageCount);
 
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
-        $cate_menu = $this->web_cate->cate_menu($CateID);
-        $xoopsTpl->assign('cate_menu_form', $cate_menu);
+        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        if (!empty($plugin_menu_var)) {
+            $this->web_cate->set_button_value($plugin_menu_var['page']['short'] . _MD_TCW_CATE_TOOLS);
+            $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['page']['short']));
+            $cate_menu = $this->web_cate->cate_menu($CateID);
+            $xoopsTpl->assign('cate_menu_form', $cate_menu);
+        }
 
         $op = (empty($PageID)) ? "insert" : "update";
 

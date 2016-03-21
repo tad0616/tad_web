@@ -9,20 +9,25 @@ class tad_web_files
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "files", "tad_web_files");
+        $this->tags     = new tags($WebID);
     }
 
     //檔案下載
-    public function list_all($CateID = "", $limit = "", $mode = "assign")
+    public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '')
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
-            $xoopsTpl->assign('cate_menu', $cate_menu);
+            if (!empty($plugin_menu_var)) {
+                $this->web_cate->set_button_value($plugin_menu_var['files']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['files']['short']));
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $xoopsTpl->assign('cate_menu', $cate_menu);
+            }
 
             if (!empty($CateID)) {
                 //取得單一分類資料
@@ -46,6 +51,9 @@ class tad_web_files
             $andSchoolName = !empty($SchoolName) ? "and d.SchoolName='{$SchoolName}'" : "";
 
             $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid where c.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.file_date desc";
+        } elseif (!empty($tag)) {
+            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as d on d.col_name='fsn' and d.col_sn=a.fsn where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
+
         } else {
             $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
         }
@@ -111,7 +119,6 @@ class tad_web_files
         if (is_array($need_del)) {
             foreach ($need_del as $fsn) {
                 if (!in_array($fsn, $no_need_del)) {
-                    // echo "<div>del:{$fsn}</div>";
                     $this->delete($fsn);
                 }
             }
@@ -138,7 +145,7 @@ class tad_web_files
     //tad_web_files編輯表單
     public function edit_form($fsn = "", $WebID = "")
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
@@ -174,7 +181,9 @@ class tad_web_files
         $xoopsTpl->assign('WebID', $WebID);
 
         //設定「CateID」欄位預設值
-        $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $this->web_cate->set_button_value($plugin_menu_var['files']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['files']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
@@ -204,6 +213,9 @@ class tad_web_files
         include_once TADTOOLS_PATH . "/formValidator.php";
         $formValidator = new formValidator("#myForm", true);
         $formValidator->render();
+
+        $tags_form = $this->tags->tags_menu("fsn", $fsn);
+        $xoopsTpl->assign('tags_form', $tags_form);
 
     }
 
@@ -238,6 +250,9 @@ class tad_web_files
             check_quota($this->WebID);
 
         }
+
+        //儲存標籤
+        $this->tags->save_tags("fsn", $fsn, $_POST['tag_name'], $_POST['tags']);
         return $fsn;
     }
 
@@ -272,6 +287,9 @@ class tad_web_files
             $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
             check_quota($this->WebID);
         }
+
+        //儲存標籤
+        $this->tags->save_tags("fsn", $fsn, $_POST['tag_name'], $_POST['tags']);
         return $fsn;
     }
 
@@ -286,6 +304,8 @@ class tad_web_files
         $TadUpFiles->set_col('fsn', $fsn);
         $TadUpFiles->del_files();
         check_quota($this->WebID);
+        //刪除標籤
+        $this->tags->delete_tags("fsn", $fsn);
     }
 
     //刪除所有資料

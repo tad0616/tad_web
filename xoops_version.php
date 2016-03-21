@@ -114,6 +114,14 @@ $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_adm_schedule_b3.html';
 $modversion['templates'][$i]['description'] = "tad_web_adm_schedule_b3.html";
 
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_notice.html';
+$modversion['templates'][$i]['description'] = 'tad_web_adm_notice.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_adm_notice_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_adm_notice_b3.html';
+
 //tad_web_config.html 不需要
 
 $i++;
@@ -157,6 +165,14 @@ $modversion['templates'][$i]['description'] = 'tad_web_plugin_setup_b3.html';
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_search_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_search_b3.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_tag_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_tag_b3.html';
+
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_top_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_top_b3.html';
 
 //---區塊設定---//
 $i                                       = 1;

@@ -121,3 +121,14 @@ CREATE TABLE `tad_web_tags` (
   `tag_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
   PRIMARY KEY  (`col_name`,`col_sn`,`tag_name`)
 )  ENGINE=MyISAM;
+
+
+CREATE TABLE `tad_web_notice` (
+  `NoticeID` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '通知編號',
+  `NoticeTitle` varchar(255) NOT NULL default '' COMMENT '通知標題',
+  `NoticeContent` text NOT NULL  COMMENT '通知內容',
+  `NoticeWeb` text NOT NULL COMMENT '通知網站',
+  `NoticeWho` varchar(255) NOT NULL default '' COMMENT '通知對象',
+  `NoticeDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '通知日期',
+  PRIMARY KEY  (`NoticeID`)
+)  ENGINE=MyISAM;

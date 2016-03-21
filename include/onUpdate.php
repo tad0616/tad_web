@@ -78,9 +78,16 @@ function xoops_module_update_tad_web(&$module, $old_version)
     if (chk_chk19()) {
         go_update19();
     }
+    if (chk_chk19_1()) {
+        go_update19_1();
+    }
 
     if (chk_chk20()) {
         go_update20();
+    }
+
+    if (chk_chk21()) {
+        go_update21();
     }
 
     chk_sql();
@@ -1074,7 +1081,28 @@ function chk_chk19()
 function go_update19()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " DROP `BlockShare` , ADD `ShareFrom` int(10) unsigned NOT NULL COMMENT '分享自'";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " DROP `BlockShare`";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    return true;
+}
+
+//刪除分享區塊設訂
+function chk_chk19_1()
+{
+    global $xoopsDB;
+    $sql    = "select count(`ShareFrom`) from " . $xoopsDB->prefix("tad_web_blocks");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update19_1()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " ADD `ShareFrom` int(10) unsigned NOT NULL COMMENT '分享自'";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
     return true;
 }
@@ -1098,6 +1126,36 @@ function go_update20()
 
     $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_web_power") . "` ADD PRIMARY KEY `power_primary` (`col_name`, `col_sn`, `power_name`), DROP INDEX `PRIMARY`;";
     $xoopsDB->queryF($sql) or web_error($sql);
+
+    return true;
+}
+
+//新增通知表格
+function chk_chk21()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_notice");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update21()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_notice") . "` (
+      `NoticeID` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '通知編號',
+      `NoticeTitle` varchar(255) NOT NULL default '' COMMENT '通知標題',
+      `NoticeContent` text NOT NULL  COMMENT '通知內容',
+      `NoticeWeb` text NOT NULL COMMENT '通知網站',
+      `NoticeWho` varchar(255) NOT NULL default '' COMMENT '通知對象',
+      `NoticeDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '通知日期',
+      PRIMARY KEY  (`NoticeID`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
 
     return true;
 }

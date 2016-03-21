@@ -84,6 +84,8 @@
         </div>
       </div>
 
+      <{$tags_form}>
+
 
 
       <!--上傳圖檔-->
@@ -123,7 +125,8 @@
     <li><a href="works.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_WORKS}></a></li>
     <{if isset($cate.CateID)}><li><a href="works.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
     <li><{$WorksInfo}></li>
-  <{if $hide}><li><span class="label label-danger"><{$hide}></span></li><{/if}>
+    <{if $tags}><li><{$tags}></li><{/if}>
+    <{if $hide}><li><span class="label label-danger"><{$hide}></span></li><{/if}>
   </ol>
 
   <{if $WorkDesc}>

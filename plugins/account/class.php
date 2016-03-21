@@ -20,6 +20,10 @@ class tad_web_account
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isAdmin, $isMyWeb;
 
+        if (empty($this->WebID)) {
+            return;
+        }
+
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
@@ -57,8 +61,8 @@ class tad_web_account
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.AccountDate ,a.AccountID";
-        } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='AccountID' and c.col_sn=a.AccountID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.AccountDate,a.AccountID ";
+            // } elseif (!empty($tag)) {
+            //     $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='AccountID' and c.col_sn=a.AccountID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.AccountDate,a.AccountID ";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.AccountDate ,a.AccountID";
         }

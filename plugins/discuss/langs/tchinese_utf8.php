@@ -18,3 +18,4 @@ define("_MD_TCW_DISCUSS_FILES", "相關附件");
 define("_MD_TCW_PLEASE_INPUT", "請輸入");
 define("_MD_TCW_DISCUSS_BLOCK_LIST", "留言簿");
 define("_MD_TCW_DISCUSS_BLOCK_LIMIT", "顯示留言數量");
+define("_MD_TCW_DISCUSS_PARENTS", "同學的家長");

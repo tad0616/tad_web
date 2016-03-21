@@ -9,5 +9,6 @@ CREATE TABLE `tad_web_video` (
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
   `VideoCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
   `Youtube` varchar(255) NOT NULL default '' COMMENT 'Youtube 位址',
+  `VideoSort` smallint(6) unsigned NOT NULL default 0 COMMENT '影片排序',
   PRIMARY KEY (`VideoID`)
 ) ENGINE=MyISAM;

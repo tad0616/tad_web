@@ -33,6 +33,17 @@
     <{$cate_menu_form}>
     <hr>
 
+    <{if $isMyWeb and $WebID}>
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <{$plugin.title}><{$smarty.const._MD_TCW_NEW_CATE}>
+        </label>
+        <div class="col-md-4">
+          <input type="text" name="newCateName" id="newCateName" class="validate[required] form-control">
+        </div>
+      </div>
+    <{/if}>
+
     <{foreach from=$cate_opt_arr item=cate}>
       <!--<{$cate.CateName}>-->
       <div class="form-group">
@@ -81,5 +92,23 @@
 <{else}>
   <div class="jumbotron">
     <h1><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_NONE}></h1>
+      <{if $isMyWeb and $WebID}>
+        <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label class="col-md-2 control-label">
+              <{$smarty.const._MD_TCW_NEW_CATE}>
+            </label>
+            <div class="col-md-6">
+              <input type="text" name="newCateName" id="newCateName" class="validate[required] form-control">
+            </div>
+            <div class="col-md-4">
+              <input type="hidden" name="ColName" value="<{$ColName}>">
+              <input type="hidden" name="WebID" value="<{$WebID}>">
+              <input type="hidden" name="op" value="save_cate">
+              <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            </div>
+          </div>
+        </form>
+      <{/if}>
   </div>
 <{/if}>
