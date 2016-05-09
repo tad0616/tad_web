@@ -15,7 +15,7 @@
             <a href="news.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
             <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
-              <{if $news.isMyWeb}>
+              <{if $news.isMyWeb or $news.isAssistant}>
                 <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                 <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
               <{/if}>
@@ -27,7 +27,7 @@
   <{elseif $block.config.show_mode=="full"}>
   <script type="text/javascript">
     $(document).ready(function(){
-      $('img').css('height','').addClass('img-responsive');
+      $('#list_new img').css('height','').addClass('img-responsive');
     });
   </script>
     <{foreach from=$bc.main_data key=i item=news}>
@@ -39,12 +39,12 @@
               <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
               <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
-              <{if $isMyWeb}>
+              <{if $isMyWeb or $news.isAssistant}>
                 <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                 <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
               <{/if}>
             </h3>
-            <div class="well" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
+            <div class="well" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
               <{if isset($news.cate.CateID)}>
                 <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
               <{/if}>
@@ -60,7 +60,7 @@
                 <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
                 <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
-                <{if $isMyWeb}>
+                <{if $isMyWeb or $news.isAssistant}>
                   <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
@@ -73,7 +73,7 @@
   <{else}>
     <script type="text/javascript">
       $(document).ready(function(){
-        $('img').css('height','').addClass('img-responsive');
+        $('#list_new img').css('height','').addClass('img-responsive');
       });
     </script>
     <div class="row">
@@ -84,12 +84,12 @@
             <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.main_data.0.NewsID}>"><{$bc.main_data.0.NewsTitle}></a>
             <{if $bc.main_data.0.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
-            <{if $isMyWeb}>
+            <{if $isMyWeb or $bc.main_data.0.isAssistant}>
               <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </h3>
-          <div class="well" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
+          <div class="well" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
             <{if isset($bc.main_data.0.cate.CateID)}>
               <span class="label label-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$bc.main_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$bc.main_data.0.cate.CateName}></a></span>
             <{/if}>
@@ -105,7 +105,7 @@
               <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.main_data.0.NewsID}>"><{$bc.main_data.0.NewsTitle}></a>
               <{if $bc.main_data.0.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
-              <{if $isMyWeb}>
+              <{if $isMyWeb or $bc.main_data.0.isAssistant}>
                 <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                 <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
               <{/if}>
@@ -129,7 +129,7 @@
               <a href="news.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
             <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
-                <{if $news.isMyWeb}>
+                <{if $news.isMyWeb or $news.isAssistant}>
                   <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>

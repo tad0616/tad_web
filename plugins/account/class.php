@@ -61,8 +61,6 @@ class tad_web_account
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.AccountDate ,a.AccountID";
-            // } elseif (!empty($tag)) {
-            //     $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='AccountID' and c.col_sn=a.AccountID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.AccountDate,a.AccountID ";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.AccountDate ,a.AccountID";
         }
@@ -95,7 +93,8 @@ class tad_web_account
             //     continue;
             // }
 
-            $main_data[$i] = $all;
+            $main_data[$i]                = $all;
+            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'AccountID', $AccountID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -224,6 +223,7 @@ class tad_web_account
         $sweet_alert = new sweet_alert();
         $sweet_alert->render("delete_account_func", "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
         $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
+        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'AccountID', $AccountID));
 
         // $xoopsTpl->assign("tags", $this->tags->list_tags("AccountID", $AccountID, 'account'));
     }
@@ -235,7 +235,7 @@ class tad_web_account
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['account']) {
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
@@ -297,11 +297,12 @@ class tad_web_account
         $xoopsTpl->assign('AccountMoney', $AccountMoney);
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? $this->get_last_account_book() : $DBV['CateID'];
+        $DefCateID = isset($_SESSION['isAssistant']['account']) ? $_SESSION['isAssistant']['account'] : $this->get_last_account_book();
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->web_cate->set_label(_MD_TCW_ACCOUNT_BOOK);
         $this->web_cate->set_default_value($WebTitle);
         $this->web_cate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
-        $cate_menu = $this->web_cate->cate_menu($CateID);
+        $cate_menu = isset($_SESSION['isAssistant']['account']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($AccountID)) ? "insert" : "update";
@@ -332,10 +333,12 @@ class tad_web_account
     //新增資料到tad_web_account中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
+        if (isset($_SESSION['isAssistant']['account'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+        }
 
         $myts         = &MyTextSanitizer::getInstance();
         $AccountTitle = $myts->addSlashes($_POST['AccountTitle']);
@@ -364,6 +367,7 @@ class tad_web_account
 
         //取得最後新增資料的流水編號
         $AccountID = $xoopsDB->getInsertId();
+        save_assistant_post($CateID, 'AccountID', $AccountID);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -403,7 +407,9 @@ class tad_web_account
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
-        $anduid = onlyMine();
+        if (!is_assistant($CateID, 'AccountID', $AccountID)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "update " . $xoopsDB->prefix("tad_web_account") . " set
          `CateID` = '{$CateID}' ,
@@ -433,8 +439,13 @@ class tad_web_account
     public function delete($AccountID = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $anduid = onlyMine();
-        $sql    = "delete from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID' $anduid";
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+        if (!is_assistant($CateID, 'AccountID', $AccountID)) {
+            $anduid = onlyMine();
+        }
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";

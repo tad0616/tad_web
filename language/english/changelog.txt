@@ -1,3 +1,21 @@
+Tad Web 1.6.9 release（2016-04-08 release)
+====================================================
+1. Fixed contact book sorting incorrect issue
+2. Fixed article sorting incorrect issue
+3. Fix friendly print color text or background and you can not print large image can not be completely printed issue
+4. Add tag to most plugins.
+5. Add tag block and list page.
+6. Fixed forum emoticon displayed incorrectly issues
+7. Message forced line breaks, avoid causing incorrect forum
+8. Add leaderboards
+9. The article list will appear Unclassified article
+10. Sign of parents and related functions
+11. The contact book from the table to three-column layout to facilitate mobile device Watch
+12. Fix files can not be deleted correct.
+13. Add Global notifications
+14. New Assistant feature
+
+
 Tad Web 1.6.8 release（2016-02-23 release)
 ====================================================
 1. Add account book plugin

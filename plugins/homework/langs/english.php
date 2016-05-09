@@ -13,30 +13,38 @@ define("_MD_TCW_HOMEWORK_POST_12", "Display at that day 12:00");
 define("_MD_TCW_HOMEWORK_POST_16", "Display at that day 16:00");
 define("_MD_TCW_HOMEWORK_POST_AT", "(It wiil display at %s)");
 define("_MD_TCW_HOMEWORKCOUNTER", "Counter");
+define("_MD_TCW_HOMEWORK_DEFAULT", '<div class="row three-col">
+<div class="col-md-4 col-sm-4 span4 col-1">
+<p><img alt="Today\'s Homework" src="' . XOOPS_URL . '/modules/tad_web/images/today_homework.png" /></p>
 
-define('_MD_TCW_HOMEWORK_DEFAULT', "
-  <table class='table'>
-  <tbody>
-    <tr>
-      <td><img alt='Today's job' src='" . XOOPS_URL . "/modules/tad_web/images/today_homework.png' /></td>
-      <td><img alt='tomorrow Preparation' src='" . XOOPS_URL . "/modules/tad_web/images/bring.png' /></td>
-      <td><img alt='Teacher say...' src='" . XOOPS_URL . "/modules/tad_web/images/teacher_say.png' /></td>
-    </tr>
-    <tr>
-      <td>
-      <ol>
-        <li>&nbsp;</li>
-      </ol>
-      </td>
-      <td>
-      <ol>
-        <li>&nbsp;</li>
-      </ol>
-      </td>
-      <td>&nbsp;</td>
-    </tr>
-  </tbody>
-</table>");
+<ol>
+  <li>&nbsp;</li>
+</ol>
+</div>
+
+<div class="col-md-4 col-sm-4 span4 col-2">
+<p><img alt="Tomorrow Preparation" src="' . XOOPS_URL . '/modules/tad_web/images/bring.png" /></p>
+
+<ol>
+  <li>&nbsp;</li>
+</ol>
+</div>
+
+<div class="col-md-4 col-sm-4 span4 col-3">
+<p><img alt="Teacher say..." src="' . XOOPS_URL . '/modules/tad_web/images/teacher_say.png" /></p>
+
+<ol>
+  <li>&nbsp;</li>
+</ol>
+</div>
+</div>
+
+<p>&nbsp;</p>
+');
 
 define("_MD_TCW_HOMEWORK_BLOCK_LIST", "Contact book");
 define("_MD_TCW_HOMEWORK_BLOCK_LIMIT", "Displays the number of homeworks");
+define("_MD_TCW_HOMEWORK_TODAY_WORK", "Today Homework");
+define("_MD_TCW_HOMEWORK_BRING", "Bring");
+define("_MD_TCW_HOMEWORK_TEACHER_SAY", "Teacher Say");
+define("_MD_TCW_HOMEWORK_OTHER", "Other");

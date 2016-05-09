@@ -235,3 +235,8 @@ define('_MD_TCW_LEADERBOARD_RANK', '綜合排名');
 define('_MD_TCW_WEB_COUNTER', '網站人氣');
 define('_MD_TCW_WEB_BLOCK', '區塊應用');
 define("_MD_TCW_HI", "嗨！%s 您好！");
+define('_MD_TCW_WEB_CLOSE_MENU', '關閉選單');
+define('_MD_TCW_WEB_OPENID_SETUP', 'OpenID 登入設定');
+
+define('_MD_TCW_CATE_ASSISTANT', '小幫手');
+define('_MD_TCW_CATE_SET_ASSISTANT', '設定小幫手');

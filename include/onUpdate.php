@@ -90,6 +90,18 @@ function xoops_module_update_tad_web(&$module, $old_version)
         go_update21();
     }
 
+    if (chk_chk22()) {
+        go_update22();
+    }
+
+    if (chk_chk23()) {
+        go_update23();
+    }
+
+    if (chk_chk24()) {
+        go_update24();
+    }
+
     chk_sql();
     chk_newblock();
     go_update_var();
@@ -619,22 +631,18 @@ function go_update6()
 function chk_chk7()
 {
     global $xoopsDB;
-    $sql    = "select count(`ActionKind`) from " . $xoopsDB->prefix("tad_web_action");
+    $sql    = "SHOW Fields FROM " . $xoopsDB->prefix("tad_web_cate") . " where `Field`='CateName' and `Type` = 'varchar(255)'";
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 function go_update7()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_action") . "
-      DROP `ActionKind`";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
-
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` varchar(255) NOT NULL DEFAULT '' NOT NULL";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
 
@@ -1160,6 +1168,91 @@ function go_update21()
     return true;
 }
 
+//新增通知表格
+function chk_chk22()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_mail_log");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update22()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_mail_log") . "` (
+      `ColName` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
+      `ColSN` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+      `WebID` smallint(5) unsigned NOT NULL  COMMENT '所屬網站',
+      `Mail` varchar(100) NOT NULL default '' COMMENT '信箱',
+      `MailDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '寄信日期',
+      PRIMARY KEY  (`ColName`,`ColSN`,`WebID`,`Mail`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
+
+    return true;
+}
+
+//新增小幫手
+function chk_chk23()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_cate_assistant");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update23()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_cate_assistant") . "` (
+      `CateID` smallint(6) unsigned NOT NULL COMMENT '編號',
+      `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
+      `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
+      PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
+
+    return true;
+}
+
+//新增小幫手
+function chk_chk24()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_assistant_post");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_update24()
+{
+    global $xoopsDB;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_assistant_post") . "` (
+      `plugin` varchar(100) NOT NULL COMMENT '所屬外掛',
+      `ColName` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
+      `ColSN` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+      `CateID` smallint(6) unsigned NOT NULL COMMENT '編號',
+      `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
+      `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
+      PRIMARY KEY (`plugin`,`ColName`,`ColSN`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql);
+
+    return true;
+}
 //建立目錄
 function mk_dir($dir = "")
 {

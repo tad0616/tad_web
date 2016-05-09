@@ -275,7 +275,7 @@ class tad_web_aboutus
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 
         $xoopsTpl->assign('class_pic', sprintf(_MD_TCW_CLASS_PIC, $this->setup['class_title']));
@@ -412,7 +412,7 @@ class tad_web_aboutus
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs) or empty($DefCateID)) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
         // $Web = get_tad_web($this->WebID);
@@ -496,7 +496,7 @@ class tad_web_aboutus
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
         // $Web = get_tad_web($this->WebID);
@@ -649,7 +649,7 @@ class tad_web_aboutus
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 
         // $ys = get_seme();
@@ -818,7 +818,7 @@ class tad_web_aboutus
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 
         $myts                   = MyTextSanitizer::getInstance();
@@ -865,7 +865,7 @@ class tad_web_aboutus
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 
         $myts                   = &MyTextSanitizer::getInstance();
@@ -912,7 +912,7 @@ class tad_web_aboutus
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 
         $whereCateID = $whereMemID = "";

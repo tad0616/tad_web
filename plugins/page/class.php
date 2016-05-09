@@ -48,7 +48,7 @@ class tad_web_page
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.PageSort";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='PageID' and c.col_sn=a.PageID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.PageID desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='PageID' and c.col_sn=a.PageID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.PageID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
         }
@@ -67,7 +67,8 @@ class tad_web_page
                 $$k = $v;
             }
 
-            $main_data[$i] = $all;
+            $main_data[$i]                = $all;
+            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -178,6 +179,7 @@ class tad_web_page
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("PageID", $PageID, 'page'));
 
+        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'PageID', $PageID));
     }
 
     //tad_web_page編輯表單
@@ -187,8 +189,8 @@ class tad_web_page
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['page']) {
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 
@@ -235,11 +237,12 @@ class tad_web_page
         $xoopsTpl->assign('PageCount', $PageCount);
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $DefCateID = isset($_SESSION['isAssistant']['page']) ? $_SESSION['isAssistant']['page'] : '';
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         if (!empty($plugin_menu_var)) {
             $this->web_cate->set_button_value($plugin_menu_var['page']['short'] . _MD_TCW_CATE_TOOLS);
             $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['page']['short']));
-            $cate_menu = $this->web_cate->cate_menu($CateID);
+            $cate_menu = isset($_SESSION['isAssistant']['page']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
             $xoopsTpl->assign('cate_menu_form', $cate_menu);
         }
 
@@ -276,10 +279,12 @@ class tad_web_page
     //新增資料到tad_web_page中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
+        if (isset($_SESSION['isAssistant']['page'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+        }
 
         $myts                 = &MyTextSanitizer::getInstance();
         $_POST['PageTitle']   = $myts->addSlashes($_POST['PageTitle']);
@@ -297,6 +302,7 @@ class tad_web_page
 
         //取得最後新增資料的流水編號
         $PageID = $xoopsDB->getInsertId();
+        save_assistant_post($CateID, 'PageID', $PageID);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -320,7 +326,9 @@ class tad_web_page
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
-        $anduid = onlyMine();
+        if (!is_assistant($CateID, 'PageID', $PageID)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "update " . $xoopsDB->prefix("tad_web_page") . " set
          `CateID` = '{$CateID}' ,
@@ -342,8 +350,14 @@ class tad_web_page
     public function delete($PageID = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $anduid = onlyMine();
-        $sql    = "delete from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID' $anduid";
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+
+        if (!is_assistant($CateID, 'PageID', $PageID)) {
+            $anduid = onlyMine();
+        }
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('PageID', $PageID);

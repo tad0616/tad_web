@@ -123,7 +123,7 @@ class tad_web_calendar
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 
@@ -190,10 +190,8 @@ class tad_web_calendar
     //新增資料到tad_web_calendar中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $WebOwnerUid;
+        $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
 
         $myts                   = &MyTextSanitizer::getInstance();
         $_POST['CalendarName']  = $myts->addSlashes($_POST['CalendarName']);

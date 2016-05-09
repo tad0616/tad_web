@@ -39,14 +39,13 @@ switch ($op) {
 
     //刪除資料
     case "delete":
-        $tad_web_files->delete($fsn);
+        $tad_web_files->delete($fsn, $files_sn);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
 
     //下載檔案
     case "tufdl":
-        $files_sn = isset($_GET['files_sn']) ? intval($_GET['files_sn']) : "";
         $TadUpFiles->add_file_counter($files_sn);
         exit;
         break;

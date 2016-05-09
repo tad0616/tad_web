@@ -90,7 +90,7 @@
 <{elseif $op=="show_one"}>
   <script type="text/javascript">
     $(document).ready(function(){
-      $('img').css('width','').css('height','').addClass('img-responsive');
+      $('#list_new img').css('width','').css('height','').addClass('img-responsive');
     });
   </script>
 
@@ -104,7 +104,7 @@
   </ol>
 
   <{if $NewsContent}>
-    <div style="background-color: #fefefe; line-height: 2; font-size:120%; ">
+    <div id="list_new" style="background-color: #fefefe; line-height: 2; font-size:120%; ">
      <{$NewsContent}>
     </div>
   <{/if}>
@@ -127,7 +127,7 @@
   <{$fb_comments}>
 
   <div id="adm_bar" class="text-right" style="margin: 30px 0px;">
-    <{if $isMyWeb}>
+    <{if $isMyWeb or $isAssistant}>
       <a href="javascript:delete_news_func(<{$NewsID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$NewsID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
@@ -149,7 +149,7 @@
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup_b3.html"}>
 <{else}>
     <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$news.PluginTitle}></h1>
-    <{if $isMyWeb and $WebID}>
+    <{if $isMyWeb or $isAssistant}>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
     <{else}>
       <div class="text-center">

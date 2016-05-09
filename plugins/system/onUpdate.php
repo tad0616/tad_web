@@ -77,12 +77,15 @@ function system_onUpdate2_go()
 {
     global $xoopsDB;
 
-    $sql    = "select `BlockConfig`,`WebID` from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login'";
-    $result = $xoopsDB->query($sql);
+    $auth_method = get_sys_openid();
+    $sql         = "select `BlockConfig`,`WebID` from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login'";
+    $result      = $xoopsDB->query($sql);
     while (list($BlockConfig, $WebID) = $xoopsDB->fetchRow($result)) {
         $BlockConfig  = json_decode($BlockConfig, true);
         $login_method = implode(';', $BlockConfig['login_method']);
-
+        if (empty($login_method)) {
+            $login_method = implode(';', $auth_method);
+        }
         $sql = "replace into " . $xoopsDB->prefix("tad_web_config") . " (`ConfigName`, `ConfigValue`, `ConfigSort`, `CateID`, `WebID`) values('login_config' ,'{$login_method}',0,0,$WebID)";
         $xoopsDB->queryF($sql) or web_error($sql);
     }

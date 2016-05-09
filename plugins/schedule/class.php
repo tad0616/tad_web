@@ -71,7 +71,8 @@ class tad_web_schedule
                 $$k = $v;
             }
 
-            $main_data[$i] = $all;
+            $main_data[$i]                = $all;
+            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -155,6 +156,7 @@ class tad_web_schedule
         $sweet_alert = new sweet_alert();
         $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
+        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'ScheduleID', $ScheduleID));
     }
 
     //tad_web_schedule編輯表單
@@ -165,7 +167,7 @@ class tad_web_schedule
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 
         //抓取預設值
@@ -207,7 +209,8 @@ class tad_web_schedule
         $xoopsTpl->assign('ScheduleTime', $ScheduleTime);
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $DefCateID = isset($_SESSION['isAssistant']['schedule']) ? $_SESSION['isAssistant']['schedule'] : '';
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
 
         $ys = get_seme();
         $xoopsTpl->assign('ys', $ys);
@@ -215,7 +218,7 @@ class tad_web_schedule
         $this->web_cate->set_demo_txt(sprintf(_MD_TCW_SCHEDULE_CATE_DEMO, $ys[0], $ys[1]));
         $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
         $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
-        $cate_menu = $this->web_cate->cate_menu($CateID);
+        $cate_menu = isset($_SESSION['isAssistant']['schedule']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($ScheduleID)) ? "insert" : "update";
@@ -265,10 +268,12 @@ class tad_web_schedule
     //新增資料到tad_web_schedule中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $WebOwnerUid;
+        if (isset($_SESSION['isAssistant']['schedule'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+        }
 
         $myts                     = &MyTextSanitizer::getInstance();
         $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
@@ -285,6 +290,7 @@ class tad_web_schedule
 
         //取得最後新增資料的流水編號
         $ScheduleID = $xoopsDB->getInsertId();
+        save_assistant_post($CateID, 'ScheduleID', $ScheduleID);
 
         check_quota($this->WebID);
         return $ScheduleID;
@@ -304,7 +310,9 @@ class tad_web_schedule
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
-        $anduid = onlyMine();
+        if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set
          `CateID` = '{$CateID}' ,
@@ -329,8 +337,13 @@ class tad_web_schedule
     public function delete($ScheduleID = "")
     {
         global $xoopsDB;
-        $anduid = onlyMine();
-        $sql    = "delete from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID' $anduid";
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+        if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
+            $anduid = onlyMine();
+        }
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID' $anduid";
         if ($xoopsDB->queryF($sql)) {
 
             $sql = "delete from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='$ScheduleID'";
@@ -461,8 +474,8 @@ class tad_web_schedule
         global $xoopsModuleConfig, $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser;
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['schedule']) {
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 

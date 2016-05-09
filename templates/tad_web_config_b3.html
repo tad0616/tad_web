@@ -178,7 +178,7 @@
           <{if $login_config==''}>
             <{assign var="login_config" value=$login_defval}>
           <{/if}>
-          <h3>OpenID登入設定</h3>
+          <h3><{$smarty.const._MD_TCW_WEB_OPENID_SETUP}></h3>
           <form action="config.php" method="post" class="form-horizontal myForm" role="form">
             <{assign var="i" value=0}>
             <{assign var="total" value=1}>

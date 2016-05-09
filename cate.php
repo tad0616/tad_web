@@ -19,7 +19,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 //分類設定
 function list_all_cate($WebID = "", $ColName = "", $table = "")
 {
-    global $xoopsTpl, $plugin_menu_var;
+    global $xoopsTpl, $plugin_menu_var, $xoopsDB;
     if (empty($WebID) or empty($ColName)) {
         return;
     }
@@ -30,37 +30,53 @@ function list_all_cate($WebID = "", $ColName = "", $table = "")
 
     $cate_menu_form = $web_cate->cate_menu($CateID, "form", true, false, true, false, false);
     $xoopsTpl->assign('cate_menu_form', $cate_menu_form);
-/*
-array (
-13 =>
-array (
-'CateID' => '13',
-'WebID' => '1',
-'CateName' => '生活與藝術',
-'ColName' => 'works',
-'ColSN' => '0',
-'CateSort' => '1',
-'CateEnable' => '1',
-'CateCounter' => '0',
-),
-21 =>
-array (
-'CateID' => '21',
-'WebID' => '1',
-'CateName' => '作文',
-'ColName' => 'works',
-'ColSN' => '0',
-'CateSort' => '2',
-'CateEnable' => '1',
-'CateCounter' => '0',
-),
-)*/
+
+    // die(var_export($cate));
+    /*
+    array (
+    13 =>
+    array (
+    'CateID' => '13',
+    'WebID' => '1',
+    'CateName' => '生活與藝術',
+    'ColName' => 'works',
+    'ColSN' => '0',
+    'CateSort' => '1',
+    'CateEnable' => '1',
+    'CateCounter' => '0',
+    'AssistantType'=> 'MemID',
+    'AssistantID'=> '10',
+    ),
+    21 =>
+    array (
+    'CateID' => '21',
+    'WebID' => '1',
+    'CateName' => '作文',
+    'ColName' => 'works',
+    'ColSN' => '0',
+    'CateSort' => '2',
+    'CateEnable' => '1',
+    'CateCounter' => '0',
+    'AssistantType'=> 'MemID',
+    'AssistantID'=> '76',
+    ),
+    )*/
+    $default_class = get_web_config('default_class', $WebID);
+    $sql           = "select a.*,b.*,c.CateName from " . $xoopsDB->prefix("tad_web_link_mems") . " as a
+    left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID
+    left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
+    where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$default_class}'";
+    $result = $xoopsDB->query($sql) or web_error($sql);
+    while ($all = $xoopsDB->fetchArray($result)) {
+        $students[] = $all;
+    }
 
     $xoopsTpl->assign('cate_opt_arr', $cate);
     $xoopsTpl->assign('cate_arr', $cate);
     $xoopsTpl->assign('ColName', $ColName);
     $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('plugin', $plugin_menu_var[$ColName]);
+    $xoopsTpl->assign('students', $students);
     // die(var_export($menu_var[$ColName]));
 
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -83,7 +99,9 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
     //新增分類
-    $web_cate->save_tad_web_cate('', $_POST['newCateName']);
+    if ($_POST['newCateName']) {
+        $web_cate->save_tad_web_cate('', $_POST['newCateName']);
+    }
 
     foreach ($act_arr as $CateID => $act) {
 
@@ -100,6 +118,9 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
                 break;
             case "del_all":
                 $web_cate->delete_tad_web_cate($CateID);
+                break;
+            case "set_assistant":
+                set_assistant($CateID, $_POST['MemID'][$CateID]);
                 break;
 
         }

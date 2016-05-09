@@ -13,7 +13,7 @@ $tad_web_news->list_all($CateID, null, null, $tag);
 list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
 
 } elseif (!empty($tag)) {
-$sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.NewsID desc";
+$sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.NewsID desc";
 
 //show_one 取得標籤
 $xoopsTpl->assign("tags", $this->tags->list_tags("NewsID", $NewsID, 'news'));
@@ -128,6 +128,8 @@ class tags
         global $xoopsDB, $xoopsUser;
 
         $myts = MyTextSanitizer::getInstance();
+        $sql  = "delete from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID`='{$this->WebID}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
         if ($tags) {
             foreach ($tags as $tag) {
                 $tag = trim($tag);
@@ -135,17 +137,17 @@ class tags
                 if (empty($tag)) {
                     continue;
                 }
-                $sql = "replace into `" . $xoopsDB->prefix("tad_web_tags") . "` (
-              `WebID`,
-              `col_name`,
-              `col_sn`,
-              `tag_name`
-            ) values(
-              '{$this->WebID}',
-              '{$col_name}',
-              '{$col_sn}',
-              '{$tag}'
-            )";
+                $sql = "insert into `" . $xoopsDB->prefix("tad_web_tags") . "` (
+                  `WebID`,
+                  `col_name`,
+                  `col_sn`,
+                  `tag_name`
+                ) values(
+                  '{$this->WebID}',
+                  '{$col_name}',
+                  '{$col_sn}',
+                  '{$tag}'
+                )";
                 $xoopsDB->query($sql) or web_error($sql);
             }
         }

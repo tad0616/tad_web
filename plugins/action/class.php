@@ -53,7 +53,7 @@ class tad_web_action
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.ActionID desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='ActionID' and c.col_sn=a.ActionID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.ActionID desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='ActionID' and c.col_sn=a.ActionID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.ActionID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_action") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.ActionID desc";
         }
@@ -86,7 +86,8 @@ class tad_web_action
                 continue;
             }
 
-            $main_data[$i] = $all;
+            $main_data[$i]                = $all;
+            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -199,6 +200,7 @@ class tad_web_action
         $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("ActionID", $ActionID, 'action'));
+        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'ActionID', $ActionID));
     }
 
     //tad_web_action編輯表單
@@ -208,8 +210,8 @@ class tad_web_action
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['action']) {
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 
@@ -256,11 +258,12 @@ class tad_web_action
         $xoopsTpl->assign('ActionCount', $ActionCount);
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $DefCateID = isset($_SESSION['isAssistant']['action']) ? $_SESSION['isAssistant']['action'] : '';
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
 
         $this->web_cate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
         $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
-        $cate_menu = $this->web_cate->cate_menu($CateID);
+        $cate_menu = isset($_SESSION['isAssistant']['action']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($ActionID)) ? "insert" : "update";
@@ -291,10 +294,12 @@ class tad_web_action
     //新增資料到tad_web_action中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
+        if (isset($_SESSION['isAssistant']['action'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = $xoopsUser->getVar('uid');
+        }
 
         $myts                 = &MyTextSanitizer::getInstance();
         $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
@@ -312,6 +317,7 @@ class tad_web_action
 
         //取得最後新增資料的流水編號
         $ActionID = $xoopsDB->getInsertId();
+        save_assistant_post($CateID, 'ActionID', $ActionID);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -340,7 +346,9 @@ class tad_web_action
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
-        $anduid = onlyMine();
+        if (!is_assistant($CateID, 'ActionID', $ActionID)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "update " . $xoopsDB->prefix("tad_web_action") . " set
          `CateID` = '{$CateID}' ,
@@ -369,8 +377,13 @@ class tad_web_action
     public function delete($ActionID = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $anduid = onlyMine();
-        $sql    = "delete from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID' $anduid";
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+        if (!is_assistant($CateID, 'ActionID', $ActionID)) {
+            $anduid = onlyMine();
+        }
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";

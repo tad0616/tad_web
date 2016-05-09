@@ -32,14 +32,14 @@
       </div>
 
       <!--通知網站-->
-      <div class="form-group">
+      <!--div class="form-group">
         <label class="col-md-2 control-label">
           <{$smarty.const._MA_TADWEB_NOTICEWEB}>
         </label>
         <div class="col-md-6">
           <textarea name="NoticeWeb" rows=8 id="NoticeWeb" class="form-control " placeholder="<{$smarty.const._MA_TADWEB_NOTICEWEB}>"><{$NoticeWeb}></textarea>
         </div>
-      </div>
+      </div-->
 
       <!--通知對象-->
       <div class="form-group">
@@ -49,13 +49,13 @@
         <div class="col-md-10">
 
         <label class="checkbox-inline">
-          <input type="checkbox" name="NoticeWho[]" id="NoticeWho_def0" value="<{$smarty.const._MA_TADWEB_NOTICEWHO_DEF0}>" <{if $smarty.const._MA_TADWEB_NOTICEWHO_DEF0|in_array:$NoticeWho}>checked="checked"<{/if}>><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF0}>
+          <input type="checkbox" name="NoticeWho[]" id="NoticeWho_def0" value="master" <{if 'master'|in_array:$NoticeWho}>checked="checked"<{/if}>><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF0}>
         </label>
         <label class="checkbox-inline">
-          <input type="checkbox" name="NoticeWho[]" id="NoticeWho_def1" value="<{$smarty.const._MA_TADWEB_NOTICEWHO_DEF1}>" <{if $smarty.const._MA_TADWEB_NOTICEWHO_DEF1|in_array:$NoticeWho}>checked="checked"<{/if}>><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF1}>
+          <input type="checkbox" name="NoticeWho[]" id="NoticeWho_def1" value="mem" <{if 'mem'|in_array:$NoticeWho}>checked="checked"<{/if}>><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF1}>
         </label>
         <label class="checkbox-inline">
-          <input type="checkbox" name="NoticeWho[]" id="NoticeWho_def2" value="<{$smarty.const._MA_TADWEB_NOTICEWHO_DEF2}>" <{if $smarty.const._MA_TADWEB_NOTICEWHO_DEF2|in_array:$NoticeWho}>checked="checked"<{/if}>><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF2}>
+          <input type="checkbox" name="NoticeWho[]" id="NoticeWho_def2" value="parent" <{if 'parent'|in_array:$NoticeWho}>checked="checked"<{/if}>><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF2}>
         </label>
         </div>
       </div>
@@ -97,7 +97,7 @@
   </div>
 
   <!--通知網站-->
-  <div class="row">
+  <!--div class="row">
     <label class="col-md-3 text-right">
       <{$smarty.const._MA_TADWEB_NOTICEWEB}>
     </label>
@@ -107,7 +107,7 @@
         <{$NoticeWeb}>
       </div>
     </div>
-  </div>
+  </div-->
 
   <!--通知對象-->
   <div class="row">

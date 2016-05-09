@@ -8,7 +8,7 @@ $is_ezclass = XOOPS_URL == "http://class.tn.edu.tw" ? true : false;
 define('_IS_EZCLASS', $is_ezclass);
 
 //目前觀看的班級
-$Web = $WebName = $WebTitle = $WebOwner = $menu_var = $plugin_menu_var = "";
+$Web = $WebName = $WebTitle = $WebOwner = $WebOwnerUid = $menu_var = $plugin_menu_var = "";
 
 $i = 0;
 if (!empty($WebID)) {
@@ -16,9 +16,10 @@ if (!empty($WebID)) {
     $web_all_config = get_web_all_config($WebID);
     update_last_accessed($WebID);
     if ($Web and $Web['WebEnable'] == '1') {
-        $WebName  = $Web['WebName'];
-        $WebTitle = $Web['WebTitle'];
-        $WebOwner = $Web['WebOwner'];
+        $WebName     = $Web['WebName'];
+        $WebTitle    = $Web['WebTitle'];
+        $WebOwner    = $Web['WebOwner'];
+        $WebOwnerUid = $Web['WebOwnerUid'];
 
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png")) {
             output_head_file($WebID);

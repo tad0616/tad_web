@@ -3,9 +3,9 @@
 if (homework_onUpdate1_chk()) {
     homework_onUpdate1_go();
 }
-
-//修正聯絡簿日期
-homework_onUpdate2_go();
+if (homework_onUpdate2_chk()) {
+    homework_onUpdate2_go();
+}
 
 //修改聯絡簿計數欄位名稱
 function homework_onUpdate1_chk()
@@ -30,13 +30,28 @@ function homework_onUpdate1_go()
     return true;
 }
 
-//修正聯絡簿日期
+//新增家長表格
+function homework_onUpdate2_chk()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_homework_content");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
 function homework_onUpdate2_go()
 {
     global $xoopsDB;
-    $sql = "update `" . $xoopsDB->prefix("tad_web_homework") . "` set `HomeworkPostDate`=`HomeworkDate`
-    where right(`HomeworkPostDate`,6)!=':00:00' and `HomeworkPostDate`!=`HomeworkDate`";
-    // $sql = "update " . $xoopsDB->prefix("tad_web_homework") . " set `HomeworkPostDate`=concat(`toCal`,' ',right(`HomeworkPostDate`,8)) where `toCal`!=left(`HomeworkPostDate`,10)";
-    $xoopsDB->queryF($sql);
-    return true;
+    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_homework_content") . "` (
+      `HomeworkID` smallint(6) unsigned NOT NULL COMMENT '編號',
+      `HomeworkCol` varchar(100) NOT NULL default '' COMMENT '欄位',
+      `Content` text NOT NULL COMMENT '內容',
+      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+      PRIMARY KEY (`HomeworkID`,`HomeworkCol`)
+    ) ENGINE=MyISAM";
+    $xoopsDB->queryF($sql) or web_error($sql);
 }

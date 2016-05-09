@@ -15,29 +15,38 @@ define("_MD_TCW_HOMEWORK_POST_AT", "（預計於 %s 發布）");
 
 define("_MD_TCW_HOMEWORKCOUNTER", "人氣");
 
-define("_MD_TCW_HOMEWORK_DEFAULT", "
-  <table class='table'>
-  <tbody>
-    <tr>
-      <td><img alt='今日作業' src='" . XOOPS_URL . "/modules/tad_web/images/today_homework.png' /></td>
-      <td><img alt='明日準備事項' src='" . XOOPS_URL . "/modules/tad_web/images/bring.png' /></td>
-      <td><img alt='老師的叮嚀' src='" . XOOPS_URL . "/modules/tad_web/images/teacher_say.png' /></td>
-    </tr>
-    <tr>
-      <td>
-      <ol>
-        <li>&nbsp;</li>
-      </ol>
-      </td>
-      <td>
-      <ol>
-        <li>&nbsp;</li>
-      </ol>
-      </td>
-      <td>&nbsp;</td>
-    </tr>
-  </tbody>
-</table>");
+define("_MD_TCW_HOMEWORK_DEFAULT", '<div class="row three-col">
+<div class="col-md-4 col-sm-4 span4 col-1">
+<p><img alt="今日作業" src="' . XOOPS_URL . '/modules/tad_web/images/today_homework.png" /></p>
+
+<ol>
+  <li>&nbsp;</li>
+</ol>
+</div>
+
+<div class="col-md-4 col-sm-4 span4 col-2">
+<p><img alt="明日準備事項" src="' . XOOPS_URL . '/modules/tad_web/images/bring.png" /></p>
+
+<ol>
+  <li>&nbsp;</li>
+</ol>
+</div>
+
+<div class="col-md-4 col-sm-4 span4 col-3">
+<p><img alt="老師的叮嚀" src="' . XOOPS_URL . '/modules/tad_web/images/teacher_say.png" /></p>
+
+<ol>
+  <li>&nbsp;</li>
+</ol>
+</div>
+</div>
+
+<p>&nbsp;</p>
+');
 
 define("_MD_TCW_HOMEWORK_BLOCK_LIST", "聯絡簿");
 define("_MD_TCW_HOMEWORK_BLOCK_LIMIT", "顯示聯絡簿數量");
+define("_MD_TCW_HOMEWORK_TODAY_WORK", "今日作業");
+define("_MD_TCW_HOMEWORK_BRING", "明天應帶物品");
+define("_MD_TCW_HOMEWORK_TEACHER_SAY", "老師的叮嚀");
+define("_MD_TCW_HOMEWORK_OTHER", "其他補充");

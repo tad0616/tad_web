@@ -24,7 +24,7 @@ if (!empty($plugin)) {
     $xoopsTpl->assign('plugin', $plugin);
     $xoopsTpl->assign('now_plugin', $plugin_menu_var[$plugin]);
 }
-// die(var_export($plugin_menu_var[$plugin]));
+
 $xoopsTpl->assign('menu_var', $menu_var);
 $xoopsTpl->assign('isMyWeb', $isMyWeb);
 $xoopsTpl->assign('bootstrap', $_SESSION['bootstrap']);
@@ -54,39 +54,48 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
 }
 
 //區塊
-if ($WebID and _DISPLAY_MODE == 'no') {
-    // $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' and `BlockName`='login'";
-    // $result = $xoopsDB->queryF($sql) or web_error($sql);
-    // $all    = $xoopsDB->fetchArray($result);
-    // foreach ($all as $k => $v) {
-    //     $$k = $v;
-    // }
-
-    // $blocks_arr           = $all;
-    // $config               = json_decode($BlockConfig, true);
-    // $blocks_arr['config'] = $config;
-
-    // if (file_exists("{$dir}{$plugin}/blocks.php")) {
-    //     include_once "{$dir}{$plugin}/blocks.php";
-    // }
-
-    // $blocks_arr['tpl']          = $block_tpl[$BlockName];
-    // $blocks_arr['BlockContent'] = call_user_func($BlockName, $WebID, $config);
-    // $blocks_arr['config']       = $config;
-    // if ($_GET['test'] == '1') {
-    //     die(var_export($blocks_arr));
-    // }
-    // $xoopsTpl->assign('block', $blocks_arr);
-
-} else {
-    get_tad_web_blocks($WebID, _DISPLAY_MODE);
-}
+get_tad_web_blocks($WebID, _DISPLAY_MODE);
 
 //登入區塊及選單
 if (!empty($_SESSION['LoginMemID']) or !empty($_SESSION['LoginParentID']) or $xoopsUser) {
     tad_web_my_menu($WebID);
+    get_marquee();
 } else {
     tad_web_login($WebID);
+}
+
+//取得通知內容
+function get_marquee()
+{
+
+    global $xoopsDB, $xoopsTpl;
+    if (!empty($_SESSION['LoginMemID'])) {
+        $user_kind = 'mem';
+    } elseif (!empty($_SESSION['LoginParentID'])) {
+        $user_kind = 'parent';
+    } else {
+        $user_kind = 'master';
+    }
+
+    $sql    = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "` where `NoticeWho` like '%{$user_kind}%' or `NoticeWho`='' order by NoticeDate desc limit 0,5";
+    $result = $xoopsDB->query($sql)
+    or web_error($sql);
+    $data_arr = '';
+    while ($data = $xoopsDB->fetchArray($result)) {
+        $NoticeID                               = $data['NoticeID'];
+        $data_arr[$NoticeID]                    = $data;
+        $data_arr[$NoticeID]['NoticeShortDate'] = substr($data['NoticeDate'], 0, 10);
+    }
+    $xoopsTpl->assign('marquee_arr', $data_arr);
+
+    if ($data_arr) {
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
+        $fancybox = new fancybox('.sho_notice', '480px', '480px');
+        $fancybox->render(false);
+    }
 }
 
 //我的選單
@@ -106,6 +115,16 @@ function tad_web_my_menu($WebID)
             $back_home   = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $defaltWebID = $_SESSION['LoginWebID'];
             $add_power   = array('discuss');
+            //小幫手
+            $sql    = "select a.`CateID`,b.ColName from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as a join `" . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
+            $result = $xoopsDB->queryF($sql) or web_error($sql);
+            while (list($CateID, $ColName) = $xoopsDB->fetchRow($result)) {
+                $add_power[]                        = $ColName;
+                $_SESSION['isAssistant'][$ColName]  = $CateID;
+                $_SESSION['AssistantType'][$CateID] = 'MemID';
+                $_SESSION['AssistantID'][$CateID]   = $_SESSION['LoginMemID'];
+            }
+            // die(var_export($add_power));
         } elseif (!empty($_SESSION['LoginParentID'])) {
             $user_kind   = 'parent';
             $user_name   = $_SESSION['LoginParentName'];
@@ -180,6 +199,12 @@ function tad_web_my_menu($WebID)
             $xoopsTpl->assign('webs', $webs);
             $xoopsTpl->assign('web_num', $web_num);
 
+            if (isset($_SESSION['isAssistant'])) {
+                $xoopsTpl->assign('isAssistant', $_SESSION['isAssistant']);
+                $xoopsTpl->assign('AssistantTypeArr', $_SESSION['AssistantType']);
+                $xoopsTpl->assign('AssistantIDArr', $_SESSION['AssistantID']);
+            }
+
             //已關閉網站
             $MyClosedWebID    = MyWebID('0');
             $AllMyClosedWebID = implode("','", $MyClosedWebID);
@@ -205,10 +230,10 @@ function tad_web_my_menu($WebID)
             $xoopsTpl->assign('closed_webs', $closed_webs);
         }
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php")) {
-            mk_menu_var_file($WebID);
+        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php")) {
+            mk_menu_var_file($defaltWebID);
         }
-        include XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+        include XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
 
         $xoopsTpl->assign('user_kind', $user_kind);
         $xoopsTpl->assign('say_hi', sprintf(_MD_TCW_HI, $user_name));
@@ -239,47 +264,34 @@ function tad_web_login($WebID, $config = array())
     setcookie("login_from", $login_from, '/', $domain, false);
     $_SESSION['login_from'] = $login_from;
 
-    $login_config = explode(';', get_web_config('login_config', $WebID));
+    $login_config = get_web_config('login_config', $WebID);
+    $login_config = empty($login_config) ? array() : explode(';', $login_config);
     // die(var_export($login_config));
     $about_setup = get_plugin_setup_values($WebID, "aboutus");
-    // die(var_export($about_setup));
+    if ($_GET['test'] == '1') {
+        die(var_export($about_setup));
+    }
 
-    $xoopsTpl->assign('student_title', $about_setup['student_title']);
-    $xoopsTpl->assign('mem_parents', $about_setup['mem_parents']);
+    $auth_method = get_sys_openid();
+    if ($auth_method) {
 
-    $modhandler     = &xoops_gethandler('module');
-    $config_handler = &xoops_gethandler('config');
-
-    $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
-    if ($TadLoginXoopsModule) {
-        include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
-        include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
-        if (function_exists('facebook_login')) {
-            $tad_login['facebook'] = facebook_login('return');
-        }
-
-        if (function_exists('google_login')) {
-            $tad_login['google'] = google_login('return');
-        }
-
-        $config_handler = &xoops_gethandler('config');
-        $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
-
-        $auth_method = $modConfig['auth_method'];
-        $i           = 0;
+        $i = 0;
 
         // $login_method_arr = explode(';', $login_method);
         foreach ($auth_method as $method) {
-            if (!in_array($method, $login_config)) {
+            if (!empty($login_config) and !in_array($method, $login_config)) {
+                // die(var_export($login_config));
                 continue;
             }
             $method_const = "_" . strtoupper($method);
             $loginTitle   = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
 
             if ($method == "facebook") {
-                $tlogin[$i]['link'] = $tad_login['facebook'];
+                $tlogin[$i]['link'] = facebook_login('return');
+
             } elseif ($method == "google") {
-                $tlogin[$i]['link'] = $tad_login['google'];
+                $tlogin[$i]['link'] = google_login('return');
+
             } else {
                 $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
             }
@@ -288,6 +300,10 @@ function tad_web_login($WebID, $config = array())
 
             $i++;
         }
+
+        // if ($_GET['test'] == '1') {
+        //     die(var_export($auth_method));
+        // }
 
         $openid = '1';
         $xoopsTpl->assign('tlogin', $tlogin);
@@ -311,14 +327,18 @@ function tad_web_login($WebID, $config = array())
         $web_cate->set_var('menu_id', 'loginCateID');
         $cate_menu = $web_cate->cate_menu('', 'page', false, false, false);
         $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('mem_parents', $about_setup['mem_parents']);
     }
 
+    $xoopsTpl->assign('student_title', $about_setup['student_title']);
 }
 
 //取得多人網頁的內部區塊(在footer.php執行)
 function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 {
     global $xoopsTpl, $xoopsDB, $Web;
+
+    $power           = new power($WebID);
     $myts            = &MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = array();
 
@@ -343,6 +363,12 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
+        }
+
+        //檢查權限
+        $have_power = $power->check_power("read", "BlockID", $BlockID);
+        if (!$have_power) {
+            continue;
         }
 
         if ($Web['WebEnable'] != "1" and $BlockName == "my_menu") {

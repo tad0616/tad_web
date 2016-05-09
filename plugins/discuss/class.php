@@ -54,7 +54,7 @@ class tad_web_discuss
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' and a.ReDiscussID='0' $andCounty $andCity $andSchoolName order by a.LastTime desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='DiscussID' and c.col_sn=a.DiscussID where b.`WebEnable`='1' and a.ReDiscussID='0' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.LastTime desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='DiscussID' and c.col_sn=a.DiscussID where b.`WebEnable`='1' and a.ReDiscussID='0' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.LastTime desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_discuss") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' and a.ReDiscussID='0' $andWebID $andCateID order by a.LastTime desc";
         }

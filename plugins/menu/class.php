@@ -54,7 +54,7 @@ class tad_web_menu
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.MenuID desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='MenuID' and c.col_sn=a.MenuID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.MenuID desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='MenuID' and c.col_sn=a.MenuID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.MenuID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.MenuID desc";
         }
@@ -210,7 +210,7 @@ class tad_web_menu
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 
@@ -257,7 +257,7 @@ class tad_web_menu
         $xoopsTpl->assign('MenuCount', $MenuCount);
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? '' : $DBV['CateID'];
         $this->web_cate->set_button_value($plugin_menu_var['menu']['short'] . _MD_TCW_CATE_TOOLS);
         $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['menu']['short']));
         $cate_menu = $this->web_cate->cate_menu($CateID);
@@ -291,10 +291,8 @@ class tad_web_menu
     //新增資料到tad_web_menu中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
+        $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
 
         $myts               = &MyTextSanitizer::getInstance();
         $_POST['MenuName']  = $myts->addSlashes($_POST['MenuName']);
@@ -370,7 +368,8 @@ class tad_web_menu
     {
         global $xoopsDB, $TadUpFiles;
         $anduid = onlyMine();
-        $sql    = "delete from " . $xoopsDB->prefix("tad_web_menu") . " where MenuID='$MenuID' $anduid";
+
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_menu") . " where MenuID='$MenuID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";

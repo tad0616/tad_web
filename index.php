@@ -74,21 +74,40 @@ function list_all_class()
     $xoopsTpl->assign('data_count_sum', array_sum($data_count));
 }
 
+function view_notice($NoticeID = "")
+{
+    global $xoopsTpl;
+    $xoopsTpl->assign('Notice', get_tad_web_notice($NoticeID));
+    $xoopsTpl->assign('theme_display_mode', 'blank');
+    $xoopsTpl->assign('blank_kind', 'content');
+
+
+}
+
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op    = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$op       = system_CleanVars($_REQUEST, 'op', '', 'string');
+$WebID    = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$NoticeID = system_CleanVars($_REQUEST, 'NoticeID', 0, 'int');
 
 common_template($WebID, $web_all_config);
 
-if (!empty($WebID)) {
-    ClassHome($WebID);
-    $op = 'ClassHome';
-} else {
-    list_all_class();
-    $op = 'list_all_class';
-}
+switch ($op) {
+    //新增資料
+    case "notice":
+        view_notice($NoticeID);
+        break;
 
+    //預設動作
+    default:
+        if (!empty($WebID)) {
+            ClassHome($WebID);
+            $op = 'ClassHome';
+        } else {
+            list_all_class();
+            $op = 'list_all_class';
+        }
+}
 /*-----------秀出結果區--------------*/
 include_once 'footer.php';
 include_once XOOPS_ROOT_PATH . '/footer.php';

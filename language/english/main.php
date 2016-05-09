@@ -242,3 +242,8 @@ define('_MD_TCW_LEADERBOARD_RANK', 'Rank');
 define('_MD_TCW_WEB_COUNTER', 'Web Counter');
 define('_MD_TCW_WEB_BLOCK', 'Blocks');
 define("_MD_TCW_HI", "Hi %s!");
+define('_MD_TCW_WEB_CLOSE_MENU', 'Close Menu');
+define('_MD_TCW_WEB_OPENID_SETUP', 'OpenID Setup');
+
+define('_MD_TCW_CATE_ASSISTANT', 'Assistant');
+define('_MD_TCW_CATE_SET_ASSISTANT', 'Setup an assistant');

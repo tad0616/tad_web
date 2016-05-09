@@ -9,11 +9,18 @@ if (!empty($_REQUEST['WebID']) and $isMyWeb) {
     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
 }
 
+//權限設定
+$power = new power($WebID);
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 function config_block($WebID, $BlockID, $plugin, $mode = "config")
 {
-    global $xoopsDB, $xoopsTpl;
+    global $xoopsDB, $xoopsTpl, $power;
+
+    $power->set_col_md(3, 9);
+    $power_form = $power->power_menu('read', "BlockID", $BlockID);
+    $xoopsTpl->assign('power_form', $power_form);
+
     $shareBlockCount = $webs = '';
     $shareBlockID    = get_share_block_id($BlockID);
 
@@ -158,7 +165,7 @@ function array2form($form_arr = array(), $config = array())
 
 function save_block_config($WebID = "", $BlockID = "", $BlockName = "", $BlockTitle = "", $BlockPosition = "", $config = "", $BlockShare = "", $shareBlockID = "", $BlockEnable = "", $ShareFrom = "")
 {
-    global $xoopsDB;
+    global $xoopsDB, $power;
     $myts          = MyTextSanitizer::getInstance();
     $BlockTitle    = $myts->addSlashes($BlockTitle);
     $BlockPosition = $myts->addSlashes($BlockPosition);
@@ -236,6 +243,8 @@ function save_block_config($WebID = "", $BlockID = "", $BlockName = "", $BlockTi
         }
     }
 
+    //儲存權限
+    $power->save_power("BlockID", $BlockID, 'read');
     mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
 }
 
@@ -303,7 +312,7 @@ function block_setup($WebID = "")
 //刪除區塊
 function delete_block($BlockID, $WebID)
 {
-    global $xoopsDB, $MyWebs, $isAdmin;
+    global $xoopsDB, $MyWebs, $isAdmin, $power;
     if (!$isAdmin and !in_array($WebID, $MyWebs)) {
         return;
     }
@@ -316,6 +325,9 @@ function delete_block($BlockID, $WebID)
     //刪除自己
     $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where BlockID='{$BlockID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
+
+    //刪除權限
+    $power->delete_power("BlockID", $BlockID, 'read');
 }
 
 //刪除分享區塊

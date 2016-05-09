@@ -9,18 +9,27 @@
         $("#new_name_col"+cate_id).show();
         $("#move2"+cate_id).hide();
         $("#del_alert"+cate_id).hide();
+        $("#set_assistant"+cate_id).hide();
       }else if(this_op=="delete" || this_op=="move"){
         $("#new_name_col"+cate_id).hide();
         $("#move2"+cate_id).show();
         $("#del_alert"+cate_id).hide();
+        $("#set_assistant"+cate_id).hide();
       }else if(this_op=="del_all"){
         $("#new_name_col"+cate_id).hide();
         $("#move2"+cate_id).hide();
         $("#del_alert"+cate_id).show();
+        $("#set_assistant"+cate_id).hide();
+      }else if(this_op=="set_assistant"){
+        $("#new_name_col"+cate_id).hide();
+        $("#move2"+cate_id).hide();
+        $("#del_alert"+cate_id).hide();
+        $("#set_assistant"+cate_id).show();
       }else{
         $("#new_name_col"+cate_id).hide();
         $("#move2"+cate_id).hide();
         $("#del_alert"+cate_id).hide();
+        $("#set_assistant"+cate_id).hide();
       }
     });
   });
@@ -39,7 +48,7 @@
           <{$plugin.title}><{$smarty.const._MD_TCW_NEW_CATE}>
         </label>
         <div class="col-md-4">
-          <input type="text" name="newCateName" id="newCateName" class="validate[required] form-control">
+          <input type="text" name="newCateName" id="newCateName" class="form-control">
         </div>
       </div>
     <{/if}>
@@ -48,6 +57,9 @@
       <!--<{$cate.CateName}>-->
       <div class="form-group">
         <label class="col-md-2 control-label">
+          <{if $cate.assistant}>
+            <i class="fa fa-male" alt="<{$cate.assistant.MemName}>" title="<{$cate.assistant.MemName}>"></i>
+          <{/if}>
           <span class="label label-success"><{$cate.counter}></span>
           <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
         </label>
@@ -58,6 +70,9 @@
             <option value="rename"><{$smarty.const._MD_TCW_CATE_MODIFY}></option>
             <option value="delete"><{$smarty.const._MD_TCW_DEL_CATE_MOVE_TO}></option>
             <option value="del_all"><{$smarty.const._MD_TCW_DEL_CATE_ALL}></option>
+            <{if $plugin.assistant=='1'}>
+            <option value="set_assistant"><{$smarty.const._MD_TCW_CATE_SET_ASSISTANT}></option>
+            <{/if}>
           </select>
         </div>
         <div class="col-md-6">
@@ -75,6 +90,11 @@
               <{$smarty.const._MD_TCW_DEL_CATE_ALL_ALERT}>
             </label>
           </div>
+          <select name="MemID[<{$cate.CateID}>]" id="set_assistant<{$cate.CateID}>" class="form-control set_assistant" style="display: none;">
+            <{foreach from=$students item=mem}>
+              <option value="<{$mem.MemID}>" <{if $cate.assistant.MemID==$mem.MemID}>selected<{/if}>><{$mem.CateName}>(<{$mem.MemSort}>)<{$mem.MemName}></option>
+            <{/foreach}>
+          </select>
         </div>
       </div>
     <{/foreach}>

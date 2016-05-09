@@ -509,7 +509,7 @@ switch ($op) {
     //刪除資料
     case "delete_tad_web_chk":
         if (empty($delWebID) or !$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         common_template($WebID, $web_all_config);
         delete_tad_web_chk($delWebID);
@@ -518,7 +518,7 @@ switch ($op) {
     //刪除資料
     case "delete_tad_web":
         if (empty($WebID) or !$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         delete_tad_web($WebID);
         header("location: index.php");

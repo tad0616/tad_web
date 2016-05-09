@@ -1,4 +1,17 @@
 <link rel="stylesheet" href="<{$xoops_url}>/modules/tad_web/class/Slide-Push-Menus/css/style.css">
+<script type='text/javascript' src='<{$xoops_url}>/modules/tad_web/class/jquery.marquee.js'></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.marquee').marquee({
+      duplicated: true,
+      pauseOnHover: true,
+      duration :8000,
+      startVisible :false,
+      gap :80
+    });
+  });
+</script>
+
 <style>
 #c-button--slide-right{
   width: 60px;
@@ -18,6 +31,12 @@
   right: 15px;
   background: transparent url('images/my_menu_hover.png');
 }
+
+.marquee {
+  overflow: hidden;
+  border: 1px solid #E3EEEF;
+  background: #E3EEEF;
+}
 </style>
 
 <div id="o-wrapper">
@@ -26,7 +45,15 @@
 
 
 <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right" style="background: #ffffff; color:#000000;">
-  <button class="c-menu__close">Close Menu &rarr;</button>
+  <button class="c-menu__close"><{$smarty.const._MD_TCW_WEB_CLOSE_MENU}> &rarr;</button>
+  <{if $marquee_arr}>
+    <div class="marquee">
+      <{foreach from=$marquee_arr item=marquee}>
+        <i class="fa fa-chevron-circle-right"></i> <a href="index.php?WebID=<{$WebID}>&op=notice&NoticeID=<{$marquee.NoticeID}>" class="sho_notice" data-fancybox-type="iframe"><{$marquee.NoticeShortDate}> <{$marquee.NoticeTitle}></a>
+      <{/foreach}>
+    </div>
+  <{/if}>
+
   <div style="margin-left:10px;">
     <h3><{$say_hi}></h3>
     <div style="margin:10px 0px;">
@@ -43,9 +70,9 @@
             <i class="fa fa-check-square-o"></i>
             <{$smarty.const._MD_TCW_ABOUTUS_MY_ACCOUNT}>
           </a>
-          <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger">
-            <i class="fa fa-check-square-o"></i>
-            <{$smarty.const._MD_TCW_EXIT}>
+          <a href="aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$default_class}>&MemID=<{$LoginMemID}>&op=edit_stu" class="btn btn-success">
+            <i class="fa fa-pencil-square-o"></i>
+            <{$smarty.const._MD_TCW_ABOUTUS_EDIT_ACCOUNT}>
           </a>
         </div>
         <table class="table">
@@ -73,15 +100,19 @@
           <{/foreach}>
         </table>
 
+        <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
+          <i class="fa fa-check-square-o"></i>
+          <{$smarty.const._MD_TCW_EXIT}>
+        </a>
     <{elseif $user_kind=="parent"}>
         <div class="btn-group">
           <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$LoginCateID}>&ParentID=<{$LoginParentID}>&op=show_parent" class="btn btn-info">
             <i class="fa fa-check-square-o"></i>
             <{$smarty.const._MD_TCW_ABOUTUS_MY_ACCOUNT}>
           </a>
-          <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=parent_logout&WebID=<{$WebID}>" class="btn btn-danger">
-            <i class="fa fa-check-square-o"></i>
-            <{$smarty.const._MD_TCW_EXIT}>
+          <a href="aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$default_class}>&ParentID=<{$LoginParentID}>&op=show_parent" class="btn btn-success">
+            <i class="fa fa-pencil-square-o"></i>
+            <{$smarty.const._MD_TCW_ABOUTUS_EDIT_ACCOUNT}>
           </a>
         </div>
         <table class="table">
@@ -108,6 +139,11 @@
             <{/if}>
           <{/foreach}>
         </table>
+
+        <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=parent_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
+          <i class="fa fa-check-square-o"></i>
+          <{$smarty.const._MD_TCW_EXIT}>
+        </a>
     <{else}>
 
       <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/bootstrap-progressbar/bootstrap-progressbar.js"></script>
@@ -174,7 +210,13 @@
                         <i class="fa fa-folder-open"></i>
                       </a>
                     <{/if}>
-
+                  </td>
+                  <td>
+                    <{if $plugin.assistant=='1'}>
+                      <a href="<{$xoops_url}>/modules/tad_web/assistant.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>"  title="<{$plugin.short}><{$smarty.const._MD_TCW_CATE_ASSISTANT}>">
+                        <i class="fa fa-male"></i>
+                      </a>
+                    <{/if}>
                   </td>
                 </tr>
               <{else}>
@@ -183,7 +225,7 @@
                       <i class="fa <{$plugin.icon}>"></i>
                       <{$plugin.title}>
                   </td>
-                  <td colspan=3 style="background-color: #dfdfdf;">
+                  <td colspan=4 style="background-color: #dfdfdf;">
                     <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-xs"><{$smarty.const._MD_TCW_ENABLE_PLUGIN}></a>
                   </td>
                 </tr>
@@ -235,7 +277,6 @@
     e.preventDefault;
     slideRight.open();
   });
-
 
 
 </script>

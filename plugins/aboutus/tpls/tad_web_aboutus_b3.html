@@ -573,7 +573,7 @@
     <div class="col-md-4">
       <{if $im_student}>
        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.html"}>
-      <{else}>
+      <{elseif $students}>
         <table class="table table-striped table-bordered table-hover table-condensed">
           <tr>
           <{if 'MemNum'|in_array:$mem_column}>

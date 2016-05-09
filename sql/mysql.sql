@@ -28,6 +28,23 @@ CREATE TABLE `tad_web_cate` (
   PRIMARY KEY (`CateID`)
 ) ENGINE=MyISAM;
 
+CREATE TABLE `tad_web_cate_assistant` (
+  `CateID` smallint(6) unsigned NOT NULL COMMENT '編號',
+  `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
+  `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
+  PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`)
+) ENGINE=MyISAM;
+
+CREATE TABLE `tad_web_assistant_post` (
+  `plugin` varchar(100) NOT NULL COMMENT '所屬外掛',
+  `ColName` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
+  `ColSN` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+  `CateID` smallint(6) unsigned NOT NULL COMMENT '編號',
+  `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
+  `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
+  PRIMARY KEY (`plugin`,`ColName`,`ColSN`)
+) ENGINE=MyISAM;
+
 CREATE TABLE `tad_web_config` (
   `ConfigName` VARCHAR(100) NOT NULL default '',
   `ConfigValue` TEXT NOT NULL,
@@ -131,4 +148,13 @@ CREATE TABLE `tad_web_notice` (
   `NoticeWho` varchar(255) NOT NULL default '' COMMENT '通知對象',
   `NoticeDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '通知日期',
   PRIMARY KEY  (`NoticeID`)
+)  ENGINE=MyISAM;
+
+CREATE TABLE `tad_web_mail_log` (
+  `ColName` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
+  `ColSN` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+  `WebID` smallint(5) unsigned NOT NULL  COMMENT '所屬網站',
+  `Mail` varchar(100) NOT NULL default '' COMMENT '信箱',
+  `MailDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '寄信日期',
+  PRIMARY KEY  (`ColName`,`ColSN`,`WebID`,`Mail`)
 )  ENGINE=MyISAM;

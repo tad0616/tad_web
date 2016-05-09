@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
-$modversion['version']     = 1.68;
+$modversion['version']     = 1.69;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author']      = _MI_TCW_AUTHOR;
 $modversion['credits']     = _MI_TCW_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2016/02/23';
+$modversion['release_date']        = '2016/04/08';
 $modversion['module_website_url']  = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -45,6 +45,10 @@ $modversion['tables'][]         = "tad_web_blocks";
 $modversion['tables'][]         = "tad_web_plugins_setup";
 $modversion['tables'][]         = "tad_web_power";
 $modversion['tables'][]         = "tad_web_tags";
+$modversion['tables'][]         = "tad_web_notice";
+$modversion['tables'][]         = "tad_web_mail_log";
+$modversion['tables'][]         = "tad_web_cate_assistant";
+$modversion['tables'][]         = "tad_web_assistant_post";
 
 //---管理介面設定---//
 $modversion['hasAdmin']   = 1;
@@ -132,6 +136,11 @@ $modversion['templates'][$i]['description'] = 'tad_web_config_b3.html';
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_web_cate_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_web_cate_b3.html';
+
+//tad_web_assistant.html 不需要
+$i++;
+$modversion['templates'][$i]['file']        = 'tad_web_assistant_b3.html';
+$modversion['templates'][$i]['description'] = 'tad_web_assistant_b3.html';
 
 //tad_web_header.html 不需要
 $i++;

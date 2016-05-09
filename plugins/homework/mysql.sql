@@ -11,3 +11,11 @@ CREATE TABLE `tad_web_homework` (
   `HomeworkPostDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '顯示日期',
 PRIMARY KEY (`HomeworkID`)
 ) ENGINE=MyISAM;
+
+CREATE TABLE `tad_web_homework_content` (
+  `HomeworkID` smallint(6) unsigned NOT NULL COMMENT '編號',
+  `HomeworkCol` varchar(100) NOT NULL default '' COMMENT '欄位',
+  `Content` text NOT NULL COMMENT '內容',
+  `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+PRIMARY KEY (`HomeworkID`,`HomeworkCol`)
+) ENGINE=MyISAM;

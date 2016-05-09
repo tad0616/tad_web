@@ -52,7 +52,7 @@ class tad_web_files
 
             $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid where c.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.file_date desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as d on d.col_name='fsn' and d.col_sn=a.fsn where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
+            $sql = "select distinct a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as d on d.col_name='fsn' and d.col_sn=a.fsn where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
 
         } else {
             $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
@@ -93,6 +93,8 @@ class tad_web_files
 
             $main_data[$i] = $all;
 
+            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'fsn', $fsn);
+
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
@@ -113,7 +115,7 @@ class tad_web_files
         }
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert = new sweet_alert();
-        $sweet_alert->render("delete_files_func", "files.php?op=delete&WebID={$this->WebID}&fsn={$fsn}&files_sn=", 'files_sn');
+        $sweet_alert->render("delete_files_func", "files.php?op=delete&WebID={$this->WebID}&files_sn=", 'files_sn');
 
         //刪除檔案
         if (is_array($need_del)) {
@@ -149,8 +151,8 @@ class tad_web_files
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['files']) {
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 
@@ -181,10 +183,11 @@ class tad_web_files
         $xoopsTpl->assign('WebID', $WebID);
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $DefCateID = isset($_SESSION['isAssistant']['files']) ? $_SESSION['isAssistant']['files'] : '';
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->web_cate->set_button_value($plugin_menu_var['files']['short'] . _MD_TCW_CATE_TOOLS);
         $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['files']['short']));
-        $cate_menu = $this->web_cate->cate_menu($CateID);
+        $cate_menu = isset($_SESSION['isAssistant']['files']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         //設定「file_link」欄位預設值
@@ -222,10 +225,12 @@ class tad_web_files
     //新增資料到tad_web_files中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
+        if (isset($_SESSION['isAssistant']['files'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+        }
 
         $myts = &MyTextSanitizer::getInstance();
 
@@ -244,6 +249,8 @@ class tad_web_files
 
         //取得最後新增資料的流水編號
         $fsn = $xoopsDB->getInsertId();
+        save_assistant_post($CateID, 'fsn', $fsn);
+
         if ($_POST['file_method'] == "upload_file") {
             $TadUpFiles->set_col('fsn', $fsn);
             $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -269,8 +276,9 @@ class tad_web_files
         $file_description = $myts->addSlashes($_POST['file_description']);
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
-        // die('CateID=' . $CateID);
-        $anduid = onlyMine();
+        if (!is_assistant($CateID, 'fsn', $fsn)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "update " . $xoopsDB->prefix("tad_web_files") . " set
         `CateID` = '{$CateID}' ,
@@ -294,14 +302,26 @@ class tad_web_files
     }
 
     //刪除tad_web_files某筆資料資料
-    public function delete($fsn = "")
+    public function delete($fsn = "", $files_sn = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $anduid = onlyMine();
-        $sql    = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn' $anduid";
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+        if (!is_assistant($CateID, 'fsn', $fsn)) {
+            $anduid = onlyMine();
+        }
+        if (empty($fsn) and !empty($files_sn)) {
+            $file = $TadUpFiles->get_one_file($files_sn);
+            // die(var_export($file));
+            $fsn = $file['col_sn'];
+        }
+
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col('fsn', $fsn);
+
         $TadUpFiles->del_files();
         check_quota($this->WebID);
         //刪除標籤

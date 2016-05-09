@@ -16,3 +16,4 @@ $pluginConfig['menu']       = true;
 $pluginConfig['export']     = true;
 $pluginConfig['tag']        = true;
 $pluginConfig['top_score']  = 1;
+$pluginConfig['assistant']  = false;

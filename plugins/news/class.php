@@ -55,7 +55,7 @@ class tad_web_news
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' {$andEnable} $andCounty $andCity $andSchoolName order by a.NewsDate desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' {$andEnable} $andWebID $andCateID order by a.NewsDate desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='NewsID' and c.col_sn=a.NewsID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' {$andEnable} $andWebID $andCateID order by a.NewsDate desc";
             // die($sql);
 
         } else {
@@ -92,6 +92,8 @@ class tad_web_news
             }
 
             $main_data[$i] = $all;
+
+            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'NewsID', $NewsID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -237,6 +239,7 @@ class tad_web_news
         //取得標籤
         $xoopsTpl->assign("tags", $this->tags->list_tags("NewsID", $NewsID, 'news'));
 
+        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'NewsID', $NewsID));
     }
 
     //tad_web_news編輯表單
@@ -246,8 +249,8 @@ class tad_web_news
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['news']) {
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 
@@ -295,10 +298,11 @@ class tad_web_news
         $xoopsTpl->assign('NewsCounter', $NewsCounter);
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $DefCateID = isset($_SESSION['isAssistant']['news']) ? $_SESSION['isAssistant']['news'] : '';
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->web_cate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
         $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
-        $cate_menu = $this->web_cate->cate_menu($CateID);
+        $cate_menu = isset($_SESSION['isAssistant']['news']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         //設定「NewsEnable」欄位預設值
@@ -342,9 +346,12 @@ class tad_web_news
     //新增資料到tad_web_news中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles;
-
-        $uid = $xoopsUser->getVar('uid');
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
+        if (isset($_SESSION['isAssistant']['news'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+        }
 
         $myts                 = &MyTextSanitizer::getInstance();
         $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
@@ -366,6 +373,7 @@ class tad_web_news
 
         //取得最後新增資料的流水編號
         $NewsID = $xoopsDB->getInsertId();
+        save_assistant_post($CateID, 'NewsID', $NewsID);
 
         $TadUpFiles->set_col("NewsID", $NewsID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -398,7 +406,9 @@ class tad_web_news
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
-        $anduid = onlyMine();
+        if (!is_assistant($CateID, 'NewsID', $NewsID)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "update " . $xoopsDB->prefix("tad_web_news") . " set
          `CateID` = '{$CateID}' ,
@@ -426,8 +436,13 @@ class tad_web_news
     public function delete($NewsID = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $anduid = onlyMine();
-        $sql    = "delete from " . $xoopsDB->prefix("tad_web_news") . " where NewsID='$NewsID' $anduid";
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_news") . " where NewsID='$NewsID'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+        if (!is_assistant($CateID, 'NewsID', $NewsID)) {
+            $anduid = onlyMine();
+        }
+        $sql = "delete from " . $xoopsDB->prefix("tad_web_news") . " where NewsID='$NewsID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         $TadUpFiles->set_col("NewsID", $NewsID);

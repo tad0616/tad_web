@@ -468,6 +468,9 @@ function mk_menu_var_file($WebID = null)
         $current .= "\$menu_var['{$dirname}']['menu']   = '{$plugin['config']['menu']}';\n";
         $current .= "\$menu_var['{$dirname}']['export']   = '{$plugin['config']['export']}';\n";
         $current .= "\$menu_var['{$dirname}']['tag']   = '{$plugin['config']['tag']}';\n";
+        $current .= "\$menu_var['{$dirname}']['top_score']   = '{$plugin['config']['top_score']}';\n";
+        $current .= "\$menu_var['{$dirname}']['assistant']   = '{$plugin['config']['assistant']}';\n";
+
         if ($plugin['db']['PluginEnable'] != '1') {
             $current .= "}\n\n";
         } else {
@@ -534,6 +537,12 @@ function get_tad_web_mems($MemID)
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_mems") . " where MemID='{$MemID}'";
     $result = $xoopsDB->query($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
+
+    $sql                   = "select MemNum,CateID from " . $xoopsDB->prefix("tad_web_link_mems") . " where `MemID`='{$MemID}' limit 0,1";
+    $result                = $xoopsDB->queryF($sql) or web_error($sql);
+    list($MemNum, $CateID) = $xoopsDB->fetchRow($result);
+    $all['MemNum']         = $MemNum;
+    $all['CateID']         = $CateID;
     return $all;
 }
 
@@ -542,9 +551,8 @@ function get_tad_web_parent($ParentID = "", $code = "")
     global $xoopsDB;
     $andCode = !empty($code) ? "and `code`='{$code}'" : "";
     $sql     = "select * from " . $xoopsDB->prefix("tad_web_mem_parents") . " where `ParentID`='{$ParentID}' {$andCode}";
-    // die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-    $all    = $xoopsDB->fetchArray($result);
+    $result  = $xoopsDB->queryF($sql) or web_error($sql);
+    $all     = $xoopsDB->fetchArray($result);
     return $all;
 }
 
@@ -688,17 +696,20 @@ function getLevelName($WebID = "")
 }
 
 //立即寄出
-function send_now($email = "", $title = "", $content = "", $address = "", $name = "")
+function send_now($email = "", $title = "", $content = "", $ColName = "", $ColSN = "", $WebID = '')
 {
     global $xoopsConfig, $xoopsDB, $xoopsModuleConfig;
 
     $xoopsMailer                           = &getMailer();
     $xoopsMailer->multimailer->ContentType = "text/html";
     $xoopsMailer->addHeaders("MIME-Version: 1.0");
-    if (!empty($address)) {
-        $xoopsMailer->AddReplyTo($address, $name);
-    }
     $msg = ($xoopsMailer->sendMail($email, $title, $content, $headers)) ? true : false;
+
+    if ($ColName and $msg) {
+        $now = date("Y-m-d H:i:s");
+        $sql = "insert into " . $xoopsDB->prefix("tad_web_mail_log") . " (`ColName`, `ColSN`, `WebID`, `Mail`, `MailDate`) values('{$ColName}', '{$ColSN}', '{$WebID}', '{$email}', '{$now}')";
+        $xoopsDB->query($sql) or web_error($sql);
+    }
     return $msg;
 }
 
@@ -1474,4 +1485,129 @@ function fb_comments($use = true)
 
     return $main;
 
+}
+
+//以流水號取得某筆tad_web_notice資料
+function get_tad_web_notice($NoticeID = '')
+{
+    global $xoopsDB;
+
+    if (empty($NoticeID)) {
+        return;
+    }
+
+    $sql = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "`
+    where `NoticeID` = '{$NoticeID}'";
+    $result = $xoopsDB->query($sql)
+    or web_error($sql);
+    $data = $xoopsDB->fetchArray($result);
+    return $data;
+}
+
+//取得系統預設的OpenID登入方式
+function get_sys_openid()
+{
+    $auth_method         = array();
+    $modhandler          = &xoops_gethandler('module');
+    $config_handler      = &xoops_gethandler('config');
+    $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+    if ($TadLoginXoopsModule) {
+        include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
+        include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+        if (function_exists('facebook_login')) {
+            $tad_login['facebook'] = facebook_login('return');
+        }
+
+        if (function_exists('google_login')) {
+            $tad_login['google'] = google_login('return');
+        }
+
+        $config_handler = &xoops_gethandler('config');
+        $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+
+        $auth_method = $modConfig['auth_method'];
+    }
+    return $auth_method;
+}
+
+//設定小幫手
+function set_assistant($CateID = "", $MemID = "")
+{
+    global $xoopsDB;
+    if (empty($CateID) or empty($MemID)) {
+        return;
+    }
+
+    $sql = "delete from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `AssistantType`='MemID'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "insert into `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`) values('{$CateID}', 'MemID', '{$MemID}')";
+    $xoopsDB->queryF($sql) or web_error($sql);
+}
+
+//取得小幫手
+function get_assistant($CateID = "")
+{
+    global $xoopsDB;
+    if (empty($CateID)) {
+        return;
+    }
+
+    $sql    = "select `AssistantType`, `AssistantID` from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}'";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $all    = $xoopsDB->fetchArray($result);
+    // die(var_export($all));
+    if ($all['AssistantType'] == "MemID") {
+        $mem = get_tad_web_mems($all['AssistantID']);
+    } elseif ($all['AssistantType'] == "ParentID") {
+        $mem = get_tad_web_parent($all['AssistantID']);
+    }
+    return $mem;
+}
+
+//儲存小幫手的編輯紀錄
+function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
+{
+    global $xoopsDB, $xoopsUser;
+
+    if (empty($ColName) or empty($ColSN)) {
+        return;
+    }
+
+    $sql = "delete from `" . $xoopsDB->prefix("tad_web_assistant_post") . "` where `plugin`='{$ColName}' and `ColName`='{$ColName}' and `ColSN`='{$ColSN}'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+
+    $sql = "insert into `" . $xoopsDB->prefix("tad_web_assistant_post") . "` (
+              `plugin`,
+              `ColName`,
+              `ColSN`,
+              `CateID`,
+              `AssistantType`,
+              `AssistantID`
+            ) values(
+              '{$ColName}',
+              '{$ColName}',
+              '{$ColSN}',
+              '{$CateID}',
+              '{$_SESSION['AssistantType'][$CateID]}',
+              '{$_SESSION['AssistantID'][$CateID]}'
+            )";
+    $xoopsDB->query($sql) or web_error($sql);
+
+}
+
+//檢查某個內容是否是小幫手發的
+function is_assistant($CateID = '', $ColName = '', $ColSN = '')
+{
+    global $xoopsDB;
+
+    $sql    = "select `AssistantType`,`AssistantID` from `" . $xoopsDB->prefix('tad_web_assistant_post') . "` where `ColName`='{$ColName}' and `ColSN`='{$ColSN}' and `CateID`='{$CateID}'";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $all    = $xoopsDB->fetchArray($result);
+    if ($all['AssistantType'] == "MemID") {
+        $mem = get_tad_web_mems($all['AssistantID']);
+    } elseif ($all['AssistantType'] == "ParentID") {
+        $mem = get_tad_web_parent($all['AssistantID']);
+    }
+    return $mem;
 }

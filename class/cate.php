@@ -123,6 +123,34 @@ class web_cate
         $this->$var = $val;
     }
 
+    //隱藏表單
+    public function hidden_cate_menu($CateID = "", $show_label = true)
+    {
+        $cate = $this->get_tad_web_cate($CateID);
+
+        $row          = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
+        $span         = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
+        $form_group   = $_SESSION['bootstrap'] == '3' ? 'form-group' : 'control-group';
+        $form_control = $_SESSION['bootstrap'] == '3' ? 'form-control' : 'span12';
+
+        $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
+        $show_label_txt      = empty($this->label) ? $default_option_text : $this->label;
+        $label               = $show_label ? "<label class=\"{$span}{$this->label_col_md} control-label\">
+          {$show_label_txt}
+          </label>" : "";
+        $menu_col_md = 12 - $this->label_col_md;
+        $menu        = "
+        <div class=\"{$row}\" style=\"margin-bottom: 10px;\">
+            $label
+            <div id='cate_menu' class=\"{$span}{$menu_col_md}\">
+              <p class='form-control-static text-info'>{$cate['CateName']}</p>
+              <input type='hidden' name='CateID' value='{$CateID}'>
+            </div>
+        </div>
+        ";
+        return $menu;
+    }
+
     //分類選單 $mode = "form" ,"menu","page"
     public function cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     {
@@ -261,22 +289,22 @@ class web_cate
             $CateSort = $this->tad_web_cate_max_sort();
 
             $sql = "insert into `" . $xoopsDB->prefix("tad_web_cate") . "` (
-          `WebID`,
-          `CateName`,
-          `ColName`,
-          `ColSN`,
-          `CateSort`,
-          `CateEnable`,
-          `CateCounter`
-        ) values(
-          '{$this->WebID}',
-          '{$CateName}',
-          '{$this->ColName}',
-          '{$this->ColSN}',
-          '{$CateSort}',
-          '1',
-          0
-        )";
+              `WebID`,
+              `CateName`,
+              `ColName`,
+              `ColSN`,
+              `CateSort`,
+              `CateEnable`,
+              `CateCounter`
+            ) values(
+              '{$this->WebID}',
+              '{$CateName}',
+              '{$this->ColName}',
+              '{$this->ColSN}',
+              '{$CateSort}',
+              '1',
+              0
+            )";
             $xoopsDB->query($sql) or web_error($sql);
 
             //取得最後新增資料的流水編號
@@ -348,6 +376,8 @@ class web_cate
     {
         global $xoopsDB;
 
+        include_once XOOPS_ROOT_PATH . "/modules/tad_web/function.php";
+
         $counter    = $counter ? $this->tad_web_cate_data_counter() : '';
         $arr        = "";
         $andWebID   = empty($this->WebID) ? '' : "and `WebID` = '{$this->WebID}'";
@@ -356,9 +386,10 @@ class web_cate
         // echo $sql . '<br>';
         $result = $xoopsDB->query($sql) or web_error($sql);
         while ($data = $xoopsDB->fetchArray($result)) {
-            $CateID          = $data['CateID'];
-            $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
-            $arr[$CateID]    = $data;
+            $CateID                    = $data['CateID'];
+            $data['counter']           = isset($counter[$CateID]) ? $counter[$CateID] : 0;
+            $arr[$CateID]              = $data;
+            $arr[$CateID]['assistant'] = get_assistant($CateID);
         }
         return $arr;
     }
@@ -398,6 +429,14 @@ class web_cate
         } else {
             $this->delete_tad_web_cate_data($CateID);
         }
+
+        $sql = "delete from `" . $xoopsDB->prefix("tad_web_assistant_post") . "`
+        where `CateID` = '{$CateID}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+
+        $sql = "delete from `" . $xoopsDB->prefix("tad_web_cate_assistant") . "`
+        where `CateID` = '{$CateID}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $sql = "delete from `" . $xoopsDB->prefix("tad_web_cate") . "`
         where `CateID` = '{$CateID}'";

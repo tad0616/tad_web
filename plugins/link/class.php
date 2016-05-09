@@ -50,7 +50,7 @@ class tad_web_link
 
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.LinkID desc";
         } elseif (!empty($tag)) {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='LinkID' and c.col_sn=a.LinkID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.LinkID desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='LinkID' and c.col_sn=a.LinkID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.LinkID desc";
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.LinkID desc";
         }
@@ -79,6 +79,8 @@ class tad_web_link
             }
 
             $main_data[$i] = $all;
+
+            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'LinkID', $LinkID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -137,8 +139,8 @@ class tad_web_link
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php", 3, _MD_TCW_NOT_OWNER);
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['link']) {
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
         get_quota($this->WebID);
 
@@ -184,10 +186,11 @@ class tad_web_link
         $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
 
         //設定「CateID」欄位預設值
-        $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+        $DefCateID = isset($_SESSION['isAssistant']['link']) ? $_SESSION['isAssistant']['link'] : '';
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->web_cate->set_button_value($plugin_menu_var['link']['short'] . _MD_TCW_CATE_TOOLS);
         $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['link']['short']));
-        $cate_menu = $this->web_cate->cate_menu($CateID);
+        $cate_menu = isset($_SESSION['isAssistant']['link']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($LinkID)) ? "insert" : "update";
@@ -211,10 +214,12 @@ class tad_web_link
     //新增資料到tad_web_link中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser;
-
-        //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        global $xoopsDB, $xoopsUser, $WebOwnerUid;
+        if (isset($_SESSION['isAssistant']['link'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+        }
 
         $myts                 = &MyTextSanitizer::getInstance();
         $_POST['LinkTitle']   = $myts->addSlashes($_POST['LinkTitle']);
@@ -234,6 +239,7 @@ class tad_web_link
 
         //取得最後新增資料的流水編號
         $LinkID = $xoopsDB->getInsertId();
+        save_assistant_post($CateID, 'LinkID', $LinkID);
         check_quota($this->WebID);
 
         //儲存標籤
@@ -255,7 +261,9 @@ class tad_web_link
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
-        $anduid = onlyMine();
+        if (!is_assistant($CateID, 'LinkID', $LinkID)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "update " . $xoopsDB->prefix("tad_web_link") . " set
        `CateID` = '{$CateID}' ,
@@ -277,7 +285,13 @@ class tad_web_link
     {
         global $xoopsDB;
 
-        $anduid = onlyMine();
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
+        list($CateID) = $xoopsDB->fetchRow($result);
+
+        if (!is_assistant($CateID, 'LinkID', $LinkID)) {
+            $anduid = onlyMine();
+        }
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
