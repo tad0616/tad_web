@@ -2,7 +2,7 @@
 $xoopsTpl->assign("op", $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
 $xoopsTpl->assign('Web', $Web);
-$xoopsTpl->assign('login_from', $_COOKIE['login_from']);
+// $xoopsTpl->assign('login_from', $_COOKIE['login_from']);
 
 if (isset($LoginWebID)) {
     $xoopsTpl->assign("LoginMemID", $LoginMemID);
@@ -254,15 +254,15 @@ function tad_web_login($WebID, $config = array())
     if ($xoopsUser or !empty($_SESSION['LoginMemID']) or !empty($_SESSION['LoginParentID'])) {
         return;
     }
-    $http = 'http://';
-    if (!empty($_SERVER['HTTPS'])) {
-        $http = ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
-    }
+    // $http = 'http://';
+    // if (!empty($_SERVER['HTTPS'])) {
+    //     $http = ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+    // }
 
-    $domain     = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
-    $login_from = $http . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI'];
-    setcookie("login_from", $login_from, '/', $domain, false);
-    $_SESSION['login_from'] = $login_from;
+    // $domain     = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+    // $login_from = $http . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI'];
+    // setcookie("login_from", $login_from, '/', $domain, false);
+    // $_SESSION['login_from'] = $login_from;
 
     $login_config = get_web_config('login_config', $WebID);
     $login_config = empty($login_config) ? array() : explode(';', $login_config);
@@ -326,7 +326,7 @@ function tad_web_login($WebID, $config = array())
                   });");
         $web_cate->set_var('menu_id', 'loginCateID');
         $cate_menu = $web_cate->cate_menu('', 'page', false, false, false);
-        $xoopsTpl->assign('cate_menu', $cate_menu);
+        $xoopsTpl->assign('login_cate_menu', $cate_menu);
         $xoopsTpl->assign('mem_parents', $about_setup['mem_parents']);
     }
 

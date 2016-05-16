@@ -408,7 +408,7 @@ function go_update1()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_discuss") . " CHANGE `DisscussCounter` `DiscussCounter` SMALLINT( 6 ) UNSIGNED NOT NULL";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
 
@@ -429,7 +429,7 @@ function go_update2()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_discuss") . " ADD `uid` SMALLINT( 6 ) UNSIGNED NOT NULL AFTER `WebID`";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
 
@@ -450,7 +450,7 @@ function go_update3()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_discuss") . " ADD `MemID` SMALLINT( 6 ) UNSIGNED NOT NULL AFTER `uid`";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
 
@@ -471,7 +471,7 @@ function go_update4()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_discuss") . " ADD `MemName` varchar(255) NOT NULL default '' AFTER `MemID`";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
 
@@ -495,11 +495,11 @@ function go_update5()
       ADD `original_filename` varchar(255) NOT NULL default '',
       ADD `hash_filename` varchar(255) NOT NULL default '',
       ADD `sub_dir` varchar(255) NOT NULL default ''";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     $sql = "update " . $xoopsDB->prefix("tad_web_files_center") . " set
     `original_filename`=`description`";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 }
 
 function go_update6()
@@ -644,7 +644,7 @@ function go_update7()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` varchar(255) NOT NULL DEFAULT '' NOT NULL";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     return true;
 }
@@ -920,7 +920,7 @@ function go_update12()
 // {
 //     global $xoopsDB;
 //     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " ADD `BlockShare` varchar(255) NOT NULL COMMENT '分享區塊' AFTER `BlockSort`";
-//     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+//     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 //     return true;
 // }
 
@@ -968,7 +968,7 @@ function go_update15()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web") . " ADD `used_size` int(10) unsigned NOT NULL default 0 COMMENT '已使用空間', ADD `last_accessed` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '最後被拜訪時間'";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     $dir = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
@@ -1013,10 +1013,10 @@ function go_update16()
 
     //修改欄位大小
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_files_center") . " CHANGE `files_sn` `files_sn` INT(10) UNSIGNED NOT NULL auto_increment COMMENT '檔案流水號'";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " CHANGE `BlockID` `BlockID` INT(10) UNSIGNED NOT NULL auto_increment COMMENT '區塊流水號'";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
 
@@ -1090,7 +1090,7 @@ function go_update19()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " DROP `BlockShare`";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
 
@@ -1111,7 +1111,7 @@ function go_update19_1()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " ADD `ShareFrom` int(10) unsigned NOT NULL COMMENT '分享自'";
-    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, mysql_error());
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
 

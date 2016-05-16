@@ -6,7 +6,7 @@ class tad_web_calendar
     public $web_cate;
     public $setup;
 
-    public function tad_web_calendar($WebID)
+    public function __construct($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "calendar", "tad_web_calendar");

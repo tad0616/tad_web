@@ -12,10 +12,10 @@ if (page_onUpdate2_chk()) {
 function page_onUpdate1_chk()
 {
     global $xoopsDB;
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web_page");
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $len    = mysql_field_len($result, 4);
-    if ($len == "196605") {
+    $sql        = "SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '" . $xoopsDB->prefix("tad_web_page") . "' AND COLUMN_NAME = 'PageContent'";
+    $result     = $xoopsDB->query($sql);
+    list($type) = $xoopsDB->fetchRow($result);
+    if ($type == 'text') {
         return true;
     }
 

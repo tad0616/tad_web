@@ -6,7 +6,7 @@ class tad_web_action
     public $web_cate;
     public $setup;
 
-    public function tad_web_action($WebID)
+    public function __construct($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "action", "tad_web_action");
@@ -28,7 +28,7 @@ class tad_web_action
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
                 $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
-                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 

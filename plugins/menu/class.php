@@ -6,7 +6,7 @@ class tad_web_menu
     public $web_cate;
     public $setup;
 
-    public function tad_web_menu($WebID)
+    public function __construct($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "menu", "tad_web_menu");

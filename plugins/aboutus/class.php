@@ -6,7 +6,7 @@ class tad_web_aboutus
     public $web_cate;
     public $setup;
 
-    public function tad_web_aboutus($WebID)
+    public function __construct($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "aboutus", "tad_web_link_mems");

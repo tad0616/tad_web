@@ -6,7 +6,7 @@ class tad_web_page
     public $web_cate;
     public $setup;
 
-    public function tad_web_page($WebID)
+    public function __construct($WebID)
     {
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);

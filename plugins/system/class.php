@@ -4,7 +4,7 @@ class tad_web_system
 
     public $WebID = 0;
 
-    public function tad_web_system($WebID)
+    public function __construct($WebID)
     {
         $this->WebID = $WebID;
     }

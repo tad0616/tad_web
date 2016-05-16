@@ -6,7 +6,7 @@ class tad_web_account
     public $web_cate;
     public $setup;
 
-    public function tad_web_account($WebID)
+    public function __construct($WebID)
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, "account", "tad_web_account");
@@ -38,7 +38,7 @@ class tad_web_account
             //取得tad_web_cate所有資料陣列
             $this->web_cate->set_button_value(_MD_TCW_ACCOUNT_BOOK_TOOL);
             $this->web_cate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
-            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
+            $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
             $xoopsTpl->assign('cate_menu', $cate_menu);
 
             if (!empty($CateID)) {
