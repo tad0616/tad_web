@@ -8,9 +8,9 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
     $FooTableJS = $FooTable->render();
 }
 
-$modhandler        = &xoops_gethandler('module');
+$modhandler        = xoops_gethandler('module');
 $xoopsModule       = &$modhandler->getByDirname("tad_web");
-$config_handler    = &xoops_gethandler('config');
+$config_handler    = xoops_gethandler('config');
 $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
 $CateID = intval($_GET['CateID']);
@@ -113,4 +113,3 @@ $content = $FooTableJS . '
 </table>';
 
 die($content);
-// echo html5($content, false, false, $_SESSION['bootstrap']);

@@ -18,7 +18,7 @@ function chk_evn()
         $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
     }
 
-    $modhandler    = &xoops_gethandler('module');
+    $modhandler    = xoops_gethandler('module');
     $ttxoopsModule = &$modhandler->getByDirname("tadtools");
     $version       = $ttxoopsModule->version();
     if ($version < 274) {

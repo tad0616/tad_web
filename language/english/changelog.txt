@@ -1,4 +1,16 @@
-Tad Web 1.6.9 release（2016-04-08 release)
+Tad Web 1.7 (2016-05-27 released)
+====================================================
+1. Corrected issues related to tag is repeatedly displayed and can not be canceled
+2. Add Block read permissions
+3. Corrected issues related to the table "category name" field becomes integer type
+4. Corrected issues related to the menu when you are not signed in classification can not be switched
+5. Corrected issues related to the module can not be updated correctly
+6. Remove BootStrap2
+7. Support PHP7
+
+
+
+Tad Web 1.6.9 (2016-04-08 released)
 ====================================================
 1. Fixed contact book sorting incorrect issue
 2. Fixed article sorting incorrect issue
@@ -16,7 +28,7 @@ Tad Web 1.6.9 release（2016-04-08 release)
 14. New Assistant feature
 
 
-Tad Web 1.6.8 release（2016-02-23 release)
+Tad Web 1.6.8 (2016-02-23 released)
 ====================================================
 1. Add account book plugin
 2. improve video load performance
@@ -29,7 +41,7 @@ Tad Web 1.6.8 release（2016-02-23 release)
 
 
 
-Tad Web 1.6.7 release（2016-01-20 release)
+Tad Web 1.6.7 (2016-01-20 released)
 ====================================================
 1. Fixed block sharing mechanism
 2. New "About Us" presentation set
@@ -46,7 +58,7 @@ Tad Web 1.6.7 release（2016-01-20 release)
 
 
 
-Tad Web 1.6.6 release（2016-01-04 release)
+Tad Web 1.6.6 (2016-01-04 released)
 ====================================================
  1. Fixed Paging Toolbar
  2. Fix classification
@@ -72,7 +84,7 @@ Tad Web 1.6.6 release（2016-01-04 release)
 
 
 
-Tad Web 1.6.5 release（2015-12-17 release)
+Tad Web 1.6.5 (2015-12-17 released)
 ====================================================
 1. The new free block function
 2. Fixed Link in works share
@@ -85,7 +97,7 @@ Tad Web 1.6.5 release（2015-12-17 release)
 
 
 
-Tad Web 1.6.4 release（2015-12-01 release)
+Tad Web 1.6.4 (2015-12-01 released)
 ====================================================
 1. Fixed bug Students can not add a message on the message or viewing
 2. Add the latest videos, random videos block
@@ -98,14 +110,14 @@ Tad Web 1.6.4 release（2015-12-01 release)
 9. Add some new method for each plug
 
 
-Tad Web 1.6.3 release（2015-11-04 release)
+Tad Web 1.6.3 (2015-11-04 released)
 ====================================================
 1. Fixed function displays the number of each class home setting does not work
 2. Fixed class home homework can not display website name
 3. To fix the problem can not be installed on or uninstalled correctly
 4. Add schedule table Print function (need tadtools 2.8 above)
 
-Tad Web 1.6.2 release（2015-11-02 release)
+Tad Web 1.6.2 (2015-11-02 released)
 ====================================================
 1. "Page" can display in front page
 2. Added Menu font size setting
@@ -114,7 +126,7 @@ Tad Web 1.6.2 release（2015-11-02 release)
 5. Fixed some display bug of homework in bootstrap2
 
 
-Tad Web 1.6.1 release (2015-10-30 release)
+Tad Web 1.6.1 (2015-10-30 released)
 ====================================================
  1. Add the function of the preset contact book contents
  2. Fixed issue that co-administrator can not be removed
@@ -126,7 +138,7 @@ Tad Web 1.6.1 release (2015-10-30 release)
  8. Fixed problem that change the tile of the site is not automatically updated logo
 
 
-Tad Web 1.6 release (2015-10-26 release)
+Tad Web 1.6 (2015-10-26 released)
 ====================================================
  1. Add new calendar functions and blocks
  2. Add setting detection and recommendation function
@@ -136,14 +148,14 @@ Tad Web 1.6 release (2015-10-26 release)
  6. New co-administrator functions
 
 
-Tad Web 1.5.1 release (2015-10-16 release)
+Tad Web 1.5.1 (2015-10-16 released)
 ====================================================
  1.Fixed GuestBook English language
  2.Fixed problem of disappearing blocks
 
 
 
-Tad Web 1.5 release (2015-10-16 release)
+Tad Web 1.5 (2015-10-16 released)
 ====================================================
 1. Fixed activity English language
 2. New page functions and blocks
@@ -156,12 +168,13 @@ Tad Web 1.5 release (2015-10-16 release)
 9. Fixed the external classes can not be used in bootstrap2
 
 
-Tad Web 1.4.1 release (2015-10-08 release)
+Tad Web 1.4.1 (2015-10-08 released)
 ====================================================
 1. Fixed a person has two or more sites, the menu can not switch the site.
 2. Fixed external class website can not automatically link
 
-Tad Web 1.4 release (2015-10-02 release)
+
+Tad Web 1.4 (2015-10-02 released)
 ====================================================
 1. All features modular, simplify the development process
 2. The user can specify your own website in a different address
@@ -171,7 +184,7 @@ Tad Web 1.4 release (2015-10-02 release)
 6. Add new management plug-in page
 
 
-Tad Web version 1.3 release (2015-09-21 release)
+Tad Web 1.3 (2015-09-21 released)
 ====================================================
 1. Fixed the issue that sites categories menu does not work.
 2. Fixed the issue that can not delete the members who empty name.
@@ -180,7 +193,7 @@ Tad Web version 1.3 release (2015-09-21 release)
 5. Fixed the issue that students guestbook messages can not be deleted
 
 
-Tad Web version 1.2 release (2015-09-17 release)
+Tad Web 1.2 (2015-09-17 released)
 ====================================================
 1. Fixed issue news page can not download the attached files.
 2. Problem Fixed menu block can not be displayed correctly.
@@ -199,7 +212,7 @@ Tad Web version 1.2 release (2015-09-17 release)
 15. The logon block can be login to XOOPS or personal web site.
 
 
-Tad Web version 1.1 release (2015-09-05 release)
+Tad Web 1.1 (2015-09-05 released)
 ====================================================
  1.Optimization news display
  2.Optimization homework display
@@ -208,14 +221,14 @@ Tad Web version 1.1 release (2015-09-05 release)
  5.All using BootStrap3, except module index, as the original site bootstrap version is automatically adjusted.
 
 
-Tad Web version 1.0.1 release (2015-09-02 release)
+Tad Web 1.0.1 (2015-09-02 released)
 ====================================================
  1.Fixed some language
  2.Added blocks setup function.
  3.Fixed logo bug when web in bootstrap2
 
 
-Tad Web version 1.0 release (2015-09-02 release)
+Tad Web 1.0 (2015-09-02 released)
 ====================================================
 1. Fixed video playback Block
 2. Admin added "according to the official name of the sort" function
@@ -226,27 +239,27 @@ Tad Web version 1.0 release (2015-09-02 release)
 7. The album changed to a sliding block way to display pictures
 
 
-Tad Web version 1.0 RC6 (2014-10-23 release)
+Tad Web 1.0 RC6 (2014-10-23 released)
 ================================================== ==
  1. Fixed contact book can not be edited problem of old data
  2. Modify the home page list for the table
  3. Fix file subdirectory is not the right questions, and join the program update fixes
 
 
-Tad Web 1.0 RC5 Edition (2014-09-25 release)
+Tad Web 1.0 RC5 (2014-09-25 released)
 ================================================== ==
  1. Modify the program so that it conforms with WCAG
  2. For MySQL strict mode is corrected
  3. Fix any upload problem
 
 
-Tad Web 1.0 RC4 version (2014-01-27)
+Tad Web 1.0 RC4 (2014-01-27 released)
 ================================================== ==
  1. Import new upload mechanism
  2. For MySQL strict mode is corrected
  3. Adjust the screen for setting students
 
-Tad Web 1.0 RC3 version (2013-07-30)
+Tad Web 1.0 RC3 (2013-07-30 released)
 ================================================== ==
  1. Fixed video playback function and tad_player duplicate bug
  2. Amendments to the same teacher can not have two or more sites of bug
@@ -257,7 +270,7 @@ Tad Web 1.0 RC3 version (2013-07-30)
  7. Message restrictions only teachers and students (or website members) can see.
 
 
-Tad Web 1.0 RC2 version (2013-07-29)
+Tad Web 1.0 RC2 (2013-07-29 released)
 ================================================== ==
  1. Increase the message function
  2. Increase the site members related functions
@@ -265,7 +278,7 @@ Tad Web 1.0 RC2 version (2013-07-29)
  The package hills sea of ​​small bug fixes
 
 
-Tad Web 1.0 RC1 version (2013-07-01)
+Tad Web 1.0 RC1 (2013-07-01 released)
 ================================================== ==
  1. The user can set up a simple personal page
  2. Each user can have multiple pages

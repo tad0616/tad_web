@@ -14,7 +14,7 @@ function add_log($status)
 {
     global $xoopsConfig, $xoopsDB;
     include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
-    $modhandler  = &xoops_gethandler('module');
+    $modhandler  = xoops_gethandler('module');
     $xoopsModule = &$modhandler->getByDirname("tad_web");
     $version     = $xoopsModule->version();
     if ($status == 'install') {

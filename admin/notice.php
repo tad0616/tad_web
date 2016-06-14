@@ -230,7 +230,7 @@ function list_tad_web_notice()
     $sql = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "` order by `NoticeTitle`";
 
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10, null, null, $bootstrap);
+    $PageBar = getPageBar($sql, 20, 10, null, null, 3);
     $bar     = $PageBar['bar'];
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];

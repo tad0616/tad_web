@@ -27,7 +27,6 @@ if (!empty($plugin)) {
 
 $xoopsTpl->assign('menu_var', $menu_var);
 $xoopsTpl->assign('isMyWeb', $isMyWeb);
-$xoopsTpl->assign('bootstrap', $_SESSION['bootstrap']);
 $xoopsTpl->assign('your_version', $xoopsModule->version());
 if (!defined('_DISPLAY_MODE')) {
     define('_DISPLAY_MODE', 'page');

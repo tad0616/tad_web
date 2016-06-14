@@ -30,13 +30,6 @@ function tad_web_discuss($options)
     }
 
     $block['main_data'] = $main_data;
-    if (!empty($_GET['WebID'])) {
-        $block['row']  = 'row';
-        $block['span'] = 'col-md-';
-    } else {
-        $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
-        $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
-    }
     return $block;
 }
 

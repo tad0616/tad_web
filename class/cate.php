@@ -128,21 +128,16 @@ class web_cate
     {
         $cate = $this->get_tad_web_cate($CateID);
 
-        $row          = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
-        $span         = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
-        $form_group   = $_SESSION['bootstrap'] == '3' ? 'form-group' : 'control-group';
-        $form_control = $_SESSION['bootstrap'] == '3' ? 'form-control' : 'span12';
-
         $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
         $show_label_txt      = empty($this->label) ? $default_option_text : $this->label;
-        $label               = $show_label ? "<label class=\"{$span}{$this->label_col_md} control-label\">
+        $label               = $show_label ? "<label class=\"col-md-{$this->label_col_md} control-label\">
           {$show_label_txt}
           </label>" : "";
         $menu_col_md = 12 - $this->label_col_md;
         $menu        = "
-        <div class=\"{$row}\" style=\"margin-bottom: 10px;\">
+        <div class=\"row\" style=\"margin-bottom: 10px;\">
             $label
-            <div id='cate_menu' class=\"{$span}{$menu_col_md}\">
+            <div id='cate_menu' class=\"col-md-{$menu_col_md}\">
               <p class='form-control-static text-info'>{$cate['CateName']}</p>
               <input type='hidden' name='CateID' value='{$CateID}'>
             </div>
@@ -172,19 +167,14 @@ class web_cate
             $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
         }
 
-        $row          = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
-        $span         = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
-        $form_group   = $_SESSION['bootstrap'] == '3' ? 'form-group' : 'control-group';
-        $form_control = $_SESSION['bootstrap'] == '3' ? 'form-control' : 'span12';
-
         $button_value = empty($this->button_value) ? _MD_TCW_CATE_TOOLS : $this->button_value;
-        $tools        = $show_tools ? "<div class=\"{$span}2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}&table={$this->table}' class='btn btn-warning' >$button_value</a></div>" : "";
+        $tools        = $show_tools ? "<div class=\"col-md-2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}&table={$this->table}' class='btn btn-warning' >$button_value</a></div>" : "";
 
         $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
 
         $validate = $required ? 'validate[required]' : '';
         $def_opt  = $default_opt ? "<option value=''>$default_option_text</option>" : '';
-        $menu     = "<select name='{$this->menu_name}' id='{$this->menu_id}' class='{$validate} {$form_control}' >
+        $menu     = "<select name='{$this->menu_name}' id='{$this->menu_id}' class='{$validate} form-control' >
                     {$def_opt}
                     {$option}
                   </select>";
@@ -195,7 +185,7 @@ class web_cate
 
         if ($option and $show_select) {
             $cate_menu = "
-            <div id='cate_menu' class=\"{$span}{$this->menu_col_md}\">
+            <div id='cate_menu' class=\"col-md-{$this->menu_col_md}\">
               $menu
             </div>
             ";
@@ -214,13 +204,13 @@ class web_cate
 
         if ($newCate) {
             $new_input = "
-            <div class=\"{$span}5\" id=\"newCateName\" style='display:none;'>
-              <input type='text' name='newCateName' placeholder='{$new_cate} {$demo_txt}' class='{$form_control}' value='{$this->default_value}'>
+            <div class=\"col-md-5\" id=\"newCateName\" style='display:none;'>
+              <input type='text' name='newCateName' placeholder='{$new_cate} {$demo_txt}' class='form-control' value='{$this->default_value}'>
             </div>
-            <div class=\"{$span}2\" id=\"newCate\">
+            <div class=\"col-md-2\" id=\"newCate\">
               <button type='button' class='btn btn-info' id=\"add_cate\">{$new_cate}</button>
             </div>
-            <div class=\"{$span}2\" id=\"showMenu\" style='display:none;'>
+            <div class=\"col-md-2\" id=\"showMenu\" style='display:none;'>
               <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_MENU . "</button>
             </div>";
         } else {
@@ -230,11 +220,11 @@ class web_cate
         $label_title    = ($show_select) ? $default_option_text : _MD_TCW_NEW_CATE;
         $show_label_txt = empty($this->label) ? $label_title : $this->label;
 
-        $label = $show_label ? "<label class=\"{$span}{$this->label_col_md} control-label\">
+        $label = $show_label ? "<label class=\"col-md-{$this->label_col_md} control-label\">
           {$show_label_txt}
           </label>" : "";
 
-        $row = ($mode == "form") ? $form_group : $row;
+        $row = ($mode == "form") ? "form-group" : "row";
 
         $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op={$_REQUEST['op']}&CateID=' + $('#CateID').val();" : "";
 

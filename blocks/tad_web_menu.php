@@ -8,20 +8,6 @@ function tad_web_menu($options)
     $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
     $block['DefWebID'] = $DefWebID;
 
-    if (!empty($DefWebID)) {
-        $block['row']          = 'row';
-        $block['span']         = 'col-md-';
-        $block['form_group']   = 'form-group';
-        $block['form_control'] = 'form-control';
-        $block['mini']         = 'form-xs';
-    } else {
-        $block['row']          = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
-        $block['span']         = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
-        $block['form_group']   = $_SESSION['web_bootstrap'] == '3' ? 'form-group' : 'control-group';
-        $block['form_control'] = $_SESSION['web_bootstrap'] == '3' ? 'form-control' : 'span12';
-        $block['mini']         = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
-    }
-
     if ($xoopsUser) {
         $uid = $xoopsUser->uid();
 
@@ -61,10 +47,6 @@ function tad_web_menu($options)
             $block['back_home']   = empty($defaltWebName) ? _MB_TCW_HOME : sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
             $block['defaltWebID'] = $defaltWebID;
 
-            $block['row']  = $_SESSION['web_bootstrap'] == '3' ? 'row' : 'row-fluid';
-            $block['span'] = $_SESSION['web_bootstrap'] == '3' ? 'col-md-' : 'span';
-            $block['mini'] = $_SESSION['web_bootstrap'] == '3' ? 'xs' : 'mini';
-
             if (!defined('_SHOW_UNABLE')) {
                 define('_SHOW_UNABLE', '1');
             }
@@ -74,9 +56,9 @@ function tad_web_menu($options)
                 $block['plugins'] = $menu_var;
             }
 
-            $modhandler        = &xoops_gethandler('module');
+            $modhandler        = xoops_gethandler('module');
             $xoopsModule       = &$modhandler->getByDirname("tad_web");
-            $config_handler    = &xoops_gethandler('config');
+            $config_handler    = xoops_gethandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
             $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
@@ -125,8 +107,8 @@ function tad_web_menu($options)
         return $block;
     } else {
 
-        $modhandler     = &xoops_gethandler('module');
-        $config_handler = &xoops_gethandler('config');
+        $modhandler     = xoops_gethandler('module');
+        $config_handler = xoops_gethandler('config');
 
         $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
         if ($TadLoginXoopsModule) {
@@ -135,7 +117,7 @@ function tad_web_menu($options)
             $tad_login['facebook'] = facebook_login('return');
             $tad_login['google']   = google_login('return');
 
-            $config_handler = &xoops_gethandler('config');
+            $config_handler = xoops_gethandler('config');
             $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
             $auth_method = $modConfig['auth_method'];

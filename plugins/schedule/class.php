@@ -410,9 +410,9 @@ class tad_web_schedule
         global $xoopsDB, $xoopsModuleConfig;
         if (!isset($xoopsModuleConfig)) {
 
-            $modhandler        = &xoops_gethandler('module');
+            $modhandler        = xoops_gethandler('module');
             $xoopsModule       = &$modhandler->getByDirname("tad_web");
-            $config_handler    = &xoops_gethandler('config');
+            $config_handler    = xoops_gethandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
         }
 

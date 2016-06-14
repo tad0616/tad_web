@@ -7,9 +7,9 @@ $end   = empty($_REQUEST['end']) ? date("Y-m-t") : date("Y-m-d", $_REQUEST['end'
 
 if (!isset($xoopsModuleConfig)) {
 
-    $modhandler        = &xoops_gethandler('module');
+    $modhandler        = xoops_gethandler('module');
     $xoopsModule       = &$modhandler->getByDirname("tad_web");
-    $config_handler    = &xoops_gethandler('config');
+    $config_handler    = xoops_gethandler('config');
     $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 }
 

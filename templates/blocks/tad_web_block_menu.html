@@ -24,28 +24,28 @@
 
     <div class="well">
       <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login">
-        <div class="<{$block.form_group}>">
-          <label class="<{$block.span}>4 control-label">
+        <div class="form-group">
+          <label class="col-md-4 control-label">
             <{$smarty.const._MB_TCW_ID}>
           </label>
-          <div class="<{$block.span}>8 contros">
-            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="<{$block.form_control}>" />
+          <div class="col-md-8 contros">
+            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control" />
           </div>
         </div>
 
-        <div class="<{$block.form_group}>">
-          <label class="<{$block.span}>4 control-label">
+        <div class="form-group">
+          <label class="col-md-4 control-label">
             <{$smarty.const._MB_TCW_PASSWD}>
           </label>
-          <div class="<{$block.span}>8 contros">
-          <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="<{$block.form_control}>" />
+          <div class="col-md-8 contros">
+          <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control" />
           </div>
         </div>
 
-        <div class="<{$block.form_group}>">
-          <label class="<{$block.span}>4 control-label">
+        <div class="form-group">
+          <label class="col-md-4 control-label">
           </label>
-          <div class="<{$block.span}>8 contros">
+          <div class="col-md-8 contros">
             <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
             <input type="hidden" name="rememberme" value="On" />
             <input type="hidden" name="op" value="login" />
@@ -55,27 +55,27 @@
       </form>
 
       <form action="aboutus.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="tad_web_login">
-        <div class="<{$block.form_group}>">
-          <label class="<{$block.span}>4 control-label">
+        <div class="form-group">
+          <label class="col-md-4 control-label">
             <{$smarty.const._MB_TCW_MEM_UNAME}>
           </label>
-          <div class="<{$block.span}>8 controls">
+          <div class="col-md-8 controls">
             <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_UNAME}>">
           </div>
         </div>
-        <div class="<{$block.form_group}>">
-          <label class="<{$block.span}>4 control-label">
+        <div class="form-group">
+          <label class="col-md-4 control-label">
             <{$smarty.const._MB_TCW_MEM_PASSWD}>
           </label>
-          <div class="<{$block.span}>8 controls">
+          <div class="col-md-8 controls">
             <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_PASSWD}>">
           </div>
         </div>
 
-        <div class="<{$block.form_group}>">
-          <label class="<{$block.span}>4 control-label">
+        <div class="form-group">
+          <label class="col-md-4 control-label">
           </label>
-          <div class="<{$block.span}>8">
+          <div class="col-md-8">
             <input type="hidden" name="WebID" value="<{$WebID}>">
             <input type="hidden" name="op" value="mem_login">
             <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MB_TCW_LOGIN}></button>
@@ -98,19 +98,19 @@
     </div>
   <{/if}>
 <{elseif $block.op=="mem"}>
-  <div class="<{$block.row}>">
-    <div class="<{$block.span}>12">
+  <div class="row">
+    <div class="col-md-12">
       <div class="well well-small">
 
         <{$LoginMemName}>
         <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>
         <{$smarty.const._MD_TCW_HELLO}>
 
-        <div class="<{$block.row}>">
-          <div class="<{$block.span}>6">
+        <div class="row">
+          <div class="col-md-6">
             <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-<{$mini}> btn-warning btn-block"><{$smarty.const._MD_TCW_EXIT}></a>
           </div>
-          <div class="<{$block.span}>6">
+          <div class="col-md-6">
             <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-<{$mini}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
           </div>
         </div>
@@ -129,8 +129,8 @@
     <h3><{$block.WebTitle}><small><{$smarty.const._MB_TCW_MENU}></small></h3>
   <{/if}>
   <{if $block.defaltWebID}>
-    <div class="<{$block.row}>">
-      <div class="<{$block.span}>12">
+    <div class="row">
+      <div class="col-md-12">
         <{if $block.web_num > 1}>
           <select class="span12 form-control" onChange="location.href=this.value">
             <{foreach from=$block.webs item=web}>
@@ -147,8 +147,8 @@
       </div>
     </div>
 
-    <div class="<{$block.row}>">
-      <div class="<{$block.span}>12 text-center">
+    <div class="row">
+      <div class="col-md-12 text-center">
         <div class="btn-group">
           <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$block.defaltWebID}>" class="btn btn-success">
             <i class="fa fa-check-square-o"></i>
@@ -209,7 +209,7 @@
                   <{$plugin.title}>
               </td>
               <td colspan=3 style="background-color: #dfdfdf;">
-                <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-<{$block.mini}>"><{$smarty.const._MB_TCW_ENABLE_PLUGIN}></a>
+                <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$plugin.WebID}>&dirname=<{$plugin.dirname}>&op=enabe_plugin" class="btn btn-primary btn-xs"><{$smarty.const._MB_TCW_ENABLE_PLUGIN}></a>
               </td>
             </tr>
           <{/if}>
@@ -217,8 +217,8 @@
       <{/foreach}>
     </table>
 
-    <div class="<{$block.row}>">
-      <div class="<{$block.span}>12">
+    <div class="row">
+      <div class="col-md-12">
         <div class="progress progress-striped">
           <div class="progress-bar progress-bar-<{$block.progress_color}>" role="progressbar" data-transitiongoal="<{$block.quota}>"></div>
         </div>
@@ -228,16 +228,16 @@
   <{/if}>
 
   <{if $block.closed_webs}>
-    <div class="<{$block.row}>">
-      <div class="<{$block.span}>12">
+    <div class="row">
+      <div class="col-md-12">
         <{foreach from=$block.closed_webs item=web}>
           <a href="<{$web.url}>" class="btn btn-default btn-block"><{$smarty.const._MB_TCW_ENABLE}> <{$web.name}></a>
         <{/foreach}>
       </div>
     </div>
   <{/if}>
-  <div class="<{$block.row}>">
-    <div class="<{$block.span}>12">
+  <div class="row">
+    <div class="col-md-12">
       <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
     </div>
   </div>

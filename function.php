@@ -26,7 +26,7 @@ $MyWebs     = array();
 $isMyWeb    = false;
 if ($xoopsUser) {
     if (!$xoopsModule) {
-        $modhandler  = &xoops_gethandler('module');
+        $modhandler  = xoops_gethandler('module');
         $xoopsModule = &$modhandler->getByDirname("tad_web");
     }
     $module_id = $xoopsModule->getVar('mid');
@@ -1507,23 +1507,24 @@ function get_tad_web_notice($NoticeID = '')
 //取得系統預設的OpenID登入方式
 function get_sys_openid()
 {
+    global $xoopsConfig;
     $auth_method         = array();
-    $modhandler          = &xoops_gethandler('module');
-    $config_handler      = &xoops_gethandler('config');
-    $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+    $modhandler          = xoops_gethandler('module');
+    $config_handler      = xoops_gethandler('config');
+    $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
     if ($TadLoginXoopsModule) {
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
-        if (function_exists('facebook_login')) {
-            $tad_login['facebook'] = facebook_login('return');
-        }
+        // if (function_exists('facebook_login')) {
+        //     $tad_login['facebook'] = facebook_login('return');
+        // }
 
-        if (function_exists('google_login')) {
-            $tad_login['google'] = google_login('return');
-        }
+        // if (function_exists('google_login')) {
+        //     $tad_login['google'] = google_login('return');
+        // }
 
-        $config_handler = &xoops_gethandler('config');
-        $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $config_handler = xoops_gethandler('config');
+        $modConfig      = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method = $modConfig['auth_method'];
     }
