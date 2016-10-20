@@ -12,3 +12,6 @@ define("_MD_TCW_PAGESORT", "Sort");
 define("_MD_TCW_PAGE_UPLOAD", "Upload");
 define("_MD_TCW_PAGE_BLOCK_LIST", "Page List");
 define("_MD_TCW_PAGE_BLOCK_MENU", "Page Menu");
+define("_MD_TCW_PAGE_BLOCK_SHOW_COUNT", "Do you wnat to display counter?");
+define("_MD_TCW_PAGECSS", "Content Style");
+define("_MD_TCW_PAGECSS_DESC", "");

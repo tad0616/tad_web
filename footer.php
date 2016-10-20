@@ -2,6 +2,7 @@
 $xoopsTpl->assign("op", $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
 $xoopsTpl->assign('Web', $Web);
+$xoopsTpl->assign('_IS_EZCLASS', _IS_EZCLASS);
 // $xoopsTpl->assign('login_from', $_COOKIE['login_from']);
 
 if (isset($LoginWebID)) {
@@ -9,6 +10,7 @@ if (isset($LoginWebID)) {
     $xoopsTpl->assign("LoginMemName", $LoginMemName);
     $xoopsTpl->assign("LoginMemNickName", $LoginMemNickName);
     $xoopsTpl->assign("LoginWebID", $LoginWebID);
+    $LoginCateID = isset($LoginCateID) ? $LoginCateID : '';
     $xoopsTpl->assign("LoginCateID", $LoginCateID);
 }
 
@@ -17,6 +19,7 @@ if (isset($LoginParentID)) {
     $xoopsTpl->assign("LoginParentName", $LoginParentName);
     $xoopsTpl->assign("LoginParentMemID", $LoginParentMemID);
     $xoopsTpl->assign("LoginWebID", $LoginWebID);
+    $LoginCateID = isset($LoginCateID) ? $LoginCateID : '';
     $xoopsTpl->assign("LoginCateID", $LoginCateID);
 }
 
@@ -226,6 +229,7 @@ function tad_web_my_menu($WebID)
                 }
             }
 
+            $closed_webs = isset($closed_webs) ? $closed_webs : '';
             $xoopsTpl->assign('closed_webs', $closed_webs);
         }
 
@@ -242,7 +246,6 @@ function tad_web_my_menu($WebID)
         $xoopsTpl->assign('menu_plugins', $menu_var);
         $xoopsTpl->assign('add_power', $add_power);
     }
-    return $block;
 }
 
 //以流水號秀出某筆tad_web_mems資料內容

@@ -28,9 +28,14 @@ function tad_web_image()
     $block['ActionID']   = $ActionID;
     $block['ActionName'] = $ActionName;
 
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-    $tad_web_action_image = new TadUpFiles("tad_web");
-    $subdir               = isset($WebID) ? "/{$WebID}" : "";
+    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
+        $tad_web_action_image = new TadUpFiles2("tad_web");
+    } else {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+        $tad_web_action_image = new TadUpFiles("tad_web");
+    }
+    $subdir = isset($WebID) ? "/{$WebID}" : "";
     $tad_web_action_image->set_dir('subdir', "/{$subdir}");
     $tad_web_action_image->set_col("ActionID", $ActionID);
     $photos = $tad_web_action_image->get_file();

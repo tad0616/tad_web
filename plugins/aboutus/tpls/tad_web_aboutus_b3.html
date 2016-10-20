@@ -77,12 +77,22 @@
         <div class="row">
           <div class="col-md-12">
             <{if $isMyWeb}>
-              <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_position"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
+              <{if 'position'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
+                <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_position"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
+              <{/if}>
               <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_class_stu"><{$edit_student}></a>
-              <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=export_config">匯出設定</a>
+              <{if 'export'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
+                <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=export_config"><{$smarty.const._MD_TCW_ABOUTUS_EXPORT}></a>
+              <{/if}>
             <{/if}>
-            <button id="clear" class="btn btn-danger"><{$smarty.const._MD_TCW_CLEAR}></button>
-            <button id="getit" class="btn btn-primary"><{$smarty.const._MD_TCW_GET_SOMEONE}></button>
+            <{if 'lotto'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
+              <button id="getit" class="btn btn-primary"><{$smarty.const._MD_TCW_GET_SOMEONE}></button>
+              <button id="clear" class="btn btn-danger"><{$smarty.const._MD_TCW_CLEAR}></button>
+            <{/if}>
+
+            <{if 'slot'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
+              <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=mem_slot"><{$smarty.const._MD_TCW_ABOUTUS_SLOT}></a>
+            <{/if}>
           </div>
         </div>
       <{/if}>
@@ -200,7 +210,7 @@
               <{$stud.MemSexTitle}>
             </div>
 
-            <{if 'MemNickName'|in_array:$mem_column}>
+            <{if 'MemNickName'|in_array:$mem_column and $stud.MemNickName}>
               <div style="margin: 2px;">
                 <span class="label label-default"><{$smarty.const._MD_TCW_MEM_NICKNAME}></span>
                 <{$stud.MemNickName}>
@@ -208,21 +218,21 @@
             <{/if}>
 
             <{if $isMyWeb}>
-              <{if 'MemUnicode'|in_array:$mem_column}>
+              <{if 'MemUnicode'|in_array:$mem_column and $stud.MemUnicode}>
                 <div style="margin: 2px;">
                   <span class="label label-danger"><{$smarty.const._MD_TCW_MEM_UNICODE}></span>
                   <{$stud.MemUnicode}>
                 </div>
               <{/if}>
 
-              <{if 'MemBirthday'|in_array:$mem_column}>
+              <{if 'MemBirthday'|in_array:$mem_column and $stud.MemBirthday}>
                 <div style="margin: 2px;">
                   <span class="label label-danger"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></span>
                   <{$stud.MemBirthday}>
                 </div>
               <{/if}>
 
-              <{if 'MemExpertises'|in_array:$mem_column}>
+              <{if 'MemExpertises'|in_array:$mem_column and $stud.MemExpertises}>
                 <div style="margin: 2px;">
                   <span class="label label-default"><{$smarty.const._MD_TCW_MEM_EXPERTISES}></span>
                   <{$stud.MemExpertises}>
@@ -232,7 +242,7 @@
           </div>
           <div class="col-sm-7">
 
-            <{if 'MemClassOrgan'|in_array:$mem_column}>
+            <{if 'MemClassOrgan'|in_array:$mem_column and $stud.MemClassOrgan and $stud.MemClassOrgan}>
               <div style="margin: 2px;">
                 <span class="label label-default"><{$smarty.const._MD_TCW_MEM_CLASSORGAN}></span>
                 <{$stud.MemClassOrgan}>
@@ -240,10 +250,10 @@
             <{/if}>
 
 
-            <{if 'AboutMem'|in_array:$mem_column}>
+            <{if 'AboutMem'|in_array:$mem_column and $stud.AboutMem and $stud.AboutMem}>
               <div style="margin: 2px;">
-                <span class="label label-default"><{$smarty.const._MD_TCW_MEM_ABOUTME}></span>
-                <{$stud.AboutMem}>
+                <!--span class="label label-default"><{$smarty.const._MD_TCW_MEM_ABOUTME}></span-->
+                <div class="alert alert-info" style="margin-top:4px;"><{$stud.AboutMem}></div>
               </div>
             <{/if}>
 
@@ -928,6 +938,9 @@
     <{/foreach}>
     </table>
   <{/if}>
+<{elseif $op=="mem_slot"}>
+
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_mem_slot.html"}>
 <{else}>
   <{$FooTableJS}>
   <div class="row">

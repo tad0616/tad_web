@@ -8,5 +8,6 @@ CREATE TABLE `tad_web_page` (
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
   `PageCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
   `PageSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
+  `PageCSS` text NOT NULL COMMENT '文章樣式',
 PRIMARY KEY (`PageID`)
 ) ENGINE=MyISAM;

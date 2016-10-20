@@ -237,6 +237,12 @@ switch ($op) {
         redirect_header("aboutus.php?WebID={$WebID}", 3, sprintf(_MD_TCW_ABOUTUS_SEND_PARENT_PASSWD, $email));
         break;
 
+    //小瑪莉
+    case "mem_slot":
+        $default_class = empty($CateID) ? get_web_config('default_class', $WebID) : $CateID;
+        $tad_web_aboutus->mem_slot($default_class);
+        break;
+
     //預設動作
     default:
         if (empty($WebID)) {
@@ -248,11 +254,7 @@ switch ($op) {
                 $op = 'show_stu';
             } else {
 
-                $default_class = get_web_config('default_class', $WebID);
-                // if (empty($CateID)) {
-                //     $CateID = $tad_web_aboutus->web_cate->tad_web_cate_max_id();
-                // }
-
+                $default_class = empty($CateID) ? get_web_config('default_class', $WebID) : $CateID;
                 $tad_web_aboutus->show_one($default_class);
                 $op = 'show_one';
             }

@@ -112,16 +112,17 @@ function countdown($WebID, $config = array())
 {
     $block['main_data'] = true;
     $block['config']    = $config;
+    $block['randStr']   = randStr(4);
     return $block;
 }
 
 //相簿崁入
-function flickrit($WebID, $config = array())
-{
-    $block['main_data'] = true;
-    $block['config']    = $config;
-    return $block;
-}
+// function flickrit($WebID, $config = array())
+// {
+//     $block['main_data'] = true;
+//     $block['config']    = $config;
+//     return $block;
+// }
 
 //標籤
 function tags($WebID, $config = array())

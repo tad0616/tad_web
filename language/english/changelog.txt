@@ -1,3 +1,25 @@
+Tad Web 1.7.1 (2016-10-12 released)
+====================================================
+1. Fixed mobile phone page class image is not correct
+2. Fix the problem that "About Us" can not switch classes correctly
+3. "About Us" members introduce themselves to join the word wrap
+4. Fixed URL input errors will have the problem of redundant folders
+5. New classification of the closure and the opening function
+6. Classification management to add close and sort function
+7. Fixed block can not properly preview the problem
+8. The article list block to display the number of articles and whether to display the number of clicks set
+9. Member name can be set to display the full name, to facilitate the use of administrative sites
+10. Correcting a Course Schedule When you add a new course, you may sometimes have problems that overwrite the old one
+11. The good links section is added to the hidden links and description settings
+12. Revision calendar If you close the global event, you can not see the site of global events
+13. Add the contents of the list of articles appearance style settings
+14. Join 360 ° photo support (with the latest tadtools)
+15. Remove the invalid flickrit blocks
+16. Add slot function
+17. Settings that are enabled or disabled in the About Us feature
+
+
+
 Tad Web 1.7 (2016-05-27 released)
 ====================================================
 1. Corrected issues related to tag is repeatedly displayed and can not be canceled
@@ -7,6 +29,7 @@ Tad Web 1.7 (2016-05-27 released)
 5. Corrected issues related to the module can not be updated correctly
 6. Remove BootStrap2
 7. Support PHP7
+8. Fixed countdown block repeated installation will have abnormal problems
 
 
 

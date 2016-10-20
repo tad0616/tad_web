@@ -25,6 +25,7 @@ class tad_web_schedule
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
                 $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
+                $this->web_cate->set_col_md(0, 6);
                 $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
@@ -34,6 +35,9 @@ class tad_web_schedule
         if (!empty($CateID) and $mode == "assign") {
             //取得單一分類資料
             $cate = $this->web_cate->get_tad_web_cate($CateID);
+            if ($CateID and $cate['CateEnable'] != '1') {
+                return;
+            }
             $xoopsTpl->assign('cate', $cate);
             $andCateID = "and a.`CateID`='$CateID'";
             $xoopsTpl->assign('ScheduleDefCateID', $CateID);
@@ -145,9 +149,16 @@ class tad_web_schedule
         $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($ScheduleName), 0, 300));
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
+        if ($CateID and $cate['CateEnable'] != '1') {
+            return;
+        }
         $xoopsTpl->assign('cate', $cate);
 
         $schedule_template = $this->get_one_schedule($ScheduleID);
+        // if ($_GET['test'] == '1') {
+        //     die($schedule_template);
+        // }
+
         $xoopsTpl->assign('schedule_template', $schedule_template);
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
@@ -481,9 +492,12 @@ class tad_web_schedule
 
         $xoopsTpl->assign('ScheduleID', $ScheduleID);
 
-        $schedule_subjects_arr = $this->get_subjects();
+        $schedule_subjects_arr     = $this->get_subjects();
+        $schedule_subjects_max_key = max(array_keys($schedule_subjects_arr));
+        $schedule_subjects_max_key++;
+
         $xoopsTpl->assign('schedule_subjects_arr', $schedule_subjects_arr);
-        $xoopsTpl->assign('item_form_index_start', sizeof($schedule_subjects_arr));
+        $xoopsTpl->assign('item_form_index_start', $schedule_subjects_max_key);
 
         //顏色設定
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/mColorPicker.php")) {

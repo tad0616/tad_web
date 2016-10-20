@@ -171,3 +171,14 @@ define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED_CONTENT', '<p>Your account fails to
       <p>If it did not receive a letter, you can also <a href="%s">click here to re-send a letter</a>.</p>');
 
 define('_MD_TCW_ABOUTUS_RE_SENDMAIL_TO', 'Re-send confirmation letter to ');
+
+define('_MD_TCW_ABOUTUS_S7_TEXT', 'Do you want to display the full name?');
+define('_MD_TCW_ABOUTUS_S7_DESC', 'Class is recommended set to "No" in order to protect students\' personal information.');
+
+define('_MD_TCW_ABOUTUS_EXPORT', 'Export config');
+define('_MD_TCW_ABOUTUS_SLOT', 'Slot');
+define('_MD_TCW_ABOUTUS_START', 'Again');
+
+define('_MD_TCW_ABOUTUS_S8_TEXT', 'Set the function to be used');
+define('_MD_TCW_ABOUTUS_S8_DESC', 'Uncheck the features you do not want');
+define('_MD_TCW_ABOUTUS_ALL_DONT', 'All do not');

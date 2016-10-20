@@ -29,6 +29,7 @@ class tad_web_menu
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['menu']['short'] . _MD_TCW_CATE_TOOLS);
                 $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['menu']['short']));
+                $this->web_cate->set_col_md(0, 6);
                 $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, true);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }

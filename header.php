@@ -12,9 +12,16 @@ $Web = $WebName = $WebTitle = $WebOwner = $WebOwnerUid = $menu_var = $plugin_men
 
 $i = 0;
 if (!empty($WebID)) {
-    $Web            = getWebInfo($WebID);
-    $web_all_config = get_web_all_config($WebID);
-    update_last_accessed($WebID);
+    $Web = getWebInfo($WebID);
+
+    if ($Web) {
+        $web_all_config = get_web_all_config($WebID);
+        update_last_accessed($WebID);
+    } else {
+        header('location:index.php');
+        exit;
+    }
+
     if ($Web and $Web['WebEnable'] == '1') {
         $WebName     = $Web['WebName'];
         $WebTitle    = $Web['WebTitle'];
@@ -23,6 +30,7 @@ if (!empty($WebID)) {
 
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png")) {
             output_head_file($WebID);
+            output_head_file_480($WebID);
         }
 
         if ($web_all_config['use_simple_menu'] == '1') {
@@ -84,6 +92,7 @@ if (!empty($WebID)) {
 
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png")) {
             output_head_file($WebID);
+            output_head_file_480($WebID);
         }
 
         $menu_var[$i]['id']     = $i;

@@ -27,6 +27,7 @@ if ($_REQUEST['CalKind'] == "homework") {
 
     $i = 0;
     //抓取母站行事曆
+    //不是全國版才抓
     if (in_array('all', $cal_cols) or $WebID) {
         $allEvents = get_all_event($start, $end, $WebID);
         foreach ($allEvents as $evens) {
@@ -123,14 +124,17 @@ function get_all_event($start, $end, $WebID)
 {
     global $xoopsDB;
 
-    if ($WebID) {
+    $andWebID = '';
+    if (_IS_EZCLASS) {
+        $andWebID = "and WebID='$WebID'";
+    } elseif ($WebID) {
         $calendar_setup = get_plugin_setup_values($WebID, "calendar");
         if ($calendar_setup['show_global_event'] != '1') {
-            return;
+            $andWebID = "and WebID='$WebID'";
         }
     }
 
-    $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' and CalendarDate <= '$end' and CalendarType='all' order by CalendarDate";
+    $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' and CalendarDate <= '$end' and CalendarType='all' $andWebID order by CalendarDate";
     $result = $xoopsDB->queryF($sql) or die($sql);
     $i      = 0;
     while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {

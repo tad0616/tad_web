@@ -84,6 +84,8 @@ define("_MD_TCW_SELECT_PLUGIN_CATE", "選擇%s分類");
 define("_MD_TCW_CATE_TOOLS", "分類管理");
 define("_MD_TCW_DEL_CATE_MOVE_TO", "刪除分類並將底下資料移至：");
 define("_MD_TCW_DEL_CATE_ALL", "刪除分類（含底下所有資料）");
+define("_MD_TCW_UNABLE_CATE", "停用此分類");
+define("_MD_TCW_ENABLE_CATE", "啟用此分類");
 define("_MD_TCW_CATE_NAME", "原始名稱");
 define("_MD_TCW_CATE_NEW_NAME", "新名稱或目的地");
 define("_MD_TCW_CATE_ACT", "欲執行動作");
@@ -93,6 +95,7 @@ define("_MD_TCW_CATE_MODIFY", "修改分類名稱為：");
 define("_MD_TCW_CATE_MOVE", "搬移分類底下資料至：");
 define("_MD_TCW_DEL_CATE_ALL_ALERT", "我確定要刪除整個指定分類以及底下所有資料。");
 define("_MD_TCW_OTHER_CLASS_SETUP", "請連到我另一個班網網址：");
+define("_MD_TCW_CATE_POWER", "設定分類權限(開發中)");
 
 define("_MD_TCW_CATE_PLUGIN_ENABLE", "是否啟用");
 define("_MD_TCW_CATE_PLUGIN_TITLE", "功能名稱");
@@ -244,3 +247,11 @@ define('_MD_TCW_WEB_CLOSE_MENU', '關閉選單');
 define('_MD_TCW_WEB_OPENID_SETUP', 'OpenID 登入設定');
 define('_MD_TCW_CATE_ASSISTANT', '小幫手');
 define('_MD_TCW_CATE_SET_ASSISTANT', '設定小幫手');
+
+define('_MD_TCW_CATE_ENABLED', '啟用中');
+define('_MD_TCW_CATE_UNABLED', '關閉中');
+define('_MD_TCW_CATE_DATA_AMOUNT1', '（目前有 ');
+define('_MD_TCW_CATE_DATA_AMOUNT2', ' 筆資料）');
+define('_MD_TCW_BLOCK_EMPTY', '目前無內容，無法展示');
+define('_MD_TCW_BLOCK_TITLE', '區塊標題');
+define('_MD_TCW_BLOCK_DEMO', '區塊預覽');

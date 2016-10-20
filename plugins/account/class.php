@@ -38,12 +38,16 @@ class tad_web_account
             //取得tad_web_cate所有資料陣列
             $this->web_cate->set_button_value(_MD_TCW_ACCOUNT_BOOK_TOOL);
             $this->web_cate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
+            $this->web_cate->set_col_md(0, 6);
             $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
             $xoopsTpl->assign('cate_menu', $cate_menu);
 
             if (!empty($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
+                if ($CateID and $cate['CateEnable'] != '1') {
+                    return;
+                }
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
                 $xoopsTpl->assign('AccountDefCateID', $CateID);
@@ -213,6 +217,9 @@ class tad_web_account
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
+        if ($CateID and $cate['CateEnable'] != '1') {
+            return;
+        }
         $xoopsTpl->assign('cate', $cate);
 
         //可愛刪除

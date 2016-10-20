@@ -25,6 +25,7 @@ class tad_web_files
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['files']['short'] . _MD_TCW_CATE_TOOLS);
                 $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['files']['short']));
+                $this->web_cate->set_col_md(0, 6);
                 $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
@@ -32,6 +33,9 @@ class tad_web_files
             if (!empty($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
+                if ($CateID and $cate['CateEnable'] != '1') {
+                    return;
+                }
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
                 $xoopsTpl->assign('FilesDefCateID', $CateID);

@@ -62,7 +62,6 @@
           </div>
         </div>
 
-
         <div class="form-group">
           <label class="col-md-3 control-label">
             <{$smarty.const._MD_TCW_BLOCK_POSITION}>
@@ -128,7 +127,7 @@
             </div>
           </div>
 
-          <{if $block.ShareFrom > 0}>
+          <{if $block.ShareFrom > 0 or $_IS_EZCLASS=='1'}>
             <input type="hidden" name="BlockShare" value="0">
           <{else}>
             <div class="form-group">

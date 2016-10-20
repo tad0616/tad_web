@@ -8,6 +8,10 @@ if (page_onUpdate2_chk()) {
     page_onUpdate2_go();
 }
 
+if (page_onUpdate3_chk()) {
+    page_onUpdate3_go();
+}
+
 //修改欄位
 function page_onUpdate1_chk()
 {
@@ -53,5 +57,26 @@ function page_onUpdate2_go()
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_page") . " CHANGE `PageSort` `PageSort` smallint NOT NULL DEFAULT 0 COMMENT '排序'";
     // die($sql);
     $xoopsDB->queryF($sql) or web_error($sql);
+    return true;
+}
+
+//新增樣式欄位
+function page_onUpdate3_chk()
+{
+    global $xoopsDB;
+    $sql    = "select count(PageCSS) from " . $xoopsDB->prefix("tad_web_page");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function page_onUpdate3_go()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_page") . " ADD `PageCSS` text NOT NULL COMMENT '文章樣式'";
+    $xoopsDB->queryF($sql);
     return true;
 }

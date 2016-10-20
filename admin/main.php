@@ -431,6 +431,7 @@ function save_one_web_title($WebID = '', $WebTitle = '')
     $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
 
     output_head_file($WebID);
+    output_head_file_480($WebID);
 }
 
 function save_webs_able($WebID = "", $able = "")

@@ -9,8 +9,9 @@ function list_page($WebID, $config = array())
     include_once "class.php";
 
     $tad_web_page = new tad_web_page($WebID);
-
-    $block = $tad_web_page->list_all("", $config['limit'], 'return');
+    $limit        = isset($config['limit']) ? $config['limit'] : '';
+    $show_count   = isset($config['show_count']) ? $config['show_count'] : '';
+    $block        = $tad_web_page->list_all("", $limit, 'return', '', $show_count);
     return $block;
 }
 
@@ -22,10 +23,13 @@ function page_menu($WebID, $config = array())
         retuen;
     }
 
+    $limit      = (isset($config['limit']) and !empty($config['limit'])) ? "limit 0,{$config['limit']}" : '';
+    $show_count = isset($config['show_count']) ? $config['show_count'] : '';
+
     $sql = "SELECT `CateName`, `CateID`
     FROM `" . $xoopsDB->prefix("tad_web_cate") . "`
     WHERE `WebID` = '$WebID' AND `ColName` = 'page' AND `CateEnable` = '1'
-    ORDER BY `CateSort`";
+    ORDER BY `CateSort` {$limit}";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
 
@@ -53,10 +57,10 @@ function page_menu($WebID, $config = array())
         $main[$i]['CateName']   = $CateName;
         $main[$i]['CateAmount'] = $j;
         $main[$i]['content']    = $content;
+        $main[$i]['show_count'] = $show_count;
         $i++;
 
     }
     $block['page_list'] = $main;
-
     return $block;
 }

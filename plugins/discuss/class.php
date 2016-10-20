@@ -4,12 +4,14 @@ class tad_web_discuss
 
     public $WebID = 0;
     public $web_cate;
+    public $aboutus_setup;
 
     public function __construct($WebID)
     {
-        $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, "discuss", "tad_web_discuss");
-        $this->tags     = new tags($WebID);
+        $this->WebID         = $WebID;
+        $this->web_cate      = new web_cate($WebID, "discuss", "tad_web_discuss");
+        $this->tags          = new tags($WebID);
+        $this->aboutus_setup = get_plugin_setup_values($WebID, "aboutus");
     }
 
     //列出所有tad_web_discuss資料
@@ -29,6 +31,7 @@ class tad_web_discuss
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['discuss']['short'] . _MD_TCW_CATE_TOOLS);
                 $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['discuss']['short']));
+                $this->web_cate->set_col_md(0, 6);
                 $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
@@ -36,6 +39,9 @@ class tad_web_discuss
             if (!empty($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
+                if ($CateID and $cate['CateEnable'] != '1') {
+                    return;
+                }
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
                 $xoopsTpl->assign('DiscussDefCateID', $CateID);
@@ -98,9 +104,9 @@ class tad_web_discuss
             $main_data[$i]['LastTime']    = $LastTime;
             if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
                 if ($MemID) {
-                    $main_data[$i]['MemName'] = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
+                    $main_data[$i]['MemName'] = ($this->aboutus_setup['mem_fullname'] != '1') ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemName;
                 } elseif ($ParentID) {
-                    $main_data[$i]['MemName'] = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS;
+                    $main_data[$i]['MemName'] = ($this->aboutus_setup['mem_fullname'] != '1') ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS : $MemName . _MD_TCW_DISCUSS_PARENTS;
                 } else {
                     $main_data[$i]['MemName'] = $MemName;
                 }
@@ -206,9 +212,9 @@ class tad_web_discuss
         $xoopsTpl->assign('LastTime', $LastTime);
         if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
             if ($MemID) {
-                $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
+                $MemName = ($this->aboutus_setup['mem_fullname'] != '1') ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemName;
             } elseif ($ParentID) {
-                $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS;
+                $MemName = ($this->aboutus_setup['mem_fullname'] != '1') ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS : $MemName . _MD_TCW_DISCUSS_PARENTS;
             } else {
                 $MemName = $MemName;
             }
@@ -227,6 +233,9 @@ class tad_web_discuss
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
+        if ($CateID and $cate['CateEnable'] != '1') {
+            return;
+        }
         $xoopsTpl->assign('cate', $cate);
 
         $upform = $TadUpFiles->upform(false, 'upfile', null, false);
@@ -538,10 +547,11 @@ class tad_web_discuss
             $anduid = "and `MemID`='{$_SESSION['LoginMemID']}'";
         } elseif ($_SESSION['LoginParentID']) {
             $anduid = "and `ParentID`='{$_SESSION['LoginParentID']}'";
+        } else {
+            return;
         }
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where `DiscussID`='$DiscussID' $anduid";
-        // die($sql);
         $xoopsDB->queryF($sql) or web_error($sql);
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where `ReDiscussID`='$DiscussID' $anduid";
@@ -683,9 +693,9 @@ class tad_web_discuss
             $DiscussContent = $this->bubble($DiscussContent . $DiscussFiles);
             if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
                 if ($MemID) {
-                    $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
+                    $MemName = ($this->aboutus_setup['mem_fullname'] != '1') ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemName;
                 } elseif ($ParentID) {
-                    $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS;
+                    $MemName = ($this->aboutus_setup['mem_fullname'] != '1') ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_DISCUSS_PARENTS : $MemName . _MD_TCW_DISCUSS_PARENTS;
                 } else {
                     $MemName = $MemName;
                 }

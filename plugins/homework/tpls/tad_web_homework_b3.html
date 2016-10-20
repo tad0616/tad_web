@@ -185,12 +185,27 @@
       <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$HomeworkID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
     </div>
   <{/if}>
-<{elseif $homework_data or $yet_data}>
+<{elseif $op=="list_all"}>
   <{if $WebID}>
-    <{$cate_menu}>
+    <div class="row">
+      <div class="col-sm-8">
+        <{$cate_menu}>
+      </div>
+      <div class="col-sm-4 text-right">
+        <{if $isMyWeb and $WebID}>
+          <a href="cate.php?WebID=<{$WebID}>&ColName=homework&table=tad_web_homework" class="btn btn-warning <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-folder-open"></i> <{$smarty.const._MD_TCW_CATE_TOOLS}></a>
+          <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
+        <{/if}>
+      </div>
+    </div>
   <{/if}>
-  <{$FooTableJS}>
-  <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework_b3.html"}>
+  <{if $homework_data or $yet_data}>
+    <{$FooTableJS}>
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework_b3.html"}>
+  <{else}>
+    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h1>
+    <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
+  <{/if}>
   <div class="clearfix"></div>
   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
 <{elseif $op=="setup"}>

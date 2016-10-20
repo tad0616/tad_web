@@ -6,12 +6,12 @@
 
 <div class="text-center">
   <div style="font-size: 1.5em; margin-bottom:10px;"><{$bc.config.countdown_title}></div>
-  <div id="countdown"></div>
+  <div id="countdown_<{$bc.randStr}>"></div>
 </div>
 
 <script type="text/javascript">
   $(function () {
-    $('#countdown').timeTo({
+    $('#countdown_<{$bc.randStr}>').timeTo({
         timeTo: new Date(new Date('<{$bc.config.countdown_date}>')),
         displayDays: 3,
         theme: "black",

@@ -31,6 +31,7 @@ switch ($op) {
     case "save_head":
         save_web_config("web_head", $filename, $WebID);
         output_head_file($WebID);
+        output_head_file_480($WebID);
         die($filename);
         exit;
         break;
@@ -39,6 +40,7 @@ switch ($op) {
         save_web_config("head_top", $head_top, $WebID);
         save_web_config("head_left", $head_left, $WebID);
         output_head_file($WebID);
+        output_head_file_480($WebID);
         exit;
         break;
 
@@ -47,12 +49,14 @@ switch ($op) {
         save_web_config("logo_top", $logo_top, $WebID);
         save_web_config("logo_left", $logo_left, $WebID);
         output_head_file($WebID);
+        output_head_file_480($WebID);
         exit;
         break;
 
     case "save_logo_pic":
         save_web_config("web_logo", $filename, $WebID);
         output_head_file($WebID);
+        output_head_file_480($WebID);
         exit;
         break;
 

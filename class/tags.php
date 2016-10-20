@@ -40,7 +40,7 @@ class tags
     public $label_col_md = '2';
     public $menu_col_md  = '10';
 
-    public function tags($WebID = "0")
+    public function __construct($WebID = "0")
     {
         if (!empty($WebID)) {
             $this->set_WebID($WebID);

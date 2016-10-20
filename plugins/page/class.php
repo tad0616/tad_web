@@ -15,8 +15,8 @@ class tad_web_page
         $this->setup    = get_plugin_setup_values($WebID, "page");
     }
 
-    //文章剪影
-    public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
+    //所有文章
+    public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '', $show_count = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
@@ -26,12 +26,14 @@ class tad_web_page
         $cate_arr = $this->web_cate->get_tad_web_cate_arr();
 
         $xoopsTpl->assign('cate_arr', $cate_arr);
-        //die(var_export($cate_arr));
         $andCateID = "";
         if (!empty($CateID)) {
             //取得單一分類資料
-            $cate_one = $this->web_cate->get_tad_web_cate($CateID);
-            $xoopsTpl->assign('cate', $cate_one);
+            $cate = $this->web_cate->get_tad_web_cate($CateID);
+            if ($CateID and $cate['CateEnable'] != '1') {
+                return;
+            }
+            $xoopsTpl->assign('cate', $cate);
             $andCateID = "and a.`CateID`='$CateID'";
             $xoopsTpl->assign('PageDefCateID', $CateID);
         }
@@ -52,6 +54,14 @@ class tad_web_page
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
         }
+        $to_limit = empty($limit) ? '200' : $limit;
+
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar = getPageBar($sql, $to_limit, 10);
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
+
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
 
@@ -62,14 +72,20 @@ class tad_web_page
         $Webs = getAllWebInfo();
 
         while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $PageID , $PageTitle , $PageContent , $PageDate , $PageSort , $uid , $WebID , $PageCount
+            //以下會產生這些變數： $PageID , $PageTitle , $PageContent , $PageDate , $PageSort , $uid , $WebID , $PageCount, $PageCSS
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
 
+            if (!empty($CateID) and !empty($cate_arr)) {
+                if ($cate_arr[$CateID]['CateEnable'] != '1') {
+                    continue;
+                }
+            }
+
             $main_data[$i]                = $all;
             $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
-
+            $main_data[$i]['show_count']  = $show_count;
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = $cate_arr[$CateID];
@@ -119,7 +135,7 @@ class tad_web_page
             return $all;
         }
 
-        //以下會產生這些變數： $PageID , $PageTitle , $PageContent , $PageDate , $PageSort , $uid , $WebID , $PageCount
+        //以下會產生這些變數： $PageID , $PageTitle , $PageContent , $PageDate , $PageSort , $uid , $WebID , $PageCount, $PageCSS
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -152,12 +168,16 @@ class tad_web_page
         $xoopsTpl->assign('files', $files);
         $xoopsTpl->assign('PageID', $PageID);
         $xoopsTpl->assign('PageInfo', sprintf(_MD_TCW_INFO, $uid_name, $PageDate, $PageCount));
+        $xoopsTpl->assign('PageCSS', $PageCSS);
 
         $xoopsTpl->assign('xoops_pagetitle', $PageTitle);
         $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($PageContent), 0, 300));
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
+        if ($CateID and $cate['CateEnable'] != '1') {
+            return;
+        }
         $xoopsTpl->assign('cate', $cate);
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
@@ -236,6 +256,10 @@ class tad_web_page
         $PageCount = (!isset($DBV['PageCount'])) ? "" : $DBV['PageCount'];
         $xoopsTpl->assign('PageCount', $PageCount);
 
+        //設定「PageCSS」欄位預設值
+        $PageCSS = empty($DBV['PageCSS']) ? "line-height: 2; font-size:120%; background: #FFFFFF;" : $DBV['PageCSS'];
+        $xoopsTpl->assign('PageCSS', $PageCSS);
+
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['page']) ? $_SESSION['isAssistant']['page'] : '';
         $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
@@ -286,18 +310,19 @@ class tad_web_page
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                 = &MyTextSanitizer::getInstance();
-        $_POST['PageTitle']   = $myts->addSlashes($_POST['PageTitle']);
-        $_POST['PageContent'] = $myts->addSlashes($_POST['PageContent']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
-        $PageSort             = $this->max_sort($_POST['WebID'], $_POST['CateID']);
-        $PageDate             = date("Y-m-d H:i:s");
+        $myts        = &MyTextSanitizer::getInstance();
+        $PageTitle   = $myts->addSlashes($_POST['PageTitle']);
+        $PageContent = $myts->addSlashes($_POST['PageContent']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
+        $PageSort    = $this->max_sort($WebID, $CateID);
+        $PageDate    = date("Y-m-d H:i:s");
+        $PageCSS     = $myts->addSlashes($_POST['PageCSS']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_page") . "
-        (`CateID`,`PageTitle` , `PageContent` , `PageDate` , `PageSort` , `uid` , `WebID` , `PageCount`)
-        values('{$CateID}' ,'{$_POST['PageTitle']}' , '{$_POST['PageContent']}' , '{$PageDate}' , '{$PageSort}' , '{$uid}' , '{$_POST['WebID']}' , '0')";
+        (`CateID`,`PageTitle` , `PageContent` , `PageDate` , `PageSort` , `uid` , `WebID` , `PageCount` , `PageCSS`)
+        values('{$CateID}' ,'{$PageTitle}' , '{$PageContent}' , '{$PageDate}' , '{$PageSort}' , '{$uid}' , '{$WebID}' , '0' , '{$PageCSS}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -317,14 +342,15 @@ class tad_web_page
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts                 = &MyTextSanitizer::getInstance();
-        $_POST['PageTitle']   = $myts->addSlashes($_POST['PageTitle']);
-        $_POST['PageContent'] = $myts->addSlashes($_POST['PageContent']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
-        $PageDate             = date("Y-m-d H:i:s");
+        $myts        = &MyTextSanitizer::getInstance();
+        $PageTitle   = $myts->addSlashes($_POST['PageTitle']);
+        $PageContent = $myts->addSlashes($_POST['PageContent']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
+        $PageDate    = date("Y-m-d H:i:s");
+        $PageCSS     = $myts->addSlashes($_POST['PageCSS']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
 
         if (!is_assistant($CateID, 'PageID', $PageID)) {
             $anduid = onlyMine();
@@ -332,9 +358,10 @@ class tad_web_page
 
         $sql = "update " . $xoopsDB->prefix("tad_web_page") . " set
          `CateID` = '{$CateID}' ,
-         `PageTitle` = '{$_POST['PageTitle']}' ,
-         `PageContent` = '{$_POST['PageContent']}' ,
-         `PageDate` = '{$PageDate}'
+         `PageTitle` = '{$PageTitle}' ,
+         `PageContent` = '{$PageContent}' ,
+         `PageDate` = '{$PageDate}',
+         `PageCSS` = '{$PageCSS}'
         where PageID='$PageID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 

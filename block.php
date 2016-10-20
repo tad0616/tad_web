@@ -103,9 +103,11 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
 //區塊設定表單
 function array2form($form_arr = array(), $config = array())
 {
-    // if ($_GET['test'] == '1') {
-    //     // die(var_export($form_arr));
-    // }
+    if ($_GET['test'] == '1') {
+        var_export($form_arr);
+        var_export($config);
+        exit();
+    }
 
     if (empty($form_arr)) {
         return;
@@ -440,6 +442,9 @@ function demo_block($BlockID, $WebID)
     }
 
     $xoopsTpl->assign('theme_display_mode', 'blank');
+    // if ($WebID == '177') {
+    //     die(var_export($blocks_arr));
+    // }
     $xoopsTpl->assign('block', $blocks_arr);
 }
 /*-----------執行動作判斷區----------*/
@@ -504,14 +509,14 @@ switch ($op) {
     default:
         //die(var_export(get_all_blocks('limit')));
         block_setup($WebID);
-        $xoopsTpl->assign('block1', get_position_blocks($WebID, 'block1'));
-        $xoopsTpl->assign('block2', get_position_blocks($WebID, 'block2'));
-        $xoopsTpl->assign('block3', get_position_blocks($WebID, 'block3'));
-        $xoopsTpl->assign('block4', get_position_blocks($WebID, 'block4'));
-        $xoopsTpl->assign('block5', get_position_blocks($WebID, 'block5'));
-        $xoopsTpl->assign('block6', get_position_blocks($WebID, 'block6'));
-        $xoopsTpl->assign('side', get_position_blocks($WebID, 'side'));
-        $xoopsTpl->assign('uninstall', get_position_blocks($WebID, 'uninstall'));
+        $xoopsTpl->assign('block1', get_position_blocks($WebID, 'block1', $plugin));
+        $xoopsTpl->assign('block2', get_position_blocks($WebID, 'block2', $plugin));
+        $xoopsTpl->assign('block3', get_position_blocks($WebID, 'block3', $plugin));
+        $xoopsTpl->assign('block4', get_position_blocks($WebID, 'block4', $plugin));
+        $xoopsTpl->assign('block5', get_position_blocks($WebID, 'block5', $plugin));
+        $xoopsTpl->assign('block6', get_position_blocks($WebID, 'block6', $plugin));
+        $xoopsTpl->assign('side', get_position_blocks($WebID, 'side', $plugin));
+        $xoopsTpl->assign('uninstall', get_position_blocks($WebID, 'uninstall', $plugin));
         break;
 
 }

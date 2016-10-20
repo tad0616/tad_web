@@ -47,7 +47,7 @@ class power
     public $label_col_md = '2';
     public $menu_col_md  = '4';
 
-    public function power($WebID = "0")
+    public function __construct($WebID = "0")
     {
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
@@ -120,13 +120,13 @@ class power
     }
 
     //新增資料到tad_web_power中
-    public function save_power($col_name = "", $col_sn = "", $power_name = "")
+    public function save_power($col_name = "", $col_sn = "", $power_name = "", $power_val = "")
     {
         global $xoopsDB, $xoopsUser;
 
         $myts       = MyTextSanitizer::getInstance();
         $power_name = $myts->addSlashes($power_name);
-        $power_val  = $myts->addSlashes($_REQUEST[$power_name]);
+        $power_val  = empty($power_val) ? $myts->addSlashes($_REQUEST[$power_name]) : $myts->addSlashes($power_val);
 
         $sql = "replace into `" . $xoopsDB->prefix("tad_web_power") . "` (
           `WebID`,

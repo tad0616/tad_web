@@ -68,6 +68,9 @@ CREATE TABLE `tad_web_files_center` (
   `original_filename` varchar(255) NOT NULL COMMENT '檔案名稱',
   `hash_filename` varchar(255) NOT NULL COMMENT '加密檔案名稱',
   `sub_dir` varchar(255) NOT NULL COMMENT '檔案子路徑',
+  `upload_date` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '上傳時間',
+  `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
+  `tag` varchar(255) NOT NULL default '' COMMENT '註記',
   PRIMARY KEY (`files_sn`),
   UNIQUE KEY `col_name` (`col_name`,`col_sn`,`sort`)
 ) ENGINE=MyISAM;

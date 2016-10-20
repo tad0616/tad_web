@@ -196,6 +196,7 @@ function update_tad_web()
     $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
     //import_img(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo", "logo", $WebID);
     output_head_file($WebID);
+    output_head_file_480($WebID);
 }
 
 //移除網站設定
@@ -265,6 +266,7 @@ function reset_logo($WebID)
     save_web_config('logo_left', '41.7', $WebID);
     save_web_config('logo_top', '53.8', $WebID);
     output_head_file($WebID);
+    output_head_file_480($WebID);
 }
 
 //重置標題圖位置
@@ -278,6 +280,7 @@ function reset_head($WebID)
     save_web_config('head_left', '0', $WebID);
     save_web_config('head_top', '-371', $WebID);
     output_head_file($WebID);
+    output_head_file_480($WebID);
 }
 
 function enabe_plugin($dirname = "", $WebID = "")
@@ -413,6 +416,7 @@ switch ($op) {
         if ($file_name) {
             save_web_config("web_head", $file_name, $WebID);
             output_head_file($WebID);
+            output_head_file_480($WebID);
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
@@ -425,6 +429,7 @@ switch ($op) {
         if ($file_name) {
             save_web_config("web_logo", $file_name, $WebID);
             output_head_file($WebID);
+            output_head_file_480($WebID);
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;

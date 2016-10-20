@@ -8,6 +8,10 @@ if (system_onUpdate2_chk()) {
     system_onUpdate2_go();
 }
 
+if (system_onUpdate3_chk()) {
+    system_onUpdate3_go();
+}
+
 //修改欄位
 function system_onUpdate1_chk()
 {
@@ -91,5 +95,26 @@ function system_onUpdate2_go()
     }
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login' or `BlockName`='my_menu'";
+    $xoopsDB->queryF($sql) or web_error($sql);
+}
+
+//移除 flickrit 區塊
+function system_onUpdate3_chk()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='flickrit'";
+    $result = $xoopsDB->query($sql);
+    if (!empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+//轉移設定後刪除
+function system_onUpdate3_go()
+{
+    global $xoopsDB;
+    $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='flickrit'";
     $xoopsDB->queryF($sql) or web_error($sql);
 }

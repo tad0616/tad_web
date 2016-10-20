@@ -102,12 +102,40 @@ function xoops_module_update_tad_web($module, $old_version)
         go_update24();
     }
 
+    if (chk_fc_tag()) {
+        go_fc_tag();
+    }
+
     chk_sql();
     chk_newblock();
     go_update_var();
     chk_plugin_update();
     add_log('update');
     return true;
+}
+
+//新增檔案欄位
+function chk_fc_tag()
+{
+    global $xoopsDB;
+    $sql    = "select count(`tag`) from " . $xoopsDB->prefix("tad_web_files_center");
+    $result = $xoopsDB->query($sql);
+    if (empty($result)) {
+        return true;
+    }
+
+    return false;
+}
+
+function go_fc_tag()
+{
+    global $xoopsDB;
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_files_center") . "
+    ADD `upload_date` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '上傳時間',
+    ADD `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
+    ADD `tag` varchar(255) NOT NULL default '' COMMENT '註記'
+    ";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 }
 
 //新增外掛的sql檔
@@ -153,7 +181,7 @@ function chk_newblock()
     }
 
     //修正自訂區塊名稱（並用序號排序）
-    $sql    = "select BlockID,BlockName,BlockTitle,BlockContent,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where plugin='custom' order by     BlockID";
+    $sql    = "select BlockID,BlockName,BlockTitle,BlockContent,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where plugin='custom' order by BlockID";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
 
@@ -643,7 +671,7 @@ function chk_chk7()
 function go_update7()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` varchar(255) NOT NULL DEFAULT '' NOT NULL";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` varchar(255) NOT NULL DEFAULT ''";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     return true;
@@ -1253,6 +1281,7 @@ function go_update24()
 
     return true;
 }
+
 //建立目錄
 function mk_dir($dir = "")
 {

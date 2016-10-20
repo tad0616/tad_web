@@ -13,7 +13,7 @@ class tad_web_link
     }
 
     //好站連結
-    public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '')
+    public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '', $hide_link = 0, $hide_desc = 0)
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var;
 
@@ -25,6 +25,7 @@ class tad_web_link
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['link']['short'] . _MD_TCW_CATE_TOOLS);
                 $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['link']['short']));
+                $this->web_cate->set_col_md(0, 6);
                 $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
@@ -32,6 +33,9 @@ class tad_web_link
             if (!empty($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
+                if ($CateID and $cate['CateEnable'] != '1') {
+                    return;
+                }
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
                 $xoopsTpl->assign('LinkDefCateID', $CateID);
@@ -90,6 +94,8 @@ class tad_web_link
             $main_data[$i]['LinkShortUrl'] = xoops_substr($LinkUrl, 0, 100, '...');
             $LinkDesc                      = nl2br(xoops_substr(strip_tags($LinkDesc), 0, 150));
             $main_data[$i]['LinkDesc']     = $LinkDesc;
+            $main_data[$i]['hide_link']    = $hide_link;
+            $main_data[$i]['hide_desc']    = $hide_desc;
             $i++;
         }
 

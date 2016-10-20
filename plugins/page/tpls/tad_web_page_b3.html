@@ -29,6 +29,18 @@
 
       <{$tags_form}>
 
+      <!--樣式設定-->
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <{$smarty.const._MD_TCW_PAGECSS}>
+        </label>
+        <div class="col-md-10">
+          <input type="text" name="PageCSS" value="<{$PageCSS}>" id="PageCSS" class="form-control" placeholder="">
+          <span class="help-block"><{$smarty.const._MD_TCW_PAGECSS_DESC}></span>
+        </div>
+      </div>
+
+
       <!--上傳圖檔-->
       <div class="form-group">
         <label class="col-md-2 control-label">
@@ -69,7 +81,7 @@
   </ol>
 
   <{if $PageContent}>
-    <div id="list_page" style="min-height: 100px; overflow: auto; line-height: 2; font-size:120%; background: #FFFFFF url('<{$bg_pic}>') center center; border-radius: 5px; margin:10px auto; padding: 20px; background-size:cover;"><{$PageContent}></div>
+    <div id="list_page" style="min-height: 100px; overflow: auto; border-radius: 5px; margin:10px auto; padding: 20px;<{if $PageCSS}><{$PageCSS}><{else}>line-height: 2; font-size:120%; background: #FFFFFF;<{/if}>"><{$PageContent}></div>
   <{/if}>
 
   <div class="row">

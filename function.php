@@ -6,9 +6,15 @@ if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php")) {
     redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1", 3, _TAD_NEED_TADTOOLS);
 }
 
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-$TadUpFiles = new TadUpFiles("tad_web");
-$subdir     = isset($WebID) ? "/{$WebID}" : "";
+if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
+    $TadUpFiles = new TadUpFiles2("tad_web");
+} else {
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+    $TadUpFiles = new TadUpFiles("tad_web");
+}
+
+$subdir = isset($WebID) ? "/{$WebID}" : "";
 $TadUpFiles->set_dir('subdir', $subdir);
 
 //引入TadTools的函式庫
@@ -46,6 +52,9 @@ if ($xoopsUser) {
     $LoginParentName  = isset($_SESSION['LoginParentName']) ? $_SESSION['LoginParentName'] : null;
     $LoginParentMemID = isset($_SESSION['LoginParentMemID']) ? $_SESSION['LoginParentMemID'] : null;
 }
+
+//區塊位置
+$BlockPositionTitle = array('block1' => _MD_TCW_TOP_CENTER_BLOCK, 'block2' => _MD_TCW_TOP_LEFT_BLOCK, 'block3' => _MD_TCW_TOP_LEFT_BLOCK, 'block4' => _MD_TCW_BOTTOM_CENTER_BLOCK, 'block5' => _MD_TCW_BOTTOM_LEFT_BLOCK, 'block6' => _MD_TCW_BOTTOM_RIGHT_BLOCK, 'side' => _MD_TCW_SIDE_BLOCK, 'uninstall' => _MD_TCW_UNINSTALL_BLOCK);
 
 /********************* 自訂函數 *********************/
 //取得已安裝的區塊
@@ -105,17 +114,21 @@ function get_all_blocks($value = 'title')
     return $block_option;
 }
 
-function get_position_blocks($WebID, $BlockPosition)
+function get_position_blocks($WebID, $BlockPosition, $plugin = '')
 {
     global $xoopsDB, $plugin_menu_var;
     if ($BlockPosition == 'uninstall') {
         //找出這個網站已經安裝的分享區塊
-        $share_blocks_id  = get_share_blocks($WebID);
-        $all_share_blocks = implode("','", $share_blocks_id);
-        $andShareBlocks   = empty($all_share_blocks) ? '' : "and BlockID not in('{$all_share_blocks}')";
-        $andBlockPosition = "(`WebID`='{$WebID}' and (`BlockPosition`='uninstall' or `BlockPosition`='') and plugin!='share' ) or (plugin='share' and WebID!='{$WebID}' {$andShareBlocks})";
+        if (empty($plugin)) {
+            $share_blocks_id  = get_share_blocks($WebID);
+            $all_share_blocks = implode("','", $share_blocks_id);
+            $andShareBlocks   = empty($all_share_blocks) ? '' : "and BlockID not in('{$all_share_blocks}')";
+            $andBlockPosition = "(`WebID`='{$WebID}' and (`BlockPosition`='uninstall' or `BlockPosition`='') and plugin!='share' ) or (plugin='share' and WebID!='{$WebID}' {$andShareBlocks})";
+        } else {
+            $andBlockPosition = "(`WebID`='{$WebID}' and (`BlockPosition`='uninstall' or `BlockPosition`='') and plugin='{$plugin}' )";
+        }
     } else {
-        $andBlockPosition = "`WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' and `plugin`!='share'";
+        $andBlockPosition = empty($plugin) ? "`WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' and `plugin`!='share'" : "`WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' and `plugin`='{$plugin}'";
     }
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where  $andBlockPosition order by `BlockSort`";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
@@ -161,11 +174,12 @@ function get_share_blocks($WebID)
 }
 
 //取得所有顯示的區塊
-function get_display_blocks($WebID, $BlockEnable = 1)
+function get_web_blocks($WebID, $plugin = '', $BlockEnable = 1)
 {
     global $xoopsDB;
+    $andBlockPlugin = empty($plugin) ? "" : "and plugin='{$plugin}'";
     $andBlockEnable = is_null($BlockEnable) ? "" : "and BlockEnable='{$BlockEnable}'";
-    $sql            = "select BlockName from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' {$andBlockEnable}";
+    $sql            = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' {$andBlockEnable} {$andBlockPlugin}";
     $result         = $xoopsDB->queryF($sql) or web_error($sql);
 
     $i      = 0;
@@ -424,7 +438,6 @@ function common_template($WebID, $web_all_config = "")
         }
     }
 
-    $xoopsTpl->assign('_IS_EZCLASS', _IS_EZCLASS);
     // return $web_all_config;
 }
 
@@ -492,7 +505,7 @@ function mk_menu_var_file($WebID = null)
 
     file_put_contents($file, $current);
 
-    $display_blocks_arr = get_display_blocks($WebID);
+    $display_blocks_arr = get_web_blocks($WebID);
 
     if (empty($display_blocks_arr)) {
         //取得系統所有區塊
@@ -949,24 +962,39 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
 
 function TadUpFilesBg($WebID)
 {
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-    $TadUpFilesBg = new TadUpFiles("tad_web", "/{$WebID}/bg", null, "", "/thumbs");
+    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
+        $TadUpFilesBg = new TadUpFiles2("tad_web", "/{$WebID}/bg", null, "", "/thumbs");
+    } else {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+        $TadUpFilesBg = new TadUpFiles("tad_web", "/{$WebID}/bg", null, "", "/thumbs");
+    }
     $TadUpFilesBg->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesBg;
 }
 
 function TadUpFilesLogo($WebID)
 {
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-    $TadUpFilesLogo = new TadUpFiles("tad_web", "/{$WebID}/logo", null, "", "/thumbs");
+    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
+        $TadUpFilesLogo = new TadUpFiles2("tad_web", "/{$WebID}/logo", null, "", "/thumbs");
+    } else {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+        $TadUpFilesLogo = new TadUpFiles("tad_web", "/{$WebID}/logo", null, "", "/thumbs");
+    }
     $TadUpFilesLogo->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesLogo;
 }
 
 function TadUpFilesHead($WebID)
 {
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-    $TadUpFilesHead = new TadUpFiles("tad_web", "/{$WebID}/head", null, "", "/thumbs");
+    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
+        $TadUpFilesHead = new TadUpFiles2("tad_web", "/{$WebID}/head", null, "", "/thumbs");
+    } else {
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+        $TadUpFilesHead = new TadUpFiles("tad_web", "/{$WebID}/head", null, "", "/thumbs");
+    }
     $TadUpFilesHead->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesHead;
 }
@@ -1108,6 +1136,7 @@ function output_head_file($WebID)
     header('Content-type: image/png');
     imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png");
     imagedestroy($im);
+
 }
 
 //製作文字圖片
@@ -1119,6 +1148,7 @@ function output_head_file_480($WebID)
     }
     //先刪掉舊檔
     $filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png";
+
     if (file_exists($filename)) {
         unlink($filename);
     }
@@ -1553,7 +1583,7 @@ function get_assistant($CateID = "")
     if (empty($CateID)) {
         return;
     }
-
+    $mem    = '';
     $sql    = "select `AssistantType`, `AssistantID` from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}'";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
@@ -1601,7 +1631,7 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
 function is_assistant($CateID = '', $ColName = '', $ColSN = '')
 {
     global $xoopsDB;
-
+    $mem    = '';
     $sql    = "select `AssistantType`,`AssistantID` from `" . $xoopsDB->prefix('tad_web_assistant_post') . "` where `ColName`='{$ColName}' and `ColSN`='{$ColSN}' and `CateID`='{$CateID}'";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);

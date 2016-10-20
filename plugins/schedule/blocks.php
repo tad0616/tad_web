@@ -9,7 +9,7 @@ function list_schedule($WebID, $config = array())
     include_once "class.php";
 
     $tad_web_schedule = new tad_web_schedule($WebID);
-
-    $block = $tad_web_schedule->list_all("", $config['limit'], 'return');
+    $limit            = isset($config['limit']) ? $config['limit'] : '';
+    $block            = $tad_web_schedule->list_all("", $limit, 'return');
     return $block;
 }

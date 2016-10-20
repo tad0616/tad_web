@@ -12,3 +12,6 @@ define("_MD_TCW_PAGESORT", "排序");
 define("_MD_TCW_PAGE_UPLOAD", "上傳檔案");
 define("_MD_TCW_PAGE_BLOCK_LIST", "文章列表");
 define("_MD_TCW_PAGE_BLOCK_MENU", "文章選單");
+define("_MD_TCW_PAGE_BLOCK_SHOW_COUNT", "是否顯示點閱數？");
+define("_MD_TCW_PAGECSS", "內容外觀設定");
+define("_MD_TCW_PAGECSS_DESC", "line-height: 行距; font-size: 文字大小; background: 背景色;（此為CSS語法，不熟請維持原設定即可）");

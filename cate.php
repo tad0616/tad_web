@@ -96,6 +96,8 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
         return;
     }
 
+    $power = new power($WebID);
+
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
     //新增分類
@@ -122,7 +124,15 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
             case "set_assistant":
                 set_assistant($CateID, $_POST['MemID'][$CateID]);
                 break;
-
+            case "enable":
+                $web_cate->enable_tad_web_cate($CateID, 1);
+                break;
+            case "unable":
+                $web_cate->enable_tad_web_cate($CateID, 0);
+                break;
+            case "power":
+                $power->save_power("CateID", $CateID, 'read', $_POST['power'][$CateID]);
+                break;
         }
     }
 }

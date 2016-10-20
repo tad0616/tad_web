@@ -56,15 +56,15 @@ $blocksArr['countdown']['colset']['countdown_title'] = array('label' => _MD_TCW_
 $blocksArr['countdown']['config']['countdown_date']  = date("12/25/Y 00:00:00");
 $blocksArr['countdown']['colset']['countdown_date']  = array('label' => _MD_TCW_SYSTEM_BLOCK_COUNTDOWN_DATE, 'type' => 'datetime');
 
-$blocksArr['flickrit']['name']                     = _MD_TCW_SYSTEM_BLOCK_FLICKRIT;
-$blocksArr['flickrit']['tpl']                      = 'flickrit.html';
-$blocksArr['flickrit']['position']                 = 'side';
-$blocksArr['flickrit']['config']['flickrit_type']  = 'slideshowholderpicasa';
-$blocksArr['flickrit']['colset']['flickrit_type']  = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_TYPE, 'type' => 'select', 'options' => array(_MD_TCW_SYSTEM_BLOCK_FLICKRIT_TYPE_FLICKR => 'slideshowholder', _MD_TCW_SYSTEM_BLOCK_FLICKRIT_TYPE_PICASA => 'slideshowholderpicasa'));
-$blocksArr['flickrit']['config']['flickrit_kind']  = 'setId';
-$blocksArr['flickrit']['colset']['flickrit_kind']  = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND, 'type' => 'select', 'options' => array(_MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND_SETID => 'setId', _MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND_USERID => 'userId'));
-$blocksArr['flickrit']['config']['flickrit_setid'] = '110168492315217261022/Flickrit';
-$blocksArr['flickrit']['colset']['flickrit_setid'] = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_SETID, 'type' => 'text');
+// $blocksArr['flickrit']['name']                     = _MD_TCW_SYSTEM_BLOCK_FLICKRIT;
+// $blocksArr['flickrit']['tpl']                      = 'flickrit.html';
+// $blocksArr['flickrit']['position']                 = 'side';
+// $blocksArr['flickrit']['config']['flickrit_type']  = 'slideshowholderpicasa';
+// $blocksArr['flickrit']['colset']['flickrit_type']  = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_TYPE, 'type' => 'select', 'options' => array(_MD_TCW_SYSTEM_BLOCK_FLICKRIT_TYPE_FLICKR => 'slideshowholder', _MD_TCW_SYSTEM_BLOCK_FLICKRIT_TYPE_PICASA => 'slideshowholderpicasa'));
+// $blocksArr['flickrit']['config']['flickrit_kind']  = 'setId';
+// $blocksArr['flickrit']['colset']['flickrit_kind']  = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND, 'type' => 'select', 'options' => array(_MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND_SETID => 'setId', _MD_TCW_SYSTEM_BLOCK_FLICKRIT_KIND_USERID => 'userId'));
+// $blocksArr['flickrit']['config']['flickrit_setid'] = '110168492315217261022/Flickrit';
+// $blocksArr['flickrit']['colset']['flickrit_setid'] = array('label' => _MD_TCW_SYSTEM_BLOCK_FLICKRIT_SETID, 'type' => 'text');
 
 $blocksArr['tags']['name']                 = _MD_TCW_SYSTEM_BLOCK_TAGS;
 $blocksArr['tags']['tpl']                  = 'tags.html';

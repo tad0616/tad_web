@@ -90,6 +90,8 @@ define("_MD_TCW_SELECT_PLUGIN_CATE", "Select %s Category");
 define("_MD_TCW_CATE_TOOLS", "Category Tools");
 define("_MD_TCW_DEL_CATE_MOVE_TO", "Delete category and move files to ");
 define("_MD_TCW_DEL_CATE_ALL", "Delete category and all files.");
+define("_MD_TCW_UNABLE_CATE", "Unable category");
+define("_MD_TCW_ENABLE_CATE", "Enable category");
 define("_MD_TCW_CATE_NAME", "Category Name");
 define("_MD_TCW_CATE_NEW_NAME", "New name or new category");
 define("_MD_TCW_CATE_ACT", "Do something...");
@@ -98,6 +100,7 @@ define("_MD_TCW_CATE_NONE", "No any category");
 define("_MD_TCW_CATE_MODIFY", "Rename to ");
 define("_MD_TCW_DEL_CATE_ALL_ALERT", "I'm sure I want to delete the entire category as well as all the archives.");
 define("_MD_TCW_OTHER_CLASS_SETUP", "My Other website url:");
+define("_MD_TCW_CATE_POWER", "Category permission");
 
 define("_MD_TCW_CATE_PLUGIN_ENABLE", "Enable");
 define("_MD_TCW_CATE_PLUGIN_TITLE", "Title");
@@ -247,3 +250,11 @@ define('_MD_TCW_WEB_OPENID_SETUP', 'OpenID Setup');
 
 define('_MD_TCW_CATE_ASSISTANT', 'Assistant');
 define('_MD_TCW_CATE_SET_ASSISTANT', 'Setup an assistant');
+
+define('_MD_TCW_CATE_ENABLED', 'Enable');
+define('_MD_TCW_CATE_UNABLED', 'Unable');
+define('_MD_TCW_CATE_DATA_AMOUNT1', '( ');
+define('_MD_TCW_CATE_DATA_AMOUNT2', ' )');
+define('_MD_TCW_BLOCK_EMPTY', 'Empty Block');
+define('_MD_TCW_BLOCK_TITLE', 'Block Title');
+define('_MD_TCW_BLOCK_DEMO', 'Block Demo');

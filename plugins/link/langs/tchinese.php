@@ -12,3 +12,5 @@ define("_MD_TCW_LINKCOUNTER", "人氣");
 define("_MD_TCW_LINK_AUTO_GET", "自動抓取");
 define("_MD_TCW_LINK_BLOCK_LIST", "常用網站");
 define("_MD_TCW_LINK_BLOCK_LIMIT", "顯示連結數量");
+define("_MD_TCW_LINK_HIDE_LINK", "是否要隱藏連結？");
+define("_MD_TCW_LINK_HIDE_DESC", "是否要隱藏說明？");

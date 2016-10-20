@@ -28,6 +28,7 @@ class tad_web_news
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
                 $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
+                $this->web_cate->set_col_md(0, 6);
                 $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
@@ -35,6 +36,9 @@ class tad_web_news
             if (!empty($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
+                if ($CateID and $cate['CateEnable'] != '1') {
+                    return;
+                }
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
                 $xoopsTpl->assign('NewsDefCateID', $CateID);
@@ -61,6 +65,7 @@ class tad_web_news
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' {$andEnable} $andWebID $andCateID order by a.NewsDate desc";
         }
+
         $to_limit = empty($limit) ? 10 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -216,6 +221,9 @@ class tad_web_news
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
+        if ($CateID and $cate['CateEnable'] != '1') {
+            return;
+        }
         $xoopsTpl->assign('cate', $cate);
 
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {

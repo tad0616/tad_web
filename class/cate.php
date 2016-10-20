@@ -48,9 +48,12 @@ class web_cate
     public $custom_change_js;
     public $menu_name = 'CateID';
     public $menu_id   = 'CateID';
+    public $power;
 
-    public function web_cate($WebID = "0", $ColName = "", $table = "")
+    public function __construct($WebID = "0", $ColName = "", $table = "")
     {
+        include_once "power.php";
+        $this->power = new power($WebID);
 
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
@@ -226,7 +229,8 @@ class web_cate
 
         $row = ($mode == "form") ? "form-group" : "row";
 
-        $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op={$_REQUEST['op']}&CateID=' + $('#CateID').val();" : "";
+        $op             = isset($_REQUEST['op']) ? $_REQUEST['op'] : '';
+        $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op={$op}&CateID=' + $('#CateID').val();" : "";
 
         $newCate_js = ($mode == "form") ? "if(\$('#CateID').val()==''){\$('#newCate').show(); }else{ \$('#newCate').hide();}" : "";
 
@@ -380,6 +384,7 @@ class web_cate
             $data['counter']           = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID]              = $data;
             $arr[$CateID]['assistant'] = get_assistant($CateID);
+            $arr[$CateID]['power']     = $this->power->get_power("read", "CateID", $CateID);
         }
         return $arr;
     }
@@ -472,6 +477,20 @@ class web_cate
             $counter[$CateID] = $count;
         }
         return $counter;
+    }
+
+    //改變分類啟用狀態
+    public function enable_tad_web_cate($CateID = '', $enable = '1')
+    {
+        global $xoopsDB;
+
+        if (empty($CateID)) {
+            return;
+        }
+
+        $sql = "update `" . $xoopsDB->prefix('tad_web_cate') . "` set `CateEnable`='{$enable}' where `CateID` = '{$CateID}'";
+        $xoopsDB->queryF($sql) or web_error($sql);
+
     }
 
 }
