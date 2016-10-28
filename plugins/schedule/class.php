@@ -524,16 +524,18 @@ class tad_web_schedule
         $schedule_subjects = json_encode($schedule_subjects_arr);
         file_put_contents($my_subject_file, $schedule_subjects);
 
-        //找出本站所有功課表
-        // $sql    = "select ScheduleID from " . $xoopsDB->prefix("tad_web_schedule") . " where WebID='{$this->WebID}'";
-        // $result = $xoopsDB->query($sql) or web_error($sql);
-
-        // while (list($ScheduleID) = $xoopsDB->fetchRow($result)) {
+        $myts = &MyTextSanitizer::getInstance();
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
             $Subject  = $_POST['Subject'][$k];
             $Teacher  = $_POST['Teacher'][$k];
             $color    = $_POST['color'][$k];
             $bg_color = $_POST['bg_color'][$k];
+
+            $old_Subject = $myts->addSlashes($old_Subject);
+            $Subject     = $myts->addSlashes($_POST['Subject'][$k]);
+            $Teacher     = $myts->addSlashes($_POST['Teacher'][$k]);
+            $color       = $myts->addSlashes($_POST['color'][$k]);
+            $bg_color    = $myts->addSlashes($_POST['bg_color'][$k]);
 
             $sql2 = "update " . $xoopsDB->prefix("tad_web_schedule_data") . " set `Subject`='{$Subject}', `Teacher`='{$Teacher}', `color`='{$color}', `bg_color`='{$bg_color}' where ScheduleID='{$ScheduleID}' and `Subject`='{$old_Subject}'";
             $xoopsDB->queryF($sql2) or web_error($sql2);
