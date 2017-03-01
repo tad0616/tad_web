@@ -116,10 +116,10 @@ function array2form($form_arr = array(), $config = array())
     foreach ($form_arr as $config_name => $form) {
         $form_code .= '<div class="form-group">';
         $form_code .= '
-          <label class="col-md-3 control-label">
+          <label class="col-sm-3 control-label">
             ' . $form['label'] . '
           </label>
-          <div class="col-md-9">';
+          <div class="col-sm-9">';
         switch ($form['type']) {
             case 'select':
                 $form_code .= '<select name="config[' . $config_name . ']" class="form-control">';

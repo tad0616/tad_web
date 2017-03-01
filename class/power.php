@@ -103,10 +103,10 @@ class power
         $menu = '
         <!--權限設定-->
         <div class="form-group" style="background: #FCECDB;">
-            <label class="col-md-' . $this->label_col_md . ' control-label">
+            <label class="col-sm-' . $this->label_col_md . ' control-label">
               ' . $label . '
             </label>
-            <div class="col-md-' . $this->menu_col_md . '">
+            <div class="col-sm-' . $this->menu_col_md . '">
               <select name="' . $power_name . '" class="form-control">
                 <option value="">' . _MD_TCW_POWER_FOR_ALL . '</option>
                 <option value="users" ' . $select_users . '>' . _MD_TCW_POWER_FOR_USERS . '</option>

@@ -63,73 +63,60 @@
       </ul>
 
       <div id='tad_web_config_tab-1'>
-        <div class="row">
-          <div class="col-md-7">
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
-              <h3><{$smarty.const._MD_TCW_WEB_NAME_SETUP}></h3>
+        <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
+          <div class="row">
+            <div class="col-sm-7">
+              <h3><{$smarty.const._MD_TCW_WEB_TOOLS}></h3>
               <{$cate_menu}>
+
               <div class="form-group">
-                <div class="col-md-10">
+                <label class="col-sm-3 control-label">
+                  <{$smarty.const._MD_TCW_WEB_NAME_SETUP}>
+                </label>
+                <div class="col-sm-9">
                   <input type="text" name="WebName" value="<{$WebName}>" id="WebName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_CLASS_WEB_NAME}>">
                 </div>
-                <div class="col-md-2">
-                  <input type="hidden" name="WebID" value="<{$WebID}>">
-                  <input type="hidden" name="op" value="update_tad_web">
-                  <button type="submit" class="btn btn-primary pull-right"><{$smarty.const._TAD_SAVE}></button>
-                </div>
               </div>
-            </form>
 
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
-              <h3><{$smarty.const._MD_TCW_UPLOAD_MY_PHOTO}></h3>
               <div class="form-group">
-                <div class="col-md-10">
+                <label class="col-sm-3 control-label">
+                  <{$smarty.const._MD_TCW_UPLOAD_MY_PHOTO}>
+                </label>
+                <div class="col-sm-9">
                   <{$upform_teacher}>
                 </div>
-                <div class="col-md-2">
-                  <input type="hidden" name="WebID" value="<{$WebID}>">
-                  <input type="hidden" name="op" value="update_photo">
-                  <button type="submit" class="btn btn-primary pull-right"><{$smarty.const._TAD_SAVE}></button>
-                </div>
               </div>
-            </form>
 
-            <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
-              <h3><{$smarty.const._MD_TCW_OTHER_CLASS_SETUP}></h3>
               <div class="form-group">
-                <div class="col-md-10">
+                <label class="col-sm-3 control-label">
+                  <{$smarty.const._MD_TCW_OTHER_CLASS_SETUP}>
+                </label>
+                <div class="col-sm-9">
                   <input type="text" name="other_web_url" value="<{$other_web_url}>" id="other_web_url" class="form-control" placeholder="http://">
                 </div>
-                <div class="col-md-2">
-                  <input type="hidden" name="WebID" value="<{$WebID}>">
-                  <input type="hidden" name="op" value="save_other_web_url">
-                  <button type="submit" class="btn btn-primary pull-right"><{$smarty.const._TAD_SAVE}></button>
-                </div>
               </div>
-            </form>
+            </div>
+            <div class="col-sm-5">
+              <{if $teacher_thumb_pic}>
+                <img src="<{$teacher_thumb_pic}>" alt="photo" class="img-rounded img-polaroid img-responsive img-thumbnail">
+              <{/if}>
+            </div>
           </div>
-          <div class="col-md-5">
-            <{if $teacher_thumb_pic}>
-              <img src="<{$teacher_thumb_pic}>" alt="photo" class="img-rounded img-polaroid img-responsive img-thumbnail">
-            <{/if}>
-          </div>
-        </div>
 
-        <form action="config.php" method="post" class="form-horizontal myForm" role="form">
           <h3><{$smarty.const._MD_TCW_THEME_TOOLS}></h3>
           <div class="row">
-            <label class="col-md-2 control-label">
+            <label class="col-sm-2 control-label">
               <{$smarty.const._MD_TCW_THEME_TOOLS_DEFAULT_THEME}>
             </label>
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <select name="defalut_theme" id="defalut_theme" class="form-control">
                 <option value="for_tad_web_theme" <{if $defalut_theme=="for_tad_web_theme"}>selected<{/if}>>for_tad_web_theme</option>
                 <option value="for_tad_web_theme_2" <{if $defalut_theme=="for_tad_web_theme_2"}>selected<{/if}>>for_tad_web_theme_2</option>
               </select>
-            </div><label class="col-md-2 control-label">
+            </div><label class="col-sm-2 control-label">
               <{$smarty.const._MD_TCW_USER_SIMPLE_MENU}>
             </label>
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <label class="radio-inline">
                 <input type="radio" name="use_simple_menu" value="1" <{if $use_simple_menu=='1'}>checked<{/if}>>
                 <{$smarty.const._YES}>
@@ -142,10 +129,10 @@
           </div>
 
           <div class="row">
-            <label class="col-md-2 control-label">
+            <label class="col-sm-2 control-label">
               <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE}>
             </label>
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <label class="radio-inline">
                 <input type="radio" name="theme_side" value="left" <{if $theme_side=="left"}>checked<{/if}>> <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE_LEFT}>
               </label>
@@ -157,56 +144,49 @@
               </label>
             </div>
 
-            <label class="col-md-2 control-label">
+            <label class="col-sm-2 control-label">
               <{$smarty.const._MD_TCW_THEME_TOOLS_FONT_SIZE}>
             </label>
-            <div class="col-md-2">
+            <div class="col-sm-ˋ">
               <div class="input-group">
                 <input type="text" name="menu_font_size" value="<{$menu_font_size}>" class="form-control">
                 <span class="input-group-addon">px</span>
               </div>
             </div>
-            <div class="col-md-2">
-              <input type="hidden" name="WebID" value="<{$WebID}>">
-              <input type="hidden" name="op" value="save_theme_config">
-              <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-            </div>
+          </div>
+
+          <{if $login_method}>
+            <{if $login_config==''}>
+              <{assign var="login_config" value=$login_defval}>
+            <{/if}>
+            <h3><{$smarty.const._MD_TCW_WEB_OPENID_SETUP}></h3>
+              <{assign var="i" value=0}>
+              <{assign var="total" value=1}>
+              <{foreach from=$login_method key=title item=openid}>
+                <{if $i==0}>
+                  <div class="row">
+                <{/if}>
+                <div class="col-sm-4">
+                  <label class="checkbox">
+                    <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}><{$openid}>
+                  </label>
+                </div>
+                <{assign var="i" value=$i+1}>
+                <{if $i == 3 || $total==$login_method_count}>
+                  </div>
+                  <{assign var="i" value=0}>
+                <{/if}>
+                <{assign var="total" value=$total+1}>
+              <{/foreach}>
+          <{/if}>
+
+
+          <div class="text-center">
+            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="op" value="save_config">
+            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
           </div>
         </form>
-
-        <{if $login_method}>
-          <{if $login_config==''}>
-            <{assign var="login_config" value=$login_defval}>
-          <{/if}>
-          <h3><{$smarty.const._MD_TCW_WEB_OPENID_SETUP}></h3>
-          <form action="config.php" method="post" class="form-horizontal myForm" role="form">
-            <{assign var="i" value=0}>
-            <{assign var="total" value=1}>
-            <{foreach from=$login_method key=title item=openid}>
-              <{if $i==0}>
-                <div class="row">
-              <{/if}>
-              <div class="col-md-4">
-                <label class="checkbox">
-                  <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}><{$openid}>
-                </label>
-              </div>
-              <{assign var="i" value=$i+1}>
-              <{if $i == 3 || $total==$login_method_count}>
-                </div>
-                <{assign var="i" value=0}>
-              <{/if}>
-              <{assign var="total" value=$total+1}>
-            <{/foreach}>
-
-            <div class="text-center">
-              <input type="hidden" name="WebID" value="<{$WebID}>">
-              <input type="hidden" name="op" value="save_login_config">
-              <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-            </div>
-          </form>
-        <{/if}>
-
         <hr>
 
         <{if $Web.WebEnable=='1'}>
@@ -272,7 +252,7 @@
             </tbody>
           </table>
           <div class="form-group">
-            <div class="col-md-12 text-center">
+            <div class="col-sm-12 text-center">
               <input type="hidden" name="WebID" value="<{$WebID}>">
               <input type="hidden" name="op" value="save_plugins">
               <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
@@ -284,7 +264,7 @@
       <div id='tad_web_config_tab-3'>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-12">
             <script language="JavaScript">
               $().ready(function(){
                 $(".thumb").click(function(){
@@ -307,13 +287,13 @@
 
             <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
-                <div class="col-md-12">
+                <div class="col-sm-12">
                   <{$upform_head}>
                 </div>
               </div>
 
               <div class="form-group">
-                <div class="col-md-12">
+                <div class="col-sm-12">
                   <{if $all_head}>
                     <{foreach from=$all_head item=head}>
                       <div style="width:100px; height:96px; display:inline-block; margin:4px;">
@@ -344,7 +324,7 @@
       <div id='tad_web_config_tab-4'>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-12">
             <script language="JavaScript">
               $().ready(function(){
                 $(".logo_thumb").click(function(){
@@ -367,13 +347,13 @@
 
             <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
-                <div class="col-md-12">
+                <div class="col-sm-12">
                   <{$upform_logo}>
                 </div>
               </div>
 
               <div class="form-group">
-                <div class="col-md-12">
+                <div class="col-sm-12">
                   <{if $all_logo}>
                     <{foreach from=$all_logo item=logo}>
                       <div style="width:150px; height:76px; display:inline-block; margin:4px;">
@@ -404,7 +384,7 @@
       <div id='tad_web_config_tab-5'>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-12">
             <script language="JavaScript">
               $().ready(function(){
                 $(".bg_thumb").click(function(){
@@ -429,16 +409,16 @@
             </h3>
             <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
-                <div class="col-md-12">
+                <div class="col-sm-12">
                   <{$upform_bg}>
                 </div>
               </div>
               <hr>
               <div class="form-group">
-                <label class="col-md-2 control-label">
+                <label class="col-sm-2 control-label">
                   <{$smarty.const._MD_TCW_BG_REPEAT}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <select name="bg_repeat" id="bg_repeat" class="form-control">
                     <option value="" <{if $bg_repeat==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_NORMAL}></option>
                     <option value="repeat-x" <{if $bg_repeat=="repeat-x"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_X}></option>
@@ -446,10 +426,10 @@
                     <option value="no-repeat" <{if $bg_repeat=="no-repeat"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_NO_REPEAT}></option>
                   </select>
                 </div>
-                <label class="col-md-2 control-label">
+                <label class="col-sm-2 control-label">
                   <{$smarty.const._MD_TCW_BG_ATTACHMENT}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <select name="bg_attachment" id="bg_attachment" class="form-control">
                     <option value="" <{if $bg_attachment==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_ATTACHMENT_SCROLL}></option>
                     <option value="fixed" <{if $bg_attachment=="fixed"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_ATTACHMENT_FIXED}></option>
@@ -458,10 +438,10 @@
               </div>
 
               <div class="form-group">
-                <label class="col-md-2 control-label">
+                <label class="col-sm-2 control-label">
                   <{$smarty.const._MD_TCW_BG_POSITION}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <select name="bg_postiton" id="bg_postiton" class="form-control">
                     <option value="left top" <{if $bg_postiton=="left top"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_LT}></option>
                     <option value="right top" <{if $bg_postiton=="right top"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_RT}></option>
@@ -472,10 +452,10 @@
                     <option value="center bottom" <{if $bg_postiton=="center bottom"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_CB}></option>
                   </select>
                 </div>
-                <label class="col-md-2 control-label">
+                <label class="col-sm-2 control-label">
                   <{$smarty.const._MD_TCW_BG_SIZE}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <select name="bg_size" id="bg_size" class="form-control">
                     <option value="" <{if $bg_size==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_NONE}></option>
                     <option value="cover" <{if $bg_size=="cover"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_COVER}></option>
@@ -485,7 +465,7 @@
               </div>
               <hr>
               <div class="form-group">
-                <div class="col-md-12">
+                <div class="col-sm-12">
                   <div style="width:100px; height:96px; display:inline-block; margin:4px;">
                     <label style="width: 80px; height: 80px; background: <{$bg_color}>; border: 1px solid gray; background-size: contain;" id="none" class="bg_thumb">
                     </label>
@@ -522,7 +502,7 @@
       <div id='tad_web_config_tab-6'>
         <{$mColorPicker_code}>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-12">
             <script language="JavaScript">
               function change_color(selector,css_name,css_val){
                 $(selector).css(css_name,css_val);
@@ -559,25 +539,25 @@
             </h3>
             <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_MAIN_NAV_TOP_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[navbar_bg_top]" class="form-control color" value="<{$navbar_bg_top}>" id="navbar_bg_top" data-text="true" data-hex="true" onChange="change_color('#tad_web_nav,.sf-menu li','background-color',this.value);" style="width:120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$navbar_bg_top}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_MAIN_NAV_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[navbar_color]" class="form-control color" value="<{$navbar_color}>" id="navbar_color" data-text="true" data-hex="true" onChange="change_color('.sf-menu a','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$navbar_color}>
                 </div>
               </div>
@@ -585,25 +565,25 @@
               <hr>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_MAIN_NAV_HOVER_BG_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[navbar_hover]" class="form-control color" value="<{$navbar_hover}>" id="navbar_hover" data-text="true" data-hex="true" onChange="change_color('.sf-menu li:hover,.sf-menu li.sfHover','background-color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$navbar_hover}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_MAIN_NAV_HOVER_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[navbar_color_hover]" class="form-control color" value="<{$navbar_color_hover}>" id="navbar_color_hover" data-text="true" data-hex="true" onChange="change_color('.sf-menu a:hover','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$navbar_color_hover}>
                 </div>
               </div>
@@ -611,13 +591,13 @@
               <hr>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_MAIN_BG_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[bg_color]" class="form-control color" value="<{$bg_color}>" id="bg_color" data-text="true" data-hex="true" onChange="change_color('body','background-color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$bg_color}>
                 </div>
               </div>
@@ -625,73 +605,73 @@
               <hr>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_CONTAINER_BG_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[container_bg_color]" class="form-control color" value="<{$container_bg_color}>" id="container_bg_color" data-text="true" data-hex="true" onChange="change_color('#container','background-color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$container_bg_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_CENTER_TEXT_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[center_text_color]" class="form-control color" value="<{$center_text_color}>" id="center_text_color" data-text="true" data-hex="true" onChange="change_color('#web_center_block','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$center_text_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_CENTER_LINK_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[center_link_color]" class="form-control color" value="<{$center_link_color}>" id="center_link_color" data-text="true" data-hex="true" onChange="change_color('#web_center_block a','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$center_link_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_CENTER_HOVER_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[center_hover_color]" class="form-control color" value="<{$center_hover_color}>" id="center_hover_color" data-text="true" data-hex="true" onChange="change_color('#web_center_block a','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$center_hover_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_CENTER_HEADER_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[center_header_color]" class="form-control color" value="<{$center_header_color}>" id="center_header_color" data-text="true" data-hex="true" onChange="change_color('#web_center_block h3','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$center_header_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_CENTER_BORDER_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[center_border_color]" class="form-control color" value="<{$center_border_color}>" id="center_border_color" data-text="true" data-hex="true" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$center_border_color}>
                 </div>
               </div>
@@ -699,74 +679,74 @@
               <hr>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_SIDE_BG_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[side_bg_color]" class="form-control color" value="<{$side_bg_color}>" id="side_bg_color" data-text="true" data-hex="true" onChange="change_color('#web_side_block','background-color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$side_bg_color}>
                 </div>
               </div>
 
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_SIDE_TEXT_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[side_text_color]" class="form-control color" value="<{$side_text_color}>" id="side_text_color" data-text="true" data-hex="true" onChange="change_color('#web_side_block','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$side_text_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_SIDE_LINK_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[side_link_color]" class="form-control color" value="<{$side_link_color}>" id="side_link_color" data-text="true" data-hex="true" onChange="change_color('#web_side_block a','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$side_link_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_SIDE_HOVER_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[side_hover_color]" class="form-control color" value="<{$side_hover_color}>" id="side_hover_color" data-text="true" data-hex="true" onChange="change_color('#web_side_block a','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$side_hover_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_SIDE_HEADER_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[side_header_color]" class="form-control color" value="<{$side_header_color}>" id="side_header_color" data-text="true" data-hex="true" onChange="change_color('#web_center_block h3','color',this.value);" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$side_header_color}>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label class="col-sm-3 control-label">
                   <{$smarty.const._MD_TCW_SIDE_BORDER_COLOR}>
                 </label>
-                <div class="col-md-4">
+                <div class="col-sm-4">
                   <input type="text" name="color_setup[side_border_color]" class="form-control color" value="<{$side_border_color}>" id="side_border_color" data-text="true" data-hex="true" style="width: 120px; display: inline-block;">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-5">
                   <{$smarty.const._MD_TCW_MAIN_DEFAULT_COLOR}>: <{$side_border_color}>
                 </div>
               </div>
@@ -797,19 +777,19 @@
       <div id="tad_web_config_tab-7">
         <{$smarty.const._MD_TCW_DEFAULT_ADMIN}><{$Web.WebOwnerUid}> <{$Web.WebOwner}>
         <div class="row">
-          <div class="col-md-5 text-center">
+          <div class="col-sm-5 text-center">
             <h3><{$smarty.const._MD_TCW_USER_LIST}></h3>
           </div>
-          <div class="col-md-2"></div>
-          <div class="col-md-5 text-center">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-5 text-center">
             <h3><{$smarty.const._MD_TCW_USER_SELECTED}></h3>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-12">
             <form action="config.php" method="post" class="form-horizontal myForm" role="form">
             <div class="row">
-              <div class="col-md-5">
+              <div class="col-sm-5">
 
                 <div class="input-group">
                   <input type="text" name="keyman" id="keyman" placeholder="<{$smarty.const._MD_TCW_KEYWORD_TO_SELECT_USER}>" class="form-control">
@@ -824,7 +804,7 @@
                 <{$user_yet}>
                 </select>
               </div>
-              <div class="col-md-2 text-center">
+              <div class="col-sm-2 text-center">
                 <img src="<{$xoops_url}>/modules/tad_web/images/right.png" onclick="tmt.spry.linkedselect.util.moveOptions('adm_repository', 'adm_destination');getOptions('adm_destination','web_admins');"><br>
                 <img src="<{$xoops_url}>/modules/tad_web/images/left.png" onclick="tmt.spry.linkedselect.util.moveOptions('adm_destination' , 'adm_repository');getOptions('adm_destination','web_admins');"><br><br>
 
@@ -837,7 +817,7 @@
                   <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
                 </div>
               </div>
-              <div class="col-md-5">
+              <div class="col-sm-5">
                 <select id="adm_destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
                 <{$user_ok}>
                 </select>

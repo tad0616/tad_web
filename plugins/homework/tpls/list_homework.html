@@ -5,7 +5,7 @@
   <{/if}>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <ul class="list-group">
         <{foreach from=$bc.main_data key=i item=homework}>
           <{if $homework.toCal > $bc.today }>
@@ -29,7 +29,7 @@
   <{foreach from=$bc.main_data key=i item=homework}>
     <{if $homework.toCal ==$bc.today}>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <h3>
             <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
@@ -45,7 +45,7 @@
             <{else}>
               <div class="row">
                 <{if $homework.today_homework}>
-                  <div class="col-md-<{$homework.ColWidth}>">
+                  <div class="col-sm-<{$homework.ColWidth}>">
                     <div style="border-bottom: 1px solid #cfcfcf;">
                       <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-responsive" style="margin:6px auto;">
                     </div>
@@ -53,7 +53,7 @@
                   </div>
                 <{/if}>
                 <{if $homework.bring}>
-                  <div class="col-md-<{$homework.ColWidth}>">
+                  <div class="col-sm-<{$homework.ColWidth}>">
                     <div style="border-bottom: 1px solid #cfcfcf;">
                       <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-responsive" style="margin:6px auto;">
                     </div>
@@ -61,7 +61,7 @@
                   </div>
                 <{/if}>
                 <{if $homework.teacher_say}>
-                  <div class="col-md-<{$homework.ColWidth}>">
+                  <div class="col-sm-<{$homework.ColWidth}>">
                     <div style="border-bottom: 1px solid #cfcfcf;">
                       <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-responsive" style="margin:6px auto;">
                     </div>
@@ -81,7 +81,7 @@
   <{/foreach}>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <ul class="list-group">
         <{foreach from=$bc.main_data key=i item=homework}>
           <{if $homework.toCal < $bc.today}>
@@ -105,7 +105,7 @@
 
 <{if $bc.yet_data and $isMyWeb}>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <ul class="list-group">
         <{foreach from=$bc.yet_data key=i item=homework}>
           <li class="list-group-item">

@@ -13,40 +13,40 @@
 
       <!--通知標題-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADWEB_NOTICETITLE}>
         </label>
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <input type="text" name="NoticeTitle" id="NoticeTitle" class="form-control validate[required]" value="<{$NoticeTitle}>" placeholder="<{$smarty.const._MA_TADWEB_NOTICETITLE}>">
         </div>
       </div>
 
       <!--通知內容-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADWEB_NOTICECONTENT}>
         </label>
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <{$NoticeContent_editor}>
         </div>
       </div>
 
       <!--通知網站-->
       <!--div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADWEB_NOTICEWEB}>
         </label>
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <textarea name="NoticeWeb" rows=8 id="NoticeWeb" class="form-control " placeholder="<{$smarty.const._MA_TADWEB_NOTICEWEB}>"><{$NoticeWeb}></textarea>
         </div>
       </div-->
 
       <!--通知對象-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADWEB_NOTICEWHO}>
         </label>
-        <div class="col-md-10">
+        <div class="col-sm-10">
 
         <label class="checkbox-inline">
           <input type="checkbox" name="NoticeWho[]" id="NoticeWho_def0" value="master" <{if 'master'|in_array:$NoticeWho}>checked="checked"<{/if}>><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF0}>
@@ -85,10 +85,10 @@
 
   <!--通知內容-->
   <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-sm-3 text-right">
       <{$smarty.const._MA_TADWEB_NOTICECONTENT}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
 
       <div class="well">
         <{$NoticeContent}>
@@ -98,10 +98,10 @@
 
   <!--通知網站-->
   <!--div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-sm-3 text-right">
       <{$smarty.const._MA_TADWEB_NOTICEWEB}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
 
       <div class="well">
         <{$NoticeWeb}>
@@ -111,20 +111,20 @@
 
   <!--通知對象-->
   <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-sm-3 text-right">
       <{$smarty.const._MA_TADWEB_NOTICEWHO}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
       <{$NoticeWho}>
     </div>
   </div>
 
   <!--通知日期-->
   <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-sm-3 text-right">
       <{$smarty.const._MA_TADWEB_NOTICEDATE}>
     </label>
-    <div class="col-md-9">
+    <div class="col-sm-9">
       <{$NoticeDate}>
     </div>
   </div>

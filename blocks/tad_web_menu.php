@@ -61,9 +61,10 @@ function tad_web_menu($options)
             $config_handler    = xoops_gethandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
-            $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
-            $size  = get_web_config("used_size", $defaltWebID);
-
+            $quota          = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config("space_quota", $defaltWebID);
+            $block['quota'] = $quota;
+            $size           = get_web_config("used_size", $defaltWebID);
+            $block['size']  = $size;
             $percentage     = round($size / $quota, 2) * 100;
             $block['quota'] = $percentage;
             if ($percentage <= 70) {

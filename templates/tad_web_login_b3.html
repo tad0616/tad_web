@@ -87,27 +87,27 @@
 
       <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login" <{if $openid=='1'}>style="display: none;"<{/if}>>
         <div class="form-group">
-          <label class="col-md-4 control-label">
+          <label class="col-sm-4 control-label">
             <{$smarty.const._MD_TCW_ID}>
           </label>
-          <div class="col-md-8 contros">
+          <div class="col-sm-8 contros">
             <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control" />
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label">
+          <label class="col-sm-4 control-label">
             <{$smarty.const._MD_TCW_PASSWD}>
           </label>
-          <div class="col-md-8 contros">
+          <div class="col-sm-8 contros">
           <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control" />
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label">
+          <label class="col-sm-4 control-label">
           </label>
-          <div class="col-md-8 contros">
+          <div class="col-sm-8 contros">
             <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
             <input type="hidden" name="rememberme" value="On" />
             <input type="hidden" name="op" value="login" />
@@ -118,26 +118,26 @@
 
       <form action="aboutus.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" id="student_login" style="display: none;">
         <div class="form-group">
-          <label class="col-md-4 control-label">
+          <label class="col-sm-4 control-label">
             <{$student_title}><{$smarty.const._MD_TCW_ID}>
           </label>
-          <div class="col-md-8 controls">
+          <div class="col-sm-8 controls">
             <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>">
           </div>
         </div>
         <div class="form-group">
-          <label class="col-md-4 control-label">
+          <label class="col-sm-4 control-label">
             <{$student_title}><{$smarty.const._MD_TCW_PASSWD}>
           </label>
-          <div class="col-md-8 controls">
+          <div class="col-sm-8 controls">
             <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_PASSWD}>">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label">
+          <label class="col-sm-4 control-label">
           </label>
-          <div class="col-md-8">
+          <div class="col-sm-8">
             <input type="hidden" name="WebID" value="<{$WebID}>">
             <input type="hidden" name="op" value="mem_login">
             <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
@@ -149,24 +149,24 @@
         <div class="form-group">
           <label class="sr-only">
           </label>
-          <div class="col-md-12 controls">
+          <div class="col-sm-12 controls">
             <{$login_cate_menu}>
           </div>
         </div>
         <div class="form-group">
           <label class="sr-only">
           </label>
-          <div class="col-md-12 controls">
+          <div class="col-sm-12 controls">
             <select name='MemID' id='select_mems' class='form-control' style="display:none;"></select>
           </div>
         </div>
 
         <div id="parent_login_div" style="display:none;">
           <div class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$smarty.const._MD_TCW_PASSWD}>
             </label>
-            <div class="col-md-9 controls">
+            <div class="col-sm-9 controls">
               <input class="form-control" type="password" name="ParentPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_PASSWD}>">
             </div>
           </div>
@@ -174,7 +174,7 @@
           <div class="form-group">
             <label class="sr-only">
             </label>
-            <div class="col-md-12">
+            <div class="col-sm-12">
               <input type="hidden" name="WebID" value="<{$WebID}>">
               <input type="hidden" name="op" value="parent_login">
               <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
@@ -184,7 +184,7 @@
         <{if $mem_parents=='1'}>
 
           <div class="row">
-            <div class="col-md-12 text-center" style="font-size:12pt;">
+            <div class="col-sm-12 text-center" style="font-size:12pt;">
               <a href="aboutus.php?WebID=<{$WebID}>&op=forget_parent_passwd"><{$smarty.const._MD_TCW_FORGET_PARENTS_PASSWD}></a>
               |
               <a href="aboutus.php?WebID=<{$WebID}>&op=parents_account"><{$smarty.const._MD_TCW_REGIST_BY_PARENTS}></a>

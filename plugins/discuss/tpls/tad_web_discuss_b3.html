@@ -28,20 +28,20 @@
 
       <!--標題-->
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <input type="text" name="DiscussTitle" value="<{$DiscussTitle}>" id="DiscussTitle" class="form-control validate[required]" placeholder="<{$smarty.const._MD_TCW_DISCUSSTITLE}>">
         </div>
       </div>
 
       <!--內容-->
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <textarea name="DiscussContent" class="form-control" rows=15 id="DiscussContent" placehold="<{$smarty.const._MD_TCW_DISCUSSCONTENT}>"><{$DiscussContent}></textarea>
         </div>
       </div>
 
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <{foreach from=$smile_pics item=file}>
             <img src="<{$xoops_url}>/modules/tad_web/plugins/discuss/smiles/<{$file}>" alt="<{$file}>" onClick="typeInTextarea('DiscussContent','[<{$file}>]');" style="margin:1px;">
           <{/foreach}>
@@ -52,17 +52,17 @@
 
       <!--相關附件-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MD_TCW_DISCUSS_FILES}>
         </label>
-        <div class="col-md-10">
+        <div class="col-sm-10">
           <{$upform}>
         </div>
       </div>
 
 
       <div class="form-group">
-        <div class="col-md-12 text-center">
+        <div class="col-sm-12 text-center">
           <input type="hidden" name="WebID" value="<{$WebID}>">
           <input type="hidden" name="DiscussID" value="<{$DiscussID}>">
           <input type="hidden" name="ReDiscussID" value="<{$ReDiscussID}>">
@@ -132,13 +132,13 @@
     <h3><{$smarty.const._MD_TCW_DISCUSS_REPLY}></h3>
     <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form" style="margin-top:16px;">
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <textarea name="DiscussContent" class="form-control" rows=8 id="DiscussContent" class="validate[required , length[10,9999]]"></textarea>
         </div>
       </div>
 
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <{foreach from=$smile_pics item=file}>
             <img src="<{$xoops_url}>/modules/tad_web/plugins/discuss/smiles/<{$file}>" alt="<{$file}>" onClick="typeInTextarea('DiscussContent','[<{$file}>]');" style="margin:1px;">
           <{/foreach}>
@@ -147,13 +147,13 @@
 
       <!--相關附件-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MD_TCW_DISCUSS_FILES}>
         </label>
-        <div class="col-md-8">
+        <div class="col-sm-8">
           <{$upform}>
         </div>
-        <div class="col-md-2">
+        <div class="col-sm-2">
           <input type="hidden" name="WebID" value="<{$WebID}>">
 
           <!--回覆編號-->

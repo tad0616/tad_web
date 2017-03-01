@@ -38,7 +38,7 @@ function tad_web_config($WebID, $configs)
 
     //網站設定
     $web_cate = new web_cate(0, "web_cate", "tad_web");
-    $web_cate->set_col_md(3, 7);
+    $web_cate->set_col_md(3, 9);
     //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     $cate_menu = $web_cate->cate_menu($Web['CateID'], 'page', false, false, true, false, true, true, false);
 
@@ -226,8 +226,8 @@ function save_plugins($WebID)
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$plugin['db']['PluginSort']}', '{$PluginEnable}', '{$WebID}')";
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set BlockEnable='$PluginEnable' where `WebID`='{$WebID}' and `plugin`='{$dirname}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        // $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set BlockEnable='$PluginEnable' where `WebID`='{$WebID}' and `plugin`='{$dirname}'";
+        // $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     mk_menu_var_file($WebID);
@@ -388,26 +388,36 @@ $login_method    = system_CleanVars($_REQUEST, 'login_method', '', 'array');
 switch ($op) {
 
     //儲存設定值
+    case "save_config":
+        //更新班級資料
+        update_tad_web();
+        //更新照片
+        $TadUpFiles->set_col("WebOwner", $WebID, 1);
+        $TadUpFiles->del_files();
+        $TadUpFiles->upload_file('upfile', 480, 120, null, null, true);
+        //儲存布景
+        save_web_config("other_web_url", $other_web_url, $WebID);
+        save_web_config('menu_font_size', $menu_font_size, $WebID);
+        save_web_config('theme_side', $theme_side, $WebID);
+        save_web_config('defalut_theme', $defalut_theme, $WebID);
+        save_web_config('use_simple_menu', $use_simple_menu, $WebID);
+        //儲存OpenID
+        save_web_config('login_config', implode(';', $login_method), $WebID);
+        header("location: config.php?WebID={$WebID}");
+        exit;
+
+    //儲存設定值
     case "save_all_color":
         foreach ($color_setup as $col_name => $col_val) {
             save_web_config($col_name, $col_val, $WebID);
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
-
-    //更新班級資料
-    case "update_tad_web":
-        update_tad_web();
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
-        break;
 
     case "save_plugins":
         save_plugins($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     case "upload_head":
         $TadUpFilesHead = TadUpFilesHead($WebID);
@@ -420,7 +430,6 @@ switch ($op) {
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     case "upload_logo":
         $TadUpFilesLogo = TadUpFilesLogo($WebID);
@@ -433,7 +442,6 @@ switch ($op) {
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     case "upload_bg":
         $TadUpFilesBg = TadUpFilesBg($WebID);
@@ -448,68 +456,36 @@ switch ($op) {
         save_web_config("bg_size", $bg_size, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
-
-    //更新照片
-    case "update_photo":
-        $TadUpFiles->set_col("WebOwner", $WebID, 1);
-        $TadUpFiles->del_files();
-        $TadUpFiles->upload_file('upfile', 480, 120, null, null, true);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
-        break;
-
-    case "save_other_web_url":
-        save_web_config("other_web_url", $other_web_url, $WebID);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
-        break;
 
     case "save_adm":
         save_adm($web_admins, $WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     case "reset_logo":
         reset_logo($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     case "reset_head":
         reset_head($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
-
-    case "save_theme_config":
-        save_web_config('menu_font_size', $menu_font_size, $WebID);
-        save_web_config('theme_side', $theme_side, $WebID);
-        save_web_config('defalut_theme', $defalut_theme, $WebID);
-        save_web_config('use_simple_menu', $use_simple_menu, $WebID);
-
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
-        break;
 
     case "enabe_plugin":
         enabe_plugin($dirname, $WebID);
         header("location: {$dirname}.php?WebID={$WebID}&op=edit_form");
         exit;
-        break;
 
     case "unable_my_web":
         unable_my_web($WebID);
         header("location: index.php");
         exit;
-        break;
 
     case "enable_my_web":
         enable_my_web($WebID);
         header("location: index.php?WebID={$WebID}");
         exit;
-        break;
 
     //刪除資料
     case "delete_tad_web_chk":
@@ -528,21 +504,12 @@ switch ($op) {
         delete_tad_web($WebID);
         header("location: index.php");
         exit;
-        break;
 
     //恢復顏色預設值
     case "default_color":
         default_color($WebID);
         header("location: config.php?WebID={$WebID}");
         exit;
-        break;
-
-    //儲存OpenID
-    case "save_login_config":
-        save_web_config('login_config', implode(';', $login_method), $WebID);
-        header("location: config.php?WebID={$WebID}");
-        exit;
-        break;
 
     //預設動作
     default:

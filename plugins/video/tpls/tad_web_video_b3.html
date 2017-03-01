@@ -32,10 +32,10 @@
 
       <!--影片網址-->
       <div class="form-group">
-        <div class="col-md-10">
+        <div class="col-sm-10">
           <input type="text" name="Youtube" value="<{$Youtube}>" id="Youtube" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_VIDEOYOUTUBE}>">
         </div>
-        <div class="col-md-2">
+        <div class="col-sm-2">
           <button type="button" class="btn" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
         </div>
       </div>
@@ -43,7 +43,7 @@
 
       <!--影片名稱-->
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <input type="text" name="VideoName" value="<{$VideoName}>" id="VideoName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_VIDEONAME}>">
         </div>
       </div>
@@ -51,14 +51,14 @@
 
       <!--影片說明-->
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <textarea name="VideoDesc" rows=4 id="VideoDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_VIDEODESC}>"><{$VideoDesc}></textarea>
         </div>
       </div>
       <{$tags_form}>
 
       <div class="form-group">
-        <div class="col-md-12 text-center">
+        <div class="col-sm-12 text-center">
           <!--影片編號-->
           <input type="hidden" name="VideoID" value="<{$VideoID}>">
 
@@ -86,7 +86,7 @@
   </ol>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <div class="embed-responsive embed-responsive-4by3"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/<{$VideoPlace}>?feature=oembed" frameborder="0" allowfullscreen></iframe></div>
 
       <div style="line-height: 1.8; margin: 10px auto;">

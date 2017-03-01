@@ -1,3 +1,11 @@
+Tad Web 1.7.2 (2017-01-08 released)
+====================================================
+1. Account books open to parents to watch
+2. Modify schedule for security
+3. Correct the incorrect calculation of spatial statistics
+4. Change the col-md of boootstrap to col-sm
+
+
 Tad Web 1.7.1 (2016-10-12 released)
 ====================================================
 1. Fixed mobile phone page class image is not correct

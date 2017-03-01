@@ -99,10 +99,10 @@ class tags
         $menu = '
         <!--標籤設定-->
         <div class="form-group">
-            <label class="col-md-' . $this->label_col_md . ' control-label">
+            <label class="col-sm-' . $this->label_col_md . ' control-label">
               ' . _MD_TCW_TAGS . '
             </label>
-            <div class="col-md-' . $this->menu_col_md . '">
+            <div class="col-sm-' . $this->menu_col_md . '">
                 <input type="text" name="tag_name" class="form-control" placeholder="' . _MD_TCW_INPUT_TAGS . '">
             </div>
         </div>
@@ -111,9 +111,9 @@ class tags
         if ($tags_select) {
             $menu .= '
             <div class="form-group">
-                <label class="col-md-' . $this->label_col_md . '">
+                <label class="col-sm-' . $this->label_col_md . '">
                 </label>
-                <div class="col-md-' . $this->menu_col_md . '">
+                <div class="col-sm-' . $this->menu_col_md . '">
                     ' . $tags_select . '
                 </div>
             </div>

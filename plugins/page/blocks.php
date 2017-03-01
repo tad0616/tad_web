@@ -11,7 +11,7 @@ function list_page($WebID, $config = array())
     $tad_web_page = new tad_web_page($WebID);
     $limit        = isset($config['limit']) ? $config['limit'] : '';
     $show_count   = isset($config['show_count']) ? $config['show_count'] : '';
-    $block        = $tad_web_page->list_all("", $limit, 'return', '', $show_count);
+    $block        = $tad_web_page->list_all($config['CateID'], $limit, 'return', '', $show_count);
     return $block;
 }
 

@@ -3,7 +3,7 @@
   <{if $op=="tad_web_form"}>
     <{$formValidator_code}>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
         <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
           <table class="table" style="<{$pic}>">
 
@@ -23,7 +23,7 @@
               <td nowrap><{$smarty.const._MA_TCW_TEAMTITLE}></td>
               <td>
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-sm-3">
                     <select name="year" class="form-control">
                       <option value=""></option>
                       <option value="<{$last_year}>"><{$last_year}></option>
@@ -31,7 +31,7 @@
                       <option value="<{$next_year}>"><{$next_year}></option>
                     </select>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-sm-9">
                     <input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required] form-control">
                   </div>
                 </div>
@@ -96,7 +96,7 @@
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
 
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <h3><{$smarty.const._MA_TCW_ALL_USER_NO}></h3>
           <select name="repository" id="repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
             <{if $opt}>
@@ -106,7 +106,7 @@
             <{/if}>
           </select>
         </div>
-        <div class="col-md-1 text-center" style="padding-top: 60px;">
+        <div class="col-sm-1 text-center" style="padding-top: 60px;">
           <img src="<{$xoops_url}>/modules/tad_web/images/right.png" onclick="tmt.spry.linkedselect.util.moveOptions('repository', 'destination');getOptions();"><br>
           <img src="<{$xoops_url}>/modules/tad_web/images/left.png" onclick="tmt.spry.linkedselect.util.moveOptions('destination' , 'repository');getOptions();"><br><br>
           <img src="<{$xoops_url}>/modules/tad_web/images/up.png" onclick="tmt.spry.linkedselect.util.moveOptionUp('destination');getOptions();"><br>
@@ -116,7 +116,7 @@
           <input type="hidden" name="op" value="batch_add_class_by_user">
           <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <h3><{$smarty.const._MA_TCW_ALL_USER_YES}></h3>
           <select id="destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
             <{if $opt2}>
@@ -183,7 +183,7 @@
 
     <{if $cate}>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <select name="CateID" id="CateID" class="form-control" onchange="location.href='main.php?CateID='+this.value">
             <option value="" <{if $CateID==""}>selected="selected"<{/if}>><{$smarty.const._MA_TCW_SELECT_CATE}></option>
             <{foreach from=$cate item=cate}>

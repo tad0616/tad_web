@@ -1,17 +1,17 @@
 <{if $op=="show_one"}>
 
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-sm-4">
       <{if $class_pic_thumb}>
         <div class="well" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
       <{else}>
         <div class="well" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
       <{/if}>
     </div>
-    <div class="col-md-8">
+    <div class="col-sm-8">
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <{$cate_menu}>
         </div>
       </div>
@@ -75,7 +75,7 @@
 
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-12">
             <{if $isMyWeb}>
               <{if 'position'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
                 <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_position"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
@@ -101,7 +101,7 @@
 
   <{if $all_mems}>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
         <div id="randomnumber" style="font-size:16px;"></div>
         <div id="MemRandList"></div>
       </div>
@@ -303,20 +303,20 @@
     <form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
       <h3><{$class_setup}></h3>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <{if $class_pic_thumb}>
             <div class="well" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size: contain;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
           <{else}>
             <div class="well" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
           <{/if}>
         </div>
-        <div class="col-md-8">
+        <div class="col-sm-8">
 
           <div class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$edit_class_title}>
             </label>
-            <div class="col-md-9">
+            <div class="col-sm-9">
 
                 <div class="input-group">
                   <div class="input-group-btn ">
@@ -333,19 +333,19 @@
           </div>
 
           <div class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$class_pic}>
             </label>
-            <div class="col-md-9">
+            <div class="col-sm-9">
               <{$upform_class}>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$smarty.const._MD_TCW_ABOUTUS_DEFAULT_CLASS}>
             </label>
-            <div class="col-md-9">
+            <div class="col-sm-9">
               <label class="checkbox-inline">
                 <input type="checkbox" name="default_class" value='1' <{if $default_class==$CateID}>checked<{/if}>>
                 <{$smarty.const._MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC}>
@@ -355,10 +355,10 @@
 
           <{if $op=="new_class" and $old_cate}>
             <div class="form-group">
-              <label class="col-md-3 control-label">
+              <label class="col-sm-3 control-label">
                 <{$setup_stud}>
               </label>
-              <div class="col-md-9">
+              <div class="col-sm-9">
                 <select name="form_CateID" class="form-control">
                   <option value=""><{$smarty.const._MD_TCW_STUDENT_NO_COPY}></option>
                   <{foreach from=$old_cate item=cate}>
@@ -494,9 +494,9 @@
 
   <div class="row">
 
-    <div class="col-md-8">
+    <div class="col-sm-8">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-sm-8">
 
           <!--性別-->
           <div class="row">
@@ -556,7 +556,7 @@
           <{/if}>
         </div>
 
-        <div class="col-md-4 text-center">
+        <div class="col-sm-4 text-center">
           <img src="<{$pic}>" alt="<{$mem.MemName}>" class="img-responsive img-rounded">
         </div>
       </div>
@@ -564,8 +564,8 @@
       <!--自我介紹-->
       <{if 'AboutMem'|in_array:$mem_column}>
         <div class="row">
-          <label class="col-md-2"><{$smarty.const._MD_TCW_MEM_ABOUTME}></label>
-          <div class="col-md-10">
+          <label class="col-sm-2"><{$smarty.const._MD_TCW_MEM_ABOUTME}></label>
+          <div class="col-sm-10">
             <{$class_mem.AboutMem}>
           </div>
         </div>
@@ -580,7 +580,7 @@
     <{/if}>
 
     </div>
-    <div class="col-md-4">
+    <div class="col-sm-4">
       <{if $im_student}>
        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.html"}>
       <{elseif $students}>
@@ -617,12 +617,12 @@
     <{foreach from=$stud_works.main_data item=work}>
       <div class="well">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-sm-8">
             <span style="font-size: 2em;">
               <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a>
             </span>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-4">
             <{if $work.mem_upload_content.UploadDate!=""}>
               <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
             <{else}>
@@ -664,8 +664,8 @@
   <div class="well">
     <form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data">
         <div class="row">
-          <label class="col-md-3"><{$import_excel}></label>
-          <div class="col-md-5">
+          <label class="col-sm-3"><{$import_excel}></label>
+          <div class="col-sm-5">
             <input type="file" name="importfile">
           </div>
           <input type="hidden" name="op" value="import_excel">
@@ -725,13 +725,13 @@
 
   <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-sm-3 control-label">
         <{$cate_label}>
       </label>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <{$cate_menu}>
       </div>
-      <div class="col-md-5">
+      <div class="col-sm-5">
         <select name='MemID' id='list_mems' class='form-control'>
           <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
         </select>
@@ -739,36 +739,36 @@
     </div>
     <div id="step2" style="display:none;">
       <div class="form-group">
-        <label class="col-md-3 control-label">
+        <label class="col-sm-3 control-label">
           <span class="mem_name"><{$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT}></span><{$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT_BIRTHDAY}>
         </label>
-        <div class="col-md-9">
+        <div class="col-sm-9">
           <input type="text" name="MemBirthday" id="MemBirthday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_VERIFY_BIRTHDAY}>2010-01-10">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-3 control-label">
+        <label class="col-sm-3 control-label">
           <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
         </label>
-        <div class="col-md-9">
+        <div class="col-sm-9">
           <input type="text" name="Reationship" id="Reationship" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_REATIONSHIP_DESC}>">
         </div>
       </div>
 
       <div class="form-group">
-        <label class="col-md-3 control-label">
+        <label class="col-sm-3 control-label">
           <{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL}>
         </label>
-        <div class="col-md-9">
+        <div class="col-sm-9">
           <input type="text" name="ParentEmail" id="ParentEmail" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL_DESC}>">
         </div>
       </div>
 
       <div class="form-group">
-        <label class="col-md-3 control-label">
+        <label class="col-sm-3 control-label">
           <{$smarty.const._MD_TCW_ABOUTUS_PARENT_PASSWD}>
         </label>
-        <div class="col-md-9">
+        <div class="col-sm-9">
           <input type="text" name="ParentPasswd" id="ParentPasswd" class="validate[required] form-control">
         </div>
       </div>
@@ -825,13 +825,13 @@
 
   <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-sm-3 control-label">
         <{$cate_label}>
       </label>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <{$cate_menu}>
       </div>
-      <div class="col-md-5">
+      <div class="col-sm-5">
         <select name='MemID' id='list_mems' class='form-control'>
           <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
         </select>
@@ -839,14 +839,14 @@
     </div>
 
     <div class="form-group" id="step3" style="display:none;">
-      <label class="col-md-3 control-label">
+      <label class="col-sm-3 control-label">
         <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
       </label>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <select name="Reationship" id="Reationship" class='form-control'>
         </select>
       </div>
-      <div class="col-md-5">
+      <div class="col-sm-5">
         <input type="hidden" name="op" value="send_parents_passwd">
         <input type="hidden" name="WebID" value="<{$WebID}>">
         <button type="submit" class="btn btn-primary" id="submit_btn"><{$smarty.const._TAD_SUBMIT}></button>
@@ -874,36 +874,36 @@
   <form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
     <div class="row">
 
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <img src="<{$pic}>" alt="<{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_S}><{$parent.Reationship}>" class="img-responsive img-rounded">
         <br>
         <input type="file" name="upfile[]"  maxlength="1" accept="gif|jpg|png|GIF|JPG|PNG">
       </div>
-      <div class="col-md-6">
+      <div class="col-sm-6">
 
           <div class="form-group">
-            <label class="col-md-4 control-label">
+            <label class="col-sm-4 control-label">
               <{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL}>
             </label>
-            <div class="col-md-8">
+            <div class="col-sm-8">
               <input type="text" name="ParentEmail"  class="form-control" value="<{$parent.ParentEmail}>">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-md-4 control-label">
+            <label class="col-sm-4 control-label">
               <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_S}>
             </label>
-            <div class="col-md-8">
+            <div class="col-sm-8">
               <input type="text" name="Reationship"  class="form-control" value="<{$parent.Reationship}>">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-md-4 control-label">
+            <label class="col-sm-4 control-label">
               <{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD}>
             </label>
-            <div class="col-md-8">
+            <div class="col-sm-8">
               <input type="text" name="ParentPasswd"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC}>">
             </div>
           </div>
@@ -915,7 +915,7 @@
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
           </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-sm-3">
          <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/parent_toolbar.html"}>
       </div>
     </div>
@@ -944,7 +944,7 @@
 <{else}>
   <{$FooTableJS}>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_b3.html"}>
     </div>
   </div>

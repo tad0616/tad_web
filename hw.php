@@ -41,24 +41,24 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     $content = explode('</td><td>', $tr_content_body);
 
     if ($today_homework and $bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-3"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[2] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-3"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[2] . '</div>';
     } elseif ($today_homework and !$bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
     } elseif ($today_homework and $bring and !$teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
     } elseif (!$today_homework and $bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
     } elseif ($today_homework and !$bring and !$teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
     } elseif (!$today_homework and $bring and !$teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
     } elseif (!$today_homework and !$bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[0] . '</div>';
     }
 
     $tr_content_title = nl2br(htmlspecialchars($tr_content_title));

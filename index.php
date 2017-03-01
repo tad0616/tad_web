@@ -81,7 +81,6 @@ function view_notice($NoticeID = "")
     $xoopsTpl->assign('theme_display_mode', 'blank');
     $xoopsTpl->assign('blank_kind', 'content');
 
-
 }
 
 /*-----------執行動作判斷區----------*/

@@ -450,6 +450,7 @@ function mk_menu_var_file($WebID = null)
     }
 
     $all_plugins = get_plugins($WebID, 'show');
+    $myts        = MyTextSanitizer::getInstance();
 
     $current = "<?php\n";
     $i       = 1;
@@ -464,6 +465,8 @@ function mk_menu_var_file($WebID = null)
         if ($plugin['db']['PluginEnable'] != '1') {
             $current .= "if(defined('_SHOW_UNABLE') and _SHOW_UNABLE=='1'){\n";
         }
+
+        $plugin['db']['PluginTitle'] = $myts->addSlashes($plugin['db']['PluginTitle']);
 
         $current .= "\$menu_var['{$dirname}']['id']     = $i;\n";
         $current .= "\$menu_var['{$dirname}']['title']  = '{$plugin['db']['PluginTitle']}';\n";
@@ -738,20 +741,22 @@ function mklogoPic($WebID = "")
     } else {
         $n = strlen($WebName) / 3;
     }
+    // die('$n:' . $n);
     //$width=50*$n+35;
-    $size = round(600 / $n, 0);
-    if ($size > 70) {
-        $size  = 70;
-        $x     = $size + 10;
-        $size2 = 20;
-    } else {
-        $x     = round(600 / $n, 0) + 10;
-        $size2 = 17;
-    }
-    $y = $size + 55;
+    // $size = round(800 / $n, 0);
+    // if ($size > 70) {
+    $size     = 60;
+    $pic_size = ($size + 24) * $n;
+    $x        = $size + 10;
+    $size2    = 30;
+    // } else {
+    //     $x     = round(800 / $n, 0) + 10;
+    //     $size2 = 17;
+    // }
+    $y = $size + 65;
 
     header('Content-type: image/png');
-    $im = @imagecreatetruecolor(600, 140) or die(_MD_TCW_MKPIC_ERROR);
+    $im = @imagecreatetruecolor($pic_size, 140) or die(_MD_TCW_MKPIC_ERROR);
     imagesavealpha($im, true);
 
     $white = imagecolorallocate($im, 255, 255, 255);

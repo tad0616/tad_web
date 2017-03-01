@@ -21,23 +21,23 @@
   </script>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <h1 class="text-center"><{$block.BlockTitle}></h1>
       <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
         <div class="form-group">
-          <label class="col-md-3 control-label">
+          <label class="col-sm-3 control-label">
             <{$smarty.const._MD_TCW_BLOCK_TITLE}>
           </label>
-          <div class="col-md-9">
+          <div class="col-sm-9">
             <input type="text" name="BlockTitle" value="<{$block.BlockTitle}>" class="form-control">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-3 control-label">
+          <label class="col-sm-3 control-label">
             <{$smarty.const._MD_TCW_BLOCK_SHOW_TITLE}>
           </label>
-          <div class="col-md-9">
+          <div class="col-sm-9">
             <div class="radio-inline">
               <input type="radio" name="config[show_title]" value="1" <{if $block.config.show_title!='0'}>checked<{/if}>><{$smarty.const._YES}>
             </div>
@@ -49,10 +49,10 @@
 
 
         <div class="form-group">
-          <label class="col-md-3 control-label">
+          <label class="col-sm-3 control-label">
             <{$smarty.const._MD_TCW_BLOCK_ENABLE}>
           </label>
-          <div class="col-md-9">
+          <div class="col-sm-9">
             <div class="radio-inline">
               <input type="radio" name="BlockEnable" value="1" <{if $block.BlockEnable!='0'}>checked<{/if}>><{$smarty.const._YES}>
             </div>
@@ -63,10 +63,10 @@
         </div>
 
         <div class="form-group">
-          <label class="col-md-3 control-label">
+          <label class="col-sm-3 control-label">
             <{$smarty.const._MD_TCW_BLOCK_POSITION}>
           </label>
-          <div class="col-md-9">
+          <div class="col-sm-9">
             <select name="BlockPosition" id="BlockPosition" class="form-control">
               <option value="block1" <{if $block.BlockPosition=="block1"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_CENTER_BLOCK}></option>
               <option value="block2" <{if $block.BlockPosition=="block2"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_LEFT_BLOCK}></option>
@@ -88,11 +88,11 @@
 
         <{if $block.plugin=="custom" or $op=="add_block"}>
           <div class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$smarty.const._MD_TCW_BLOCK_CONTENT}>
               <{$block.config.content_type}>
             </label>
-            <div class="col-md-9">
+            <div class="col-sm-9">
               <select name="config[content_type]" id="content_type" class="form-control">
                 <option value="html" <{if $block.config.content_type=="html"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_HTML}></option>
                 <option value="js" <{if $block.config.content_type=="js"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_JS}></option>
@@ -107,10 +107,10 @@
 
           <div id="js_editor" <{if $block.config.content_type!="js"}>style="display:none;"<{/if}>>
             <div class="form-group">
-              <label class="col-md-3 control-label">
+              <label class="col-sm-3 control-label">
                 <{$smarty.const._MD_TCW_BLOCK_JS_DESC}>
               </label>
-              <div class="col-md-9">
+              <div class="col-sm-9">
                 <textarea name="BlockContent[js]"  rows="10" class="form-control" style="background: #11190E; color: #90E86A; "><{$block.BlockContent}></textarea>
               </div>
             </div>
@@ -118,10 +118,10 @@
 
           <div id="iframe_editor" <{if $block.config.content_type!="iframe"}>style="display:none;"<{/if}>>
             <div class="form-group">
-              <label class="col-md-3 control-label">
+              <label class="col-sm-3 control-label">
                 <{$smarty.const._MD_TCW_BLOCK_IFRAME_DESC}>
               </label>
-              <div class="col-md-9">
+              <div class="col-sm-9">
                 <input type="text" name="BlockContent[iframe]"  class="form-control" placeholder="http://" value="<{$iframeContent}>">
               </div>
             </div>
@@ -131,10 +131,10 @@
             <input type="hidden" name="BlockShare" value="0">
           <{else}>
             <div class="form-group">
-              <label class="col-md-3 control-label">
+              <label class="col-sm-3 control-label">
                 <{$smarty.const._MD_TCW_BLOCK_SHARE}>
               </label>
-              <div class="col-md-9">
+              <div class="col-sm-9">
                 <div class="radio-inline">
                   <input type="radio" name="BlockShare" value="1" <{if $shareBlockID > 0}>checked<{/if}>><{$smarty.const._YES}>
                 </div>
@@ -273,10 +273,10 @@
     }
   </script>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm-6">
       <h1><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
     </div>
-    <div class="col-md-6 text-right">
+    <div class="col-sm-6 text-right">
       <a href="block.php?WebID=<{$WebID}>&op=add_block" class="btn btn-primary"><{$smarty.const._MD_TCW_BLOCK_ADD}></a>
     </div>
   </div>
@@ -303,7 +303,7 @@
   <div id="msg"></div>
   <div class="row">
     <{if $theme_side=="left"}>
-      <div class="col-md-4">
+      <div class="col-sm-4">
           <div id="side" class="alert alert-success" style="min-height: 300px;">
             <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
             <ul id="sort_side" class="connectedSortable">
@@ -324,9 +324,9 @@
           </div>
         </div>
     <{/if}>
-    <div class="col-md-8">
+    <div class="col-sm-8">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <div id="block1" class="alert alert-info" style="min-height: 100px;">
             <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_CENTER_BLOCK}></div>
             <ul id="sort_block1" class="connectedSortable">
@@ -350,7 +350,7 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <div id="block2" class="alert alert-info" style="min-height: 100px;">
             <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_LEFT_BLOCK}></div>
             <ul id="sort_block2" class="connectedSortable">
@@ -371,7 +371,7 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <div id="block3" class="alert alert-info" style="min-height: 100px;">
             <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_RIGHT_BLOCK}></div>
             <ul id="sort_block3" class="connectedSortable">
@@ -395,7 +395,7 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <div id="block4" class="alert alert-info" style="min-height: 100px;">
             <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_CENTER_BLOCK}></div>
             <ul id="sort_block4" class="connectedSortable">
@@ -419,7 +419,7 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <div id="block5" class="alert alert-info" style="min-height: 100px;">
             <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_LEFT_BLOCK}></div>
             <ul id="sort_block5" class="connectedSortable">
@@ -440,7 +440,7 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <div id="block6" class="alert alert-info" style="min-height: 100px;">
             <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_RIGHT_BLOCK}></div>
             <ul id="sort_block6" class="connectedSortable">
@@ -465,7 +465,7 @@
     </div>
 
     <{if $theme_side!="left"}>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <div id="side" class="alert alert-success" style="min-height: 300px;">
           <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
           <ul id="sort_side" class="connectedSortable">
@@ -494,31 +494,31 @@
   <{$mColorPicker_code}>
   <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TCW_BLOCK_PIC_COLOR}>
       </label>
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <input type="text" name="block_pic[block_pic_text_color]" value="<{$block_pic_text_color}>" class="form-control color" value="<{$block_pic_text_color}>" id="block_pic_text_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
       </div>
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TCW_BLOCK_PIC_BORDER_COLOR}>
       </label>
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <input type="text" name="block_pic[block_pic_border_color]" value="<{$block_pic_border_color}>" class="form-control color" value="<{$block_pic_border_color}>" id="block_pic_border_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
       </div>
     </div>
 
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TCW_BLOCK_PIC_SIZE}>
       </label>
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <input type="text" name="block_pic[block_pic_text_size]" value="<{$block_pic_text_size}>" class="form-control">
       </div>
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TCW_BLOCK_PIC_FONT}>
       </label>
-      <div class="col-md-3">
+      <div class="col-sm-3">
         <select name="block_pic[block_pic_font]" class="form-control">
         <option value="font.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_PIC_FONT1}></option>
         <option value="DroidSansFallback.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>>DroidSansFallback<{$smarty.const._MD_TCW_BLOCK_PIC_FONT2}></option>

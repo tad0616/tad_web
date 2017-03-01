@@ -66,10 +66,10 @@
 
     <{if $isMyWeb and $WebID}>
       <div class="form-group">
-        <label class="col-md-3 control-label">
+        <label class="col-sm-3 control-label">
           <{$plugin.title}><{$smarty.const._MD_TCW_NEW_CATE}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <input type="text" name="newCateName" id="newCateName" class="form-control">
         </div>
       </div>
@@ -80,7 +80,7 @@
         <{foreach from=$cate_opt_arr key=i item=cate}>
           <!--<{$cate.CateName}>-->
           <div class="form-group" id="CateID_<{$cate.CateID}>">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
               <span class="fa-stack fa-1x text-warning pull-left">
                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -97,7 +97,7 @@
 
               <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
             </label>
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <select name="act[<{$cate.CateID}>]" id="<{$cate.CateID}>" class="form-control act">
                 <option value=""><{$smarty.const._MD_TCW_CATE_NONE_OPT}><{$smarty.const._MD_TCW_CATE_DATA_AMOUNT1}><{$cate.counter}><{$smarty.const._MD_TCW_CATE_DATA_AMOUNT2}></option>
                 <option value="move"><{$smarty.const._MD_TCW_CATE_MOVE}></option>
@@ -115,7 +115,7 @@
                 <option value="power"><{$smarty.const._MD_TCW_CATE_POWER}><{if $cate.power}>[<{$cate.power}>]<{/if}></option>
               </select>
             </div>
-            <div class="col-md-5">
+            <div class="col-sm-5">
               <input type="text" name="newName[<{$cate.CateID}>]" value="<{$cate.CateName}>" id="new_name_col<{$cate.CateID}>" class="validate[required] form-control new_name_col" style="display: none;">
               <select name="move2[<{$cate.CateID}>]" id="move2<{$cate.CateID}>" class="form-control move2" style="display: none;">
                 <{foreach from=$cate_arr item=other}>
@@ -148,7 +148,7 @@
     <{/if}>
 
     <div class="form-group">
-      <div class="col-md-12 text-center">
+      <div class="col-sm-12 text-center">
         <input type="hidden" name="ColName" value="<{$ColName}>">
         <input type="hidden" name="WebID" value="<{$WebID}>">
         <input type="hidden" name="op" value="save_cate">
@@ -162,13 +162,13 @@
       <{if $isMyWeb and $WebID}>
         <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
           <div class="form-group">
-            <label class="col-md-2 control-label">
+            <label class="col-sm-2 control-label">
               <{$smarty.const._MD_TCW_NEW_CATE}>
             </label>
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <input type="text" name="newCateName" id="newCateName" class="validate[required] form-control">
             </div>
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <input type="hidden" name="ColName" value="<{$ColName}>">
               <input type="hidden" name="WebID" value="<{$WebID}>">
               <input type="hidden" name="op" value="save_cate">

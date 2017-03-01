@@ -8,7 +8,7 @@
   <{foreach from=$show_arr item=dirname}>
     <{if "$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`_b3.html"|file_exists}>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`_b3.html"}>
         </div>
       </div>

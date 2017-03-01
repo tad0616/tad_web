@@ -24,10 +24,10 @@
   <hr>
   <{foreach from=$plugin_setup item=setup}>
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-sm-3 control-label">
         <{$setup.text}>
       </label>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <{if $setup.type=="text"}>
           <input type="text" name="<{$setup.name}>" value="<{$setup.value}>" class="form-control">
         <{elseif $setup.type=="select"}>
@@ -67,7 +67,7 @@
       </div>
 
       <{if $setup.type=="file"}>
-        <div class="col-md-5">
+        <div class="col-sm-5">
           <{if $setup.list}>
 
             <div style="width:60px; height:86px; display:inline-block; margin:4px;">
@@ -101,7 +101,7 @@
           <{/if}>
         </div>
       <{else}>
-        <div class="col-md-5">
+        <div class="col-sm-5">
           <div class="alert alert-info">
             <{$setup.desc}>
           </div>

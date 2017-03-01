@@ -182,7 +182,7 @@ function tad_web_my_menu($WebID)
                     define('_SHOW_UNABLE', '1');
                 }
 
-                $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
+                $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config("space_quota", $defaltWebID);
                 $size  = get_web_config("used_size", $defaltWebID);
 
                 $percentage = round($size / $quota, 2) * 100;

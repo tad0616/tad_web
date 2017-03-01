@@ -36,6 +36,7 @@ class tad_web_page
             $xoopsTpl->assign('cate', $cate);
             $andCateID = "and a.`CateID`='$CateID'";
             $xoopsTpl->assign('PageDefCateID', $CateID);
+            $this->setup['list_pages_title'] = 1;
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
@@ -65,7 +66,7 @@ class tad_web_page
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
 
-        $main_data = $cate_data = "";
+        $main_data = $cate_data = $cate_size = "";
 
         $i = 0;
 
@@ -91,7 +92,9 @@ class tad_web_page
             $main_data[$i]['cate']     = $cate_arr[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
-            $cate_data[$CateID][]      = $all;
+
+            $cate_data[$CateID][] = $all;
+            $cate_size[$CateID]++;
             $i++;
         }
 
@@ -103,15 +106,20 @@ class tad_web_page
         $sweet_alert->render("delete_page_func", "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
 
         if ($mode == "return") {
-            $data['cate_arr']  = $cate_arr;
-            $data['cate_data'] = $cate_data;
-            $data['main_data'] = $main_data;
-            $data['total']     = $total;
+            $data['cate_arr']         = $cate_arr;
+            $data['cate_data']        = $cate_data;
+            $data['main_data']        = $main_data;
+            $data['cate_size']        = $cate_size;
+            $data['total']            = $total;
+            $data['list_pages_title'] = $this->setup['list_pages_title'];
+
             return $data;
         } else {
             $xoopsTpl->assign('cate_data', $cate_data);
             $xoopsTpl->assign('page_data', $main_data);
+            $xoopsTpl->assign('cate_size', $cate_size);
             $xoopsTpl->assign('page', get_db_plugin($this->WebID, 'page'));
+            $xoopsTpl->assign('list_pages_title', $this->setup['list_pages_title']);
             return $total;
         }
     }

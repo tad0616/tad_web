@@ -8,13 +8,13 @@
 
       <!--分類名稱-->
       <div class="form-group">
-        <label class="col-md-1 control-label">
+        <label class="col-sm-1 control-label">
           <{$smarty.const._MA_TADWEB_CATENAME}>
         </label>
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <input type="text" name="CateName" id="CateName" class="form-control validate[required]" value="<{$CateName}>" placeholder="<{$smarty.const._MA_TADWEB_CATENAME}>">
         </div>
-        <div class="col-md-8">
+        <div class="col-sm-8">
           <input type='hidden' name="CateID" value="<{$CateID}>">
           <input type="hidden" name="ColName" id="ColName" value="<{$ColName}>">
           <input type="hidden" name="ColSN" id="ColSN" value="<{$ColSN}>">
@@ -77,7 +77,7 @@
 
         <form action="cate.php" method="post" id="myForm<{$i}>" class="form-horizontal" role="form">
           <div class="form-group">
-            <div class="col-md-5">
+            <div class="col-sm-5">
               <select id="repository<{$i}>" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control" style="height: 200px;">
                 <{foreach from=$cate.repository item=opt}>
                   <{if $opt.WebID}>
@@ -87,7 +87,7 @@
               </select>
 
             </div>
-            <div class="col-md-1 text-center">
+            <div class="col-sm-1 text-center">
               <img src="<{$xoops_url}>/modules/tad_web/images/right.png" onclick="tmt.spry.linkedselect.util.moveOptions('repository<{$i}>', 'destination<{$i}>'); getOptions(<{$i}>);" alt="right"><br>
               <img src="<{$xoops_url}>/modules/tad_web/images/left.png" onclick="tmt.spry.linkedselect.util.moveOptions('destination<{$i}>' , 'repository<{$i}>'); getOptions(<{$i}>);" alt="left"><br><br>
 
@@ -100,7 +100,7 @@
               <input type="hidden" name="op" value="update_tad_web_cate_arr">
               <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
-            <div class="col-md-5">
+            <div class="col-sm-5">
               <select id="destination<{$i}>" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control" style="height: 200px;">
                 <{foreach from=$cate.destination item=opt}>
                   <{if $opt.WebID}>

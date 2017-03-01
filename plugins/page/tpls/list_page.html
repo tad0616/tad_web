@@ -20,27 +20,32 @@
   <{foreach from=$bc.cate_arr item=cate}>
     <{assign var="cid" value=$cate.CateID}>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
         <{if $bc.cate_data.$cid}>
-          <h3><a href="page.php?WebID=<{$WebID}>&CateID=<{$cid}>"><{$cate.CateName}></a></h3>
-          <div id="page_sort_save_msg<{$cate.CateID}>"></div>
-          <ul id="page_sort<{$cate.CateID}>" class="list-group">
-            <{foreach from=$bc.cate_data.$cid item=page}>
-              <li id="li_<{$page.PageID}>" class="list-group-item">
-                <{if $isMyWeb}>
-                  <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>"></i>
-                <{/if}>
-                <{if $content.show_count=='1'}>
-                  <span class="badge"><{$page.PageCount}></span>
-                <{/if}>
-                <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
-                <{if $isMyWeb or $page.isAssistant}>
-                  <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                  <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
-                <{/if}>
-              </li>
-            <{/foreach}>
-          </ul>
+          <h3><a href="page.php?WebID=<{$WebID}>&CateID=<{$cid}>"><{$cate.CateName}></a>
+          <{if $bc.list_pages_title!='1'}>
+          <small> (<{$bc.cate_size.$cid}>) </small>
+          <{/if}></h3>
+          <{if $bc.list_pages_title=='1'}>
+            <div id="page_sort_save_msg<{$cate.CateID}>"></div>
+            <ul id="page_sort<{$cate.CateID}>" class="list-group">
+              <{foreach from=$bc.cate_data.$cid item=page}>
+                <li id="li_<{$page.PageID}>" class="list-group-item">
+                  <{if $isMyWeb}>
+                    <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>"></i>
+                  <{/if}>
+                  <{if $content.show_count=='1'}>
+                    <span class="badge"><{$page.PageCount}></span>
+                  <{/if}>
+                  <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
+                  <{if $isMyWeb or $page.isAssistant}>
+                    <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                    <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+                  <{/if}>
+                </li>
+              <{/foreach}>
+            </ul>
+          <{/if}>
         <{/if}>
       </div>
     </div>

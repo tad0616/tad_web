@@ -14,7 +14,7 @@
 
       <!--活動名稱-->
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <input type="text" name="ActionName" value="<{$ActionName}>" id="ActionName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONNAME}>">
         </div>
       </div>
@@ -22,24 +22,24 @@
 
       <!--活動說明-->
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <textarea name="ActionDesc"  rows=4 id="ActionDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONDESC}>"><{$ActionDesc}></textarea>
         </div>
       </div>
 
       <!--活動日期-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MD_TCW_ACTIONDATE}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <input type="text" name="ActionDate" class="form-control" value="<{$ActionDate}>" id="ActionDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
         </div>
         <!--活動地點-->
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MD_TCW_ACTIONPLACE}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <input type="text" name="ActionPlace" class="form-control" value="<{$ActionPlace}>" id="ActionPlace" >
         </div>
       </div>
@@ -49,16 +49,16 @@
 
       <!--上傳圖檔-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
         </label>
-        <div class="col-md-10">
+        <div class="col-sm-10">
           <{$upform}>
         </div>
       </div>
 
       <div class="form-group">
-        <div class="col-md-12 text-center">
+        <div class="col-sm-12 text-center">
 
           <!--活動編號-->
           <input type="hidden" name="ActionID" value="<{$ActionID}>">
@@ -82,11 +82,11 @@
 
   <div class="row" style="margin:10px 0px;">
     <{if $ActionDate}>
-      <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
+      <div class="col-sm-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
     <{/if}>
 
     <{if $ActionPlace}>
-      <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
+      <div class="col-sm-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
     <{/if}>
   </div>
 
@@ -98,7 +98,7 @@
   <{if $ActionDesc}>
     <hr>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
         <div style="line-height: 1.8; font-size: 120%;"><{$ActionDesc}></div>
       </div>
     </div>

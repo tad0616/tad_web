@@ -11,35 +11,35 @@
 
       <!--活動日期-->
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MD_TCW_CALENDARDATE}>
         </label>
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <input type="text" name="CalendarDate" class="form-control" value="<{$CalendarDate}>" id="CalendarDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
         </div>
 
         <!--活動名稱-->
-        <div class="col-md-7">
+        <div class="col-sm-7">
           <input type="text" name="CalendarName" value="<{$CalendarName}>" id="CalendarName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_CALENDARNAME}>">
         </div>
       </div>
 
       <!--活動說明-->
       <div class="form-group">
-        <div class="col-md-12">
+        <div class="col-sm-12">
           <textarea name="CalendarDesc"  rows=4 id="CalendarDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_CALENDARDESC}>"><{$CalendarDesc}></textarea>
         </div>
       </div>
 
       <!--全校活動-->
       <div class="form-group">
-        <div class="col-md-10">
+        <div class="col-sm-10">
           <label class="checkbox-inline">
             <input type="checkbox" name="CalendarType" id="CalendarType" value="all"><{$smarty.const._MD_TCW_CALENDAR_TYPE_GLOBAL}>
           </label>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-sm-2">
           <input type="hidden" name="CalendarID" value="<{$CalendarID}>">
           <input type="hidden" name="WebID" value="<{$WebID}>">
           <input type="hidden" name="op" value="<{$next_op}>">
@@ -82,7 +82,7 @@
     <{$cate_menu}>
   <{/if}>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar_b3.html"}>
     </div>
   </div>
