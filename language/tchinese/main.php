@@ -251,3 +251,5 @@ define('_MD_TCW_CATE_DATA_AMOUNT2', ' 筆資料）');
 define('_MD_TCW_BLOCK_EMPTY', '目前無內容，無法展示');
 define('_MD_TCW_BLOCK_TITLE', '區塊標題');
 define('_MD_TCW_BLOCK_DEMO', '區塊預覽');
+
+define('_MD_TCW_UPDATE_MY_NAME', '管理者姓名');

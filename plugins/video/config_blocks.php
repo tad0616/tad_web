@@ -6,6 +6,8 @@ $blocksArr['list_video']['tpl']             = 'list_video.html';
 $blocksArr['list_video']['position']        = 'block4';
 $blocksArr['list_video']['config']['limit'] = 5;
 $blocksArr['list_video']['colset']['limit'] = array('label' => _MD_TCW_VIDEO_BLOCK_LIMIT, 'type' => 'text');
+$blocksArr['list_video']['config']['mode']  = 'list';
+$blocksArr['list_video']['colset']['mode']  = array('label' => _MD_TCW_VIDEO_BLOCK_MODE, 'type' => 'radio', 'options' => array(_MD_TCW_VIDEO_BLOCK_LIST_MODE => 'list', _MD_TCW_VIDEO_BLOCK_THUMB_MODE => 'thumb'));
 
 $blocksArr['random_video']['name']     = _MD_TCW_VIDEO_BLOCK_RANDOM;
 $blocksArr['random_video']['tpl']      = 'random_video.html';

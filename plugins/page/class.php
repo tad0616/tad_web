@@ -27,7 +27,7 @@ class tad_web_page
 
         $xoopsTpl->assign('cate_arr', $cate_arr);
         $andCateID = "";
-        if (!empty($CateID)) {
+        if (!empty($CateID) and is_numeric($CateID)) {
             //取得單一分類資料
             $cate = $this->web_cate->get_tad_web_cate($CateID);
             if ($CateID and $cate['CateEnable'] != '1') {
@@ -49,11 +49,25 @@ class tad_web_page
             $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.PageSort";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName
+            order by a.PageSort";
         } elseif (!empty($tag)) {
-            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='PageID' and c.col_sn=a.PageID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.PageID desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_page") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='PageID' and c.col_sn=a.PageID
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
+            order by a.PageID desc";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.PageSort";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_page") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
+            where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID
+            order by a.PageSort";
         }
         $to_limit = empty($limit) ? '200' : $limit;
 
@@ -63,6 +77,10 @@ class tad_web_page
         $sql     = $PageBar['sql'];
         $total   = $PageBar['total'];
 
+        if ($_GET['debug'] == 1 and $CateID == "all") {
+            echo "<h2>{$sql}</h2>";
+            $debug = 1;
+        }
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
 
@@ -94,10 +112,13 @@ class tad_web_page
             $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
             $cate_data[$CateID][] = $all;
-            $cate_size[$CateID]++;
+            $cate_size[$CateID]   = $this->get_total($CateID);
             $i++;
         }
+        if ($debug == 1) {
 
+            die(var_dump($cate_size));
+        }
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
         }
@@ -420,10 +441,11 @@ class tad_web_page
     }
 
     //取得資料總數
-    public function get_total()
+    public function get_total($CateID = '')
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_page") . " where WebID='{$this->WebID}'";
+        $andCate     = empty($CateID) ? '' : "and CateID='$CateID'";
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_page") . " where WebID='{$this->WebID}' {$andCate}";
         $result      = $xoopsDB->query($sql) or web_error($sql);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;

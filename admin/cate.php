@@ -10,7 +10,7 @@ function tad_web_cate_form($CateID = '')
     global $xoopsDB, $xoopsTpl, $isAdmin;
 
     //抓取預設值
-    if (!empty($CateID)) {
+    if (!empty($CateID) and is_numeric($CateID)) {
         $DBV = get_tad_web_cate($CateID);
     } else {
         $DBV = array();

@@ -48,6 +48,7 @@ function tad_web_config($WebID, $configs)
     $WebOwnerUid = intval($Web['WebOwnerUid']);
     $xoopsTpl->assign('Web', $Web);
     $xoopsTpl->assign('WebName', $Web['WebName']);
+    $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
 
     $TadUpFiles->set_col("WebOwner", $WebID, 1);
     $teacher_pic = $TadUpFiles->get_pic_file();
@@ -181,11 +182,12 @@ function update_tad_web()
 {
     global $xoopsDB, $xoopsUser, $WebID;
 
-    $myts             = &MyTextSanitizer::getInstance();
-    $_POST['WebName'] = $myts->addSlashes($_POST['WebName']);
-    $CateID           = intval($_POST['CateID']);
+    $myts              = &MyTextSanitizer::getInstance();
+    $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
+    $_POST['WebOwner'] = $myts->addSlashes($_POST['WebOwner']);
+    $CateID            = intval($_POST['CateID']);
 
-    $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$_POST['WebName']}' where WebID ='{$WebID}'";
+    $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$_POST['WebName']}', `WebOwner` = '{$_POST['WebOwner']}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
     $TadUpFilesLogo = TadUpFilesLogo($WebID);

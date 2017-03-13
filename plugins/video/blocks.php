@@ -11,7 +11,7 @@ function list_video($WebID, $config = array())
 
     $block         = '';
     $tad_web_video = new tad_web_video($WebID);
-    $block         = $tad_web_video->list_all("", $config['limit'], 'return');
+    $block         = $tad_web_video->list_all("", $config['limit'], 'return', '', $config['mode']);
     return $block;
 }
 

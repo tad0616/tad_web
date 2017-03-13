@@ -15,3 +15,6 @@ define("_MD_TCW_VIDEO_BLOCK_LIST", "影片列表");
 define("_MD_TCW_VIDEO_BLOCK_RANDOM", "隨機影片");
 define("_MD_TCW_VIDEO_BLOCK_LATEST", "最新影片");
 define("_MD_TCW_VIDEO_BLOCK_LIMIT", "顯示影片數量");
+define("_MD_TCW_VIDEO_BLOCK_MODE", "顯示影片模式");
+define("_MD_TCW_VIDEO_BLOCK_LIST_MODE", "列表");
+define("_MD_TCW_VIDEO_BLOCK_THUMB_MODE", "縮圖");

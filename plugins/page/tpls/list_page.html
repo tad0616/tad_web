@@ -52,7 +52,7 @@
   <{/foreach}>
 
   <{if $PageDefCateID}>
-    <div style="text-align:right; margin: 30px 0px 10px;">
+    <div style="text-align:right; margin: 0px 0px 10px;">
       <{if $web_display_mode=='home' or $web_display_mode=='index' or $PageDefCateID}>
         <a href="page.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
       <{/if}>

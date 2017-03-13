@@ -258,3 +258,5 @@ define('_MD_TCW_CATE_DATA_AMOUNT2', ' )');
 define('_MD_TCW_BLOCK_EMPTY', 'Empty Block');
 define('_MD_TCW_BLOCK_TITLE', 'Block Title');
 define('_MD_TCW_BLOCK_DEMO', 'Block Demo');
+
+define('_MD_TCW_UPDATE_MY_NAME', 'Admin Name');

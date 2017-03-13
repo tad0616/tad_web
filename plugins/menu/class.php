@@ -34,7 +34,7 @@ class tad_web_menu
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 
-            if (!empty($CateID)) {
+            if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
                 $xoopsTpl->assign('cate', $cate);
@@ -53,11 +53,25 @@ class tad_web_menu
             $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.MenuID desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            where b.`WebEnable`='1' and d.CateEnable='1' $andCounty $andCity $andSchoolName
+            order by a.MenuID desc";
         } elseif (!empty($tag)) {
-            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='MenuID' and c.col_sn=a.MenuID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.MenuID desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='MenuID' and c.col_sn=a.MenuID
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            where b.`WebEnable`='1' and d.CateEnable='1' and c.`tag_name`='{$tag}' $andWebID $andCateID
+            order by a.MenuID desc";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.MenuID desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
+            where b.`WebEnable`='1' and c.CateEnable='1' $andWebID $andCateID
+            order by a.MenuID desc";
         }
         $to_limit = empty($limit) ? 20 : $limit;
 

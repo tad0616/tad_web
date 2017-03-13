@@ -30,7 +30,7 @@ class tad_web_files
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 
-            if (!empty($CateID)) {
+            if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
                 if ($CateID and $cate['CateEnable'] != '1') {
@@ -54,12 +54,29 @@ class tad_web_files
             $andCity       = !empty($city) ? "and d.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and d.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid where c.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.file_date desc";
+            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a
+            left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn and b.col_name='fsn'
+            left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID
+            left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as e on a.CateID=e.CateID
+            where c.`WebEnable`='1' and (e.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName
+            order by a.file_date desc";
         } elseif (!empty($tag)) {
-            $sql = "select distinct a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as d on d.col_name='fsn' and d.col_sn=a.fsn where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
+            $sql = "select distinct a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a
+            left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn'
+            left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID
+            join " . $xoopsDB->prefix("tad_web_tags") . " as d on d.col_name='fsn' and d.col_sn=a.fsn
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as e on a.CateID=e.CateID
+            where c.`WebEnable`='1' and (e.CateEnable='1' or a.CateID='0') $andWebID $andCateID
+            order by a.file_date desc";
 
         } else {
-            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn' left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID where c.`WebEnable`='1' $andWebID $andCateID order by a.file_date desc";
+            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a
+            left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn'
+            left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            where c.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') $andWebID $andCateID
+            order by a.file_date desc";
         }
         $to_limit = empty($limit) ? 20 : $limit;
 

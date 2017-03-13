@@ -924,7 +924,7 @@ class tad_web_aboutus
         }
 
         $whereCateID = $whereMemID = "";
-        if (!empty($CateID)) {
+        if (!empty($CateID) and is_numeric($CateID)) {
             $whereCateID = "CateID ='{$CateID}'";
         } elseif (!empty($MemID)) {
             $whereMemID = "MemID ='{$MemID}'";

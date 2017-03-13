@@ -15,13 +15,13 @@ class tad_web_video
     }
 
     //影片
-    public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '')
+    public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '', $display = "list")
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
-        $andCateID = "";
+        $andCateID = $andCateDataSort = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
@@ -32,14 +32,15 @@ class tad_web_video
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 
-            if (!empty($CateID)) {
+            if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
                 if ($CateID and $cate['CateEnable'] != '1') {
                     return;
                 }
                 $xoopsTpl->assign('cate', $cate);
-                $andCateID = "and a.`CateID`='$CateID'";
+                $andCateID       = "and a.`CateID`='$CateID'";
+                $andCateDataSort = "a.VideoSort,";
                 $xoopsTpl->assign('VideoDefCateID', $CateID);
             }
         }
@@ -53,19 +54,36 @@ class tad_web_video
             $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid where b.`WebEnable`='1' $andCounty $andCity $andSchoolName order by a.VideoDate desc , a.VideoID desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName
+            order by a.VideoDate desc , a.VideoID desc";
         } elseif (!empty($tag)) {
-            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='VideoID' and c.col_sn=a.VideoID where b.`WebEnable`='1' and c.`tag_name`='{$tag}' $andWebID $andCateID order by a.VideoDate desc , a.VideoID desc";
+            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_video") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='VideoID' and c.col_sn=a.VideoID
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            where b.`WebEnable`='1'and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
+            order by a.VideoDate desc , a.VideoID desc";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $andWebID $andCateID order by a.VideoDate desc , a.VideoID desc";
+            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_video") . " as a
+            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
+            left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
+            where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID
+            order by $andCateDataSort a.VideoDate desc , a.VideoID desc";
         }
-        $to_limit = empty($limit) ? 20 : $limit;
 
-        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar = getPageBar($sql, $to_limit, 10);
-        $bar     = $PageBar['bar'];
-        $sql     = $PageBar['sql'];
-        $total   = $PageBar['total'];
+        if (empty($CateID)) {
+            $to_limit = empty($limit) ? 20 : $limit;
+
+            //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+            $PageBar = getPageBar($sql, $to_limit, 10);
+            $bar     = $PageBar['bar'];
+            $sql     = $PageBar['sql'];
+            $total   = $PageBar['total'];
+        }
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
@@ -113,10 +131,13 @@ class tad_web_video
         if ($mode == "return") {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
+            $data['display']   = $display;
+
             return $data;
         } else {
             $xoopsTpl->assign('video_data', $main_data);
             $xoopsTpl->assign('bar', $bar);
+            $xoopsTpl->assign('display', $display);
             $xoopsTpl->assign('video', get_db_plugin($this->WebID, 'video'));
             return $total;
         }
