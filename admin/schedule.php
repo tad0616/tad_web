@@ -1,6 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tad_web_adm_schedule.html";
+$xoopsOption['template_main'] = "tad_web_adm_schedule.tpl";
 include_once 'header.php';
 include_once "../function.php";
 include_once "../class/cate.php";

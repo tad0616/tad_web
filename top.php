@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$xoopsOption['template_main'] = 'tad_web_top_b3.html';
+$xoopsOption['template_main'] = 'tad_web_top.tpl';
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 

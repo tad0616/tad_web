@@ -57,9 +57,9 @@ function tad_web_menu($options)
             }
 
             $modhandler        = xoops_gethandler('module');
-            $xoopsModule       = &$modhandler->getByDirname("tad_web");
+            $tad_web_Module    = &$modhandler->getByDirname("tad_web");
             $config_handler    = xoops_gethandler('config');
-            $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+            $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $tad_web_Module->getVar('mid'));
 
             $quota          = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config("space_quota", $defaltWebID);
             $block['quota'] = $quota;
@@ -115,8 +115,6 @@ function tad_web_menu($options)
         if ($TadLoginXoopsModule) {
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
-            $tad_login['facebook'] = facebook_login('return');
-            $tad_login['google']   = google_login('return');
 
             $config_handler = xoops_gethandler('config');
             $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
@@ -129,9 +127,9 @@ function tad_web_menu($options)
                 $loginTitle   = sprintf(_MB_TCW_OPENID_LOGIN, constant($method_const));
 
                 if ($method == "facebook") {
-                    $tlogin[$i]['link'] = $tad_login['facebook'];
+                    $tlogin[$i]['link'] = facebook_login('return');
                 } elseif ($method == "google") {
-                    $tlogin[$i]['link'] = $tad_login['google'];
+                    $tlogin[$i]['link'] = google_login('return');
                 } else {
                     $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
                 }

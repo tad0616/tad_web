@@ -1,6 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tad_web_adm_main.html";
+$xoopsOption['template_main'] = "tad_web_adm_main.tpl";
 include_once 'header.php';
 include_once "../function.php";
 include_once "../class/cate.php";
@@ -514,7 +514,7 @@ switch ($op) {
 
     //刪除資料
     case "delete_tad_web_chk":
-        delete_tad_web_chk($WebID);
+        delete_tad_web_chk($WebID, $g2p);
         break;
 
     //刪除資料

@@ -2,7 +2,7 @@
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
-    $xoopsOption['template_main'] = 'tad_web_block_b3.html';
+    $xoopsOption['template_main'] = 'tad_web_block.tpl';
 } elseif (!$isMyWeb and $MyWebs) {
     redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
 } else {

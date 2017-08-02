@@ -2,7 +2,7 @@
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
-    $xoopsOption['template_main'] = 'tad_web_plugin_setup_b3.html';
+    $xoopsOption['template_main'] = 'tad_web_plugin_setup.tpl';
 } else {
     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
 }

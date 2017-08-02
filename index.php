@@ -1,11 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-if (!empty($WebID)) {
-    $xoopsOption['template_main'] = 'tad_web_index_b3.html';
-} else {
-    $xoopsOption['template_main'] = set_bootstrap('tad_web_index.html');
-}
+$xoopsOption['template_main'] = 'tad_web_index.tpl';
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 

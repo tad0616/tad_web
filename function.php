@@ -1377,7 +1377,7 @@ function get_plugin_setup_values($WebID = "", $plugin = "")
 }
 
 //刪除tad_web某筆資料資料確認
-function delete_tad_web_chk($WebID = "")
+function delete_tad_web_chk($WebID = "", $g2p = 0)
 {
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
@@ -1400,6 +1400,7 @@ function delete_tad_web_chk($WebID = "")
 
     $xoopsTpl->assign('plugins', $plugins);
     $xoopsTpl->assign('WebID', $WebID);
+    $xoopsTpl->assign('g2p', $g2p);
 
 }
 

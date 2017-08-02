@@ -43,11 +43,18 @@ class tad_web_calendar
         // die('$calendar_data=' . $calendar_data);
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
         $fullcalendar = new fullcalendar();
+
         //$fullcalendar->add_js_parameter('dayClick', "function(date, jsEvent, view) {alert('新增事件')}", false);
         if ($this->WebID) {
+            $fullcalendar->add_js_parameter('firstDay', $this->setup['week_first_day']);
             $fullcalendar->add_json_parameter('WebID', $this->WebID);
         }
-        $fullcalendar_code = $fullcalendar->render('#calendar', 'get_event.php');
+        $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/get_event.php');
+
+        if ($_GET['debug'] == 1) {
+            die(var_export($fullcalendar_code));
+        }
+
         if ($mode == "return") {
             $data['fullcalendar_code'] = $fullcalendar_code;
             $data['main_data']         = $calendar_data;

@@ -5,6 +5,7 @@ class tad_web_discuss
     public $WebID = 0;
     public $web_cate;
     public $aboutus_setup;
+    public $discuss_setup;
 
     public function __construct($WebID)
     {
@@ -12,6 +13,7 @@ class tad_web_discuss
         $this->web_cate      = new web_cate($WebID, "discuss", "tad_web_discuss");
         $this->tags          = new tags($WebID);
         $this->aboutus_setup = get_plugin_setup_values($WebID, "aboutus");
+        $this->discuss_setup = get_plugin_setup_values($WebID, "discuss");
     }
 
     //列出所有tad_web_discuss資料
@@ -164,7 +166,7 @@ class tad_web_discuss
         $DiscussID = intval($DiscussID);
         $this->add_counter($DiscussID);
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}'";
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}' ";
         $result = $xoopsDB->query($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
 
@@ -651,7 +653,9 @@ class tad_web_discuss
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' order by DiscussDate";
+        $desc = ($this->discuss_setup['new2old'] == '1') ? 'desc' : '';
+
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' order by DiscussDate $desc";
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $re_data = "";
@@ -688,8 +692,9 @@ class tad_web_discuss
                 $isMineDiscuss = $this->isMineDiscuss('LoginParentID', $ParentID, $WebID);
             }
 
-            $fun = $isMineDiscuss ? "<div style='font-size:12px;'>
-            <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID'>" . _TAD_EDIT . "</a> | <a href=\"javascript:delete_discuss_func($DiscussID);\">" . _TAD_DEL . "</a>
+            $fun = $isMineDiscuss ? "<div style='float:right;'>
+            <a href=\"javascript:delete_discuss_func($DiscussID);\" class='btn btn-xs btn-danger'>" . _TAD_DEL . "</a>
+            <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID' class='btn btn-xs btn-warning'>" . _TAD_EDIT . "</a>
             </div>" : '';
 
             $TadUpFiles->set_col("DiscussID", $DiscussID);
@@ -714,26 +719,25 @@ class tad_web_discuss
                     $MemName = $MemName;
                 }
             }
-            $re_data .= "<tr><td style='line-height:180%;'>
-            {$DiscussContent}
-            <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='max-width: 120px; max-height: 120px; margin: 0px 15px 0px 30px; float: left;' class='img-rounded img-polaroid'>
-            <div style='line-height:1.5em;'>
-              <div>{$MemName}</div><div style='font-size:12px;'>$DiscussDate</div>
-              {$fun}
+            $re_data .= "
+            <hr>
+            <div class='row'>
+                <div class='col-sm-2 col-md-2  text-center'>
+                    <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='max-width: 100%;' class='img-rounded img-polaroid'>
+                    <div style='line-height:1.5em;'>
+                      <div>{$MemName}</div>
+                      <div style='font-size:10px; background: #1d649b; color: #fff; border-radius: 3px;'>$DiscussDate</div>
+                    </div>
+                </div>
+                <div class='col-sm-10  col-md-10'>
+                    {$DiscussContent}
+                    {$fun}
+                </div>
             </div>
-            <div style='clean:both;'></div>
-            </td></tr>";
-        }
-
-        $re = "";
-        if (!empty($re_data)) {
-            $re = "
-            <table>
-            $re_data
-            </table>
             ";
         }
-        return $re;
+
+        return $re_data;
     }
 
     //取得回覆數量
@@ -753,14 +757,10 @@ class tad_web_discuss
 
     public function bubble($content = "")
     {
-        $main = "<div class='xsnazzy'>
-          <b class='xb1'></b><b class='xb2'></b><b class='xb3'></b><b class='xb4'></b><b class='xb5'></b><b class='xb6'></b><b class='xb7'></b>
-          <div class='xboxcontent'>
-          <p style='word-break: break-all;'>$content</p>
-          </div>
-          <b class='xb7'></b><b class='xb6'></b><b class='xb5'></b><b class='xb4'></b><b class='xb3'></b><b class='xb2'></b><b class='xb1'></b>
-          <em></em><span></span>
-          </div>";
+        $main = "
+        <div class='xsnazzy'>
+          $content
+        </div>";
         return $main;
     }
 

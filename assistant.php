@@ -8,7 +8,7 @@ if (!$isMyWeb) {
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
 }
 if (!empty($WebID)) {
-    $xoopsOption['template_main'] = 'tad_web_assistant_b3.html';
+    $xoopsOption['template_main'] = 'tad_web_assistant.tpl';
 } else {
     header("location: index.php");
     exit;
