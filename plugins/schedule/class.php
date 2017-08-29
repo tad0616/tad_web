@@ -184,7 +184,7 @@ class tad_web_schedule
 
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
+        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['schedule']) {
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 

@@ -5,15 +5,17 @@ class tad_web_homework
     public $WebID = 0;
     public $web_cate;
     public $setup;
+    public $calendar_setup;
 
     public function __construct($WebID)
     {
-        $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, "homework", "tad_web_homework");
-        $this->setup    = get_plugin_setup_values($WebID, "homework");
+        $this->WebID          = $WebID;
+        $this->web_cate       = new web_cate($WebID, "homework", "tad_web_homework");
+        $this->setup          = get_plugin_setup_values($WebID, "homework");
+        $this->calendar_setup = get_plugin_setup_values($WebID, "calendar");
     }
 
-    //最新消息
+    //聯絡簿
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
@@ -166,6 +168,7 @@ class tad_web_homework
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
         $fullcalendar = new fullcalendar();
         if ($this->WebID) {
+            $fullcalendar->add_js_parameter('firstDay', $this->calendar_setup['week_first_day']);
             $fullcalendar->add_json_parameter('WebID', $this->WebID);
         }
         if (strrpos($_SERVER['PHP_SELF'], 'homework.php') !== false) {

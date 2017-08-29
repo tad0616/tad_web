@@ -49,7 +49,7 @@ class tad_web_calendar
             $fullcalendar->add_js_parameter('firstDay', $this->setup['week_first_day']);
             $fullcalendar->add_json_parameter('WebID', $this->WebID);
         }
-        $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/get_event.php');
+        $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
 
         if ($_GET['debug'] == 1) {
             die(var_export($fullcalendar_code));

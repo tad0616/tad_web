@@ -58,6 +58,7 @@
           <input type="hidden" name="PageID" value="<{$PageID}>">
           <!--所屬團隊-->
           <input type="hidden" name="WebID" value="<{$WebID}>">
+          <input type="hidden" name="uid" value="<{$uid}>">
           <input type="hidden" name="op" value="<{$next_op}>">
           <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>

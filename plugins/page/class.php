@@ -169,7 +169,7 @@ class tad_web_page
             $$k = $v;
         }
 
-        if (empty($uid)) {
+        if (empty($PageContent)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
@@ -335,6 +335,8 @@ class tad_web_page
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
         if (isset($_SESSION['isAssistant']['page'])) {
             $uid = $WebOwnerUid;
+        } elseif (!empty($_POST['uid'])) {
+            $uid = intval($_POST['uid']);
         } else {
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }

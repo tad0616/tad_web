@@ -737,23 +737,28 @@ function mklogoPic($WebID = "")
     $WebTitle = $Class['WebTitle'];
 
     if (function_exists('mb_strwidth')) {
-        $n = mb_strwidth($WebName) / 2;
+        $n  = mb_strwidth($WebName) / 2;
+        $n2 = mb_strwidth($WebTitle) / 2;
     } else {
-        $n = strlen($WebName) / 3;
+        $n  = strlen($WebName) / 3;
+        $n2 = strlen($WebTitle) / 3;
     }
     // die('$n:' . $n);
     //$width=50*$n+35;
     // $size = round(800 / $n, 0);
     // if ($size > 70) {
-    $size     = 60;
-    $pic_size = ($size + 24) * $n;
-    $x        = $size + 10;
-    $size2    = 30;
+    $size      = 60;
+    $pic_size1 = ($size + 24) * $n;
+    $x         = $size + 10;
+    $size2     = 30;
+    $pic_size2 = ($size2 + 8) * $n2;
     // } else {
     //     $x     = round(800 / $n, 0) + 10;
     //     $size2 = 17;
     // }
     $y = $size + 65;
+
+    $pic_size = ($pic_size1 > $pic_size2) ? $pic_size1 : $pic_size2;
 
     header('Content-type: image/png');
     $im = @imagecreatetruecolor($pic_size, 140) or die(_MD_TCW_MKPIC_ERROR);
@@ -1139,7 +1144,10 @@ function output_head_file($WebID)
     }
 
     header('Content-type: image/png');
-    imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png");
+    $save = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png";
+    imagepng($im, $save);
+
+    // imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png");
     imagedestroy($im);
 
 }
@@ -1242,7 +1250,12 @@ function output_head_file_480($WebID)
     }
 
     header('Content-type: image/png');
-    imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png");
+
+    // imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png");
+    $save = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png";
+    imagepng($im, $save);
+    chmod($save, 0777);
+
     imagedestroy($im);
 }
 
