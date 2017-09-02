@@ -15,7 +15,7 @@ function account_search($WebID, $queryarray, $limit = 10)
     $date_col    = 'AccountDate';
     $content_col = 'AccountDesc';
 
-    $myts = &MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
         $arr[$k] = $myts->addSlashes($v);
     }

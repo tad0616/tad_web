@@ -293,7 +293,7 @@ class tad_web_schedule
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                     = &MyTextSanitizer::getInstance();
+        $myts                     = MyTextSanitizer::getInstance();
         $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
         $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
         $_POST['CateID']          = intval($_POST['CateID']);
@@ -319,7 +319,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
 
-        $myts                     = &MyTextSanitizer::getInstance();
+        $myts                     = MyTextSanitizer::getInstance();
         $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
         $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
         $_POST['CateID']          = intval($_POST['CateID']);
@@ -531,7 +531,7 @@ class tad_web_schedule
         $schedule_subjects = json_encode($schedule_subjects_arr);
         file_put_contents($my_subject_file, $schedule_subjects);
 
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
             $Subject  = $_POST['Subject'][$k];
             $Teacher  = $_POST['Teacher'][$k];

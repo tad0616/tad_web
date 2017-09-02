@@ -16,7 +16,7 @@ if (news_onUpdate3_chk()) {
 function news_onUpdate1_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(NewsPlace) from " . $xoopsDB->prefix("tad_web_news");
+    $sql    = "SELECT count(NewsPlace) FROM " . $xoopsDB->prefix("tad_web_news");
     $result = $xoopsDB->query($sql);
     if (!empty($result)) {
         return true;
@@ -28,7 +28,7 @@ function news_onUpdate1_chk()
 function news_onUpdate1_go()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_news") . " CHANGE `NewsContent` `NewsContent` longtext COLLATE 'utf8_general_ci' NOT NULL COMMENT '內容',
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_news") . " CHANGE `NewsContent` `NewsContent` LONGTEXT COLLATE 'utf8_general_ci' NOT NULL COMMENT '內容',
     DROP `NewsPlace`,
     DROP `NewsMaster`";
     $xoopsDB->queryF($sql);
@@ -39,7 +39,7 @@ function news_onUpdate1_go()
 function news_onUpdate2_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(NewsKind) from " . $xoopsDB->prefix("tad_web_news");
+    $sql    = "SELECT count(NewsKind) FROM " . $xoopsDB->prefix("tad_web_news");
     $result = $xoopsDB->query($sql);
     if (!empty($result)) {
         return true;
@@ -60,7 +60,7 @@ function news_onUpdate2_go()
 function news_onUpdate3_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(NewsEnable) from " . $xoopsDB->prefix("tad_web_news");
+    $sql    = "SELECT count(NewsEnable) FROM " . $xoopsDB->prefix("tad_web_news");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -72,7 +72,7 @@ function news_onUpdate3_chk()
 function news_onUpdate3_go()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_news") . " ADD `NewsEnable` enum('1','0')  NOT NULL default '1' COMMENT '狀態' after `NewsCounter`";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_news") . " ADD `NewsEnable` ENUM('1','0')  NOT NULL DEFAULT '1' COMMENT '狀態' AFTER `NewsCounter`";
     $xoopsDB->queryF($sql);
     return true;
 }

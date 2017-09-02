@@ -33,11 +33,11 @@ function save_plugins()
     global $xoopsDB;
     $plugins = get_plugins(0);
     //die(var_export($plugins));
-    $myts = &MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
 
     $i = 1;
 
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='0'";
+    $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_plugins") . " WHERE WebID='0'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
     $display_plugins = '';
@@ -61,7 +61,6 @@ function save_plugins()
 
     save_web_config('web_plugin_display_arr', implode(',', $display_plugins), 0);
     mk_menu_var_file(0);
-
 }
 
 /*-----------執行動作判斷區----------*/
@@ -83,7 +82,7 @@ switch ($op) {
         tad_web_setup_form();
         break;
 
-        /*---判斷動作請貼在上方---*/
+    /*---判斷動作請貼在上方---*/
 }
 
 /*-----------秀出結果區--------------*/

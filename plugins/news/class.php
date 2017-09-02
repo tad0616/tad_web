@@ -379,7 +379,7 @@ class tad_web_news
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                 = &MyTextSanitizer::getInstance();
+        $myts                 = MyTextSanitizer::getInstance();
         $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
         $_POST['NewsUrl']     = $myts->addSlashes($_POST['NewsUrl']);
         $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);
@@ -418,7 +418,7 @@ class tad_web_news
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts                 = &MyTextSanitizer::getInstance();
+        $myts                 = MyTextSanitizer::getInstance();
         $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
         $_POST['NewsUrl']     = $myts->addSlashes($_POST['NewsUrl']);
         $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);

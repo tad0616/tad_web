@@ -15,7 +15,7 @@ function action_search($WebID, $queryarray, $limit = 10)
     $date_col    = 'ActionDate';
     $content_col = 'ActionDesc';
 
-    $myts = &MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
         $arr[$k] = $myts->addSlashes($v);
     }

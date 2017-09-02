@@ -253,7 +253,7 @@ class tad_web_files
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
 
         $CateID           = intval($_POST['CateID']);
         $WebID            = intval($_POST['WebID']);
@@ -289,7 +289,7 @@ class tad_web_files
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
 
         $CateID           = intval($_POST['CateID']);
         $WebID            = intval($_POST['WebID']);

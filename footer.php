@@ -341,7 +341,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     global $xoopsTpl, $xoopsDB, $Web;
 
     $power           = new power($WebID);
-    $myts            = &MyTextSanitizer::getInstance();
+    $myts            = MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = array();
 
     $block_tpl = get_all_blocks('tpl');

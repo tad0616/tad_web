@@ -339,7 +339,7 @@ class tad_web_works
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                 = &MyTextSanitizer::getInstance();
+        $myts                 = MyTextSanitizer::getInstance();
         $_POST['WorkName']    = $myts->addSlashes($_POST['WorkName']);
         $_POST['WorkDesc']    = $myts->addSlashes($_POST['WorkDesc']);
         $_POST['WorksKind']   = $myts->addSlashes($_POST['WorksKind']);
@@ -372,7 +372,7 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts                 = &MyTextSanitizer::getInstance();
+        $myts                 = MyTextSanitizer::getInstance();
         $_POST['WorkName']    = $myts->addSlashes($_POST['WorkName']);
         $_POST['WorkDesc']    = $myts->addSlashes($_POST['WorkDesc']);
         $_POST['WorksKind']   = $myts->addSlashes($_POST['WorksKind']);
@@ -410,7 +410,7 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts     = &MyTextSanitizer::getInstance();
+        $myts     = MyTextSanitizer::getInstance();
         $WorkDesc = $myts->addSlashes($_POST['WorkDesc']);
 
         //讀出原有分數及評語
@@ -587,7 +587,7 @@ class tad_web_works
     public function save_score($WorksID = "", $WorkScoreArr = array(), $WorkJudgmentArr = array())
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         foreach ($WorkScoreArr as $MemID => $WorkScore) {
             $WorkScore    = $myts->addSlashes($WorkScore);
             $WorkJudgment = $myts->addSlashes($WorkJudgmentArr[$MemID]);

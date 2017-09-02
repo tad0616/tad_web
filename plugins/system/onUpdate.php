@@ -16,7 +16,7 @@ if (system_onUpdate3_chk()) {
 function system_onUpdate1_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_blocks") . " where `plugin`='xoops'";
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `plugin`='xoops'";
     $result = $xoopsDB->query($sql);
     if (!empty($result)) {
         return true;
@@ -28,14 +28,13 @@ function system_onUpdate1_chk()
 function system_onUpdate1_go()
 {
     global $xoopsDB;
-    $sql    = "select bid,show_func from " . $xoopsDB->prefix("newblocks") . " where dirname='tad_web' order by weight";
+    $sql = "SELECT bid,show_func FROM " . $xoopsDB->prefix("newblocks") . " WHERE dirname='tad_web' ORDER BY weight";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts = MyTextSanitizer::getInstance();
     //來自系統的區塊
     while (list($bid, $show_func) = $xoopsDB->fetchRow($result)) {
-
-        $sql2    = "select BlockID,BlockTitle,BlockEnable,BlockPosition,BlockSort,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where `plugin`='xoops' and BlockName='{$bid}'";
+        $sql2 = "select BlockID,BlockTitle,BlockEnable,BlockPosition,BlockSort,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where `plugin`='xoops' and BlockName='{$bid}'";
         $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
         while (list($BlockID, $BlockTitle, $BlockEnable, $BlockPosition, $BlockSort, $WebID) = $xoopsDB->fetchRow($result2)) {
             $BlockTitle = $myts->addSlashes($BlockTitle);
@@ -47,7 +46,6 @@ function system_onUpdate1_go()
                 $BlockSort = max_blocks_sort($WebID, 'side');
                 $sql3      = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockTitle`='" . _MD_TCW_SYSTEM_BLOCK_LOGIN . "',BlockEnable='1',BlockPosition='side' ,BlockSort='{$BlockSort}'  where `plugin`='system' and BlockName='login' and WebID='{$WebID}'";
                 $xoopsDB->queryF($sql3) or web_error($sql3);
-
             } elseif ($show_func == 'tad_web_list') {
                 $sql3 = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockTitle`='{$BlockTitle}',BlockEnable='{$BlockEnable}',BlockPosition='{$BlockPosition}' ,BlockSort='{$BlockSort}'  where `plugin`='system' and BlockName='web_list' and WebID='{$WebID}'";
                 $xoopsDB->queryF($sql3);
@@ -67,7 +65,7 @@ function system_onUpdate1_go()
 function system_onUpdate2_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login' or `BlockName`='my_menu'";
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='login' OR `BlockName`='my_menu'";
     $result = $xoopsDB->query($sql);
     if (!empty($result)) {
         return true;
@@ -82,7 +80,7 @@ function system_onUpdate2_go()
     global $xoopsDB;
 
     $auth_method = get_sys_openid();
-    $sql         = "select `BlockConfig`,`WebID` from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login'";
+    $sql         = "SELECT `BlockConfig`,`WebID` FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='login'";
     $result      = $xoopsDB->query($sql);
     while (list($BlockConfig, $WebID) = $xoopsDB->fetchRow($result)) {
         $BlockConfig  = json_decode($BlockConfig, true);
@@ -94,7 +92,7 @@ function system_onUpdate2_go()
         $xoopsDB->queryF($sql) or web_error($sql);
     }
 
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='login' or `BlockName`='my_menu'";
+    $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='login' OR `BlockName`='my_menu'";
     $xoopsDB->queryF($sql) or web_error($sql);
 }
 
@@ -102,7 +100,7 @@ function system_onUpdate2_go()
 function system_onUpdate3_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='flickrit'";
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='flickrit'";
     $result = $xoopsDB->query($sql);
     if (!empty($result)) {
         return true;
@@ -115,6 +113,6 @@ function system_onUpdate3_chk()
 function system_onUpdate3_go()
 {
     global $xoopsDB;
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where `BlockName`='flickrit'";
+    $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='flickrit'";
     $xoopsDB->queryF($sql) or web_error($sql);
 }

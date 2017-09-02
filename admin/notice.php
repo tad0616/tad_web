@@ -227,7 +227,7 @@ function list_tad_web_notice()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "` order by `NoticeTitle`";
+    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_notice") . "` ORDER BY `NoticeTitle`";
 
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
     $PageBar = getPageBar($sql, 20, 10, null, null, 3);

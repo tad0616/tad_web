@@ -118,7 +118,7 @@ function xoops_module_update_tad_web($module, $old_version)
 function chk_fc_tag()
 {
     global $xoopsDB;
-    $sql    = "select count(`tag`) from " . $xoopsDB->prefix("tad_web_files_center");
+    $sql    = "SELECT count(`tag`) FROM " . $xoopsDB->prefix("tad_web_files_center");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -131,9 +131,9 @@ function go_fc_tag()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_files_center") . "
-    ADD `upload_date` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '上傳時間',
-    ADD `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
-    ADD `tag` varchar(255) NOT NULL default '' COMMENT '註記'
+    ADD `upload_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '上傳時間',
+    ADD `uid` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '上傳者',
+    ADD `tag` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '註記'
     ";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 }
@@ -148,7 +148,7 @@ function chk_sql()
         include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
         if (!empty($pluginConfig['sql'])) {
             foreach ($pluginConfig['sql'] as $sql_name) {
-                $sql    = "select count(*) from " . $xoopsDB->prefix($sql_name);
+                $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix($sql_name);
                 $result = $xoopsDB->query($sql);
                 if (empty($result)) {
                     $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
@@ -174,17 +174,16 @@ function chk_newblock()
 
     //找出所有網站
     $allWebID = '';
-    $sql      = "select WebID from `" . $xoopsDB->prefix("tad_web") . "` group by `WebID`";
-    $result   = $xoopsDB->queryF($sql) or web_error($sql);
+    $sql      = "SELECT WebID FROM `" . $xoopsDB->prefix("tad_web") . "` GROUP BY `WebID`";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($WebID) = $xoopsDB->fetchRow($result)) {
         $allWebID[] = $WebID;
     }
 
     //修正自訂區塊名稱（並用序號排序）
-    $sql    = "select BlockID,BlockName,BlockTitle,BlockContent,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where plugin='custom' order by BlockID";
+    $sql = "SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE plugin='custom' ORDER BY BlockID";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
-
         $BlockTitle   = $myts->addSlashes($BlockTitle);
         $BlockContent = $myts->addSlashes($BlockContent);
 
@@ -196,7 +195,7 @@ function chk_newblock()
         }
 
         //搜尋該自訂區塊有無分享區塊
-        $sql2    = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and WebID='{$WebID}' and plugin='share'";
+        $sql2 = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and WebID='{$WebID}' and plugin='share'";
         $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
 
         list($share_BlockID) = $xoopsDB->fetchRow($result2);
@@ -215,7 +214,7 @@ function chk_newblock()
 
     foreach ($allWebID as $WebID) {
         //找出目前已安裝的區塊
-        $sql    = "select BlockID,BlockName,BlockConfig from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
+        $sql = "select BlockID,BlockName,BlockConfig from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
             $db_blocks[$WebID][$BlockName]                  = $BlockName;
@@ -251,7 +250,6 @@ function chk_newblock()
         foreach ($allWebID as $WebID) {
             //若該區塊還沒有安裝在該網站
             if (!in_array($BlockName, $db_blocks[$WebID])) {
-
                 if (is_array($block_config[$BlockName])) {
                     if (PHP_VERSION_ID >= 50400) {
                         $config = json_encode($block_config[$BlockName], JSON_UNESCAPED_UNICODE);
@@ -267,14 +265,15 @@ function chk_newblock()
                     $config = '';
                 }
                 $config = str_replace('{{WebID}}', $WebID, $config);
-                $sql    = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
+                $sql    = "insert into `"
+                          . $xoopsDB->prefix("tad_web_blocks")
+                          . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
                 $xoopsDB->queryF($sql) or web_error($sql);
             } else {
                 //檢查區塊設定值是否需要更新
 
                 //找出某區塊安裝在該網站的 $BlockID 以及現有設定
                 foreach ($db_blocks_config[$WebID][$BlockName] as $BlockID => $BlockConfig) {
-
                     $new_config = $db_config = '';
 
                     //已安裝區塊的設定值陣列
@@ -315,7 +314,6 @@ function chk_newblock()
                     // echo "<div>$sql</div>";
                     $xoopsDB->queryF($sql) or web_error($sql);
                 }
-
             }
         }
     }
@@ -363,8 +361,8 @@ function add_log($status)
     if ($status == 'install') {
         $web_amount = 0;
     } else {
-        $sql        = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by WebSort";
-        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $web_amount = $xoopsDB->getRowsNum($result);
     }
     $sitename      = urlencode($xoopsConfig['sitename']);
@@ -385,6 +383,7 @@ function add_log($status)
         fclose($handle);
     }
 }
+
 //刪除錯誤的重複欄位及樣板檔
 function chk_tad_web_block()
 {
@@ -416,14 +415,13 @@ function chk_tad_web_block()
             $xoopsDB->queryF($sql);
         }
     }
-
 }
 
 //修改討論區計數欄位名稱
 function chk_chk1()
 {
     global $xoopsDB;
-    $sql    = "select count(`DiscussCounter`) from " . $xoopsDB->prefix("tad_web_discuss");
+    $sql    = "SELECT count(`DiscussCounter`) FROM " . $xoopsDB->prefix("tad_web_discuss");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return false;
@@ -444,7 +442,7 @@ function go_update1()
 function chk_chk2()
 {
     global $xoopsDB;
-    $sql    = "select count(`uid`) from " . $xoopsDB->prefix("tad_web_discuss");
+    $sql    = "SELECT count(`uid`) FROM " . $xoopsDB->prefix("tad_web_discuss");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return false;
@@ -465,7 +463,7 @@ function go_update2()
 function chk_chk3()
 {
     global $xoopsDB;
-    $sql    = "select count(`MemID`) from " . $xoopsDB->prefix("tad_web_discuss");
+    $sql    = "SELECT count(`MemID`) FROM " . $xoopsDB->prefix("tad_web_discuss");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return false;
@@ -486,7 +484,7 @@ function go_update3()
 function chk_chk4()
 {
     global $xoopsDB;
-    $sql    = "select count(`MemName`) from " . $xoopsDB->prefix("tad_web_discuss");
+    $sql    = "SELECT count(`MemName`) FROM " . $xoopsDB->prefix("tad_web_discuss");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return false;
@@ -498,7 +496,7 @@ function chk_chk4()
 function go_update4()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_discuss") . " ADD `MemName` varchar(255) NOT NULL default '' AFTER `MemID`";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_discuss") . " ADD `MemName` VARCHAR(255) NOT NULL DEFAULT '' AFTER `MemID`";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
@@ -507,7 +505,7 @@ function go_update4()
 function chk_chk5()
 {
     global $xoopsDB;
-    $sql    = "select count(`original_filename`) from " . $xoopsDB->prefix("tad_web_files_center");
+    $sql    = "SELECT count(`original_filename`) FROM " . $xoopsDB->prefix("tad_web_files_center");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return false;
@@ -520,9 +518,9 @@ function go_update5()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_files_center") . "
-      ADD `original_filename` varchar(255) NOT NULL default '',
-      ADD `hash_filename` varchar(255) NOT NULL default '',
-      ADD `sub_dir` varchar(255) NOT NULL default ''";
+      ADD `original_filename` VARCHAR(255) NOT NULL DEFAULT '',
+      ADD `hash_filename` VARCHAR(255) NOT NULL DEFAULT '',
+      ADD `sub_dir` VARCHAR(255) NOT NULL DEFAULT ''";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     $sql = "update " . $xoopsDB->prefix("tad_web_files_center") . " set
@@ -538,7 +536,7 @@ function go_update6()
     $os    = (PATH_SEPARATOR == ':') ? "linux" : "win";
 
     //修正子目錄，並找出實體檔案沒有真的在子目錄下的
-    $sql    = "select `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` from " . $xoopsDB->prefix("tad_web_files_center") . " where `sub_dir` like '//%'";
+    $sql = "SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM " . $xoopsDB->prefix("tad_web_files_center") . " WHERE `sub_dir` LIKE '//%'";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
         $sub_dir = str_replace("//", "/", $sub_dir);
@@ -584,30 +582,29 @@ function go_update6()
     }
 
     //找出沒有放到子目錄的
-    $sql    = "select `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` from " . $xoopsDB->prefix("tad_web_files_center") . "";
+    $sql = "SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM " . $xoopsDB->prefix("tad_web_files_center") . "";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
-
         $typedir = $kind == 'img' ? "image" : "file";
         $WebID   = intval(substr($sub_dir, 1));
         if (empty($WebID)) {
             if ($col_name == "WebOwner" or $col_name == "WebLogo") {
                 $WebID = $col_sn;
             } elseif ($col_name == "MemID") {
-                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_link_mems") . " where `MemID` = '{$col_sn}'";
-                $result2     = $xoopsDB->queryF($sql) or die($sql);
+                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_link_mems") . " where `MemID` = '{$col_sn}'";
+                $result2 = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             } elseif ($col_name == "ActionID") {
-                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_action") . " where `ActionID` = '{$col_sn}'";
-                $result2     = $xoopsDB->queryF($sql) or die($sql);
+                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_action") . " where `ActionID` = '{$col_sn}'";
+                $result2 = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             } elseif ($col_name == "fsn") {
-                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_files") . " where `fsn` = '{$col_sn}'";
-                $result2     = $xoopsDB->queryF($sql) or die($sql);
+                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_files") . " where `fsn` = '{$col_sn}'";
+                $result2 = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             } elseif ($col_name == "NewsID") {
-                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_news") . " where `NewsID` = '{$col_sn}'";
-                $result2     = $xoopsDB->queryF($sql) or die($sql);
+                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_news") . " where `NewsID` = '{$col_sn}'";
+                $result2 = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             }
         }
@@ -671,7 +668,7 @@ function chk_chk7()
 function go_update7()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` varchar(255) NOT NULL DEFAULT ''";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_cate") . " CHANGE `CateName` `CateName` VARCHAR(255) NOT NULL DEFAULT ''";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     return true;
@@ -681,7 +678,7 @@ function go_update7()
 function chk_chk8()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_works");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_works");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -694,14 +691,14 @@ function go_update8()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_works") . "` (
-      `WorksID` smallint(5) unsigned NOT NULL auto_increment COMMENT '檔案流水號',
-      `CateID` smallint(6) unsigned NOT NULL default 0,
-      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-      `WorkName` varchar(255) NOT NULL default '' COMMENT '活動名稱',
-      `WorkDesc` text NOT NULL COMMENT '活動說明',
-      `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
-      `WorksDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '日期',
-      `WorksCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
+      `WorksID` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '檔案流水號',
+      `CateID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0,
+      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬班級',
+      `WorkName` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '活動名稱',
+      `WorkDesc` TEXT NOT NULL COMMENT '活動說明',
+      `uid` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '上傳者',
+      `WorksDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '日期',
+      `WorksCount` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '人氣',
     PRIMARY KEY (`WorksID`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
@@ -711,7 +708,7 @@ function go_update8()
 function chk_chk9()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_homework");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_homework");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -724,20 +721,20 @@ function go_update9()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_homework") . "` (
-      `HomeworkID` smallint(6) unsigned NOT NULL auto_increment COMMENT '編號',
-      `CateID` smallint(6) unsigned NOT NULL default 0,
-      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
-      `HomeworkTitle` varchar(255) NOT NULL default '' COMMENT '標題',
-      `HomeworkContent` text NOT NULL COMMENT '內容',
-      `HomeworkDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布日期',
-      `toCal` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '加到行事曆',
-      `HomeworkCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-      `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
+      `HomeworkID` SMALLINT(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '編號',
+      `CateID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0,
+      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬班級',
+      `HomeworkTitle` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '標題',
+      `HomeworkContent` TEXT NOT NULL COMMENT '內容',
+      `HomeworkDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '發布日期',
+      `toCal` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '加到行事曆',
+      `HomeworkCounter` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '人氣',
+      `uid` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '發布者',
     PRIMARY KEY (`HomeworkID`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
 
-    $sql    = "select * from `" . $xoopsDB->prefix("tad_web_news") . "` where NewsKind='homework'";
+    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_news") . "` WHERE NewsKind='homework'";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
@@ -756,7 +753,7 @@ function go_update9()
 function chk_chk10()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_plugins");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_plugins");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -769,11 +766,11 @@ function go_update10()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_plugins") . "` (
-      `PluginDirname` varchar(100) NOT NULL COMMENT '目錄名稱',
-      `PluginTitle` varchar(255) NOT NULL COMMENT '外掛名稱',
-      `PluginSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
-      `PluginEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+      `PluginDirname` VARCHAR(100) NOT NULL COMMENT '目錄名稱',
+      `PluginTitle` VARCHAR(255) NOT NULL COMMENT '外掛名稱',
+      `PluginSort` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+      `PluginEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '狀態',
+      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬班級',
     PRIMARY KEY (`PluginDirname`,`WebID`)
     ) ENGINE=MyISAM;";
     $xoopsDB->queryF($sql);
@@ -783,7 +780,7 @@ function go_update10()
 function chk_chk11()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_roles");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_roles");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -796,11 +793,11 @@ function go_update11()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_roles") . "` (
-      `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '使用者',
-      `role` varchar(255) NOT NULL COMMENT '角色',
-      `term` date  NOT NULL default '0000-00-00' COMMENT '期限',
-      `enable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
+      `uid` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '使用者',
+      `role` VARCHAR(255) NOT NULL COMMENT '角色',
+      `term` DATE  NOT NULL DEFAULT '0000-00-00' COMMENT '期限',
+      `enable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '狀態',
+      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬班級',
     PRIMARY KEY (`WebID`,`uid`,`role`)
     ) ENGINE=MyISAM;";
     $xoopsDB->queryF($sql);
@@ -810,7 +807,7 @@ function go_update11()
 function chk_chk12()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_blocks");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_blocks");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -824,18 +821,18 @@ function go_update12()
     global $xoopsDB;
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` (
-      `BlockID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '區塊流水號',
-      `BlockName` varchar(100) NOT NULL COMMENT '區塊名稱',
-      `BlockCopy` tinyint(3) NOT NULL COMMENT '區塊份數',
-      `BlockTitle` varchar(255) NOT NULL COMMENT '區塊標題',
-      `BlockContent` text NOT NULL COMMENT '區塊內容',
-      `BlockEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-      `BlockConfig` text NOT NULL default '' COMMENT '區塊設定值',
-      `BlockPosition` varchar(255) NOT NULL COMMENT '區塊位置',
-      `BlockSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
-      `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬網站',
-      `plugin` varchar(100) NOT NULL COMMENT '所屬外掛',
-      `ShareFrom` int(10) unsigned NOT NULL COMMENT '分享自',
+      `BlockID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '區塊流水號',
+      `BlockName` VARCHAR(100) NOT NULL COMMENT '區塊名稱',
+      `BlockCopy` TINYINT(3) NOT NULL COMMENT '區塊份數',
+      `BlockTitle` VARCHAR(255) NOT NULL COMMENT '區塊標題',
+      `BlockContent` TEXT NOT NULL COMMENT '區塊內容',
+      `BlockEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '狀態',
+      `BlockConfig` TEXT NOT NULL DEFAULT '' COMMENT '區塊設定值',
+      `BlockPosition` VARCHAR(255) NOT NULL COMMENT '區塊位置',
+      `BlockSort` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
+      `plugin` VARCHAR(100) NOT NULL COMMENT '所屬外掛',
+      `ShareFrom` INT(10) UNSIGNED NOT NULL COMMENT '分享自',
       PRIMARY KEY (`BlockID`),
       UNIQUE KEY `BlockName_BlockCopy_WebID_plugin` (`BlockName`,`BlockCopy`,`WebID`,`plugin`)
     ) ENGINE=MyISAM;";
@@ -847,13 +844,12 @@ function go_update12()
     $block_config = get_all_blocks('config');
 
     //存入既有設定
-    $sql    = "select ConfigValue, WebID from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='display_blocks'";
+    $sql = "SELECT ConfigValue, WebID FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='display_blocks'";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
         $Config = explode(',', $ConfigValue);
         $sort   = 1;
         foreach ($block_option as $func => $name) {
-
             if ($func == "list_{$block_plugin[$func]}") {
                 $BlockPosition = 'block4';
             } else {
@@ -876,21 +872,22 @@ function go_update12()
                 $config = '';
             }
             $config = str_replace('{{WebID}}', $WebID, $config);
-            $sql    = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
+            $sql    = "insert into `"
+                      . $xoopsDB->prefix("tad_web_blocks")
+                      . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
             $xoopsDB->queryF($sql) or web_error($sql);
             $sort++;
         }
     }
 
     //將首頁轉為區塊
-    $sql    = "select ConfigValue, WebID from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='web_plugin_display_arr'";
+    $sql = "SELECT ConfigValue, WebID FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='web_plugin_display_arr'";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
         $web_plugin_display_arr = explode(',', $ConfigValue);
 
         $sort = 1;
         foreach ($web_plugin_display_arr as $plugin) {
-
             if ($block_config["list_{$plugin}"]) {
                 if (PHP_VERSION_ID >= 50400) {
                     $config = json_encode($block_config["list_{$plugin}"], JSON_UNESCAPED_UNICODE);
@@ -912,23 +909,22 @@ function go_update12()
         }
     }
 
-    $sql = "delete from " . $xoopsDB->prefix('tad_web_config') . " WHERE `ConfigName` LIKE '%_display'";
+    $sql = "DELETE FROM " . $xoopsDB->prefix('tad_web_config') . " WHERE `ConfigName` LIKE '%_display'";
     $xoopsDB->queryF($sql);
-    $sql = "delete from " . $xoopsDB->prefix('tad_web_config') . " WHERE `ConfigValue` = '活動剪影,網頁列表選單,選單,文章選單'";
+    $sql = "DELETE FROM " . $xoopsDB->prefix('tad_web_config') . " WHERE `ConfigValue` = '活動剪影,網頁列表選單,選單,文章選單'";
     $xoopsDB->queryF($sql);
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='display_blocks'";
+    $sql = "DELETE FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='display_blocks'";
     $xoopsDB->queryF($sql);
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName like '%_limit' and WebID!=0";
+    $sql = "DELETE FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName LIKE '%_limit' AND WebID!=0";
     $xoopsDB->queryF($sql);
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='hide_function'";
+    $sql = "DELETE FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='hide_function'";
     $xoopsDB->queryF($sql);
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='web_setup_show_arr'";
+    $sql = "DELETE FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='web_setup_show_arr'";
     $xoopsDB->queryF($sql);
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='web_plugin_display_arr' and WebID!=0";
+    $sql = "DELETE FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='web_plugin_display_arr' AND WebID!=0";
     $xoopsDB->queryF($sql);
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_config") . "` where ConfigName='web_plugin_enable_arr' and WebID=0";
+    $sql = "DELETE FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='web_plugin_enable_arr' AND WebID=0";
     $xoopsDB->queryF($sql);
-
 }
 
 //新增分享區塊設訂
@@ -956,7 +952,7 @@ function go_update12()
 function chk_chk14()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_plugins_setup");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_plugins_setup");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -969,11 +965,11 @@ function go_update14()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_plugins_setup") . "` (
-      `WebID` smallint(5) unsigned NOT NULL default 0 COMMENT '所屬網站',
-      `plugin` varchar(100) NOT NULL default '' COMMENT '所屬外掛',
-      `name` varchar(100) NOT NULL default '' COMMENT '設定名稱',
-      `type` varchar(255) NOT NULL default '' COMMENT '欄位類型',
-      `value` text NOT NULL COMMENT '設定值',
+      `WebID` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
+      `plugin` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '所屬外掛',
+      `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '設定名稱',
+      `type` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '欄位類型',
+      `value` TEXT NOT NULL COMMENT '設定值',
       PRIMARY KEY  (`WebID`,`plugin`,`name`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
@@ -983,7 +979,7 @@ function go_update14()
 function chk_chk15()
 {
     global $xoopsDB;
-    $sql    = "select count(`used_size`) from " . $xoopsDB->prefix("tad_web");
+    $sql    = "SELECT count(`used_size`) FROM " . $xoopsDB->prefix("tad_web");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -995,13 +991,13 @@ function chk_chk15()
 function go_update15()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web") . " ADD `used_size` int(10) unsigned NOT NULL default 0 COMMENT '已使用空間', ADD `last_accessed` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '最後被拜訪時間'";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web") . " ADD `used_size` INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '已使用空間', ADD `last_accessed` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '最後被拜訪時間'";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     $dir = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
-    $sql    = "select WebID from `" . $xoopsDB->prefix("tad_web") . "`";
+    $sql = "SELECT WebID FROM `" . $xoopsDB->prefix("tad_web") . "`";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($WebID) = $xoopsDB->fetchRow($result)) {
         $dir_size = get_dir_size("{$dir}{$WebID}/");
@@ -1017,7 +1013,7 @@ function go_update15()
 function chk_chk16()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_power");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_power");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -1030,20 +1026,20 @@ function go_update16()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_power") . "` (
-      `WebID` smallint(5) unsigned NOT NULL default 0 COMMENT '所屬網站',
-      `col_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
-      `col_sn` mediumint(8) unsigned NOT NULL default 0 COMMENT '對應編號',
-      `power_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
-      `power_val` varchar(255) NOT NULL COMMENT '權限設定',
+      `WebID` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
+      `col_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
+      `col_sn` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '對應編號',
+      `power_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
+      `power_val` VARCHAR(255) NOT NULL COMMENT '權限設定',
       PRIMARY KEY  (`WebID`,`col_name`,`power_name`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
 
     //修改欄位大小
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_files_center") . " CHANGE `files_sn` `files_sn` INT(10) UNSIGNED NOT NULL auto_increment COMMENT '檔案流水號'";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_files_center") . " CHANGE `files_sn` `files_sn` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '檔案流水號'";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " CHANGE `BlockID` `BlockID` INT(10) UNSIGNED NOT NULL auto_increment COMMENT '區塊流水號'";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " CHANGE `BlockID` `BlockID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '區塊流水號'";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
@@ -1052,7 +1048,7 @@ function go_update16()
 function chk_chk17()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_tags");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_tags");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -1065,10 +1061,10 @@ function go_update17()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_tags") . "` (
-      `WebID` smallint(5) unsigned NOT NULL  COMMENT '所屬網站',
-      `col_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
-      `col_sn` mediumint(8) unsigned NOT NULL default 0 COMMENT '對應編號',
-      `tag_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
+      `WebID` SMALLINT(5) UNSIGNED NOT NULL  COMMENT '所屬網站',
+      `col_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
+      `col_sn` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '對應編號',
+      `tag_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
       PRIMARY KEY  (`col_name`,`col_sn`,`tag_name`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
@@ -1092,7 +1088,7 @@ function chk_chk18()
 function go_update18()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` CHANGE `plugin` `plugin` varchar(100) COLLATE 'utf8_general_ci' NOT NULL COMMENT '所屬外掛' AFTER `WebID`;";
+    $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` CHANGE `plugin` `plugin` VARCHAR(100) COLLATE 'utf8_general_ci' NOT NULL COMMENT '所屬外掛' AFTER `WebID`;";
     $xoopsDB->queryF($sql) or web_error($sql);
 
     $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` ADD UNIQUE `BlockName_BlockCopy_WebID_plugin` (`BlockName`, `BlockCopy`, `WebID`, `plugin`);";
@@ -1105,7 +1101,7 @@ function go_update18()
 function chk_chk19()
 {
     global $xoopsDB;
-    $sql    = "select count(`BlockShare`) from " . $xoopsDB->prefix("tad_web_blocks");
+    $sql    = "SELECT count(`BlockShare`) FROM " . $xoopsDB->prefix("tad_web_blocks");
     $result = $xoopsDB->query($sql);
     if (!empty($result)) {
         return true;
@@ -1126,7 +1122,7 @@ function go_update19()
 function chk_chk19_1()
 {
     global $xoopsDB;
-    $sql    = "select count(`ShareFrom`) from " . $xoopsDB->prefix("tad_web_blocks");
+    $sql    = "SELECT count(`ShareFrom`) FROM " . $xoopsDB->prefix("tad_web_blocks");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -1138,7 +1134,7 @@ function chk_chk19_1()
 function go_update19_1()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " ADD `ShareFrom` int(10) unsigned NOT NULL COMMENT '分享自'";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " ADD `ShareFrom` INT(10) UNSIGNED NOT NULL COMMENT '分享自'";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }
@@ -1170,7 +1166,7 @@ function go_update20()
 function chk_chk21()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_notice");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_notice");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -1183,12 +1179,12 @@ function go_update21()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_notice") . "` (
-      `NoticeID` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '通知編號',
-      `NoticeTitle` varchar(255) NOT NULL default '' COMMENT '通知標題',
-      `NoticeContent` text NOT NULL  COMMENT '通知內容',
-      `NoticeWeb` text NOT NULL COMMENT '通知網站',
-      `NoticeWho` varchar(255) NOT NULL default '' COMMENT '通知對象',
-      `NoticeDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '通知日期',
+      `NoticeID` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '通知編號',
+      `NoticeTitle` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '通知標題',
+      `NoticeContent` TEXT NOT NULL  COMMENT '通知內容',
+      `NoticeWeb` TEXT NOT NULL COMMENT '通知網站',
+      `NoticeWho` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '通知對象',
+      `NoticeDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '通知日期',
       PRIMARY KEY  (`NoticeID`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
@@ -1200,7 +1196,7 @@ function go_update21()
 function chk_chk22()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_mail_log");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_mail_log");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -1213,11 +1209,11 @@ function go_update22()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_mail_log") . "` (
-      `ColName` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
-      `ColSN` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
-      `WebID` smallint(5) unsigned NOT NULL  COMMENT '所屬網站',
-      `Mail` varchar(100) NOT NULL default '' COMMENT '信箱',
-      `MailDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '寄信日期',
+      `ColName` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '欄位名稱',
+      `ColSN` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+      `WebID` SMALLINT(5) UNSIGNED NOT NULL  COMMENT '所屬網站',
+      `Mail` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '信箱',
+      `MailDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '寄信日期',
       PRIMARY KEY  (`ColName`,`ColSN`,`WebID`,`Mail`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
@@ -1229,7 +1225,7 @@ function go_update22()
 function chk_chk23()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_cate_assistant");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_cate_assistant");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -1242,9 +1238,9 @@ function go_update23()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_cate_assistant") . "` (
-      `CateID` smallint(6) unsigned NOT NULL COMMENT '編號',
-      `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
-      `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
+      `CateID` SMALLINT(6) UNSIGNED NOT NULL COMMENT '編號',
+      `AssistantType` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用戶種類',
+      `AssistantID` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用戶ID',
       PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);
@@ -1256,7 +1252,7 @@ function go_update23()
 function chk_chk24()
 {
     global $xoopsDB;
-    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_web_assistant_post");
+    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_assistant_post");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -1269,12 +1265,12 @@ function go_update24()
 {
     global $xoopsDB;
     $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_assistant_post") . "` (
-      `plugin` varchar(100) NOT NULL COMMENT '所屬外掛',
-      `ColName` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
-      `ColSN` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
-      `CateID` smallint(6) unsigned NOT NULL COMMENT '編號',
-      `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
-      `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
+      `plugin` VARCHAR(100) NOT NULL COMMENT '所屬外掛',
+      `ColName` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '欄位名稱',
+      `ColSN` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+      `CateID` SMALLINT(6) UNSIGNED NOT NULL COMMENT '編號',
+      `AssistantType` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用戶種類',
+      `AssistantID` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用戶ID',
       PRIMARY KEY (`plugin`,`ColName`,`ColSN`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql);

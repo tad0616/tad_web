@@ -7,9 +7,9 @@ function tad_web_list($options)
     $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
     $block['DefWebID'] = $DefWebID;
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebEnable='1' order by CateID,WebSort";
+    $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
     $result = $xoopsDB->query($sql) or web_error($sql);
-    $i      = 0;
+    $i = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;

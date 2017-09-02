@@ -309,7 +309,7 @@ class tad_web_menu
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
         $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
 
-        $myts               = &MyTextSanitizer::getInstance();
+        $myts               = MyTextSanitizer::getInstance();
         $_POST['MenuName']  = $myts->addSlashes($_POST['MenuName']);
         $_POST['MenuDesc']  = $myts->addSlashes($_POST['MenuDesc']);
         $_POST['MenuPlace'] = $myts->addSlashes($_POST['MenuPlace']);
@@ -344,7 +344,7 @@ class tad_web_menu
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts               = &MyTextSanitizer::getInstance();
+        $myts               = MyTextSanitizer::getInstance();
         $_POST['MenuName']  = $myts->addSlashes($_POST['MenuName']);
         $_POST['MenuDesc']  = $myts->addSlashes($_POST['MenuDesc']);
         $_POST['MenuPlace'] = $myts->addSlashes($_POST['MenuPlace']);

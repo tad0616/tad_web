@@ -300,7 +300,7 @@ class tad_web_video
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts      = &MyTextSanitizer::getInstance();
+        $myts      = MyTextSanitizer::getInstance();
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);
@@ -345,7 +345,7 @@ class tad_web_video
     {
         global $xoopsDB;
 
-        $myts      = &MyTextSanitizer::getInstance();
+        $myts      = MyTextSanitizer::getInstance();
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);

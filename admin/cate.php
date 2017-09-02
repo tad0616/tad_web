@@ -65,8 +65,7 @@ function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
 {
     global $xoopsDB;
     $sql    = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$WebID}' and  ColName='{$ColName}' and ColSN='{$ColSN}'";
-    $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -184,8 +183,7 @@ function get_tad_web_cate($CateID = '')
 
     $sql = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "`
     where `CateID` = '{$CateID}'";
-    $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql);
     $data = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -197,9 +195,8 @@ function tad_web_list_cate()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID`='0' and `ColName`='web_cate' and `ColSN`='0' order by `CateSort`";
-    $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_cate") . "` WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $all_content = '';
 
