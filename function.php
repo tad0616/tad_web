@@ -677,7 +677,7 @@ function onlyMine($uid_col = 'uid')
 function getWebInfo($WebID = null)
 {
     global $xoopsDB;
-    $WebID = intval($WebID);
+    $WebID = (int)$WebID;
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='{$WebID}'";
     $result = $xoopsDB->query($sql) or web_error($sql);
@@ -1305,9 +1305,9 @@ function get_quota($WebID = "")
 {
     global $xoopsModuleConfig;
     $size               = get_web_config("used_size", $WebID);
-    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
+    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
     $space_quota        = get_web_config("space_quota", $WebID);
-    $user_space_quota   = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : intval($space_quota);
+    $user_space_quota   = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : (int)$space_quota;
 
     if ($size >= $user_space_quota) {
         redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $size, $user_space_quota));
@@ -1492,7 +1492,7 @@ function update_last_accessed($WebID = "")
 function get_article_content($content, $page = 1)
 {
 
-    $page = $page ? intval($page) :
+    $page = $page ? (int)$page :
 
     $article = array('info' => array(), 'pages' => 1);
 

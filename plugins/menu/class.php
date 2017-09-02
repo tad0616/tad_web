@@ -153,7 +153,7 @@ class tad_web_menu
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
-        $MenuID = intval($MenuID);
+        $MenuID = (int)$MenuID;
         $this->add_counter($MenuID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_menu") . " where MenuID='{$MenuID}'";
@@ -313,9 +313,9 @@ class tad_web_menu
         $_POST['MenuName']  = $myts->addSlashes($_POST['MenuName']);
         $_POST['MenuDesc']  = $myts->addSlashes($_POST['MenuDesc']);
         $_POST['MenuPlace'] = $myts->addSlashes($_POST['MenuPlace']);
-        $_POST['MenuCount'] = intval($_POST['MenuCount']);
-        $_POST['CateID']    = intval($_POST['CateID']);
-        $_POST['WebID']     = intval($_POST['WebID']);
+        $_POST['MenuCount'] = (int)$_POST['MenuCount'];
+        $_POST['CateID']    = (int)$_POST['CateID'];
+        $_POST['WebID']     = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_menu") . "
@@ -348,8 +348,8 @@ class tad_web_menu
         $_POST['MenuName']  = $myts->addSlashes($_POST['MenuName']);
         $_POST['MenuDesc']  = $myts->addSlashes($_POST['MenuDesc']);
         $_POST['MenuPlace'] = $myts->addSlashes($_POST['MenuPlace']);
-        $_POST['CateID']    = intval($_POST['CateID']);
-        $_POST['WebID']     = intval($_POST['WebID']);
+        $_POST['CateID']    = (int)$_POST['CateID'];
+        $_POST['WebID']     = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 

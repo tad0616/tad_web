@@ -139,7 +139,7 @@ function tad_web_my_menu($WebID)
             $user_name = $xoopsUser->name();
             $add_power = "";
             $MyWebID   = MyWebID('1');
-            $DefWebID  = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
+            $DefWebID  = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
 
             $uid = $xoopsUser->uid();
 

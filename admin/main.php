@@ -346,7 +346,7 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
         $WebYear = date('Y');
     }
 
-    $WebSort = intval($$WebSort);
+    $WebSort = (int)$$WebSort;
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web") . "
     (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`)

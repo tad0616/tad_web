@@ -202,7 +202,7 @@ class tad_web_homework
             return;
         }
         $myts       = MyTextSanitizer::getInstance();
-        $HomeworkID = intval($HomeworkID);
+        $HomeworkID = (int)$HomeworkID;
         $this->add_counter($HomeworkID);
 
         $now     = date("Y-m-d H:i:s");
@@ -435,8 +435,8 @@ class tad_web_homework
         $myts                     = MyTextSanitizer::getInstance();
         $_POST['HomeworkTitle']   = $myts->addSlashes($_POST['HomeworkTitle']);
         $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
-        $_POST['CateID']          = intval($_POST['CateID']);
-        $_POST['WebID']           = intval($_POST['WebID']);
+        $_POST['CateID']          = (int)$_POST['CateID'];
+        $_POST['WebID']           = (int)$_POST['WebID'];
         $HomeworkDate             = date("Y-m-d H:i:s");
 
         $_POST['today_homework'] = $myts->addSlashes($_POST['today_homework']);
@@ -517,8 +517,8 @@ class tad_web_homework
         $myts                     = MyTextSanitizer::getInstance();
         $_POST['HomeworkTitle']   = $myts->addSlashes($_POST['HomeworkTitle']);
         $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
-        $_POST['CateID']          = intval($_POST['CateID']);
-        $_POST['WebID']           = intval($_POST['WebID']);
+        $_POST['CateID']          = (int)$_POST['CateID'];
+        $_POST['WebID']           = (int)$_POST['WebID'];
         $HomeworkDate             = date("Y-m-d H:i:s");
 
         $_POST['today_homework'] = $myts->addSlashes($_POST['today_homework']);

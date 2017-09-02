@@ -123,7 +123,7 @@ class tad_web_schedule
             return;
         }
 
-        $ScheduleID = intval($ScheduleID);
+        $ScheduleID = (int)$ScheduleID;
         $this->add_counter($ScheduleID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='{$ScheduleID}'";
@@ -296,8 +296,8 @@ class tad_web_schedule
         $myts                     = MyTextSanitizer::getInstance();
         $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
         $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $_POST['CateID']          = intval($_POST['CateID']);
-        $_POST['WebID']           = intval($_POST['WebID']);
+        $_POST['CateID']          = (int)$_POST['CateID'];
+        $_POST['WebID']           = (int)$_POST['WebID'];
         $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
@@ -322,8 +322,8 @@ class tad_web_schedule
         $myts                     = MyTextSanitizer::getInstance();
         $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
         $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $_POST['CateID']          = intval($_POST['CateID']);
-        $_POST['WebID']           = intval($_POST['WebID']);
+        $_POST['CateID']          = (int)$_POST['CateID'];
+        $_POST['WebID']           = (int)$_POST['WebID'];
         $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);

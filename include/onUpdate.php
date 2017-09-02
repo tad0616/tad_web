@@ -586,7 +586,7 @@ function go_update6()
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
         $typedir = $kind == 'img' ? "image" : "file";
-        $WebID   = intval(substr($sub_dir, 1));
+        $WebID   = (int)substr($sub_dir, 1);
         if (empty($WebID)) {
             if ($col_name == "WebOwner" or $col_name == "WebLogo") {
                 $WebID = $col_sn;

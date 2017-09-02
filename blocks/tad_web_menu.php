@@ -5,7 +5,7 @@ function tad_web_menu($options)
     global $xoopsUser, $xoopsDB, $MyWebs, $xoopsConfig;
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
     $MyWebID           = MyWebID(1);
-    $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
+    $DefWebID          = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
     $block['DefWebID'] = $DefWebID;
 
     if ($xoopsUser) {

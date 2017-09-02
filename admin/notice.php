@@ -89,7 +89,7 @@ function insert_tad_web_notice()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $NoticeID      = intval($_POST['NoticeID']);
+    $NoticeID      = (int)$_POST['NoticeID'];
     $NoticeTitle   = $myts->addSlashes($_POST['NoticeTitle']);
     $NoticeContent = $myts->addSlashes($_POST['NoticeContent']);
     $NoticeWeb     = $myts->addSlashes($_POST['NoticeWeb']);
@@ -133,7 +133,7 @@ function update_tad_web_notice($NoticeID = '')
 
     $myts = MyTextSanitizer::getInstance();
 
-    $NoticeID      = intval($_POST['NoticeID']);
+    $NoticeID      = (int)$_POST['NoticeID'];
     $NoticeTitle   = $myts->addSlashes($_POST['NoticeTitle']);
     $NoticeContent = $myts->addSlashes($_POST['NoticeContent']);
     $NoticeWeb     = $myts->addSlashes($_POST['NoticeWeb']);
@@ -178,7 +178,7 @@ function show_one_tad_web_notice($NoticeID = '')
     if (empty($NoticeID)) {
         return;
     } else {
-        $NoticeID = intval($NoticeID);
+        $NoticeID = (int)$NoticeID;
     }
 
     $myts = MyTextSanitizer::getInstance();

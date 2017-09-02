@@ -151,7 +151,7 @@ class tad_web_video
             return;
         }
 
-        $VideoID = intval($VideoID);
+        $VideoID = (int)$VideoID;
         $this->add_counter($VideoID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='{$VideoID}'";
@@ -304,11 +304,11 @@ class tad_web_video
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);
-        $CateID    = intval($_POST['CateID']);
-        $WebID     = intval($_POST['WebID']);
+        $CateID    = (int)$_POST['CateID'];
+        $WebID     = (int)$_POST['WebID'];
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
-        $VideoCount = intval($_POST['VideoCount']);
+        $VideoCount = (int)$_POST['VideoCount'];
 
         $CateID    = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
         $VideoSort = $this->max_sort($WebID, $CateID);
@@ -349,12 +349,12 @@ class tad_web_video
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);
-        $CateID    = intval($_POST['CateID']);
-        $WebID     = intval($_POST['WebID']);
+        $CateID    = (int)$_POST['CateID'];
+        $WebID     = (int)$_POST['WebID'];
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
-        $VideoCount = intval($_POST['VideoCount']);
-        $VideoSort  = intval($_POST['VideoSort']);
+        $VideoCount = (int)$_POST['VideoCount'];
+        $VideoSort  = (int)$_POST['VideoSort'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
 

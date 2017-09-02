@@ -175,7 +175,7 @@ class tad_web_account
         //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         // }
 
-        $AccountID = intval($AccountID);
+        $AccountID = (int)$AccountID;
         $this->add_counter($AccountID);
 
         $sql = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='{$AccountID}'";
@@ -362,10 +362,10 @@ class tad_web_account
         $AccountKind  = $myts->addSlashes($_POST['AccountKind']);
         $AccountDate  = $myts->addSlashes($_POST['AccountDate']);
         $newCateName  = $myts->addSlashes($_POST['newCateName']);
-        $AccountMoney = intval($_POST['AccountMoney']);
-        $AccountCount = intval($_POST['AccountCount']);
-        $CateID       = intval($_POST['CateID']);
-        $WebID        = intval($_POST['WebID']);
+        $AccountMoney = (int)$_POST['AccountMoney'];
+        $AccountCount = (int)$_POST['AccountCount'];
+        $CateID       = (int)$_POST['CateID'];
+        $WebID        = (int)$_POST['WebID'];
 
         if ($AccountKind == "AccountIncome") {
             $AccountIncome    = $AccountMoney;
@@ -409,9 +409,9 @@ class tad_web_account
         $AccountKind  = $myts->addSlashes($_POST['AccountKind']);
         $newCateName  = $myts->addSlashes($_POST['newCateName']);
         $AccountDate  = $myts->addSlashes($_POST['AccountDate']);
-        $AccountMoney = intval($_POST['AccountMoney']);
-        $CateID       = intval($_POST['CateID']);
-        $WebID        = intval($_POST['WebID']);
+        $AccountMoney = (int)$_POST['AccountMoney'];
+        $CateID       = (int)$_POST['CateID'];
+        $WebID        = (int)$_POST['WebID'];
 
         if ($AccountKind == "AccountIncome") {
             $AccountIncome    = $AccountMoney;

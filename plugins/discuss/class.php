@@ -163,7 +163,7 @@ class tad_web_discuss
             return;
         }
 
-        $DiscussID = intval($DiscussID);
+        $DiscussID = (int)$DiscussID;
         $this->add_counter($DiscussID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}' ";
@@ -443,9 +443,9 @@ class tad_web_discuss
         $myts                    = MyTextSanitizer::getInstance();
         $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
         $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
-        $_POST['CateID']         = intval($_POST['CateID']);
-        $_POST['WebID']          = intval($_POST['WebID']);
-        $_POST['ReDiscussID']    = intval($_POST['ReDiscussID']);
+        $_POST['CateID']         = (int)$_POST['CateID'];
+        $_POST['WebID']          = (int)$_POST['WebID'];
+        $_POST['ReDiscussID']    = (int)$_POST['ReDiscussID'];
 
         if ($isMyWeb) {
             $uid      = $xoopsUser->uid();
@@ -524,9 +524,9 @@ class tad_web_discuss
         $myts                    = MyTextSanitizer::getInstance();
         $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
         $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
-        $_POST['CateID']         = intval($_POST['CateID']);
-        $_POST['WebID']          = intval($_POST['WebID']);
-        $_POST['ReDiscussID']    = intval($_POST['ReDiscussID']);
+        $_POST['CateID']         = (int)$_POST['CateID'];
+        $_POST['WebID']          = (int)$_POST['WebID'];
+        $_POST['ReDiscussID']    = (int)$_POST['ReDiscussID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 

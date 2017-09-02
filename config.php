@@ -45,7 +45,7 @@ function tad_web_config($WebID, $configs)
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
     // die(var_export($Web));
-    $WebOwnerUid = intval($Web['WebOwnerUid']);
+    $WebOwnerUid = (int)$Web['WebOwnerUid'];
     $xoopsTpl->assign('Web', $Web);
     $xoopsTpl->assign('WebName', $Web['WebName']);
     $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
@@ -185,7 +185,7 @@ function update_tad_web()
     $myts              = MyTextSanitizer::getInstance();
     $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
     $_POST['WebOwner'] = $myts->addSlashes($_POST['WebOwner']);
-    $CateID            = intval($_POST['CateID']);
+    $CateID            = (int)$_POST['CateID'];
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$_POST['WebName']}', `WebOwner` = '{$_POST['WebOwner']}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);

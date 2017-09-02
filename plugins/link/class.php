@@ -144,7 +144,7 @@ class tad_web_link
             return;
         }
 
-        $LinkID = intval($LinkID);
+        $LinkID = (int)$LinkID;
         $this->add_counter($LinkID);
 
         $sql = "select LinkUrl from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='{$LinkID}'";
@@ -247,10 +247,10 @@ class tad_web_link
         $_POST['LinkTitle']   = $myts->addSlashes($_POST['LinkTitle']);
         $_POST['LinkDesc']    = $myts->addSlashes($_POST['LinkDesc']);
         $_POST['LinkUrl']     = $myts->addSlashes($_POST['LinkUrl']);
-        $_POST['LinkCounter'] = intval($_POST['LinkCounter']);
-        $_POST['LinkSort']    = intval($_POST['LinkSort']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
+        $_POST['LinkCounter'] = (int)$_POST['LinkCounter'];
+        $_POST['LinkSort']    = (int)$_POST['LinkSort'];
+        $_POST['CateID']      = (int)$_POST['CateID'];
+        $_POST['WebID']       = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
@@ -278,8 +278,8 @@ class tad_web_link
         $_POST['LinkTitle'] = $myts->addSlashes($_POST['LinkTitle']);
         $_POST['LinkDesc']  = $myts->addSlashes($_POST['LinkDesc']);
         $_POST['LinkUrl']   = $myts->addSlashes($_POST['LinkUrl']);
-        $_POST['CateID']    = intval($_POST['CateID']);
-        $_POST['WebID']     = intval($_POST['WebID']);
+        $_POST['CateID']    = (int)$_POST['CateID'];
+        $_POST['WebID']     = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 

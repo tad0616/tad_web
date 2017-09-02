@@ -11,7 +11,7 @@ class Tad_WebCorePreload extends XoopsPreloadItem
     {
         global $xoopsDB;
         include_once XOOPS_ROOT_PATH . "/modules/tad_web/function_block.php";
-        $WebID = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
+        $WebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
 
         if (!empty($WebID) and strpos($_SERVER['PHP_SELF'], "modules/tad_web") !== false and strpos($_SERVER['REQUEST_URI'], "?WebID=") !== false) {
             $defalut_theme = get_web_config('defalut_theme', $WebID);

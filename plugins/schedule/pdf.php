@@ -7,8 +7,8 @@ include_once "class.php";
 set_time_limit(0);
 ini_set("memory_limit", "150M");
 
-$WebID      = empty($_REQUEST['WebID']) ? "" : intval($_REQUEST['WebID']);
-$ScheduleID = empty($_REQUEST['ScheduleID']) ? "" : intval($_REQUEST['ScheduleID']);
+$WebID      = empty($_REQUEST['WebID']) ? "" : (int)$_REQUEST['WebID'];
+$ScheduleID = empty($_REQUEST['ScheduleID']) ? "" : (int)$_REQUEST['ScheduleID'];
 
 $schedule      = new tad_web_schedule($WebID);
 $schedule_data = $schedule->get_one_data($ScheduleID);

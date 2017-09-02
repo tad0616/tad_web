@@ -76,7 +76,7 @@ class tad_web_calendar
             return;
         }
 
-        $CalendarID = intval($CalendarID);
+        $CalendarID = (int)$CalendarID;
         $this->add_counter($CalendarID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='{$CalendarID}'";
@@ -204,9 +204,9 @@ class tad_web_calendar
         $_POST['CalendarName']  = $myts->addSlashes($_POST['CalendarName']);
         $_POST['CalendarType']  = $myts->addSlashes($_POST['CalendarType']);
         $_POST['CalendarDesc']  = $myts->addSlashes($_POST['CalendarDesc']);
-        $_POST['CalendarCount'] = intval($_POST['CalendarCount']);
+        $_POST['CalendarCount'] = (int)$_POST['CalendarCount'];
         //$_POST['CateID']        = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $_POST['WebID'] = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_calendar") . "
@@ -231,7 +231,7 @@ class tad_web_calendar
         $_POST['CalendarType'] = $myts->addSlashes($_POST['CalendarType']);
         $_POST['CalendarDesc'] = $myts->addSlashes($_POST['CalendarDesc']);
         //$_POST['CateID']       = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $_POST['WebID'] = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 

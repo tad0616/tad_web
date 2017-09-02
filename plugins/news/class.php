@@ -169,7 +169,7 @@ class tad_web_news
             return;
         }
 
-        $NewsID = intval($NewsID);
+        $NewsID = (int)$NewsID;
         $this->add_counter($NewsID);
 
         $andEnable = $isMyWeb ? '' : "and `NewsEnable`='1'";
@@ -383,9 +383,9 @@ class tad_web_news
         $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
         $_POST['NewsUrl']     = $myts->addSlashes($_POST['NewsUrl']);
         $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
-        $_POST['NewsEnable']  = intval($_POST['NewsEnable']);
+        $_POST['CateID']      = (int)$_POST['CateID'];
+        $_POST['WebID']       = (int)$_POST['WebID'];
+        $_POST['NewsEnable']  = (int)$_POST['NewsEnable'];
 
         if (empty($_POST['toCal'])) {
             $_POST['toCal'] = "0000-00-00 00:00:00";
@@ -422,9 +422,9 @@ class tad_web_news
         $_POST['NewsTitle']   = $myts->addSlashes($_POST['NewsTitle']);
         $_POST['NewsUrl']     = $myts->addSlashes($_POST['NewsUrl']);
         $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
-        $_POST['NewsEnable']  = intval($_POST['NewsEnable']);
+        $_POST['CateID']      = (int)$_POST['CateID'];
+        $_POST['WebID']       = (int)$_POST['WebID'];
+        $_POST['NewsEnable']  = (int)$_POST['NewsEnable'];
 
         if (empty($_POST['toCal'])) {
             $_POST['toCal'] = "0000-00-00 00:00:00";

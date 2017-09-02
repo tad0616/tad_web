@@ -1,7 +1,7 @@
 <?php
 include_once "header.php";
 
-$WebID = intval($_REQUEST['WebID']);
+$WebID = (int)$_REQUEST['WebID'];
 $start = empty($_REQUEST['start']) ? date("Y-m-01") : date("Y-m-d", $_REQUEST['start'] / 1000);
 $end   = empty($_REQUEST['end']) ? date("Y-m-t") : date("Y-m-d", $_REQUEST['end'] / 1000);
 

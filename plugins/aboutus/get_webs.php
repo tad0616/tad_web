@@ -13,7 +13,7 @@ $xoopsModule       = $modhandler->getByDirname("tad_web");
 $config_handler    = xoops_getHandler('config');
 $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
-$CateID = intval($_GET['CateID']);
+$CateID = (int)$_GET['CateID'];
 $today  = date("Y-m-d");
 $now    = date("Y-m-d H:i:s");
 //我的班級ID（陣列）

@@ -156,7 +156,7 @@ class tad_web_action
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
-        $ActionID = intval($ActionID);
+        $ActionID = (int)$ActionID;
         $this->add_counter($ActionID);
 
         $sql = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
@@ -326,9 +326,9 @@ class tad_web_action
         $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
         $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
         $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
-        $_POST['ActionCount'] = intval($_POST['ActionCount']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
+        $_POST['ActionCount'] = (int)$_POST['ActionCount'];
+        $_POST['CateID']      = (int)$_POST['CateID'];
+        $_POST['WebID']       = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_action") . "
@@ -362,8 +362,8 @@ class tad_web_action
         $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
         $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
         $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
+        $_POST['CateID']      = (int)$_POST['CateID'];
+        $_POST['WebID']       = (int)$_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
 
