@@ -74,17 +74,17 @@ function tad_web_config($WebID, $configs)
 
     //登入設定
     // $login_method   = '';
-    $modhandler     = xoops_gethandler('module');
-    $config_handler = xoops_gethandler('config');
+    $modhandler     = xoops_getHandler('module');
+    $config_handler = xoops_getHandler('config');
 
-    $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+    $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
     $login_method        = $login_defval        = "";
     if ($TadLoginXoopsModule) {
         global $xoopsConfig;
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-        $config_handler = xoops_gethandler('config');
-        $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $config_handler = xoops_getHandler('config');
+        $modConfig      = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method = $modConfig['auth_method'];
         foreach ($auth_method as $method) {

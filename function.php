@@ -32,8 +32,8 @@ $MyWebs     = array();
 $isMyWeb    = false;
 if ($xoopsUser) {
     if (!$xoopsModule) {
-        $modhandler  = xoops_gethandler('module');
-        $xoopsModule = &$modhandler->getByDirname("tad_web");
+        $modhandler  = xoops_getHandler('module');
+        $xoopsModule = $modhandler->getByDirname("tad_web");
     }
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin   = $xoopsUser->isAdmin($module_id);
@@ -1558,8 +1558,8 @@ function get_sys_openid()
 {
     global $xoopsConfig;
     $auth_method         = array();
-    $modhandler          = xoops_gethandler('module');
-    $config_handler      = xoops_gethandler('config');
+    $modhandler          = xoops_getHandler('module');
+    $config_handler      = xoops_getHandler('config');
     $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
     if ($TadLoginXoopsModule) {
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
@@ -1572,7 +1572,7 @@ function get_sys_openid()
         //     $tad_login['google'] = google_login('return');
         // }
 
-        $config_handler = xoops_gethandler('config');
+        $config_handler = xoops_getHandler('config');
         $modConfig      = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method = $modConfig['auth_method'];

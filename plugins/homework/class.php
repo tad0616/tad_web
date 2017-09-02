@@ -569,7 +569,7 @@ class tad_web_homework
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
             where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='today_homework' and `WebID`='{$_POST['WebID']}'";
-            $xoopsDB->queryf($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
 
         if (!empty($bring)) {
@@ -580,7 +580,7 @@ class tad_web_homework
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
             where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='bring' and `WebID`='{$_POST['WebID']}'";
-            $xoopsDB->queryf($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
 
         if (!empty($teacher_say)) {
@@ -591,7 +591,7 @@ class tad_web_homework
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
             where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='teacher_say' and `WebID`='{$_POST['WebID']}'";
-            $xoopsDB->queryf($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
 
         if (!empty($other)) {
@@ -602,7 +602,7 @@ class tad_web_homework
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
             where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='other' and `WebID`='{$_POST['WebID']}'";
-            $xoopsDB->queryf($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql);
         }
 
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);

@@ -8,10 +8,10 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
     $FooTableJS = $FooTable->render();
 }
 
-$modhandler        = xoops_gethandler('module');
-$xoopsModule       = &$modhandler->getByDirname("tad_web");
-$config_handler    = xoops_gethandler('config');
-$xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+$modhandler        = xoops_getHandler('module');
+$xoopsModule       = $modhandler->getByDirname("tad_web");
+$config_handler    = xoops_getHandler('config');
+$xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
 $CateID = intval($_GET['CateID']);
 $today  = date("Y-m-d");

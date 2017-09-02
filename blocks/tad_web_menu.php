@@ -56,10 +56,10 @@ function tad_web_menu($options)
                 $block['plugins'] = $menu_var;
             }
 
-            $modhandler        = xoops_gethandler('module');
-            $tad_web_Module    = &$modhandler->getByDirname("tad_web");
-            $config_handler    = xoops_gethandler('config');
-            $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $tad_web_Module->getVar('mid'));
+            $modhandler        = xoops_getHandler('module');
+            $tad_web_Module    = $modhandler->getByDirname("tad_web");
+            $config_handler    = xoops_getHandler('config');
+            $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $tad_web_Module->getVar('mid'));
 
             $quota          = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config("space_quota", $defaltWebID);
             $block['quota'] = $quota;
@@ -108,16 +108,16 @@ function tad_web_menu($options)
         return $block;
     } else {
 
-        $modhandler     = xoops_gethandler('module');
-        $config_handler = xoops_gethandler('config');
+        $modhandler     = xoops_getHandler('module');
+        $config_handler = xoops_getHandler('config');
 
-        $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+        $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
         if ($TadLoginXoopsModule) {
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-            $config_handler = xoops_gethandler('config');
-            $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+            $config_handler = xoops_getHandler('config');
+            $modConfig      = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
             $auth_method = $modConfig['auth_method'];
             $i           = 0;
