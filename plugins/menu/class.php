@@ -509,16 +509,16 @@ class tad_web_menu
         }
         switch ($type) {
             case 1:
-                $im = imageCreateFromGif($filepath);
+                $im = imagecreatefromgif($filepath);
                 break;
             case 2:
-                $im = imageCreateFromJpeg($filepath);
+                $im = imagecreatefromjpeg($filepath);
                 break;
             case 3:
-                $im = imageCreateFromPng($filepath);
+                $im = imagecreatefrompng($filepath);
                 break;
             case 6:
-                $im = imageCreateFromBmp($filepath);
+                $im = imagecreatefrombmp($filepath);
                 break;
         }
 
