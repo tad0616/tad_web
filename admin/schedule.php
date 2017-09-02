@@ -31,7 +31,7 @@ function save_schedule_template()
     global $xoopsModule, $xoopsDB;
     $conf_modid = $xoopsModule->getVar('mid');
 
-    $myts       = &MyTextSanitizer::getInstance();
+    $myts       = MyTextSanitizer::getInstance();
     $conf_value = $myts->addSlashes($_POST['schedule_template']);
 
     $sql = "update " . $xoopsDB->prefix("config") . " set conf_value='$conf_value' where conf_modid='$conf_modid' and conf_name='schedule_template'";
@@ -44,7 +44,7 @@ function save_schedule_subjects()
     global $xoopsModule, $xoopsDB;
     $conf_modid = $xoopsModule->getVar('mid');
 
-    $myts       = &MyTextSanitizer::getInstance();
+    $myts       = MyTextSanitizer::getInstance();
     $conf_value = $myts->addSlashes($_POST['schedule_subjects']);
 
     $sql = "update " . $xoopsDB->prefix("config") . " set conf_value='$conf_value' where conf_modid='$conf_modid' and conf_name='schedule_subjects'";

@@ -334,7 +334,7 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
 
     }
 
-    $myts    = &MyTextSanitizer::getInstance();
+    $myts    = MyTextSanitizer::getInstance();
     $WebName = $myts->addSlashes($WebName);
     // $WebTitle = $myts->addSlashes($WebTitle);
     $WebOwner = $myts->addSlashes($WebOwner);
@@ -370,7 +370,7 @@ function update_tad_web($WebID = "")
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts     = &MyTextSanitizer::getInstance();
+    $myts     = MyTextSanitizer::getInstance();
     $WebName  = $myts->addSlashes($_POST['WebName']);
     $WebTitle = $myts->addSlashes($_POST['WebTitle']);
 
@@ -409,7 +409,7 @@ function save_webs_title($webTitles = array(), $old_webTitle = array())
 function save_one_web_title($WebID = '', $WebTitle = '')
 {
     global $xoopsDB, $TadUpFiles;
-    $myts     = &MyTextSanitizer::getInstance();
+    $myts     = MyTextSanitizer::getInstance();
     $WebTitle = $myts->addSlashes($WebTitle);
     $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);

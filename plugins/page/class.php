@@ -341,7 +341,7 @@ class tad_web_page
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts        = &MyTextSanitizer::getInstance();
+        $myts        = MyTextSanitizer::getInstance();
         $PageTitle   = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
         $CateID      = intval($_POST['CateID']);
@@ -373,7 +373,7 @@ class tad_web_page
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts        = &MyTextSanitizer::getInstance();
+        $myts        = MyTextSanitizer::getInstance();
         $PageTitle   = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
         $CateID      = intval($_POST['CateID']);

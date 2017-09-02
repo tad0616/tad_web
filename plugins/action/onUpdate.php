@@ -8,7 +8,7 @@ if (action_onUpdate1_chk()) {
 function action_onUpdate1_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(`ActionKind`) from " . $xoopsDB->prefix("tad_web_action");
+    $sql    = "SELECT count(`ActionKind`) FROM " . $xoopsDB->prefix("tad_web_action");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return false;

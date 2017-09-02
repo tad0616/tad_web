@@ -1,7 +1,7 @@
 <?php
+
 class tad_web_link
 {
-
     public $WebID = 0;
     public $web_cate;
 
@@ -147,8 +147,8 @@ class tad_web_link
         $LinkID = intval($LinkID);
         $this->add_counter($LinkID);
 
-        $sql           = "select LinkUrl from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='{$LinkID}'";
-        $result        = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select LinkUrl from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='{$LinkID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($LinkUrl) = $xoopsDB->fetchRow($result);
 
         header("location: {$LinkUrl}");
@@ -231,7 +231,6 @@ class tad_web_link
 
         $tags_form = $this->tags->tags_menu("LinkID", $LinkID);
         $xoopsTpl->assign('tags_form', $tags_form);
-
     }
 
     //新增資料到tad_web_link中
@@ -244,7 +243,7 @@ class tad_web_link
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                 = &MyTextSanitizer::getInstance();
+        $myts                 = MyTextSanitizer::getInstance();
         $_POST['LinkTitle']   = $myts->addSlashes($_POST['LinkTitle']);
         $_POST['LinkDesc']    = $myts->addSlashes($_POST['LinkDesc']);
         $_POST['LinkUrl']     = $myts->addSlashes($_POST['LinkUrl']);
@@ -275,7 +274,7 @@ class tad_web_link
     {
         global $xoopsDB, $xoopsUser;
 
-        $myts               = &MyTextSanitizer::getInstance();
+        $myts               = MyTextSanitizer::getInstance();
         $_POST['LinkTitle'] = $myts->addSlashes($_POST['LinkTitle']);
         $_POST['LinkDesc']  = $myts->addSlashes($_POST['LinkDesc']);
         $_POST['LinkUrl']   = $myts->addSlashes($_POST['LinkUrl']);
@@ -308,8 +307,8 @@ class tad_web_link
     {
         global $xoopsDB;
 
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select CateID from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($CateID) = $xoopsDB->fetchRow($result);
 
         if (!is_assistant($CateID, 'LinkID', $LinkID)) {
@@ -330,7 +329,7 @@ class tad_web_link
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select LinkID,CateID from " . $xoopsDB->prefix("tad_web_link") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
         while (list($LinkID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($LinkID);
             $allCateID[$CateID] = $CateID;
@@ -345,8 +344,8 @@ class tad_web_link
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_link") . " where WebID='{$this->WebID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -355,8 +354,8 @@ class tad_web_link
     public function max_sort()
     {
         global $xoopsDB;
-        $sql        = "select max(`LinkSort`) from " . $xoopsDB->prefix("tad_web_link");
-        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "SELECT max(`LinkSort`) FROM " . $xoopsDB->prefix("tad_web_link");
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -377,9 +376,9 @@ class tad_web_link
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $data   = $xoopsDB->fetchArray($result);
+        $data = $xoopsDB->fetchArray($result);
         return $data;
     }
 }

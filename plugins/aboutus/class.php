@@ -876,7 +876,7 @@ class tad_web_aboutus
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         }
 
-        $myts                   = &MyTextSanitizer::getInstance();
+        $myts                   = MyTextSanitizer::getInstance();
         $_POST['MemExpertises'] = $myts->addSlashes($_POST['MemExpertises']);
         $_POST['AboutMem']      = $myts->addSlashes($_POST['AboutMem']);
         $_POST['MemClassOrgan'] = $myts->addSlashes($_POST['MemClassOrgan']);

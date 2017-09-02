@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$sql    = "select HomeworkID,HomeworkContent from " . $xoopsDB->prefix("tad_web_homework") . " order by HomeworkID desc limit 0,150";
+$sql = "SELECT HomeworkID,HomeworkContent FROM " . $xoopsDB->prefix("tad_web_homework") . " ORDER BY HomeworkID DESC LIMIT 0,150";
 $result = $xoopsDB->queryF($sql) or web_error($sql);
 // $main   = "<table border=1>";
 $r_start = '<table class="table"><tbody><tr>';
@@ -18,8 +18,8 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
         continue;
     }
 
-    $newHomeworkContent                 = preg_replace('/(?![ ])\s+/', '', trim($HomeworkContent));
-    list($table, $other)                = explode('</tbody></table>', $newHomeworkContent);
+    $newHomeworkContent = preg_replace('/(?![ ])\s+/', '', trim($HomeworkContent));
+    list($table, $other) = explode('</tbody></table>', $newHomeworkContent);
     list($content_title, $content_body) = explode('</tr><tr>', $table);
 
     $tr_content_title = str_replace($r_start, '', $content_title);
@@ -62,13 +62,12 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     }
 
     $tr_content_title = nl2br(htmlspecialchars($tr_content_title));
-    $main .= "<div class='alert alert-info'>{$today_homework}-{$bring}-{$teacher_say}<br>{$tr_content_title}</div>";
-    $main .= $HomeworkContent;
+    $main             .= "<div class='alert alert-info'>{$today_homework}-{$bring}-{$teacher_say}<br>{$tr_content_title}</div>";
+    $main             .= $HomeworkContent;
     if (empty($other)) {
         $other = "<p>&nbsp;</p>";
     }
     $main .= "<div class=\"row three-col\">{$data}</div>{$other}";
-
 }
 // $main .= "</table>";
 echo html5($main);

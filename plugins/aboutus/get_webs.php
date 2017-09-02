@@ -28,7 +28,7 @@ while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
 }
 
 //找出各班功課表
-$sql    = "select `WebID`,`ScheduleID`,`ScheduleName` from " . $xoopsDB->prefix("tad_web_schedule") . " where `ScheduleDisplay` = '1'";
+$sql = "SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM " . $xoopsDB->prefix("tad_web_schedule") . " WHERE `ScheduleDisplay` = '1'";
 $result = $xoopsDB->query($sql) or web_error($sql);
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule[$WebID]       = $ScheduleID;

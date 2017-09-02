@@ -1,7 +1,7 @@
 <?php
+
 class tad_web_action
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -159,9 +159,9 @@ class tad_web_action
         $ActionID = intval($ActionID);
         $this->add_counter($ActionID);
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $all    = $xoopsDB->fetchArray($result);
+        $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
         foreach ($all as $k => $v) {
@@ -322,7 +322,7 @@ class tad_web_action
             $uid = $xoopsUser->getVar('uid');
         }
 
-        $myts                 = &MyTextSanitizer::getInstance();
+        $myts                 = MyTextSanitizer::getInstance();
         $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
         $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
         $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
@@ -358,7 +358,7 @@ class tad_web_action
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts                 = &MyTextSanitizer::getInstance();
+        $myts                 = MyTextSanitizer::getInstance();
         $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
         $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
         $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
@@ -398,8 +398,8 @@ class tad_web_action
     public function delete($ActionID = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select CateID from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'ActionID', $ActionID)) {
             $anduid = onlyMine();
@@ -424,7 +424,7 @@ class tad_web_action
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select ActionID,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
         while (list($ActionID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ActionID);
             $allCateID[$CateID] = $CateID;
@@ -439,8 +439,8 @@ class tad_web_action
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -461,9 +461,9 @@ class tad_web_action
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $data   = $xoopsDB->fetchArray($result);
+        $data = $xoopsDB->fetchArray($result);
         return $data;
     }
 
@@ -491,8 +491,7 @@ class tad_web_action
 
             // resize previous image to next size
             $nextImage = imagecreatetruecolor($nextWidth, $nextHeight);
-            imagecopyresized($nextImage, $prevImage, 0, 0, 0, 0,
-                $nextWidth, $nextHeight, $prevWidth, $prevHeight);
+            imagecopyresized($nextImage, $prevImage, 0, 0, 0, 0, $nextWidth, $nextHeight, $prevWidth, $prevHeight);
 
             // apply blur filter
             imagefilter($nextImage, IMG_FILTER_GAUSSIAN_BLUR);
@@ -504,8 +503,7 @@ class tad_web_action
         }
 
         // scale back to original size and blur one more time
-        imagecopyresized($gdImageResource, $nextImage,
-            0, 0, 0, 0, $originalWidth, $originalHeight, $nextWidth, $nextHeight);
+        imagecopyresized($gdImageResource, $nextImage, 0, 0, 0, 0, $originalWidth, $originalHeight, $nextWidth, $nextHeight);
         imagefilter($gdImageResource, IMG_FILTER_GAUSSIAN_BLUR);
 
         // clean up
@@ -560,13 +558,12 @@ class tad_web_action
     //匯出資料
     public function export_data($start_date = "", $end_date = "", $CateID = "")
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
         $andStart  = empty($start_date) ? "" : "and ActionDate >= '{$start_date}'";
         $andEnd    = empty($end_date) ? "" : "and ActionDate <= '{$end_date}'";
 
-        $sql    = "select ActionID,ActionName,ActionDate,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by ActionDate";
+        $sql = "select ActionID,ActionName,ActionDate,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by ActionDate";
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;

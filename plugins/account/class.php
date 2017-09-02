@@ -1,7 +1,7 @@
 <?php
+
 class tad_web_account
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -178,9 +178,9 @@ class tad_web_account
         $AccountID = intval($AccountID);
         $this->add_counter($AccountID);
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='{$AccountID}'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='{$AccountID}'";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $all    = $xoopsDB->fetchArray($result);
+        $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $AccountID , $AccountTitle , $AccountDesc , $AccountDate , $AccountIncome ,$AccountOutgoings , $uid , $WebID , $AccountCount
         foreach ($all as $k => $v) {
@@ -356,7 +356,7 @@ class tad_web_account
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts         = &MyTextSanitizer::getInstance();
+        $myts         = MyTextSanitizer::getInstance();
         $AccountTitle = $myts->addSlashes($_POST['AccountTitle']);
         $AccountDesc  = $myts->addSlashes($_POST['AccountDesc']);
         $AccountKind  = $myts->addSlashes($_POST['AccountKind']);
@@ -403,7 +403,7 @@ class tad_web_account
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts         = &MyTextSanitizer::getInstance();
+        $myts         = MyTextSanitizer::getInstance();
         $AccountTitle = $myts->addSlashes($_POST['AccountTitle']);
         $AccountDesc  = $myts->addSlashes($_POST['AccountDesc']);
         $AccountKind  = $myts->addSlashes($_POST['AccountKind']);
@@ -455,8 +455,8 @@ class tad_web_account
     public function delete($AccountID = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'AccountID', $AccountID)) {
             $anduid = onlyMine();
@@ -481,7 +481,7 @@ class tad_web_account
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select AccountID,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
         while (list($AccountID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($AccountID);
             $allCateID[$CateID] = $CateID;
@@ -496,8 +496,8 @@ class tad_web_account
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -518,22 +518,21 @@ class tad_web_account
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $data   = $xoopsDB->fetchArray($result);
+        $data = $xoopsDB->fetchArray($result);
         return $data;
     }
 
     //匯出資料
     public function export_data($start_date = "", $end_date = "", $CateID = "")
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
         $andStart  = empty($start_date) ? "" : "and AccountDate >= '{$start_date}'";
         $andEnd    = empty($end_date) ? "" : "and AccountDate <= '{$end_date}'";
 
-        $sql    = "select AccountID,AccountTitle,AccountDate,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by AccountDate";
+        $sql = "select AccountID,AccountTitle,AccountDate,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by AccountDate";
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
@@ -554,8 +553,8 @@ class tad_web_account
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' order by AccountDate desc limit 0,1";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' order by AccountDate desc limit 0,1";
+        $result = $xoopsDB->query($sql) or web_error($sql);
         list($CateID) = $xoopsDB->fetchRow($result);
         return $CateID;
     }

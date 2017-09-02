@@ -28,10 +28,10 @@ function list_top()
             continue;
         }
 
-        $sql    = "select a.WebID, count(*) as cc , b.WebName ,b.WebTitle from " . $xoopsDB->prefix($pluginConfig['top_table']) . " as a  left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' group by a.WebID order by cc desc limit 0,10";
+        $sql = "SELECT a.WebID, count(*) AS cc , b.WebName ,b.WebTitle FROM " . $xoopsDB->prefix($pluginConfig['top_table']) . " AS a  LEFT JOIN " . $xoopsDB->prefix("tad_web") . " AS b ON a.WebID=b.WebID WHERE b.`WebEnable`='1' GROUP BY a.WebID ORDER BY cc DESC LIMIT 0,10";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $top    = '';
-        $j      = 1;
+        $top = '';
+        $j   = 1;
         while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
             $top[$j]['count']    = $count;
             $top[$j]['WebName']  = $WebName;
@@ -42,7 +42,6 @@ function list_top()
             $WebNames[$WebID]  = $WebName;
             $WebTitles[$WebID] = $WebTitle;
             $j++;
-
         }
 
         $all_top[$i]['pluginName'] = $pluginConfig['name'];
@@ -53,10 +52,10 @@ function list_top()
     }
 
     //標籤部份
-    $sql    = "select a.WebID, count(*) as cc , b.WebName ,b.WebTitle from " . $xoopsDB->prefix('tad_web_tags') . " as a  left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' group by a.WebID order by cc desc limit 0,10";
+    $sql = "SELECT a.WebID, count(*) AS cc , b.WebName ,b.WebTitle FROM " . $xoopsDB->prefix('tad_web_tags') . " AS a  LEFT JOIN " . $xoopsDB->prefix("tad_web") . " AS b ON a.WebID=b.WebID WHERE b.`WebEnable`='1' GROUP BY a.WebID ORDER BY cc DESC LIMIT 0,10";
     $result = $xoopsDB->query($sql) or web_error($sql);
-    $top    = '';
-    $j      = 1;
+    $top = '';
+    $j   = 1;
     while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
         $top[$j]['count']    = $count;
         $top[$j]['WebName']  = $WebName;
@@ -76,10 +75,10 @@ function list_top()
     $i++;
 
     //點閱數部份
-    $sql    = "select WebID, WebCounter , WebName ,WebTitle from " . $xoopsDB->prefix('tad_web') . " where `WebEnable`='1' group by WebID order by WebCounter desc limit 0,10";
+    $sql = "SELECT WebID, WebCounter , WebName ,WebTitle FROM " . $xoopsDB->prefix('tad_web') . " WHERE `WebEnable`='1' GROUP BY WebID ORDER BY WebCounter DESC LIMIT 0,10";
     $result = $xoopsDB->query($sql) or web_error($sql);
-    $top    = '';
-    $j      = 1;
+    $top = '';
+    $j   = 1;
     while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
         $top[$j]['count']    = $count;
         $top[$j]['WebName']  = $WebName;
@@ -99,10 +98,14 @@ function list_top()
     $i++;
 
     //區塊部份
-    $sql    = "select a.WebID, count(*) as cc , a.`ShareFrom`, b.WebName ,b.WebTitle from " . $xoopsDB->prefix('tad_web_blocks') . " as a  left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.`BlockEnable`=1 and a.`BlockPosition`!='uninstall' and a.`plugin`='custom' and b.`WebEnable`='1' group by a.WebID order by cc desc limit 0,10";
+    $sql = "SELECT a.WebID, count(*) AS cc , a.`ShareFrom`, b.WebName ,b.WebTitle FROM "
+           . $xoopsDB->prefix('tad_web_blocks')
+           . " AS a  LEFT JOIN "
+           . $xoopsDB->prefix("tad_web")
+           . " AS b ON a.WebID=b.WebID WHERE a.`BlockEnable`=1 AND a.`BlockPosition`!='uninstall' AND a.`plugin`='custom' AND b.`WebEnable`='1' GROUP BY a.WebID ORDER BY cc DESC LIMIT 0,10";
     $result = $xoopsDB->query($sql) or web_error($sql);
-    $top    = '';
-    $j      = 1;
+    $top = '';
+    $j   = 1;
     while (list($WebID, $count, $ShareFrom, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
         $top[$j]['count']    = $count;
         $top[$j]['WebName']  = $WebName;

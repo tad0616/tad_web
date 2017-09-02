@@ -20,7 +20,7 @@ class tad_web_homework
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
-        $myts     = &MyTextSanitizer::getInstance();
+        $myts     = MyTextSanitizer::getInstance();
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
         $andCateID = "";
@@ -201,7 +201,7 @@ class tad_web_homework
         if (empty($HomeworkID)) {
             return;
         }
-        $myts       = &MyTextSanitizer::getInstance();
+        $myts       = MyTextSanitizer::getInstance();
         $HomeworkID = intval($HomeworkID);
         $this->add_counter($HomeworkID);
 
@@ -432,7 +432,7 @@ class tad_web_homework
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                     = &MyTextSanitizer::getInstance();
+        $myts                     = MyTextSanitizer::getInstance();
         $_POST['HomeworkTitle']   = $myts->addSlashes($_POST['HomeworkTitle']);
         $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
         $_POST['CateID']          = intval($_POST['CateID']);
@@ -514,7 +514,7 @@ class tad_web_homework
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts                     = &MyTextSanitizer::getInstance();
+        $myts                     = MyTextSanitizer::getInstance();
         $_POST['HomeworkTitle']   = $myts->addSlashes($_POST['HomeworkTitle']);
         $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
         $_POST['CateID']          = intval($_POST['CateID']);
@@ -677,7 +677,7 @@ class tad_web_homework
             return;
         }
 
-        $myts   = &MyTextSanitizer::getInstance();
+        $myts   = MyTextSanitizer::getInstance();
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkID='$HomeworkID'";
         $result = $xoopsDB->query($sql) or web_error($sql);
         $data   = $xoopsDB->fetchArray($result);

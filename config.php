@@ -151,7 +151,7 @@ function tad_web_config($WebID, $configs)
     //管理員設定
     $web_admin_arr = get_web_roles($WebID, 'admin');
     $web_admins    = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
-    $sql           = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
+    $sql           = "SELECT uid,uname,name FROM " . $xoopsDB->prefix("users") . " ORDER BY uname";
     $result        = $xoopsDB->query($sql) or web_error($sql);
 
     $myts    = MyTextSanitizer::getInstance();
@@ -182,7 +182,7 @@ function update_tad_web()
 {
     global $xoopsDB, $xoopsUser, $WebID;
 
-    $myts              = &MyTextSanitizer::getInstance();
+    $myts              = MyTextSanitizer::getInstance();
     $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
     $_POST['WebOwner'] = $myts->addSlashes($_POST['WebOwner']);
     $CateID            = intval($_POST['CateID']);
@@ -216,7 +216,7 @@ function save_plugins($WebID)
 {
     global $xoopsDB;
     $plugins = get_plugins($WebID);
-    $myts    = &MyTextSanitizer::getInstance();
+    $myts    = MyTextSanitizer::getInstance();
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
@@ -289,7 +289,7 @@ function enabe_plugin($dirname = "", $WebID = "")
 {
     global $xoopsDB;
 
-    $myts    = &MyTextSanitizer::getInstance();
+    $myts    = MyTextSanitizer::getInstance();
     $dirname = $myts->addSlashes($dirname);
 
     $sql = "update " . $xoopsDB->prefix("tad_web_plugins") . " set
@@ -351,7 +351,25 @@ function default_color($WebID = "")
     if (empty($WebID) or !$isMyWeb) {
         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
     }
-    $del_item = array('bg_color', 'container_bg_color', 'side_bg_color', 'center_text_color', 'center_link_color', 'center_hover_color', 'center_header_color', 'center_border_color', 'side_text_color', 'side_link_color', 'side_hover_color', 'side_header_color', 'side_border_color', 'navbar_bg_top', 'navbar_color', 'navbar_hover', 'navbar_color_hover');
+    $del_item = array(
+        'bg_color',
+        'container_bg_color',
+        'side_bg_color',
+        'center_text_color',
+        'center_link_color',
+        'center_hover_color',
+        'center_header_color',
+        'center_border_color',
+        'side_text_color',
+        'side_link_color',
+        'side_hover_color',
+        'side_header_color',
+        'side_border_color',
+        'navbar_bg_top',
+        'navbar_color',
+        'navbar_hover',
+        'navbar_color_hover'
+    );
     foreach ($del_item as $ConfigName) {
         $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID ='{$WebID}' and ConfigName='{$ConfigName}'";
         $xoopsDB->queryF($sql) or web_error($sql);

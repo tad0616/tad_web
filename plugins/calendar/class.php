@@ -200,7 +200,7 @@ class tad_web_calendar
         global $xoopsDB, $xoopsUser, $WebOwnerUid;
         $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
 
-        $myts                   = &MyTextSanitizer::getInstance();
+        $myts                   = MyTextSanitizer::getInstance();
         $_POST['CalendarName']  = $myts->addSlashes($_POST['CalendarName']);
         $_POST['CalendarType']  = $myts->addSlashes($_POST['CalendarType']);
         $_POST['CalendarDesc']  = $myts->addSlashes($_POST['CalendarDesc']);
@@ -226,7 +226,7 @@ class tad_web_calendar
     {
         global $xoopsDB;
 
-        $myts                  = &MyTextSanitizer::getInstance();
+        $myts                  = MyTextSanitizer::getInstance();
         $_POST['CalendarName'] = $myts->addSlashes($_POST['CalendarName']);
         $_POST['CalendarType'] = $myts->addSlashes($_POST['CalendarType']);
         $_POST['CalendarDesc'] = $myts->addSlashes($_POST['CalendarDesc']);
