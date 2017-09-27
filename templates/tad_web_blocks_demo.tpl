@@ -12,8 +12,11 @@
     <{if $block.BlockContent.main_data}>
       <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin.dirname`/tpls/`$block.tpl`"|file_exists}>
         <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin.dirname`/tpls/`$block.tpl`"}>
+      <{elseif "$xoops_rootpath/modules/tad_web/plugins/system/tpls/`$block.tpl`"|file_exists}>
+        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/system/tpls/`$block.tpl`"}>
       <{else}>
-        no template
+        no template<br>
+        <{"$xoops_rootpath/modules/tad_web/plugins/`$block.plugin.dirname`/tpls/`$block.tpl`"}>
       <{/if}>
     <{else}>
       <{$smarty.const._MD_TCW_BLOCK_EMPTY}>

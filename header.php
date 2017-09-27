@@ -4,7 +4,8 @@ include_once "../../mainfile.php";
 $WebID = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
 include_once "function.php";
 
-$is_ezclass = XOOPS_URL == "http://class.tn.edu.tw" ? true : false;
+define('_EZCLASS', 'http://class.tn.edu.tw');
+$is_ezclass = XOOPS_URL == _EZCLASS ? true : false;
 define('_IS_EZCLASS', $is_ezclass);
 
 //目前觀看的班級
@@ -12,7 +13,7 @@ $Web = $WebName = $WebTitle = $WebOwner = $WebOwnerUid = $menu_var = $plugin_men
 
 $i = 0;
 if (!empty($WebID)) {
-    $Web = getWebInfo($WebID);
+    $Web = get_tad_web($WebID);
 
     if ($Web) {
         $web_all_config = get_web_all_config($WebID);
@@ -168,21 +169,21 @@ $j++;
 
 $sub_menu_var[$j]['id']     = $j;
 $sub_menu_var[$j]['title']  = _MD_TCW_MENU_DISCUSS;
-$sub_menu_var[$j]['url']    = "http://class.tn.edu.tw/modules/tad_discuss/discuss.php?BoardID=1";
+$sub_menu_var[$j]['url']    = _EZCLASS . "/modules/tad_discuss/discuss.php?BoardID=1";
 $sub_menu_var[$j]['target'] = "_blank";
 $sub_menu_var[$j]['icon']   = "fa-share-square-o";
 $j++;
 
 $sub_menu_var[$j]['id']     = $j;
 $sub_menu_var[$j]['title']  = _MD_TCW_MENU_SUGGEST;
-$sub_menu_var[$j]['url']    = "http://class.tn.edu.tw/modules/tad_discuss/discuss.php?BoardID=2";
+$sub_menu_var[$j]['url']    = _EZCLASS . "/modules/tad_discuss/discuss.php?BoardID=2";
 $sub_menu_var[$j]['target'] = "_blank";
 $sub_menu_var[$j]['icon']   = "fa-share-square-o";
 $j++;
 
 $sub_menu_var[$j]['id']     = $j;
 $sub_menu_var[$j]['title']  = _MD_TCW_MENU_BOOKS;
-$sub_menu_var[$j]['url']    = "http://class.tn.edu.tw/modules/tad_book3/index.php";
+$sub_menu_var[$j]['url']    = _EZCLASS . "/modules/tad_book3/index.php";
 $sub_menu_var[$j]['target'] = "_blank";
 $sub_menu_var[$j]['icon']   = "fa-share-square-o";
 $j++;

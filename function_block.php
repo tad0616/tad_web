@@ -31,25 +31,34 @@ if (!function_exists('get_web_config')) {
     function get_web_config($ConfigName = null, $defWebID = null)
     {
         global $xoopsDB;
-
-        $andWebID = is_null($defWebID) ? "" : "and `WebID`='$defWebID'";
-
-        $sql = "select `ConfigValue`,`WebID` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='{$ConfigName}' $andWebID ";
-        //die($sql);
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
-
-        $ConfigValue = "";
+        $andWebID = '';
         if (!is_null($defWebID)) {
-            if ($xoopsDB->getRowsNum($result)) {
-                list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result);
+            $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/web_config.php";
+            // unlink($file);
+            if (file_exists($file)) {
+                require $file;
+            } else {
+                $content = "<?php\n";
+                $sql     = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$defWebID' ";
+                $result  = $xoopsDB->queryF($sql) or web_error($sql);
+                while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
+                    $web_config[$ConfigName] = $ConfigValue;
+                    $content .= "\$web_config['$ConfigName'] = '$ConfigValue';\n";
+                }
+                file_put_contents($file, $content);
             }
-
+            // if ($defWebID == 10 and $ConfigName == 'default_class') {
+            //     die(var_dump($web_config));
+            // }
+            return $web_config[$ConfigName];
         } else {
-            while (list($Value, $WebID) = $xoopsDB->fetchRow($result)) {
-                $ConfigValue[$WebID] = $Value;
-            }
-        }
-        return $ConfigValue;
+            $sql    = "select `WebID`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='$ConfigName' ";
+            $result = $xoopsDB->queryF($sql) or web_error($sql);
 
+            while (list($WebID, $ConfigValue) = $xoopsDB->fetchRow($result)) {
+                $ConfigValues[$WebID] = $ConfigValue;
+            }
+            return $ConfigValues;
+        }
     }
 }

@@ -54,7 +54,7 @@ class tad_web_files
             $andCity       = !empty($city) ? "and d.city='{$city}'" : "";
             $andSchoolName = !empty($SchoolName) ? "and d.SchoolName='{$SchoolName}'" : "";
 
-            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . "  as a
+            $sql = "select a.* , b.files_sn, b.col_name, b.col_sn, b.sort, b.kind, b.file_name, b.file_type, b.file_size, b.description, b.counter, b.original_filename, b.hash_filename, b.sub_dir from " . $xoopsDB->prefix("tad_web_files") . "  as a
             left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn and b.col_name='fsn'
             left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID
             left join " . $xoopsDB->prefix("apply") . " as d on c.WebOwnerUid=d.uid
@@ -62,7 +62,7 @@ class tad_web_files
             where c.`WebEnable`='1' and (e.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName
             order by a.file_date desc";
         } elseif (!empty($tag)) {
-            $sql = "select distinct a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a
+            $sql = "select distinct a.* , b.files_sn, b.col_name, b.col_sn, b.sort, b.kind, b.file_name, b.file_type, b.file_size, b.description, b.counter, b.original_filename, b.hash_filename, b.sub_dir from " . $xoopsDB->prefix("tad_web_files") . " as a
             left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn'
             left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID
             join " . $xoopsDB->prefix("tad_web_tags") . " as d on d.col_name='fsn' and d.col_sn=a.fsn
@@ -71,7 +71,7 @@ class tad_web_files
             order by a.file_date desc";
 
         } else {
-            $sql = "select a.* , b.* from " . $xoopsDB->prefix("tad_web_files") . " as a
+            $sql = "select a.* , b.files_sn, b.col_name, b.col_sn, b.sort, b.kind, b.file_name, b.file_type, b.file_size, b.description, b.counter, b.original_filename, b.hash_filename, b.sub_dir from " . $xoopsDB->prefix("tad_web_files") . " as a
             left join " . $xoopsDB->prefix("tad_web_files_center") . " as b on a.fsn=b.col_sn  and b.col_name='fsn'
             left join " . $xoopsDB->prefix("tad_web") . " as c on a.WebID=c.WebID
             left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
@@ -79,7 +79,9 @@ class tad_web_files
             order by a.file_date desc";
         }
         $to_limit = empty($limit) ? 20 : $limit;
-
+        // if ($this->WebID == 10) {
+        //     die($sql);
+        // }
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
         $PageBar = getPageBar($sql, $to_limit, 10);
         $bar     = $PageBar['bar'];
@@ -120,7 +122,11 @@ class tad_web_files
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
-            $uid_name  = XoopsUser::getUnameFromId($uid, 1);
+            $uid_name = XoopsUser::getUnameFromId($uid, 1);
+            if (empty($uid_name)) {
+                $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            }
+
             $file_date = substr($file_date, 0, 10);
 
             $showurl = empty($file_link) ? "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn#{$original_filename}' class='iconize'>{$description}</a>" : "<a href='{$file_link}' class='iconize'>{$file_description}</a>";

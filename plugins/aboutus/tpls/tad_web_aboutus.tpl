@@ -374,7 +374,7 @@
             <input type="hidden" name="CateID" value="<{$CateID}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
           </div>
-
+          <div class="alert alert-warning"><{$smarty.const._MD_TCW_STUDENT_NOTE}></div>
         </div>
       </div>
 

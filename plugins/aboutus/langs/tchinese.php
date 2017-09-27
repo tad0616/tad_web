@@ -180,3 +180,5 @@ define('_MD_TCW_ABOUTUS_START', '再來一次！');
 define('_MD_TCW_ABOUTUS_S8_TEXT', '設定欲使用功能');
 define('_MD_TCW_ABOUTUS_S8_DESC', '請將不需要的功能取消');
 define('_MD_TCW_ABOUTUS_ALL_DONT', '都不要');
+
+define('_MD_TCW_STUDENT_NOTE', '若新增或修改班級後，上方圖檔副標題看不到新班級名稱（若是採用系統預設 logo 話），九成九是您的瀏覽器快取在做怪，請按 <kbd>Ctrl</kbd>+<kbd>F5</kbd> 試試。');

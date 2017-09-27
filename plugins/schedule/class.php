@@ -19,7 +19,7 @@ class tad_web_schedule
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
-        $andCateID = $andDisplay = "";
+        $andCateID = "";
         if ($mode == "assign") {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
@@ -41,8 +41,6 @@ class tad_web_schedule
             $xoopsTpl->assign('cate', $cate);
             $andCateID = "and a.`CateID`='$CateID'";
             $xoopsTpl->assign('ScheduleDefCateID', $CateID);
-        } else {
-            $andDisplay = "and a.`ScheduleDisplay`='1'";
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
@@ -64,7 +62,7 @@ class tad_web_schedule
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_schedule") . " as a
             left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
             left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
-            where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID $andDisplay order by b.WebSort";
+            where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID order by a.ScheduleDisplay desc, b.WebSort";
         }
         $result = $xoopsDB->query($sql) or web_error($sql);
 

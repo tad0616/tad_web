@@ -22,3 +22,4 @@ define("_MD_TCW_SCHEDULE_BGCOLOR", "Background Color");
 define("_MD_TCW_SCHEDULE_ADD_ITEM", "Add a new item");
 define("_MD_TCW_SCHEDULE_PDF", "Download Schedule");
 define("_MD_TCW_SCHEDULE_BLOCK_LIST", "Class Schedule");
+define("_MD_TCW_SCHEDULE_OTHER_LIST", "Other Schedule");

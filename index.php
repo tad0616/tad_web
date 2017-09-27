@@ -32,6 +32,7 @@ function ClassHome($WebID = "")
     }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
+    $_SESSION['tad_web'][$WebID]['WebCounter']++;
 
     $xoopsTpl->assign('MyWebs', $MyWebs);
     $xoopsTpl->assign('plugin_data_total', $plugin_data_total);

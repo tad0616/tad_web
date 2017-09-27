@@ -71,18 +71,51 @@ function get_blocks($WebID)
 }
 
 //取得所有區塊設定
-function get_dir_blocks()
+function get_dir_blocks($mode = '')
 {
     global $xoopsConfig;
-    $plugins = get_dir_plugins();
-    foreach ($plugins as $plugin) {
-        $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
-        if (file_exists($config_blocks_file)) {
-            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
-            include $config_blocks_file;
+    $dir_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/dir_blocks.json";
+    if (file_exists($dir_blocks_file) and $mode == '') {
+        $blockConfig = get_json_file($dir_blocks_file);
+    } else {
+
+        $plugins = get_dir_plugins();
+        foreach ($plugins as $plugin) {
+            $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
+            if (file_exists($config_blocks_file)) {
+                include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+                include $config_blocks_file;
+            }
         }
+        put_json_file($dir_blocks_file, $blockConfig);
+
     }
     return $blockConfig;
+}
+
+//寫入 json 設定檔
+function put_json_file($file, $array)
+{
+    unlink($file);
+    if (PHP_VERSION_ID >= 50400) {
+        $json = json_encode($array, JSON_UNESCAPED_UNICODE);
+    } else {
+        array_walk_recursive($array, function (&$value, $key) {
+            if (is_string($value)) {
+                $value = urlencode($value);
+            }
+        });
+        $json = urldecode(json_encode($array));
+    }
+
+    file_put_contents($file, $json);
+}
+
+//讀出 json 設定檔陣列
+function get_json_file($file)
+{
+    $array = json_decode(file_get_contents($file), true);
+    return $array;
 }
 
 //取得各外掛及系統所有區塊(onUpdate.php)
@@ -234,12 +267,17 @@ function get_web_roles($defWebID = '', $defRole = '')
 function get_web_all_config($WebID = "")
 {
     global $xoopsDB;
-    //die('test...');
+
     if (empty($WebID)) {
         return;
     }
-    if (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php")) {
-        include XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php";
+    if (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php") or file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2/theme_config.php")) {
+        if (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php")) {
+            include XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php";
+        } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2/theme_config.php")) {
+            include XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2/theme_config.php";
+
+        }
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head");
@@ -258,7 +296,7 @@ function get_web_all_config($WebID = "")
         }
 
     } else {
-        web_error("Need to install 'for_tad_web_theme' theme.");
+        web_error("Need to install 'for_tad_web_theme' or 'for_tad_web_theme_2'theme.");
     }
     //die(var_export($tad_web_config));
     $sql = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$WebID'";
@@ -291,7 +329,8 @@ function save_web_config($ConfigName = "", $ConfigValue = "", $WebID)
       values('{$ConfigName}' , '{$ConfigValue}', '{$WebID}')";
     // die($sql);
     $xoopsDB->queryF($sql) or web_error($sql);
-
+    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
+    unlink($file);
 }
 
 //取得資料庫中的外掛資料
@@ -323,25 +362,34 @@ function get_db_plugin($WebID = "", $dirname = "")
 }
 
 //取得硬碟中外掛模組的名稱陣列
-function get_dir_plugins()
+function get_dir_plugins($mode = '')
 {
-    $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
-    if (is_dir($dir)) {
-        if ($dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) {
-                if (filetype($dir . $file) == "dir") {
-                    if (substr($file, 0, 1) == '.') {
-                        continue;
-                    }
-                    if (!empty($file)) {
-                        $plugins[] = $file;
+    $dir_plugins_file = XOOPS_ROOT_PATH . "/uploads/tad_web/dir_plugins.json";
+    if (file_exists($dir_plugins_file) and $mode == '') {
+        $plugins = get_json_file($dir_plugins_file);
+    } else {
+
+        $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
+        if (is_dir($dir)) {
+            if ($dh = opendir($dir)) {
+                while (($file = readdir($dh)) !== false) {
+                    if (filetype($dir . $file) == "dir") {
+                        if (substr($file, 0, 1) == '.') {
+                            continue;
+                        }
+                        if (!empty($file)) {
+                            $plugins[] = $file;
+                        }
                     }
                 }
+                closedir($dh);
             }
-            closedir($dh);
         }
+        sort($plugins);
+
+        put_json_file($dir_plugins_file, $plugins);
+
     }
-    sort($plugins);
     return $plugins;
 }
 
@@ -584,27 +632,6 @@ function get_tad_web_link_mems($MemID = "", $CateID = "")
     return $all;
 }
 
-//以流水號取得某筆tad_web資料
-function get_tad_web($WebID = "", $enable = false)
-{
-    global $xoopsDB, $isMyWeb, $isAdmin;
-    if (empty($WebID)) {
-        return;
-    }
-
-    $andEnable = ($enable and !$isMyWeb and !$isAdmin) ? "and WebEnable='1'" : "";
-
-    $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID' {$andEnable}";
-
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $data   = $xoopsDB->fetchArray($result);
-
-    if ($enable and (empty($data))) {
-        redirect_header("index.php", 3, _MD_TCW_WEB_NOT_EXIST);
-    }
-    return $data;
-}
-
 //取得網頁下成員的人數
 function memAmount($WebID = "")
 {
@@ -673,17 +700,32 @@ function onlyMine($uid_col = 'uid')
     return "and `{$uid_col}`='$uid'";
 }
 
-//取得網站資訊
-function getWebInfo($WebID = null)
+//以流水號取得某筆tad_web資料
+function get_tad_web($WebID = "", $enable = false)
 {
-    global $xoopsDB;
-    $WebID = intval($WebID);
+    global $xoopsDB, $isMyWeb, $isAdmin;
+    if (empty($WebID)) {
+        return;
+    }
+    if (isset($_SESSION['tad_web'][$WebID])) {
+        if ($enable and (empty($_SESSION['tad_web'][$WebID]))) {
+            redirect_header("index.php", 3, _MD_TCW_WEB_NOT_EXIST);
+        }
+        return $_SESSION['tad_web'][$WebID];
+    } else {
+        $andEnable = ($enable and !$isMyWeb and !$isAdmin) ? "and WebEnable='1'" : "";
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='{$WebID}'";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+        $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID' {$andEnable}";
 
-    $Web = $xoopsDB->fetchArray($result);
-    return $Web;
+        $result                      = $xoopsDB->query($sql) or web_error($sql);
+        $data                        = $xoopsDB->fetchArray($result);
+        $_SESSION['tad_web'][$WebID] = $data;
+
+        if ($enable and (empty($data))) {
+            redirect_header("index.php", 3, _MD_TCW_WEB_NOT_EXIST);
+        }
+        return $data;
+    }
 }
 
 //取得網站資訊
@@ -732,7 +774,7 @@ function send_now($email = "", $title = "", $content = "", $ColName = "", $ColSN
 //製作logo圖
 function mklogoPic($WebID = "")
 {
-    $Class    = getWebInfo($WebID);
+    $Class    = get_tad_web($WebID);
     $WebName  = $Class['WebName'];
     $WebTitle = $Class['WebTitle'];
 
@@ -1298,6 +1340,7 @@ function check_quota($WebID = "")
     $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    $_SESSION['tad_web'][$WebID]['used_size'] = $dir_size;
 }
 
 //檢查已使用空間
@@ -1464,6 +1507,10 @@ function delete_tad_web($WebID = "")
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web") . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
+    unset($_SESSION['tad_web'][$WebID]);
+
+    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
+    unlink($file);
 
     $TadUpFiles->set_col("WebOwner", $WebID);
     $TadUpFiles->del_files();

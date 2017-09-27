@@ -335,6 +335,11 @@ class tad_web_news
         $NewsEnable = (!isset($DBV['NewsEnable'])) ? "1" : $DBV['NewsEnable'];
         $xoopsTpl->assign('NewsEnable', $NewsEnable);
 
+        //設定「uid」欄位預設值
+        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
+        $xoopsTpl->assign('uid', $uid);
+
         $op = (empty($NewsID)) ? "insert" : "update";
 
         if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -375,6 +380,8 @@ class tad_web_news
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
         if (isset($_SESSION['isAssistant']['news'])) {
             $uid = $WebOwnerUid;
+        } elseif (!empty($_POST['uid'])) {
+            $uid = intval($_POST['uid']);
         } else {
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }

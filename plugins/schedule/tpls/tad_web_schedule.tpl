@@ -202,11 +202,9 @@
     <{$cate_menu}>
   <{/if}>
   <{$FooTableJS}>
-  <div class="row">
-    <div class="col-sm-12">
-      <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/tad_web_common_schedule.tpl"}>
-    </div>
-  </div>
+
+  <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/tad_web_common_schedule.tpl"}>
+
 <{elseif $op=="setup"}>
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>

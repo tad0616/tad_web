@@ -190,6 +190,8 @@ function update_tad_web()
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$_POST['WebName']}', `WebOwner` = '{$_POST['WebOwner']}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    unset($_SESSION['tad_web'][$WebID]);
+
     $TadUpFilesLogo = TadUpFilesLogo($WebID);
     $TadUpFilesLogo->set_col('logo', $WebID, 1);
     $TadUpFilesLogo->del_files();
@@ -208,7 +210,8 @@ function delete_web_config($ConfigName = "")
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='{$ConfigName}' and `WebID`='{$MyWebs}'";
     $xoopsDB->queryF($sql) or web_error($sql);
-
+    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
+    unlink($file);
 }
 
 //儲存外掛
@@ -305,18 +308,6 @@ function enabe_plugin($dirname = "", $WebID = "")
     mk_menu_var_file($WebID);
 }
 
-//刪除網站
-// function delete_my_web($WebID)
-// {
-//     global $xoopsDB, $isMyWeb;
-//     if (empty($WebID) or !$isMyWeb) {
-//         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
-//     }
-
-//     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '0' where WebID ='{$WebID}'";
-//     $xoopsDB->queryF($sql) or web_error($sql);
-// }
-
 //關閉網站
 function unable_my_web($WebID)
 {
@@ -340,8 +331,8 @@ function enable_my_web($WebID)
     }
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '1' where WebID ='{$WebID}'";
-    // die($sql);
     $xoopsDB->queryF($sql) or web_error($sql);
+    $_SESSION['tad_web'][$WebID]['WebEnable'] = 1;
 }
 
 //恢復顏色預設值
@@ -368,12 +359,14 @@ function default_color($WebID = "")
         'navbar_bg_top',
         'navbar_color',
         'navbar_hover',
-        'navbar_color_hover'
+        'navbar_color_hover',
     );
     foreach ($del_item as $ConfigName) {
         $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID ='{$WebID}' and ConfigName='{$ConfigName}'";
         $xoopsDB->queryF($sql) or web_error($sql);
     }
+    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
+    unlink($file);
 }
 
 /*-----------執行動作判斷區----------*/

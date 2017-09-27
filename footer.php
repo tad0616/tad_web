@@ -403,7 +403,9 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
         }
         $block[$BlockPosition][$BlockSort] = $blocks_arr;
     }
-
+    // if ($_GET['test'] == '1') {
+    //     die(var_export($block));
+    // }
     // die(var_export($block['side']));
 
     $xoopsTpl->assign('center_block1', $block['block1']);

@@ -209,7 +209,7 @@ class tad_web_discuss
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
         //$xoopsTpl->assign('DiscussFiles', $DiscussFiles);
-
+        $DiscussContent = $this->addLink(nl2br($DiscussContent));
         preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
         foreach ($smile_pic[1] as $pic_name) {
             $new_pic_name   = strtolower($pic_name);
@@ -223,7 +223,7 @@ class tad_web_discuss
         $xoopsTpl->assign('DiscussTitle', $DiscussTitle);
         $xoopsTpl->assign('MemID', $MemID);
         $xoopsTpl->assign('ParentID', $ParentID);
-        $xoopsTpl->assign('DiscussContent', $this->bubble(nl2br($DiscussContent) . $DiscussFiles));
+        $xoopsTpl->assign('DiscussContent', $this->bubble($DiscussContent . $DiscussFiles));
         $xoopsTpl->assign('DiscussDate', $DiscussDate);
         $xoopsTpl->assign('LastTime', $LastTime);
         if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
@@ -700,6 +700,7 @@ class tad_web_discuss
             $TadUpFiles->set_col("DiscussID", $DiscussID);
             $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
 
+            $DiscussContent = $this->addLink(nl2br($DiscussContent));
             preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
             foreach ($smile_pic[1] as $pic_name) {
                 $new_pic_name   = strtolower($pic_name);
@@ -708,7 +709,7 @@ class tad_web_discuss
 
             // $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
             // $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
-            $DiscussContent = nl2br($DiscussContent);
+
             $DiscussContent = $this->bubble($DiscussContent . $DiscussFiles);
             if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
                 if ($MemID) {
@@ -788,5 +789,13 @@ class tad_web_discuss
         }
 
         return $main_data;
+    }
+
+    //網址轉連結
+    public function addLink($str)
+    {
+        $str = preg_replace('#(http|https|ftp|telnet)://([0-9a-z\.\-]+)(:?[0-9]*)([0-9a-z\_\/\?\&\=\%\.\;\#\-\~\+]*)#i', '<a
+href="\1://\2\3\4" rel="nofollow" target="_blank">\1://\2\3\4</a>', $str);
+        return $str;
     }
 }

@@ -169,7 +169,7 @@ class tad_web_page
             $$k = $v;
         }
 
-        if (empty($PageContent)) {
+        if (empty($PageContent) and empty($PageTitle)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 

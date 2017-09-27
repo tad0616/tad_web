@@ -14,7 +14,7 @@ $blocksArr['news_rss']['tpl']                   = 'news_rss.tpl';
 $blocksArr['news_rss']['position']              = 'block1';
 $blocksArr['news_rss']['config']['height']      = 400;
 $blocksArr['news_rss']['colset']['height']      = array('label' => _MD_TCW_NEWS_BLOCK_RSS_HEIGHT, 'type' => 'text');
-$blocksArr['news_rss']['config']['feed_url']    = 'http://class.tn.edu.tw/modules/tad_web/rss.php?WebID=10';
+$blocksArr['news_rss']['config']['feed_url']    = _EZCLASS . '/modules/tad_web/rss.php?WebID=10';
 $blocksArr['news_rss']['colset']['feed_url']    = array('label' => _MD_TCW_NEWS_BLOCK_RSS_LINK, 'type' => 'text');
 $blocksArr['news_rss']['config']['display_rss'] = 'on';
 $blocksArr['news_rss']['colset']['display_rss'] = array('label' => _MD_TCW_NEWS_BLOCK_RSS_DISPLAY, 'type' => 'radio', 'options' => array(_MD_TCW_NEWS_BLOCK_RSS_DISPLAY_ALL => 'on', _MD_TCW_NEWS_BLOCK_RSS_DISPLAY_TITLE => 'title_only'));

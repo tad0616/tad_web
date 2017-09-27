@@ -2,115 +2,124 @@
 function xoops_module_update_tad_web($module, $old_version)
 {
     global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    define('_EZCLASS', 'http://class.tn.edu.tw');
+    $is_ezclass = XOOPS_URL == _EZCLASS ? true : false;
+    define('_IS_EZCLASS', $is_ezclass);
 
     mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web");
-    if (!chk_chk1()) {
-        go_update1();
-    }
+    //重新產生外掛設定
+    get_dir_plugins('force');
+    //重新產生區塊設定
+    get_dir_blocks('force');
 
-    if (!chk_chk2()) {
-        go_update2();
-    }
+    if (!_IS_EZCLASS) {
+        //修改討論區計數欄位名稱
+        if (!chk_chk1()) {
+            go_update1();
+        }
 
-    if (!chk_chk3()) {
-        go_update3();
-    }
+        //修改討論區發布者uid編號
+        if (!chk_chk2()) {
+            go_update2();
+        }
+        //修改討論區發布者編號
+        if (!chk_chk3()) {
+            go_update3();
+        }
+        //新增討論區發布者姓名欄位
+        if (!chk_chk4()) {
+            go_update4();
+        }
+        //新增original_filename欄位
+        if (!chk_chk5()) {
+            go_update5();
+        }
+        //將各班檔案收攏到各個子目錄下
+        go_update6();
+        //刪除錯誤的重複欄位及樣板檔
+        chk_tad_web_block();
 
-    if (!chk_chk4()) {
-        go_update4();
-    }
+        //修改分類名稱欄位名稱
+        if (chk_chk7()) {
+            go_update7();
+        }
+        //新增外掛表格
+        if (chk_chk10()) {
+            go_update10();
+        }
+        //新增角色表格
+        if (chk_chk11()) {
+            go_update11();
+        }
+        //新增區塊設定表格
+        if (chk_chk12()) {
+            go_update12();
+        }
+        //新增外掛偏好設定表格
+        if (chk_chk14()) {
+            go_update14();
+        }
+        //新增已使用空間
+        if (chk_chk15()) {
+            go_update15();
+        }
+        //新增權限表格
+        if (chk_chk16()) {
+            go_update16();
+        }
+        //新增標籤表格
+        if (chk_chk17()) {
+            go_update17();
+        }
+        //修正區塊索引
+        if (chk_chk18()) {
+            go_update18();
+        }
+        //刪除分享區塊設訂
+        if (chk_chk19()) {
+            go_update19();
+        }
+        //刪除分享區塊設訂
+        if (chk_chk19_1()) {
+            go_update19_1();
+        }
+        //修正權限表格索引
+        if (chk_chk20()) {
+            go_update20();
+        }
+        //新增通知表格
+        if (chk_chk21()) {
+            go_update21();
+        }
+        //新增寄信紀錄表格
+        if (chk_chk22()) {
+            go_update22();
+        }
+        //新增小幫手
+        if (chk_chk23()) {
+            go_update23();
+        }
+        //新增小幫手權限資料表
+        if (chk_chk24()) {
+            go_update24();
+        }
+        //新增檔案欄位
+        if (chk_fc_tag()) {
+            go_fc_tag();
+        }
 
-    if (!chk_chk5()) {
-        go_update5();
-    }
-
-    go_update6();
-    chk_tad_web_block();
-
-    if (chk_chk7()) {
-        go_update7();
-    }
-
-    // if (chk_chk8()) {
-    //     go_update8();
-    // }
-
-    // if (chk_chk9()) {
-    //     go_update9();
-    // }
-
-    if (chk_chk10()) {
-        go_update10();
-    }
-
-    if (chk_chk11()) {
-        go_update11();
-    }
-
-    if (chk_chk12()) {
-        go_update12();
-    }
-
-    // if (chk_chk13()) {
-    //     go_update13();
-    // }
-
-    if (chk_chk14()) {
-        go_update14();
-    }
-
-    if (chk_chk15()) {
-        go_update15();
-    }
-
-    if (chk_chk16()) {
-        go_update16();
-    }
-
-    if (chk_chk17()) {
-        go_update17();
-    }
-
-    if (chk_chk18()) {
-        go_update18();
-    }
-
-    if (chk_chk19()) {
-        go_update19();
-    }
-    if (chk_chk19_1()) {
-        go_update19_1();
-    }
-
-    if (chk_chk20()) {
-        go_update20();
-    }
-
-    if (chk_chk21()) {
-        go_update21();
-    }
-
-    if (chk_chk22()) {
-        go_update22();
-    }
-
-    if (chk_chk23()) {
-        go_update23();
-    }
-
-    if (chk_chk24()) {
-        go_update24();
-    }
-
-    if (chk_fc_tag()) {
-        go_fc_tag();
     }
 
     chk_sql();
-    chk_newblock();
-    go_update_var();
+
+    if (!_IS_EZCLASS) {
+        modify_share_block();
+        go_update_var();
+        add_log('update');
+    }
+
     chk_plugin_update();
-    add_log('update');
     return true;
 }
 
@@ -159,165 +168,47 @@ function chk_sql()
 }
 
 //檢查是否有新區塊，若有安裝之。
-function chk_newblock()
+function modify_share_block()
 {
     global $xoopsDB;
     include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 
     $myts = MyTextSanitizer::getInstance();
 
-    //取得應有的所有區塊
-    $all_blocks   = get_all_blocks();
-    $block_plugin = get_all_blocks('plugin');
-    $block_config = get_all_blocks('config');
-    // die(var_export($block_config));
-
-    //找出所有網站
-    $allWebID = '';
-    $sql      = "SELECT WebID FROM `" . $xoopsDB->prefix("tad_web") . "` GROUP BY `WebID`";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-    while (list($WebID) = $xoopsDB->fetchRow($result)) {
-        $allWebID[] = $WebID;
-    }
-
     //修正自訂區塊名稱（並用序號排序）
-    $sql = "SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE plugin='custom' ORDER BY BlockID";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
-    while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
-        $BlockTitle   = $myts->addSlashes($BlockTitle);
-        $BlockContent = $myts->addSlashes($BlockContent);
-
-        $new_name = "custom_{$WebID}_{$BlockID}";
-        if ($new_name != $BlockName) {
-            //修改自己
-            $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='{$new_name}' where `BlockID`='{$BlockID}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
-        }
-
-        //搜尋該自訂區塊有無分享區塊
-        $sql2 = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and WebID='{$WebID}' and plugin='share'";
-        $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
-
-        list($share_BlockID) = $xoopsDB->fetchRow($result2);
-
-        //若有分享區塊
-        if ($share_BlockID) {
-            //修改分享區塊
-            $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='share_{$WebID}_{$share_BlockID}', `ShareFrom`='{$BlockID}' where BlockID='{$share_BlockID}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
-
-            //修改其他網站已經使用該分享區塊的
-            $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `ShareFrom`='{$share_BlockID}' where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and plugin='custom' and WebID!='{$WebID}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
-        }
-    }
-
-    foreach ($allWebID as $WebID) {
-        //找出目前已安裝的區塊
-        $sql = "select BlockID,BlockName,BlockConfig from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
+    if (!_IS_EZCLASS) {
+        $sql    = "SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE plugin='custom' ORDER BY BlockID";
         $result = $xoopsDB->queryF($sql) or web_error($sql);
-        while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
-            $db_blocks[$WebID][$BlockName]                  = $BlockName;
-            $db_blocks_config[$WebID][$BlockName][$BlockID] = $BlockConfig;
-        }
-    }
+        while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
+            $BlockTitle   = $myts->addSlashes($BlockTitle);
+            $BlockContent = $myts->addSlashes($BlockContent);
 
-    //區塊的設定值
-    // die(var_export($block_config));
-    // array (
-    //   'list_web_adm' => NULL,
-    //   'list_web_student' => NULL,
-    //   'list_account' => array ('limit' => 10)
-    // )
-
-    //現有區塊資料（含不在資料庫中的）
-    // die(var_export($all_blocks));
-
-    //所有的網站編號陣列
-    // die(var_export($allWebID));
-
-    //資料庫中，已經有哪些網站，有了哪些區塊資訊
-    // die(var_export($db_blocks));
-
-    //資料庫中，個個網站已存在的區塊設定
-    // die(var_export($db_blocks_config));
-
-    // echo "<h1>" . PHP_VERSION_ID . "</h1>";
-
-    // die('$JSON_UNESCAPED_UNICODE=' . $JSON_UNESCAPED_UNICODE);
-    //安裝新區塊
-    foreach ($all_blocks as $BlockName => $BlockTitle) {
-        foreach ($allWebID as $WebID) {
-            //若該區塊還沒有安裝在該網站
-            if (!in_array($BlockName, $db_blocks[$WebID])) {
-                if (is_array($block_config[$BlockName])) {
-                    if (PHP_VERSION_ID >= 50400) {
-                        $config = json_encode($block_config[$BlockName], JSON_UNESCAPED_UNICODE);
-                    } else {
-                        array_walk_recursive($block_config[$BlockName], function (&$value, $key) {
-                            if (is_string($value)) {
-                                $value = urlencode($value);
-                            }
-                        });
-                        $config = urldecode(json_encode($block_config[$BlockName]));
-                    }
-                } else {
-                    $config = '';
-                }
-                $config = str_replace('{{WebID}}', $WebID, $config);
-                $sql    = "insert into `"
-                          . $xoopsDB->prefix("tad_web_blocks")
-                          . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
+            $new_name = "custom_{$WebID}_{$BlockID}";
+            if ($new_name != $BlockName) {
+                //修改自己
+                $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='{$new_name}' where `BlockID`='{$BlockID}'";
                 $xoopsDB->queryF($sql) or web_error($sql);
-            } else {
-                //檢查區塊設定值是否需要更新
+            }
 
-                //找出某區塊安裝在該網站的 $BlockID 以及現有設定
-                foreach ($db_blocks_config[$WebID][$BlockName] as $BlockID => $BlockConfig) {
-                    $new_config = $db_config = '';
+            //搜尋該自訂區塊有無分享區塊
+            $sql2    = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and WebID='{$WebID}' and plugin='share'";
+            $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
 
-                    //已安裝區塊的設定值陣列
-                    $db_config = json_decode($BlockConfig, true);
+            list($share_BlockID) = $xoopsDB->fetchRow($result2);
 
-                    if (is_array($block_config[$BlockName])) {
-                        // echo "<h3>$BlockName</h3>";
-                        foreach ($block_config[$BlockName] as $config_name => $def_value) {
-                            // echo "<h4>{$config_name}：{$def_value} (\$db_config[\$config_name]={$db_config[$config_name]})</h4>";
-                            if (isset($db_config[$config_name]) and $db_config[$config_name] != '') {
-                                // echo "有預設值：{$db_config[$config_name]}<br>";
-                                $new_config[$config_name] = $db_config[$config_name];
-                            } else {
-                                // echo "沒有預設值：{$def_value}<br>";
-                                $new_config[$config_name] = $def_value;
-                            }
-                        }
-                    }
+            //若有分享區塊
+            if ($share_BlockID) {
+                //修改分享區塊
+                $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='share_{$WebID}_{$share_BlockID}', `ShareFrom`='{$BlockID}' where BlockID='{$share_BlockID}'";
+                $xoopsDB->queryF($sql) or web_error($sql);
 
-                    // echo "新設定值為：" . var_export($new_config, true) . "<br>";
-                    //更新設定值
-
-                    if (PHP_VERSION_ID >= 50400) {
-                        $new_block_config = json_encode($new_config, JSON_UNESCAPED_UNICODE);
-                    } else {
-                        array_walk_recursive($new_config, function (&$value, $key) {
-                            if (is_string($value)) {
-                                $value = urlencode($value);
-                            }
-                        });
-                        $new_block_config = urldecode(json_encode($new_config));
-                    }
-
-                    // echo "新設定：" . $new_block_config . "<br>";
-
-                    $new_block_config = str_replace('{{WebID}}', $WebID, $new_block_config);
-                    $sql              = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockConfig`='{$new_block_config}' where `BlockID`='{$BlockID}'";
-                    // echo "<div>$sql</div>";
-                    $xoopsDB->queryF($sql) or web_error($sql);
-                }
+                //修改其他網站已經使用該分享區塊的
+                $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `ShareFrom`='{$share_BlockID}' where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and plugin='custom' and WebID!='{$WebID}'";
+                $xoopsDB->queryF($sql) or web_error($sql);
             }
         }
     }
-    // exit;
+
 }
 
 //重作選單快取檔
@@ -361,8 +252,8 @@ function add_log($status)
     if ($status == 'install') {
         $web_amount = 0;
     } else {
-        $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $sql        = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
+        $result     = $xoopsDB->query($sql) or web_error($sql);
         $web_amount = $xoopsDB->getRowsNum($result);
     }
     $sitename      = urlencode($xoopsConfig['sitename']);
@@ -528,6 +419,7 @@ function go_update5()
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 }
 
+//將各班檔案收攏到各個子目錄下
 function go_update6()
 {
     global $xoopsDB;
@@ -536,7 +428,7 @@ function go_update6()
     $os    = (PATH_SEPARATOR == ':') ? "linux" : "win";
 
     //修正子目錄，並找出實體檔案沒有真的在子目錄下的
-    $sql = "SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM " . $xoopsDB->prefix("tad_web_files_center") . " WHERE `sub_dir` LIKE '//%'";
+    $sql    = "SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM " . $xoopsDB->prefix("tad_web_files_center") . " WHERE `sub_dir` LIKE '//%'";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
         $sub_dir = str_replace("//", "/", $sub_dir);
@@ -582,7 +474,7 @@ function go_update6()
     }
 
     //找出沒有放到子目錄的
-    $sql = "SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM " . $xoopsDB->prefix("tad_web_files_center") . "";
+    $sql    = "SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM " . $xoopsDB->prefix("tad_web_files_center") . "";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
         $typedir = $kind == 'img' ? "image" : "file";
@@ -591,20 +483,20 @@ function go_update6()
             if ($col_name == "WebOwner" or $col_name == "WebLogo") {
                 $WebID = $col_sn;
             } elseif ($col_name == "MemID") {
-                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_link_mems") . " where `MemID` = '{$col_sn}'";
-                $result2 = $xoopsDB->queryF($sql) or die($sql);
+                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_link_mems") . " where `MemID` = '{$col_sn}'";
+                $result2     = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             } elseif ($col_name == "ActionID") {
-                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_action") . " where `ActionID` = '{$col_sn}'";
-                $result2 = $xoopsDB->queryF($sql) or die($sql);
+                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_action") . " where `ActionID` = '{$col_sn}'";
+                $result2     = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             } elseif ($col_name == "fsn") {
-                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_files") . " where `fsn` = '{$col_sn}'";
-                $result2 = $xoopsDB->queryF($sql) or die($sql);
+                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_files") . " where `fsn` = '{$col_sn}'";
+                $result2     = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             } elseif ($col_name == "NewsID") {
-                $sql = "select `WebID` from " . $xoopsDB->prefix("tad_web_news") . " where `NewsID` = '{$col_sn}'";
-                $result2 = $xoopsDB->queryF($sql) or die($sql);
+                $sql         = "select `WebID` from " . $xoopsDB->prefix("tad_web_news") . " where `NewsID` = '{$col_sn}'";
+                $result2     = $xoopsDB->queryF($sql) or die($sql);
                 list($WebID) = $xoopsDB->fetchRow($result2);
             }
         }
@@ -672,81 +564,6 @@ function go_update7()
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
 
     return true;
-}
-
-//新增作品分享表格
-function chk_chk8()
-{
-    global $xoopsDB;
-    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_works");
-    $result = $xoopsDB->query($sql);
-    if (empty($result)) {
-        return true;
-    }
-
-    return false;
-}
-
-function go_update8()
-{
-    global $xoopsDB;
-    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_works") . "` (
-      `WorksID` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '檔案流水號',
-      `CateID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0,
-      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬班級',
-      `WorkName` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '活動名稱',
-      `WorkDesc` TEXT NOT NULL COMMENT '活動說明',
-      `uid` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '上傳者',
-      `WorksDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '日期',
-      `WorksCount` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '人氣',
-    PRIMARY KEY (`WorksID`)
-    ) ENGINE=MyISAM";
-    $xoopsDB->queryF($sql);
-}
-
-//新增聯絡簿
-function chk_chk9()
-{
-    global $xoopsDB;
-    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_homework");
-    $result = $xoopsDB->query($sql);
-    if (empty($result)) {
-        return true;
-    }
-
-    return false;
-}
-
-function go_update9()
-{
-    global $xoopsDB;
-    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_homework") . "` (
-      `HomeworkID` SMALLINT(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '編號',
-      `CateID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0,
-      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬班級',
-      `HomeworkTitle` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '標題',
-      `HomeworkContent` TEXT NOT NULL COMMENT '內容',
-      `HomeworkDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '發布日期',
-      `toCal` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '加到行事曆',
-      `HomeworkCounter` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '人氣',
-      `uid` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '發布者',
-    PRIMARY KEY (`HomeworkID`)
-    ) ENGINE=MyISAM";
-    $xoopsDB->queryF($sql);
-
-    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_news") . "` WHERE NewsKind='homework'";
-    $result = $xoopsDB->queryF($sql) or die($sql);
-    while ($all = $xoopsDB->fetchArray($result)) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-
-        $sql = "insert into `" . $xoopsDB->prefix("tad_web_homework") . "` (`WebID`, `HomeworkTitle`, `HomeworkContent`, `HomeworkDate`, `toCal`, `HomeworkCounter`, `uid`) values('{$WebID}', '{$NewsTitle}', '{$NewsContent}', '{$NewsDate}', '{$toCal}', '{$NewsCounter}', '{$uid}')";
-        $xoopsDB->queryF($sql);
-
-        $sql = "delete from `" . $xoopsDB->prefix("tad_web_news") . "` where `NewsID`='{$NewsID}'";
-        $xoopsDB->queryF($sql);
-    }
 }
 
 //新增外掛表格
@@ -844,7 +661,7 @@ function go_update12()
     $block_config = get_all_blocks('config');
 
     //存入既有設定
-    $sql = "SELECT ConfigValue, WebID FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='display_blocks'";
+    $sql    = "SELECT ConfigValue, WebID FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='display_blocks'";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
         $Config = explode(',', $ConfigValue);
@@ -873,15 +690,15 @@ function go_update12()
             }
             $config = str_replace('{{WebID}}', $WebID, $config);
             $sql    = "insert into `"
-                      . $xoopsDB->prefix("tad_web_blocks")
-                      . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
+            . $xoopsDB->prefix("tad_web_blocks")
+                . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
             $xoopsDB->queryF($sql) or web_error($sql);
             $sort++;
         }
     }
 
     //將首頁轉為區塊
-    $sql = "SELECT ConfigValue, WebID FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='web_plugin_display_arr'";
+    $sql    = "SELECT ConfigValue, WebID FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='web_plugin_display_arr'";
     $result = $xoopsDB->queryF($sql) or die($sql);
     while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
         $web_plugin_display_arr = explode(',', $ConfigValue);
@@ -926,27 +743,6 @@ function go_update12()
     $sql = "DELETE FROM `" . $xoopsDB->prefix("tad_web_config") . "` WHERE ConfigName='web_plugin_enable_arr' AND WebID=0";
     $xoopsDB->queryF($sql);
 }
-
-//新增分享區塊設訂
-// function chk_chk13()
-// {
-//     global $xoopsDB;
-//     $sql    = "select count(`BlockShare`) from " . $xoopsDB->prefix("tad_web_blocks");
-//     $result = $xoopsDB->query($sql);
-//     if (empty($result)) {
-//         return true;
-//     }
-
-//     return false;
-// }
-
-// function go_update13()
-// {
-//     global $xoopsDB;
-//     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_blocks") . " ADD `BlockShare` varchar(255) NOT NULL COMMENT '分享區塊' AFTER `BlockSort`";
-//     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
-//     return true;
-// }
 
 //新增外掛偏好設定表格
 function chk_chk14()
@@ -997,7 +793,7 @@ function go_update15()
     $dir = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
-    $sql = "SELECT WebID FROM `" . $xoopsDB->prefix("tad_web") . "`";
+    $sql    = "SELECT WebID FROM `" . $xoopsDB->prefix("tad_web") . "`";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($WebID) = $xoopsDB->fetchRow($result)) {
         $dir_size = get_dir_size("{$dir}{$WebID}/");
@@ -1044,7 +840,7 @@ function go_update16()
     return true;
 }
 
-//新增權限表格
+//新增標籤表格
 function chk_chk17()
 {
     global $xoopsDB;
@@ -1139,7 +935,7 @@ function go_update19_1()
     return true;
 }
 
-//修正區塊索引
+//修正權限表格索引
 function chk_chk20()
 {
     global $xoopsDB;
@@ -1192,7 +988,7 @@ function go_update21()
     return true;
 }
 
-//新增通知表格
+//新增寄信紀錄表格
 function chk_chk22()
 {
     global $xoopsDB;
@@ -1248,7 +1044,7 @@ function go_update23()
     return true;
 }
 
-//新增小幫手
+//新增小幫手權限資料表
 function chk_chk24()
 {
     global $xoopsDB;

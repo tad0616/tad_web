@@ -291,7 +291,7 @@ class tad_web_homework
         }
         get_quota($this->WebID);
 
-        $Class = getWebInfo($this->WebID);
+        $Class = get_tad_web($this->WebID);
 
         //抓取預設值
         if (!empty($HomeworkID)) {

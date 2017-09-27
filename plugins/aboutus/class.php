@@ -340,6 +340,9 @@ class tad_web_aboutus
         $sweet_alert->render("del_class", "aboutus.php?op=del_class&WebID={$this->WebID}&CateID=", 'CateID');
 
         $default_class = get_web_config('default_class', $this->WebID);
+        // if ($this->WebID == 10) {
+        //     die('default_class=' . $default_class);
+        // }
         $xoopsTpl->assign('default_class', $default_class);
     }
 
@@ -1180,6 +1183,7 @@ class tad_web_aboutus
     public function update_web_title($WebTitle = "")
     {
         global $xoopsDB;
+        unset($_SESSION['tad_web'][$this->WebID]);
         $sql = "update  " . $xoopsDB->prefix("tad_web") . " set WebTitle='{$WebTitle}' where `WebID`='{$this->WebID}'";
         $xoopsDB->queryF($sql) or web_error($sql);
         mklogoPic($this->WebID);

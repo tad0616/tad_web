@@ -14,7 +14,7 @@ function chk_evn()
         $error[_MA_TCW_NEED_IMAGECREATETURECOLOR] = _MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT;
     }
 
-    if (!is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme")) {
+    if (!is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme") and !is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2")) {
         $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
     }
 
@@ -388,6 +388,8 @@ function update_tad_web($WebID = "")
     where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    unset($_SESSION['tad_web'][$WebID]);
+
     save_one_web_title($WebID, $WebTitle);
 
     return $WebID;
@@ -413,6 +415,8 @@ function save_one_web_title($WebID = '', $WebTitle = '')
     $WebTitle = $myts->addSlashes($WebTitle);
     $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
+
+    $_SESSION['tad_web'][$WebID]['WebTitle'] = $WebTitle;
 
     //修改班級名稱
     $default_class = get_web_config('default_class', $WebID);
@@ -441,6 +445,7 @@ function save_webs_able($WebID = "", $able = "")
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '{$able}' where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    $_SESSION['tad_web'][$WebID]['WebEnable'] = $able;
     return $WebID;
 }
 
