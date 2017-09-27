@@ -10,7 +10,7 @@ function account_onUpdate1_chk()
     global $xoopsDB;
     $sql    = "SHOW Fields FROM " . $xoopsDB->prefix("tad_web_account") . " where `Field`='AccountIncome' and `Type` = 'smallint(6)'";
     $result = $xoopsDB->query($sql);
-    if (empty($result)) {
+    if (!empty($result)) {
         return true;
     }
 

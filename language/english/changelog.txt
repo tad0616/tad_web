@@ -1,3 +1,22 @@
+Tad Web 1.7.3 (2017-09-27 released)
+================================================== ==
+  1. Simplified website settings page
+  2. Fixed the problem that the closed block will be reopened after saving the plug-in settings.
+  3. Link and video join sorting
+  4. Add the change manager (mentor) name function
+  5. After the classification is closed, the content is still a problem
+  6. Discussion area plus message sort setting
+  7. The calendar is set on the first day of the week
+  8. The message content will automatically add the URL
+  9. Resolve issues that "article list", "latest news" phone editing will not show
+10. Speed up the management of background space
+11. Resolve the "article menu" block can not display the problem
+12. Resolve the file block can not show the uploader's problem
+13. If you do not set the schedule, you will not be able to display the problem
+14. Solve the income limit of the Account books
+
+
+
 Tad Web 1.7.2 (2017-01-08 released)
 ====================================================
 1. Account books open to parents to watch
