@@ -104,12 +104,12 @@ class tad_web_action
                 continue;
             }
 
-            $main_data[$i]                = $all;
-            $main_data[$i]['id']          = $ActionID;
-            $main_data[$i]['id_name']     = 'ActionID';
-            $main_data[$i]['title']       = $ActionName;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
-
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $ActionID;
+            $main_data[$i]['id_name'] = 'ActionID';
+            $main_data[$i]['title']   = $ActionName;
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
+            $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
@@ -195,6 +195,12 @@ class tad_web_action
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
+        $assistant   = is_assistant($CateID, 'ActionID', $ActionID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID));
+
         $xoopsTpl->assign('ActionName', $ActionName);
         $xoopsTpl->assign('ActionDate', $ActionDate);
         $xoopsTpl->assign('ActionPlace', $ActionPlace);
@@ -225,7 +231,7 @@ class tad_web_action
         $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("ActionID", $ActionID, 'action'));
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'ActionID', $ActionID));
+
     }
 
     //tad_web_action編輯表單

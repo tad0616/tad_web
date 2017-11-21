@@ -103,12 +103,13 @@ class tad_web_page
                 }
             }
 
-            $main_data[$i]                = $all;
-            $main_data[$i]['id']          = $PageID;
-            $main_data[$i]['id_name']     = 'PageID';
-            $main_data[$i]['title']       = $PageTitle;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
-            $main_data[$i]['show_count']  = $show_count;
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $PageID;
+            $main_data[$i]['id_name'] = 'PageID';
+            $main_data[$i]['title']   = $PageTitle;
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
+            $main_data[$i]['isCanEdit']  = isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID);
+            $main_data[$i]['show_count'] = $show_count;
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = $cate_arr[$CateID];
@@ -189,6 +190,12 @@ class tad_web_page
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
+        $assistant   = is_assistant($CateID, 'PageID', $PageID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID));
+
         //取消換頁符號
         $pattern     = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
         $PageContent = preg_replace($pattern, '', $PageContent);
@@ -233,7 +240,6 @@ class tad_web_page
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("PageID", $PageID, 'page'));
 
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'PageID', $PageID));
     }
 
     //tad_web_page編輯表單

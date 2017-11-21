@@ -97,7 +97,7 @@
   <{$fb_comments}>
 
   <div id="adm_bar" class="text-right" style="margin: 30px 0px;">
-    <{if $isMyWeb or $isAssistant}>
+    <{if $isMyWeb or $isCanEdit}>
       <a href="javascript:delete_page_func(<{$PageID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
       <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
       <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$PageID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
@@ -116,7 +116,7 @@
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
   <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$page.PluginTitle}></h1>
-  <{if $isMyWeb or $isAssistant}>
+  <{if $isMyWeb or $isCanEdit}>
     <a href="page.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>
   <{else}>
     <div class="text-center">

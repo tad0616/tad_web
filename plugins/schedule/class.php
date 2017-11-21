@@ -80,11 +80,12 @@ class tad_web_schedule
                 $$k = $v;
             }
 
-            $main_data[$i]                = $all;
-            $main_data[$i]['id']          = $ScheduleID;
-            $main_data[$i]['id_name']     = 'ScheduleID';
-            $main_data[$i]['title']       = $ScheduleName;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $ScheduleID;
+            $main_data[$i]['id_name'] = 'ScheduleID';
+            $main_data[$i]['title']   = $ScheduleName;
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
+            $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -146,6 +147,12 @@ class tad_web_schedule
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
+        $assistant   = is_assistant($CateID, 'ScheduleID', $ScheduleID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID));
+
         $xoopsTpl->assign('ScheduleName', $ScheduleName);
         $xoopsTpl->assign('ScheduleDisplay', $ScheduleDisplay);
         $xoopsTpl->assign('uid_name', $uid_name);
@@ -176,7 +183,6 @@ class tad_web_schedule
         $sweet_alert = new sweet_alert();
         $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'ScheduleID', $ScheduleID));
     }
 
     //tad_web_schedule編輯表單

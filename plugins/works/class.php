@@ -110,11 +110,12 @@ class tad_web_works
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
-            $main_data[$i]                = $all;
-            $main_data[$i]['id']          = $WorksID;
-            $main_data[$i]['id_name']     = 'WorksID';
-            $main_data[$i]['title']       = $WorkName;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'WorksID', $WorksID);
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $WorksID;
+            $main_data[$i]['id_name'] = 'WorksID';
+            $main_data[$i]['title']   = $WorkName;
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'WorksID', $WorksID);
+            $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
             $this->web_cate->set_WebID($WebID);
 
             if ($pic !== false) {
@@ -199,6 +200,15 @@ class tad_web_works
         $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
         $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        if (empty($uid_name)) {
+            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+        }
+
+        $assistant   = is_assistant($CateID, 'WorksID', $WorksID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID));
 
         if (strtotime($WorksDate) > $time and $WorksKind == 'mem_after_end') {
             $hide = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
@@ -244,7 +254,6 @@ class tad_web_works
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("WorksID", $WorksID, 'works'));
 
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'WorksID', $WorksID));
     }
 
     //tad_web_works編輯表單

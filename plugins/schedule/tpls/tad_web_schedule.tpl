@@ -119,7 +119,7 @@
   <{$schedule_template}>
 
   <div class="text-right" style="margin: 30px 0px;">
-    <{if $isMyWeb or $isAssistant}>
+    <{if $isMyWeb or $isCanEdit}>
       <a href="javascript:delete_schedule_func(<{$ScheduleID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
       <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
       <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$ScheduleID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
@@ -210,7 +210,7 @@
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
   <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h1>
-  <{if $isMyWeb  or $isAssistant}>
+  <{if $isMyWeb  or $isCanEdit}>
     <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
   <{else}>
     <div class="text-center">
