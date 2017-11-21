@@ -206,16 +206,24 @@ class web_cate
         $new_cate = empty($this->label) ? _MD_TCW_NEW_CATE : sprintf(_MD_TCW_NEW_SOMETHING, $this->label);
 
         if ($newCate) {
+            if (empty($option)) {
+                $hide   = "";
+                $botton = "";
+            } else {
+                $hide   = "style='display:none;'";
+                $botton = "
+                <div class=\"col-sm-2\" id=\"newCate\">
+                  <button type='button' class='btn btn-info' id=\"add_cate\">{$new_cate}</button>
+                </div>
+                <div class=\"col-sm-2\" id=\"showMenu\" style='display:none;'>
+                  <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_TO_MENU . "</button>
+                </div>";
+            }
             $new_input = "
-            <div class=\"col-sm-5\" id=\"newCateName\" style='display:none;'>
-              <input type='text' name='newCateName' placeholder='{$new_cate} {$demo_txt}' class='form-control' value='{$this->default_value}'>
+            <div class=\"col-sm-5\" id=\"newCateName\" $hide>
+              <input type='text' name='newCateName' placeholder='{$new_cate} {$demo_txt}' class='validate[required] form-control' value='{$this->default_value}'>
             </div>
-            <div class=\"col-sm-2\" id=\"newCate\">
-              <button type='button' class='btn btn-info' id=\"add_cate\">{$new_cate}</button>
-            </div>
-            <div class=\"col-sm-2\" id=\"showMenu\" style='display:none;'>
-              <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_MENU . "</button>
-            </div>";
+            $botton";
         } else {
             $new_input = "";
         }
@@ -312,8 +320,8 @@ class web_cate
     public function tad_web_cate_max_sort()
     {
         global $xoopsDB;
-        $sql    = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $sql        = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
+        $result     = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -323,12 +331,12 @@ class web_cate
     {
         global $xoopsDB;
 
-        $sql    = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $sql        = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
+        $result     = $xoopsDB->query($sql) or web_error($sql);
         list($sort) = $xoopsDB->fetchRow($result);
 
-        $sql    = "select `CateID` from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}' and CateSort='{$sort}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $sql          = "select `CateID` from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}' and CateSort='{$sort}'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
         list($CateID) = $xoopsDB->fetchRow($result);
 
         return $CateID;
@@ -370,7 +378,7 @@ class web_cate
         include_once XOOPS_ROOT_PATH . "/modules/tad_web/function.php";
 
         $counter    = $counter ? $this->tad_web_cate_data_counter() : '';
-        $arr        = "";
+        $arr        = array();
         $andWebID   = empty($this->WebID) ? '' : "and `WebID` = '{$this->WebID}'";
         $andColName = empty($this->ColName) ? '' : "and `ColName`='{$this->ColName}'";
         $sql        = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where 1 $andWebID $andColName order by CateSort";
@@ -467,7 +475,7 @@ class web_cate
         } else {
             $table = $this->table;
         }
-        $counter = "";
+        $counter = array();
         $sql     = "select count(*),CateID from `" . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
         $result  = $xoopsDB->query($sql) or web_error($sql);
         while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {

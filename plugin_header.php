@@ -19,3 +19,18 @@ if ($show_plugin) {
 
 include_once "plugins/{$plugin}/class.php";
 $$plugin_name = new $plugin_name($WebID);
+
+function chk_self_web($WebID, $other = null)
+{
+    global $isMyWeb, $MyWebs;
+    if (!$isMyWeb and $MyWebs) {
+        redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+    } elseif (!$isMyWeb) {
+        if ($other !== null and !$other) {
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+        } else {
+            return true;
+        }
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+    }
+}

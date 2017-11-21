@@ -16,7 +16,7 @@ function tad_web_setup_form()
     }
     // die(var_export($plugins));
     $xoopsTpl->assign('plugins', $plugins);
-    $web_plugin_display_arr = '';
+    $web_plugin_display_arr = array();
     $web_setup_show         = get_web_config('web_plugin_display_arr', '0');
     if ($web_setup_show) {
         $web_plugin_display_arr = explode(',', $web_setup_show);
@@ -40,7 +40,7 @@ function save_plugins()
     $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_plugins") . " WHERE WebID='0'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
-    $display_plugins = '';
+    $display_plugins = array();
     foreach ($plugins as $plugin) {
         $dirname     = $plugin['dirname'];
         $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
@@ -82,7 +82,7 @@ switch ($op) {
         tad_web_setup_form();
         break;
 
-    /*---判斷動作請貼在上方---*/
+        /*---判斷動作請貼在上方---*/
 }
 
 /*-----------秀出結果區--------------*/

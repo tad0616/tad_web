@@ -15,7 +15,7 @@ class tad_web_calendar
 
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
@@ -51,7 +51,7 @@ class tad_web_calendar
         }
         $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
 
-        if ($_GET['debug'] == 1) {
+        if (isset($_GET['debug']) and $_GET['debug'] == 1) {
             die(var_export($fullcalendar_code));
         }
 
@@ -127,11 +127,7 @@ class tad_web_calendar
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID);
         get_quota($this->WebID);
 
         //抓取預設值

@@ -1,6 +1,4 @@
 <?php
-$blocksArr = '';
-
 $blocksArr['list_homework']['name']            = _MD_TCW_HOMEWORK_BLOCK_LIST;
 $blocksArr['list_homework']['tpl']             = 'list_homework.tpl';
 $blocksArr['list_homework']['position']        = 'block1';

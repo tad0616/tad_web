@@ -15,7 +15,7 @@ class tad_web_schedule
     //課表
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
@@ -44,7 +44,7 @@ class tad_web_schedule
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -66,7 +66,7 @@ class tad_web_schedule
         }
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = $total = 0;
 
@@ -81,13 +81,17 @@ class tad_web_schedule
             }
 
             $main_data[$i]                = $all;
+            $main_data[$i]['id']          = $ScheduleID;
+            $main_data[$i]['id_name']     = 'ScheduleID';
+            $main_data[$i]['title']       = $ScheduleName;
             $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
 
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb']  = $isMyWeb;
             $main_data[$i]['schedule'] = $this->get_one_schedule($ScheduleID);
             $i++;
             $total++;
@@ -180,11 +184,7 @@ class tad_web_schedule
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $WebName, $xoopsModuleConfig, $plugin_menu_var;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['schedule']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
 
         //抓取預設值
         if (!empty($ScheduleID)) {
@@ -251,7 +251,7 @@ class tad_web_schedule
 
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
         $result     = $xoopsDB->query($sql) or web_error($sql);
-        $SubjectArr = '';
+        $SubjectArr = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -427,14 +427,14 @@ class tad_web_schedule
         if (!isset($xoopsModuleConfig)) {
 
             $modhandler        = xoops_gethandler('module');
-            $xoopsModule       = &$modhandler->getByDirname("tad_web");
+            $xoopsModule       = $modhandler->getByDirname("tad_web");
             $config_handler    = xoops_gethandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
         }
 
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
         $result     = $xoopsDB->query($sql) or web_error($sql);
-        $SubjectArr = '';
+        $SubjectArr = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount
             foreach ($all as $k => $v) {
@@ -469,7 +469,7 @@ class tad_web_schedule
             $schedule_subjects_arr = json_decode(file_get_contents($my_subject_file), true);
         } else {
             $schedule_subjects     = explode(';', $xoopsModuleConfig['schedule_subjects']);
-            $schedule_subjects_arr = '';
+            $schedule_subjects_arr = array();
 
             $i = 0;
             foreach ($schedule_subjects as $subject) {
@@ -488,11 +488,8 @@ class tad_web_schedule
     public function setup_subject($ScheduleID)
     {
         global $xoopsModuleConfig, $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser;
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['schedule']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
         get_quota($this->WebID);
 
         $xoopsTpl->assign('ScheduleID', $ScheduleID);
@@ -511,7 +508,6 @@ class tad_web_schedule
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/mColorPicker.php";
         $mColorPicker      = new mColorPicker('.color');
         $mColorPicker_code = $mColorPicker->render();
-        $xoopsTpl->assign('mColorPicker_code', $mColorPicker_code);
 
     }
 

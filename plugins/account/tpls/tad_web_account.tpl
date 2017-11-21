@@ -141,7 +141,7 @@
 
   <{$fb_comments}>
 
-  <{if $isMyWeb or $isAssistant}>
+  <{if $isMyWeb or $isCanEdit}>
     <div class="text-right" style="margin: 30px 0px;">
       <a href="javascript:delete_account_func(<{$AccountID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_ACCOUNT_SHORT}></a>
       <a href="account.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACCOUNT_SHORT}></a>
@@ -175,7 +175,7 @@
 
 <{else}>
   <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$account.PluginTitle}></h1>
-  <{if $isMyWeb or $isAssistant}>
+  <{if $isMyWeb or $isCanEdit}>
     <a href="account.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACCOUNT_SHORT}></a>
   <{else}>
     <div class="text-center">

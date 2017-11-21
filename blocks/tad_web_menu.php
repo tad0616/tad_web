@@ -57,7 +57,7 @@ function tad_web_menu($options)
             }
 
             $modhandler        = xoops_gethandler('module');
-            $tad_web_Module    = &$modhandler->getByDirname("tad_web");
+            $tad_web_Module    = $modhandler->getByDirname("tad_web");
             $config_handler    = xoops_gethandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $tad_web_Module->getVar('mid'));
 
@@ -111,7 +111,7 @@ function tad_web_menu($options)
         $modhandler     = xoops_gethandler('module');
         $config_handler = xoops_gethandler('config');
 
-        $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+        $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
         if ($TadLoginXoopsModule) {
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
             include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";

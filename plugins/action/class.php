@@ -18,7 +18,7 @@ class tad_web_action
     //活動剪影
     public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $plugin_menu_var;
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
@@ -46,7 +46,7 @@ class tad_web_action
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -85,7 +85,7 @@ class tad_web_action
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -105,13 +105,17 @@ class tad_web_action
             }
 
             $main_data[$i]                = $all;
+            $main_data[$i]['id']          = $ActionID;
+            $main_data[$i]['id_name']     = 'ActionID';
+            $main_data[$i]['title']       = $ActionName;
             $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
 
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
 
             $subdir = isset($WebID) ? "/{$WebID}" : "";
             $TadUpFiles->set_dir('subdir', $subdir);
@@ -159,9 +163,9 @@ class tad_web_action
         $ActionID = intval($ActionID);
         $this->add_counter($ActionID);
 
-        $sql = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $all = $xoopsDB->fetchArray($result);
+        $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
         foreach ($all as $k => $v) {
@@ -229,11 +233,7 @@ class tad_web_action
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['action']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['action']);
         get_quota($this->WebID);
 
         //抓取預設值
@@ -398,8 +398,8 @@ class tad_web_action
     public function delete($ActionID = "")
     {
         global $xoopsDB, $TadUpFiles;
-        $sql = "select CateID from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
+        $result       = $xoopsDB->query($sql) or web_error($sql);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'ActionID', $ActionID)) {
             $anduid = onlyMine();
@@ -424,7 +424,7 @@ class tad_web_action
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select ActionID,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql);
         while (list($ActionID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ActionID);
             $allCateID[$CateID] = $CateID;
@@ -439,8 +439,8 @@ class tad_web_action
     public function get_total()
     {
         global $xoopsDB;
-        $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
+        $result      = $xoopsDB->query($sql) or web_error($sql);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -461,9 +461,9 @@ class tad_web_action
             return;
         }
 
-        $sql = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
+        $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='$ActionID'";
         $result = $xoopsDB->query($sql) or web_error($sql);
-        $data = $xoopsDB->fetchArray($result);
+        $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
 
@@ -563,11 +563,11 @@ class tad_web_action
         $andStart  = empty($start_date) ? "" : "and ActionDate >= '{$start_date}'";
         $andEnd    = empty($end_date) ? "" : "and ActionDate <= '{$end_date}'";
 
-        $sql = "select ActionID,ActionName,ActionDate,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by ActionDate";
+        $sql    = "select ActionID,ActionName,ActionDate,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by ActionDate";
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
-        $main_data = '';
+        $main_data = array();
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

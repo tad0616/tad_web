@@ -1,10 +1,9 @@
 <?php
-$blocksArr = '';
 // if (!isset($_SESSION['page_cates'])) {
 $arr[_MD_TCW_PAGE_ALLCATE] = 'all';
 $web_cate                  = new web_cate($WebID, "page", "tad_web_page");
 $tad_web_cate_arr          = $web_cate->get_tad_web_cate_arr();
-// if ($_GET['debug'] == 1) {
+// if (isset($_GET['debug']) and $_GET['debug'] == 1) {
 //     die(var_export($tad_web_cate_arr));
 // }
 foreach ($tad_web_cate_arr as $cate) {

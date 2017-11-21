@@ -1,6 +1,4 @@
 <?php
-$blocksArr = '';
-
 $blocksArr['list_link']['name']                = _MD_TCW_LINK_BLOCK_LIST;
 $blocksArr['list_link']['tpl']                 = 'list_link.tpl';
 $blocksArr['list_link']['position']            = 'block4';

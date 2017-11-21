@@ -5,9 +5,6 @@
 
   <{if $WebID}>
 
-
-    <div class="row">
-      <div class="col-sm-12">
         <ul class="list-group">
           <{foreach from=$homework_data key=i item=homework}>
             <{if $homework.toCal > $today}>
@@ -16,7 +13,7 @@
 
                 <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-                <{if $homework.isMyWeb or $homework.isAssistant}>
+                <{if $homework.isCanEdit}>
                   <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
@@ -24,18 +21,15 @@
             <{/if}>
           <{/foreach}>
         </ul>
-      </div>
-    </div>
 
 
     <{foreach from=$homework_data key=i item=homework}>
       <{if $homework.toCal ==$today}>
-        <div class="row">
-          <div class="col-sm-12">
+
             <h3>
               <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-              <{if $isMyWeb or $homework.isAssistant}>
+              <{if $homework.isCanEdit}>
                 <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
 
                 <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
@@ -76,13 +70,9 @@
               <{/if}>
             <{/if}>
             </div>
-          </div>
-        </div>
       <{/if}>
     <{/foreach}>
 
-    <div class="row">
-      <div class="col-sm-12">
         <ul class="list-group">
           <{foreach from=$homework_data key=i item=homework}>
             <{if $homework.toCal < $today}>
@@ -91,7 +81,7 @@
 
                 <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-                <{if $homework.isMyWeb or $homework.isAssistant}>
+                <{if $homework.isCanEdit}>
                   <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                   <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
@@ -99,8 +89,6 @@
             <{/if}>
           <{/foreach}>
         </ul>
-      </div>
-    </div>
 
   <{else}>
     <{if $web_display_mode=='index' and $homework_data}>
@@ -131,11 +119,11 @@
           <{/if}>
         </tr>
       </thead>
-      <{foreach item=homework from=$homework_data}>
+      <{foreach  from=$homework_data item=homework}>
         <tr>
           <td>
             <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.WebName}> <{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
-            <{if $homework.isMyWeb or $homework.isAssistant}>
+            <{if $homework.isCanEdit}>
               <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
@@ -171,8 +159,7 @@
 <{/if}>
 
 <{if $yet_data and $isMyWeb}>
-  <div class="row">
-    <div class="col-sm-12">
+
       <ul class="list-group">
         <{foreach from=$yet_data key=i item=homework}>
           <li class="list-group-item">
@@ -180,7 +167,7 @@
 
             <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-            <{if $homework.isMyWeb or $homework.isAssistant}>
+            <{if $homework.isCanEdit}>
               <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
@@ -189,6 +176,4 @@
           </li>
         <{/foreach}>
       </ul>
-    </div>
-  </div>
 <{/if}>

@@ -1,6 +1,4 @@
 <?php
-$blocksArr = '';
-
 $blocksArr['list_news']['name']                = _MD_TCW_NEWS_BLOCK_LIST;
 $blocksArr['list_news']['tpl']                 = 'list_news.tpl';
 $blocksArr['list_news']['position']            = 'block1';

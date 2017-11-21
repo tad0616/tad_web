@@ -1,6 +1,4 @@
 <?php
-$blocksArr = '';
-
 $blocksArr['list_files']['name']            = _MD_TCW_FILES_BLOCK_LIST;
 $blocksArr['list_files']['tpl']             = 'list_files.tpl';
 $blocksArr['list_files']['position']        = 'block4';

@@ -3,7 +3,7 @@ CREATE TABLE `tad_web_menu` (
   `ParentMenuID` smallint(6) unsigned NOT NULL COMMENT '選項編號',
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
   `MenuTitle` varchar(255) NOT NULL default '' COMMENT '選項名稱',
-  `Plugin` text NOT NULL COMMENT '對應外掛',
+  `Plugin` varchar(255) NOT NULL COMMENT '對應外掛',
   `CateID` smallint(6) unsigned NOT NULL default 0,
   `ColName` varchar(255) NOT NULL default '' COMMENT '對應欄位',
   `ColSn` smallint(6) unsigned NOT NULL default 0 COMMENT '對應編號',

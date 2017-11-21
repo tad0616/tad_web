@@ -238,7 +238,7 @@ function list_tad_web_notice()
     $result = $xoopsDB->query($sql)
     or web_error($sql);
 
-    $all_content = '';
+    $all_content = array();
     $i           = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate

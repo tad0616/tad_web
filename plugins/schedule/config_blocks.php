@@ -1,6 +1,4 @@
 <?php
-$blocksArr = '';
-
 $blocksArr['list_schedule']['name']     = _MD_TCW_SCHEDULE_BLOCK_LIST;
 $blocksArr['list_schedule']['tpl']      = 'list_schedule.tpl';
 $blocksArr['list_schedule']['position'] = 'block4';

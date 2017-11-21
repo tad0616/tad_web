@@ -33,7 +33,6 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     $tr_content_body = str_replace('<pre>', '<div class="well">', $tr_content_body);
     $tr_content_body = str_replace('</pre>', '</div>', $tr_content_body);
 
-    $content = '';
     $content = explode('</td><td>', $tr_content_body);
 
     if ($today_homework and $bring and $teacher_say) {

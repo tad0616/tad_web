@@ -21,7 +21,8 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
     $power_form = $power->power_menu('read', "BlockID", $BlockID);
     $xoopsTpl->assign('power_form', $power_form);
 
-    $shareBlockCount = $webs = '';
+    $shareBlockCount = '';
+    $webs            = array();
     $shareBlockID    = get_share_block_id($BlockID);
 
     if ($BlockID) {
@@ -357,7 +358,6 @@ function delete_share_block($BlockID, $WebID)
 function get_share_block_id($BlockID)
 {
     global $xoopsDB;
-    $share_blocks  = '';
     $sql           = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where `ShareFrom`='{$BlockID}'";
     $result        = $xoopsDB->queryF($sql) or web_error($sql);
     list($BlockID) = $xoopsDB->fetchRow($result);
@@ -496,7 +496,7 @@ function chk_newblock($WebID)
 
             //找出某區塊安裝在該網站的 $BlockID 以及現有設定
             foreach ($db_blocks_config[$BlockName] as $BlockID => $BlockConfig) {
-                $new_config = $db_config = '';
+                $new_config = $db_config = array();
 
                 //已安裝區塊的設定值陣列
                 $db_config = json_decode($BlockConfig, true);

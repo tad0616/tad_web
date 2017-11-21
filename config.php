@@ -77,8 +77,8 @@ function tad_web_config($WebID, $configs)
     $modhandler     = xoops_gethandler('module');
     $config_handler = xoops_gethandler('config');
 
-    $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
-    $login_method        = $login_defval        = "";
+    $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
+    $login_method        = $login_defval        = array();
     if ($TadLoginXoopsModule) {
         global $xoopsConfig;
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";

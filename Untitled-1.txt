@@ -1,0 +1,5 @@
+plugin	ColName	ColSN	CateID	AssistantType	AssistantID
+fsn	fsn	2448	9160	MemID	18594
+PageID	PageID	2895	7450	MemID	16923
+ScheduleID	ScheduleID	3474	8982	MemID	18407
+WorksID	WorksID	988	5164	MemID	10605

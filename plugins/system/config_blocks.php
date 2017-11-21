@@ -1,5 +1,4 @@
 <?php
-$blocksArr = '';
 global $WebID;
 
 $blocksArr['search']['name']     = _MD_TCW_SYSTEM_BLOCK_SEARCH;

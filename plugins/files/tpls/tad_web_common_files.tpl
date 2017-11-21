@@ -40,7 +40,7 @@
           <{/if}>
           <{$file.showurl}>
           <{if $file.isMyWeb or $file.isAssistant}>
-            <a href="javascript:delete_files_func(<{$file.files_sn}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+            <a href="javascript:delete_files_func(<{$file.fsn}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
             <a href="files.php?WebID=<{$file.WebID}>&op=edit_form&fsn=<{$file.fsn}>" class="text-warning"><i class="fa fa-pencil"></i></a>
           <{/if}>
           </div>

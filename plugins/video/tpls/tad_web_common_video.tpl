@@ -45,7 +45,7 @@
       <tr id="VideoID_<{$video.VideoID}>">
         <td style="width: 200px;">
           <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>">
-            <img src="http://i3.ytimg.com/vi/<{$video.VideoPlace}>/0.jpg" class="img-responsive img-rounded" style="width: 100%;" alt="<{$video.VideoName}>" title="<{$video.VideoName}>">
+            <img src="https://i3.ytimg.com/vi/<{$video.VideoPlace}>/0.jpg" class="img-responsive img-rounded" style="width: 100%;" alt="<{$video.VideoName}>" title="<{$video.VideoName}>">
           </a>
 
           <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>

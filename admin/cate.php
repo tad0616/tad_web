@@ -198,7 +198,7 @@ function tad_web_list_cate()
     $sql    = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_cate") . "` WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
-    $all_content = '';
+    $all_content = array();
 
     $i = 0;
 

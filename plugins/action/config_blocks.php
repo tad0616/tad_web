@@ -1,5 +1,4 @@
 <?php
-$blocksArr = '';
 
 $blocksArr['list_action']['name']            = _MD_TCW_ACTION_BLOCK_LIST;
 $blocksArr['list_action']['tpl']             = 'list_action.tpl';

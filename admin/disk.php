@@ -21,7 +21,7 @@ function list_all_web($defCateID = '')
 
     $result            = $xoopsDB->query($sql) or web_error($sql);
     $_SESSION['quota'] = '';
-    $data              = "";
+    $data              = array();
     $dir               = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
@@ -62,8 +62,18 @@ function list_all_web($defCateID = '')
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('space', $space);
     $xoopsTpl->assign('free_space', get_free_space());
-    $xoopsTpl->assign('total_space', roundsize(get_dir_size($dir)));
+
+    $xoopsTpl->assign('total_space', roundsize(get_all_dir_size()));
     $xoopsTpl->assign('user_space_quota', $xoopsModuleConfig['user_space_quota']);
+}
+
+function get_all_dir_size()
+{
+    global $xoopsDB;
+    $sql             = "SELECT sum(`used_size`) FROM " . $xoopsDB->prefix("tad_web") . " ";
+    $result          = $xoopsDB->query($sql) or web_error($sql);
+    list($used_size) = $xoopsDB->fetchRow($result);
+    return $used_size;
 }
 
 //目前硬碟空間

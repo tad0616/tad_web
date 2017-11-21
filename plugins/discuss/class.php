@@ -51,7 +51,7 @@ class tad_web_discuss
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -90,7 +90,7 @@ class tad_web_discuss
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -104,13 +104,17 @@ class tad_web_discuss
                 $$k = $v;
             }
 
-            $main_data[$i] = $all;
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $DiscussID;
+            $main_data[$i]['id_name'] = 'DiscussID';
+            $main_data[$i]['title']   = $DiscussTitle;
 
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
 
             $renum       = $this->get_re_num($DiscussID);
             $show_re_num = empty($renum) ? "" : " ({$renum}) ";
@@ -778,7 +782,7 @@ class tad_web_discuss
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
-        $main_data = '';
+        $main_data = array();
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

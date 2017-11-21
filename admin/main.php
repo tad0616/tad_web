@@ -9,7 +9,7 @@ include_once "../class/cate.php";
 //環境檢查
 function chk_evn()
 {
-    $error = '';
+    $error = array();
     if (!function_exists('imagecreatetruecolor')) {
         $error[_MA_TCW_NEED_IMAGECREATETURECOLOR] = _MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT;
     }
@@ -19,7 +19,7 @@ function chk_evn()
     }
 
     $modhandler    = xoops_gethandler('module');
-    $ttxoopsModule = &$modhandler->getByDirname("tadtools");
+    $ttxoopsModule = $modhandler->getByDirname("tadtools");
     $version       = $ttxoopsModule->version();
     if ($version < 274) {
         $error[_MA_TCW_NEED_TADTOOLS] = _MA_TCW_NEED_TADTOOLS_CONTENT;
@@ -50,7 +50,7 @@ function list_all_web($defCateID = '')
     $result  = $xoopsDB->query($sql) or web_error($sql);
     $xoopsTpl->assign('bar', $bar);
 
-    $data = "";
+    $data = array();
     $i    = 1;
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/jeditable.php";
     $file = "save.php";
@@ -71,7 +71,7 @@ function list_all_web($defCateID = '')
 
             $result2   = $xoopsDB->queryF($sql2) or web_error($sql2);
             $j         = 0;
-            $admin_arr = '';
+            $admin_arr = array();
             while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result2)) {
                 $admin_arr[$j]['uid']   = $uid;
                 $admin_arr[$j]['name']  = $name;
@@ -80,7 +80,7 @@ function list_all_web($defCateID = '')
                 $j++;
             }
         } else {
-            $admin_arr = "";
+            $admin_arr = array();
         }
         $data[$i]['admin_arr'] = $admin_arr;
         //$jeditable->setSelectCol(".Class{$WebID}",$file,"{{$teacher_option}, 'selected':'{$WebOwnerUid}'}","{'WebID' : $WebID , 'op' : 'save_teacher'}",_MA_TCW_CLICK_TO_EDIT);
@@ -130,7 +130,7 @@ function create_by_user()
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts = MyTextSanitizer::getInstance();
-    $opt  = "";
+    $opt  = array();
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;

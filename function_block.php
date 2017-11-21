@@ -28,29 +28,38 @@ if (!function_exists('MyWebID')) {
 
 //取得網站設定值
 if (!function_exists('get_web_config')) {
-    function get_web_config($ConfigName = null, $defWebID = null)
+    function get_web_config($ConfigName = null, $defWebID = null, $form = 'file')
     {
         global $xoopsDB;
-        $andWebID = '';
+        $andWebID     = '';
+        $ConfigValues = array();
         if (!is_null($defWebID)) {
-            $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/web_config.php";
-            // unlink($file);
-            if (file_exists($file)) {
-                require $file;
+            if ($form != 'file') {
+                $sql               = "select `ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='$ConfigName' and WebID='$defWebID'";
+                $result            = $xoopsDB->queryF($sql) or web_error($sql);
+                list($ConfigValue) = $xoopsDB->fetchRow($result);
+                return $ConfigValues;
             } else {
-                $content = "<?php\n";
-                $sql     = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$defWebID' ";
-                $result  = $xoopsDB->queryF($sql) or web_error($sql);
-                while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
-                    $web_config[$ConfigName] = $ConfigValue;
-                    $content .= "\$web_config['$ConfigName'] = '$ConfigValue';\n";
+                $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/web_config.php";
+                // unlink($file);
+                if (file_exists($file)) {
+                    require $file;
+                } else {
+                    $content = "<?php\n";
+                    $sql     = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$defWebID' ";
+                    $result  = $xoopsDB->queryF($sql) or web_error($sql);
+                    while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
+                        $web_config[$ConfigName] = $ConfigValue;
+                        $content .= "\$web_config['$ConfigName'] = '$ConfigValue';\n";
+                    }
+                    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/");
+                    file_put_contents($file, $content);
                 }
-                file_put_contents($file, $content);
+                // die(var_export($web_config));
+                if (isset($web_config[$ConfigName])) {
+                    return $web_config[$ConfigName];
+                }
             }
-            // if ($defWebID == 10 and $ConfigName == 'default_class') {
-            //     die(var_dump($web_config));
-            // }
-            return $web_config[$ConfigName];
         } else {
             $sql    = "select `WebID`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='$ConfigName' ";
             $result = $xoopsDB->queryF($sql) or web_error($sql);

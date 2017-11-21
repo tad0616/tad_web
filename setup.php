@@ -18,11 +18,11 @@ function plugin_setup($WebID, $plugin)
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=setup", 3, _MD_TCW_AUTO_TO_HOME);
     } elseif (!$xoopsUser or empty($WebID) or empty($MyWebs)) {
-        redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
     }
 
     $myts        = MyTextSanitizer::getInstance();
-    $pluginSetup = '';
+    $pluginSetup = array();
     $setup_file  = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
     if (file_exists($setup_file)) {
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";

@@ -1,3 +1,18 @@
+Tad Web 1.7.5 (2017-11-21 released)
+====================================================
+  1. Correct the file can not be deleted correctly
+  2  correction function settings can not use the problem
+  3. Support PHP7.1
+  4. Correct "small helper" function related permissions
+
+
+Tad Web 1.7.4 (2017-10-06 released)
+====================================================
+  1. Modify some link
+  2. Accelerate the backspace management page
+  3. Fix the calendar can not display the problem
+
+
 Tad Web 1.7.3 (2017-09-27 released)
 ================================================== ==
   1. Simplified website settings page

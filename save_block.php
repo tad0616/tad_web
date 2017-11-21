@@ -48,7 +48,8 @@ switch ($op) {
             // $log .= "<div>$sql</div>";
         }
 
-        $sort = 1;
+        $sort         = 1;
+        $shareBlockID = '';
         if ($plugin == "share") {
             $shareBlockID = $BlockID;
             $copyBlockID  = get_share_to_custom_blockid($BlockID, $WebID);
@@ -73,9 +74,9 @@ switch ($op) {
         $sort = 1;
         if ($plugin != "share") {
             foreach ($order_arr as $BlockID) {
-                if ($BlockID == $shareBlockID) {
-                    $BlockID = $copyBlockID;
-                }
+                // if ($BlockID == $shareBlockID) {
+                //     $BlockID = $copyBlockID;
+                // }
                 $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set `BlockSort`='{$sort}' where `BlockID`='{$BlockID}'";
                 $xoopsDB->queryF($sql) or web_error($sql);
                 $sort++;
