@@ -347,7 +347,7 @@ function tad_web_login($WebID, $config = array())
 //取得多人網頁的內部區塊(在footer.php執行)
 function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 {
-    global $xoopsTpl, $xoopsDB, $Web;
+    global $xoopsTpl, $xoopsDB, $Web, $isAdmin;
 
     $power           = new power($WebID);
     $myts            = MyTextSanitizer::getInstance();
@@ -366,7 +366,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     // die($andForceMenu);
     //取得區塊位置
     $sql = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}'  $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
-    // if ($_GET['test'] == '1') {
+    // if ($isAdmin) {
     //     die($sql);
     // }
     $result = $xoopsDB->queryF($sql) or web_error($sql);
@@ -403,6 +403,9 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
             }
         } else {
             if (file_exists("{$dir}{$plugin}/blocks.php")) {
+                // if ($isAdmin) {
+                //     echo "{$dir}{$plugin}/blocks.php<br>";
+                // }
                 include_once "{$dir}{$plugin}/blocks.php";
             }
 
@@ -417,6 +420,9 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     // }
     // die(var_export($block['side']));
 
+    // if ($isAdmin) {
+    //     exit;
+    // }
     $xoopsTpl->assign('center_block1', $block['block1']);
     $xoopsTpl->assign('center_block2', $block['block2']);
     $xoopsTpl->assign('center_block3', $block['block3']);

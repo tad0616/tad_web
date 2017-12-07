@@ -120,7 +120,22 @@ function xoops_module_update_tad_web($module, $old_version)
     }
 
     chk_plugin_update();
+    fiexd_block();
     return true;
+}
+
+//修正區塊所屬plugin
+function fiexd_block()
+{
+    global $xoopsDB;
+    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    $allBlockConfig = get_dir_blocks();
+    foreach ($allBlockConfig as $plugin => $BlockConfig) {
+        foreach ($BlockConfig as $BlockName => $Block) {
+            $sql = "update  " . $xoopsDB->prefix("tad_web_blocks") . " set plugin='{$plugin}' where `BlockName`='{$BlockName}' and plugin!='{$plugin}'";
+            $xoopsDB->queryF($sql) or web_error($sql);
+        }
+    }
 }
 
 //新增檔案欄位

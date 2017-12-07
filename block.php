@@ -67,6 +67,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
         $block_plugin = isset($block['plugin']) ? $block['plugin'] : $plugin;
         $config       = isset($block['plugin']) ? json_decode($block['BlockConfig'], true) : '';
 
+
         if ($block_plugin == 'custom') {
             include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
             $ck = new CKEditor("tad_web/{$WebID}/block", "BlockContent[html]", $block['BlockContent']);
@@ -77,6 +78,10 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
             $func = isset($block['BlockName']) ? $block['BlockName'] : '';
             include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
             $form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
+            if ($_GET['test'] == '1') {
+                die(var_export($form));
+            }
+
         }
     }
     $block['config'] = $config;

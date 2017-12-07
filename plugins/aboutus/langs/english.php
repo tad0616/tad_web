@@ -50,7 +50,7 @@ define('_MD_TCW_IMPORT_EXCEL', 'Import %s data as Excel file');
 define('_MD_TCW_SELECT_TO_EDIT', 'Click on the name of the member to edit the Student Information');
 define('_MD_TCW_IMPORT_LINK', "
 <ul>
-  <li> <a href='http://120.115.2.90/modules/student_data/' target='_blank'> Tainan dedicated teacher member data import files made </a> </li>
+  <li> <a href='https: //campus-xoops.tn.edu.tw/modules/student_data/' target='_blank'> Tainan dedicated teacher member data import files made </a> </li>
    < li> <a href = 'import.xls' > member data import Excel files example </a > </li >
    <li style = 'color: red;' > only supports xls format(csv, xlsx not support) </li >
 </ul > ");
