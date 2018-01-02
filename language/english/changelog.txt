@@ -1,3 +1,7 @@
+Tad Web 1.7.6 (2017-01-26 released)
+================================================== ==
+  1. Fix block json file content is not correct
+
 Tad Web 1.7.5 (2017-11-21 released)
 ====================================================
   1. Correct the file can not be deleted correctly
