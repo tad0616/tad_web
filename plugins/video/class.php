@@ -17,7 +17,7 @@ class tad_web_video
     //影片
     public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '', $display = "list")
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
@@ -45,7 +45,7 @@ class tad_web_video
             }
         }
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -87,7 +87,7 @@ class tad_web_video
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -102,13 +102,17 @@ class tad_web_video
             }
 
             $main_data[$i]                = $all;
+            $main_data[$i]['id']          = $VideoID;
+            $main_data[$i]['id_name']     = 'VideoID';
+            $main_data[$i]['title']       = $VideoName;
             $main_data[$i]['isAssistant'] = is_assistant($CateID, 'VideoID', $VideoID);
 
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
             if (empty($VideoPlace)) {
                 $VideoPlace = $this->tad_web_getYTid($Youtube);
                 if (!empty($VideoPlace)) {
@@ -208,12 +212,7 @@ class tad_web_video
     public function edit_form($VideoID = "")
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
-
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['video']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['video']);
         get_quota($this->WebID);
 
         //抓取預設值
@@ -455,7 +454,7 @@ class tad_web_video
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
-        $main_data = '';
+        $main_data = array();
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

@@ -18,7 +18,7 @@ define("_MD_TCW_LOGO_TOOLS", "Logo");
 define("_MD_TCW_BG_TOOLS", "Background");
 define("_MD_TCW_COLOR_TOOLS", "Color");
 define("_MD_TCW_BLOCK_TOOLS", "Blocks");
-define("_MD_TCW_BLOCK_TITLE", "Do you want to display the title block?");
+define("_MD_TCW_BLOCK_TITLE", "Block title");
 define("_MD_TCW_BLOCK_SHOW_TITLE", "Does display block title?");
 define("_MD_TCW_BLOCK_ENABLE", "Does enable this block?");
 define("_MD_TCW_DATA_NOT_EXIST", "This information does not exist.");
@@ -164,7 +164,7 @@ define("_MD_TCW_BOTTOM_LEFT_BLOCK", "Bottom left blocks");
 define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "Bottom right blocks");
 define("_MD_TCW_UNINSTALL_BLOCK", "Uninstall blocks");
 define("_MD_TCW_NO_SPACE", "You have used %s MB of hard disk space has reached the upper limit of  %s MB, can not add data.");
-define("_MD_TCW_MENU", "Menu");
+define("_MD_TCW_TO_MENU", "Menu");
 define("_MD_TCW_USE_BLOCK_SITE", "Currently there are %s sites use this block");
 define("_MD_TCW_SIDE_BG_COLOR", "Side background color");
 
@@ -256,7 +256,6 @@ define('_MD_TCW_CATE_UNABLED', 'Unable');
 define('_MD_TCW_CATE_DATA_AMOUNT1', '( ');
 define('_MD_TCW_CATE_DATA_AMOUNT2', ' )');
 define('_MD_TCW_BLOCK_EMPTY', 'Empty Block');
-define('_MD_TCW_BLOCK_TITLE', 'Block Title');
 define('_MD_TCW_BLOCK_DEMO', 'Block Demo');
 
 define('_MD_TCW_UPDATE_MY_NAME', 'Admin Name');

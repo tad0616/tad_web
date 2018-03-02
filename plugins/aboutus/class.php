@@ -16,7 +16,7 @@ class tad_web_aboutus
     //所有網站列表
     public function list_all()
     {
-        global $xoopsDB, $MyWebs, $xoopsTpl, $TadUpFiles, $MyWebs, $xoopsModuleConfig, $isAdmin;
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isMyWeb, $xoopsModuleConfig, $isAdmin;
         $list_web_order = $xoopsModuleConfig['list_web_order'];
         if (empty($list_web_order)) {
             $list_web_order = 'WebSort';
@@ -36,7 +36,7 @@ class tad_web_aboutus
             $sql       = "select a.*,b.* from " . $xoopsDB->prefix("tad_web") . " as a left join " . $xoopsDB->prefix("apply") . " as b on a.WebOwnerUid=b.uid where a.`WebEnable`='1' {$and_county} {$and_city} {$and_SchoolName} order by b.zip, {$list_web_order}";
             $result    = $xoopsDB->query($sql) or web_error($sql);
             $total_web = 0;
-            $all_webs  = "";
+            $all_webs  = array();
             while ($all = $xoopsDB->fetchArray($result)) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
                 foreach ($all as $k => $v) {
@@ -59,7 +59,7 @@ class tad_web_aboutus
                 $total_web++;
             }
 
-            $data = "";
+            $data = array();
             $i    = 0;
             if (!empty($def_SchoolName)) {
                 foreach ($all_webs as $key => $item) {
@@ -112,7 +112,7 @@ class tad_web_aboutus
             $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by {$list_web_order}";
             $result = $xoopsDB->query($sql) or web_error($sql);
 
-            $data = "";
+            $data = array();
             $i    = 0;
             while ($all = $xoopsDB->fetchArray($result)) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
@@ -277,11 +277,7 @@ class tad_web_aboutus
     {
 
         global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb, $xoopsUser;
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID);
 
         $xoopsTpl->assign('class_pic', sprintf(_MD_TCW_CLASS_PIC, $this->setup['class_title']));
 
@@ -340,6 +336,9 @@ class tad_web_aboutus
         $sweet_alert->render("del_class", "aboutus.php?op=del_class&WebID={$this->WebID}&CateID=", 'CateID');
 
         $default_class = get_web_config('default_class', $this->WebID);
+        // if ($this->WebID == 10) {
+        //     die('default_class=' . $default_class);
+        // }
         $xoopsTpl->assign('default_class', $default_class);
     }
 
@@ -501,11 +500,7 @@ class tad_web_aboutus
     public function edit_class_stu($DefCateID = '')
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID);
         get_quota($this->WebID);
         // $Web = get_tad_web($this->WebID);
         $xoopsTpl->assign('CateID', $DefCateID);
@@ -515,7 +510,7 @@ class tad_web_aboutus
         $result = $xoopsDB->query($sql) or web_error($sql);
         $i      = 0;
 
-        $students = "";
+        $students = array();
 
         while ($all = $xoopsDB->fetchArray($result)) {
 
@@ -591,7 +586,7 @@ class tad_web_aboutus
             $result = $xoopsDB->query($sql) or web_error($sql);
             $i      = 0;
 
-            $students = "";
+            $students = array();
             while ($all = $xoopsDB->fetchArray($result)) {
                 $students[$i]           = $all;
                 $students[$i]['color']  = ($all['MemSex'] == '1') ? 'blue' : 'red';
@@ -787,7 +782,7 @@ class tad_web_aboutus
         $result = $xoopsDB->query($sql) or web_error($sql);
         $i      = 0;
 
-        $students = "";
+        $students = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             $students[$i]           = $all;
             $students[$i]['color']  = ($all['MemSex'] == '1') ? 'blue' : 'red';
@@ -823,11 +818,7 @@ class tad_web_aboutus
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $TadUpFiles, $isMyWeb, $MyWebs;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID);
 
         $myts                   = MyTextSanitizer::getInstance();
         $_POST['MemExpertises'] = $myts->addSlashes($_POST['MemExpertises']);
@@ -917,11 +908,7 @@ class tad_web_aboutus
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles, $isMyWeb, $MyWebs;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID);
 
         $whereCateID = $whereMemID = "";
         if (!empty($CateID) and is_numeric($CateID)) {
@@ -1141,7 +1128,7 @@ class tad_web_aboutus
         $web_cate = new web_cate('0', "web_cate", $table);
         $cate     = $web_cate->get_tad_web_cate_arr();
         $webs     = get_web_cate_arr();
-        $data_arr = "";
+        $data_arr = array();
         if (is_array($cate)) {
             foreach ($cate as $CateID => $data) {
                 $data_arr[$CateID]         = $data;
@@ -1180,6 +1167,7 @@ class tad_web_aboutus
     public function update_web_title($WebTitle = "")
     {
         global $xoopsDB;
+        unset($_SESSION['tad_web'][$this->WebID]);
         $sql = "update  " . $xoopsDB->prefix("tad_web") . " set WebTitle='{$WebTitle}' where `WebID`='{$this->WebID}'";
         $xoopsDB->queryF($sql) or web_error($sql);
         mklogoPic($this->WebID);
@@ -1209,7 +1197,7 @@ class tad_web_aboutus
         }
 
         $i                 = 0;
-        $config_plugin_arr = '';
+        $config_plugin_arr = array();
         foreach ($menu_var as $k => $plugin) {
             // die(var_export($plugin));
             $dirname = $plugin['dirname'];
@@ -1596,7 +1584,7 @@ class tad_web_aboutus
         $row       = 1;
         $real_num  = ($row_num * 4) - 4;
         $more_num  = $real_num - $mem_total;
-        $all_mems  = "";
+        $all_mems  = array();
 
         if ($more_num) {
             $sql2 .= $sql . " limit 0, $more_num";
@@ -1680,11 +1668,11 @@ class tad_web_aboutus
             if (($row == 1 or $row == $row_num) and $i >= $row_num) {
                 $row++;
                 $i        = 1;
-                $all_main = "";
+                $all_main = array();
             } elseif ($row > 1 and $row < $row_num and $i >= 2) {
                 $row++;
                 $i        = 1;
-                $all_main = "";
+                $all_main = array();
             } else {
                 $i++;
             }

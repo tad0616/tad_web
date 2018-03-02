@@ -18,7 +18,7 @@ class tad_web_action
     //活動剪影
     public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $plugin_menu_var;
+        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
@@ -46,7 +46,7 @@ class tad_web_action
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -85,7 +85,7 @@ class tad_web_action
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -105,13 +105,17 @@ class tad_web_action
             }
 
             $main_data[$i]                = $all;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
-
+            $main_data[$i]['id'] = $ActionID;
+            $main_data[$i]['id_name'] = 'ActionID';
+            $main_data[$i]['title'] = $ActionName;
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
+            $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
 
             $subdir = isset($WebID) ? "/{$WebID}" : "";
             $TadUpFiles->set_dir('subdir', $subdir);
@@ -174,7 +178,7 @@ class tad_web_action
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col("ActionID", $ActionID);
-        $pics = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+        $pics = $TadUpFiles->show_files('upfile', null, null, null, null, null, null, null, 3000); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
         // $TadUpFiles->set_col("ActionID", $ActionID, 1);
         // $bg_pic = $TadUpFiles->get_file_for_smarty();
@@ -190,6 +194,12 @@ class tad_web_action
         if (empty($uid_name)) {
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
+
+        $assistant = is_assistant($CateID, 'ActionID', $ActionID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID));
 
         $xoopsTpl->assign('ActionName', $ActionName);
         $xoopsTpl->assign('ActionDate', $ActionDate);
@@ -221,7 +231,7 @@ class tad_web_action
         $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("ActionID", $ActionID, 'action'));
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'ActionID', $ActionID));
+
     }
 
     //tad_web_action編輯表單
@@ -229,11 +239,7 @@ class tad_web_action
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['action']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['action']);
         get_quota($this->WebID);
 
         //抓取預設值
@@ -567,7 +573,7 @@ class tad_web_action
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
-        $main_data = '';
+        $main_data = array();
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

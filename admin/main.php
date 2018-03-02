@@ -9,12 +9,12 @@ include_once "../class/cate.php";
 //環境檢查
 function chk_evn()
 {
-    $error = '';
+    $error = array();
     if (!function_exists('imagecreatetruecolor')) {
         $error[_MA_TCW_NEED_IMAGECREATETURECOLOR] = _MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT;
     }
 
-    if (!is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme")) {
+    if (!is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme") and !is_dir(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2")) {
         $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
     }
 
@@ -50,7 +50,7 @@ function list_all_web($defCateID = '')
     $result  = $xoopsDB->query($sql) or web_error($sql);
     $xoopsTpl->assign('bar', $bar);
 
-    $data = "";
+    $data = array();
     $i    = 1;
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/jeditable.php";
     $file = "save.php";
@@ -71,7 +71,7 @@ function list_all_web($defCateID = '')
 
             $result2   = $xoopsDB->queryF($sql2) or web_error($sql2);
             $j         = 0;
-            $admin_arr = '';
+            $admin_arr = array();
             while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result2)) {
                 $admin_arr[$j]['uid']   = $uid;
                 $admin_arr[$j]['name']  = $name;
@@ -80,7 +80,7 @@ function list_all_web($defCateID = '')
                 $j++;
             }
         } else {
-            $admin_arr = "";
+            $admin_arr = array();
         }
         $data[$i]['admin_arr'] = $admin_arr;
         //$jeditable->setSelectCol(".Class{$WebID}",$file,"{{$teacher_option}, 'selected':'{$WebOwnerUid}'}","{'WebID' : $WebID , 'op' : 'save_teacher'}",_MA_TCW_CLICK_TO_EDIT);
@@ -130,7 +130,7 @@ function create_by_user()
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts = MyTextSanitizer::getInstance();
-    $opt  = "";
+    $opt  = array();
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -388,6 +388,8 @@ function update_tad_web($WebID = "")
     where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    unset($_SESSION['tad_web'][$WebID]);
+
     save_one_web_title($WebID, $WebTitle);
 
     return $WebID;
@@ -413,6 +415,8 @@ function save_one_web_title($WebID = '', $WebTitle = '')
     $WebTitle = $myts->addSlashes($WebTitle);
     $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
+
+    $_SESSION['tad_web'][$WebID]['WebTitle'] = $WebTitle;
 
     //修改班級名稱
     $default_class = get_web_config('default_class', $WebID);
@@ -441,6 +445,7 @@ function save_webs_able($WebID = "", $able = "")
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '{$able}' where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
+    $_SESSION['tad_web'][$WebID]['WebEnable'] = $able;
     return $WebID;
 }
 

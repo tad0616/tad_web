@@ -12,8 +12,8 @@ class tad_web_system
     //系統
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs;
-        $main_data = "";
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb;
+        $main_data = array();
         $total     = "";
 
         if ($mode == "return") {
@@ -40,11 +40,7 @@ class tad_web_system
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['system']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['system']);
         get_quota($this->WebID);
 
         return;

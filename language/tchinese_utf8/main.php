@@ -51,8 +51,8 @@ define("_MD_TCW_WEB_NAME_SETUP", "網站名稱設定");
 define("_MD_TCW_FCNCTION_SETUP", "功能設定");
 define("_MD_TCW_SELECT_TO_CANCEL", "請將想要隱藏的功能打勾");
 define("_MD_TCW_CLICK_TO_CHANG", "點選下圖以切換圖片，並可拖動上方底圖或logo圖，以調整喜歡的位置。");
-define("_MD_TCW_GOOD_LOGO_SITE", "<ol><li>可從 <a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a> 線上製作 logo 圖。</li><li>若 logo 圖拖曳到看不見，<a href='config.php?WebID=%s&op=reset_logo'>可點此恢復其預設位置</a>。</li></ol>");
-define("_MD_TCW_GOOD_BG_SITE", "<ol><li>可從 <a href='https://pixabay.com/' target='_blank'>https://pixabay.com/</a> 下載可合法使用的精美圖片來作為標題圖。</li><li>若標題圖拖曳到看不見，<a href='config.php?WebID=%s&op=reset_head'>可點此恢復其預設位置</a>。</li></ol>");
+define("_MD_TCW_GOOD_LOGO_SITE", "<ol><li>可從 <a href='http://www.qt86.com/random.php' target='_blank'>http://www.qt86.com/random.php</a> 線上製作 logo 圖。</li><li>若 logo 圖拖曳到看不見，<a href='config.php?WebID=%s&op=reset_logo'>可點此恢復其預設位置</a>。</li><li>若看不到新圖或調整後結果，九成九是您的瀏覽器快取在做怪，請按 <kbd>Ctrl</kbd>+<kbd>F5</kbd> 試試。</li></ol>");
+define("_MD_TCW_GOOD_BG_SITE", "<ol><li>可從 <a href='https://pixabay.com/' target='_blank'>https://pixabay.com/</a> 下載可合法使用的精美圖片來作為標題圖。</li><li>若標題圖拖曳到看不見，<a href='config.php?WebID=%s&op=reset_head'>可點此恢復其預設位置</a>。</li><li>若看不到新圖或調整後結果，九成九是您的瀏覽器快取在做怪，請按 <kbd>Ctrl</kbd>+<kbd>F5</kbd> 試試。</li></ol>");
 
 define("_MD_TCW_RAND_IMAGE", "回復成隨機背景");
 define("_MD_TCW_BG_TOP", "上");
@@ -158,7 +158,7 @@ define("_MD_TCW_BOTTOM_LEFT_BLOCK", "下中左區塊");
 define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "下中右區塊");
 define("_MD_TCW_UNINSTALL_BLOCK", "未安裝區塊");
 define("_MD_TCW_NO_SPACE", "您已使用 %s MB的硬碟空間，已達上限 %s MB，無法再新增資料。");
-define("_MD_TCW_MENU", "回到選單");
+define("_MD_TCW_TO_MENU", "回到選單");
 define("_MD_TCW_USE_BLOCK_SITE", "目前有 %s 個網站使用此區塊");
 define("_MD_TCW_SIDE_BG_COLOR", "側邊欄底色");
 
@@ -253,7 +253,6 @@ define('_MD_TCW_CATE_UNABLED', '關閉中');
 define('_MD_TCW_CATE_DATA_AMOUNT1', '（目前有 ');
 define('_MD_TCW_CATE_DATA_AMOUNT2', ' 筆資料）');
 define('_MD_TCW_BLOCK_EMPTY', '目前無內容，無法展示');
-define('_MD_TCW_BLOCK_TITLE', '區塊標題');
 define('_MD_TCW_BLOCK_DEMO', '區塊預覽');
 
 define('_MD_TCW_UPDATE_MY_NAME', '管理者姓名');

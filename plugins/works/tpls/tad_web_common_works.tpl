@@ -45,7 +45,7 @@
           <{/if}>
           <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
           <{if $work.hide}><span class="label label-danger"><{$work.hide}></span><{/if}>
-          <{if $work.isMyWeb or $work.isAssistant}>
+          <{if $work.isCanEdit}>
             <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
             <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
           <{/if}>

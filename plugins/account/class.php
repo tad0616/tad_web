@@ -55,7 +55,7 @@ class tad_web_account
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -87,7 +87,7 @@ class tad_web_account
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -107,13 +107,18 @@ class tad_web_account
             // }
 
             $main_data[$i]                = $all;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'AccountID', $AccountID);
+            $main_data[$i]['id'] = $AccountID;
+            $main_data[$i]['id_name'] = 'AccountID';
+            $main_data[$i]['title'] = $AccountTitle;
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'AccountID', $AccountID);
+            $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
 
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
             $main_data[$i]['Money']    = !empty($AccountOutgoings) ? "<span class='text-danger'>-{$AccountOutgoings}</span>" : "<span class='text-primary'>$AccountIncome</span>";
 
             $subdir = isset($WebID) ? "/{$WebID}" : "";
@@ -210,6 +215,12 @@ class tad_web_account
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
 
+        $assistant = is_assistant($CateID, 'AccountID', $AccountID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID));
+
         $xoopsTpl->assign('AccountTitle', $AccountTitle);
         $xoopsTpl->assign('AccountDate', $AccountDate);
         $xoopsTpl->assign('AccountIncome', $AccountIncome);
@@ -239,7 +250,6 @@ class tad_web_account
         $sweet_alert = new sweet_alert();
         $sweet_alert->render("delete_account_func", "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
         $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'AccountID', $AccountID));
 
         // $xoopsTpl->assign("tags", $this->tags->list_tags("AccountID", $AccountID, 'account'));
     }
@@ -249,11 +259,7 @@ class tad_web_account
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $WebTitle;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['account']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['account']);
         get_quota($this->WebID);
 
         //抓取預設值
@@ -536,7 +542,7 @@ class tad_web_account
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
-        $main_data = '';
+        $main_data = array();
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

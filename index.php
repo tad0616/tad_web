@@ -32,6 +32,7 @@ function ClassHome($WebID = "")
     }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
+    $_SESSION['tad_web'][$WebID]['WebCounter']++;
 
     $xoopsTpl->assign('MyWebs', $MyWebs);
     $xoopsTpl->assign('plugin_data_total', $plugin_data_total);
@@ -54,7 +55,7 @@ function list_all_class()
     $xoopsTpl->assign('show_arr', $show_arr);
     // $xoopsTpl->assign('display_mode', 'index');
     define('_DISPLAY_MODE', 'index');
-    $data_count = "";
+    $data_count = array();
 
     foreach ($show_arr as $dirname) {
         if (empty($dirname)) {

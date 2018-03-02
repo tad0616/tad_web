@@ -21,7 +21,8 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
     $power_form = $power->power_menu('read', "BlockID", $BlockID);
     $xoopsTpl->assign('power_form', $power_form);
 
-    $shareBlockCount = $webs = '';
+    $shareBlockCount = '';
+    $webs            = array();
     $shareBlockID    = get_share_block_id($BlockID);
 
     if ($BlockID) {
@@ -66,6 +67,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
         $block_plugin = isset($block['plugin']) ? $block['plugin'] : $plugin;
         $config       = isset($block['plugin']) ? json_decode($block['BlockConfig'], true) : '';
 
+
         if ($block_plugin == 'custom') {
             include_once XOOPS_ROOT_PATH . "/modules/tadtools/ck.php";
             $ck = new CKEditor("tad_web/{$WebID}/block", "BlockContent[html]", $block['BlockContent']);
@@ -76,14 +78,21 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
             $func = isset($block['BlockName']) ? $block['BlockName'] : '';
             include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
             $form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
+            if ($_GET['test'] == '1') {
+                die(var_export($form));
+            }
+
         }
     }
     $block['config'] = $config;
-    if ($_GET['test'] == '1') {
-        die(var_export($config));
-    }
+    // if ($WebID == '10') {
+    //     die(var_export($config));
+    // }
     $xoopsTpl->assign('form', $form);
     $xoopsTpl->assign('editor', $editor);
+    if ($_GET['test'] == '1') {
+        die(var_export($block));
+    }
     $xoopsTpl->assign('block', $block);
     $xoopsTpl->assign('iframeContent', $iframeContent);
     // $xoopsTpl->assign('block_config', $config);
@@ -354,7 +363,6 @@ function delete_share_block($BlockID, $WebID)
 function get_share_block_id($BlockID)
 {
     global $xoopsDB;
-    $share_blocks  = '';
     $sql           = "select BlockID from " . $xoopsDB->prefix("tad_web_blocks") . " where `ShareFrom`='{$BlockID}'";
     $result        = $xoopsDB->queryF($sql) or web_error($sql);
     list($BlockID) = $xoopsDB->fetchRow($result);
@@ -442,10 +450,100 @@ function demo_block($BlockID, $WebID)
     }
 
     $xoopsTpl->assign('theme_display_mode', 'blank');
-    // if ($WebID == '177') {
+    // if ($_GET['test'] == '1') {
     //     die(var_export($blocks_arr));
     // }
     $xoopsTpl->assign('block', $blocks_arr);
+}
+
+function chk_newblock($WebID)
+{
+    global $xoopsDB;
+
+    //取得應有的所有區塊
+    $all_blocks   = get_all_blocks();
+    $block_plugin = get_all_blocks('plugin');
+    $block_config = get_all_blocks('config');
+    //找出目前已安裝的區塊
+    $sql    = "select BlockID,BlockName,BlockConfig from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
+        $db_blocks[$BlockName]                  = $BlockName;
+        $db_blocks_config[$BlockName][$BlockID] = $BlockConfig;
+    }
+
+    //安裝新區塊
+    foreach ($all_blocks as $BlockName => $BlockTitle) {
+
+        //若該區塊還沒有安裝在該網站
+        if (!in_array($BlockName, $db_blocks)) {
+            if (is_array($block_config[$BlockName])) {
+                if (PHP_VERSION_ID >= 50400) {
+                    $config = json_encode($block_config[$BlockName], JSON_UNESCAPED_UNICODE);
+                } else {
+                    array_walk_recursive($block_config[$BlockName], function (&$value, $key) {
+                        if (is_string($value)) {
+                            $value = urlencode($value);
+                        }
+                    });
+                    $config = urldecode(json_encode($block_config[$BlockName]));
+                }
+            } else {
+                $config = '';
+            }
+            $config = str_replace('{{WebID}}', $WebID, $config);
+            $sql    = "insert into `"
+            . $xoopsDB->prefix("tad_web_blocks")
+                . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
+            $xoopsDB->queryF($sql) or web_error($sql);
+        } else {
+            //檢查區塊設定值是否需要更新
+
+            //找出某區塊安裝在該網站的 $BlockID 以及現有設定
+            foreach ($db_blocks_config[$BlockName] as $BlockID => $BlockConfig) {
+                $new_config = $db_config = array();
+
+                //已安裝區塊的設定值陣列
+                $db_config = json_decode($BlockConfig, true);
+
+                if (is_array($block_config[$BlockName])) {
+                    // echo "<h3>$BlockName</h3>";
+                    foreach ($block_config[$BlockName] as $config_name => $def_value) {
+                        // echo "<h4>{$config_name}：{$def_value} (\$db_config[\$config_name]={$db_config[$config_name]})</h4>";
+                        if (isset($db_config[$config_name]) and $db_config[$config_name] != '') {
+                            // echo "有預設值：{$db_config[$config_name]}<br>";
+                            $new_config[$config_name] = $db_config[$config_name];
+                        } else {
+                            // echo "沒有預設值：{$def_value}<br>";
+                            $new_config[$config_name] = $def_value;
+                        }
+                    }
+                }
+
+                // echo "新設定值為：" . var_export($new_config, true) . "<br>";
+                //更新設定值
+
+                if (PHP_VERSION_ID >= 50400) {
+                    $new_block_config = json_encode($new_config, JSON_UNESCAPED_UNICODE);
+                } else {
+                    array_walk_recursive($new_config, function (&$value, $key) {
+                        if (is_string($value)) {
+                            $value = urlencode($value);
+                        }
+                    });
+                    $new_block_config = urldecode(json_encode($new_config));
+                }
+
+                // echo "新設定：" . $new_block_config . "<br>";
+
+                $new_block_config = str_replace('{{WebID}}', $WebID, $new_block_config);
+                $sql              = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockConfig`='{$new_block_config}' where `BlockID`='{$BlockID}'";
+                // echo "<div>$sql</div>";
+                $xoopsDB->queryF($sql) or web_error($sql);
+            }
+        }
+
+    }
 }
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -507,6 +605,7 @@ switch ($op) {
 
     //預設動作
     default:
+        chk_newblock($WebID);
         //die(var_export(get_all_blocks('limit')));
         block_setup($WebID);
         $xoopsTpl->assign('block1', get_position_blocks($WebID, 'block1', $plugin));

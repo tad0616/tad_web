@@ -51,7 +51,7 @@ class tad_web_discuss
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -90,7 +90,7 @@ class tad_web_discuss
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -104,13 +104,17 @@ class tad_web_discuss
                 $$k = $v;
             }
 
-            $main_data[$i] = $all;
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $DiscussID;
+            $main_data[$i]['id_name'] = 'DiscussID';
+            $main_data[$i]['title']   = $DiscussTitle;
 
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
 
             $renum       = $this->get_re_num($DiscussID);
             $show_re_num = empty($renum) ? "" : " ({$renum}) ";
@@ -209,7 +213,7 @@ class tad_web_discuss
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
         //$xoopsTpl->assign('DiscussFiles', $DiscussFiles);
-
+        $DiscussContent = $this->addLink(nl2br($DiscussContent));
         preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
         foreach ($smile_pic[1] as $pic_name) {
             $new_pic_name   = strtolower($pic_name);
@@ -223,7 +227,7 @@ class tad_web_discuss
         $xoopsTpl->assign('DiscussTitle', $DiscussTitle);
         $xoopsTpl->assign('MemID', $MemID);
         $xoopsTpl->assign('ParentID', $ParentID);
-        $xoopsTpl->assign('DiscussContent', $this->bubble(nl2br($DiscussContent) . $DiscussFiles));
+        $xoopsTpl->assign('DiscussContent', $this->bubble($DiscussContent . $DiscussFiles));
         $xoopsTpl->assign('DiscussDate', $DiscussDate);
         $xoopsTpl->assign('LastTime', $LastTime);
         if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
@@ -700,6 +704,7 @@ class tad_web_discuss
             $TadUpFiles->set_col("DiscussID", $DiscussID);
             $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
 
+            $DiscussContent = $this->addLink(nl2br($DiscussContent));
             preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
             foreach ($smile_pic[1] as $pic_name) {
                 $new_pic_name   = strtolower($pic_name);
@@ -708,7 +713,7 @@ class tad_web_discuss
 
             // $DiscussContent = str_replace("[e_", "<img src='" . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/e_", $DiscussContent);
             // $DiscussContent = str_replace(".png]", ".png' hspace=2 align='absmiddle'>", $DiscussContent);
-            $DiscussContent = nl2br($DiscussContent);
+
             $DiscussContent = $this->bubble($DiscussContent . $DiscussFiles);
             if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
                 if ($MemID) {
@@ -777,7 +782,7 @@ class tad_web_discuss
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
-        $main_data = '';
+        $main_data = array();
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
@@ -788,5 +793,13 @@ class tad_web_discuss
         }
 
         return $main_data;
+    }
+
+    //網址轉連結
+    public function addLink($str)
+    {
+        $str = preg_replace('#(http|https|ftp|telnet)://([0-9a-z\.\-]+)(:?[0-9]*)([0-9a-z\_\/\?\&\=\%\.\;\#\-\~\+]*)#i', '<a
+href="\1://\2\3\4" rel="nofollow" target="_blank">\1://\2\3\4</a>', $str);
+        return $str;
     }
 }

@@ -24,7 +24,7 @@ function random_video($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block = '';
+    $block = array();
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by rand() limit 0,1";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
@@ -57,7 +57,7 @@ function latest_video($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block  = '';
+    $block  = array();
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by VideoDate desc , VideoID desc limit 0,1";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);

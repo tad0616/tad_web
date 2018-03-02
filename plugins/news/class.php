@@ -48,7 +48,7 @@ class tad_web_news
         $andEnable = $isMyWeb ? '' : "and a.`NewsEnable`='1'";
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -94,7 +94,7 @@ class tad_web_news
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -115,8 +115,12 @@ class tad_web_news
             }
 
             $main_data[$i] = $all;
+            $main_data[$i]['id'] = $NewsID;
+            $main_data[$i]['id_name'] = 'NewsID';
+            $main_data[$i]['title'] = $NewsTitle;
 
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'NewsID', $NewsID);
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'NewsID', $NewsID);
+            $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
 
             $this->web_cate->set_WebID($WebID);
 
@@ -137,7 +141,8 @@ class tad_web_news
             }
 
             $main_data[$i]['NewsTitle'] = $NewsTitle;
-            $main_data[$i]['isMyWeb']   = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
             $main_data[$i]['Date']      = $Date;
             $i++;
         }
@@ -214,6 +219,13 @@ class tad_web_news
         $pattern     = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
         $NewsContent = preg_replace($pattern, '', $NewsContent);
 
+        $assistant = is_assistant($CateID, 'NewsID', $NewsID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID));
+
         if ($mode == "return") {
             $data['uid_name']    = $uid_name;
             $data['NewsUrlTxt']  = $NewsUrlTxt;
@@ -265,7 +277,8 @@ class tad_web_news
         //取得標籤
         $xoopsTpl->assign("tags", $this->tags->list_tags("NewsID", $NewsID, 'news'));
 
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'NewsID', $NewsID));
+        // $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'NewsID', $NewsID));
+
     }
 
     //tad_web_news編輯表單
@@ -273,11 +286,7 @@ class tad_web_news
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['news']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['news']);
         get_quota($this->WebID);
 
         //抓取預設值
@@ -335,6 +344,11 @@ class tad_web_news
         $NewsEnable = (!isset($DBV['NewsEnable'])) ? "1" : $DBV['NewsEnable'];
         $xoopsTpl->assign('NewsEnable', $NewsEnable);
 
+        //設定「uid」欄位預設值
+        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        $uid = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
+        $xoopsTpl->assign('uid', $uid);
+
         $op = (empty($NewsID)) ? "insert" : "update";
 
         if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -375,6 +389,8 @@ class tad_web_news
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
         if (isset($_SESSION['isAssistant']['news'])) {
             $uid = $WebOwnerUid;
+        } elseif (!empty($_POST['uid'])) {
+            $uid = (int)$_POST['uid'];
         } else {
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
@@ -534,7 +550,8 @@ class tad_web_news
     public function get_prev_next($DefNewsID)
     {
         global $xoopsDB, $isMyWeb;
-        $DefNewsSort = $all = $main = '';
+        $DefNewsSort = '';
+        $all = $main = array();
         $andEnable   = $isMyWeb ? "" : "and `NewsEnable`='1'";
         $sql         = "select NewsID,NewsTitle from " . $xoopsDB->prefix("tad_web_news") . " where `WebID`='{$this->WebID}' $andEnable order by NewsDate desc";
         // if (isset($_GET['test'])) {
@@ -579,7 +596,7 @@ class tad_web_news
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         $i         = 0;
-        $main_data = '';
+        $main_data = array();
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

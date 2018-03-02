@@ -82,6 +82,7 @@
         <!--編號-->
         <input type="hidden" name="NewsID" value="<{$NewsID}>">
         <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="uid" value="<{$uid}>">
         <input type="hidden" name="op" value="<{$next_op}>">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
       </div>
@@ -127,7 +128,7 @@
   <{$fb_comments}>
 
   <div id="adm_bar" class="text-right" style="margin: 30px 0px;">
-    <{if $isMyWeb or $isAssistant}>
+    <{if $isMyWeb or $isCanEdit}>
       <a href="javascript:delete_news_func(<{$NewsID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$NewsID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
@@ -163,7 +164,7 @@
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
     <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$news.PluginTitle}></h1>
-    <{if $isMyWeb or $isAssistant}>
+    <{if $isMyWeb or $isCanEdit}>
       <a href="news.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
     <{else}>
       <div class="text-center">

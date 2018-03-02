@@ -33,7 +33,7 @@ function page_menu($WebID, $config = array())
 
     $result = $xoopsDB->query($sql) or web_error($sql);
 
-    $main = '';
+    $main = array();
 
     $i = 0;
 
@@ -43,7 +43,7 @@ function page_menu($WebID, $config = array())
         FROM `" . $xoopsDB->prefix("tad_web_page") . "` WHERE `CateID` = '$CateID'
         ORDER BY `PageSort`";
         $result2 = $xoopsDB->query($sql2) or web_error($sql2);
-        $content = '';
+        $content = array();
         $j       = 0;
         while (list($PageID, $PageTitle, $PageCount) = $xoopsDB->fetchRow($result2)) {
             $content[$j]['PageCount'] = $PageCount;
@@ -61,6 +61,8 @@ function page_menu($WebID, $config = array())
         $i++;
 
     }
+    $block['main_data'] = true;
     $block['page_list'] = $main;
+
     return $block;
 }

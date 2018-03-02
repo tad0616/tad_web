@@ -40,7 +40,7 @@ class tad_web_page
         }
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -77,14 +77,15 @@ class tad_web_page
         $sql     = $PageBar['sql'];
         $total   = $PageBar['total'];
 
-        if ($_GET['debug'] == 1 and $CateID == "all") {
+        $debug = 0;
+        if (isset($_GET['debug']) and $_GET['debug'] == 1 and $CateID == "all") {
             echo "<h2>{$sql}</h2>";
             $debug = 1;
         }
         $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
 
-        $main_data = $cate_data = $cate_size = "";
+        $main_data = $cate_data = $cate_size = array();
 
         $i = 0;
 
@@ -102,14 +103,19 @@ class tad_web_page
                 }
             }
 
-            $main_data[$i]                = $all;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
-            $main_data[$i]['show_count']  = $show_count;
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $PageID;
+            $main_data[$i]['id_name'] = 'PageID';
+            $main_data[$i]['title']   = $PageTitle;
+            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
+            $main_data[$i]['isCanEdit']  = isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID);
+            $main_data[$i]['show_count'] = $show_count;
             $this->web_cate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = $cate_arr[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
 
             $cate_data[$CateID][] = $all;
             $cate_size[$CateID]   = $this->get_total($CateID);
@@ -169,7 +175,7 @@ class tad_web_page
             $$k = $v;
         }
 
-        if (empty($PageContent)) {
+        if (empty($PageContent) and empty($PageTitle)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
@@ -183,6 +189,12 @@ class tad_web_page
         if (empty($uid_name)) {
             $uid_name = XoopsUser::getUnameFromId($uid, 0);
         }
+
+        $assistant   = is_assistant($CateID, 'PageID', $PageID);
+        $isAssistant = !empty($assistant) ? true : false;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $xoopsTpl->assign("isAssistant", $isAssistant);
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID));
 
         //取消換頁符號
         $pattern     = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
@@ -228,7 +240,6 @@ class tad_web_page
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("PageID", $PageID, 'page'));
 
-        $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'PageID', $PageID));
     }
 
     //tad_web_page編輯表單
@@ -236,11 +247,7 @@ class tad_web_page
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['page']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['page']);
         get_quota($this->WebID);
 
         //抓取預設值
@@ -489,7 +496,8 @@ class tad_web_page
     public function get_prev_next($DefPageID, $DefCateID)
     {
         global $xoopsDB;
-        $DefPageSort = $all = $main = '';
+        $DefPageSort = '';
+        $all         = $main         = array();
         $sql         = "select PageID,PageTitle,PageSort from " . $xoopsDB->prefix("tad_web_page") . " where CateID='{$DefCateID}' order by PageSort";
         // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql);

@@ -45,7 +45,7 @@ if ($WebID and _DISPLAY_MODE == 'home') {
     $xoopsTpl->assign('xoops_sitename', $WebName);
     $xoopsTpl->assign('logo_img', XOOPS_URL . "/uploads/tad_web/{$WebID}/header_480.png");
 } else {
-    $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+    // $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
 }
 
 if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
@@ -82,7 +82,7 @@ function get_marquee()
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "` where `NoticeWho` like '%{$user_kind}%' or `NoticeWho`='' order by NoticeDate desc limit 0,5";
     $result = $xoopsDB->query($sql)
     or web_error($sql);
-    $data_arr = '';
+    $data_arr = array();
     while ($data = $xoopsDB->fetchArray($result)) {
         $NoticeID                               = $data['NoticeID'];
         $data_arr[$NoticeID]                    = $data;
@@ -120,11 +120,11 @@ function tad_web_my_menu($WebID)
             //小幫手
             $sql    = "select a.`CateID`,b.ColName from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as a join `" . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql);
-            while (list($CateID, $ColName) = $xoopsDB->fetchRow($result)) {
-                $add_power[]                        = $ColName;
-                $_SESSION['isAssistant'][$ColName]  = $CateID;
-                $_SESSION['AssistantType'][$CateID] = 'MemID';
-                $_SESSION['AssistantID'][$CateID]   = $_SESSION['LoginMemID'];
+            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
+                $add_power[]                          = $plugin_dir;
+                $_SESSION['isAssistant'][$plugin_dir] = $CateID;
+                $_SESSION['AssistantType'][$CateID]   = 'MemID';
+                $_SESSION['AssistantID'][$CateID]     = $_SESSION['LoginMemID'];
             }
             // die(var_export($add_power));
         } elseif (!empty($_SESSION['LoginParentID'])) {
@@ -133,11 +133,19 @@ function tad_web_my_menu($WebID)
             $defaltWebID = $_SESSION['LoginWebID'];
             $back_home   = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $defaltWebID = $_SESSION['LoginWebID'];
-            $add_power   = array('discuss');
+            $add_power   = array('discuss'); //小幫手
+            $sql         = "select a.`CateID`,b.ColName from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as a join `" . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
+            $result      = $xoopsDB->queryF($sql) or web_error($sql);
+            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
+                $add_power[]                          = $plugin_dir;
+                $_SESSION['isAssistant'][$plugin_dir] = $CateID;
+                $_SESSION['AssistantType'][$CateID]   = 'ParentID';
+                $_SESSION['AssistantID'][$CateID]     = $_SESSION['LoginParentID'];
+            }
         } else {
             $user_kind = 'xoops';
             $user_name = $xoopsUser->name();
-            $add_power = "";
+            $add_power = array();
             $MyWebID   = MyWebID('1');
             $DefWebID  = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
 
@@ -181,9 +189,10 @@ function tad_web_my_menu($WebID)
                 if (!defined('_SHOW_UNABLE')) {
                     define('_SHOW_UNABLE', '1');
                 }
-
-                $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config("space_quota", $defaltWebID);
-                $size  = get_web_config("used_size", $defaltWebID);
+                $space_quota = get_web_config("space_quota", $defaltWebID);
+                $space_quota = empty($space_quota) ? 1 : $space_quota;
+                $quota       = empty($xoopsModuleConfig['user_space_quota']) ? 1 : $space_quota;
+                $size        = get_web_config("used_size", $defaltWebID);
 
                 $percentage = round($size / $quota, 2) * 100;
 
@@ -338,7 +347,7 @@ function tad_web_login($WebID, $config = array())
 //取得多人網頁的內部區塊(在footer.php執行)
 function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 {
-    global $xoopsTpl, $xoopsDB, $Web;
+    global $xoopsTpl, $xoopsDB, $Web, $isAdmin;
 
     $power           = new power($WebID);
     $myts            = MyTextSanitizer::getInstance();
@@ -348,16 +357,16 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     $dir       = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
 
     $andBlockPosition = $web_display_mode == 'home' ? '' : "and `BlockPosition`='side'";
-
-    if ($Web['WebEnable'] != "1") {
+    // die(var_export($Web));
+    if (isset($Web['WebEnable']) and $Web['WebEnable'] != "1") {
         $andForceMenu = "and (`BlockEnable`='1' or `BlockName`='my_menu')";
-
     } else {
         $andForceMenu = "and `BlockEnable`='1'";
     }
+    // die($andForceMenu);
     //取得區塊位置
     $sql = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}'  $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
-    // if ($_GET['test'] == '1') {
+    // if ($isAdmin) {
     //     die($sql);
     // }
     $result = $xoopsDB->queryF($sql) or web_error($sql);
@@ -394,6 +403,9 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
             }
         } else {
             if (file_exists("{$dir}{$plugin}/blocks.php")) {
+                // if ($isAdmin) {
+                //     echo "{$dir}{$plugin}/blocks.php<br>";
+                // }
                 include_once "{$dir}{$plugin}/blocks.php";
             }
 
@@ -403,9 +415,14 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
         }
         $block[$BlockPosition][$BlockSort] = $blocks_arr;
     }
-
+    // if ($_GET['test'] == '1') {
+    //     die(var_export($block));
+    // }
     // die(var_export($block['side']));
 
+    // if ($isAdmin) {
+    //     exit;
+    // }
     $xoopsTpl->assign('center_block1', $block['block1']);
     $xoopsTpl->assign('center_block2', $block['block2']);
     $xoopsTpl->assign('center_block3', $block['block3']);

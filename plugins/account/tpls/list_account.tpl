@@ -5,11 +5,7 @@
   <{foreach from=$bc.cate_menu item=account}>
     <li  class="list-group-item">
       <span class="badge"><{$account.PageCount}></span>
-      <{if $isMyWeb or $account.isAssistant}>
       <a href='account.php?WebID=<{$account.WebID}>&CateID=<{$account.CateID}>'><{$account.CateName}></a>
-      <{else}>
-      <{$account.CateName}>
-      <{/if}>
     </li>
   <{/foreach}>
   </ul>

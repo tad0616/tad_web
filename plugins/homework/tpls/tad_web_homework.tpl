@@ -125,7 +125,7 @@
   </div>
 <{elseif $op=="show_one"}>
 
-  <{if $isMyWeb}>
+  <{if $isCanEdit}>
     <{$sweet_delete_homework_func_code}>
   <{/if}>
 
@@ -178,7 +178,8 @@
 
   <{$fb_comments}>
 
-  <{if $isMyWeb or $isAssistant}>
+
+  <{if $isCanEdit}>
     <div class="text-right" style="margin: 30px 0px;">
       <a href="javascript:delete_homework_func(<{$HomeworkID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
       <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
@@ -192,7 +193,7 @@
         <{$cate_menu}>
       </div>
       <div class="col-sm-4 text-right">
-        <{if $isMyWeb and $WebID}>
+        <{if $isCanEdit}>
           <a href="cate.php?WebID=<{$WebID}>&ColName=homework&table=tad_web_homework" class="btn btn-warning <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-folder-open"></i> <{$smarty.const._MD_TCW_CATE_TOOLS}></a>
           <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info <{if $web_display_mode=='index'}>btn-xs<{/if}>"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
         <{/if}>
@@ -213,7 +214,7 @@
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
     <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h1>
-    <{if $isMyWeb or $isAssistant}>
+    <{if $isCanEdit}>
       <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
     <{else}>
       <div class="text-center">

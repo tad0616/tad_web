@@ -19,38 +19,58 @@
     <{assign var="total" value=1}>
 
     <{foreach item=act from=$schedule_data}>
-      <{if $i==0}>
-      <div class="row">
+      <{if $act.ScheduleDisplay=='1'}>
+        <{if $i==0}>
+          <div class="row">
+          <{/if}>
+            <div class="col-sm-3">
+              <a href="schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>" class="btn btn-link btn-block"><i class="fa fa-table"></i> <{$act.ScheduleName}>
+              </a>
+            </div>
+        <{assign var="i" value=$i+1}>
+        <{if $i == 4 || $total==$schedule_amount}>
+          </div>
+          <{assign var="i" value=0}>
+        <{/if}>
+        <{assign var="total" value=$total+1}>
       <{/if}>
-        <div class="col-sm-3">
-          <a href="schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>" class="btn btn-link btn-block"><i class="fa fa-table"></i> <{$act.ScheduleName}>
-          </a>
-        </div>
-    <{assign var="i" value=$i+1}>
-    <{if $i == 4 || $total==$schedule_amount}>
-      </div>
-      <{assign var="i" value=0}>
-    <{/if}>
-    <{assign var="total" value=$total+1}>
     <{/foreach}>
   <{else}>
     <{foreach item=act from=$schedule_data}>
-      <div style="margin: 8px auto;">
-        <h2>
+
+      <{if $act.ScheduleDisplay=='1'}>
+        <div style="margin: 8px auto;">
+          <h2>
+            <a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}>
+            </a>
+            <a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}>
+            </a>
+            <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i></a>
+            <small>
+              <{if $act.isCanEdit}>
+                <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+              <{/if}>
+            </small>
+          </h2>
+          <{$act.schedule}>
+        </div>
+      <{else}>
+        <h2><{$smarty.const._MD_TCW_SCHEDULE_OTHER_LIST}></h2>
+        <div>
           <a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}>
           </a>
           <a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}>
           </a>
           <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i></a>
           <small>
-            <{if $act.isMyWeb or $act.isAssistant}>
+            <{if $act.isCanEdit}>
               <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
               <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
             <{/if}>
           </small>
-        </h2>
-        <{$act.schedule}>
-      </div>
+        </div>
+      <{/if}>
     <{/foreach}>
   <{/if}>
   <div style="clear: both;"></div>

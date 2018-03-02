@@ -7,7 +7,7 @@
         <div class="panel-heading" role="tab" id="heading<{$page.CateID}>">
           <h4 class="panel-title">
             <span class="label label-info pull-right"><{$page.CateAmount}></span>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<{$page.CateID}>" aria-expanded="true" aria-controls="collapse<{$page.CateID}>">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<{$page.CateID}>" aria-expanded="true" aria-controls="collapse<{$page.CateID}>" style="color: #000000;">
               <{$page.CateName}>
             </a>
           </h4>
@@ -19,7 +19,7 @@
                 <{if $content.show_count=='1'}>
                   <span class="badge"><{$content.PageCount}></span>
                 <{/if}>
-                <a href="page.php?WebID=<{$content.WebID}>&PageID=<{$content.PageID}>"><{$content.PageTitle}></a>
+                <a href="page.php?WebID=<{$content.WebID}>&PageID=<{$content.PageID}>" style="color: #333333;"><{$content.PageTitle}></a>
               </li>
             <{/foreach}>
           </ul>

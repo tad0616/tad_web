@@ -38,7 +38,7 @@
                     <span class="badge"><{$page.PageCount}></span>
                   <{/if}>
                   <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
-                  <{if $isMyWeb or $page.isAssistant}>
+                  <{if $page.isCanEdit}>
                     <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                     <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
                   <{/if}>

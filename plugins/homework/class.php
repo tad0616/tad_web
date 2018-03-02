@@ -49,7 +49,7 @@ class tad_web_homework
         $now = date("Y-m-d H:i:s");
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
-            //http://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
+            //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -81,7 +81,7 @@ class tad_web_homework
 
         $result = $xoopsDB->query($sql) or web_error($sql);
 
-        $main_data = "";
+        $main_data = array();
 
         $i = 0;
 
@@ -98,7 +98,13 @@ class tad_web_homework
             }
 
             $main_data[$i]                = $all;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'HomeworkID', $HomeworkID);
+            $main_data[$i]['id'] = $HomeworkID;
+            $main_data[$i]['id_name'] = 'HomeworkID';
+            $main_data[$i]['title'] = $HomeworkTitle;
+            // $assistant = get_assistant($CateID);
+            // die(var_dump($assistant));
+            // $isAssistant                = is_assistant($CateID, 'HomeworkID', $HomeworkID);
+            $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
 
             //找出聯絡簿內容
             $sql     = "select `HomeworkCol`, `Content` from " . $xoopsDB->prefix("tad_web_homework_content") . " where HomeworkID='{$HomeworkID}'";
@@ -121,7 +127,7 @@ class tad_web_homework
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebName']  = $WebNames[$WebID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
-            $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
+            // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
             if (empty($HomeworkTitle)) {
                 $HomeworkTitle = _MD_TCW_EMPTY_TITLE;
@@ -133,7 +139,7 @@ class tad_web_homework
             $main_data[$i]['Week']          = $cweek[$w];
             $i++;
         }
-
+        // die(var_export($main_data));
         //可愛刪除
         if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
             redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
@@ -143,7 +149,7 @@ class tad_web_homework
         $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
 
         //找出尚未發布的聯絡簿
-        $yet_data = '';
+        $yet_data = array();
         if ($isMyWeb) {
             $i      = 0;
             $sql    = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate > '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkPostDate desc";
@@ -253,9 +259,11 @@ class tad_web_homework
         $xoopsTpl->assign('HomeworkID', $HomeworkID);
         $assistant   = is_assistant($CateID, 'HomeworkID', $HomeworkID);
         $isAssistant = !empty($assistant) ? true : false;
-        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>
-" : $uid_name;
+        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign("isAssistant", $isAssistant);
+
+        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID));
+
         $xoopsTpl->assign('HomeworkInfo', sprintf(_MD_TCW_INFO, $uid_name, $HomeworkDate, $HomeworkCounter));
 
         $xoopsTpl->assign('xoops_pagetitle', $HomeworkTitle);
@@ -284,14 +292,10 @@ class tad_web_homework
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb and !$_SESSION['isAssistant']['homework']) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['homework']);
         get_quota($this->WebID);
 
-        $Class = getWebInfo($this->WebID);
+        $Class = get_tad_web($this->WebID);
 
         //抓取預設值
         if (!empty($HomeworkID)) {

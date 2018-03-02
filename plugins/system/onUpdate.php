@@ -28,13 +28,13 @@ function system_onUpdate1_chk()
 function system_onUpdate1_go()
 {
     global $xoopsDB;
-    $sql = "SELECT bid,show_func FROM " . $xoopsDB->prefix("newblocks") . " WHERE dirname='tad_web' ORDER BY weight";
+    $sql    = "SELECT bid,show_func FROM " . $xoopsDB->prefix("newblocks") . " WHERE dirname='tad_web' ORDER BY weight";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     $myts = MyTextSanitizer::getInstance();
     //來自系統的區塊
     while (list($bid, $show_func) = $xoopsDB->fetchRow($result)) {
-        $sql2 = "select BlockID,BlockTitle,BlockEnable,BlockPosition,BlockSort,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where `plugin`='xoops' and BlockName='{$bid}'";
+        $sql2    = "select BlockID,BlockTitle,BlockEnable,BlockPosition,BlockSort,WebID from " . $xoopsDB->prefix("tad_web_blocks") . " where `plugin`='xoops' and BlockName='{$bid}'";
         $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
         while (list($BlockID, $BlockTitle, $BlockEnable, $BlockPosition, $BlockSort, $WebID) = $xoopsDB->fetchRow($result2)) {
             $BlockTitle = $myts->addSlashes($BlockTitle);
@@ -90,6 +90,8 @@ function system_onUpdate2_go()
         }
         $sql = "replace into " . $xoopsDB->prefix("tad_web_config") . " (`ConfigName`, `ConfigValue`, `ConfigSort`, `CateID`, `WebID`) values('login_config' ,'{$login_method}',0,0,$WebID)";
         $xoopsDB->queryF($sql) or web_error($sql);
+        $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
+        unlink($file);
     }
 
     $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='login' OR `BlockName`='my_menu'";

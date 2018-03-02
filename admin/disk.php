@@ -19,21 +19,21 @@ function list_all_web($defCateID = '')
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result            = $xoopsDB->query($sql) or web_error($sql);
     $_SESSION['quota'] = '';
-    $data              = "";
+    $data              = array();
     $dir               = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
-        $WebID = $all['WebID'];
-
-        $dir_size = get_dir_size("{$dir}{$WebID}/");
+        $WebID    = $all['WebID'];
+        $dir_size = $all['used_size'];
+        // $dir_size = get_dir_size("{$dir}{$WebID}/");
 
         $data[$WebID] = $all;
         $size         = size2mb($dir_size);
-        save_web_config("used_size", $size, $WebID);
+        // save_web_config("used_size", $size, $WebID);
 
         $space_quota      = get_web_config("space_quota", $WebID);
         $user_space_quota = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : (int)$space_quota;
@@ -57,13 +57,23 @@ function list_all_web($defCateID = '')
     }
 
     //sort($space);
-    arsort($space);
+    // arsort($space);
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('space', $space);
     $xoopsTpl->assign('free_space', get_free_space());
-    $xoopsTpl->assign('total_space', roundsize(get_dir_size($dir)));
+
+    $xoopsTpl->assign('total_space', roundsize(get_all_dir_size()));
     $xoopsTpl->assign('user_space_quota', $xoopsModuleConfig['user_space_quota']);
+}
+
+function get_all_dir_size()
+{
+    global $xoopsDB;
+    $sql             = "SELECT sum(`used_size`) FROM " . $xoopsDB->prefix("tad_web") . " ";
+    $result          = $xoopsDB->query($sql) or web_error($sql);
+    list($used_size) = $xoopsDB->fetchRow($result);
+    return $used_size;
 }
 
 //目前硬碟空間
@@ -72,7 +82,7 @@ function get_free_space()
     $bytes     = disk_free_space(".");
     $si_prefix = array('B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB');
     $base      = 1024;
-    $class     = min((int)log($bytes, $base), count($si_prefix) - 1);
+    $class     = min((int) log($bytes, $base), count($si_prefix) - 1);
     $space     = sprintf('%1.2f', $bytes / pow($base, $class)) . ' ' . $si_prefix[$class];
     return $space;
 }
@@ -206,7 +216,7 @@ switch ($op) {
         list_all_web($CateID);
         break;
 
-    /*---判斷動作請貼在上方---*/
+        /*---判斷動作請貼在上方---*/
 }
 
 /*-----------秀出結果區--------------*/
