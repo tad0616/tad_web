@@ -1,5 +1,5 @@
 <{if $web_display_mode=='home_plugin'}>
-  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$account.PluginTitle}></h1>
+  <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$account.PluginTitle}></h2>
 <{/if}>
 
 <{if $account_data}>

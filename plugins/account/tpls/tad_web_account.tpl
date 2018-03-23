@@ -5,7 +5,7 @@
 
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
-  <h1><{$smarty.const._MD_TCW_ACCOUNT_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_ACCOUNT_ADD}></h2>
   <div class="well">
     <form action="account.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
@@ -97,7 +97,7 @@
     </form>
   </div>
 <{elseif $op=="show_one"}>
-  <h1><{$AccountTitle}></h1>
+  <h2><{$AccountTitle}></h2>
 
   <ol class="breadcrumb">
     <li><a href="account.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_ACCOUNT}></a></li>
@@ -169,12 +169,12 @@
     <{$FooTableJS}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/account/tpls/tad_web_common_account.tpl"}>
   <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$account.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$account.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
   <{/if}>
 
 <{else}>
-  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$account.PluginTitle}></h1>
+  <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$account.PluginTitle}></h2>
   <{if $isMyWeb or $isCanEdit}>
     <a href="account.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACCOUNT_SHORT}></a>
   <{else}>

@@ -24,7 +24,7 @@
   </script>
 
   <{$formValidator_code}>
-  <h1><{$smarty.const._MD_TCW_VIDEO_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_VIDEO_ADD}></h2>
   <div class="well">
     <form action="video.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
       <!--分類-->
@@ -76,7 +76,7 @@
     <{$sweet_delete_video_func_code}>
   <{/if}>
 
-  <h1><{$VideoName}></h1>
+  <h2><{$VideoName}></h2>
 
   <ol class="breadcrumb">
     <li><a href="video.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_VIDEO}></a></li>
@@ -85,14 +85,10 @@
     <{if $tags}><li><{$tags}></li><{/if}>
   </ol>
 
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="embed-responsive embed-responsive-4by3"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/<{$VideoPlace}>?feature=oembed" frameborder="0" allowfullscreen></iframe></div>
+  <div class="embed-responsive embed-responsive-4by3"><iframe title="show_one_video" class="embed-responsive-item" src="https://www.youtube.com/embed/<{$VideoPlace}>?feature=oembed" frameborder="0" allowfullscreen></iframe></div>
 
-      <div style="line-height: 1.8; margin: 10px auto;">
-        <{$VideoDesc}>
-      </div>
-    </div>
+  <div style="line-height: 1.8; margin: 10px auto;">
+    <{$VideoDesc}>
   </div>
 
   <{$fb_comments}>
@@ -123,14 +119,14 @@
     <{$FooTableJS}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/video/tpls/tad_web_common_video.tpl"}>
   <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
   <{/if}>
 <{elseif $op=="setup"}>
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h2>
     <{if $isMyWeb or $isAssistant}>
       <a href="video.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_VIDEO_SHORT}></a>
     <{else}>

@@ -173,14 +173,12 @@ $modversion['blocks'][$i]['description'] = _MI_TCW_BDESC3;
 $modversion['blocks'][$i]['show_func']   = "tad_web_image";
 $modversion['blocks'][$i]['template']    = "tad_web_block_image.tpl";
 
-/*
 $i++;
-$modversion['blocks'][$i]['file'] = "tad_web_discuss.php";
-$modversion['blocks'][$i]['name'] = _MI_TCW_BNAME2;
-$modversion['blocks'][$i]['description'] = _MI_TCW_BDESC2;
-$modversion['blocks'][$i]['show_func'] = "tad_web_discuss";
-$modversion['blocks'][$i]['template'] = "tad_web_block_discuss.tpl";
- */
+$modversion['blocks'][$i]['file']        = "tad_web_news.php";
+$modversion['blocks'][$i]['name']        = _MI_TCW_BNAME4;
+$modversion['blocks'][$i]['description'] = _MI_TCW_BDESC4;
+$modversion['blocks'][$i]['show_func']   = "tad_web_news";
+$modversion['blocks'][$i]['template']    = "tad_web_block_news.tpl";
 
 //---偏好設定---//
 $i                                       = 0;

@@ -426,7 +426,7 @@ function demo_block($BlockID, $WebID)
     // die(var_export($blocks_arr));
     if ($plugin == "custom" or $plugin == "share") {
         if ($config['content_type'] == "iframe") {
-            $blocks_arr['BlockContent'] = "<iframe src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
+            $blocks_arr['BlockContent'] = "<iframe title=\"{$BlockTitle}\" src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
         } elseif ($config['content_type'] == "js") {
             $blocks_arr['BlockContent'] = $BlockContent;
         } else {

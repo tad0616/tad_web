@@ -1,6 +1,6 @@
 <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
 <div class="container-fluid">
-  <h1><{$smarty.const._MA_TCW_WEB_SCHEDULE_TEMPLATE}></h1>
+  <h2><{$smarty.const._MA_TCW_WEB_SCHEDULE_TEMPLATE}></h2>
   <form action="schedule.php" method="post">
     <{$schedule_template}>
     <div class="text-center" style="margin: 10px auto;">
@@ -11,7 +11,7 @@
   <div class="alert alert-info"><{$smarty.const._MA_TCW_WEB_SCHEDULE_TEMPLATE_DESC}></div>
 
   <hr>
-  <h1><{$smarty.const._MA_TCW_WEB_SCHEDULE_SUBJECT}></h1>
+  <h2><{$smarty.const._MA_TCW_WEB_SCHEDULE_SUBJECT}></h2>
   <form action="schedule.php" method="post">
     <textarea name="schedule_subjects" id="schedule_subjects" cols="30" rows="2" class="form-control"><{$schedule_subjects}></textarea>
     <div class="text-center" style="margin: 10px auto;">

@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tad_web/module.css" />
 
-<h1><{$smarty.const._MD_TCW_LEADERBOARD_RANK}></h1>
+<h2><{$smarty.const._MD_TCW_LEADERBOARD_RANK}></h2>
 <{assign var="i" value=1}>
 <ul class="list-group">
   <{foreach from=$king_rank key=WebID item=rank}>
@@ -17,7 +17,7 @@
 
 
 <{foreach from=$all_top item=plugin}>
-  <h1><{$plugin.pluginName}> <{$smarty.const._MD_TCW_LEADERBOARD}></h1>
+  <h2><{$plugin.pluginName}> <{$smarty.const._MD_TCW_LEADERBOARD}></h2>
   <ul class="list-group">
     <{foreach from=$plugin.top key=rank item=top}>
       <li class="list-group-item">

@@ -38,7 +38,7 @@
     });
   </script>
 
-  <h1><{$smarty.const._MD_TCW_CATE_SET_ASSISTANT}></h1>
+  <h2><{$smarty.const._MD_TCW_CATE_SET_ASSISTANT}></h2>
 
   <form action="assistant.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
     <table class="table">

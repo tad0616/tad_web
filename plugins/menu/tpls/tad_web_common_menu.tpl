@@ -5,11 +5,11 @@
     <h3><a href="<{$xoops_url}>/modules/tad_web/menu.php"><{$menu.PluginTitle}></a></h3>
   <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
-  <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$menu.PluginTitle}></h1>
+  <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$menu.PluginTitle}></h2>
 <{elseif $web_display_mode=='home_plugin'}>
-  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$menu.PluginTitle}></h1>
+  <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$menu.PluginTitle}></h2>
 <{/if}>
-
+<{*
 <{foreach from=$cate_arr item=cate}>
   <{assign var="cid" value=$cate.CateID}>
 
@@ -36,7 +36,7 @@
   </div>
 
 <{/foreach}>
-
+*}>
 <div style="clear: both;"></div>
 
 <{if $menu_data}>

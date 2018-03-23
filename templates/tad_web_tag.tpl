@@ -1,6 +1,6 @@
 
 <{if $tag}>
-    <h1><{$tag}> <small>(<a href="tag.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_TAGS_LIST}></a>)</small></h1>
+    <h2><{$tag}> <small>(<a href="tag.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_TAGS_LIST}></a>)</small></h2>
 
 
   <link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tad_web/module.css" />
@@ -15,7 +15,7 @@
     <{/if}>
   <{/foreach}>
 <{else}>
-  <h1><{$smarty.const._MD_TCW_TAGS_LIST}></h1>
+  <h2><{$smarty.const._MD_TCW_TAGS_LIST}></h2>
   <ul class="list-group">
     <{foreach from=$tags_arr key=tag item=count}>
       <li class="list-group-item">

@@ -40,7 +40,7 @@
   });
   </script>
 
-  <h1><{$smarty.const._MD_TCW_SCHEDULE_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_SCHEDULE_ADD}></h2>
   <div class="well">
     <form schedule="schedule.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
@@ -108,7 +108,7 @@
     <{$sweet_delete_schedule_func_code}>
   <{/if}>
 
-  <h1><{$ScheduleName}></h1>
+  <h2><{$ScheduleName}></h2>
 
   <ol class="breadcrumb">
     <li><a href="schedule.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_SCHEDULE}></a></li>
@@ -127,7 +127,7 @@
     <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$ScheduleID}>" class="btn btn-primary"><{$smarty.const._MD_TCW_SCHEDULE_PDF}></a>
   </div>
 <{elseif $op=="setup_subject"}>
-  <h1><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></h1>
+  <h2><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></h2>
   <script language="JavaScript">
     function change_color(selector,css_name,css_val){
       $(selector).css(css_name,css_val);
@@ -209,7 +209,7 @@
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h1>
+  <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h2>
   <{if $isMyWeb  or $isCanEdit}>
     <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
   <{else}>

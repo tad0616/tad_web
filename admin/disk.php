@@ -33,7 +33,6 @@ function list_all_web($defCateID = '')
 
         $data[$WebID] = $all;
         $size         = size2mb($dir_size);
-        // save_web_config("used_size", $size, $WebID);
 
         $space_quota      = get_web_config("space_quota", $WebID);
         $user_space_quota = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : intval($space_quota);

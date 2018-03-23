@@ -17,7 +17,7 @@ function tad_web_menu($options)
             //die($sql);
             $result = $xoopsDB->query($sql) or web_error($sql);
             //$web_num = $xoopsDB->getRowsNum($result);
-            $i = 0;
+            $i = $defalt_used_size = 0;
 
             $defaltWebID = 0;
             while ($all = $xoopsDB->fetchArray($result)) {
@@ -25,9 +25,10 @@ function tad_web_menu($options)
                     $$k = $v;
                 }
                 if (!empty($DefWebID) and $WebID == $DefWebID) {
-                    $defaltWebID    = $WebID;
-                    $defaltWebTitle = $WebTitle;
-                    $defaltWebName  = $WebName;
+                    $defaltWebID      = $WebID;
+                    $defaltWebTitle   = $WebTitle;
+                    $defaltWebName    = $WebName;
+                    $defalt_used_size = $used_size;
                 } elseif (empty($defaltWebID)) {
                     $defaltWebID    = $WebID;
                     $defaltWebTitle = $WebTitle;
@@ -61,12 +62,12 @@ function tad_web_menu($options)
             $config_handler    = xoops_gethandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $tad_web_Module->getVar('mid'));
 
-            $quota          = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config("space_quota", $defaltWebID);
-            $block['quota'] = $quota;
-            $size           = get_web_config("used_size", $defaltWebID);
-            $block['size']  = $size;
-            $percentage     = round($size / $quota, 2) * 100;
-            $block['quota'] = $percentage;
+            $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config("space_quota", $defaltWebID);
+            // $block['quota'] = $quota;
+            $block['size']       = size2mb($defalt_used_size);
+            $percentage          = round($block['size'] / $quota, 2) * 100;
+            $block['percentage'] = $percentage;
+            $block['quota']      = $quota;
             if ($percentage <= 70) {
                 $block['progress_color'] = 'success';
             } elseif ($percentage <= 90) {
@@ -146,4 +147,12 @@ function tad_web_menu($options)
         return $block;
     }
 
+}
+
+if (!function_exists('size2mb')) {
+    function size2mb($size)
+    {
+        $mb = round($size / (1024 * 1024), 0);
+        return $mb;
+    }
 }

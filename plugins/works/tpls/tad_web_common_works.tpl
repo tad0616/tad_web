@@ -5,9 +5,9 @@
     <h3><a href="<{$xoops_url}>/modules/tad_web/works.php"><{$works.PluginTitle}></a></h3>
   <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
-  <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h1>
+  <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h2>
 <{elseif $web_display_mode=='home_plugin'}>
-  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h1>
+  <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h2>
 <{/if}>
 
 <{if $works_data}>

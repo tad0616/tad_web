@@ -279,7 +279,7 @@
   <{else}>
 
     <div class="jumbotron">
-      <h1><{$no_student}></h1>
+      <h2><{$no_student}></h2>
 
       <{if $isMyWeb}>
       <p>
@@ -462,7 +462,7 @@
   <{else}>
 
     <div class="jumbotron">
-      <h1><{$no_student}></h1>
+      <h2><{$no_student}></h2>
 
       <{if $isMyWeb}>
       <p>
@@ -680,7 +680,7 @@
   </div>
 <{elseif $op=="import_excel"}>
 
-  <h1><{$smarty.const._MD_TCW_IMPORT_PREVIEW}></h1>
+  <h2><{$smarty.const._MD_TCW_IMPORT_PREVIEW}></h2>
 
   <{$smarty.const._MD_TCW_IMPORT_DESCRIPT}>
 
@@ -782,18 +782,18 @@
     </div>
   </form>
 <{elseif $op=="show_parents_signup"}>
-  <h1><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL}></h1>
+  <h2><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL}></h2>
   <div class="alert alert-info">
     <{$mail_content}>
   </div>
 <{elseif $op=="show_enable_parent"}>
   <{if $result=='1'}>
-    <h1><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS}></h1>
+    <h2><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS}></h2>
     <div class="alert alert-success">
       <p><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_SUCCESS_CONTENT}></p>
     </div>
   <{else}>
-    <h1><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED}></h1>
+    <h2><{$smarty.const._MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED}></h2>
     <div class="alert alert-danger">
       <{$failed_content}>
     </div>

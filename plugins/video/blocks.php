@@ -41,7 +41,7 @@ function random_video($WebID, $config = array())
         return;
     }
 
-    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
+    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe title='random_video' class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
     $block['VideoID']   = $VideoID;
     $block['VideoName'] = $VideoName;
     return $block;
@@ -73,7 +73,7 @@ function latest_video($WebID, $config = array())
         return;
     }
 
-    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
+    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe title='latest_video' class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
     $block['VideoID']   = $VideoID;
     $block['VideoName'] = $VideoName;
     return $block;

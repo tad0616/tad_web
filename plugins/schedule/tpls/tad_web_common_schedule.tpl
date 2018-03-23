@@ -5,7 +5,7 @@
     <h3><a href="<{$xoops_url}>/modules/tad_web/schedule.php"><{$schedule.PluginTitle}></a></h3>
   <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
-  <h1><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h1>
+  <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h2>
 <{/if}>
 
 <{if $isMyWeb}>

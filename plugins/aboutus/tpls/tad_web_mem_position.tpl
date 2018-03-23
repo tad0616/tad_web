@@ -48,7 +48,7 @@
     <div id="save_info"></div>
   <{else}>
     <div class="jumbotron">
-      <h1><{$no_student}></h1>
+      <h2><{$no_student}></h2>
 
       <{if $isMyWeb}>
       <p>

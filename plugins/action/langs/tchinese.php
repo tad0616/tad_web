@@ -13,3 +13,5 @@ define("_MD_TCW_ACTION_UPLOAD", "上傳圖檔");
 define("_MD_TCW_ACTION_BLOCK_LIST", "活動剪影");
 define("_MD_TCW_ACTION_BLOCK_LIMIT", "顯示活動數量");
 define("_MD_TCW_ACTION_BLOCK_SLIDE", "活動剪影秀");
+define("_MD_TCW_AUTO_PLAY_IMAGES", "圖片自動播放設定（毫秒）");
+define("_MD_TCW_AUTO_PLAY_IMAGES_DESC", "如：設「3000」為3秒，設0則不自動播放");

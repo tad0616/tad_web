@@ -25,7 +25,7 @@
   </script>
 
   <{$formValidator_code}>
-  <h1><{$smarty.const._MD_TCW_LINK}></h1>
+  <h2><{$smarty.const._MD_TCW_LINK}></h2>
   <div class="well">
     <form action="link.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
@@ -102,14 +102,14 @@
     <{$FooTableJS}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/link/tpls/tad_web_common_link.tpl"}>
   <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$link.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$link.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
   <{/if}>
 <{elseif $op=="setup"}>
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$link.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$link.PluginTitle}></h2>
     <{if $isMyWeb or $isAssistant}>
       <a href="link.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_LINK_SHORT}></a>
     <{else}>

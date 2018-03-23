@@ -25,27 +25,27 @@
     <div class="well">
       <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login">
         <div class="form-group">
-          <label class="col-sm-4 control-label">
+          <label class="col-sm-4 control-label" for="uname">
             <{$smarty.const._MB_TCW_ID}>
           </label>
-          <div class="col-sm-8 contros">
-            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control" />
+          <div class="col-sm-8">
+            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-sm-4 control-label">
+          <label class="col-sm-4 control-label" for="pass">
             <{$smarty.const._MB_TCW_PASSWD}>
           </label>
-          <div class="col-sm-8 contros">
-          <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control" />
+          <div class="col-sm-8">
+          <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-sm-4 control-label">
           </label>
-          <div class="col-sm-8 contros">
+          <div class="col-sm-8">
             <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
             <input type="hidden" name="rememberme" value="On" />
             <input type="hidden" name="op" value="login" />
@@ -84,8 +84,9 @@
       </form>
 
       <div class="text-center">
-        <label class="checkbox">
-          <input type="checkbox" id="stu_login" value="stu_login"><{$smarty.const._MB_TCW_IM_MEM}>
+        <label class="checkbox" for="stu_login">
+          <input type="checkbox" name="stu_login" id="stu_login" value="stu_login">
+          <{$smarty.const._MB_TCW_IM_MEM}>
         </label>
       </div>
       <div id="open_login">
@@ -217,13 +218,10 @@
       <{/foreach}>
     </table>
 
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="progress progress-striped">
-          <div class="progress-bar progress-bar-<{$block.progress_color}>" role="progressbar" data-transitiongoal="<{$block.quota}>"></div>
-        </div>
-      </div>
+    <div class="progress progress-striped">
+      <div class="progress-bar progress-bar-<{$block.progress_color}>" role="progressbar" data-transitiongoal="<{$block.percentage}>"></div>
     </div>
+    已使用空間：<{$block.size}>MB/<{$block.quota}>MB (<{$block.percentage}>%)
 
   <{/if}>
 

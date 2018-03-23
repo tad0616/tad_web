@@ -89,7 +89,7 @@ function get_dir_blocks($mode = '')
                 include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
                 include $config_blocks_file;
                 $Config[$plugin] = $blocksArr;
-                $blocksArr = array();
+                $blocksArr       = array();
             } else {
             }
         }
@@ -1132,7 +1132,7 @@ function output_head_file($WebID)
     $height = 200;
     //die('test2=' . $WebID);
     $all_config = get_web_all_config($WebID);
-    //die("<h1>$WebID</h1>" . var_export($all_config));
+    //die("<h2>$WebID</h2>" . var_export($all_config));
     foreach ($all_config as $k => $v) {
         $$k = $v;
     }
@@ -1228,7 +1228,7 @@ function output_head_file_480($WebID)
     $height = 200;
     //die('test2=' . $WebID);
     $all_config = get_web_all_config($WebID);
-    //die("<h1>$WebID</h1>" . var_export($all_config));
+    //die("<h2>$WebID</h2>" . var_export($all_config));
     foreach ($all_config as $k => $v) {
         $$k = $v;
     }
@@ -1362,13 +1362,15 @@ function check_quota($WebID = "")
 //檢查已使用空間
 function get_quota($WebID = "")
 {
-    global $xoopsModuleConfig;
-    $size               = get_web_config("used_size", $WebID);
-    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
+    global $xoopsModuleConfig, $Web;
+    $Web              = get_tad_web($WebID);
+    $defalt_used_size = round($Web['used_size'] / (1024 * 1024), 2);
+    // $size               = get_web_config("used_size", $WebID);
+    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : intval($xoopsModuleConfig['user_space_quota']);
     $space_quota        = get_web_config("space_quota", $WebID);
     $user_space_quota   = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : intval($space_quota);
 
-    if ($size >= $user_space_quota) {
+    if ($defalt_used_size >= $user_space_quota) {
         redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $size, $user_space_quota));
         exit;
     }

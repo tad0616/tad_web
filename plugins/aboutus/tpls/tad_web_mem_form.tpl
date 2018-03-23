@@ -15,7 +15,7 @@
         <{$show_files}>
         </label>
         <div class="col-sm-8">
-          <h1><{$MemName}></h1>
+          <h2><{$MemName}></h2>
           <input type="file" name="upfile[]"  maxlength="1" accept="gif|jpg|png|GIF|JPG|PNG">
         </div>
       </div>

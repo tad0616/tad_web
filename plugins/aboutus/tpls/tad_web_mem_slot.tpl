@@ -1,5 +1,5 @@
 
-<h1><{$cate.CateName}><{$smarty.const._MD_TCW_ABOUTUS_SLOT}></h1>
+<h2><{$cate.CateName}><{$smarty.const._MD_TCW_ABOUTUS_SLOT}></h2>
 <{if $all_mems}>
   <style type="text/css" media="screen">
     #slot td{

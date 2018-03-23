@@ -15,10 +15,10 @@ class Tad_WebCorePreload extends XoopsPreloadItem
 
         if (!empty($WebID) and strpos($_SERVER['PHP_SELF'], "modules/tad_web") !== false and strpos($_SERVER['REQUEST_URI'], "?WebID=") !== false) {
             $defalut_theme = get_web_config('defalut_theme', $WebID);
+
             if (empty($defalut_theme)) {
                 $defalut_theme = 'for_tad_web_theme';
             }
-
             $GLOBALS['xoopsConfig']['theme_set_allowed'][] = $defalut_theme;
             $_REQUEST['xoops_theme_select']                = $defalut_theme;
         } else {

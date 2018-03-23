@@ -18,7 +18,7 @@
   </script>
 
 
-<h1><a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID}>"><{$plugin_arr.PluginTitle}></a><{$smarty.const._MD_TCW_PLUGIN_TOOLS}></h1>
+<h2><a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID}>"><{$plugin_arr.PluginTitle}></a><{$smarty.const._MD_TCW_PLUGIN_TOOLS}></h2>
 
 <form action="setup.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
   <hr>
@@ -118,7 +118,7 @@
   </div>
 </form>
 <{/if}>
-<h1><a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID}>"><{$plugin_arr.PluginTitle}></a><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
+<h2><a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID}>"><{$plugin_arr.PluginTitle}></a><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h2>
 
 <table class="table table-hover table-striped">
   <tr>

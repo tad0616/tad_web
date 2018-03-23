@@ -57,7 +57,7 @@
 
 
 
-<h1><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_TOOLS}></h1>
+<h2><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_TOOLS}></h2>
 
 <{if $cate_arr}>
   <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
@@ -158,7 +158,7 @@
   </form>
 <{else}>
   <div class="jumbotron">
-    <h1><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_NONE}></h1>
+    <h2><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_NONE}></h2>
       <{if $isMyWeb and $WebID}>
         <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
           <div class="form-group">

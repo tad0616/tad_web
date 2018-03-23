@@ -19,6 +19,7 @@ class tad_web_menu
     public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isMyWeb, $plugin_menu_var;
+        return;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 

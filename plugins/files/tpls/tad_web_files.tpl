@@ -23,7 +23,7 @@
       <{/if}>
     });
   </script>
-  <h1><{$smarty.const._MD_TCW_FILES_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_FILES_ADD}></h2>
   <div class="well">
     <form action="files.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
@@ -116,13 +116,13 @@
     <{$FooTableJS}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/files/tpls/tad_web_common_files.tpl"}>
   <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
   <{/if}>
 <{elseif $op=="setup"}>
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h2>
     <{if $isMyWeb or $isAssistant}>
       <a href="files.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_FILES_SHORT}></a>
     <{else}>

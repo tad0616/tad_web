@@ -5,7 +5,7 @@
 
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
-  <h1><{$smarty.const._MD_TCW_CALENDAR_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_CALENDAR_ADD}></h2>
   <div class="well">
     <form action="calendar.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
@@ -55,7 +55,7 @@
     <{$sweet_delete_calendar_func_code}>
   <{/if}>
 
-  <h1><{$CalendarDate}><{$CalendarName}></h1>
+  <h2><{$CalendarDate}><{$CalendarName}></h2>
 
   <ol class="breadcrumb">
     <li><a href="calendar.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_CALENDAR}></a></li>
@@ -90,7 +90,7 @@
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$calendar.PluginTitle}></h1>
+  <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$calendar.PluginTitle}></h2>
   <{if $isMyWeb and $WebID}>
     <a href="setup.php?WebID=<{$WebID}>&plugin=calendar" class="btn btn-success"><i class="fa fa-wrench"></i> <{$smarty.const._MD_TCW_SETUP}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
     <a href="calendar.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>

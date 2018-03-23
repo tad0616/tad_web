@@ -1,5 +1,5 @@
 <{if $op=="search"}>
-  <h1><{$smarty.const._MD_TCW_SEARCH_RESULT}></h1>
+  <h2><{$smarty.const._MD_TCW_SEARCH_RESULT}></h2>
   <{foreach from=$result key=plugin item=data}>
     <{if $data}>
       <h3><{$plugin}></h3>

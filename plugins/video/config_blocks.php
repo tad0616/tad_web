@@ -1,6 +1,4 @@
 <?php
-$blocksArr = '';
-
 $blocksArr['list_video']['name']            = _MD_TCW_VIDEO_BLOCK_LIST;
 $blocksArr['list_video']['plugin']          = 'video';
 $blocksArr['list_video']['tpl']             = 'list_video.tpl';

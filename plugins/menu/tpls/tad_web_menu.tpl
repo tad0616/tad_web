@@ -3,7 +3,7 @@
   <{$formValidator_code}>
   <link rel="stylesheet" href="class/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css">
 
-  <h1><{$smarty.const._MD_TCW_MENU_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_MENU_ADD}></h2>
   <div class="well">
     <form action="menu.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
@@ -165,7 +165,7 @@
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-  <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$menu.PluginTitle}></h1>
+  <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$menu.PluginTitle}></h2>
   <{if $isMyWeb}>
     <a href="menu.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_MENU_SHORT}></a>
   <{else}>

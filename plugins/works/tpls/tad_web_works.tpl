@@ -20,7 +20,7 @@
 
 
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-  <h1><{$smarty.const._MD_TCW_WORKS_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_WORKS_ADD}></h2>
   <div class="well">
     <form action="works.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
       <!--分類-->
@@ -117,9 +117,9 @@
     <{$sweet_delete_works_func_code}>
   <{/if}>
 
-  <h1>
+  <h2>
   <{$WorkName}>
-  </h1>
+  </h2>
 
   <ol class="breadcrumb">
     <li><a href="works.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_WORKS}></a></li>
@@ -282,14 +282,14 @@
     <{$FooTableJS}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/works/tpls/tad_web_common_works.tpl"}>
   <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
   <{/if}>
 <{elseif $op=="setup"}>
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h2>
     <{if $isMyWeb and $WebID}>
       <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
     <{else}>

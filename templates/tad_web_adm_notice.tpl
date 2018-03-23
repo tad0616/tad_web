@@ -1,6 +1,6 @@
 <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
 <div class="container-fluid">
-  <h1><{$smarty.const._MA_TCW_WEB_NOTICE}></h1>
+  <h2><{$smarty.const._MA_TCW_WEB_NOTICE}></h2>
 <!--顯示表單-->
 <{if $now_op=="tad_web_notice_form"}>
 

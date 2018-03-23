@@ -98,6 +98,10 @@ $th3 = in_array('schedule', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide
 $th4 = in_array('homework', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ABOUTUS_HOMEWORK . '</th>' : '';
 
 $content = $FooTableJS . '
+<html lang="zh-TW">
+<meta charset="utf-8">
+<title>Web List</title>
+<h2 class="sr-only">Web List</h2>
 <table class="footable">
   <thead>
     <tr>
@@ -110,6 +114,9 @@ $content = $FooTableJS . '
   <tbody>
   ' . $web_tr . '
   </tbody>
-</table>';
-
+</table>
+</html>';
 die($content);
+
+// html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)
+// die(html5($content, false, true, 3, false));

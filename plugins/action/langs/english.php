@@ -13,3 +13,5 @@ define("_MD_TCW_ACTION_UPLOAD", "Upload Images");
 define("_MD_TCW_ACTION_BLOCK_LIST", "Gallery");
 define("_MD_TCW_ACTION_BLOCK_LIMIT", "Displays the number of Gallery");
 define("_MD_TCW_ACTION_BLOCK_SLIDE", "Photo Slide");
+define("_MD_TCW_AUTO_PLAY_IMAGES", "Picture auto play setting (milliseconds)");
+define("_MD_TCW_AUTO_PLAY_IMAGES_DESC", "For example: set \"3000\" for 3 seconds, set 0 does not automatically play");

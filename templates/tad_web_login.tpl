@@ -87,27 +87,27 @@
 
       <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login" <{if $openid=='1'}>style="display: none;"<{/if}>>
         <div class="form-group">
-          <label class="col-sm-4 control-label">
+          <label class="col-sm-4 control-label" for="uname">
             <{$smarty.const._MD_TCW_ID}>
           </label>
-          <div class="col-sm-8 contros">
-            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control" />
+          <div class="col-sm-8">
+            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-sm-4 control-label">
+          <label class="col-sm-4 control-label" for="pass">
             <{$smarty.const._MD_TCW_PASSWD}>
           </label>
-          <div class="col-sm-8 contros">
-          <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control" />
+          <div class="col-sm-8">
+          <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-sm-4 control-label">
           </label>
-          <div class="col-sm-8 contros">
+          <div class="col-sm-8">
             <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
             <input type="hidden" name="rememberme" value="On" />
             <input type="hidden" name="op" value="login" />

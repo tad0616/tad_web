@@ -1,6 +1,6 @@
 <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
 <{if $op=="view_file"}>
-  <h1><{$dir}></h1>
+  <h2><{$dir}></h2>
   <{$ztree_code}>
 <{else}>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/bootstrap-progressbar/bootstrap-progressbar.js"></script>

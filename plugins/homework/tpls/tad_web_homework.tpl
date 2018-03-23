@@ -10,7 +10,7 @@
     };
   </script>
 
-  <h1><{$smarty.const._MD_TCW_HOMEWORK_ADD}></h1>
+  <h2><{$smarty.const._MD_TCW_HOMEWORK_ADD}></h2>
 
   <div class="well">
     <form action="homework.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
@@ -129,7 +129,7 @@
     <{$sweet_delete_homework_func_code}>
   <{/if}>
 
-  <h1><{$HomeworkTitle}></h1>
+  <h2><{$HomeworkTitle}></h2>
   <ol class="breadcrumb">
     <li><a href="homework.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_HOMEWORK}></a></li>
     <{if isset($cate.CateID)}><li><a href="homework.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li><{/if}>
@@ -204,7 +204,7 @@
     <{$FooTableJS}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework.tpl"}>
   <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
   <{/if}>
   <div class="clearfix"></div>
@@ -213,7 +213,7 @@
 
   <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_plugin_setup.tpl"}>
 <{else}>
-    <h1><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h1>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h2>
     <{if $isCanEdit}>
       <a href="homework.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_HOMEWORK_SHORT}></a>
     <{else}>

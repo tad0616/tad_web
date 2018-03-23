@@ -22,7 +22,7 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <h1 class="text-center"><{$block.BlockTitle}> <small><{$block.BlockName}></small></h1>
+      <h1 class="text-center"><{$block.BlockTitle}> <small><{$block.BlockName}></small></h2>
       <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
         <div class="form-group">
           <label class="col-sm-3 control-label">
@@ -274,7 +274,7 @@
   </script>
   <div class="row">
     <div class="col-sm-6">
-      <h1><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h1>
+      <h2><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h2>
     </div>
     <div class="col-sm-6 text-right">
       <a href="block.php?WebID=<{$WebID}>&op=add_block" class="btn btn-primary"><{$smarty.const._MD_TCW_BLOCK_ADD}></a>

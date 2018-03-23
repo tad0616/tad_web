@@ -103,7 +103,7 @@ function get_marquee()
 //我的選單
 function tad_web_my_menu($WebID)
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser, $MyWebID, $xoopsModuleConfig, $WebTitle;
+    global $xoopsDB, $xoopsTpl, $xoopsUser, $MyWebID, $xoopsModuleConfig, $WebTitle, $isAdmin;
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
     //未登入
     if (!$xoopsUser and empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID'])) {
@@ -158,7 +158,7 @@ function tad_web_my_menu($WebID)
                 //die($sql);
                 $result = $xoopsDB->query($sql) or web_error($sql);
                 //$web_num = $xoopsDB->getRowsNum($result);
-                $i = 0;
+                $i = $defalt_used_size = 0;
 
                 $defaltWebID = 0;
                 while ($all = $xoopsDB->fetchArray($result)) {
@@ -166,9 +166,10 @@ function tad_web_my_menu($WebID)
                         $$k = $v;
                     }
                     if (!empty($DefWebID) and $WebID == $DefWebID) {
-                        $defaltWebID    = $WebID;
-                        $defaltWebTitle = $WebTitle;
-                        $defaltWebName  = $WebName;
+                        $defaltWebID      = $WebID;
+                        $defaltWebTitle   = $WebTitle;
+                        $defaltWebName    = $WebName;
+                        $defalt_used_size = $used_size;
                     } elseif (empty($defaltWebID)) {
                         $defaltWebID    = $WebID;
                         $defaltWebTitle = $WebTitle;
@@ -190,12 +191,15 @@ function tad_web_my_menu($WebID)
                     define('_SHOW_UNABLE', '1');
                 }
                 $space_quota = get_web_config("space_quota", $defaltWebID);
-                $space_quota = empty($space_quota) ? 1 : $space_quota;
-                $quota       = empty($xoopsModuleConfig['user_space_quota']) ? 1 : $space_quota;
-                $size        = get_web_config("used_size", $defaltWebID);
+                $space_quota = empty($space_quota) ? 500 : $space_quota;
+                $quota       = empty($space_quota) ? $xoopsModuleConfig['user_space_quota'] : $space_quota;
 
+                $size       = size2mb($defalt_used_size);
                 $percentage = round($size / $quota, 2) * 100;
-
+                // $size        = get_web_config("used_size", $defaltWebID);
+                // if ($isAdmin) {
+                //     die("defalt_used_size={$defalt_used_size}, size={$size}, quota={$quota}, percentage={$percentage},");
+                // }
                 if ($percentage <= 70) {
                     $progress_color = 'success';
                 } elseif ($percentage <= 90) {
@@ -205,7 +209,9 @@ function tad_web_my_menu($WebID)
                 }
             }
 
-            $xoopsTpl->assign('quota', $percentage);
+            $xoopsTpl->assign('size', $size);
+            $xoopsTpl->assign('quota', $quota);
+            $xoopsTpl->assign('percentage', $percentage);
             $xoopsTpl->assign('progress_color', $progress_color);
             $xoopsTpl->assign('webs', $webs);
             $xoopsTpl->assign('web_num', $web_num);
@@ -394,7 +400,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
             $blocks_arr['tpl'] = '';
         } elseif ($plugin == "custom" or $plugin == "share") {
             if ($config['content_type'] == "iframe") {
-                $blocks_arr['BlockContent'] = "<iframe src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
+                $blocks_arr['BlockContent'] = "<iframe title=\"{$BlockTitle}\" src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
             } elseif ($config['content_type'] == "js") {
                 $blocks_arr['BlockContent'] = $BlockContent;
 

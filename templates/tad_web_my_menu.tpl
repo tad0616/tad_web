@@ -232,13 +232,10 @@
           <{/foreach}>
         </table>
 
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="progress progress-striped">
-              <div class="progress-bar progress-bar-<{$progress_color}>" role="progressbar" data-transitiongoal="<{$quota}>"></div>
-            </div>
-          </div>
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-<{$progress_color}>" role="progressbar" data-transitiongoal="<{$percentage}>"></div>
         </div>
+        已使用空間：<{$size}>MB/<{$quota}>MB (<{$percentage}>%)
 
       <{/if}>
 
