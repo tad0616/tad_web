@@ -336,7 +336,7 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
 
     $myts    = MyTextSanitizer::getInstance();
     $WebName = $myts->addSlashes($WebName);
-    // $WebTitle = $myts->addSlashes($WebTitle);
+    $WebTitle = $myts->addSlashes($WebTitle);
     $WebOwner = $myts->addSlashes($WebOwner);
 
     $and_year = empty($year) ? '' : "{$year} ";
