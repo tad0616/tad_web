@@ -379,7 +379,7 @@ function update_tad_web($WebID = "")
         $WebOwner = XoopsUser::getUnameFromId($_POST['WebOwnerUid'], 0);
     }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set
-    `CateID`='{$_POST['CateID']}'
+    `CateID`='{$_POST['CateID']}',
     `WebName` = '{$WebName}' ,
     `WebSort` = '{$_POST['WebSort']}' ,
     `WebEnable` = '{$_POST['WebEnable']}' ,
