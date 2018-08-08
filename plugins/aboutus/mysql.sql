@@ -10,7 +10,7 @@ CREATE TABLE `tad_web_link_mems` (
   `top` smallint(6) NOT NULL default 0,
   `left` smallint(6) NOT NULL default 0,
 PRIMARY KEY (`MemID`,`CateID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tad_web_mems` (
@@ -19,13 +19,13 @@ CREATE TABLE `tad_web_mems` (
   `MemNickName` varchar(255) NOT NULL DEFAULT '' COMMENT '學生暱稱',
   `MemSex` enum('1','0') NOT NULL DEFAULT '1' COMMENT '性別',
   `MemUnicode` varchar(255) NOT NULL DEFAULT '' COMMENT '學號',
-  `MemBirthday` date NOT NULL DEFAULT '0000-00-00' COMMENT '生日',
+  `MemBirthday` date NOT NULL  COMMENT '生日',
   `MemExpertises` varchar(255) NOT NULL DEFAULT '' COMMENT '專長',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT 'uid',
   `MemUname` varchar(255) NOT NULL DEFAULT '' COMMENT '帳號',
   `MemPasswd` varchar(255) NOT NULL DEFAULT '' COMMENT '密碼',
   PRIMARY KEY `uid` (`MemID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tad_web_mem_parents` (
@@ -38,4 +38,4 @@ CREATE TABLE `tad_web_mem_parents` (
   `code` varchar(255) NOT NULL DEFAULT '' COMMENT '啟用碼',
   PRIMARY KEY (`ParentID`),
   UNIQUE KEY `MemID_ParentEmail` (`MemID`,`ParentEmail`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

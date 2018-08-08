@@ -16,4 +16,4 @@ CREATE TABLE `tad_web_menu` (
   `Sort` smallint(6) unsigned NOT NULL default 0 COMMENT '順序',
   `MenuCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
 PRIMARY KEY (`MenuID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

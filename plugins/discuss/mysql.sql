@@ -9,8 +9,8 @@ CREATE TABLE `tad_web_discuss` (
   `MemName` varchar(255) NOT NULL default '' COMMENT '發布者姓名',
   `DiscussTitle` varchar(255) NOT NULL default '' COMMENT '標題',
   `DiscussContent` text NOT NULL COMMENT '內容',
-  `DiscussDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布時間',
-  `LastTime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '最後發表時間',
+  `DiscussDate` datetime NOT NULL COMMENT '發布時間',
+  `LastTime` datetime NOT NULL COMMENT '最後發表時間',
   `DiscussCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
 PRIMARY KEY (`DiscussID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

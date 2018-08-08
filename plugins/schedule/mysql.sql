@@ -6,9 +6,9 @@ CREATE TABLE `tad_web_schedule` (
   `ScheduleDisplay` enum('0','1') NOT NULL default '0' COMMENT '預設課表',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
   `ScheduleCount` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
-  `ScheduleTime` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布日期',
+  `ScheduleTime` datetime NOT NULL COMMENT '發布日期',
 PRIMARY KEY (`ScheduleID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tad_web_schedule_data` (
@@ -20,4 +20,4 @@ CREATE TABLE `tad_web_schedule_data` (
   `color` varchar(255)  NOT NULL default '' COMMENT '文字顏色',
   `bg_color` varchar(255)  NOT NULL default '' COMMENT '背景顏色',
 PRIMARY KEY (`ScheduleID`,`SDWeek`,`SDSort`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

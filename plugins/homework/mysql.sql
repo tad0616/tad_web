@@ -4,13 +4,13 @@ CREATE TABLE `tad_web_homework` (
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
   `HomeworkTitle` varchar(255) NOT NULL default '' COMMENT '標題',
   `HomeworkContent` text NOT NULL COMMENT '內容',
-  `HomeworkDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '發布日期',
-  `toCal` date NOT NULL default '0000-00-00' COMMENT '加到行事曆',
+  `HomeworkDate` datetime NOT NULL COMMENT '發布日期',
+  `toCal` date NOT NULL COMMENT '加到行事曆',
   `HomeworkCounter` smallint(6) unsigned NOT NULL default 0 COMMENT '人氣',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
-  `HomeworkPostDate` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT '顯示日期',
+  `HomeworkPostDate` datetime NOT NULL COMMENT '顯示日期',
 PRIMARY KEY (`HomeworkID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tad_web_homework_content` (
   `HomeworkID` smallint(6) unsigned NOT NULL COMMENT '編號',
@@ -18,4 +18,4 @@ CREATE TABLE `tad_web_homework_content` (
   `Content` text NOT NULL COMMENT '內容',
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬班級',
 PRIMARY KEY (`HomeworkID`,`HomeworkCol`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
