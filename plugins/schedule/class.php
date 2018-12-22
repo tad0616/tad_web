@@ -109,11 +109,13 @@ class tad_web_schedule
             $data['schedule_amount'] = $i;
             $data['main_data']       = $main_data;
             $data['total']           = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
             return $data;
         } else {
             $xoopsTpl->assign('schedule_amount', $i);
             $xoopsTpl->assign('schedule_data', $main_data);
             $xoopsTpl->assign('schedule', get_db_plugin($this->WebID, 'schedule'));
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID));
             return $i;
         }
     }
@@ -298,16 +300,17 @@ class tad_web_schedule
         }
 
         $myts                     = MyTextSanitizer::getInstance();
-        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
-        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $_POST['CateID']          = intval($_POST['CateID']);
-        $_POST['WebID']           = intval($_POST['WebID']);
+        $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
+        $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $CateID          = intval($_POST['CateID']);
+        $WebID           = intval($_POST['WebID']);
         $ScheduleTime             = date("Y-m-d H:i:s");
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_schedule") . "
         (`CateID`,`ScheduleName` , `ScheduleDisplay` , `uid` , `WebID` , `ScheduleCount` , `ScheduleTime`)
-        values('{$CateID}' ,'{$_POST['ScheduleName']}' , '{$_POST['ScheduleDisplay']}'  , '{$uid}' , '{$_POST['WebID']}' , '0' , '{$ScheduleTime}')";
+        values('{$CateID}' ,'{$ScheduleName}' , '{$ScheduleDisplay}'  , '{$uid}' , '{$WebID}' , '0' , '{$ScheduleTime}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -324,13 +327,14 @@ class tad_web_schedule
         global $xoopsDB;
 
         $myts                     = MyTextSanitizer::getInstance();
-        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
-        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $_POST['CateID']          = intval($_POST['CateID']);
-        $_POST['WebID']           = intval($_POST['WebID']);
+        $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
+        $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $CateID          = intval($_POST['CateID']);
+        $WebID           = intval($_POST['WebID']);
         $ScheduleTime             = date("Y-m-d H:i:s");
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
             $anduid = onlyMine();
@@ -338,16 +342,16 @@ class tad_web_schedule
 
         $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set
          `CateID` = '{$CateID}' ,
-         `ScheduleName` = '{$_POST['ScheduleName']}' ,
-         `ScheduleDisplay` = '{$_POST['ScheduleDisplay']}',
+         `ScheduleName` = '{$ScheduleName}' ,
+         `ScheduleDisplay` = '{$ScheduleDisplay}',
          `ScheduleTime` = '{$ScheduleTime}'
         where ScheduleID='$ScheduleID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        if ($_POST['ScheduleDisplay'] == '1') {
+        if ($ScheduleDisplay == '1') {
             $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set
              `ScheduleDisplay` = '0'
-            where WebID='{$_POST['WebID']}' and ScheduleID!='{$ScheduleID}' $anduid";
+            where WebID='{$WebID}' and ScheduleID!='{$ScheduleID}' $anduid";
             $xoopsDB->queryF($sql) or web_error($sql);
         }
 
@@ -533,11 +537,6 @@ class tad_web_schedule
 
         $myts = MyTextSanitizer::getInstance();
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
-            $Subject  = $_POST['Subject'][$k];
-            $Teacher  = $_POST['Teacher'][$k];
-            $color    = $_POST['color'][$k];
-            $bg_color = $_POST['bg_color'][$k];
-
             $old_Subject = $myts->addSlashes($old_Subject);
             $Subject     = $myts->addSlashes($_POST['Subject'][$k]);
             $Teacher     = $myts->addSlashes($_POST['Teacher'][$k]);

@@ -1,7 +1,2 @@
-<{if $block.config.show_title=='1' or $block.config.show_title==''}>
-  <{if $use_block_pic=='1'}>
-    <img src="<{$xoops_url}>/uploads/tad_web/<{$WebID}>/image/block_<{$block.BlockID}>.png" alt="<{$block.BlockTitle}>">
-  <{else}>
-    <h3><{$block.BlockTitle}></h3>
-  <{/if}>
-<{/if}>
+<{assign var=this_file value=$smarty.template|basename|replace:'db:':''}>
+<{includeq file="$xoops_rootpath/modules/$xoops_dirname/templates/b4.tpl"}>

@@ -304,6 +304,8 @@ class tad_web_menu
         $WebID         = intval($_POST['WebID']);
         $Status        = intval($_POST['Status']);
         $menu_type     = $myts->addSlashes($_POST['menu_type']);
+        $CateID        = intval($_POST['CateID']);
+        $newCateName     = $myts->addSlashes($_POST['newCateName']);
 
         $ColName = $ColSn = '';
         if ($menu_type == "Plugin") {
@@ -318,7 +320,7 @@ class tad_web_menu
             $Plugin = '';
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $Sort   = $this->max_sort($WebID, $CateID);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_menu") . "
@@ -363,6 +365,9 @@ class tad_web_menu
         $WebID         = intval($_POST['WebID']);
         $Status        = intval($_POST['Status']);
         $menu_type     = $myts->addSlashes($_POST['menu_type']);
+        $CateID        = intval($_POST['CateID']);
+        $newCateName     = $myts->addSlashes($_POST['newCateName']);
+        $read     = $myts->addSlashes($_POST['read']);
 
         $ColName = $ColSn = '';
         if ($menu_type == "Plugin") {
@@ -376,7 +381,7 @@ class tad_web_menu
         } else {
             $Plugin = '';
         }
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $Sort   = $this->max_sort($WebID, $CateID);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_menu") . " set
@@ -403,7 +408,7 @@ class tad_web_menu
         // check_quota($this->WebID);
 
         //儲存權限
-        $read = $myts->addSlashes($_POST['read']);
+        $read = $myts->addSlashes($read);
         $this->power->save_power("MenuID", $MenuID, 'read', $read);
         //儲存標籤
         // $this->tags->save_tags("MenuID", $MenuID, $_POST['tag_name'], $_POST['tags']);

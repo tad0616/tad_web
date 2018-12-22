@@ -445,11 +445,13 @@ class tad_web_discuss
         }
 
         $myts                    = MyTextSanitizer::getInstance();
-        $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
-        $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
-        $_POST['CateID']         = intval($_POST['CateID']);
-        $_POST['WebID']          = intval($_POST['WebID']);
-        $_POST['ReDiscussID']    = intval($_POST['ReDiscussID']);
+        $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
+        $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $CateID        = intval($_POST['CateID']);
+        $WebID          = intval($_POST['WebID']);
+        $ReDiscussID    = intval($_POST['ReDiscussID']);
 
         if ($isMyWeb) {
             $uid      = $xoopsUser->uid();
@@ -470,9 +472,9 @@ class tad_web_discuss
             $WebID    = $_SESSION['LoginWebID'];
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_discuss") . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
-        values('{$CateID}'  ,'{$_POST['ReDiscussID']}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$_POST['DiscussTitle']}' , '{$_POST['DiscussContent']}' , now() , '{$WebID}' , now() , 0)";
+        values('{$CateID}'  ,'{$ReDiscussID}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$DiscussTitle}' , '{$DiscussContent}' , now() , '{$WebID}' , now() , 0)";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -481,19 +483,19 @@ class tad_web_discuss
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
-        if (!empty($_POST['ReDiscussID'])) {
+        if (!empty($ReDiscussID)) {
             $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `LastTime` = now()
-            where `DiscussID` = '{$_POST['ReDiscussID']}' or `ReDiscussID` = '{$_POST['ReDiscussID']}'";
+            where `DiscussID` = '{$ReDiscussID}' or `ReDiscussID` = '{$ReDiscussID}'";
             $xoopsDB->queryF($sql) or web_error($sql);
         }
 
-        if (!empty($_POST['ReDiscussID'])) {
-            return $_POST['ReDiscussID'];
+        if (!empty($ReDiscussID)) {
+            return $ReDiscussID;
         }
 
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("DiscussID", $DiscussID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("DiscussID", $DiscussID, $tag_name, $_POST['tags']);
         return $DiscussID;
     }
 
@@ -526,19 +528,21 @@ class tad_web_discuss
         }
 
         $myts                    = MyTextSanitizer::getInstance();
-        $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
-        $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
-        $_POST['CateID']         = intval($_POST['CateID']);
-        $_POST['WebID']          = intval($_POST['WebID']);
-        $_POST['ReDiscussID']    = intval($_POST['ReDiscussID']);
+        $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
+        $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $CateID         = intval($_POST['CateID']);
+        $WebID          = intval($_POST['WebID']);
+        $ReDiscussID    = intval($_POST['ReDiscussID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set
          `CateID` = '{$CateID}' ,
-         `ReDiscussID` = '{$_POST['ReDiscussID']}' ,
-         `DiscussTitle` = '{$_POST['DiscussTitle']}' ,
-         `DiscussContent` = '{$_POST['DiscussContent']}' ,
+         `ReDiscussID` = '{$ReDiscussID}' ,
+         `DiscussTitle` = '{$DiscussTitle}' ,
+         `DiscussContent` = '{$DiscussContent}' ,
          `LastTime` = now()
         where DiscussID='{$DiscussID}' {$anduid}";
         $xoopsDB->queryF($sql) or web_error($sql);
@@ -548,7 +552,7 @@ class tad_web_discuss
 
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("DiscussID", $DiscussID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("DiscussID", $DiscussID, $tag_name, $_POST['tags']);
         return $DiscussID;
     }
 
@@ -727,14 +731,14 @@ class tad_web_discuss
             $re_data .= "
             <hr>
             <div class='row'>
-                <div class='col-sm-2 col-md-2  text-center'>
-                    <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='max-width: 100%;' class='img-rounded img-polaroid'>
+                <div class='col-md-2  text-center'>
+                    <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='max-width: 100%;' class='img-rounded img-polaroid rounded'>
                     <div style='line-height:1.5em;'>
                       <div>{$MemName}</div>
                       <div style='font-size:10px; background: #1d649b; color: #fff; border-radius: 3px;'>$DiscussDate</div>
                     </div>
                 </div>
-                <div class='col-sm-10  col-md-10'>
+                <div class='col-md-10'>
                     {$DiscussContent}
                     {$fun}
                 </div>

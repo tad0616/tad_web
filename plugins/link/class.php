@@ -243,20 +243,22 @@ class tad_web_link
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                 = MyTextSanitizer::getInstance();
-        $_POST['LinkTitle']   = $myts->addSlashes($_POST['LinkTitle']);
-        $_POST['LinkDesc']    = $myts->addSlashes($_POST['LinkDesc']);
-        $_POST['LinkUrl']     = $myts->addSlashes($_POST['LinkUrl']);
-        $_POST['LinkCounter'] = intval($_POST['LinkCounter']);
-        $_POST['LinkSort']    = intval($_POST['LinkSort']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
+        $myts        = MyTextSanitizer::getInstance();
+        $LinkTitle   = $myts->addSlashes($_POST['LinkTitle']);
+        $LinkDesc    = $myts->addSlashes($_POST['LinkDesc']);
+        $LinkUrl     = $myts->addSlashes($_POST['LinkUrl']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $LinkCounter = intval($_POST['LinkCounter']);
+        $LinkSort    = intval($_POST['LinkSort']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_link") . "
           (`CateID`, `LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
-          values('{$CateID}', '{$_POST['LinkTitle']}' , '{$_POST['LinkDesc']}' , '{$_POST['LinkUrl']}' , '{$_POST['LinkCounter']}' , '{$_POST['LinkSort']}' , '{$_POST['WebID']}' , '{$uid}')";
+          values('{$CateID}', '{$LinkTitle}' , '{$LinkDesc}' , '{$LinkUrl}' , '{$LinkCounter}' , '{$LinkSort}' , '{$WebID}' , '{$uid}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -265,7 +267,7 @@ class tad_web_link
         check_quota($this->WebID);
 
         //儲存標籤
-        $this->tags->save_tags("LinkID", $LinkID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("LinkID", $LinkID, $tag_name, $_POST['tags']);
         return $LinkID;
     }
 
@@ -274,14 +276,16 @@ class tad_web_link
     {
         global $xoopsDB, $xoopsUser;
 
-        $myts               = MyTextSanitizer::getInstance();
-        $_POST['LinkTitle'] = $myts->addSlashes($_POST['LinkTitle']);
-        $_POST['LinkDesc']  = $myts->addSlashes($_POST['LinkDesc']);
-        $_POST['LinkUrl']   = $myts->addSlashes($_POST['LinkUrl']);
-        $_POST['CateID']    = intval($_POST['CateID']);
-        $_POST['WebID']     = intval($_POST['WebID']);
+        $myts        = MyTextSanitizer::getInstance();
+        $LinkTitle   = $myts->addSlashes($_POST['LinkTitle']);
+        $LinkDesc    = $myts->addSlashes($_POST['LinkDesc']);
+        $LinkUrl     = $myts->addSlashes($_POST['LinkUrl']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'LinkID', $LinkID)) {
             $anduid = onlyMine();
@@ -289,16 +293,16 @@ class tad_web_link
 
         $sql = "update " . $xoopsDB->prefix("tad_web_link") . " set
        `CateID` = '{$CateID}' ,
-       `LinkTitle` = '{$_POST['LinkTitle']}' ,
-       `LinkDesc` = '{$_POST['LinkDesc']}' ,
-       `LinkUrl` = '{$_POST['LinkUrl']}' ,
-       `WebID` = '{$_POST['WebID']}'
+       `LinkTitle` = '{$LinkTitle}' ,
+       `LinkDesc` = '{$LinkDesc}' ,
+       `LinkUrl` = '{$LinkUrl}' ,
+       `WebID` = '{$WebID}'
         where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
         check_quota($this->WebID);
 
         //儲存標籤
-        $this->tags->save_tags("LinkID", $LinkID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("LinkID", $LinkID, $tag_name, $_POST['tags']);
         return $LinkID;
     }
 
@@ -319,8 +323,10 @@ class tad_web_link
         $xoopsDB->queryF($sql) or web_error($sql);
         check_quota($this->WebID);
 
+        $myts     = MyTextSanitizer::getInstance();
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
         //儲存標籤
-        $this->tags->save_tags("LinkID", $LinkID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("LinkID", $LinkID, $tag_name, $_POST['tags']);
     }
 
     //刪除所有資料

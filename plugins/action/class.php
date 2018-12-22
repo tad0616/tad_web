@@ -137,11 +137,13 @@ class tad_web_action
         if ($mode == "return") {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             return $data;
         } else {
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('action_data', $main_data);
             $xoopsTpl->assign('action', get_db_plugin($this->WebID, 'action'));
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID));
             return $total;
         }
     }
@@ -329,17 +331,20 @@ class tad_web_action
         }
 
         $myts                 = MyTextSanitizer::getInstance();
-        $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
-        $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
-        $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
-        $_POST['ActionCount'] = intval($_POST['ActionCount']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
+        $ActionName  = $myts->addSlashes($_POST['ActionName']);
+        $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
+        $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
+        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $ActionCount = intval($_POST['ActionCount']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_action") . "
         (`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
-        values('{$CateID}' ,'{$_POST['ActionName']}' , '{$_POST['ActionDesc']}' , '{$_POST['ActionDate']}' , '{$_POST['ActionPlace']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['ActionCount']}')";
+        values('{$CateID}' ,'{$ActionName}' , '{$ActionDesc}' , '{$ActionDate}' , '{$ActionPlace}' , '{$uid}' , '{$WebID}' , '{$ActionCount}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -355,7 +360,7 @@ class tad_web_action
         //儲存權限
         $this->power->save_power("ActionID", $ActionID, 'read');
         //儲存標籤
-        $this->tags->save_tags("ActionID", $ActionID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("ActionID", $ActionID, $tag_name, $_POST['tags']);
         return $ActionID;
     }
 
@@ -365,13 +370,17 @@ class tad_web_action
         global $xoopsDB, $TadUpFiles;
 
         $myts                 = MyTextSanitizer::getInstance();
-        $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
-        $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
-        $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
+        $ActionName  = $myts->addSlashes($_POST['ActionName']);
+        $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
+        $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
+        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $read = $myts->addSlashes($_POST['read']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'ActionID', $ActionID)) {
             $anduid = onlyMine();
@@ -379,10 +388,10 @@ class tad_web_action
 
         $sql = "update " . $xoopsDB->prefix("tad_web_action") . " set
          `CateID` = '{$CateID}' ,
-         `ActionName` = '{$_POST['ActionName']}' ,
-         `ActionDesc` = '{$_POST['ActionDesc']}' ,
-         `ActionDate` = '{$_POST['ActionDate']}' ,
-         `ActionPlace` = '{$_POST['ActionPlace']}'
+         `ActionName` = '{$ActionName}' ,
+         `ActionDesc` = '{$ActionDesc}' ,
+         `ActionDate` = '{$ActionDate}' ,
+         `ActionPlace` = '{$ActionPlace}'
         where ActionID='$ActionID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -393,10 +402,9 @@ class tad_web_action
         check_quota($this->WebID);
 
         //儲存權限
-        $read = $myts->addSlashes($_POST['read']);
         $this->power->save_power("ActionID", $ActionID, 'read', $read);
         //儲存標籤
-        $this->tags->save_tags("ActionID", $ActionID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("ActionID", $ActionID, $tag_name, $_POST['tags']);
         return $ActionID;
     }
 

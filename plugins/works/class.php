@@ -152,11 +152,13 @@ class tad_web_works
         if ($mode == "return") {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
             return $data;
         } else {
             $xoopsTpl->assign('works_data', $main_data);
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('works', get_db_plugin($this->WebID, 'works'));
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID));
             return $total;
         }
     }
@@ -348,19 +350,22 @@ class tad_web_works
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts                 = MyTextSanitizer::getInstance();
-        $_POST['WorkName']    = $myts->addSlashes($_POST['WorkName']);
-        $_POST['WorkDesc']    = $myts->addSlashes($_POST['WorkDesc']);
-        $_POST['WorksKind']   = $myts->addSlashes($_POST['WorksKind']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
-        $_POST['WorksEnable'] = intval($_POST['WorksEnable']);
+        $myts        = MyTextSanitizer::getInstance();
+        $WorkName    = $myts->addSlashes($_POST['WorkName']);
+        $WorkDesc    = $myts->addSlashes($_POST['WorkDesc']);
+        $WorksKind   = $myts->addSlashes($_POST['WorksKind']);
+        $WorksDate   = $myts->addSlashes($_POST['WorksDate']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
+        $WorksEnable = intval($_POST['WorksEnable']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_works") . "
         (`CateID`,`WorkName` , `WorkDesc` , `WorksDate` ,  `uid` , `WebID` , `WorksCount` , `WorksKind` , `WorksEnable`)
-        values('{$CateID}' , '{$_POST['WorkName']}' , '{$_POST['WorkDesc']}' , '{$_POST['WorksDate']}' , '{$uid}' , '{$_POST['WebID']}' , '0', '{$_POST['WorksKind']}', '{$_POST['WorksEnable']}')";
+        values('{$CateID}' , '{$WorkName}' , '{$WorkDesc}' , '{$WorksDate}' , '{$uid}' , '{$WebID}' , '0', '{$WorksKind}', '{$WorksEnable}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -372,7 +377,7 @@ class tad_web_works
 
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("WorksID", $WorksID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("WorksID", $WorksID, $tag_name, $_POST['tags']);
         return $WorksID;
     }
 
@@ -381,15 +386,18 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts                 = MyTextSanitizer::getInstance();
-        $_POST['WorkName']    = $myts->addSlashes($_POST['WorkName']);
-        $_POST['WorkDesc']    = $myts->addSlashes($_POST['WorkDesc']);
-        $_POST['WorksKind']   = $myts->addSlashes($_POST['WorksKind']);
-        $_POST['CateID']      = intval($_POST['CateID']);
-        $_POST['WebID']       = intval($_POST['WebID']);
-        $_POST['WorksEnable'] = intval($_POST['WorksEnable']);
+        $myts        = MyTextSanitizer::getInstance();
+        $WorkName    = $myts->addSlashes($_POST['WorkName']);
+        $WorkDesc    = $myts->addSlashes($_POST['WorkDesc']);
+        $WorksKind   = $myts->addSlashes($_POST['WorksKind']);
+        $WorksDate   = $myts->addSlashes($_POST['WorksDate']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
+        $WorksEnable = intval($_POST['WorksEnable']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'WorksID', $WorksID)) {
             $anduid = onlyMine();
@@ -397,11 +405,11 @@ class tad_web_works
 
         $sql = "update " . $xoopsDB->prefix("tad_web_works") . " set
          `CateID` = '{$CateID}' ,
-         `WorkName` = '{$_POST['WorkName']}' ,
-         `WorkDesc` = '{$_POST['WorkDesc']}' ,
-         `WorksDate` = '{$_POST['WorksDate']}' ,
-         `WorksKind` = '{$_POST['WorksKind']}' ,
-         `WorksEnable` = '{$_POST['WorksEnable']}'
+         `WorkName` = '{$WorkName}' ,
+         `WorkDesc` = '{$WorkDesc}' ,
+         `WorksDate` = '{$WorksDate}' ,
+         `WorksKind` = '{$WorksKind}' ,
+         `WorksEnable` = '{$WorksEnable}'
         where WorksID='$WorksID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -410,7 +418,7 @@ class tad_web_works
 
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("WorksID", $WorksID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("WorksID", $WorksID, $tag_name, $_POST['tags']);
         return $WorksID;
     }
 

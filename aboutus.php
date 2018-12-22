@@ -9,15 +9,18 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op          = system_CleanVars($_REQUEST, 'op', '', 'string');
-$MemID       = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
-$year        = system_CleanVars($_REQUEST, 'year', '', 'string');
-$newCateName = system_CleanVars($_REQUEST, 'newCateName', '', 'string');
-$CateID      = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-$chk_code    = system_CleanVars($_REQUEST, 'chk_code', '', 'string');
-$ParentID    = system_CleanVars($_REQUEST, 'ParentID', 0, 'int');
-$Reationship = system_CleanVars($_REQUEST, 'Reationship', '', 'string');
-$result      = system_CleanVars($_REQUEST, 'result', 0, 'int');
+$op           = system_CleanVars($_REQUEST, 'op', '', 'string');
+$MemID        = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
+$year         = system_CleanVars($_REQUEST, 'year', '', 'string');
+$newCateName  = system_CleanVars($_REQUEST, 'newCateName', '', 'string');
+$CateID       = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$chk_code     = system_CleanVars($_REQUEST, 'chk_code', '', 'string');
+$ParentID     = system_CleanVars($_REQUEST, 'ParentID', 0, 'int');
+$Reationship  = system_CleanVars($_REQUEST, 'Reationship', '', 'string');
+$result       = system_CleanVars($_REQUEST, 'result', 0, 'int');
+$MemUname     = system_CleanVars($_REQUEST, 'MemUname', '', 'string');
+$MemPasswd    = system_CleanVars($_REQUEST, 'MemPasswd', '', 'string');
+$ParentPasswd = system_CleanVars($_REQUEST, 'ParentPasswd', '', 'string');
 
 common_template($WebID, $web_all_config);
 
@@ -110,7 +113,7 @@ switch ($op) {
 
     //登入
     case "mem_login":
-        $login = $tad_web_aboutus->mem_login($WebID, $_POST['MemUname'], $_POST['MemPasswd']);
+        $login = $tad_web_aboutus->mem_login($WebID, $MemUname, $MemPasswd);
         if ($login) {
             header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&MemID={$_SESSION['LoginMemID']}&op=show_stu");
         } else {
@@ -189,7 +192,7 @@ switch ($op) {
 
     //家長登入
     case "parent_login":
-        $login = $tad_web_aboutus->parent_login($WebID, $MemID, $_POST['ParentPasswd']);
+        $login = $tad_web_aboutus->parent_login($WebID, $MemID, $ParentPasswd);
         if ($login) {
             header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&ParentID={$_SESSION['LoginParentID']}&op=show_parent");
         } else {

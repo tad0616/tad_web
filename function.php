@@ -263,14 +263,7 @@ function get_web_roles($defWebID = '', $defRole = '')
         $users[$i] = $uid;
         $i++;
     }
-    // $sql = "select * from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
-    // $result = $xoopsDB->queryF($sql) or web_error($sql);
 
-    // $i = 0;
-    // while ($all = $xoopsDB->fetchArray($result)) {
-    //     $users[$i] = $all;
-    //     $i++;
-    // }
 
     return $users;
 
@@ -1001,11 +994,12 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
 {
     global $xoopsDB, $xoopsUser, $xoopsModule, $xoopsConfig;
 
+    $slink = (PATH_SEPARATOR == ':') ? true : false;
     if ($col_name == "bg") {
         $TadUpFilesBg = TadUpFilesBg($col_sn);
         if (is_object($TadUpFilesBg)) {
             $TadUpFilesBg->set_col($col_name, $col_sn);
-            $TadUpFilesBg->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name);
+            $TadUpFilesBg->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name, false, $slink);
         } else {
             die('Need TadUpFilesBg Object!');
         }
@@ -1013,7 +1007,7 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
         $TadUpFilesLogo = TadUpFilesLogo($col_sn);
         if (is_object($TadUpFilesLogo)) {
             $TadUpFilesLogo->set_col($col_name, $col_sn);
-            $TadUpFilesLogo->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name);
+            $TadUpFilesLogo->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name, false, $slink);
         } else {
             die('Need TadUpFilesLogo Object!');
         }
@@ -1021,7 +1015,7 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
         $TadUpFilesHead = TadUpFilesHead($col_sn);
         if (is_object($TadUpFilesHead)) {
             $TadUpFilesHead->set_col($col_name, $col_sn);
-            $TadUpFilesHead->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name);
+            $TadUpFilesHead->import_one_file($file_name, null, $main_width, $thumb_width, null, $desc, $safe_name, false, $slink);
         } else {
             die('Need TadUpFilesHead Object!');
         }
@@ -1771,4 +1765,20 @@ function isCanEdit($WebID = null, $plugin_dir = '', $CateID = '', $ColName = '',
         }
     }
     return false;
+}
+
+
+function chk_self_web($WebID, $other = null)
+{
+    global $isMyWeb, $MyWebs;
+    if (!$isMyWeb and $MyWebs) {
+        redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
+    } elseif (!$isMyWeb) {
+        if ($other !== null and !$other) {
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+        } else {
+            return true;
+        }
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+    }
 }

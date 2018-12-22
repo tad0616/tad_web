@@ -157,11 +157,13 @@ class tad_web_news
         if ($mode == "return") {
             $data['main_data'] = $main_data;
             $data['total'] = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
             return $data;
         } else {
             $xoopsTpl->assign('news_data', $main_data);
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('news', get_db_plugin($this->WebID, 'news'));
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID));
             return $total;
         }
     }
@@ -396,21 +398,25 @@ class tad_web_news
         }
 
         $myts = MyTextSanitizer::getInstance();
-        $_POST['NewsTitle'] = $myts->addSlashes($_POST['NewsTitle']);
-        $_POST['NewsUrl'] = $myts->addSlashes($_POST['NewsUrl']);
-        $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);
-        $_POST['CateID'] = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
-        $_POST['NewsEnable'] = intval($_POST['NewsEnable']);
+        $NewsTitle = $myts->addSlashes($_POST['NewsTitle']);
+        $NewsUrl = $myts->addSlashes($_POST['NewsUrl']);
+        $NewsContent = $myts->addSlashes($_POST['NewsContent']);
+        $NewsDate = $myts->addSlashes($_POST['NewsDate']);
+        $toCal = $myts->addSlashes($_POST['toCal']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $CateID = intval($_POST['CateID']);
+        $WebID = intval($_POST['WebID']);
+        $NewsEnable = intval($_POST['NewsEnable']);
 
-        if (empty($_POST['toCal'])) {
-            $_POST['toCal'] = "0000-00-00 00:00:00";
+        if (empty($toCal)) {
+            $toCal = "0000-00-00 00:00:00";
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql = "insert into " . $xoopsDB->prefix("tad_web_news") . "
         (`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsUrl` , `WebID` , `NewsCounter` , `uid` , `NewsEnable`)
-        values('{$CateID}','{$_POST['NewsTitle']}' , '{$_POST['NewsContent']}' , '{$_POST['NewsDate']}' , '{$_POST['toCal']}' , '{$_POST['NewsUrl']}' , '{$_POST['WebID']}'  , '0' , '{$uid}', '{$_POST['NewsEnable']}' )";
+        values('{$CateID}','{$NewsTitle}' , '{$NewsContent}' , '{$NewsDate}' , '{$toCal}' , '{$NewsUrl}' , '{$WebID}'  , '0' , '{$uid}', '{$NewsEnable}' )";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -425,7 +431,7 @@ class tad_web_news
         $this->power->save_power("NewsID", $NewsID, 'read');
         //儲存標籤
 
-        $this->tags->save_tags("NewsID", $NewsID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("NewsID", $NewsID, $tag_name, $_POST['tags']);
         return $NewsID;
     }
 
@@ -435,18 +441,22 @@ class tad_web_news
         global $xoopsDB, $TadUpFiles;
 
         $myts = MyTextSanitizer::getInstance();
-        $_POST['NewsTitle'] = $myts->addSlashes($_POST['NewsTitle']);
-        $_POST['NewsUrl'] = $myts->addSlashes($_POST['NewsUrl']);
-        $_POST['NewsContent'] = $myts->addSlashes($_POST['NewsContent']);
-        $_POST['CateID'] = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
-        $_POST['NewsEnable'] = intval($_POST['NewsEnable']);
+        $NewsTitle = $myts->addSlashes($_POST['NewsTitle']);
+        $NewsUrl = $myts->addSlashes($_POST['NewsUrl']);
+        $NewsContent = $myts->addSlashes($_POST['NewsContent']);
+        $NewsDate = $myts->addSlashes($_POST['NewsDate']);
+        $toCal = $myts->addSlashes($_POST['toCal']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $CateID = intval($_POST['CateID']);
+        $WebID = intval($_POST['WebID']);
+        $NewsEnable = intval($_POST['NewsEnable']);
 
-        if (empty($_POST['toCal'])) {
-            $_POST['toCal'] = "0000-00-00 00:00:00";
+        if (empty($toCal)) {
+            $toCal = "0000-00-00 00:00:00";
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'NewsID', $NewsID)) {
             $anduid = onlyMine();
@@ -454,12 +464,12 @@ class tad_web_news
 
         $sql = "update " . $xoopsDB->prefix("tad_web_news") . " set
          `CateID` = '{$CateID}' ,
-         `NewsTitle` = '{$_POST['NewsTitle']}' ,
-         `NewsContent` = '{$_POST['NewsContent']}' ,
-         `NewsDate` = '{$_POST['NewsDate']}' ,
-         `toCal` = '{$_POST['toCal']}' ,
-         `NewsUrl` = '{$_POST['NewsUrl']}',
-         `NewsEnable`='{$_POST['NewsEnable']}'
+         `NewsTitle` = '{$NewsTitle}' ,
+         `NewsContent` = '{$NewsContent}' ,
+         `NewsDate` = '{$NewsDate}' ,
+         `toCal` = '{$toCal}' ,
+         `NewsUrl` = '{$NewsUrl}',
+         `NewsEnable`='{$NewsEnable}'
         where NewsID='$NewsID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -470,7 +480,7 @@ class tad_web_news
         //儲存權限
         $this->power->save_power("NewsID", $NewsID, 'read');
         //儲存標籤
-        $this->tags->save_tags("NewsID", $NewsID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("NewsID", $NewsID, $tag_name, $_POST['tags']);
         return $NewsID;
     }
 

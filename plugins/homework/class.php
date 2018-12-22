@@ -187,6 +187,7 @@ class tad_web_homework
             $data['yet_data'] = $yet_data;
             $data['total'] = $total;
             $data['today'] = date("Y-m-d");
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $AccountID);
             return $data;
         } else {
             $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
@@ -196,6 +197,7 @@ class tad_web_homework
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('today', date("Y-m-d"));
             $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID));
             return $total;
         }
     }
@@ -261,6 +263,7 @@ class tad_web_homework
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign("isAssistant", $isAssistant);
+
 
         $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID));
 
@@ -424,6 +427,7 @@ class tad_web_homework
         $TadUpFiles->set_col("HomeworkID", $HomeworkID);
         $upform = $TadUpFiles->upform();
         $xoopsTpl->assign('upform', $upform);
+        $xoopsTpl->assign('uid', $xoopsUser->uid());
     }
 
     //新增資料到tad_web_homework中
@@ -437,72 +441,75 @@ class tad_web_homework
         }
 
         $myts = MyTextSanitizer::getInstance();
-        $_POST['HomeworkTitle'] = $myts->addSlashes($_POST['HomeworkTitle']);
-        $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
-        $_POST['CateID'] = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);
+        $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
+        $toCal = $myts->addSlashes($_POST['toCal']);
+        $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
+        $CateID = intval($_POST['CateID']);
+        $WebID = intval($_POST['WebID']);
         $HomeworkDate = date("Y-m-d H:i:s");
 
-        $_POST['today_homework'] = $myts->addSlashes($_POST['today_homework']);
-        $today_homework = $this->remove_html($_POST['today_homework']);
-        $_POST['bring'] = $myts->addSlashes($_POST['bring']);
-        $bring = $this->remove_html($_POST['bring']);
-        $_POST['teacher_say'] = $myts->addSlashes($_POST['teacher_say']);
-        $teacher_say = $this->remove_html($_POST['teacher_say']);
-        $_POST['other'] = $myts->addSlashes($_POST['other']);
-        $other = $this->remove_html($_POST['other']);
+        $today_homework = $myts->addSlashes($_POST['today_homework']);
+        $today_homework_remove_html = $this->remove_html($today_homework);
+        $bring = $myts->addSlashes($_POST['bring']);
+        $bring_remove_html = $this->remove_html($bring);
+        $teacher_say = $myts->addSlashes($_POST['teacher_say']);
+        $teacher_say_remove_html = $this->remove_html($teacher_say);
+        $other = $myts->addSlashes($_POST['other']);
+        $other_remove_html = $this->remove_html($other);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
 
-        if (empty($_POST['toCal'])) {
-            $_POST['toCal'] = "0000-00-00";
+        if (empty($toCal)) {
+            $toCal = "0000-00-00";
         }
 
-        if ($_POST['HomeworkPostDate'] == 8) {
-            $HomeworkPostDate = $_POST['toCal'] . " 08:00:00";
-        } elseif ($_POST['HomeworkPostDate'] == 12) {
-            $HomeworkPostDate = $_POST['toCal'] . " 12:00:00";
-        } elseif ($_POST['HomeworkPostDate'] == 16) {
-            $HomeworkPostDate = $_POST['toCal'] . " 16:00:00";
+        if ($HomeworkPostDate == 8) {
+            $HomeworkPostDate = $toCal . " 08:00:00";
+        } elseif ($HomeworkPostDate == 12) {
+            $HomeworkPostDate = $toCal . " 12:00:00";
+        } elseif ($HomeworkPostDate == 16) {
+            $HomeworkPostDate = $toCal . " 16:00:00";
         } else {
-            // $HomeworkPostDate = $_POST['toCal'] . " 00:00:00";
+            // $HomeworkPostDate = $toCal . " 00:00:00";
             $HomeworkPostDate = $HomeworkDate;
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_homework") . "
         (`CateID`,`HomeworkTitle` , `HomeworkContent` , `HomeworkDate` , `toCal` , `WebID` , `HomeworkCounter` , `uid` , `HomeworkPostDate`)
-        values('{$CateID}','{$_POST['HomeworkTitle']}' , '{$_POST['HomeworkContent']}' , '{$HomeworkDate}' , '{$_POST['toCal']}' , '{$_POST['WebID']}' , '0' , '{$uid}' , '{$HomeworkPostDate}')";
+        values('{$CateID}','{$HomeworkTitle}' , '{$HomeworkContent}' , '{$HomeworkDate}' , '{$toCal}' , '{$WebID}' , '0' , '{$uid}' , '{$HomeworkPostDate}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
         $HomeworkID = $xoopsDB->getInsertId();
         save_assistant_post($CateID, 'HomeworkID', $HomeworkID);
 
-        if (!empty($today_homework)) {
+        if (!empty($today_homework_remove_html)) {
             $sql = "insert into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','today_homework' , '{$_POST['today_homework']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','today_homework' , '{$today_homework}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         }
 
-        if (!empty($bring)) {
+        if (!empty($bring_remove_html)) {
             $sql = "insert into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','bring' , '{$_POST['bring']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','bring' , '{$bring}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         }
 
-        if (!empty($teacher_say)) {
+        if (!empty($teacher_say_remove_html)) {
             $sql = "insert into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','teacher_say' , '{$_POST['teacher_say']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','teacher_say' , '{$teacher_say}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         }
 
-        if (!empty($other)) {
+        if (!empty($other_remove_html)) {
             $sql = "insert into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','other' , '{$_POST['other']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','other' , '{$other}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         }
 
@@ -519,37 +526,40 @@ class tad_web_homework
         global $xoopsDB, $TadUpFiles;
 
         $myts = MyTextSanitizer::getInstance();
-        $_POST['HomeworkTitle'] = $myts->addSlashes($_POST['HomeworkTitle']);
-        $_POST['HomeworkContent'] = $myts->addSlashes($_POST['HomeworkContent']);
-        $_POST['CateID'] = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);
+        $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
+        $toCal = $myts->addSlashes($_POST['toCal']);
+        $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
+        $CateID = intval($_POST['CateID']);
+        $WebID = intval($_POST['WebID']);
         $HomeworkDate = date("Y-m-d H:i:s");
 
-        $_POST['today_homework'] = $myts->addSlashes($_POST['today_homework']);
-        $today_homework = $this->remove_html($_POST['today_homework']);
-        $_POST['bring'] = $myts->addSlashes($_POST['bring']);
-        $bring = $this->remove_html($_POST['bring']);
-        $_POST['teacher_say'] = $myts->addSlashes($_POST['teacher_say']);
-        $teacher_say = $this->remove_html($_POST['teacher_say']);
-        $_POST['other'] = $myts->addSlashes($_POST['other']);
-        $other = $this->remove_html($_POST['other']);
+        $today_homework = $myts->addSlashes($_POST['today_homework']);
+        $today_homework_remove_html = $this->remove_html($today_homework);
+        $bring = $myts->addSlashes($_POST['bring']);
+        $bring_remove_html = $this->remove_html($bring);
+        $teacher_say = $myts->addSlashes($_POST['teacher_say']);
+        $teacher_say_remove_html = $this->remove_html($teacher_say);
+        $other = $myts->addSlashes($_POST['other']);
+        $other_remove_html = $this->remove_html($other);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
         // die($bring);
-        if (empty($_POST['toCal'])) {
-            $_POST['toCal'] = "0000-00-00";
+        if (empty($toCal)) {
+            $toCal = "0000-00-00";
         }
 
-        if ($_POST['HomeworkPostDate'] == 8) {
-            $HomeworkPostDate = $_POST['toCal'] . " 08:00:00";
-        } elseif ($_POST['HomeworkPostDate'] == 12) {
-            $HomeworkPostDate = $_POST['toCal'] . " 12:00:00";
-        } elseif ($_POST['HomeworkPostDate'] == 16) {
-            $HomeworkPostDate = $_POST['toCal'] . " 16:00:00";
+        if ($HomeworkPostDate == 8) {
+            $HomeworkPostDate = $toCal . " 08:00:00";
+        } elseif ($HomeworkPostDate == 12) {
+            $HomeworkPostDate = $toCal . " 12:00:00";
+        } elseif ($HomeworkPostDate == 16) {
+            $HomeworkPostDate = $toCal . " 16:00:00";
         } else {
-            // $HomeworkPostDate = $_POST['toCal'] . " 00:00:00";
+            // $HomeworkPostDate = $toCal . " 00:00:00";
             $HomeworkPostDate = $HomeworkDate;
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'HomeworkID', $HomeworkID)) {
             $anduid = onlyMine();
@@ -557,55 +567,55 @@ class tad_web_homework
 
         $sql = "update " . $xoopsDB->prefix("tad_web_homework") . " set
          `CateID` = '{$CateID}' ,
-         `HomeworkTitle` = '{$_POST['HomeworkTitle']}' ,
-         `HomeworkContent` = '{$_POST['HomeworkContent']}' ,
+         `HomeworkTitle` = '{$HomeworkTitle}' ,
+         `HomeworkContent` = '{$HomeworkContent}' ,
          `HomeworkDate` = '{$HomeworkDate}' ,
-         `toCal` = '{$_POST['toCal']}' ,
+         `toCal` = '{$toCal}' ,
          `HomeworkPostDate` = '{$HomeworkPostDate}'
         where HomeworkID='$HomeworkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        if (!empty($today_homework)) {
+        if (!empty($today_homework_remove_html)) {
             $sql = "replace into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','today_homework' , '{$_POST['today_homework']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','today_homework' , '{$today_homework}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
-            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='today_homework' and `WebID`='{$_POST['WebID']}'";
+            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='today_homework' and `WebID`='{$WebID}'";
             $xoopsDB->queryf($sql) or web_error($sql);
         }
 
-        if (!empty($bring)) {
+        if (!empty($bring_remove_html)) {
             $sql = "replace into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','bring' , '{$_POST['bring']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','bring' , '{$bring}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
-            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='bring' and `WebID`='{$_POST['WebID']}'";
+            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='bring' and `WebID`='{$WebID}'";
             $xoopsDB->queryf($sql) or web_error($sql);
         }
 
-        if (!empty($teacher_say)) {
+        if (!empty($teacher_say_remove_html)) {
             $sql = "replace into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','teacher_say' , '{$_POST['teacher_say']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','teacher_say' , '{$teacher_say}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
-            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='teacher_say' and `WebID`='{$_POST['WebID']}'";
+            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='teacher_say' and `WebID`='{$WebID}'";
             $xoopsDB->queryf($sql) or web_error($sql);
         }
 
-        if (!empty($other)) {
+        if (!empty($other_remove_html)) {
             $sql = "replace into " . $xoopsDB->prefix("tad_web_homework_content") . "
             (`HomeworkID`,`HomeworkCol` , `Content` , `WebID` )
-            values('{$HomeworkID}','other' , '{$_POST['other']}' , '{$_POST['WebID']}')";
+            values('{$HomeworkID}','other' , '{$other}' , '{$WebID}')";
             $xoopsDB->query($sql) or web_error($sql);
         } else {
             $sql = "delete from " . $xoopsDB->prefix("tad_web_homework_content") . "
-            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='other' and `WebID`='{$_POST['WebID']}'";
+            where `HomeworkID`='{$HomeworkID}' and `HomeworkCol`='other' and `WebID`='{$WebID}'";
             $xoopsDB->queryf($sql) or web_error($sql);
         }
 

@@ -163,11 +163,13 @@ class tad_web_files
         if ($mode == "return") {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'files', $CateID, 'fsn', $fsn);
             return $data;
         } else {
             $xoopsTpl->assign('file_data', $main_data);
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('files', get_db_plugin($this->WebID, 'files'));
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'files', $CateID, 'fsn', $fsn));
             return $total;
         }
 
@@ -268,8 +270,11 @@ class tad_web_files
         $WebID            = intval($_POST['WebID']);
         $file_link        = $myts->addSlashes($_POST['file_link']);
         $file_description = $myts->addSlashes($_POST['file_description']);
+        $newCateName      = $myts->addSlashes($_POST['newCateName']);
+        $file_method      = $myts->addSlashes($_POST['file_method']);
+        $tag_name         = $myts->addSlashes($_POST['tag_name']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_files") . "
           (`uid` , `CateID` , `file_date`  , `WebID` , `file_link` , `file_description`)
@@ -281,7 +286,7 @@ class tad_web_files
         $fsn = $xoopsDB->getInsertId();
         save_assistant_post($CateID, 'fsn', $fsn);
 
-        if ($_POST['file_method'] == "upload_file") {
+        if ($file_method == "upload_file") {
             $TadUpFiles->set_col('fsn', $fsn);
             $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
             check_quota($this->WebID);
@@ -289,7 +294,7 @@ class tad_web_files
         }
 
         //儲存標籤
-        $this->tags->save_tags("fsn", $fsn, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("fsn", $fsn, $tag_name, $_POST['tags']);
         return $fsn;
     }
 
@@ -304,8 +309,11 @@ class tad_web_files
         $WebID            = intval($_POST['WebID']);
         $file_link        = $myts->addSlashes($_POST['file_link']);
         $file_description = $myts->addSlashes($_POST['file_description']);
+        $newCateName      = $myts->addSlashes($_POST['newCateName']);
+        $file_method      = $myts->addSlashes($_POST['file_method']);
+        $tag_name         = $myts->addSlashes($_POST['tag_name']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         if (!is_assistant($CateID, 'fsn', $fsn)) {
             $anduid = onlyMine();
         }
@@ -320,14 +328,14 @@ class tad_web_files
         // die($sql);
         $xoopsDB->queryF($sql) or web_error($sql);
 
-        if ($_POST['file_method'] == "upload_file") {
+        if ($file_method == "upload_file") {
             $TadUpFiles->set_col('fsn', $fsn);
             $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
             check_quota($this->WebID);
         }
 
         //儲存標籤
-        $this->tags->save_tags("fsn", $fsn, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("fsn", $fsn, $tag_name, $_POST['tags']);
         return $fsn;
     }
 

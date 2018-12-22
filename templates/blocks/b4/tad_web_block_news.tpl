@@ -1,0 +1,1 @@
+<{includeq file="$xoops_rootpath/modules/tad_web/plugins/news/tpls/b4/tad_web_common_news.tpl" }>

@@ -152,12 +152,14 @@ class tad_web_account
             $data['main_data'] = $main_data;
             $data['AccountTotal'] = $AccountTotal;
             $data['total'] = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
             return $data;
         } else {
             $xoopsTpl->assign('bar', $bar);
             $xoopsTpl->assign('account_data', $main_data);
             $xoopsTpl->assign('AccountTotal', $AccountTotal);
             $xoopsTpl->assign('account', get_db_plugin($this->WebID, 'account'));
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID));
             return $total;
         }
     }

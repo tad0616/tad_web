@@ -821,11 +821,17 @@ class tad_web_aboutus
         chk_self_web($this->WebID);
 
         $myts                   = MyTextSanitizer::getInstance();
-        $_POST['MemExpertises'] = $myts->addSlashes($_POST['MemExpertises']);
-        $_POST['AboutMem']      = $myts->addSlashes($_POST['AboutMem']);
-        $_POST['MemClassOrgan'] = $myts->addSlashes($_POST['MemClassOrgan']);
-        $_POST['MemName']       = $myts->addSlashes($_POST['MemName']);
-        $_POST['MemNickName']   = $myts->addSlashes($_POST['MemNickName']);
+        $MemExpertises = $myts->addSlashes($_POST['MemExpertises']);
+        $AboutMem      = $myts->addSlashes($_POST['AboutMem']);
+        $MemClassOrgan = $myts->addSlashes($_POST['MemClassOrgan']);
+        $MemName       = $myts->addSlashes($_POST['MemName']);
+        $MemNickName   = $myts->addSlashes($_POST['MemNickName']);
+        $MemSex        = $myts->addSlashes($_POST['MemSex']);
+        $MemUnicode    = $myts->addSlashes($_POST['MemUnicode']);
+        $MemBirthday   = $myts->addSlashes($_POST['MemBirthday']);
+        $MemUname      = $myts->addSlashes($_POST['MemUname']);
+        $MemPasswd     = $myts->addSlashes($_POST['MemPasswd']);
+        $MemNum     = $myts->addSlashes($_POST['MemNum']);
 
         $CateID = intval($_POST['CateID']);
 
@@ -833,7 +839,7 @@ class tad_web_aboutus
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_mems") . "
           (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemExpertises`,  `MemUname`, `MemPasswd`)
-          values( '{$_POST['MemName']}' , '{$_POST['MemNickName']}', '{$_POST['MemSex']}', '{$_POST['MemUnicode']}', '{$_POST['MemBirthday']}', '{$_POST['MemExpertises']}' ,'{$_POST['MemUname']}', '{$_POST['MemPasswd']}')";
+          values( '{$MemName}' , '{$MemNickName}', '{$MemSex}', '{$MemUnicode}', '{$MemBirthday}', '{$MemExpertises}' ,'{$MemUname}', '{$MemPasswd}')";
 
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -847,7 +853,7 @@ class tad_web_aboutus
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . "
           (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable`, `MemClassOrgan`, `AboutMem`)
-          values('{$MemID}' , '{$this->WebID}' , '{$CateID}', '{$_POST['MemNum']}' , '{$MemSort}' , '1' , '{$_POST['MemClassOrgan']}', '{$_POST['AboutMem']}')";
+          values('{$MemID}' , '{$this->WebID}' , '{$CateID}', '{$MemNum}' , '{$MemSort}' , '1' , '{$MemClassOrgan}', '{$AboutMem}')";
 
         $xoopsDB->queryF($sql) or web_error($sql);
         check_quota($this->WebID);
@@ -868,29 +874,36 @@ class tad_web_aboutus
         }
 
         $myts                   = MyTextSanitizer::getInstance();
-        $_POST['MemExpertises'] = $myts->addSlashes($_POST['MemExpertises']);
-        $_POST['AboutMem']      = $myts->addSlashes($_POST['AboutMem']);
-        $_POST['MemClassOrgan'] = $myts->addSlashes($_POST['MemClassOrgan']);
-        $_POST['MemName']       = $myts->addSlashes($_POST['MemName']);
-        $_POST['MemNickName']   = $myts->addSlashes($_POST['MemNickName']);
+        $MemExpertises = $myts->addSlashes($_POST['MemExpertises']);
+        $AboutMem      = $myts->addSlashes($_POST['AboutMem']);
+        $MemClassOrgan = $myts->addSlashes($_POST['MemClassOrgan']);
+        $MemName       = $myts->addSlashes($_POST['MemName']);
+        $MemNickName   = $myts->addSlashes($_POST['MemNickName']);
+        $MemSex        = $myts->addSlashes($_POST['MemSex']);
+        $MemUnicode    = $myts->addSlashes($_POST['MemUnicode']);
+        $MemBirthday   = $myts->addSlashes($_POST['MemBirthday']);
+        $MemUname      = $myts->addSlashes($_POST['MemUname']);
+        $MemPasswd     = $myts->addSlashes($_POST['MemPasswd']);
+        $MemNum     = $myts->addSlashes($_POST['MemNum']);
+        $MemSort     = intval($_POST['MemSort']);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_mems") . " set
-           `MemName` = '{$_POST['MemName']}' ,
-           `MemNickName` = '{$_POST['MemNickName']}',
-           `MemSex` = '{$_POST['MemSex']}',
-           `MemUnicode` = '{$_POST['MemUnicode']}',
-           `MemBirthday` = '{$_POST['MemBirthday']}',
-           `MemExpertises` = '{$_POST['MemExpertises']}',
-           `MemUname` = '{$_POST['MemUname']}',
-           `MemPasswd` = '{$_POST['MemPasswd']}'
+           `MemName` = '{$MemName}' ,
+           `MemNickName` = '{$MemNickName}',
+           `MemSex` = '{$MemSex}',
+           `MemUnicode` = '{$MemUnicode}',
+           `MemBirthday` = '{$MemBirthday}',
+           `MemExpertises` = '{$MemExpertises}',
+           `MemUname` = '{$MemUname}',
+           `MemPasswd` = '{$MemPasswd}'
           where MemID ='$MemID'";
         $xoopsDB->queryF($sql) or web_error($sql);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set
-           `MemNum` = '{$_POST['MemNum']}' ,
-           `MemSort` = '{$_POST['MemSort']}',
-           `MemClassOrgan` = '{$_POST['MemClassOrgan']}',
-           `AboutMem` = '{$_POST['AboutMem']}'
+           `MemNum` = '{$MemNum}' ,
+           `MemSort` = '{$MemSort}',
+           `MemClassOrgan` = '{$MemClassOrgan}',
+           `AboutMem` = '{$AboutMem}'
           where MemID ='$MemID'";
 
         $xoopsDB->queryF($sql) or web_error($sql);
@@ -1112,9 +1125,12 @@ class tad_web_aboutus
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles;
 
+        $top     = $myts->addSlashes($_POST['top']);
+        $left     = $myts->addSlashes($_POST['left']);
+
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set
-       `top` = '{$_POST['top']}' ,
-       `left` = '{$_POST['left']}'
+       `top` = '{$top}' ,
+       `left` = '{$left}'
         where MemID='$MemID'";
         //die($sql);
         $xoopsDB->queryF($sql) or web_error($sql);
@@ -1145,6 +1161,12 @@ class tad_web_aboutus
         if (empty($MemUname) or empty($MemPasswd)) {
             return false;
         }
+
+        $myts = MyTextSanitizer::getInstance();
+
+        $MemUname  = $myts->addSlashes($MemUname);
+        $MemPasswd  = $myts->addSlashes($MemPasswd);
+
 
         $sql    = "select a.`MemID` , a.`MemName` , a.`MemNickName` , b.`WebID` , b.`CateID` from " . $xoopsDB->prefix("tad_web_mems") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID` where a.`MemUname`='$MemUname' and a.`MemPasswd`='$MemPasswd' and b.`MemEnable`='1' and b.WebID='{$WebID}' order by b.MemNum";
         $result = $xoopsDB->query($sql) or web_error($sql);
@@ -1384,6 +1406,9 @@ class tad_web_aboutus
         if (empty($MemID) or empty($ParentPasswd)) {
             return false;
         }
+        $myts = MyTextSanitizer::getInstance();
+
+        $ParentPasswd  = $myts->addSlashes($ParentPasswd);
 
         $sql    = "select a.`ParentID` , a.`MemID` , a.`Reationship`, a.`ParentEnable`, a.`code` , b.`WebID` , b.`CateID`,c.MemName from " . $xoopsDB->prefix("tad_web_mem_parents") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID`  left join " . $xoopsDB->prefix("tad_web_mems") . " as c on a.`MemID`=c.`MemID` where a.`MemID`='$MemID' and a.`ParentPasswd`='$ParentPasswd' and b.WebID='{$WebID}' order by b.MemNum";
         $result = $xoopsDB->query($sql) or web_error($sql);

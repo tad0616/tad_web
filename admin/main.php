@@ -219,10 +219,6 @@ function tad_web_form($WebID = null)
     //抓取預設值
     if (!empty($WebID)) {
         $DBV = get_tad_web($WebID);
-        //圖案
-        // $TadUpFiles->set_col("WebLogo", $WebID, "1");
-        // $web_logo = $TadUpFiles->get_pic_file("thumb");
-        // $pic      = empty($web_logo) ? "" : "background-image:url($web_logo);background-repeat: no-repeat;  background-position: top right;";
     } else {
         $DBV = array();
     }
@@ -373,18 +369,22 @@ function update_tad_web($WebID = "")
     $myts     = MyTextSanitizer::getInstance();
     $WebName  = $myts->addSlashes($_POST['WebName']);
     $WebTitle = $myts->addSlashes($_POST['WebTitle']);
+    $CateID = intval($_POST['CateID']);
+    $WebSort = intval($_POST['WebSort']);
+    $WebEnable = intval($_POST['WebEnable']);
+    $WebOwnerUid = intval($_POST['WebOwnerUid']);
 
-    $WebOwner = XoopsUser::getUnameFromId($_POST['WebOwnerUid'], 1);
+    $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 1);
     if (empty($WebOwner)) {
-        $WebOwner = XoopsUser::getUnameFromId($_POST['WebOwnerUid'], 0);
+        $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 0);
     }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set
-    `CateID`='{$_POST['CateID']}',
+    `CateID`='{$CateID}',
     `WebName` = '{$WebName}' ,
-    `WebSort` = '{$_POST['WebSort']}' ,
-    `WebEnable` = '{$_POST['WebEnable']}' ,
+    `WebSort` = '{$WebSort}' ,
+    `WebEnable` = '{$WebEnable}' ,
     `WebOwner` = '{$WebOwner}' ,
-    `WebOwnerUid` = '{$_POST['WebOwnerUid']}' ,
+    `WebOwnerUid` = '{$WebOwnerUid}' ,
     `WebTitle` = '{$WebTitle}'
     where WebID='$WebID'";
     $xoopsDB->queryF($sql) or web_error($sql);

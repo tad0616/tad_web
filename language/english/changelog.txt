@@ -1,3 +1,15 @@
+Tad Web 1.7.7 (2019-01-01 released)
+=========================================================== ==
+  1. Added "Auto Skip" image auto play settings
+  2. Fix the problem that the used space is not displayed correctly.
+  3. Initial completion of accessibility 2.0 testing
+  4. Fix the problem that the middle block will not appear when there is no content.
+  5. Remove the site owner as a co-administrator
+  6. Strengthen variable filtering
+  7. Fix problems that may not be found after the contact book is saved.
+  8. Remove Big5 Chinese language
+  9. Support BootStrap4
+
 Tad Web 1.7.6 (2017-01-26 released)
 ================================================== ==
   1. Fix block json file content is not correct

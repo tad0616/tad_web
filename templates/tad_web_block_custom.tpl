@@ -1,4 +1,2 @@
-<{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
-<div>
-  <{$block.BlockContent}>
-</div>
+<{assign var=this_file value=$smarty.template|basename|replace:'db:':''}>
+<{includeq file="$xoops_rootpath/modules/$xoops_dirname/templates/b4.tpl"}>

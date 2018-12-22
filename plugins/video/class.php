@@ -303,13 +303,15 @@ class tad_web_video
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name   = $myts->addSlashes($_POST['tag_name']);
         $CateID    = intval($_POST['CateID']);
         $WebID     = intval($_POST['WebID']);
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = intval($_POST['VideoCount']);
 
-        $CateID    = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
+        $CateID    = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $VideoSort = $this->max_sort($WebID, $CateID);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_web_video") . "
@@ -322,7 +324,7 @@ class tad_web_video
         save_assistant_post($CateID, 'VideoID', $VideoID);
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("VideoID", $VideoID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("VideoID", $VideoID, $tag_name, $_POST['tags']);
         return $VideoID;
     }
 
@@ -348,6 +350,8 @@ class tad_web_video
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);
+        $newCateName   = $myts->addSlashes($_POST['newCateName']);
+        $tag_name   = $myts->addSlashes($_POST['tag_name']);
         $CateID    = intval($_POST['CateID']);
         $WebID     = intval($_POST['WebID']);
 
@@ -355,7 +359,7 @@ class tad_web_video
         $VideoCount = intval($_POST['VideoCount']);
         $VideoSort  = intval($_POST['VideoSort']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'VideoID', $VideoID)) {
             $anduid = onlyMine();
@@ -371,7 +375,7 @@ class tad_web_video
         $xoopsDB->queryF($sql) or web_error($sql);
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("VideoID", $VideoID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("VideoID", $VideoID, $tag_name, $_POST['tags']);
         return $VideoID;
     }
 

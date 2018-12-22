@@ -153,7 +153,9 @@ function tad_web_config($WebID, $configs)
     $web_admins    = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
     $sql           = "SELECT uid,uname,name FROM " . $xoopsDB->prefix("users") . " ORDER BY uname";
     $result        = $xoopsDB->query($sql) or web_error($sql);
-
+// if($_GET['test']==1){
+    // die($web_admins);
+    // }
     $myts    = MyTextSanitizer::getInstance();
     $user_ok = $user_yet = "";
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -163,12 +165,15 @@ function tad_web_config($WebID, $configs)
         $name  = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
         $name  = empty($name) ? "" : " ({$name})";
-        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr) or $uid == $WebOwnerUid) {
+        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr)) {
             $user_ok .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
         } else {
             $user_yet .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
         }
     }
+    // if ($_GET['test'] == 1) {
+    //     die($user_ok);
+    // }
     $xoopsTpl->assign('user_ok', $user_ok);
     $xoopsTpl->assign('user_yet', $user_yet);
     $xoopsTpl->assign('web_admins', $web_admins);
@@ -182,12 +187,12 @@ function update_tad_web()
 {
     global $xoopsDB, $xoopsUser, $WebID;
 
-    $myts              = MyTextSanitizer::getInstance();
-    $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
-    $_POST['WebOwner'] = $myts->addSlashes($_POST['WebOwner']);
-    $CateID            = intval($_POST['CateID']);
+    $myts     = MyTextSanitizer::getInstance();
+    $WebName  = $myts->addSlashes($_POST['WebName']);
+    $WebOwner = $myts->addSlashes($_POST['WebOwner']);
+    $CateID   = intval($_POST['CateID']);
 
-    $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$_POST['WebName']}', `WebOwner` = '{$_POST['WebOwner']}' where WebID ='{$WebID}'";
+    $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$WebName}', `WebOwner` = '{$WebOwner}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
     unset($_SESSION['tad_web'][$WebID]);
@@ -318,6 +323,7 @@ function unable_my_web($WebID)
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '0' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql);
+    $_SESSION['tad_web'][$WebID]['WebEnable'] = 0;
 }
 
 //啟動網站
@@ -492,12 +498,12 @@ switch ($op) {
 
     case "unable_my_web":
         unable_my_web($WebID);
-        header("location: index.php");
+        header("location: config.php?WebID=$WebID");
         exit;
 
     case "enable_my_web":
         enable_my_web($WebID);
-        header("location: index.php?WebID={$WebID}");
+        header("location: config.php?WebID={$WebID}");
         exit;
 
     //刪除資料

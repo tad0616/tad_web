@@ -196,18 +196,20 @@ class tad_web_calendar
         global $xoopsDB, $xoopsUser, $WebOwnerUid;
         $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
 
-        $myts                   = MyTextSanitizer::getInstance();
-        $_POST['CalendarName']  = $myts->addSlashes($_POST['CalendarName']);
-        $_POST['CalendarType']  = $myts->addSlashes($_POST['CalendarType']);
-        $_POST['CalendarDesc']  = $myts->addSlashes($_POST['CalendarDesc']);
-        $_POST['CalendarCount'] = intval($_POST['CalendarCount']);
-        //$_POST['CateID']        = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $myts          = MyTextSanitizer::getInstance();
+        $CalendarName  = $myts->addSlashes($_POST['CalendarName']);
+        $CalendarType  = $myts->addSlashes($_POST['CalendarType']);
+        $CalendarDesc  = $myts->addSlashes($_POST['CalendarDesc']);
+        $CalendarDate  = $myts->addSlashes($_POST['CalendarDate']);
+        $newCateName   = $myts->addSlashes($_POST['newCateName']);
+        $CalendarCount = intval($_POST['CalendarCount']);
+        $CateID        = intval($_POST['CateID']);
+        $WebID         = intval($_POST['WebID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_calendar") . "
         (`CateID`,`CalendarName`,`CalendarType` , `CalendarDesc` , `CalendarDate` , `uid` , `WebID` , `CalendarCount`)
-        values('0' ,'{$_POST['CalendarName']}' ,'{$_POST['CalendarType']}' , '{$_POST['CalendarDesc']}' , '{$_POST['CalendarDate']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['CalendarCount']}')";
+        values('0' ,'{$CalendarName}' ,'{$CalendarType}' , '{$CalendarDesc}' , '{$CalendarDate}' , '{$uid}' , '{$WebID}' , '{$CalendarCount}')";
         $xoopsDB->query($sql) or web_error($sql);
 
         //取得最後新增資料的流水編號
@@ -222,22 +224,23 @@ class tad_web_calendar
     {
         global $xoopsDB;
 
-        $myts                  = MyTextSanitizer::getInstance();
-        $_POST['CalendarName'] = $myts->addSlashes($_POST['CalendarName']);
-        $_POST['CalendarType'] = $myts->addSlashes($_POST['CalendarType']);
-        $_POST['CalendarDesc'] = $myts->addSlashes($_POST['CalendarDesc']);
-        //$_POST['CateID']       = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $myts         = MyTextSanitizer::getInstance();
+        $CalendarName = $myts->addSlashes($_POST['CalendarName']);
+        $CalendarType = $myts->addSlashes($_POST['CalendarType']);
+        $CalendarDesc = $myts->addSlashes($_POST['CalendarDesc']);
+        $CalendarDate = $myts->addSlashes($_POST['CalendarDate']);
+        $newCateName  = $myts->addSlashes($_POST['newCateName']);
+        $CateID       = intval($_POST['CateID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $anduid = onlyMine();
 
         $sql = "update " . $xoopsDB->prefix("tad_web_calendar") . " set
-         `CalendarName` = '{$_POST['CalendarName']}' ,
-         `CalendarType` = '{$_POST['CalendarType']}' ,
-         `CalendarDesc` = '{$_POST['CalendarDesc']}' ,
-         `CalendarDate` = '{$_POST['CalendarDate']}'
+         `CalendarName` = '{$CalendarName}' ,
+         `CalendarType` = '{$CalendarType}' ,
+         `CalendarDesc` = '{$CalendarDesc}' ,
+         `CalendarDate` = '{$CalendarDate}'
         where CalendarID='$CalendarID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql);
 

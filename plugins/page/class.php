@@ -139,6 +139,7 @@ class tad_web_page
             $data['cate_size']        = $cate_size;
             $data['total']            = $total;
             $data['list_pages_title'] = $this->setup['list_pages_title'];
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID);
 
             return $data;
         } else {
@@ -147,6 +148,7 @@ class tad_web_page
             $xoopsTpl->assign('cate_size', $cate_size);
             $xoopsTpl->assign('page', get_db_plugin($this->WebID, 'page'));
             $xoopsTpl->assign('list_pages_title', $this->setup['list_pages_title']);
+            $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID));
             return $total;
         }
     }
@@ -356,8 +358,10 @@ class tad_web_page
         $PageSort    = $this->max_sort($WebID, $CateID);
         $PageDate    = date("Y-m-d H:i:s");
         $PageCSS     = $myts->addSlashes($_POST['PageCSS']);
+        $newCateName     = $myts->addSlashes($_POST['newCateName']);
+        $tag_name     = $myts->addSlashes($_POST['tag_name']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_page") . "
         (`CateID`,`PageTitle` , `PageContent` , `PageDate` , `PageSort` , `uid` , `WebID` , `PageCount` , `PageCSS`)
         values('{$CateID}' ,'{$PageTitle}' , '{$PageContent}' , '{$PageDate}' , '{$PageSort}' , '{$uid}' , '{$WebID}' , '0' , '{$PageCSS}')";
@@ -371,7 +375,7 @@ class tad_web_page
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("PageID", $PageID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("PageID", $PageID, $tag_name, $_POST['tags']);
         return $PageID;
     }
 
@@ -387,8 +391,10 @@ class tad_web_page
         $WebID       = intval($_POST['WebID']);
         $PageDate    = date("Y-m-d H:i:s");
         $PageCSS     = $myts->addSlashes($_POST['PageCSS']);
+        $newCateName     = $myts->addSlashes($_POST['newCateName']);
+        $tag_name     = $myts->addSlashes($_POST['tag_name']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'PageID', $PageID)) {
             $anduid = onlyMine();
@@ -407,7 +413,7 @@ class tad_web_page
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("PageID", $PageID, $_POST['tag_name'], $_POST['tags']);
+        $this->tags->save_tags("PageID", $PageID, $tag_name, $_POST['tags']);
         return $PageID;
     }
 

@@ -1,3 +1,2 @@
-<div class="text-center">
-  <img src="images/plugin_unable.png" alt="plugin unable">
-</div>
+<{assign var=this_file value=$smarty.template|basename|replace:'db:':''}>
+<{includeq file="$xoops_rootpath/modules/$xoops_dirname/templates/b4.tpl"}>
