@@ -6,13 +6,10 @@ if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php")) {
     redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1", 3, _TAD_NEED_TADTOOLS);
 }
 
-if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
-    $TadUpFiles = new TadUpFiles2("tad_web");
-} else {
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-    $TadUpFiles = new TadUpFiles("tad_web");
-}
+
+include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+$TadUpFiles = new TadUpFiles("tad_web");
+
 
 $subdir = isset($WebID) ? "/{$WebID}" : "";
 $TadUpFiles->set_dir('subdir', $subdir);
@@ -1024,39 +1021,30 @@ function import_file($file_name = '', $col_name = "", $col_sn = "", $main_width 
 
 function TadUpFilesBg($WebID)
 {
-    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
-        $TadUpFilesBg = new TadUpFiles2("tad_web", "/{$WebID}/bg", null, "", "/thumbs");
-    } else {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-        $TadUpFilesBg = new TadUpFiles("tad_web", "/{$WebID}/bg", null, "", "/thumbs");
-    }
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+    $TadUpFilesBg = new TadUpFiles("tad_web", "/{$WebID}/bg", null, "", "/thumbs");
+
     $TadUpFilesBg->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesBg;
 }
 
 function TadUpFilesLogo($WebID)
 {
-    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
-        $TadUpFilesLogo = new TadUpFiles2("tad_web", "/{$WebID}/logo", null, "", "/thumbs");
-    } else {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-        $TadUpFilesLogo = new TadUpFiles("tad_web", "/{$WebID}/logo", null, "", "/thumbs");
-    }
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+    $TadUpFilesLogo = new TadUpFiles("tad_web", "/{$WebID}/logo", null, "", "/thumbs");
+
     $TadUpFilesLogo->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesLogo;
 }
 
 function TadUpFilesHead($WebID)
 {
-    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
-        $TadUpFilesHead = new TadUpFiles2("tad_web", "/{$WebID}/head", null, "", "/thumbs");
-    } else {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-        $TadUpFilesHead = new TadUpFiles("tad_web", "/{$WebID}/head", null, "", "/thumbs");
-    }
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+    $TadUpFilesHead = new TadUpFiles("tad_web", "/{$WebID}/head", null, "", "/thumbs");
+
     $TadUpFilesHead->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFilesHead;
 }

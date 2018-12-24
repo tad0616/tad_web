@@ -99,13 +99,9 @@ function TadUpFiles_plugin_setup($WebID, $plugin)
 {
     global $xoopsConfig;
 
-    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles2.php";
-        $TadUpFiles_plugin_setup = new TadUpFiles2("tad_web", "/{$WebID}/{$plugin}", null, "", "/thumbs");
-    } else {
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-        $TadUpFiles_plugin_setup = new TadUpFiles("tad_web", "/{$WebID}/{$plugin}", null, "", "/thumbs");
-    }
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+    $TadUpFiles_plugin_setup = new TadUpFiles("tad_web", "/{$WebID}/{$plugin}", null, "", "/thumbs");
+
     $TadUpFiles_plugin_setup->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFiles_plugin_setup;
 }
