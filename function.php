@@ -15,7 +15,6 @@ $subdir = isset($WebID) ? "/{$WebID}" : "";
 $TadUpFiles->set_dir('subdir', $subdir);
 
 //引入TadTools的函式庫
-include_once TADTOOLS_PATH . "/tad_function.php";
 require_once "function_block.php";
 
 include_once XOOPS_ROOT_PATH . "/modules/tad_web/class/cate.php";

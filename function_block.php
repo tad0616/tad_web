@@ -1,4 +1,7 @@
 <?php
+
+include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
+
 //是否為網站擁有者
 if (!function_exists('MyWebID')) {
     function MyWebID($WebEnable = '1')
