@@ -659,7 +659,7 @@ function go_update12()
       `BlockTitle` VARCHAR(255) NOT NULL COMMENT '區塊標題',
       `BlockContent` TEXT NOT NULL COMMENT '區塊內容',
       `BlockEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '狀態',
-      `BlockConfig` TEXT NOT NULL DEFAULT '' COMMENT '區塊設定值',
+      `BlockConfig` TEXT NOT NULL COMMENT '區塊設定值',
       `BlockPosition` VARCHAR(255) NOT NULL COMMENT '區塊位置',
       `BlockSort` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
       `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',

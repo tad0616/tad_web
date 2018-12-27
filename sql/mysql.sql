@@ -101,7 +101,7 @@ CREATE TABLE `tad_web_blocks` (
   `BlockTitle` varchar(255) NOT NULL COMMENT '區塊標題',
   `BlockContent` text NOT NULL COMMENT '區塊內容',
   `BlockEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
-  `BlockConfig` text NOT NULL default '' COMMENT '區塊設定值',
+  `BlockConfig` text NOT NULL COMMENT '區塊設定值',
   `BlockPosition` varchar(255) NOT NULL COMMENT '區塊位置',
   `BlockSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
   `WebID` smallint(6) unsigned NOT NULL default 0 COMMENT '所屬網站',

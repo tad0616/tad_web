@@ -9,6 +9,9 @@ Tad Web 1.7.7 (2019-01-01 released)
   7. Fix problems that may not be found after the contact book is saved.
   8. Remove Big5 Chinese language
   9. Support BootStrap4
+ 10. Support PHP 7.3
+ 11. Support MySQL database strict mode
+
 
 Tad Web 1.7.6 (2017-01-26 released)
 ================================================== ==

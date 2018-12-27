@@ -81,7 +81,7 @@ function aboutus_onUpdate2_chk()
 function aboutus_onUpdate2_go()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_link_mems") . " ADD `MemClassOrgan` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '職稱' , ADD `AboutMem` TEXT NOT NULL DEFAULT '' COMMENT '介紹'";
+    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_link_mems") . " ADD `MemClassOrgan` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '職稱' , ADD `AboutMem` TEXT NOT NULL COMMENT '介紹'";
     $xoopsDB->queryF($sql) or web_error($sql);
 
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_mems") . " DROP `MemUrl`, DROP `MemClassOrgan`";

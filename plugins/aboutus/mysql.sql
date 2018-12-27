@@ -6,7 +6,7 @@ CREATE TABLE `tad_web_link_mems` (
   `MemSort` smallint(6) unsigned NOT NULL default 0 COMMENT '排序',
   `MemEnable` enum('1','0') NOT NULL default '1' COMMENT '狀態',
   `MemClassOrgan` varchar(255) NOT NULL DEFAULT '' COMMENT '職稱',
-  `AboutMem` text NOT NULL DEFAULT '' COMMENT '介紹',
+  `AboutMem` text NOT NULL COMMENT '介紹',
   `top` smallint(6) NOT NULL default 0,
   `left` smallint(6) NOT NULL default 0,
 PRIMARY KEY (`MemID`,`CateID`)
