@@ -31,7 +31,7 @@ function page_menu($WebID, $config = array())
     WHERE `WebID` = '$WebID' AND `ColName` = 'page' AND `CateEnable` = '1'
     ORDER BY `CateSort` {$limit}";
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     $main = array();
 

@@ -14,7 +14,7 @@ function tad_web_image()
 
     $sql = "select a.ActionName,a.ActionID,b.WebTitle,a.WebID from " . $xoopsDB->prefix("tad_web_action") . " as a join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $and_webid order by rand() limit 0,1";
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     list($ActionName, $ActionID, $WebTitle, $WebID) = $xoopsDB->fetchRow($result);
 

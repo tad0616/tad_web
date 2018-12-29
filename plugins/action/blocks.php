@@ -23,7 +23,7 @@ function action_slide($WebID, $config = array())
 
     $sql = "select ActionName,ActionID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$WebID}' order by rand()";
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     while (list($ActionName, $ActionID) = $xoopsDB->fetchRow($result)) {
         //檢查權限
         $the_power = $power->check_power("read", "ActionID", $ActionID);

@@ -152,7 +152,7 @@ function tad_web_config($WebID, $configs)
     $web_admin_arr = get_web_roles($WebID, 'admin');
     $web_admins    = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
     $sql           = "SELECT uid,uname,name FROM " . $xoopsDB->prefix("users") . " ORDER BY uname";
-    $result        = $xoopsDB->query($sql) or web_error($sql);
+    $result        = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 // if($_GET['test']==1){
     // die($web_admins);
     // }
@@ -193,7 +193,7 @@ function update_tad_web()
     $CateID   = intval($_POST['CateID']);
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$WebName}', `WebOwner` = '{$WebOwner}' where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     unset($_SESSION['tad_web'][$WebID]);
 
@@ -214,7 +214,7 @@ function delete_web_config($ConfigName = "")
     global $xoopsDB, $xoopsUser, $WebID, $MyWebs;
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='{$ConfigName}' and `WebID`='{$MyWebs}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
 }
@@ -227,17 +227,17 @@ function save_plugins($WebID)
     $myts    = MyTextSanitizer::getInstance();
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     foreach ($plugins as $plugin) {
         $dirname      = $plugin['dirname'];
         $PluginTitle  = $myts->addSlashes($_POST['plugin_name'][$dirname]);
         $PluginEnable = ($_POST['plugin_enable'][$dirname] == '1') ? '1' : '0';
 
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$plugin['db']['PluginSort']}', '{$PluginEnable}', '{$WebID}')";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         // $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set BlockEnable='$PluginEnable' where `WebID`='{$WebID}' and `plugin`='{$dirname}'";
-        // $xoopsDB->queryF($sql) or web_error($sql);
+        // $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     }
 
     mk_menu_var_file($WebID);
@@ -253,13 +253,13 @@ function save_adm($web_admins, $WebID)
     }
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_roles") . " where `role`='admin' and `WebID`='$WebID' ";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     if ($web_admins) {
         $web_admin_arr = explode(',', $web_admins);
         foreach ($web_admin_arr as $uid) {
             $sql = "insert into " . $xoopsDB->prefix("tad_web_roles") . " (`uid`, `role`, `term`, `enable`, `WebID`) values('{$uid}', 'admin', '0000-00-00', '1', '{$WebID}')";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         }
     }
 
@@ -303,12 +303,12 @@ function enabe_plugin($dirname = "", $WebID = "")
     $sql = "update " . $xoopsDB->prefix("tad_web_plugins") . " set
    `PluginEnable` = '1'
     where WebID ='{$WebID}' and `PluginDirname`='{$dirname}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set
    `BlockEnable` = '1'
     where WebID ='{$WebID}' and `plugin`='{$dirname}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     mk_menu_var_file($WebID);
 }
@@ -322,7 +322,7 @@ function unable_my_web($WebID)
     }
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '0' where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     $_SESSION['tad_web'][$WebID]['WebEnable'] = 0;
 }
 
@@ -337,7 +337,7 @@ function enable_my_web($WebID)
     }
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '1' where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     $_SESSION['tad_web'][$WebID]['WebEnable'] = 1;
 }
 
@@ -369,7 +369,7 @@ function default_color($WebID = "")
     );
     foreach ($del_item as $ConfigName) {
         $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID ='{$WebID}' and ConfigName='{$ConfigName}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     }
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);

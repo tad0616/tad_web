@@ -95,7 +95,7 @@ class tad_web_works
         $sql     = $PageBar['sql'];
         $total   = $PageBar['total'];
 
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
         $main_data = array();
 
@@ -175,7 +175,7 @@ class tad_web_works
         $this->add_counter($WorksID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='{$WorksID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $WorksID , $WorkName , $WorkDesc , $WorksDate , $uid , $WebID , $WorksCount
@@ -366,7 +366,7 @@ class tad_web_works
         $sql = "insert into " . $xoopsDB->prefix("tad_web_works") . "
         (`CateID`,`WorkName` , `WorkDesc` , `WorksDate` ,  `uid` , `WebID` , `WorksCount` , `WorksKind` , `WorksEnable`)
         values('{$CateID}' , '{$WorkName}' , '{$WorkDesc}' , '{$WorksDate}' , '{$uid}' , '{$WebID}' , '0', '{$WorksKind}', '{$WorksEnable}')";
-        $xoopsDB->query($sql) or web_error($sql);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
         //取得最後新增資料的流水編號
         $WorksID = $xoopsDB->getInsertId();
@@ -411,7 +411,7 @@ class tad_web_works
          `WorksKind` = '{$WorksKind}' ,
          `WorksEnable` = '{$WorksEnable}'
         where WorksID='$WorksID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -433,7 +433,7 @@ class tad_web_works
         //讀出原有分數及評語
         $sql = "select WorkScore , WorkJudgment from " . $xoopsDB->prefix("tad_web_works_content") . " where `WorksID`='{$WorksID}' and `MemID`='{$_SESSION['LoginMemID']}' and  `WebID`='{$this->WebID}'";
 
-        $result                         = $xoopsDB->query($sql) or web_error($sql);
+        $result                         = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($WorkScore, $WorkJudgment) = $xoopsDB->fetchRow($result);
 
         //若已有上傳圖片
@@ -459,7 +459,7 @@ class tad_web_works
         $sql = "replace into " . $xoopsDB->prefix("tad_web_works_content") . "
         (`WorksID`,`MemID` , `MemName` , `WebID` , `WorkDesc` , `UploadDate` , `WorkScore`, `WorkJudgment` ,`all_files_sn`)
         values('{$WorksID}' , '{$_SESSION['LoginMemID']}' , '{$_SESSION['LoginMemName']}' , '{$this->WebID}' , '{$WorkDesc}' , '{$UploadDate}', '{$WorkScore}', '{$WorkJudgment}', '{$all_files_arr}')";
-        $xoopsDB->query($sql) or web_error($sql);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
         check_quota($this->WebID);
         return $WorksID;
@@ -470,16 +470,16 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
         $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'WorksID', $WorksID)) {
             $anduid = onlyMine();
         }
         $sql = "delete from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_works_content") . " where WorksID='$WorksID'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->del_files();
@@ -494,7 +494,7 @@ class tad_web_works
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select WorksID,CateID from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         while (list($WorksID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($WorksID);
             $allCateID[$CateID] = $CateID;
@@ -510,7 +510,7 @@ class tad_web_works
     {
         global $xoopsDB;
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -520,7 +520,7 @@ class tad_web_works
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_works") . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     }
 
     //以流水號取得某筆tad_web_works資料
@@ -532,7 +532,7 @@ class tad_web_works
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -549,7 +549,7 @@ class tad_web_works
         $andMemID = empty($MemID) ? "" : "and MemID='$MemID'";
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_works_content") . " where WebID='{$this->WebID}' and WorksID='$WorksID' {$andMemID}";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         if (empty($MemID)) {
             $i    = 0;
             $data = array();
@@ -612,7 +612,7 @@ class tad_web_works
              `WorkScore` = '{$WorkScore}' ,
              `WorkJudgment` = '{$WorkJudgment}'
             where WorksID='$WorksID' and `MemID` = '{$MemID}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         }
 
     }
@@ -627,7 +627,7 @@ class tad_web_works
         $andEnd    = empty($end_date) ? "" : "and WorksDate <= '{$end_date}'";
 
         $sql    = "select WorksID,WorkName,WorksDate,CateID from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by WorksDate";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
         $i         = 0;
         $main_data = array();

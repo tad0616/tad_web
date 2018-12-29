@@ -29,7 +29,7 @@ function system_onUpdate1_go()
 {
     global $xoopsDB;
     $sql    = "SELECT bid,show_func FROM " . $xoopsDB->prefix("newblocks") . " WHERE dirname='tad_web' ORDER BY weight";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     $myts = MyTextSanitizer::getInstance();
     //來自系統的區塊
@@ -89,13 +89,13 @@ function system_onUpdate2_go()
             $login_method = implode(';', $auth_method);
         }
         $sql = "replace into " . $xoopsDB->prefix("tad_web_config") . " (`ConfigName`, `ConfigValue`, `ConfigSort`, `CateID`, `WebID`) values('login_config' ,'{$login_method}',0,0,$WebID)";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
         unlink($file);
     }
 
     $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='login' OR `BlockName`='my_menu'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 }
 
 //移除 flickrit 區塊
@@ -116,5 +116,5 @@ function system_onUpdate3_go()
 {
     global $xoopsDB;
     $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE `BlockName`='flickrit'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 }

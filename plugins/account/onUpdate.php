@@ -22,7 +22,7 @@ function account_onUpdate1_go()
     global $xoopsDB;
 
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_account") . " CHANGE `AccountIncome` `AccountIncome` mediumint NOT NULL DEFAULT '0' COMMENT '收入' AFTER `AccountDate`,CHANGE `AccountOutgoings` `AccountOutgoings` mediumint NOT NULL DEFAULT '0' COMMENT '支出' AFTER `AccountIncome`";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     return true;
 }

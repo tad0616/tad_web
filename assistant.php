@@ -25,7 +25,7 @@ function list_all_assistant($WebID = "", $plugin = "")
     $sql           = "select a.*,b.* from `" . $xoopsDB->prefix("tad_web_cate_assistant") . "` as a
     left join `" . $xoopsDB->prefix("tad_web_cate") . "` as b on a.CateID=b.CateID
     where b.`WebID` = '{$WebID}' ";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     $i      = 0;
     while ($data = $xoopsDB->fetchArray($result)) {
         foreach ($data as $k => $v) {
@@ -50,7 +50,7 @@ function list_all_assistant($WebID = "", $plugin = "")
     $default_class = get_web_config('default_class', $WebID);
 
     $sql     = "select a.MemID, a.MemNum ,b.MemName from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.`CateID` = '{$default_class}'  order by a.MemNum";
-    $result  = $xoopsDB->query($sql) or web_error($sql);
+    $result  = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     $AllMems = array();
     while ($mem = $xoopsDB->fetchArray($result)) {
         $AllMems[] = $mem;
@@ -82,7 +82,7 @@ function del_assistant($CateID = "")
     }
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_cate_assistant") . " where CateID='$CateID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
 }
 

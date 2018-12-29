@@ -109,7 +109,7 @@ function insert_tad_web_notice()
         '{$NoticeWho}',
         '{$NoticeDate}'
     )";
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     //取得最後新增資料的流水編號
     $NoticeID = $xoopsDB->getInsertId();
@@ -147,7 +147,7 @@ function update_tad_web_notice($NoticeID = '')
        `NoticeWho` = '{$NoticeWho}',
        `NoticeDate` = '{$NoticeDate}'
     where `NoticeID` = '$NoticeID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     return $NoticeID;
 }
@@ -166,7 +166,7 @@ function delete_tad_web_notice($NoticeID = '')
 
     $sql = "delete from `" . $xoopsDB->prefix("tad_web_notice") . "`
     where `NoticeID` = '{$NoticeID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
 }
 
@@ -186,7 +186,7 @@ function show_one_tad_web_notice($NoticeID = '')
     $sql = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "`
     where `NoticeID` = '{$NoticeID}' ";
     $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    or web_error($sql, __FILE__, _LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate
@@ -236,7 +236,7 @@ function list_tad_web_notice()
     $total   = $PageBar['total'];
 
     $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    or web_error($sql, __FILE__, _LINE__);
 
     $all_content = array();
     $i           = 0;

@@ -47,7 +47,7 @@ function list_all_web($defCateID = '')
     $bar     = $PageBar['bar'];
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
-    $result  = $xoopsDB->query($sql) or web_error($sql);
+    $result  = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     $xoopsTpl->assign('bar', $bar);
 
     $data = array();
@@ -117,7 +117,7 @@ function create_by_user()
     $groupid = chk_tad_web_group(_MA_TCW_GROUP_NAME);
 
     $sql    = "select uid from " . $xoopsDB->prefix("groups_users_link") . " where `groupid`='$groupid' order by uid";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         if (!empty($uid)) {
             $ok_uid[$uid] = $uid;
@@ -127,7 +127,7 @@ function create_by_user()
     $WebOwnerUid = implode(',', $ok_uid);
 
     $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     $myts = MyTextSanitizer::getInstance();
     $opt  = array();
@@ -156,7 +156,7 @@ function no_web($uid = '')
     global $xoopsDB;
 
     $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid'";
-    $result      = $xoopsDB->query($sql) or web_error($sql);
+    $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     list($count) = $xoopsDB->fetchRow($result);
     if (empty($count)) {
         return true;
@@ -187,7 +187,7 @@ function batch_add_class_by_user()
             insert_tad_web(0, $WebName, $i, '1', $uid_name, $uid, $WebTitle);
 
             $sql = "replace into " . $xoopsDB->prefix("groups_users_link") . " (`uid` , `groupid`) values('{$uid}' , '{$groupid}')";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
             $i++;
         }
     }
@@ -198,12 +198,12 @@ function chk_tad_web_group($name = "")
 {
     global $xoopsDB;
     $sql           = "select groupid from " . $xoopsDB->prefix("groups") . " where `name`='$name'";
-    $result        = $xoopsDB->query($sql) or web_error($sql);
+    $result        = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     list($groupid) = $xoopsDB->fetchRow($result);
 
     if (empty($groupid)) {
         $sql = "insert into " . $xoopsDB->prefix("groups") . " (`name`,`description`) values('{$name}','" . _MA_TCW_GROUP_DESC . "')";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         //取得最後新增資料的流水編號
 
         $groupid = $xoopsDB->getInsertId();
@@ -263,7 +263,7 @@ function tad_web_form($WebID = null)
     $formValidator_code = $formValidator->render();
 
     $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     $user_menu = "<select name='WebOwnerUid' class='form-control'>";
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -312,7 +312,7 @@ function tad_web_max_sort()
 {
     global $xoopsDB;
     $sql        = "select max(`WebSort`) from " . $xoopsDB->prefix("tad_web");
-    $result     = $xoopsDB->query($sql) or web_error($sql);
+    $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -347,7 +347,7 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
     $sql = "insert into " . $xoopsDB->prefix("tad_web") . "
     (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`)
     values('{$CateID}' , '{$WebName}' , '{$WebSort}', '{$WebEnable}', '0' , '{$WebOwner}', '{$WebOwnerUid}', '{$WebTitle}', now() , '{$WebYear}')";
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     //取得最後新增資料的流水編號
     $WebID = $xoopsDB->getInsertId();
@@ -387,7 +387,7 @@ function update_tad_web($WebID = "")
     `WebOwnerUid` = '{$WebOwnerUid}' ,
     `WebTitle` = '{$WebTitle}'
     where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     unset($_SESSION['tad_web'][$WebID]);
 
@@ -415,7 +415,7 @@ function save_one_web_title($WebID = '', $WebTitle = '')
     $myts     = MyTextSanitizer::getInstance();
     $WebTitle = $myts->addSlashes($WebTitle);
     $sql      = "update " . $xoopsDB->prefix("tad_web") . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     $_SESSION['tad_web'][$WebID]['WebTitle'] = $WebTitle;
 
@@ -423,7 +423,7 @@ function save_one_web_title($WebID = '', $WebTitle = '')
     $default_class = get_web_config('default_class', $WebID);
     if (!empty($WebID) and !empty($default_class)) {
         $sql = "update " . $xoopsDB->prefix("tad_web_cate") . " set `CateName` = '{$WebTitle}' where `CateID`='{$default_class}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     }
 
     mk_menu_var_file($WebID);
@@ -444,7 +444,7 @@ function save_webs_able($WebID = "", $able = "")
     global $xoopsDB;
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebEnable` = '{$able}' where WebID='$WebID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     $_SESSION['tad_web'][$WebID]['WebEnable'] = $able;
     return $WebID;
@@ -455,11 +455,11 @@ function order_by_teamtitle()
     global $xoopsDB;
 
     $sql    = "select WebID from " . $xoopsDB->prefix("tad_web") . " order by WebTitle";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     $i      = 1;
     while (list($WebID) = $xoopsDB->fetchRow($result)) {
         $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebSort` = '{$i}' where WebID='$WebID'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         $i++;
     }
 

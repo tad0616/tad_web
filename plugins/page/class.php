@@ -82,7 +82,7 @@ class tad_web_page
             echo "<h2>{$sql}</h2>";
             $debug = 1;
         }
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         $total  = $xoopsDB->getRowsNum($result);
 
         $main_data = $cate_data = $cate_size = array();
@@ -165,7 +165,7 @@ class tad_web_page
         $this->add_counter($PageID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_page") . " where PageID='{$PageID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         if ($mode == "return") {
@@ -365,7 +365,7 @@ class tad_web_page
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_page") . "
         (`CateID`,`PageTitle` , `PageContent` , `PageDate` , `PageSort` , `uid` , `WebID` , `PageCount` , `PageCSS`)
         values('{$CateID}' ,'{$PageTitle}' , '{$PageContent}' , '{$PageDate}' , '{$PageSort}' , '{$uid}' , '{$WebID}' , '0' , '{$PageCSS}')";
-        $xoopsDB->query($sql) or web_error($sql);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
         //取得最後新增資料的流水編號
         $PageID = $xoopsDB->getInsertId();
@@ -407,7 +407,7 @@ class tad_web_page
          `PageDate` = '{$PageDate}',
          `PageCSS` = '{$PageCSS}'
         where PageID='$PageID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -422,14 +422,14 @@ class tad_web_page
     {
         global $xoopsDB, $TadUpFiles;
         $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
         if (!is_assistant($CateID, 'PageID', $PageID)) {
             $anduid = onlyMine();
         }
         $sql = "delete from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->del_files();
@@ -444,7 +444,7 @@ class tad_web_page
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select PageID,CateID from " . $xoopsDB->prefix("tad_web_page") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         while (list($PageID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($PageID);
             $allCateID[$CateID] = $CateID;
@@ -461,7 +461,7 @@ class tad_web_page
         global $xoopsDB;
         $andCate     = empty($CateID) ? '' : "and CateID='$CateID'";
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_page") . " where WebID='{$this->WebID}' {$andCate}";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -471,7 +471,7 @@ class tad_web_page
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_page") . " set `PageCount`=`PageCount`+1 where `PageID`='{$PageID}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     }
 
     //以流水號取得某筆tad_web_page資料
@@ -483,7 +483,7 @@ class tad_web_page
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_page") . " where PageID='$PageID'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -493,7 +493,7 @@ class tad_web_page
     {
         global $xoopsDB;
         $sql        = "select max(`PageSort`) from " . $xoopsDB->prefix("tad_web_page") . " where WebID='$WebID' and CateID='{$CateID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -506,7 +506,7 @@ class tad_web_page
         $all         = $main         = array();
         $sql         = "select PageID,PageTitle,PageSort from " . $xoopsDB->prefix("tad_web_page") . " where CateID='{$DefCateID}' order by PageSort";
         // die($sql);
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         while (list($PageID, $PageTitle, $PageSort) = $xoopsDB->fetchRow($result)) {
             $all[$PageSort]['PageID']    = $PageID;
             $all[$PageSort]['PageTitle'] = $PageTitle;

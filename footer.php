@@ -81,7 +81,7 @@ function get_marquee()
 
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "` where `NoticeWho` like '%{$user_kind}%' or `NoticeWho`='' order by NoticeDate desc limit 0,5";
     $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    or web_error($sql, __FILE__, _LINE__);
     $data_arr = array();
     while ($data = $xoopsDB->fetchArray($result)) {
         $NoticeID                               = $data['NoticeID'];
@@ -119,7 +119,7 @@ function tad_web_my_menu($WebID)
             $add_power   = array('discuss');
             //小幫手
             $sql    = "select a.`CateID`,b.ColName from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as a join `" . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
-            $result = $xoopsDB->queryF($sql) or web_error($sql);
+            $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
             while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[]                          = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
@@ -135,7 +135,7 @@ function tad_web_my_menu($WebID)
             $defaltWebID = $_SESSION['LoginWebID'];
             $add_power   = array('discuss'); //小幫手
             $sql         = "select a.`CateID`,b.ColName from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as a join `" . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
-            $result      = $xoopsDB->queryF($sql) or web_error($sql);
+            $result      = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
             while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[]                          = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
@@ -156,7 +156,7 @@ function tad_web_my_menu($WebID)
             if ($MyWebID) {
                 $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID in ('{$AllMyWebID}') order by WebSort";
                 //die($sql);
-                $result = $xoopsDB->query($sql) or web_error($sql);
+                $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
                 //$web_num = $xoopsDB->getRowsNum($result);
                 $i = $defalt_used_size = 0;
 
@@ -227,7 +227,7 @@ function tad_web_my_menu($WebID)
             $AllMyClosedWebID = implode("','", $MyClosedWebID);
             if ($MyClosedWebID) {
                 $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID in ('{$AllMyClosedWebID}') order by WebSort";
-                $result = $xoopsDB->query($sql) or web_error($sql);
+                $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
                 $i      = 0;
 
                 while ($all = $xoopsDB->fetchArray($result)) {
@@ -375,7 +375,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     // if ($isAdmin) {
     //     die($sql);
     // }
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {

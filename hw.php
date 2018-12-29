@@ -2,7 +2,7 @@
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 $sql    = "SELECT HomeworkID,HomeworkContent FROM " . $xoopsDB->prefix("tad_web_homework") . " ORDER BY HomeworkID DESC LIMIT 0,150";
-$result = $xoopsDB->queryF($sql) or web_error($sql);
+$result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 // $main   = "<table border=1>";
 $r_start = '<table class="table"><tbody><tr>';
 

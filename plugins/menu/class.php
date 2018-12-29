@@ -78,7 +78,7 @@ class tad_web_menu
             order by a.Sort";
         }
 
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
         $main_data = $cate_data = $cate_size = array();
 
@@ -326,7 +326,7 @@ class tad_web_menu
         $sql = "insert into " . $xoopsDB->prefix("tad_web_menu") . "
         (`ParentMenuID`,`WebID`,`MenuTitle`,`Plugin`,`CateID`,`ColName`,`ColSn`,`Link`,`Target`,`Icon`,`Color`,`BgColor`,`Status`,`Sort`,`MenuCount`)
         values('{$ParentMenuID}' ,'{$WebID}' , '{$MenuTitle}' , '{$Plugin}' , '{$CateID}' ,'{$ColName}' , '{$ColSn}' ,'{$Link}' ,'{$Target}' ,'{$Icon}' ,'{$Color}' ,'{$BgColor}','{$Status}','{$Sort}',0)";
-        $xoopsDB->query($sql) or web_error($sql);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
         //取得最後新增資料的流水編號
         $MenuID = $xoopsDB->getInsertId();
@@ -399,7 +399,7 @@ class tad_web_menu
             `BgColor` = '{$BgColor}' ,
             `Status` = '{$Status}'
             where MenuID='$MenuID'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -422,7 +422,7 @@ class tad_web_menu
         $anduid = onlyMine();
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_menu") . " where MenuID='$MenuID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -441,7 +441,7 @@ class tad_web_menu
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select MenuID,CateID from " . $xoopsDB->prefix("tad_web_menu") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         while (list($MenuID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($MenuID);
             $allCateID[$CateID] = $CateID;
@@ -458,7 +458,7 @@ class tad_web_menu
         global $xoopsDB;
         $andCate     = empty($CateID) ? '' : "and CateID='$CateID'";
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_menu") . " where WebID='{$this->WebID}' {$andCate}";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -468,7 +468,7 @@ class tad_web_menu
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_menu") . " set `MenuCount`=`MenuCount`+1 where `MenuID`='{$MenuID}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     }
 
     //以流水號取得某筆tad_web_menu資料
@@ -480,7 +480,7 @@ class tad_web_menu
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_menu") . " where MenuID='$MenuID'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -498,7 +498,7 @@ class tad_web_menu
     {
         global $xoopsDB;
         $sql        = "select max(`Sort`) from " . $xoopsDB->prefix("tad_web_menu") . " where WebID='$WebID' and CateID='{$CateID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }

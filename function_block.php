@@ -12,7 +12,7 @@ if (!function_exists('MyWebID')) {
             $uid          = $xoopsUser->uid();
             $andWebEnable = $WebEnable == 'all' ? "" : "and `WebEnable`='{$WebEnable}'";
             $sql          = "select WebID from " . $xoopsDB->prefix("tad_web") . " where WebOwnerUid='$uid' {$andWebEnable}";
-            $result       = $xoopsDB->query($sql) or web_error($sql);
+            $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
             while (list($WebID) = $xoopsDB->fetchRow($result)) {
                 $MyWebs[$WebID] = $WebID;
@@ -20,7 +20,7 @@ if (!function_exists('MyWebID')) {
 
             $andWebEnable = $WebEnable == 'all' ? "" : "and b.`WebEnable`='{$WebEnable}'";
             $sql          = "select a.WebID from " . $xoopsDB->prefix("tad_web_roles") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.uid='$uid' {$andWebEnable}";
-            $result       = $xoopsDB->query($sql) or web_error($sql);
+            $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
             while (list($WebID) = $xoopsDB->fetchRow($result)) {
                 $MyWebs[$WebID] = $WebID;
             }
@@ -39,7 +39,7 @@ if (!function_exists('get_web_config')) {
         if (!is_null($defWebID)) {
             if ($form != 'file') {
                 $sql               = "select `ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='$ConfigName' and WebID='$defWebID'";
-                $result            = $xoopsDB->queryF($sql) or web_error($sql);
+                $result            = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
                 list($ConfigValue) = $xoopsDB->fetchRow($result);
                 return $ConfigValues;
             } else {
@@ -50,7 +50,7 @@ if (!function_exists('get_web_config')) {
                 } else {
                     $content = "<?php\n";
                     $sql     = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$defWebID' ";
-                    $result  = $xoopsDB->queryF($sql) or web_error($sql);
+                    $result  = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
                     while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
                         $web_config[$ConfigName] = $ConfigValue;
                         $content .= "\$web_config['$ConfigName'] = '$ConfigValue';\n";
@@ -65,7 +65,7 @@ if (!function_exists('get_web_config')) {
             }
         } else {
             $sql    = "select `WebID`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='$ConfigName' ";
-            $result = $xoopsDB->queryF($sql) or web_error($sql);
+            $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
             while (list($WebID, $ConfigValue) = $xoopsDB->fetchRow($result)) {
                 $ConfigValues[$WebID] = $ConfigValue;

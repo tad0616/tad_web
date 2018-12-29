@@ -129,7 +129,7 @@ class tags
 
         $myts = MyTextSanitizer::getInstance();
         $sql  = "delete from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID`='{$this->WebID}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
         if ($tags) {
             foreach ($tags as $tag) {
                 $tag = trim($tag);
@@ -148,7 +148,7 @@ class tags
                   '{$col_sn}',
                   '{$tag}'
                 )";
-                $xoopsDB->query($sql) or web_error($sql);
+                $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
             }
         }
 
@@ -170,7 +170,7 @@ class tags
               '{$col_sn}',
               '{$tag}'
             )";
-            $xoopsDB->query($sql) or web_error($sql);
+            $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         }
 
     }
@@ -198,7 +198,7 @@ class tags
         $and_col_sn   = empty($col_sn) ? '' : "and `col_sn`='{$col_sn}'";
         $sql          = "select tag_name , count(*) from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
 
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
         while (list($tag_name, $count) = $xoopsDB->fetchRow($result)) {
             $tags_arr[$tag_name] = $count;
         }
@@ -213,7 +213,7 @@ class tags
         $and_tag_name = empty($tag_name) ? '' : "and `tag_name`='{$tag_name}'";
 
         $sql = "delete from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' {$and_tag_name}";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     }
 

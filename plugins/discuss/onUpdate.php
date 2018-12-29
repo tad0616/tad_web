@@ -21,7 +21,7 @@ function discuss_onUpdate1_go()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_discuss") . " ADD `ParentID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '家長'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     return true;
 }

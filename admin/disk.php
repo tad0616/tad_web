@@ -19,7 +19,7 @@ function list_all_web($defCateID = '')
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result            = $xoopsDB->query($sql) or web_error($sql);
+    $result            = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     $_SESSION['quota'] = '';
     $data              = array();
     $dir               = XOOPS_ROOT_PATH . "/uploads/tad_web/";
@@ -70,7 +70,7 @@ function get_all_dir_size()
 {
     global $xoopsDB;
     $sql             = "SELECT sum(`used_size`) FROM " . $xoopsDB->prefix("tad_web") . " ";
-    $result          = $xoopsDB->query($sql) or web_error($sql);
+    $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     list($used_size) = $xoopsDB->fetchRow($result);
     return $used_size;
 }
