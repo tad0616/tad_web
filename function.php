@@ -60,7 +60,7 @@ function get_blocks($WebID)
 {
     global $xoopsDB;
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' order by `BlockSort`";
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $Blocks = array();
     while ($all = $xoopsDB->fetchArray($result)) {
         $Blocks[] = $all;
@@ -173,7 +173,7 @@ function get_position_blocks($WebID, $BlockPosition, $plugin = '')
         $andBlockPosition = empty($plugin) ? "`WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' and `plugin`!='share'" : "`WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' and `plugin`='{$plugin}'";
     }
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where  $andBlockPosition order by `BlockSort`";
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $Blocks = array();
     $i      = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -203,7 +203,7 @@ function get_share_blocks($WebID)
     global $xoopsDB;
     $share_blocks = array();
     $sql          = "select ShareFrom from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' and `plugin`='custom' and `ShareFrom` > 0";
-    $result       = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result       = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     while (list($ShareFromID) = $xoopsDB->fetchRow($result)) {
         $share_blocks[] = $ShareFromID;
     }
@@ -222,7 +222,7 @@ function get_web_blocks($WebID, $plugin = '', $BlockEnable = 1)
     $andBlockPlugin = empty($plugin) ? "" : "and plugin='{$plugin}'";
     $andBlockEnable = is_null($BlockEnable) ? "" : "and BlockEnable='{$BlockEnable}'";
     $sql            = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' {$andBlockEnable} {$andBlockPlugin}";
-    $result         = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result         = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $i      = 0;
     $Blocks = array();
@@ -238,7 +238,7 @@ function max_blocks_sort($WebID, $BlockPosition)
 {
     global $xoopsDB;
     $sql        = "select max(`BlockSort`) from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='$WebID' and BlockPosition='{$BlockPosition}'";
-    $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -252,7 +252,7 @@ function get_web_roles($defWebID = '', $defRole = '')
     $andWebID = empty($defWebID) ? "" : "and `WebID`='$defWebID'";
     $andRole  = empty($defRole) ? "" : "and `role`='$defRole'";
     $sql      = "select uid from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
-    $result   = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result   = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $users    = array();
     $i        = 0;
     while (list($uid) = $xoopsDB->fetchRow($result)) {
@@ -306,7 +306,7 @@ function get_web_all_config($WebID = "")
     //die(var_export($tad_web_config));
     $sql = "select `ConfigName`,`ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `WebID`='$WebID'";
 
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
         $tad_web_config[$ConfigName] = $ConfigValue;
@@ -333,7 +333,7 @@ function save_web_config($ConfigName = "", $ConfigValue = "", $WebID)
       (`ConfigName`, `ConfigValue`, `WebID`)
       values('{$ConfigName}' , '{$ConfigValue}', '{$WebID}')";
     // die($sql);
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
 }
@@ -346,7 +346,7 @@ function get_db_plugins($WebID = "", $only_enable = false)
 
     //取得tad_web_plugins資料表中該網站所有設定值
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' {$andEnable} order by PluginSort";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         $dirname           = $all['PluginDirname'];
@@ -360,7 +360,7 @@ function get_db_plugin($WebID = "", $dirname = "")
     global $xoopsDB;
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' and PluginDirname='{$dirname}'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     $all = $xoopsDB->fetchArray($result);
     return $all;
@@ -419,7 +419,7 @@ function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
         if (empty($pluginVal)) {
             $sort = plugins_max_sort($WebID, $file);
             $sql  = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$file}', '{$pluginConfig['name']}', '{$sort}', '1', '{$WebID}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
 
         $pluginConfigs[$file] = $pluginConfig;
@@ -448,7 +448,7 @@ function plugins_max_sort($WebID, $dirname)
     global $xoopsDB;
 
     $sql    = "select max(PluginSort) from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}' and PluginDirname='{$dirname}'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     list($sort) = $xoopsDB->fetchRow($result);
     $sort++;
@@ -476,7 +476,7 @@ function common_template($WebID, $web_all_config = "")
         if (empty($web_all_config['default_class'])) {
 
             $sql                 = "select max(`CateID`) from " . $xoopsDB->prefix("tad_web_cate") . " where `ColName` = 'aboutus' AND `CateEnable` = '1' AND `WebID` = '{$WebID}'";
-            $result              = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result              = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             list($default_class) = $xoopsDB->fetchRow($result);
             save_web_config("default_class", $default_class, $WebID);
             $web_all_config['default_class'] = $default_class;
@@ -593,7 +593,7 @@ function mk_menu_var_file($WebID = null)
 
             $BlockConfig = str_replace('{{WebID}}', $WebID, $BlockConfig);
             $sql         = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$BlockConfig}', '{$block_position[$func]}', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $sort++;
         }
     }
@@ -604,11 +604,11 @@ function get_tad_web_mems($MemID)
     global $xoopsDB;
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_mems") . " where MemID='{$MemID}'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
 
     $sql                   = "select MemNum,CateID from " . $xoopsDB->prefix("tad_web_link_mems") . " where `MemID`='{$MemID}' limit 0,1";
-    $result                = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result                = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     list($MemNum, $CateID) = $xoopsDB->fetchRow($result);
     $all['MemNum']         = $MemNum;
     $all['CateID']         = $CateID;
@@ -620,7 +620,7 @@ function get_tad_web_parent($ParentID = "", $code = "")
     global $xoopsDB;
     $andCode = !empty($code) ? "and `code`='{$code}'" : "";
     $sql     = "select * from " . $xoopsDB->prefix("tad_web_mem_parents") . " where `ParentID`='{$ParentID}' {$andCode}";
-    $result  = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result  = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all     = $xoopsDB->fetchArray($result);
     return $all;
 }
@@ -631,7 +631,7 @@ function get_tad_web_link_mems($MemID = "", $CateID = "")
 
     $sql = "select * from " . $xoopsDB->prefix("tad_web_link_mems") . " where MemID='{$MemID}' and CateID='{$CateID}'";
     // die($sql);
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
     // die(var_export($all));
     return $all;
@@ -643,7 +643,7 @@ function memAmount($WebID = "")
     global $xoopsDB;
 
     $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$WebID}'";
-    $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     list($count) = $xoopsDB->fetchRow($result);
     return $count;
 }
@@ -722,7 +722,7 @@ function get_tad_web($WebID = "", $enable = false)
 
         $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID' {$andEnable}";
 
-        $result                      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result                      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data                        = $xoopsDB->fetchArray($result);
         $_SESSION['tad_web'][$WebID] = $data;
 
@@ -739,7 +739,7 @@ function getAllWebInfo($get_col = 'WebTitle')
     global $xoopsDB;
 
     $sql    = "select `WebID`, `{$get_col}` from " . $xoopsDB->prefix("tad_web") . " order by WebSort";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $Webs   = array();
     while (list($WebID, $data) = $xoopsDB->fetchRow($result)) {
         $Webs[$WebID] = $data;
@@ -752,7 +752,7 @@ function getLevelName($WebID = "")
 {
     global $xoopsDB;
     $sql            = "select `WebTitle` from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID'";
-    $result         = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result         = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     list($WebTitle) = $xoopsDB->fetchRow($result);
 
     return $main;
@@ -771,7 +771,7 @@ function send_now($email = "", $title = "", $content = "", $ColName = "", $ColSN
     if ($ColName and $msg) {
         $now = date("Y-m-d H:i:s");
         $sql = "insert into " . $xoopsDB->prefix("tad_web_mail_log") . " (`ColName`, `ColSN`, `WebID`, `Mail`, `MailDate`) values('{$ColName}', '{$ColSN}', '{$WebID}', '{$email}', '{$now}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     }
     return $msg;
 }
@@ -953,7 +953,7 @@ function import_img($path = '', $col_name = "logo", $col_sn = '', $desc = "", $s
 
     $sql = "select files_sn,file_name,original_filename from " . $xoopsDB->prefix("tad_web_files_center") . " where col_name='{$col_name}' and col_sn='{$col_sn}'";
 
-    $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $db_files_amount = 0;
     while (list($files_sn, $file_name, $original_filename) = $xoopsDB->fetchRow($result)) {
         $db_files[$files_sn] = $original_filename;
@@ -1055,7 +1055,7 @@ function get_tad_web_cate_menu_options($default_CateID = "0")
     $sql = "select `CateID`, `CateName`
     from `" . $xoopsDB->prefix("tad_web_cate") . "` order by `CateSort`";
     $result = $xoopsDB->query($sql)
-    or web_error($sql, __FILE__, _LINE__);
+    or web_error($sql, __FILE__, __LINE__);
 
     $option = '';
     while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
@@ -1078,7 +1078,7 @@ function get_web_cate_arr()
 
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web") . "` where WebEnable='1' and WebID > 0 order by WebSort,WebTitle";
     $result = $xoopsDB->query($sql)
-    or web_error($sql, __FILE__, _LINE__);
+    or web_error($sql, __FILE__, __LINE__);
     $data_arr = array();
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
@@ -1335,7 +1335,7 @@ function check_quota($WebID = "")
     save_web_config("used_size", $size, $WebID);
 
     $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $_SESSION['tad_web'][$WebID]['used_size'] = $dir_size;
 }
@@ -1408,7 +1408,7 @@ function get_plugin_setup_values($WebID = "", $plugin = "")
 
     $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_web_plugins_setup") . " where `WebID`='{$WebID}' and plugin='{$plugin}'";
     // die($sql);
-    $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $setup_db_values = array();
     //`theme_id`, `name`, `type`, `value`
     while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
@@ -1481,31 +1481,31 @@ function delete_tad_web($WebID = "")
         $i++;
     }
     $sql = "delete from " . $xoopsDB->prefix("tad_web_tags") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_power") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_blocks") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins_setup") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_roles") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web_cate") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "delete from " . $xoopsDB->prefix("tad_web") . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     unset($_SESSION['tad_web'][$WebID]);
 
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
@@ -1526,7 +1526,7 @@ function update_last_accessed($WebID = "")
     global $xoopsDB;
     $last_accessed = date("Y-m-d H:i:s");
     $sql           = "update `" . $xoopsDB->prefix("tad_web") . "` set `last_accessed`='{$last_accessed}' where `WebID`='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 }
 
 /**  * 獲取文章內容(當前分頁)
@@ -1594,7 +1594,7 @@ function get_tad_web_notice($NoticeID = '')
     $sql = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "`
     where `NoticeID` = '{$NoticeID}'";
     $result = $xoopsDB->query($sql)
-    or web_error($sql, __FILE__, _LINE__);
+    or web_error($sql, __FILE__, __LINE__);
     $data = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -1635,10 +1635,10 @@ function set_assistant($CateID = "", $MemID = "")
     }
 
     $sql = "delete from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `AssistantType`='MemID'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "insert into `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`) values('{$CateID}', 'MemID', '{$MemID}')";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 }
 
 //取得小幫手
@@ -1650,7 +1650,7 @@ function get_assistant($CateID = "")
     }
     $mem    = array();
     $sql    = "select `AssistantType`, `AssistantID` from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}'";
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
     // die(var_export($all));
     if ($all['AssistantType'] == "MemID") {
@@ -1672,7 +1672,7 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
     }
 
     $sql = "delete from `" . $xoopsDB->prefix("tad_web_assistant_post") . "` where `plugin`='{$ColName}' and `ColName`='{$ColName}' and `ColSN`='{$ColSN}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "insert into `" . $xoopsDB->prefix("tad_web_assistant_post") . "` (
               `plugin`,
@@ -1689,7 +1689,7 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
               '{$_SESSION['AssistantType'][$CateID]}',
               '{$_SESSION['AssistantID'][$CateID]}'
             )";
-    $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
 }
 
@@ -1699,7 +1699,7 @@ function is_assistant($CateID = '', $ColName = '', $ColSN = '')
     global $xoopsDB;
     $mem    = '';
     $sql    = "select `AssistantType`,`AssistantID` from `" . $xoopsDB->prefix('tad_web_assistant_post') . "` where `ColName`='{$ColName}' and `ColSN`='{$ColSN}' and `CateID`='{$CateID}'";
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
     if ($all['AssistantType'] == "MemID") {
         $mem = get_tad_web_mems($all['AssistantID']);

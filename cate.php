@@ -66,7 +66,7 @@ function list_all_cate($WebID = "", $ColName = "", $table = "")
     left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID
     left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
     where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$default_class}'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     while ($all = $xoopsDB->fetchArray($result)) {
         $students[] = $all;
     }

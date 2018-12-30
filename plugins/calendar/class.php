@@ -24,15 +24,15 @@ class tad_web_calendar
         }
 
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($total) = $xoopsDB->fetchRow($result);
 
         $sql          = "select count(*) from " . $xoopsDB->prefix("tad_web_homework") . " where WebID='{$this->WebID}'";
-        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($total2) = $xoopsDB->fetchRow($result);
 
         $sql          = "select count(*) from " . $xoopsDB->prefix("tad_web_news") . " where WebID='{$this->WebID}' and toCal!='0000-00-00 00:00:00'";
-        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($total3) = $xoopsDB->fetchRow($result);
 
         if (empty($total) and empty($total2) and empty($total3)) {
@@ -80,7 +80,7 @@ class tad_web_calendar
         $this->add_counter($CalendarID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='{$CalendarID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $CalendarID , $CalendarName , $CalendarType , $CalendarDesc , $CalendarDate , $uid , $WebID , $CalendarCount
@@ -210,7 +210,7 @@ class tad_web_calendar
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_calendar") . "
         (`CateID`,`CalendarName`,`CalendarType` , `CalendarDesc` , `CalendarDate` , `uid` , `WebID` , `CalendarCount`)
         values('0' ,'{$CalendarName}' ,'{$CalendarType}' , '{$CalendarDesc}' , '{$CalendarDate}' , '{$uid}' , '{$WebID}' , '{$CalendarCount}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $CalendarID = $xoopsDB->getInsertId();
@@ -242,7 +242,7 @@ class tad_web_calendar
          `CalendarDesc` = '{$CalendarDesc}' ,
          `CalendarDate` = '{$CalendarDate}'
         where CalendarID='$CalendarID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         check_quota($this->WebID);
         return $CalendarID;
@@ -254,7 +254,7 @@ class tad_web_calendar
         global $xoopsDB;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='$CalendarID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
     }
 
@@ -264,7 +264,7 @@ class tad_web_calendar
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select CalendarID,CateID from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($CalendarID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($CalendarID);
             $allCateID[$CateID] = $CateID;
@@ -280,7 +280,7 @@ class tad_web_calendar
     {
         global $xoopsDB;
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -290,7 +290,7 @@ class tad_web_calendar
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_calendar") . " set `CalendarCount`=`CalendarCount`+1 where `CalendarID`='{$CalendarID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_calendar資料
@@ -302,7 +302,7 @@ class tad_web_calendar
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='$CalendarID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

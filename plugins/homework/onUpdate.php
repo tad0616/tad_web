@@ -53,5 +53,5 @@ function homework_onUpdate2_go()
       `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬班級',
       PRIMARY KEY (`HomeworkID`,`HomeworkCol`)
     ) ENGINE=MyISAM";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 }

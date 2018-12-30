@@ -88,7 +88,7 @@ class tad_web_discuss
         $sql     = $PageBar['sql'];
         $total   = $PageBar['total'];
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $main_data = array();
 
@@ -171,7 +171,7 @@ class tad_web_discuss
         $this->add_counter($DiscussID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}' ";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $DiscussID , $ReDiscussID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
@@ -475,7 +475,7 @@ class tad_web_discuss
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_discuss") . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
         values('{$CateID}'  ,'{$ReDiscussID}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$DiscussTitle}' , '{$DiscussContent}' , now() , '{$WebID}' , now() , 0)";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $DiscussID = $xoopsDB->getInsertId();
@@ -486,7 +486,7 @@ class tad_web_discuss
         if (!empty($ReDiscussID)) {
             $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `LastTime` = now()
             where `DiscussID` = '{$ReDiscussID}' or `ReDiscussID` = '{$ReDiscussID}'";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
 
         if (!empty($ReDiscussID)) {
@@ -545,7 +545,7 @@ class tad_web_discuss
          `DiscussContent` = '{$DiscussContent}' ,
          `LastTime` = now()
         where DiscussID='{$DiscussID}' {$anduid}";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -576,10 +576,10 @@ class tad_web_discuss
         }
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where `DiscussID`='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_discuss") . " where `ReDiscussID`='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col("DiscussID", $DiscussID);
         $TadUpFiles->del_files();
@@ -594,7 +594,7 @@ class tad_web_discuss
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select DiscussID,CateID from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='{$this->WebID}' and ReDiscussID='0'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($DiscussID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($DiscussID);
             $allCateID[$CateID] = $CateID;
@@ -610,7 +610,7 @@ class tad_web_discuss
     {
         global $xoopsDB;
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -620,7 +620,7 @@ class tad_web_discuss
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_discuss資料
@@ -632,7 +632,7 @@ class tad_web_discuss
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='$DiscussID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -664,7 +664,7 @@ class tad_web_discuss
         $desc = ($this->discuss_setup['new2old'] == '1') ? 'desc' : '';
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID' order by DiscussDate $desc";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $re_data = "";
 
@@ -759,7 +759,7 @@ class tad_web_discuss
 
         $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_discuss") . " where ReDiscussID='$DiscussID'";
 
-        $result        = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result        = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($counter) = $xoopsDB->fetchRow($result);
         return $counter;
     }
@@ -783,7 +783,7 @@ class tad_web_discuss
         $andEnd    = empty($end_date) ? "" : "and DiscussDate <= '{$end_date}'";
 
         $sql    = "select DiscussID,DiscussTitle,DiscussDate,CateID from " . $xoopsDB->prefix("tad_web_discuss") . " where WebID='{$this->WebID}' and ReDiscussID=0 {$andStart} {$andEnd} {$andCateID} order by DiscussDate";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
         $main_data = array();

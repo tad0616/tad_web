@@ -15,7 +15,7 @@ function tad_web_menu($options)
         if ($MyWebID) {
             $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID in ('{$AllMyWebID}') order by WebSort";
             //die($sql);
-            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             //$web_num = $xoopsDB->getRowsNum($result);
             $i = $defalt_used_size = 0;
 
@@ -81,7 +81,7 @@ function tad_web_menu($options)
         $AllMyClosedWebID = implode("','", $MyClosedWebID);
         if ($MyClosedWebID) {
             $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID in ('{$AllMyClosedWebID}') order by WebSort";
-            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             $i      = 0;
 
             while ($all = $xoopsDB->fetchArray($result)) {

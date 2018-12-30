@@ -141,7 +141,7 @@ class power
           '{$power_name}',
           '{$power_val}'
         )";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     }
 
@@ -150,7 +150,7 @@ class power
     {
         global $xoopsDB;
         $sql             = "select power_val from `" . $xoopsDB->prefix("tad_web_power") . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($power_val) = $xoopsDB->fetchRow($result);
         return $power_val;
     }
@@ -161,7 +161,7 @@ class power
         global $xoopsDB;
 
         $sql = "delete from `" . $xoopsDB->prefix("tad_web_power") . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     }
 

@@ -88,7 +88,7 @@ class tad_web_files
         $sql     = $PageBar['sql'];
         $total   = $PageBar['total'];
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $main_data = $data = array();
 
@@ -280,7 +280,7 @@ class tad_web_files
           (`uid` , `CateID` , `file_date`  , `WebID` , `file_link` , `file_description`)
           values('{$uid}' , '{$CateID}' , now()  , '{$WebID}' , '{$file_link}' , '{$file_description}')";
 
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $fsn = $xoopsDB->getInsertId();
@@ -326,7 +326,7 @@ class tad_web_files
         `file_description` = '{$file_description}'
         where fsn='$fsn' $anduid";
         // die($sql);
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         if ($file_method == "upload_file") {
             $TadUpFiles->set_col('fsn', $fsn);
@@ -344,7 +344,7 @@ class tad_web_files
     {
         global $xoopsDB, $TadUpFiles;
         $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn'";
-        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'fsn', $fsn)) {
             $anduid = onlyMine();
@@ -356,7 +356,7 @@ class tad_web_files
         }
 
         $sql = "delete from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('fsn', $fsn);
 
@@ -372,7 +372,7 @@ class tad_web_files
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select fsn,CateID from " . $xoopsDB->prefix("tad_web_files") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($fsn, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($fsn);
             $allCateID[$CateID] = $CateID;
@@ -388,7 +388,7 @@ class tad_web_files
     {
         global $xoopsDB;
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_files") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -402,7 +402,7 @@ class tad_web_files
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_files") . " where fsn='$fsn'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -417,7 +417,7 @@ class tad_web_files
         $andEnd    = empty($end_date) ? "" : "and file_date <= '{$end_date}'";
 
         $sql    = "select fsn,file_description,file_date,CateID from " . $xoopsDB->prefix("tad_web_files") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by file_date";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
         $main_data = array();

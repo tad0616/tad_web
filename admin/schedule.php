@@ -35,7 +35,7 @@ function save_schedule_template()
     $conf_value = $myts->addSlashes($_POST['schedule_template']);
 
     $sql = "update " . $xoopsDB->prefix("config") . " set conf_value='$conf_value' where conf_modid='$conf_modid' and conf_name='schedule_template'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
 }
 
@@ -48,7 +48,7 @@ function save_schedule_subjects()
     $conf_value = $myts->addSlashes($_POST['schedule_subjects']);
 
     $sql = "update " . $xoopsDB->prefix("config") . " set conf_value='$conf_value' where conf_modid='$conf_modid' and conf_name='schedule_subjects'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
 }
 /*-----------執行動作判斷區----------*/

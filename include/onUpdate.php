@@ -133,7 +133,7 @@ function fiexd_block()
     foreach ($allBlockConfig as $plugin => $BlockConfig) {
         foreach ($BlockConfig as $BlockName => $Block) {
             $sql = "update  " . $xoopsDB->prefix("tad_web_blocks") . " set plugin='{$plugin}' where `BlockName`='{$BlockName}' and plugin!='{$plugin}'";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
     }
 }
@@ -193,7 +193,7 @@ function modify_share_block()
     //修正自訂區塊名稱（並用序號排序）
     if (!_IS_EZCLASS) {
         $sql    = "SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM " . $xoopsDB->prefix("tad_web_blocks") . " WHERE plugin='custom' ORDER BY BlockID";
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
             $BlockTitle   = $myts->addSlashes($BlockTitle);
             $BlockContent = $myts->addSlashes($BlockContent);
@@ -202,7 +202,7 @@ function modify_share_block()
             if ($new_name != $BlockName) {
                 //修改自己
                 $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='{$new_name}' where `BlockID`='{$BlockID}'";
-                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             }
 
             //搜尋該自訂區塊有無分享區塊
@@ -215,11 +215,11 @@ function modify_share_block()
             if ($share_BlockID) {
                 //修改分享區塊
                 $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockName`='share_{$WebID}_{$share_BlockID}', `ShareFrom`='{$BlockID}' where BlockID='{$share_BlockID}'";
-                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
                 //修改其他網站已經使用該分享區塊的
                 $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `ShareFrom`='{$share_BlockID}' where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and plugin='custom' and WebID!='{$WebID}'";
-                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             }
         }
     }
@@ -268,7 +268,7 @@ function add_log($status)
         $web_amount = 0;
     } else {
         $sql        = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $web_amount = $xoopsDB->getRowsNum($result);
     }
     $sitename      = urlencode($xoopsConfig['sitename']);
@@ -707,7 +707,7 @@ function go_update12()
             $sql    = "insert into `"
             . $xoopsDB->prefix("tad_web_blocks")
                 . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $sort++;
         }
     }
@@ -736,7 +736,7 @@ function go_update12()
             }
 
             $sql = "update `" . $xoopsDB->prefix("tad_web_blocks") . "` set `BlockEnable`='1',`BlockPosition`='block4',`BlockConfig`='{$config}',`BlockSort`='{$sort}' where `BlockName`='list_{$plugin}' and `WebID`='{$WebID}'";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $sort++;
         }
     }
@@ -809,12 +809,12 @@ function go_update15()
 
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $sql    = "SELECT WebID FROM `" . $xoopsDB->prefix("tad_web") . "`";
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     while (list($WebID) = $xoopsDB->fetchRow($result)) {
         $dir_size = get_dir_size("{$dir}{$WebID}/");
 
         $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     return true;
@@ -900,10 +900,10 @@ function go_update18()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` CHANGE `plugin` `plugin` VARCHAR(100) COLLATE 'utf8_general_ci' NOT NULL COMMENT '所屬外掛' AFTER `WebID`;";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_web_blocks") . "` ADD UNIQUE `BlockName_BlockCopy_WebID_plugin` (`BlockName`, `BlockCopy`, `WebID`, `plugin`);";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     return true;
 }
@@ -968,7 +968,7 @@ function go_update20()
     global $xoopsDB;
 
     $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_web_power") . "` ADD PRIMARY KEY `power_primary` (`col_name`, `col_sn`, `power_name`), DROP INDEX `PRIMARY`;";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     return true;
 }

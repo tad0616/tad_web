@@ -34,7 +34,7 @@ class tad_web_aboutus
             $and_SchoolName = empty($def_SchoolName) ? "" : "and b.SchoolName='{$def_SchoolName}'";
 
             $sql       = "select a.*,b.* from " . $xoopsDB->prefix("tad_web") . " as a left join " . $xoopsDB->prefix("apply") . " as b on a.WebOwnerUid=b.uid where a.`WebEnable`='1' {$and_county} {$and_city} {$and_SchoolName} order by b.zip, {$list_web_order}";
-            $result    = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result    = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             $total_web = 0;
             $all_webs  = array();
             while ($all = $xoopsDB->fetchArray($result)) {
@@ -110,7 +110,7 @@ class tad_web_aboutus
         } else {
 
             $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by {$list_web_order}";
-            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
             $data = array();
             $i    = 0;
@@ -162,7 +162,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('cate', $cate);
 
         $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}' order by a.MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
 
         $students1   = $students2   = "";
@@ -240,7 +240,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('students2', $students2);
 
         $sql             = "select min(`MemNum`) as min , max(`MemNum`) as max from " . $xoopsDB->prefix("tad_web_link_mems") . " where `CateID` = '{$DefCateID}' and MemEnable='1' and `MemNum` > 0 order by MemNum";
-        $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($min, $max) = $xoopsDB->fetchRow($result);
 
         $xoopsTpl->assign('min', $min);
@@ -362,13 +362,13 @@ class tad_web_aboutus
         if (!empty($_POST['form_CateID'])) {
             $form_CateID = intval($_POST['form_CateID']);
             $sql         = "select * from " . $xoopsDB->prefix("tad_web_link_mems") . " where CateID='{$form_CateID}' order by MemNum";
-            $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             while ($all = $xoopsDB->fetchArray($result)) {
                 $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . "
               (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable` , `top` ,`left`)
               values('{$all['MemID']}' , '{$this->WebID}' , '{$CateID}', '{$all['MemNum']}' , '{$all['MemSort']}' , '{$all['MemEnable']}' , '{$all['top']}' , '{$all['left']}' )";
 
-                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             }
         }
 
@@ -424,7 +424,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
 
         $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}' order by a.MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
 
         $students1   = $students2   = "";
@@ -507,7 +507,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
 
         $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}' order by a.MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
 
         $students = array();
@@ -583,7 +583,7 @@ class tad_web_aboutus
         if ($isMyWeb) {
             //所有學生
             $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}' order by a.MemNum";
-            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             $i      = 0;
 
             $students = array();
@@ -779,7 +779,7 @@ class tad_web_aboutus
 
         //所有學生
         $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}' order by a.MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
 
         $students = array();
@@ -841,7 +841,7 @@ class tad_web_aboutus
           (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemExpertises`,  `MemUname`, `MemPasswd`)
           values( '{$MemName}' , '{$MemNickName}', '{$MemSex}', '{$MemUnicode}', '{$MemBirthday}', '{$MemExpertises}' ,'{$MemUname}', '{$MemPasswd}')";
 
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $MemID = $xoopsDB->getInsertId();
@@ -855,7 +855,7 @@ class tad_web_aboutus
           (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable`, `MemClassOrgan`, `AboutMem`)
           values('{$MemID}' , '{$this->WebID}' , '{$CateID}', '{$MemNum}' , '{$MemSort}' , '1' , '{$MemClassOrgan}', '{$AboutMem}')";
 
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
         return $MemID;
     }
@@ -897,7 +897,7 @@ class tad_web_aboutus
            `MemUname` = '{$MemUname}',
            `MemPasswd` = '{$MemPasswd}'
           where MemID ='$MemID'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set
            `MemNum` = '{$MemNum}' ,
@@ -906,7 +906,7 @@ class tad_web_aboutus
            `AboutMem` = '{$AboutMem}'
           where MemID ='$MemID'";
 
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -930,7 +930,7 @@ class tad_web_aboutus
             $whereMemID = "MemID ='{$MemID}'";
         }
         $sql = "delete from " . $xoopsDB->prefix("tad_web_link_mems") . " where {$whereCateID} {$whereMemID}";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -945,7 +945,7 @@ class tad_web_aboutus
         global $xoopsDB, $TadUpFiles;
 
         $sql    = "select MemID from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$this->WebID}' order by MemNum";
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($MemID) = $xoopsDB->fetchRow($result)) {
             $this->delete($MemID);
         }
@@ -960,7 +960,7 @@ class tad_web_aboutus
 
         $andCateID   = !empty($CateID) ? "and CateID='{$CateID}'" : "";
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link_mems") . " where WebID='{$this->WebID}' {$andCateID} order by MemNum";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -970,7 +970,7 @@ class tad_web_aboutus
     {
         global $xoopsDB;
         $sql        = "select max(`MemSort`) from " . $xoopsDB->prefix("tad_web_link_mems") . " where CateID='$CateID' order by MemNum";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -1077,13 +1077,13 @@ class tad_web_aboutus
             $col[5] = $myts->addSlashes($col[5]);
             $sex    = (trim($col[4]) == _MD_TCW_BOY) ? 1 : 0;
             $sql    = "insert into " . $xoopsDB->prefix("tad_web_mems") . " (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUname`, `MemPasswd`) values('{$col[1]}','{$col[5]}','{$sex}','{$col[2]}','{$col[3]}','{$col[1]}','{$col[3]}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
             //取得最後新增資料的流水編號
             $MemID = $xoopsDB->getInsertId();
 
             $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . " (`MemID`, `WebID`,`CateID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`) values('{$MemID}','{$this->WebID}','{$CateID}','{$col[0]}','{$col[0]}','1','{$top}','{$left}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
             $j++;
             if ($j % 6 == 0) {
@@ -1106,13 +1106,13 @@ class tad_web_aboutus
         $j      = 6;
         $myts   = MyTextSanitizer::getInstance();
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_link_mems") . " where CateID='{$CateID}' order by MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         while ($all = $xoopsDB->fetchArray($result)) {
             $top  = 80 + $i * 90;
             $left = 65 + ($j % 6) * 90;
             $sql  = "update " . $xoopsDB->prefix("tad_web_link_mems") . " set `top`='{$top}', `left`='{$left}' where MemID='{$all['MemID']}' and WebID='{$this->WebID}' and CateID='{$CateID}'";
 
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $j++;
             if ($j % 6 == 0) {
                 $i++;
@@ -1133,7 +1133,7 @@ class tad_web_aboutus
        `left` = '{$left}'
         where MemID='$MemID'";
         //die($sql);
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         return $MemID;
     }
 
@@ -1169,7 +1169,7 @@ class tad_web_aboutus
 
 
         $sql    = "select a.`MemID` , a.`MemName` , a.`MemNickName` , b.`WebID` , b.`CateID` from " . $xoopsDB->prefix("tad_web_mems") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID` where a.`MemUname`='$MemUname' and a.`MemPasswd`='$MemPasswd' and b.`MemEnable`='1' and b.WebID='{$WebID}' order by b.MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         list($MemID, $MemName, $MemNickName, $WebID, $CateID) = $xoopsDB->fetchRow($result);
 
@@ -1191,7 +1191,7 @@ class tad_web_aboutus
         global $xoopsDB;
         unset($_SESSION['tad_web'][$this->WebID]);
         $sql = "update  " . $xoopsDB->prefix("tad_web") . " set WebTitle='{$WebTitle}' where `WebID`='{$this->WebID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         mklogoPic($this->WebID);
         $TadUpFilesLogo = TadUpFilesLogo($this->WebID);
         $TadUpFilesLogo->import_one_file(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/auto_logo/auto_logo.png", null, 1280, 150, null, 'auto_logo.png', false);
@@ -1211,7 +1211,7 @@ class tad_web_aboutus
 
         //取得所有分類
         $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `CateEnable`='1' order by CateSort";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         while ($data = $xoopsDB->fetchArray($result)) {
             $plugin_name                  = $data['ColName'];
             $CateID                       = $data['CateID'];
@@ -1312,7 +1312,7 @@ class tad_web_aboutus
               (`MemID`, `Reationship`, `ParentEmail`, `ParentPasswd`, `ParentEnable` ,`code`)
               values('{$MemID}', '{$Reationship}' , '{$ParentEmail}' , '{$ParentPasswd}' , '0' , '{$code}')";
 
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $ParentID = $xoopsDB->getInsertId();
@@ -1365,7 +1365,7 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
         }
         $sql = "update " . $xoopsDB->prefix("tad_web_mem_parents") . " set `ParentEnable` ='1' where `ParentID`='{$ParentID}' and `code`='{$code}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $AffectedRows = $xoopsDB->getAffectedRows();
         if ($AffectedRows > 0) {
             $today  = date("Y-m-d H:i:s");
@@ -1373,7 +1373,7 @@ class tad_web_aboutus
             $mem    = get_tad_web_mems($parent['MemID']);
 
             $sql                = "SELECT b.`name`,b.`email` FROM `" . $xoopsDB->prefix("tad_web") . "` as a join `" . $xoopsDB->prefix("users") . "` as b on a.`WebOwnerUid`=b.`uid` WHERE a.`WebID` = '{$this->WebID}'";
-            $result             = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+            $result             = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             list($name, $email) = $xoopsDB->fetchRow($result);
 
             $title   = $WebName . _MD_TCW_ABOUTUS_PARENT_ENABLE;
@@ -1411,7 +1411,7 @@ class tad_web_aboutus
         $ParentPasswd  = $myts->addSlashes($ParentPasswd);
 
         $sql    = "select a.`ParentID` , a.`MemID` , a.`Reationship`, a.`ParentEnable`, a.`code` , b.`WebID` , b.`CateID`,c.MemName from " . $xoopsDB->prefix("tad_web_mem_parents") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID`  left join " . $xoopsDB->prefix("tad_web_mems") . " as c on a.`MemID`=c.`MemID` where a.`MemID`='$MemID' and a.`ParentPasswd`='$ParentPasswd' and b.WebID='{$WebID}' order by b.MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         list($ParentID, $MemID, $Reationship, $ParentEnable, $code, $WebID, $CateID, $MemName) = $xoopsDB->fetchRow($result);
 
@@ -1520,11 +1520,11 @@ class tad_web_aboutus
         $sql = "update " . $xoopsDB->prefix("tad_web_mem_parents") . " set
               `Reationship` ='{$Reationship}', `ParentEmail` ='{$ParentEmail}' {$and_passwd} where `ParentID`='{$ParentID}'";
 
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         global $xoopsDB, $xoopsUser, $TadUpFiles, $isMyWeb, $MyWebs;
 
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col("ParentID", $ParentID, 1);
         $TadUpFiles->upload_file("upfile", 180, null, null, null, true);
@@ -1576,7 +1576,7 @@ class tad_web_aboutus
         }
 
         $sql    = "select a.`ParentID` , a.`MemID` , a.`Reationship` , a.`ParentPasswd` , a.`ParentEmail` , b.`WebID` , b.`CateID`,c.MemName from " . $xoopsDB->prefix("tad_web_mem_parents") . " as a left join " . $xoopsDB->prefix("tad_web_link_mems") . " as b on a.`MemID`=b.`MemID`  left join " . $xoopsDB->prefix("tad_web_mems") . " as c on a.`MemID`=c.`MemID` where a.`MemID`='$MemID' and a.`Reationship`='$Reationship' and a.`ParentEnable`='1' and b.WebID='{$this->WebID}' order by b.MemNum";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         list($ParentID, $MemID, $Reationship, $ParentPasswd, $ParentEmail, $WebID, $CateID, $MemName) = $xoopsDB->fetchRow($result);
 
@@ -1599,7 +1599,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('cate', $this->web_cate->get_tad_web_cate($DefCateID));
 
         $sql       = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}' order by rand()";
-        $result    = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result    = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $mem_total = $xoopsDB->getRowsNum($result);
         $row_num   = ceil($mem_total / 4) + 1;
 

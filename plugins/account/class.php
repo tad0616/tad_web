@@ -85,7 +85,7 @@ class tad_web_account
         // $sql     = $PageBar['sql'];
         // $total   = $PageBar['total'];
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $main_data = array();
 
@@ -186,7 +186,7 @@ class tad_web_account
         $this->add_counter($AccountID);
 
         $sql = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='{$AccountID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $AccountID , $AccountTitle , $AccountDesc , $AccountDate , $AccountIncome ,$AccountOutgoings , $uid , $WebID , $AccountCount
@@ -387,7 +387,7 @@ class tad_web_account
         $sql = "insert into " . $xoopsDB->prefix("tad_web_account") . "
         (`CateID`,`AccountTitle` , `AccountDesc` , `AccountDate` , `AccountIncome` , `AccountOutgoings` , `uid` , `WebID` , `AccountCount`)
         values('{$CateID}' ,'{$AccountTitle}' , '{$AccountDesc}' , '{$AccountDate}' , '{$AccountIncome}' , '{$AccountOutgoings}' , '{$uid}' , '{$WebID}' , '{$AccountCount}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $AccountID = $xoopsDB->getInsertId();
@@ -443,7 +443,7 @@ class tad_web_account
          `AccountIncome` = '{$AccountIncome}',
          `AccountOutgoings` = '{$AccountOutgoings}'
         where AccountID='$AccountID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -464,13 +464,13 @@ class tad_web_account
     {
         global $xoopsDB, $TadUpFiles;
         $sql = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'AccountID', $AccountID)) {
             $anduid = onlyMine();
         }
         $sql = "delete from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -489,7 +489,7 @@ class tad_web_account
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql = "select AccountID,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($AccountID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($AccountID);
             $allCateID[$CateID] = $CateID;
@@ -505,7 +505,7 @@ class tad_web_account
     {
         global $xoopsDB;
         $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -515,7 +515,7 @@ class tad_web_account
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_account") . " set `AccountCount`=`AccountCount`+1 where `AccountID`='{$AccountID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_account資料
@@ -527,7 +527,7 @@ class tad_web_account
         }
 
         $sql = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -541,7 +541,7 @@ class tad_web_account
         $andEnd = empty($end_date) ? "" : "and AccountDate <= '{$end_date}'";
 
         $sql = "select AccountID,AccountTitle,AccountDate,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by AccountDate";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i = 0;
         $main_data = array();
@@ -562,7 +562,7 @@ class tad_web_account
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
         $sql = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' order by AccountDate desc limit 0,1";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         return $CateID;
     }

@@ -21,7 +21,7 @@ $MyWebs = MyWebID();
 
 //找出各班最新聯絡簿
 $sql    = "select `WebID`,max(`HomeworkID`),max(`toCal`) from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkPostDate <= '$now' group by `WebID`";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
     $homework[$WebID]      = $HomeworkID;
     $homework_date[$WebID] = substr($toCal, 0, 10);
@@ -29,7 +29,7 @@ while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
 
 //找出各班功課表
 $sql    = "SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM " . $xoopsDB->prefix("tad_web_schedule") . " WHERE `ScheduleDisplay` = '1'";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule[$WebID]       = $ScheduleID;
     $schedule_title[$WebID] = $ScheduleName;
@@ -41,7 +41,7 @@ if (empty($list_web_order)) {
 }
 
 $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' and CateID='{$CateID}' order by {$list_web_order}";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
 $web_tr = '';
 while ($web = $xoopsDB->fetchArray($result)) {

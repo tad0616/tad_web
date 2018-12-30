@@ -90,7 +90,7 @@ function save_plugin_setup($WebID = "", $plugin = "")
             }
 
             $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins_setup") . " (`WebID`, `plugin`, `name`, `type`, `value`) values($WebID, '{$plugin}','{$setup['name']}' , '{$setup['type']}' , '{$value}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
     }
 }

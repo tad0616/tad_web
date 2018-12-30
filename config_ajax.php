@@ -88,7 +88,7 @@ function keyman($WebID, $keyman)
     $where         = !empty($keyman) ? "where name like '%{$keyman}%' or uname like '%{$keyman}%'" : "";
 
     $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " $where order by uname";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     $myts    = MyTextSanitizer::getInstance();
     $user_ok = $user_yet = "";

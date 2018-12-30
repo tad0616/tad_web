@@ -19,7 +19,7 @@ foreach ($folders as $kind => $dir) {
 }
 
 $sql    = "select WebID from xx_tad_web where WebID >=6000 and WebID < 7000 order by WebID";
-$result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+$result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 $sum    = 0;
 while (list($WebID) = $xoopsDB->fetchRow($result)) {
     echo "<h3>開始處理 {$WebID}</h3>";

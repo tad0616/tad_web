@@ -64,7 +64,7 @@ class tad_web_schedule
             left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
             where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID order by a.ScheduleDisplay desc, b.WebSort";
         }
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $main_data = array();
 
@@ -132,7 +132,7 @@ class tad_web_schedule
         $this->add_counter($ScheduleID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='{$ScheduleID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount ,$ScheduleTime
@@ -258,7 +258,7 @@ class tad_web_schedule
         $xoopsTpl->assign('next_op', $op);
 
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $SubjectArr = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
@@ -311,7 +311,7 @@ class tad_web_schedule
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_schedule") . "
         (`CateID`,`ScheduleName` , `ScheduleDisplay` , `uid` , `WebID` , `ScheduleCount` , `ScheduleTime`)
         values('{$CateID}' ,'{$ScheduleName}' , '{$ScheduleDisplay}'  , '{$uid}' , '{$WebID}' , '0' , '{$ScheduleTime}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $ScheduleID = $xoopsDB->getInsertId();
@@ -346,13 +346,13 @@ class tad_web_schedule
          `ScheduleDisplay` = '{$ScheduleDisplay}',
          `ScheduleTime` = '{$ScheduleTime}'
         where ScheduleID='$ScheduleID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         if ($ScheduleDisplay == '1') {
             $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set
              `ScheduleDisplay` = '0'
             where WebID='{$WebID}' and ScheduleID!='{$ScheduleID}' $anduid";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
 
         check_quota($this->WebID);
@@ -364,7 +364,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
         $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
             $anduid = onlyMine();
@@ -373,9 +373,9 @@ class tad_web_schedule
         if ($xoopsDB->queryF($sql)) {
 
             $sql = "delete from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='$ScheduleID'";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         } else {
-            web_error($sql, __FILE__, _LINE__);
+            web_error($sql, __FILE__, __LINE__);
         }
         check_quota($this->WebID);
 
@@ -387,7 +387,7 @@ class tad_web_schedule
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select ScheduleID,CateID from " . $xoopsDB->prefix("tad_web_schedule") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ScheduleID);
             $allCateID[$CateID] = $CateID;
@@ -403,7 +403,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_schedule") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -413,7 +413,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_schedule") . " set `ScheduleCount`=`ScheduleCount`+1 where `ScheduleID`='{$ScheduleID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_schedule資料
@@ -425,7 +425,7 @@ class tad_web_schedule
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -443,7 +443,7 @@ class tad_web_schedule
         }
 
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $SubjectArr = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount
