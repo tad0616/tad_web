@@ -1,4 +1,4 @@
-<link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+
 <{if $op=="view_file"}>
   <h2><{$dir}></h2>
   <{$ztree_code}>

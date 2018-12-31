@@ -185,11 +185,11 @@ function batch_add_class_by_user()
 
         if (no_web($uid)) {
             insert_tad_web(0, $WebName, $i, '1', $uid_name, $uid, $WebTitle);
-
-            $sql = "replace into " . $xoopsDB->prefix("groups_users_link") . " (`uid` , `groupid`) values('{$uid}' , '{$groupid}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $i++;
         }
+        $sql = "replace into " . $xoopsDB->prefix("groups_users_link") . " (`uid` , `groupid`) values('{$uid}' , '{$groupid}')";
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+
     }
 }
 
@@ -227,30 +227,39 @@ function tad_web_form($WebID = null)
 
     //設定「WebID」欄位預設值
     $WebID = (!isset($DBV['WebID'])) ? $WebID : $DBV['WebID'];
+    $xoopsTpl->assign('WebID', $WebID);
 
     //設定「WebName」欄位預設值
     $WebName = (!isset($DBV['WebName'])) ? "" : $DBV['WebName'];
+    $xoopsTpl->assign('WebName', $WebName);
 
     //設定「WebSort」欄位預設值
     $WebSort = (!isset($DBV['WebSort'])) ? tad_web_max_sort() : $DBV['WebSort'];
+    $xoopsTpl->assign('WebSort', $WebSort);
 
     //設定「WebEnable」欄位預設值
     $WebEnable = (!isset($DBV['WebEnable'])) ? "" : $DBV['WebEnable'];
+    $xoopsTpl->assign('WebEnable', $WWebEnableebID);
 
     //設定「WebCounter」欄位預設值
     $WebCounter = (!isset($DBV['WebCounter'])) ? "" : $DBV['WebCounter'];
+    $xoopsTpl->assign('WebCounter', $WebCounter);
 
     //設定「WebOwner」欄位預設值
     $WebOwner = (!isset($DBV['WebOwner'])) ? "" : $DBV['WebOwner'];
+    $xoopsTpl->assign('WebOwner', $WebOwner);
 
     //設定「WebOwnerUid」欄位預設值
     $WebOwnerUid = (!isset($DBV['WebOwnerUid'])) ? "" : $DBV['WebOwnerUid'];
+    $xoopsTpl->assign('WebOwnerUid', $WebOwnerUid);
 
     //設定「WebTitle」欄位預設值
     $WebTitle = (!isset($DBV['WebTitle'])) ? "" : $DBV['WebTitle'];
+    $xoopsTpl->assign('WebTitle', $WebTitle);
 
     //設定「CateID」欄位預設值
     $CateID = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
+    $xoopsTpl->assign('CateID', $CateID);
 
     $op = (empty($WebID)) ? "insert_tad_web" : "update_tad_web";
     //$op="replace_tad_web";
@@ -259,8 +268,8 @@ function tad_web_form($WebID = null)
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
     }
     include_once TADTOOLS_PATH . "/formValidator.php";
-    $formValidator      = new formValidator("#myForm", true);
-    $formValidator_code = $formValidator->render();
+    $formValidator = new formValidator("#myForm", true);
+    $formValidator->render();
 
     $sql    = "select uid,uname,name from " . $xoopsDB->prefix("users") . " order by uname";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
@@ -280,16 +289,9 @@ function tad_web_form($WebID = null)
     //$jquery = get_jquery(true);
     $xoopsTpl->assign('pic', $pic);
     $xoopsTpl->assign('user_menu', $user_menu);
-    $xoopsTpl->assign('WebName', $WebName);
-    $xoopsTpl->assign('WebTitle', $WebTitle);
-    $xoopsTpl->assign('WebOwner', $WebOwner);
     $xoopsTpl->assign('WebEnable1', chk($WebEnable, "1", "1"));
     $xoopsTpl->assign('WebEnable0', chk($WebEnable, "0"));
-    $xoopsTpl->assign('WebSort', $WebSort);
-    $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('next_op', $op);
-    $xoopsTpl->assign('CateID', $CateID);
-    // $xoopsTpl->assign('jquery', $jquery);
 
     $ys        = get_seme();
     $last_year = $ys[0] - 1;
@@ -303,7 +305,6 @@ function tad_web_form($WebID = null)
     $web_cate->set_col_md(3, 3);
     //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     $cate_menu = $web_cate->cate_menu($CateID, 'page', false, false, false, false, true, true, false);
-
     $xoopsTpl->assign('cate_menu', $cate_menu);
 }
 
@@ -330,8 +331,8 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
 
     }
 
-    $myts    = MyTextSanitizer::getInstance();
-    $WebName = $myts->addSlashes($WebName);
+    $myts     = MyTextSanitizer::getInstance();
+    $WebName  = $myts->addSlashes($WebName);
     $WebTitle = $myts->addSlashes($WebTitle);
     $WebOwner = $myts->addSlashes($WebOwner);
 
@@ -345,8 +346,8 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
     $WebSort = intval($$WebSort);
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web") . "
-    (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`)
-    values('{$CateID}' , '{$WebName}' , '{$WebSort}', '{$WebEnable}', '0' , '{$WebOwner}', '{$WebOwnerUid}', '{$WebTitle}', now() , '{$WebYear}')";
+    (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`,`used_size`, `last_accessed`)
+    values('{$CateID}' , '{$WebName}' , '{$WebSort}', '{$WebEnable}', '0' , '{$WebOwner}', '{$WebOwnerUid}', '{$WebTitle}', now() , '{$WebYear}', 0, '0000-00-00 00:00:00')";
     $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
@@ -366,12 +367,12 @@ function update_tad_web($WebID = "")
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts     = MyTextSanitizer::getInstance();
-    $WebName  = $myts->addSlashes($_POST['WebName']);
-    $WebTitle = $myts->addSlashes($_POST['WebTitle']);
-    $CateID = intval($_POST['CateID']);
-    $WebSort = intval($_POST['WebSort']);
-    $WebEnable = intval($_POST['WebEnable']);
+    $myts        = MyTextSanitizer::getInstance();
+    $WebName     = $myts->addSlashes($_POST['WebName']);
+    $WebTitle    = $myts->addSlashes($_POST['WebTitle']);
+    $CateID      = intval($_POST['CateID']);
+    $WebSort     = intval($_POST['WebSort']);
+    $WebEnable   = intval($_POST['WebEnable']);
     $WebOwnerUid = intval($_POST['WebOwnerUid']);
 
     $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 1);

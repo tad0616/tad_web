@@ -1,4 +1,4 @@
-<link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+
 <div class="container-fluid">
   <h2><{$smarty.const._MA_TCW_WEB_SCHEDULE_TEMPLATE}></h2>
   <form action="schedule.php" method="post">

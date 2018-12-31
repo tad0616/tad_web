@@ -1,6 +1,6 @@
 <?php
 $adminmenu = array();
-$icon_dir  = substr(XOOPS_VERSION, 6, 3) == '2.6' ? "" : "images/";
+$icon_dir  = substr(XOOPS_VERSION, 6, 3) == '2.6' ? "" : "images/admin/";
 
 $i                      = 1;
 $adminmenu[$i]['title'] = _MI_TAD_ADMIN_HOME;

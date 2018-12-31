@@ -178,9 +178,9 @@ class web_cate
         $validate = $required ? 'validate[required]' : '';
         $def_opt  = $default_opt ? "<option value=''>$default_option_text</option>" : '';
         $menu     = "<select name='{$this->menu_name}' id='{$this->menu_id}' class='{$validate} form-control' >
-                    {$def_opt}
-                    {$option}
-                  </select>";
+        {$def_opt}
+        {$option}
+        </select>";
 
         if ($mode == "menu") {
             return $menu;

@@ -1082,7 +1082,7 @@ class tad_web_aboutus
             //取得最後新增資料的流水編號
             $MemID = $xoopsDB->getInsertId();
 
-            $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . " (`MemID`, `WebID`,`CateID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`) values('{$MemID}','{$this->WebID}','{$CateID}','{$col[0]}','{$col[0]}','1','{$top}','{$left}')";
+            $sql = "insert into " . $xoopsDB->prefix("tad_web_link_mems") . " (`MemID`, `WebID`,`CateID`, `MemNum`, `MemSort`,  `MemEnable`, `MemClassOrgan`, `AboutMem`, `top`, `left`) values('{$MemID}','{$this->WebID}','{$CateID}','{$col[0]}','{$col[0]}','1','','','{$top}','{$left}')";
             $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
             $j++;

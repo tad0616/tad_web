@@ -77,14 +77,14 @@ function save_tad_web_cate()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $CateID      = intval($_POST['CateID']);
-    $WebID       = $_POST['WebID'];
+    $CateID      = (int) $_POST['CateID'];
+    $WebID       = (int) $_POST['WebID'];
     $CateName    = $myts->addSlashes($_POST['CateName']);
     $ColName     = $myts->addSlashes($_POST['ColName']);
     $ColSN       = $myts->addSlashes($_POST['ColSN']);
-    $CateSort    = intval($_POST['CateSort']);
-    $CateEnable  = intval($_POST['CateEnable']);
-    $CateCounter = intval($_POST['CateCounter']);
+    $CateSort    = (int) $_POST['CateSort'];
+    $CateEnable  = (int) $_POST['CateEnable'];
+    $CateCounter = (int) $_POST['CateCounter'];
 
     $sql = "insert into `" . $xoopsDB->prefix("tad_web_cate") . "` (
         `WebID`,

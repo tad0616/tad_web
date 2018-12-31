@@ -1,4 +1,4 @@
-<link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+
 <div class="container-fluid">
   <!--顯示表單-->
   <{if $now_op=="tad_web_cate_form"}>

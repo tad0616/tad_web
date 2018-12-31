@@ -31,39 +31,33 @@ switch ($op) {
         $MemID = $tad_web_aboutus->insert();
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}&MemID={$MemID}&op=show_stu");
         exit;
-        break;
 
     //更新學生資料
     case "update":
         $tad_web_aboutus->update($MemID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}&MemID={$MemID}&op=show_stu");
         exit;
-        break;
 
     //刪除學生資料
     case "delete":
         $tad_web_aboutus->delete($MemID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
-        break;
 
     case "insert_class":
         $CateID = $tad_web_aboutus->insert_class($year, $newCateName);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
-        break;
 
     case "update_class":
         $tad_web_aboutus->update_class($CateID, $year, $newCateName);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
-        break;
 
     case "del_class":
         $tad_web_aboutus->del_class($CateID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form");
         exit;
-        break;
 
     case "edit_class_stu":
         $tad_web_aboutus->edit_class_stu($CateID);
@@ -90,14 +84,12 @@ switch ($op) {
         $tad_web_aboutus->save_seat($MemID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     //登入
     case "reset_position":
         $tad_web_aboutus->reset_position($CateID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}&op=edit_position");
         exit;
-        break;
 
     case "edit_form":
         $tad_web_aboutus->edit_form($CateID);
@@ -116,11 +108,12 @@ switch ($op) {
         $login = $tad_web_aboutus->mem_login($WebID, $MemUname, $MemPasswd);
         if ($login) {
             header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&MemID={$_SESSION['LoginMemID']}&op=show_stu");
+            exit;
+
         } else {
             redirect_header("aboutus.php?WebID={$WebID}", 3, _MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED);
+            break;
         }
-        exit;
-        break;
 
     //登出
     case "mem_logout":
@@ -136,7 +129,6 @@ switch ($op) {
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     //更新照片
     case "update_photo":
@@ -145,7 +137,6 @@ switch ($op) {
         $TadUpFiles->upload_file('upfile', 480, 120, null, null, true);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     case "new_class":
         $tad_web_aboutus->edit_form();
@@ -176,7 +167,6 @@ switch ($op) {
         $result = $tad_web_aboutus->enable_parent($ParentID, $chk_code);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=show_enable_parent&ParentID=$ParentID&result={$result}&chk_code={$chk_code}");
         exit;
-        break;
 
     //提醒收信通知
     case "show_enable_parent":
@@ -188,7 +178,6 @@ switch ($op) {
         $tad_web_aboutus->send_signup_mail($ParentID, $chk_code);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=show_parents_signup&ParentID={$ParentID}&chk_code={$chk_code}");
         exit;
-        break;
 
     //家長登入
     case "parent_login":
@@ -200,7 +189,6 @@ switch ($op) {
 
         }
         exit;
-        break;
 
     case "show_parent":
         $tad_web_aboutus->show_parent($ParentID, $CateID);
@@ -211,7 +199,6 @@ switch ($op) {
         $tad_web_aboutus->save_parent($ParentID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&ParentID={$_SESSION['LoginParentID']}&op=show_parent");
         exit;
-        break;
 
     //登出
     case "parent_logout":
@@ -227,7 +214,6 @@ switch ($op) {
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
 
     //忘記密碼
     case "forget_parent_passwd":

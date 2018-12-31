@@ -592,7 +592,7 @@ function mk_menu_var_file($WebID = null)
             }
 
             $BlockConfig = str_replace('{{WebID}}', $WebID, $BlockConfig);
-            $sql         = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$BlockConfig}', '{$block_position[$func]}', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
+            $sql         = "insert into `" . $xoopsDB->prefix("tad_web_blocks") . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$BlockConfig}', '{$block_position[$func]}', '{$sort}', '{$WebID}', '{$block_plugin[$func]}', 0)";
             $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $sort++;
         }
@@ -807,7 +807,7 @@ function mklogoPic($WebID = "")
 
     $pic_size = ($pic_size1 > $pic_size2) ? $pic_size1 : $pic_size2;
 
-    header('Content-type: image/png');
+    // header('Content-type: image/png');
     $im = @imagecreatetruecolor($pic_size, 140) or die(_MD_TCW_MKPIC_ERROR);
     imagesavealpha($im, true);
 
@@ -882,7 +882,7 @@ function mkTitlePic($WebID = "", $filename = "", $title = "", $color = "#ABBF6B"
     list($color_r, $color_g, $color_b)                      = sscanf($color, "#%02x%02x%02x");
     list($border_color_r, $border_color_g, $border_color_b) = sscanf($border_color, "#%02x%02x%02x");
 
-    header('Content-type: image/png');
+    // header('Content-type: image/png');
     $im = @imagecreatetruecolor($width, $height) or die(_MD_TCW_MKPIC_ERROR . "({$title}->{$size} , {$width} x {$height})");
     imagesavealpha($im, true);
 
@@ -1182,7 +1182,7 @@ function output_head_file($WebID)
         imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $logo_width, $logo_height, $logo_width, $logo_height);
     }
 
-    header('Content-type: image/png');
+    // header('Content-type: image/png');
     $save = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png";
     imagepng($im, $save);
 
@@ -1288,7 +1288,7 @@ function output_head_file_480($WebID)
         imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $new_logo_width, $new_logo_height, $logo_width, $logo_height);
     }
 
-    header('Content-type: image/png');
+    // header('Content-type: image/png');
 
     // imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png");
     $save = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png";
