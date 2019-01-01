@@ -159,6 +159,19 @@ class web_cate
         // }
 
         $option = "";
+
+        $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='aboutus' and `CateEnable`='1' order by CateSort";
+        // die($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        while ($data = $xoopsDB->fetchArray($result)) {
+            foreach ($data as $k => $v) {
+                $$k = $v;
+            }
+            $selected = ($defCateID == $CateID) ? "selected" : "";
+            $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
+        }
+
+
         $sql    = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
         // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);

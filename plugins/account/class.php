@@ -376,11 +376,11 @@ class tad_web_account
         $WebID = intval($_POST['WebID']);
 
         if ($AccountKind == "AccountIncome") {
-            $AccountIncome = $AccountMoney;
-            $AccountOutgoings = "";
+            $AccountIncome = (int) $AccountMoney;
+            $AccountOutgoings = 0;
         } else {
-            $AccountIncome = "";
-            $AccountOutgoings = $AccountMoney;
+            $AccountIncome = 0;
+            $AccountOutgoings = (int) $AccountMoney;
         }
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);

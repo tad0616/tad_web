@@ -1674,21 +1674,23 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
     $sql = "delete from `" . $xoopsDB->prefix("tad_web_assistant_post") . "` where `plugin`='{$ColName}' and `ColName`='{$ColName}' and `ColSN`='{$ColSN}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
+    $AssistantID=(int)$_SESSION['AssistantID'][$CateID];
+
     $sql = "insert into `" . $xoopsDB->prefix("tad_web_assistant_post") . "` (
-              `plugin`,
-              `ColName`,
-              `ColSN`,
-              `CateID`,
-              `AssistantType`,
-              `AssistantID`
-            ) values(
-              '{$ColName}',
-              '{$ColName}',
-              '{$ColSN}',
-              '{$CateID}',
-              '{$_SESSION['AssistantType'][$CateID]}',
-              '{$_SESSION['AssistantID'][$CateID]}'
-            )";
+            `plugin`,
+            `ColName`,
+            `ColSN`,
+            `CateID`,
+            `AssistantType`,
+            `AssistantID`
+        ) values(
+            '{$ColName}',
+            '{$ColName}',
+            '{$ColSN}',
+            '{$CateID}',
+            '{$_SESSION['AssistantType'][$CateID]}',
+            '{$AssistantID}'
+        )";
     $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
 }
@@ -1762,6 +1764,8 @@ function chk_self_web($WebID, $other = null)
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
     } elseif (!$isMyWeb) {
         if ($other !== null and !$other) {
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+        }elseif(empty($MyWebs) and $other==null){
             redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
         } else {
             return true;
