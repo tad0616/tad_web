@@ -537,7 +537,7 @@ class tad_web_works
         return $data;
     }
 
-    //7取得某人上傳資料
+    //取得某人上傳資料
     public function get_mem_upload_content($WorksID = "", $MemID = "")
     {
         global $xoopsDB, $TadUpFiles;
