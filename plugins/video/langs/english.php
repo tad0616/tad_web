@@ -15,3 +15,6 @@ define("_MD_TCW_VIDEO_BLOCK_LIST", "List Video");
 define("_MD_TCW_VIDEO_BLOCK_RANDOM", "Random Video");
 define("_MD_TCW_VIDEO_BLOCK_LATEST", "Latest Video");
 define("_MD_TCW_VIDEO_BLOCK_LIMIT", "Displays the number of videos");
+define("_MD_TCW_VIDEO_BLOCK_MODE", "Display mode");
+define("_MD_TCW_VIDEO_BLOCK_LIST_MODE", "List");
+define("_MD_TCW_VIDEO_BLOCK_THUMB_MODE", "Thumb");

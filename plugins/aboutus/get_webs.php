@@ -8,9 +8,9 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
     $FooTableJS = $FooTable->render();
 }
 
-$modhandler        = &xoops_gethandler('module');
-$xoopsModule       = &$modhandler->getByDirname("tad_web");
-$config_handler    = &xoops_gethandler('config');
+$modhandler        = xoops_gethandler('module');
+$xoopsModule       = $modhandler->getByDirname("tad_web");
+$config_handler    = xoops_gethandler('config');
 $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
 $CateID = intval($_GET['CateID']);
@@ -21,15 +21,15 @@ $MyWebs = MyWebID();
 
 //找出各班最新聯絡簿
 $sql    = "select `WebID`,max(`HomeworkID`),max(`toCal`) from " . $xoopsDB->prefix("tad_web_homework") . " where HomeworkPostDate <= '$now' group by `WebID`";
-$result = $xoopsDB->query($sql) or web_error($sql);
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
     $homework[$WebID]      = $HomeworkID;
     $homework_date[$WebID] = substr($toCal, 0, 10);
 }
 
 //找出各班功課表
-$sql    = "select `WebID`,`ScheduleID`,`ScheduleName` from " . $xoopsDB->prefix("tad_web_schedule") . " where `ScheduleDisplay` = '1'";
-$result = $xoopsDB->query($sql) or web_error($sql);
+$sql    = "SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM " . $xoopsDB->prefix("tad_web_schedule") . " WHERE `ScheduleDisplay` = '1'";
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule[$WebID]       = $ScheduleID;
     $schedule_title[$WebID] = $ScheduleName;
@@ -41,7 +41,7 @@ if (empty($list_web_order)) {
 }
 
 $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' and CateID='{$CateID}' order by {$list_web_order}";
-$result = $xoopsDB->query($sql) or web_error($sql);
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
 $web_tr = '';
 while ($web = $xoopsDB->fetchArray($result)) {
@@ -98,6 +98,10 @@ $th3 = in_array('schedule', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide
 $th4 = in_array('homework', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ABOUTUS_HOMEWORK . '</th>' : '';
 
 $content = $FooTableJS . '
+<html lang="zh-TW">
+<meta charset="utf-8">
+<title>Web List</title>
+<h2 class="sr-only">Web List</h2>
 <table class="footable">
   <thead>
     <tr>
@@ -110,7 +114,9 @@ $content = $FooTableJS . '
   <tbody>
   ' . $web_tr . '
   </tbody>
-</table>';
-
+</table>
+</html>';
 die($content);
-// echo html5($content, false, false, $_SESSION['bootstrap']);
+
+// html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)
+// die(html5($content, false, true, 3, false));

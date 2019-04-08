@@ -15,7 +15,7 @@ class tad_web_calendar
 
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs;
+        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb;
 
         $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
 
@@ -24,15 +24,15 @@ class tad_web_calendar
         }
 
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($total) = $xoopsDB->fetchRow($result);
 
         $sql          = "select count(*) from " . $xoopsDB->prefix("tad_web_homework") . " where WebID='{$this->WebID}'";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($total2) = $xoopsDB->fetchRow($result);
 
         $sql          = "select count(*) from " . $xoopsDB->prefix("tad_web_news") . " where WebID='{$this->WebID}' and toCal!='0000-00-00 00:00:00'";
-        $result       = $xoopsDB->query($sql) or web_error($sql);
+        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($total3) = $xoopsDB->fetchRow($result);
 
         if (empty($total) and empty($total2) and empty($total3)) {
@@ -43,11 +43,18 @@ class tad_web_calendar
         // die('$calendar_data=' . $calendar_data);
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/fullcalendar.php";
         $fullcalendar = new fullcalendar();
+
         //$fullcalendar->add_js_parameter('dayClick', "function(date, jsEvent, view) {alert('新增事件')}", false);
         if ($this->WebID) {
+            $fullcalendar->add_js_parameter('firstDay', $this->setup['week_first_day']);
             $fullcalendar->add_json_parameter('WebID', $this->WebID);
         }
-        $fullcalendar_code = $fullcalendar->render('#calendar', 'get_event.php');
+        $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
+
+        if (isset($_GET['debug']) and $_GET['debug'] == 1) {
+            die(var_export($fullcalendar_code));
+        }
+
         if ($mode == "return") {
             $data['fullcalendar_code'] = $fullcalendar_code;
             $data['main_data']         = $calendar_data;
@@ -73,7 +80,7 @@ class tad_web_calendar
         $this->add_counter($CalendarID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='{$CalendarID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $CalendarID , $CalendarName , $CalendarType , $CalendarDesc , $CalendarDate , $uid , $WebID , $CalendarCount
@@ -120,11 +127,7 @@ class tad_web_calendar
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl;
 
-        if (!$isMyWeb and $MyWebs) {
-            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
-        } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
-        }
+        chk_self_web($this->WebID);
         get_quota($this->WebID);
 
         //抓取預設值
@@ -193,19 +196,21 @@ class tad_web_calendar
         global $xoopsDB, $xoopsUser, $WebOwnerUid;
         $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
 
-        $myts                   = &MyTextSanitizer::getInstance();
-        $_POST['CalendarName']  = $myts->addSlashes($_POST['CalendarName']);
-        $_POST['CalendarType']  = $myts->addSlashes($_POST['CalendarType']);
-        $_POST['CalendarDesc']  = $myts->addSlashes($_POST['CalendarDesc']);
-        $_POST['CalendarCount'] = intval($_POST['CalendarCount']);
-        //$_POST['CateID']        = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $myts          = MyTextSanitizer::getInstance();
+        $CalendarName  = $myts->addSlashes($_POST['CalendarName']);
+        $CalendarType  = $myts->addSlashes($_POST['CalendarType']);
+        $CalendarDesc  = $myts->addSlashes($_POST['CalendarDesc']);
+        $CalendarDate  = $myts->addSlashes($_POST['CalendarDate']);
+        $newCateName   = $myts->addSlashes($_POST['newCateName']);
+        $CalendarCount = intval($_POST['CalendarCount']);
+        $CateID        = intval($_POST['CateID']);
+        $WebID         = intval($_POST['WebID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_calendar") . "
         (`CateID`,`CalendarName`,`CalendarType` , `CalendarDesc` , `CalendarDate` , `uid` , `WebID` , `CalendarCount`)
-        values('0' ,'{$_POST['CalendarName']}' ,'{$_POST['CalendarType']}' , '{$_POST['CalendarDesc']}' , '{$_POST['CalendarDate']}' , '{$uid}' , '{$_POST['WebID']}' , '{$_POST['CalendarCount']}')";
-        $xoopsDB->query($sql) or web_error($sql);
+        values('0' ,'{$CalendarName}' ,'{$CalendarType}' , '{$CalendarDesc}' , '{$CalendarDate}' , '{$uid}' , '{$WebID}' , '{$CalendarCount}')";
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $CalendarID = $xoopsDB->getInsertId();
@@ -219,24 +224,25 @@ class tad_web_calendar
     {
         global $xoopsDB;
 
-        $myts                  = &MyTextSanitizer::getInstance();
-        $_POST['CalendarName'] = $myts->addSlashes($_POST['CalendarName']);
-        $_POST['CalendarType'] = $myts->addSlashes($_POST['CalendarType']);
-        $_POST['CalendarDesc'] = $myts->addSlashes($_POST['CalendarDesc']);
-        //$_POST['CateID']       = intval($_POST['CateID']);
-        $_POST['WebID'] = intval($_POST['WebID']);
+        $myts         = MyTextSanitizer::getInstance();
+        $CalendarName = $myts->addSlashes($_POST['CalendarName']);
+        $CalendarType = $myts->addSlashes($_POST['CalendarType']);
+        $CalendarDesc = $myts->addSlashes($_POST['CalendarDesc']);
+        $CalendarDate = $myts->addSlashes($_POST['CalendarDate']);
+        $newCateName  = $myts->addSlashes($_POST['newCateName']);
+        $CateID       = intval($_POST['CateID']);
 
-        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $anduid = onlyMine();
 
         $sql = "update " . $xoopsDB->prefix("tad_web_calendar") . " set
-         `CalendarName` = '{$_POST['CalendarName']}' ,
-         `CalendarType` = '{$_POST['CalendarType']}' ,
-         `CalendarDesc` = '{$_POST['CalendarDesc']}' ,
-         `CalendarDate` = '{$_POST['CalendarDate']}'
+         `CalendarName` = '{$CalendarName}' ,
+         `CalendarType` = '{$CalendarType}' ,
+         `CalendarDesc` = '{$CalendarDesc}' ,
+         `CalendarDate` = '{$CalendarDate}'
         where CalendarID='$CalendarID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         check_quota($this->WebID);
         return $CalendarID;
@@ -248,7 +254,7 @@ class tad_web_calendar
         global $xoopsDB;
         $anduid = onlyMine();
         $sql    = "delete from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='$CalendarID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
     }
 
@@ -258,7 +264,7 @@ class tad_web_calendar
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select CalendarID,CateID from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($CalendarID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($CalendarID);
             $allCateID[$CateID] = $CateID;
@@ -274,7 +280,7 @@ class tad_web_calendar
     {
         global $xoopsDB;
         $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
+        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -284,7 +290,7 @@ class tad_web_calendar
     {
         global $xoopsDB;
         $sql = "update " . $xoopsDB->prefix("tad_web_calendar") . " set `CalendarCount`=`CalendarCount`+1 where `CalendarID`='{$CalendarID}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_calendar資料
@@ -296,7 +302,7 @@ class tad_web_calendar
         }
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarID='$CalendarID'";
-        $result = $xoopsDB->query($sql) or web_error($sql);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }

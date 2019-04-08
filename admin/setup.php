@@ -1,6 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tad_web_adm_setup.html";
+$xoopsOption['template_main'] = "tad_web_adm_setup.tpl";
 include_once 'header.php';
 include_once "../function.php";
 /*-----------function區--------------*/
@@ -16,7 +16,7 @@ function tad_web_setup_form()
     }
     // die(var_export($plugins));
     $xoopsTpl->assign('plugins', $plugins);
-    $web_plugin_display_arr = '';
+    $web_plugin_display_arr = array();
     $web_setup_show         = get_web_config('web_plugin_display_arr', '0');
     if ($web_setup_show) {
         $web_plugin_display_arr = explode(',', $web_setup_show);
@@ -33,20 +33,20 @@ function save_plugins()
     global $xoopsDB;
     $plugins = get_plugins(0);
     //die(var_export($plugins));
-    $myts = &MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
 
     $i = 1;
 
-    $sql = "delete from " . $xoopsDB->prefix("tad_web_plugins") . " where WebID='0'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_plugins") . " WHERE WebID='0'";
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    $display_plugins = '';
+    $display_plugins = array();
     foreach ($plugins as $plugin) {
         $dirname     = $plugin['dirname'];
         $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
 
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         if ($_POST['plugin_limit'][$dirname] != 'none') {
             save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], 0);
@@ -61,7 +61,6 @@ function save_plugins()
 
     save_web_config('web_plugin_display_arr', implode(',', $display_plugins), 0);
     mk_menu_var_file(0);
-
 }
 
 /*-----------執行動作判斷區----------*/

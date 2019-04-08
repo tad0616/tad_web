@@ -14,14 +14,14 @@ function tad_web_image()
 
     $sql = "select a.ActionName,a.ActionID,b.WebTitle,a.WebID from " . $xoopsDB->prefix("tad_web_action") . " as a join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $and_webid order by rand() limit 0,1";
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     list($ActionName, $ActionID, $WebTitle, $WebID) = $xoopsDB->fetchRow($result);
 
     if (empty($ActionID)) {
         return;
     }
-    $slide_images = "";
+    $slide_images = array();
 
     $block['WebTitle']   = $WebTitle;
     $block['WebID']      = $WebID;
@@ -30,7 +30,8 @@ function tad_web_image()
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
     $tad_web_action_image = new TadUpFiles("tad_web");
-    $subdir               = isset($WebID) ? "/{$WebID}" : "";
+
+    $subdir = isset($WebID) ? "/{$WebID}" : "";
     $tad_web_action_image->set_dir('subdir', "/{$subdir}");
     $tad_web_action_image->set_col("ActionID", $ActionID);
     $photos = $tad_web_action_image->get_file();

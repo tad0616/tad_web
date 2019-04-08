@@ -9,4 +9,4 @@ CREATE TABLE `tad_web_link` (
   `LinkSort` tinyint(3) unsigned NOT NULL default 0 COMMENT '排序',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '發布者',
 PRIMARY KEY (`LinkID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

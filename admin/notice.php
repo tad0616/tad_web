@@ -1,6 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tad_web_adm_notice.html";
+$xoopsOption['template_main'] = "tad_web_adm_notice.tpl";
 include_once 'header.php';
 include_once "../function.php";
 include_once "../class/cate.php";
@@ -109,7 +109,7 @@ function insert_tad_web_notice()
         '{$NoticeWho}',
         '{$NoticeDate}'
     )";
-    $xoopsDB->query($sql) or web_error($sql);
+    $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $NoticeID = $xoopsDB->getInsertId();
@@ -147,7 +147,7 @@ function update_tad_web_notice($NoticeID = '')
        `NoticeWho` = '{$NoticeWho}',
        `NoticeDate` = '{$NoticeDate}'
     where `NoticeID` = '$NoticeID'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     return $NoticeID;
 }
@@ -166,7 +166,7 @@ function delete_tad_web_notice($NoticeID = '')
 
     $sql = "delete from `" . $xoopsDB->prefix("tad_web_notice") . "`
     where `NoticeID` = '{$NoticeID}'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
 }
 
@@ -186,7 +186,7 @@ function show_one_tad_web_notice($NoticeID = '')
     $sql = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "`
     where `NoticeID` = '{$NoticeID}' ";
     $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    or web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate
@@ -227,18 +227,18 @@ function list_tad_web_notice()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "` order by `NoticeTitle`";
+    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_notice") . "` ORDER BY `NoticeTitle`";
 
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10, null, null, $bootstrap);
+    $PageBar = getPageBar($sql, 20, 10, null, null, 3);
     $bar     = $PageBar['bar'];
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
     $result = $xoopsDB->query($sql)
-    or web_error($sql);
+    or web_error($sql, __FILE__, __LINE__);
 
-    $all_content = '';
+    $all_content = array();
     $i           = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate

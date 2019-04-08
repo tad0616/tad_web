@@ -43,7 +43,7 @@ if ($op == "get_reationship") {
         $num         = ($MemNum) ? '(' . $MemNum . ') ' : '';
         $option      = $num . $showMemName . _MD_TCW_ABOUTUS_S . $Reationship;
 
-        $stud .= "<option value='{$MemID}' label='{$showMemName}'>{$option}</option>";
+        $stud .= "<option value='{$MemID}'>{$option}</option>";
     }
 
     die($stud);
@@ -76,7 +76,7 @@ if ($op == "get_reationship") {
         $option      = sprintf(_MD_TCW_ABOUTUS_IM_PARENT, $num . $showMemName);
 
         $show_count = isset($count_arr[$MemID]) ? ' (' . $count_arr[$MemID] . ')' : '';
-        $stud .= "<option value='{$MemID}' label='{$showMemName}'>{$option}{$show_count}</option>";
+        $stud .= "<option value='{$MemID}'>{$option}{$show_count}</option>";
 
     }
     die($stud);

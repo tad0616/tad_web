@@ -13,7 +13,7 @@ $ScheduleID = empty($_REQUEST['ScheduleID']) ? "" : intval($_REQUEST['ScheduleID
 $schedule      = new tad_web_schedule($WebID);
 $schedule_data = $schedule->get_one_data($ScheduleID);
 $schedule_data = $schedule->get_one_data($ScheduleID);
-$content       = "<h1>{$schedule_data['ScheduleName']}</h1>";
+$content       = "<h2>{$schedule_data['ScheduleName']}</h2>";
 $content .= $schedule->get_one_schedule($ScheduleID);
 $html = html5($content, false, false, null, false);
 $html = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $html);

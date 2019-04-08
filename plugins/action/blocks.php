@@ -23,7 +23,7 @@ function action_slide($WebID, $config = array())
 
     $sql = "select ActionName,ActionID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$WebID}' order by rand()";
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     while (list($ActionName, $ActionID) = $xoopsDB->fetchRow($result)) {
         //檢查權限
         $the_power = $power->check_power("read", "ActionID", $ActionID);
@@ -42,6 +42,7 @@ function action_slide($WebID, $config = array())
 
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
     $tad_web_action_image = new TadUpFiles("tad_web");
+
     $tad_web_action_image->set_dir('subdir', "/{$WebID}");
     $tad_web_action_image->set_col("ActionID", $ActionID);
     $photos = $tad_web_action_image->get_file();

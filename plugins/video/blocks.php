@@ -11,7 +11,7 @@ function list_video($WebID, $config = array())
 
     $block         = '';
     $tad_web_video = new tad_web_video($WebID);
-    $block         = $tad_web_video->list_all("", $config['limit'], 'return');
+    $block         = $tad_web_video->list_all("", $config['limit'], 'return', '', $config['mode']);
     return $block;
 }
 
@@ -24,10 +24,10 @@ function random_video($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block = '';
+    $block = array();
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by rand() limit 0,1";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount
@@ -41,7 +41,7 @@ function random_video($WebID, $config = array())
         return;
     }
 
-    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
+    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe title='random_video' class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
     $block['VideoID']   = $VideoID;
     $block['VideoName'] = $VideoName;
     return $block;
@@ -57,9 +57,9 @@ function latest_video($WebID, $config = array())
     if (empty($WebID)) {
         retuen;
     }
-    $block  = '';
+    $block  = array();
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by VideoDate desc , VideoID desc limit 0,1";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount
@@ -73,7 +73,7 @@ function latest_video($WebID, $config = array())
         return;
     }
 
-    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
+    $block['main_data'] = "<div class='embed-responsive embed-responsive-4by3'><iframe title='latest_video' class='embed-responsive-item' src='https://www.youtube.com/embed/{$VideoPlace}?feature=oembed' frameborder='0' allowfullscreen></iframe></div>";
     $block['VideoID']   = $VideoID;
     $block['VideoName'] = $VideoName;
     return $block;

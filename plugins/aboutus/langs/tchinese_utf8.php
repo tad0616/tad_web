@@ -50,7 +50,7 @@ define("_MD_TCW_IMPORT_EXCEL", "匯入%s資料Excel檔");
 define("_MD_TCW_SELECT_TO_EDIT", "點選成員姓名可編輯該成員資料");
 define("_MD_TCW_IMPORT_LINK", "
 <ul>
-  <li><a href='http://120.115.2.90/modules/student_data/' target='_blank'>臺南市老師專用取得成員資料匯入檔</a></li>
+  <li><a href='https://campus-xoops.tn.edu.tw/modules/student_data/' target='_blank'>臺南市老師專用取得成員資料匯入檔</a></li>
   <li><a href='import.xls'>成員資料Excel匯入檔範例</a></li>
   <li style='color:red;'>僅支援 xls 格式（csv、xlsx 均不支援）</li>
 </ul>");
@@ -133,7 +133,6 @@ define('_MD_TCW_ABOUTUS_UPLOAD_NOW', '立即繳交');
 define('_MD_TCW_ABOUTUS_UPLOADED', '已於 %s 繳交');
 define('_MD_TCW_ABOUTUS_UPLOADED_WORKS', '已繳交作品');
 define('_MD_TCW_ABOUTUS_IM_PARENT', '我是「%s」的家長');
-define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', '繳交作品');
 define('_MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED', '本站已關閉家長註冊');
 define('_MD_TCW_ABOUTUS_WRONG_BIRTHDAY', '生日錯誤，請重新輸入生日');
 define('_MD_TCW_ABOUTUS_ENABLE_PARENT_ACCOUNT', '啟動家長帳號通知');
@@ -170,3 +169,16 @@ define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED', '帳號啟動失敗');
 define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED_CONTENT', '<p>您的帳號啟動失敗！請重新註冊或啟動試試。</p>
       <p>若是沒收到信件，也可以<a href="%s">點此重新寄發啟用信</a>。</p>');
 define('_MD_TCW_ABOUTUS_RE_SENDMAIL_TO', '重寄確認信給');
+
+define('_MD_TCW_ABOUTUS_S7_TEXT', '成員姓名是否顯示全名');
+define('_MD_TCW_ABOUTUS_S7_DESC', '班級建議設成「否」，以保護學生個資。若為行政網頁可設為「是」');
+
+define('_MD_TCW_ABOUTUS_EXPORT', '匯出設定');
+define('_MD_TCW_ABOUTUS_SLOT', '小瑪莉');
+define('_MD_TCW_ABOUTUS_START', '再來一次！');
+
+define('_MD_TCW_ABOUTUS_S8_TEXT', '設定欲使用功能');
+define('_MD_TCW_ABOUTUS_S8_DESC', '請將不需要的功能取消');
+define('_MD_TCW_ABOUTUS_ALL_DONT', '都不要');
+
+define('_MD_TCW_STUDENT_NOTE', '若新增或修改班級後，上方圖檔副標題看不到新班級名稱（若是採用系統預設 logo 話），九成九是您的瀏覽器快取在做怪，請按 <kbd>Ctrl</kbd>+<kbd>F5</kbd> 試試。');

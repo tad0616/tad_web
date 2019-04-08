@@ -8,7 +8,7 @@ if (action_onUpdate1_chk()) {
 function action_onUpdate1_chk()
 {
     global $xoopsDB;
-    $sql    = "select count(`ActionKind`) from " . $xoopsDB->prefix("tad_web_action");
+    $sql    = "SELECT count(`ActionKind`) FROM " . $xoopsDB->prefix("tad_web_action");
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return false;
@@ -21,7 +21,7 @@ function action_onUpdate1_go()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_action") . " DROP `ActionKind`";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     return true;
 }

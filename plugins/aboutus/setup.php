@@ -39,7 +39,15 @@ $plugin_setup[$i]['text']    = _MD_TCW_ABOUTUS_S5_TEXT;
 $plugin_setup[$i]['desc']    = _MD_TCW_ABOUTUS_S5_DESC;
 $plugin_setup[$i]['type']    = "checkbox";
 $plugin_setup[$i]['default'] = array('MemNickName', 'MemUnicode', 'MemBirthday', 'MemNum');
-$plugin_setup[$i]['options'] = array(_MD_TCW_ABOUTUS_S5_OPT1 => 'MemNickName', _MD_TCW_ABOUTUS_S5_OPT2 => 'MemUnicode', _MD_TCW_ABOUTUS_S5_OPT3 => 'MemBirthday', _MD_TCW_ABOUTUS_S5_OPT4 => 'MemExpertises', _MD_TCW_ABOUTUS_S5_OPT5 => 'MemNum', _MD_TCW_ABOUTUS_S5_OPT6 => 'MemClassOrgan', _MD_TCW_ABOUTUS_S5_OPT7 => 'AboutMem');
+$plugin_setup[$i]['options'] = array(
+    _MD_TCW_ABOUTUS_S5_OPT1 => 'MemNickName',
+    _MD_TCW_ABOUTUS_S5_OPT2 => 'MemUnicode',
+    _MD_TCW_ABOUTUS_S5_OPT3 => 'MemBirthday',
+    _MD_TCW_ABOUTUS_S5_OPT4 => 'MemExpertises',
+    _MD_TCW_ABOUTUS_S5_OPT5 => 'MemNum',
+    _MD_TCW_ABOUTUS_S5_OPT6 => 'MemClassOrgan',
+    _MD_TCW_ABOUTUS_S5_OPT7 => 'AboutMem'
+);
 
 //是否開放家長功能
 $i++;
@@ -49,3 +57,21 @@ $plugin_setup[$i]['desc']    = _MD_TCW_ABOUTUS_S6_DESC;
 $plugin_setup[$i]['type']    = "radio";
 $plugin_setup[$i]['default'] = '0';
 $plugin_setup[$i]['options'] = array(_YES => '1', _NO => '0');
+
+//成員姓名是否顯示全名
+$i++;
+$plugin_setup[$i]['name']    = "mem_fullname";
+$plugin_setup[$i]['text']    = _MD_TCW_ABOUTUS_S7_TEXT;
+$plugin_setup[$i]['desc']    = _MD_TCW_ABOUTUS_S7_DESC;
+$plugin_setup[$i]['type']    = "radio";
+$plugin_setup[$i]['default'] = '0';
+$plugin_setup[$i]['options'] = array(_YES => '1', _NO => '0');
+
+//欲使用功能設定
+$i++;
+$plugin_setup[$i]['name']    = "mem_function";
+$plugin_setup[$i]['text']    = _MD_TCW_ABOUTUS_S8_TEXT;
+$plugin_setup[$i]['desc']    = _MD_TCW_ABOUTUS_S8_DESC;
+$plugin_setup[$i]['type']    = "checkbox";
+$plugin_setup[$i]['default'] = array('position', 'lotto', 'slot');
+$plugin_setup[$i]['options'] = array(_MD_TCW_ABOUTUS_ALL_DONT => 'all_dont', _MD_TCW_STUDENT_POSITION => 'position', _MD_TCW_ABOUTUS_EXPORT => 'export', _MD_TCW_GET_SOMEONE => 'lotto', _MD_TCW_ABOUTUS_SLOT => 'slot');

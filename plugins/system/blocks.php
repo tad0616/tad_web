@@ -17,9 +17,9 @@ function web_list($WebID, $config = array())
     global $xoopsDB;
     $block['DefWebID'] = $DefWebID = $WebID;
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where WebEnable='1' order by CateID,WebSort";
-    $result = $xoopsDB->query($sql) or web_error($sql);
-    $i      = 0;
+    $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $i = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -100,7 +100,6 @@ function psi($WebID, $config = array())
 //聊天室
 function tlkio($WebID, $config = array())
 {
-
     $block['main_data'] = true;
     $block['config']    = $config;
     $block['WebID']     = $WebID;
@@ -112,16 +111,17 @@ function countdown($WebID, $config = array())
 {
     $block['main_data'] = true;
     $block['config']    = $config;
+    $block['randStr']   = randStr(4);
     return $block;
 }
 
 //相簿崁入
-function flickrit($WebID, $config = array())
-{
-    $block['main_data'] = true;
-    $block['config']    = $config;
-    return $block;
-}
+// function flickrit($WebID, $config = array())
+// {
+//     $block['main_data'] = true;
+//     $block['config']    = $config;
+//     return $block;
+// }
 
 //標籤
 function tags($WebID, $config = array())

@@ -8,7 +8,7 @@ if (!$isMyWeb) {
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
 }
 if (!empty($WebID)) {
-    $xoopsOption['template_main'] = 'tad_web_cate_b3.html';
+    $xoopsOption['template_main'] = 'tad_web_cate.tpl';
 } else {
     header("location: index.php");
     exit;
@@ -66,7 +66,7 @@ function list_all_cate($WebID = "", $ColName = "", $table = "")
     left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID
     left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
     where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$default_class}'";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     while ($all = $xoopsDB->fetchArray($result)) {
         $students[] = $all;
     }
@@ -96,6 +96,8 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
         return;
     }
 
+    $power = new power($WebID);
+
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
     //新增分類
@@ -122,7 +124,15 @@ function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
             case "set_assistant":
                 set_assistant($CateID, $_POST['MemID'][$CateID]);
                 break;
-
+            case "enable":
+                $web_cate->enable_tad_web_cate($CateID, 1);
+                break;
+            case "unable":
+                $web_cate->enable_tad_web_cate($CateID, 0);
+                break;
+            case "power":
+                $power->save_power("CateID", $CateID, 'read', $_POST['power'][$CateID]);
+                break;
         }
     }
 }

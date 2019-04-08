@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$xoopsOption['template_main'] = 'tad_web_tag_b3.html';
+$xoopsOption['template_main'] = 'tad_web_tag.tpl';
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
@@ -18,14 +18,14 @@ function search_tag($WebID = "", $tag = "")
         $enable_arr = explode(',', $web_plugin_enable_arr);
     }
 
-    $data_count = "";
+    $data_count = array();
 
     $plugin_data_total = 0;
     foreach ($enable_arr as $dirname) {
         if (empty($dirname)) {
             continue;
         }
-        $pluginConfig = '';
+        $pluginConfig = array();
         include_once "plugins/{$dirname}/config.php";
         if ($pluginConfig['tag'] !== true) {
             continue;

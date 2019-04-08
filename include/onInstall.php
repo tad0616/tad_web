@@ -1,7 +1,6 @@
 <?php
 function xoops_module_install_tad_web(&$module)
 {
-
     mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web");
     chk_sql();
     add_log('install');
@@ -19,7 +18,7 @@ function chk_sql()
         include XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/config.php";
         if (!empty($pluginConfig['sql'])) {
             foreach ($pluginConfig['sql'] as $sql_name) {
-                $sql    = "select count(*) from " . $xoopsDB->prefix($sql_name);
+                $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix($sql_name);
                 $result = $xoopsDB->query($sql);
                 if (empty($result)) {
                     $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
@@ -27,7 +26,7 @@ function chk_sql()
             }
         }
         $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$pluginConfig['name']}', '{$sort}', '1', '0')";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $sort++;
         $display_plugins[] = $dirname;
     }
@@ -39,14 +38,14 @@ function add_log($status)
 {
     global $xoopsConfig, $xoopsDB;
     include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
-    $modhandler  = &xoops_gethandler('module');
-    $xoopsModule = &$modhandler->getByDirname("tad_web");
+    $modhandler  = xoops_gethandler('module');
+    $xoopsModule = $modhandler->getByDirname("tad_web");
     $version     = $xoopsModule->version();
     if ($status == 'install') {
         $web_amount = 0;
     } else {
-        $sql        = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by WebSort";
-        $result     = $xoopsDB->query($sql) or web_error($sql);
+        $sql        = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
+        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $web_amount = $xoopsDB->getRowsNum($result);
     }
     $sitename      = urlencode($xoopsConfig['sitename']);

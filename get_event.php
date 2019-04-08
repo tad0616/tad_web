@@ -2,14 +2,14 @@
 include_once "header.php";
 
 $WebID = intval($_REQUEST['WebID']);
-$start = empty($_REQUEST['start']) ? date("Y-m-01") : date("Y-m-d", $_REQUEST['start'] / 1000);
-$end   = empty($_REQUEST['end']) ? date("Y-m-t") : date("Y-m-d", $_REQUEST['end'] / 1000);
+$start = empty($_REQUEST['start']) ? date("Y-m-01") : date("Y-m-d", strtotime($_REQUEST['start']));
+$end   = empty($_REQUEST['end']) ? date("Y-m-t") : date("Y-m-d", strtotime($_REQUEST['end']));
 
 if (!isset($xoopsModuleConfig)) {
 
-    $modhandler        = &xoops_gethandler('module');
-    $xoopsModule       = &$modhandler->getByDirname("tad_web");
-    $config_handler    = &xoops_gethandler('config');
+    $modhandler        = xoops_gethandler('module');
+    $xoopsModule       = $modhandler->getByDirname("tad_web");
+    $config_handler    = xoops_gethandler('config');
     $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 }
 
@@ -27,6 +27,7 @@ if ($_REQUEST['CalKind'] == "homework") {
 
     $i = 0;
     //抓取母站行事曆
+    //不是全國版才抓
     if (in_array('all', $cal_cols) or $WebID) {
         $allEvents = get_all_event($start, $end, $WebID);
         foreach ($allEvents as $evens) {
@@ -83,7 +84,7 @@ function get_homework_event($start, $end, $WebID)
         $myEvents[$i]['id']        = $ID;
         $myEvents[$i]['title']     = $Title;
         $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/homework.php?WebID=$WebID&HomeworkID={$ID}";
-        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['start']     = date('Y-m-d', $toCal);
         $myEvents[$i]['allDay']    = true;
         $myEvents[$i]['className'] = "fc-event";
         $myEvents[$i]['color']     = '#D37545';
@@ -109,7 +110,7 @@ function get_news_event($start, $end, $WebID)
         $myEvents[$i]['id']        = $ID;
         $myEvents[$i]['title']     = $Title;
         $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/news.php?WebID=$WebID&NewsID={$ID}";
-        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['start']     = date('Y-m-d', $toCal);
         $myEvents[$i]['allDay']    = true;
         $myEvents[$i]['className'] = "fc-event";
         $myEvents[$i]['color']     = '#639674';
@@ -123,14 +124,17 @@ function get_all_event($start, $end, $WebID)
 {
     global $xoopsDB;
 
-    if ($WebID) {
+    $andWebID = '';
+    if (_IS_EZCLASS) {
+        $andWebID = "and WebID='$WebID'";
+    } elseif ($WebID) {
         $calendar_setup = get_plugin_setup_values($WebID, "calendar");
         if ($calendar_setup['show_global_event'] != '1') {
-            return;
+            $andWebID = "and WebID='$WebID'";
         }
     }
 
-    $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' and CalendarDate <= '$end' and CalendarType='all' order by CalendarDate";
+    $sql    = "select CalendarID,CalendarName,CalendarDate,WebID from " . $xoopsDB->prefix("tad_web_calendar") . " where CalendarDate >= '$start' and CalendarDate <= '$end' and CalendarType='all' $andWebID order by CalendarDate";
     $result = $xoopsDB->queryF($sql) or die($sql);
     $i      = 0;
     while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
@@ -140,7 +144,7 @@ function get_all_event($start, $end, $WebID)
         $myEvents[$i]['id']        = $ID;
         $myEvents[$i]['title']     = $Title;
         $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/calendar.php?WebID=$WebID&CalendarID={$ID}";
-        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['start']     = date('Y-m-d', $toCal);
         $myEvents[$i]['allDay']    = true;
         $myEvents[$i]['className'] = "fc-event";
         $myEvents[$i]['color']     = '#AA1D1D';
@@ -166,7 +170,7 @@ function get_web_event($start, $end, $WebID)
         $myEvents[$i]['id']        = $ID;
         $myEvents[$i]['title']     = $Title;
         $myEvents[$i]['url']       = XOOPS_URL . "/modules/tad_web/calendar.php?WebID=$WebID&CalendarID={$ID}";
-        $myEvents[$i]['start']     = $toCal;
+        $myEvents[$i]['start']     = date('Y-m-d', $toCal);
         $myEvents[$i]['allDay']    = true;
         $myEvents[$i]['className'] = "fc-event";
         $myEvents[$i]['color']     = '#1990EA';

@@ -47,7 +47,7 @@ class power
     public $label_col_md = '2';
     public $menu_col_md  = '4';
 
-    public function power($WebID = "0")
+    public function __construct($WebID = "0")
     {
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
@@ -103,10 +103,10 @@ class power
         $menu = '
         <!--權限設定-->
         <div class="form-group" style="background: #FCECDB;">
-            <label class="col-md-' . $this->label_col_md . ' control-label">
+            <label class="col-sm-' . $this->label_col_md . ' control-label">
               ' . $label . '
             </label>
-            <div class="col-md-' . $this->menu_col_md . '">
+            <div class="col-sm-' . $this->menu_col_md . '">
               <select name="' . $power_name . '" class="form-control">
                 <option value="">' . _MD_TCW_POWER_FOR_ALL . '</option>
                 <option value="users" ' . $select_users . '>' . _MD_TCW_POWER_FOR_USERS . '</option>
@@ -120,13 +120,13 @@ class power
     }
 
     //新增資料到tad_web_power中
-    public function save_power($col_name = "", $col_sn = "", $power_name = "")
+    public function save_power($col_name = "", $col_sn = "", $power_name = "", $power_val = "")
     {
         global $xoopsDB, $xoopsUser;
 
         $myts       = MyTextSanitizer::getInstance();
         $power_name = $myts->addSlashes($power_name);
-        $power_val  = $myts->addSlashes($_REQUEST[$power_name]);
+        $power_val  = empty($power_val) ? $myts->addSlashes($_REQUEST[$power_name]) : $myts->addSlashes($power_val);
 
         $sql = "replace into `" . $xoopsDB->prefix("tad_web_power") . "` (
           `WebID`,
@@ -141,7 +141,7 @@ class power
           '{$power_name}',
           '{$power_val}'
         )";
-        $xoopsDB->query($sql) or web_error($sql);
+        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     }
 
@@ -150,7 +150,7 @@ class power
     {
         global $xoopsDB;
         $sql             = "select power_val from `" . $xoopsDB->prefix("tad_web_power") . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $result          = $xoopsDB->query($sql) or web_error($sql);
+        $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($power_val) = $xoopsDB->fetchRow($result);
         return $power_val;
     }
@@ -161,7 +161,7 @@ class power
         global $xoopsDB;
 
         $sql = "delete from `" . $xoopsDB->prefix("tad_web_power") . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     }
 

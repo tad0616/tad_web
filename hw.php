@@ -1,14 +1,10 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$sql    = "select HomeworkID,HomeworkContent from " . $xoopsDB->prefix("tad_web_homework") . " order by HomeworkID desc limit 0,150";
-$result = $xoopsDB->queryF($sql) or web_error($sql);
+$sql    = "SELECT HomeworkID,HomeworkContent FROM " . $xoopsDB->prefix("tad_web_homework") . " ORDER BY HomeworkID DESC LIMIT 0,150";
+$result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 // $main   = "<table border=1>";
 $r_start = '<table class="table"><tbody><tr>';
-
-// $r2 = '<td><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></td>';
-// $r3 = '<td><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></td>';
-// $r4 = '<td><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></td>';
 
 $r_end = '</td></tr></tbody></table>';
 
@@ -37,28 +33,27 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     $tr_content_body = str_replace('<pre>', '<div class="well">', $tr_content_body);
     $tr_content_body = str_replace('</pre>', '</div>', $tr_content_body);
 
-    $content = '';
     $content = explode('</td><td>', $tr_content_body);
 
     if ($today_homework and $bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-3"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[2] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-3"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[2] . '</div>';
     } elseif ($today_homework and !$bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
     } elseif ($today_homework and $bring and !$teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
     } elseif (!$today_homework and $bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-md-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
     } elseif ($today_homework and !$bring and !$teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="http://class.tn.edu.tw/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
     } elseif (!$today_homework and $bring and !$teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="http://class.tn.edu.tw/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
     } elseif (!$today_homework and !$bring and $teacher_say) {
-        $data = '<div class="col-md-4 col-sm-4 span4 col-1"><p><img alt="老師的叮嚀" src="http://class.tn.edu.tw/modules/tad_web/images/teacher_say.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[0] . '</div>';
     }
 
     $tr_content_title = nl2br(htmlspecialchars($tr_content_title));
@@ -68,7 +63,6 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
         $other = "<p>&nbsp;</p>";
     }
     $main .= "<div class=\"row three-col\">{$data}</div>{$other}";
-
 }
 // $main .= "</table>";
 echo html5($main);

@@ -11,7 +11,7 @@ function video_search($WebID, $queryarray, $limit = 10)
     $date_col    = 'VideoDate';
     $content_col = 'VideoDesc';
 
-    $myts = &MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
         $arr[$k] = $myts->addSlashes($v);
     }

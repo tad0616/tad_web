@@ -23,6 +23,8 @@ if ($op == "save_sort") {
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebOwnerUid` ='{$WebOwnerUid}', `WebOwner`='$uid_name' where `WebID`='{$WebID}'";
 
+    unset($_SESSION['tad_web'][$WebID]);
+
     $xoopsDB->queryF($sql) or die(_MA_TCW_UPDATE_FAIL . " (" . date("Y-m-d H:i:s") . ")");
     echo $uid_name . " ($uname)";
 }

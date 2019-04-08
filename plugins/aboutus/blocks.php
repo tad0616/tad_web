@@ -9,13 +9,13 @@ function list_web_adm($WebID, $config = array())
     }
 
     $sql    = "SELECT `WebOwnerUid` FROM `" . $xoopsDB->prefix("tad_web") . "` WHERE `WebID` = '$WebID'";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         $admin[$uid] = $uid;
     }
 
     $sql    = "SELECT `uid` FROM `" . $xoopsDB->prefix("tad_web_roles") . "` WHERE `WebID` = '$WebID' and `role` = 'admin'";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         $admin[$uid] = $uid;
     }
@@ -23,7 +23,7 @@ function list_web_adm($WebID, $config = array())
     $admin_str = implode("','", $admin);
 
     $sql    = "SELECT `uid`,`name`,`uname`,`email` FROM `" . $xoopsDB->prefix("users") . "` WHERE `uid` in('{$admin_str}')";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $i      = 0;
     while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result)) {
         $admin_arr[$i]['uid']   = $uid;
@@ -68,7 +68,7 @@ function list_web_student($WebID, $config = array())
     $block['ys'] = $ys;
 
     $sql    = "select a.*,b.* from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $i      = 0;
 
     $class_total = $class_boy = $class_girl = 0;

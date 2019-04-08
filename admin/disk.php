@@ -1,6 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tad_web_adm_disk.html";
+$xoopsOption['template_main'] = "tad_web_adm_disk.tpl";
 include_once 'header.php';
 include_once "../function.php";
 include_once "../class/cate.php";
@@ -11,7 +11,7 @@ function list_all_web($defCateID = '')
 {
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
-    $sql = "select * from " . $xoopsDB->prefix("tad_web") . "  order by used_size desc";
+    $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . "  ORDER BY used_size DESC";
 
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
     $PageBar = getPageBar($sql, 50, 10);
@@ -19,21 +19,20 @@ function list_all_web($defCateID = '')
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result            = $xoopsDB->query($sql) or web_error($sql);
+    $result            = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $_SESSION['quota'] = '';
-    $data              = "";
+    $data              = array();
     $dir               = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
-        $WebID = $all['WebID'];
-
-        $dir_size = get_dir_size("{$dir}{$WebID}/");
+        $WebID    = $all['WebID'];
+        $dir_size = $all['used_size'];
+        // $dir_size = get_dir_size("{$dir}{$WebID}/");
 
         $data[$WebID] = $all;
         $size         = size2mb($dir_size);
-        save_web_config("used_size", $size, $WebID);
 
         $space_quota      = get_web_config("space_quota", $WebID);
         $user_space_quota = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : intval($space_quota);
@@ -57,14 +56,23 @@ function list_all_web($defCateID = '')
     }
 
     //sort($space);
-    arsort($space);
+    // arsort($space);
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('data', $data);
     $xoopsTpl->assign('space', $space);
     $xoopsTpl->assign('free_space', get_free_space());
-    $xoopsTpl->assign('total_space', roundsize(get_dir_size($dir)));
-    $xoopsTpl->assign('user_space_quota', $xoopsModuleConfig['user_space_quota']);
 
+    $xoopsTpl->assign('total_space', roundsize(get_all_dir_size()));
+    $xoopsTpl->assign('user_space_quota', $xoopsModuleConfig['user_space_quota']);
+}
+
+function get_all_dir_size()
+{
+    global $xoopsDB;
+    $sql             = "SELECT sum(`used_size`) FROM " . $xoopsDB->prefix("tad_web") . " ";
+    $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    list($used_size) = $xoopsDB->fetchRow($result);
+    return $used_size;
 }
 
 //目前硬碟空間
@@ -108,7 +116,6 @@ function dirToJson($dir, $i = 1, $j = 0)
     foreach ($cdir as $key => $value) {
         if (!in_array($value, array(".", ".."))) {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
-
                 $data .= "{ id:{$i}, pId:{$j}, name:'{$dir}/{$value}', url:'{$url}', target:'_self', open:'true'}, \n";
                 $data .= dirToJson($dir . DIRECTORY_SEPARATOR . $value, $i, $i);
             } else {
@@ -143,7 +150,6 @@ function dirToJson($dir, $i = 1, $j = 0)
 
 function dirToArray($dir)
 {
-
     $result = array();
     $i      = 0;
 
@@ -176,14 +182,13 @@ function dirToArray($dir)
 
 function save_disk_setup()
 {
-
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
     foreach ($_POST['space_quota'] as $WebID => $user_space_quota) {
         $space_quota = ($user_space_quota == $xoopsModuleConfig['user_space_quota']) ? 'default' : intval($user_space_quota);
         save_web_config("space_quota", $space_quota, $WebID);
     }
-
 }
+
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op     = system_CleanVars($_REQUEST, 'op', '', 'string');

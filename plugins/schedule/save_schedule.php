@@ -1,11 +1,13 @@
 <?php
 include_once "../../../../mainfile.php";
 include_once "../../function.php";
-$op         = empty($_POST['op']) ? "" : $_POST['op'];
-$WebID      = empty($_POST['WebID']) ? "" : intval($_POST['WebID']);
-$ScheduleID = empty($_POST['ScheduleID']) ? "" : intval($_POST['ScheduleID']);
-$tag        = empty($_POST['tag']) ? "" : $_POST['tag'];
-$Subject    = empty($_POST['Subject']) ? "" : $_POST['Subject'];
+
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op         = system_CleanVars($_REQUEST, 'op', '', 'string');
+$WebID      = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$ScheduleID = system_CleanVars($_REQUEST, 'ScheduleID', 0, 'int');
+$tag        = system_CleanVars($_REQUEST, 'tag', '', 'string');
+$Subject    = system_CleanVars($_REQUEST, 'Subject', '', 'string');
 
 list($SDWeek, $SDSort) = explode('-', $tag);
 

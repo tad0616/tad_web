@@ -7,7 +7,7 @@ $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 $sort = 1;
 
-$display_plugins = "";
+$display_plugins = array();
 if ($op == 'plugin') {
     foreach ($_POST['tr'] as $dirname) {
         $sql = "update " . $xoopsDB->prefix("tad_web_plugins") . " set `PluginSort`='{$sort}' where `PluginDirname`='{$dirname}' and WebID='{$WebID}'";

@@ -50,7 +50,7 @@ define('_MD_TCW_IMPORT_EXCEL', 'Import %s data as Excel file');
 define('_MD_TCW_SELECT_TO_EDIT', 'Click on the name of the member to edit the Student Information');
 define('_MD_TCW_IMPORT_LINK', "
 <ul>
-  <li> <a href='http://120.115.2.90/modules/student_data/' target='_blank'> Tainan dedicated teacher member data import files made </a> </li>
+  <li> <a href='https://campus-xoops.tn.edu.tw/modules/student_data/' target='_blank'> Tainan dedicated teacher member data import files made </a> </li>
    < li> <a href = 'import.xls' > member data import Excel files example </a > </li >
    <li style = 'color: red;' > only supports xls format(csv, xlsx not support) </li >
 </ul > ");
@@ -171,3 +171,16 @@ define('_MD_TCW_ABOUTUS_PARENT_ENABLE_FAILED_CONTENT', '<p>Your account fails to
       <p>If it did not receive a letter, you can also <a href="%s">click here to re-send a letter</a>.</p>');
 
 define('_MD_TCW_ABOUTUS_RE_SENDMAIL_TO', 'Re-send confirmation letter to ');
+
+define('_MD_TCW_ABOUTUS_S7_TEXT', 'Do you want to display the full name?');
+define('_MD_TCW_ABOUTUS_S7_DESC', 'Class is recommended set to "No" in order to protect students\' personal information.');
+
+define('_MD_TCW_ABOUTUS_EXPORT', 'Export config');
+define('_MD_TCW_ABOUTUS_SLOT', 'Slot');
+define('_MD_TCW_ABOUTUS_START', 'Again');
+
+define('_MD_TCW_ABOUTUS_S8_TEXT', 'Set the function to be used');
+define('_MD_TCW_ABOUTUS_S8_DESC', 'Uncheck the features you do not want');
+define('_MD_TCW_ABOUTUS_ALL_DONT', 'All do not');
+
+define('_MD_TCW_STUDENT_NOTE', 'If you add or modify the class, the top of the file subtitle can not see the name of the new class (if the system default logo), 90% of your browser cache is doing, please press <kbd> Ctrl </ kbd> + <kbd> F5 </ kbd> try.');

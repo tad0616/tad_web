@@ -15,3 +15,5 @@ define("_MD_TCW_CALENDAR_TYPE_GLOBAL", "This event is to be display to other sub
 define("_MD_TCW_CALENDAR_BLOCK_LIST", "Calendar");
 define("_MD_TCW_CALENDAR_S1_TEXT", "Do you want to display global event?");
 define("_MD_TCW_CALENDAR_S1_DESC", '"Global Events" refers to check other sites for the event "global event" when new event.');
+define("_MD_TCW_CALENDAR_S2_TEXT", "The day that each week begins.");
+define("_MD_TCW_CALENDAR_S2_DESC", "If no, it will start on a Sunday.");

@@ -12,13 +12,9 @@ if ($WebID) {
 }
 
 if ($show_plugin) {
-    if (!empty($WebID)) {
-        $xoopsOption['template_main'] = 'tad_web_tpl_b3.html';
-    } else {
-        $xoopsOption['template_main'] = set_bootstrap('tad_web_tpl.html');
-    }
+    $xoopsOption['template_main'] = 'tad_web_tpl.tpl';
 } else {
-    $xoopsOption['template_main'] = 'tad_web_unable_b3.html';
+    $xoopsOption['template_main'] = 'tad_web_unable.tpl';
 }
 
 include_once "plugins/{$plugin}/class.php";

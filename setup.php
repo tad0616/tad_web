@@ -2,7 +2,7 @@
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
-    $xoopsOption['template_main'] = 'tad_web_plugin_setup_b3.html';
+    $xoopsOption['template_main'] = 'tad_web_plugin_setup.tpl';
 } else {
     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
 }
@@ -18,11 +18,11 @@ function plugin_setup($WebID, $plugin)
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=setup", 3, _MD_TCW_AUTO_TO_HOME);
     } elseif (!$xoopsUser or empty($WebID) or empty($MyWebs)) {
-        redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
     }
 
-    $myts        = &MyTextSanitizer::getInstance();
-    $pluginSetup = '';
+    $myts        = MyTextSanitizer::getInstance();
+    $pluginSetup = array();
     $setup_file  = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
     if (file_exists($setup_file)) {
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
@@ -79,7 +79,7 @@ function save_plugin_setup($WebID = "", $plugin = "")
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
 
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         foreach ($plugin_setup as $k => $setup) {
             $name = $setup['name'];
             if ($setup['type'] == "checkbox") {
@@ -90,7 +90,7 @@ function save_plugin_setup($WebID = "", $plugin = "")
             }
 
             $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins_setup") . " (`WebID`, `plugin`, `name`, `type`, `value`) values($WebID, '{$plugin}','{$setup['name']}' , '{$setup['type']}' , '{$value}')";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
     }
 }
@@ -98,10 +98,34 @@ function save_plugin_setup($WebID = "", $plugin = "")
 function TadUpFiles_plugin_setup($WebID, $plugin)
 {
     global $xoopsConfig;
+
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
     $TadUpFiles_plugin_setup = new TadUpFiles("tad_web", "/{$WebID}/{$plugin}", null, "", "/thumbs");
+
     $TadUpFiles_plugin_setup->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
     return $TadUpFiles_plugin_setup;
+}
+
+//該外掛區塊設定
+function plugin_block_setup($WebID, $plugin)
+{
+    global $xoopsTpl, $BlockPositionTitle;
+    // $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
+    // if (file_exists($config_blocks_file)) {
+    //     include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+    //     include $config_blocks_file;
+
+    //     $xoopsTpl->assign('plugin_blocks', $blockConfig[$plugin]);
+    // }
+    $web_install_blocks = get_web_blocks($WebID, $plugin, null);
+    $xoopsTpl->assign('web_install_blocks', $web_install_blocks);
+    $xoopsTpl->assign('BlockPositionTitle', $BlockPositionTitle);
+    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php")) {
+        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+    }
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
+    $fancybox = new fancybox('.edit_block', '640px');
+    $fancybox->render(false);
 }
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -123,6 +147,8 @@ switch ($op) {
     //預設動作
     default:
         plugin_setup($WebID, $plugin);
+        plugin_block_setup($WebID, $plugin);
+
         break;
 
 }

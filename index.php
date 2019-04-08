@@ -1,11 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-if (!empty($WebID)) {
-    $xoopsOption['template_main'] = 'tad_web_index_b3.html';
-} else {
-    $xoopsOption['template_main'] = set_bootstrap('tad_web_index.html');
-}
+$xoopsOption['template_main'] = 'tad_web_index.tpl';
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
@@ -36,6 +32,7 @@ function ClassHome($WebID = "")
     }
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
+    $_SESSION['tad_web'][$WebID]['WebCounter']++;
 
     $xoopsTpl->assign('MyWebs', $MyWebs);
     $xoopsTpl->assign('plugin_data_total', $plugin_data_total);
@@ -58,7 +55,7 @@ function list_all_class()
     $xoopsTpl->assign('show_arr', $show_arr);
     // $xoopsTpl->assign('display_mode', 'index');
     define('_DISPLAY_MODE', 'index');
-    $data_count = "";
+    $data_count = array();
 
     foreach ($show_arr as $dirname) {
         if (empty($dirname)) {
@@ -80,7 +77,6 @@ function view_notice($NoticeID = "")
     $xoopsTpl->assign('Notice', get_tad_web_notice($NoticeID));
     $xoopsTpl->assign('theme_display_mode', 'blank');
     $xoopsTpl->assign('blank_kind', 'content');
-
 
 }
 

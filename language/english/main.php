@@ -18,7 +18,7 @@ define("_MD_TCW_LOGO_TOOLS", "Logo");
 define("_MD_TCW_BG_TOOLS", "Background");
 define("_MD_TCW_COLOR_TOOLS", "Color");
 define("_MD_TCW_BLOCK_TOOLS", "Blocks");
-define("_MD_TCW_BLOCK_TITLE", "Do you want to display the title block?");
+define("_MD_TCW_BLOCK_TITLE", "Block title");
 define("_MD_TCW_BLOCK_SHOW_TITLE", "Does display block title?");
 define("_MD_TCW_BLOCK_ENABLE", "Does enable this block?");
 define("_MD_TCW_DATA_NOT_EXIST", "This information does not exist.");
@@ -90,6 +90,8 @@ define("_MD_TCW_SELECT_PLUGIN_CATE", "Select %s Category");
 define("_MD_TCW_CATE_TOOLS", "Category Tools");
 define("_MD_TCW_DEL_CATE_MOVE_TO", "Delete category and move files to ");
 define("_MD_TCW_DEL_CATE_ALL", "Delete category and all files.");
+define("_MD_TCW_UNABLE_CATE", "Unable category");
+define("_MD_TCW_ENABLE_CATE", "Enable category");
 define("_MD_TCW_CATE_NAME", "Category Name");
 define("_MD_TCW_CATE_NEW_NAME", "New name or new category");
 define("_MD_TCW_CATE_ACT", "Do something...");
@@ -98,6 +100,7 @@ define("_MD_TCW_CATE_NONE", "No any category");
 define("_MD_TCW_CATE_MODIFY", "Rename to ");
 define("_MD_TCW_DEL_CATE_ALL_ALERT", "I'm sure I want to delete the entire category as well as all the archives.");
 define("_MD_TCW_OTHER_CLASS_SETUP", "My Other website url:");
+define("_MD_TCW_CATE_POWER", "Category permission");
 
 define("_MD_TCW_CATE_PLUGIN_ENABLE", "Enable");
 define("_MD_TCW_CATE_PLUGIN_TITLE", "Title");
@@ -161,7 +164,7 @@ define("_MD_TCW_BOTTOM_LEFT_BLOCK", "Bottom left blocks");
 define("_MD_TCW_BOTTOM_RIGHT_BLOCK", "Bottom right blocks");
 define("_MD_TCW_UNINSTALL_BLOCK", "Uninstall blocks");
 define("_MD_TCW_NO_SPACE", "You have used %s MB of hard disk space has reached the upper limit of  %s MB, can not add data.");
-define("_MD_TCW_MENU", "Menu");
+define("_MD_TCW_TO_MENU", "Menu");
 define("_MD_TCW_USE_BLOCK_SITE", "Currently there are %s sites use this block");
 define("_MD_TCW_SIDE_BG_COLOR", "Side background color");
 
@@ -247,3 +250,12 @@ define('_MD_TCW_WEB_OPENID_SETUP', 'OpenID Setup');
 
 define('_MD_TCW_CATE_ASSISTANT', 'Assistant');
 define('_MD_TCW_CATE_SET_ASSISTANT', 'Setup an assistant');
+
+define('_MD_TCW_CATE_ENABLED', 'Enable');
+define('_MD_TCW_CATE_UNABLED', 'Unable');
+define('_MD_TCW_CATE_DATA_AMOUNT1', '( ');
+define('_MD_TCW_CATE_DATA_AMOUNT2', ' )');
+define('_MD_TCW_BLOCK_EMPTY', 'Empty Block');
+define('_MD_TCW_BLOCK_DEMO', 'Block Demo');
+
+define('_MD_TCW_UPDATE_MY_NAME', 'Admin Name');
