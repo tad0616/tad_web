@@ -80,7 +80,7 @@ class tad_web_schedule
                 $$k = $v;
             }
 
-            $main_data[$i]            = $all;
+            $main_data[$i]                = $all;
             $main_data[$i]['id']      = $ScheduleID;
             $main_data[$i]['id_name'] = 'ScheduleID';
             $main_data[$i]['title']   = $ScheduleName;
@@ -128,7 +128,7 @@ class tad_web_schedule
             return;
         }
 
-        $ScheduleID = intval($ScheduleID);
+        $ScheduleID = (int)$ScheduleID;
         $this->add_counter($ScheduleID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='{$ScheduleID}'";
@@ -300,11 +300,18 @@ class tad_web_schedule
         }
 
         $myts                     = MyTextSanitizer::getInstance();
+<<<<<<< HEAD
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $CateID          = intval($_POST['CateID']);
         $WebID           = intval($_POST['WebID']);
+=======
+        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
+        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
+        $_POST['CateID']          = (int)$_POST['CateID'];
+        $_POST['WebID']           = (int)$_POST['WebID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
         $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
@@ -327,11 +334,18 @@ class tad_web_schedule
         global $xoopsDB;
 
         $myts                     = MyTextSanitizer::getInstance();
+<<<<<<< HEAD
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $CateID          = intval($_POST['CateID']);
         $WebID           = intval($_POST['WebID']);
+=======
+        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
+        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
+        $_POST['CateID']          = (int)$_POST['CateID'];
+        $_POST['WebID']           = (int)$_POST['WebID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
         $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
@@ -436,10 +450,10 @@ class tad_web_schedule
         global $xoopsDB, $xoopsModuleConfig;
         if (!isset($xoopsModuleConfig)) {
 
-            $modhandler        = xoops_gethandler('module');
+            $modhandler        = xoops_getHandler('module');
             $xoopsModule       = $modhandler->getByDirname("tad_web");
-            $config_handler    = xoops_gethandler('config');
-            $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+            $config_handler    = xoops_getHandler('config');
+            $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
         }
 
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";

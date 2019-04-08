@@ -8,7 +8,7 @@ function tad_web_image()
     if (empty($_GET['WebID'])) {
         $where_webid = "";
     } else {
-        $WebID     = intval($_GET['WebID']);
+        $WebID     = (int)$_GET['WebID'];
         $and_webid = "and a.WebID='{$WebID}'  ";
     }
 

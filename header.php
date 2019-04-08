@@ -1,7 +1,7 @@
 <?php
 include_once "../../mainfile.php";
 //務必要在function.php之前，因為function.php會用到$WebID。
-$WebID = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
+$WebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
 include_once "function.php";
 
 define('_EZCLASS', 'https://class.tn.edu.tw');
