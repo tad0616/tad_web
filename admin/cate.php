@@ -77,7 +77,6 @@ function save_tad_web_cate()
 
     $myts = MyTextSanitizer::getInstance();
 
-<<<<<<< HEAD
     $CateID      = (int) $_POST['CateID'];
     $WebID       = (int) $_POST['WebID'];
     $CateName    = $myts->addSlashes($_POST['CateName']);
@@ -86,16 +85,7 @@ function save_tad_web_cate()
     $CateSort    = (int) $_POST['CateSort'];
     $CateEnable  = (int) $_POST['CateEnable'];
     $CateCounter = (int) $_POST['CateCounter'];
-=======
-    $CateID      = (int)$_POST['CateID'];
-    $WebID       = $_POST['WebID'];
-    $CateName    = $myts->addSlashes($_POST['CateName']);
-    $ColName     = $myts->addSlashes($_POST['ColName']);
-    $ColSN       = $myts->addSlashes($_POST['ColSN']);
-    $CateSort    = (int)$_POST['CateSort'];
-    $CateEnable  = (int)$_POST['CateEnable'];
-    $CateCounter = (int)$_POST['CateCounter'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+
 
     $sql = "insert into `" . $xoopsDB->prefix("tad_web_cate") . "` (
         `WebID`,
