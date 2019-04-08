@@ -24,7 +24,7 @@ function list_all_web($defCateID = '')
     $data              = array();
     $dir               = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
-    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : intval($xoopsModuleConfig['user_space_quota']);
+    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
         $WebID    = $all['WebID'];
@@ -35,7 +35,7 @@ function list_all_web($defCateID = '')
         $size         = size2mb($dir_size);
 
         $space_quota      = get_web_config("space_quota", $WebID);
-        $user_space_quota = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : intval($space_quota);
+        $user_space_quota = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : (int)$space_quota;
 
         $data[$WebID]['space_quota']     = $user_space_quota;
         $data[$WebID]['disk_used_space'] = $size;
@@ -184,7 +184,7 @@ function save_disk_setup()
 {
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
     foreach ($_POST['space_quota'] as $WebID => $user_space_quota) {
-        $space_quota = ($user_space_quota == $xoopsModuleConfig['user_space_quota']) ? 'default' : intval($user_space_quota);
+        $space_quota = ($user_space_quota == $xoopsModuleConfig['user_space_quota']) ? 'default' : (int)$user_space_quota;
         save_web_config("space_quota", $space_quota, $WebID);
     }
 }

@@ -17,9 +17,12 @@
  * @version      $Id $
  **/
 
-echo "<div align=\"center\"><a href=\"http://www.xoops.org\" target=\"_blank\"><img src=\"../images/admin/xoopsmicrobutton.gif\" alt=\"XOOPS\" title=\"XOOPS\"></a></div>";
-echo "<div class='center smallsmall italic pad5'><strong>" . $xoopsModule->getVar("name") . "</strong> is maintained by the <a class='tooltip' rel='external' href='http://www.xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>";
+echo "<div align=\"center\"><a href=\"https://xoops.org\" target=\"_blank\"><img src=\"../images/admin/xoopsmicrobutton.gif\" alt=\"XOOPS\" title=\"XOOPS\"></a></div>";
+echo "<div class='center smallsmall italic pad5'><strong>" . $xoopsModule->getVar("name") . "</strong> is maintained by the <a class='tooltip' rel='external' href='https://xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>";
+<<<<<<< HEAD
 
 $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
+=======
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
 xoops_cp_footer();

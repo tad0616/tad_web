@@ -28,7 +28,7 @@ $MyWebs     = array();
 $isMyWeb    = false;
 if ($xoopsUser) {
     if (!isset($xoopsModule)) {
-        $modhandler  = xoops_gethandler('module');
+        $modhandler  = xoops_getHandler('module');
         $xoopsModule = $modhandler->getByDirname("tad_web");
     }
     $module_id = $xoopsModule->getVar('mid');
@@ -77,13 +77,13 @@ function get_dir_blocks($mode = '')
         $Config = get_json_file($dir_blocks_file);
     } else {
         $Config  = array();
-        $plugins = get_dir_plugins();
+    $plugins = get_dir_plugins();
 
-        foreach ($plugins as $plugin) {
-            $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
-            if (file_exists($config_blocks_file)) {
-                include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
-                include $config_blocks_file;
+    foreach ($plugins as $plugin) {
+        $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
+        if (file_exists($config_blocks_file)) {
+            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+            include $config_blocks_file;
                 $Config[$plugin] = $blocksArr;
                 $blocksArr       = array();
             } else {
@@ -109,10 +109,10 @@ function put_json_file($file, $array)
             }
         });
         $json = urldecode(json_encode($array));
-    }
+        }
 
     file_put_contents($file, $json);
-}
+    }
 
 //讀出 json 設定檔陣列
 function get_json_file($file)
@@ -126,7 +126,7 @@ function get_all_blocks($value = 'title')
 {
     global $xoopsDB, $isAdmin;
 
-    $myts         = MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     $block_option = array();
     //來自plugin的區塊
     $allBlockConfig = get_dir_blocks();
@@ -274,8 +274,8 @@ function get_web_all_config($WebID = "")
         return;
     }
     if (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php") or file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2/theme_config.php")) {
-        if (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php")) {
-            include XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php";
+    if (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php")) {
+        include XOOPS_ROOT_PATH . "/themes/for_tad_web_theme/theme_config.php";
         } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2/theme_config.php")) {
             include XOOPS_ROOT_PATH . "/themes/for_tad_web_theme_2/theme_config.php";
 
@@ -374,23 +374,23 @@ function get_dir_plugins($mode = '')
         $plugins = get_json_file($dir_plugins_file);
     } else {
 
-        $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
-        if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
-                while (($file = readdir($dh)) !== false) {
-                    if (filetype($dir . $file) == "dir") {
-                        if (substr($file, 0, 1) == '.') {
-                            continue;
-                        }
-                        if (!empty($file)) {
-                            $plugins[] = $file;
-                        }
+    $dir = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
+    if (is_dir($dir)) {
+        if ($dh = opendir($dir)) {
+            while (($file = readdir($dh)) !== false) {
+                if (filetype($dir . $file) == "dir") {
+                    if (substr($file, 0, 1) == '.') {
+                        continue;
+                    }
+                    if (!empty($file)) {
+                        $plugins[] = $file;
                     }
                 }
-                closedir($dh);
             }
+            closedir($dh);
         }
-        sort($plugins);
+    }
+    sort($plugins);
 
         put_json_file($dir_plugins_file, $plugins);
 
@@ -722,7 +722,11 @@ function get_tad_web($WebID = "", $enable = false)
 
         $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID' {$andEnable}";
 
+<<<<<<< HEAD
         $result                      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+=======
+    $result = $xoopsDB->query($sql) or web_error($sql);
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
         $data                        = $xoopsDB->fetchArray($result);
         $_SESSION['tad_web'][$WebID] = $data;
 
@@ -1343,13 +1347,19 @@ function check_quota($WebID = "")
 //檢查已使用空間
 function get_quota($WebID = "")
 {
+<<<<<<< HEAD
     global $xoopsModuleConfig, $Web;
     $Web              = get_tad_web($WebID);
     $defalt_used_size = round($Web['used_size'] / (1024 * 1024), 2);
     // $size               = get_web_config("used_size", $WebID);
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : intval($xoopsModuleConfig['user_space_quota']);
+=======
+    global $xoopsModuleConfig;
+    $size               = get_web_config("used_size", $WebID);
+    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
     $space_quota        = get_web_config("space_quota", $WebID);
-    $user_space_quota   = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : intval($space_quota);
+    $user_space_quota   = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : (int)$space_quota;
 
     if ($defalt_used_size >= $user_space_quota) {
         redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $size, $user_space_quota));
@@ -1538,7 +1548,7 @@ function update_last_accessed($WebID = "")
 function get_article_content($content, $page = 1)
 {
 
-    $page = $page ? intval($page) :
+    $page = $page ? (int)$page :
 
     $article = array('info' => array(), 'pages' => 1);
 
@@ -1604,8 +1614,8 @@ function get_sys_openid()
 {
     global $xoopsConfig;
     $auth_method         = array();
-    $modhandler          = xoops_gethandler('module');
-    $config_handler      = xoops_gethandler('config');
+    $modhandler          = xoops_getHandler('module');
+    $config_handler      = xoops_getHandler('config');
     $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
     if ($TadLoginXoopsModule) {
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
@@ -1618,7 +1628,7 @@ function get_sys_openid()
         //     $tad_login['google'] = google_login('return');
         // }
 
-        $config_handler = xoops_gethandler('config');
+        $config_handler = xoops_getHandler('config');
         $modConfig      = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method = $modConfig['auth_method'];

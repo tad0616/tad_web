@@ -124,7 +124,7 @@ switch ($op) {
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
         // clear entry from online users table
         if (is_object($xoopsUser)) {
-            $online_handler = xoops_gethandler('online');
+            $online_handler = xoops_getHandler('online');
             $online_handler->destroy($xoopsUser->getVar('uid'));
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
@@ -209,7 +209,7 @@ switch ($op) {
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
         // clear entry from online users table
         if (is_object($xoopsUser)) {
-            $online_handler = xoops_gethandler('online');
+            $online_handler = xoops_getHandler('online');
             $online_handler->destroy($xoopsUser->getVar('uid'));
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");

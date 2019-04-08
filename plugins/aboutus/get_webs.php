@@ -8,12 +8,12 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/FooTable.php")) {
     $FooTableJS = $FooTable->render();
 }
 
-$modhandler        = xoops_gethandler('module');
+$modhandler        = xoops_getHandler('module');
 $xoopsModule       = $modhandler->getByDirname("tad_web");
-$config_handler    = xoops_gethandler('config');
-$xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+$config_handler    = xoops_getHandler('config');
+$xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
-$CateID = intval($_GET['CateID']);
+$CateID = (int)$_GET['CateID'];
 $today  = date("Y-m-d");
 $now    = date("Y-m-d H:i:s");
 //我的班級ID（陣列）
@@ -28,8 +28,13 @@ while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
 }
 
 //找出各班功課表
+<<<<<<< HEAD
 $sql    = "SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM " . $xoopsDB->prefix("tad_web_schedule") . " WHERE `ScheduleDisplay` = '1'";
 $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+=======
+$sql = "SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM " . $xoopsDB->prefix("tad_web_schedule") . " WHERE `ScheduleDisplay` = '1'";
+$result = $xoopsDB->query($sql) or web_error($sql);
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule[$WebID]       = $ScheduleID;
     $schedule_title[$WebID] = $ScheduleName;

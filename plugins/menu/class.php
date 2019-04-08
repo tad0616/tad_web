@@ -12,7 +12,7 @@ class tad_web_menu
         $this->web_cate = new web_cate($WebID, "menu", "tad_web_menu");
         $this->power    = new power($WebID);
         // $this->tags     = new tags($WebID);
-        $this->setup = get_plugin_setup_values($WebID, "menu");
+        $this->setup    = get_plugin_setup_values($WebID, "menu");
     }
 
     //列出所有tad_web_menu資料內容
@@ -107,7 +107,7 @@ class tad_web_menu
             }
 
             $all['isMyWeb']           = $isMyWeb;
-            $main_data[$i]            = $all;
+            $main_data[$i] = $all;
             $main_data[$i]['id']      = $MenuID;
             $main_data[$i]['id_name'] = 'MenuID';
             $main_data[$i]['title']   = $MenuTitle;
@@ -163,8 +163,8 @@ class tad_web_menu
     //以流水號秀出某筆tad_web_menu資料內容
     public function show_one($MenuID = "")
     {
-        return;
-    }
+            return;
+        }
 
     //tad_web_menu編輯表單
     public function edit_form($MenuID = "")
@@ -290,19 +290,19 @@ class tad_web_menu
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
 
-        $myts          = MyTextSanitizer::getInstance();
+        $myts               = MyTextSanitizer::getInstance();
         $MenuTitle     = $myts->addSlashes($_POST['MenuTitle']);
         $Plugin        = $myts->addSlashes($_POST['Plugin']);
-        $PluginCate    = intval($_POST['PluginCate']);
+        $PluginCate    = (int)$_POST['PluginCate'];
         $PluginContent = $myts->addSlashes($_POST['PluginContent']);
         $Link          = $myts->addSlashes($_POST['Link']);
         $Target        = $myts->addSlashes($_POST['Target']);
         $Icon          = $myts->addSlashes($_POST['Icon']);
         $Color         = $myts->addSlashes($_POST['Color']);
         $BgColor       = $myts->addSlashes($_POST['BgColor']);
-        $ParentMenuID  = intval($_POST['ParentMenuID']);
-        $WebID         = intval($_POST['WebID']);
-        $Status        = intval($_POST['Status']);
+        $ParentMenuID  = (int)$_POST['ParentMenuID'];
+        $WebID         = (int)$_POST['WebID'];
+        $Status        = (int)$_POST['Status'];
         $menu_type     = $myts->addSlashes($_POST['menu_type']);
         $CateID        = intval($_POST['CateID']);
         $newCateName     = $myts->addSlashes($_POST['newCateName']);
@@ -323,7 +323,7 @@ class tad_web_menu
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $Sort   = $this->max_sort($WebID, $CateID);
 
-        $sql = "insert into " . $xoopsDB->prefix("tad_web_menu") . "
+        $sql    = "insert into " . $xoopsDB->prefix("tad_web_menu") . "
         (`ParentMenuID`,`WebID`,`MenuTitle`,`Plugin`,`CateID`,`ColName`,`ColSn`,`Link`,`Target`,`Icon`,`Color`,`BgColor`,`Status`,`Sort`,`MenuCount`)
         values('{$ParentMenuID}' ,'{$WebID}' , '{$MenuTitle}' , '{$Plugin}' , '{$CateID}' ,'{$ColName}' , '{$ColSn}' ,'{$Link}' ,'{$Target}' ,'{$Icon}' ,'{$Color}' ,'{$BgColor}','{$Status}','{$Sort}',0)";
         $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
@@ -349,7 +349,7 @@ class tad_web_menu
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts               = MyTextSanitizer::getInstance();
 
         $myts          = MyTextSanitizer::getInstance();
         $MenuTitle     = $myts->addSlashes($_POST['MenuTitle']);
@@ -389,7 +389,7 @@ class tad_web_menu
             `WebID` = '{$WebID}' ,
             `MenuTitle` = '{$MenuTitle}' ,
             `Plugin` = '{$Plugin}' ,
-            `CateID` = '{$CateID}' ,
+         `CateID` = '{$CateID}' ,
             `ColName` = '{$ColName}' ,
             `ColSn` = '{$ColSn}' ,
             `Link` = '{$Link}' ,
@@ -498,7 +498,11 @@ class tad_web_menu
     {
         global $xoopsDB;
         $sql        = "select max(`Sort`) from " . $xoopsDB->prefix("tad_web_menu") . " where WebID='$WebID' and CateID='{$CateID}'";
+<<<<<<< HEAD
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+=======
+        $result = $xoopsDB->query($sql) or web_error($sql);
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }

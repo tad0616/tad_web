@@ -38,7 +38,7 @@ define("_MI_TCW_WEB_MODE_DESC", "此模組首頁欲呈現的標題");
 define("_MI_TCW_WEB_MODE_DEF", "班級網頁一覽");
 
 define('_MI_TCW_WEB_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_TCW_WEB_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_TCW_WEB_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_TCW_WEB_BACK_2_ADMIN', '管理');
 
 //help

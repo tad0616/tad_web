@@ -104,8 +104,13 @@ class tad_web_action
                 continue;
             }
 
+<<<<<<< HEAD
             $main_data[$i]            = $all;
             $main_data[$i]['id']      = $ActionID;
+=======
+            $main_data[$i]                = $all;
+            $main_data[$i]['id'] = $ActionID;
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
             $main_data[$i]['id_name'] = 'ActionID';
             $main_data[$i]['title']   = $ActionName;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
@@ -137,7 +142,10 @@ class tad_web_action
         if ($mode == "return") {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
+<<<<<<< HEAD
             $data['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
+=======
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
             return $data;
         } else {
             $xoopsTpl->assign('bar', $bar);
@@ -162,7 +170,7 @@ class tad_web_action
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
-        $ActionID = intval($ActionID);
+        $ActionID = (int)$ActionID;
         $this->add_counter($ActionID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
@@ -331,6 +339,7 @@ class tad_web_action
         }
 
         $myts                 = MyTextSanitizer::getInstance();
+<<<<<<< HEAD
         $ActionName  = $myts->addSlashes($_POST['ActionName']);
         $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
         $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
@@ -342,6 +351,16 @@ class tad_web_action
         $WebID       = intval($_POST['WebID']);
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+=======
+        $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
+        $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
+        $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
+        $_POST['ActionCount'] = (int)$_POST['ActionCount'];
+        $_POST['CateID']      = (int)$_POST['CateID'];
+        $_POST['WebID']       = (int)$_POST['WebID'];
+
+        $CateID = $this->web_cate->save_tad_web_cate($_POST['CateID'], $_POST['newCateName']);
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_action") . "
         (`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
         values('{$CateID}' ,'{$ActionName}' , '{$ActionDesc}' , '{$ActionDate}' , '{$ActionPlace}' , '{$uid}' , '{$WebID}' , '{$ActionCount}')";
@@ -370,6 +389,7 @@ class tad_web_action
         global $xoopsDB, $TadUpFiles;
 
         $myts                 = MyTextSanitizer::getInstance();
+<<<<<<< HEAD
         $ActionName  = $myts->addSlashes($_POST['ActionName']);
         $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
         $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
@@ -379,6 +399,13 @@ class tad_web_action
         $read = $myts->addSlashes($_POST['read']);
         $CateID      = intval($_POST['CateID']);
         $WebID       = intval($_POST['WebID']);
+=======
+        $_POST['ActionName']  = $myts->addSlashes($_POST['ActionName']);
+        $_POST['ActionDesc']  = $myts->addSlashes($_POST['ActionDesc']);
+        $_POST['ActionPlace'] = $myts->addSlashes($_POST['ActionPlace']);
+        $_POST['CateID']      = (int)$_POST['CateID'];
+        $_POST['WebID']       = (int)$_POST['WebID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
@@ -438,7 +465,11 @@ class tad_web_action
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select ActionID,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
+<<<<<<< HEAD
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+=======
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
         while (list($ActionID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ActionID);
             $allCateID[$CateID] = $CateID;
@@ -541,16 +572,16 @@ class tad_web_action
         }
         switch ($type) {
             case 1:
-                $im = imageCreateFromGif($filepath);
+                $im = imagecreatefromgif($filepath);
                 break;
             case 2:
-                $im = imageCreateFromJpeg($filepath);
+                $im = imagecreatefromjpeg($filepath);
                 break;
             case 3:
-                $im = imageCreateFromPng($filepath);
+                $im = imagecreatefrompng($filepath);
                 break;
             case 6:
-                $im = imageCreateFromBmp($filepath);
+                $im = imagecreatefrombmp($filepath);
                 break;
         }
 
