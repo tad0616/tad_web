@@ -167,7 +167,7 @@ class tad_web_discuss
             return;
         }
 
-        $DiscussID = intval($DiscussID);
+        $DiscussID = (int)$DiscussID;
         $this->add_counter($DiscussID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}' ";
@@ -445,6 +445,7 @@ class tad_web_discuss
         }
 
         $myts                    = MyTextSanitizer::getInstance();
+<<<<<<< HEAD
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
@@ -452,6 +453,13 @@ class tad_web_discuss
         $CateID        = intval($_POST['CateID']);
         $WebID          = intval($_POST['WebID']);
         $ReDiscussID    = intval($_POST['ReDiscussID']);
+=======
+        $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
+        $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
+        $_POST['CateID']         = (int)$_POST['CateID'];
+        $_POST['WebID']          = (int)$_POST['WebID'];
+        $_POST['ReDiscussID']    = (int)$_POST['ReDiscussID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
         if ($isMyWeb) {
             $uid      = $xoopsUser->uid();
@@ -528,6 +536,7 @@ class tad_web_discuss
         }
 
         $myts                    = MyTextSanitizer::getInstance();
+<<<<<<< HEAD
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
@@ -535,6 +544,13 @@ class tad_web_discuss
         $CateID         = intval($_POST['CateID']);
         $WebID          = intval($_POST['WebID']);
         $ReDiscussID    = intval($_POST['ReDiscussID']);
+=======
+        $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
+        $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
+        $_POST['CateID']         = (int)$_POST['CateID'];
+        $_POST['WebID']          = (int)$_POST['WebID'];
+        $_POST['ReDiscussID']    = (int)$_POST['ReDiscussID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 

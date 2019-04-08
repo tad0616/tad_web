@@ -71,7 +71,7 @@ class web_cate
 
     public function set_WebID($WebID = "")
     {
-        $WebID = intval($WebID);
+        $WebID = (int)$WebID;
 
         $this->WebID = $WebID;
     }

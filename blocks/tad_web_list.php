@@ -4,7 +4,7 @@ function tad_web_list($options)
 {
     global $xoopsDB;
 
-    $DefWebID          = isset($_REQUEST['WebID']) ? intval($_REQUEST['WebID']) : '';
+    $DefWebID          = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
     $block['DefWebID'] = $DefWebID;
 
     $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE WebEnable='1' ORDER BY CateID,WebSort";

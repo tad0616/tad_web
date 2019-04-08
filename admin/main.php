@@ -18,7 +18,7 @@ function chk_evn()
         $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
     }
 
-    $modhandler    = xoops_gethandler('module');
+    $modhandler    = xoops_getHandler('module');
     $ttxoopsModule = $modhandler->getByDirname("tadtools");
     $version       = $ttxoopsModule->version();
     if ($version < 274) {
@@ -343,7 +343,7 @@ function insert_tad_web($CateID = "", $WebName = "", $WebSort = "", $WebEnable =
         $WebYear = date('Y');
     }
 
-    $WebSort = intval($$WebSort);
+    $WebSort = (int)$$WebSort;
 
     $sql = "insert into " . $xoopsDB->prefix("tad_web") . "
     (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`,`used_size`, `last_accessed`)

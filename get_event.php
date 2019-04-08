@@ -1,16 +1,16 @@
 <?php
 include_once "header.php";
 
-$WebID = intval($_REQUEST['WebID']);
+$WebID = (int)$_REQUEST['WebID'];
 $start = empty($_REQUEST['start']) ? date("Y-m-01") : date("Y-m-d", strtotime($_REQUEST['start']));
 $end   = empty($_REQUEST['end']) ? date("Y-m-t") : date("Y-m-d", strtotime($_REQUEST['end']));
 
 if (!isset($xoopsModuleConfig)) {
 
-    $modhandler        = xoops_gethandler('module');
+    $modhandler        = xoops_getHandler('module');
     $xoopsModule       = $modhandler->getByDirname("tad_web");
-    $config_handler    = xoops_gethandler('config');
-    $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+    $config_handler    = xoops_getHandler('config');
+    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 }
 
 $cal_cols = $xoopsModuleConfig['cal_cols'];

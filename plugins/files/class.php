@@ -266,8 +266,8 @@ class tad_web_files
 
         $myts = MyTextSanitizer::getInstance();
 
-        $CateID           = intval($_POST['CateID']);
-        $WebID            = intval($_POST['WebID']);
+        $CateID           = (int)$_POST['CateID'];
+        $WebID            = (int)$_POST['WebID'];
         $file_link        = $myts->addSlashes($_POST['file_link']);
         $file_description = $myts->addSlashes($_POST['file_description']);
         $newCateName      = $myts->addSlashes($_POST['newCateName']);
@@ -305,8 +305,8 @@ class tad_web_files
 
         $myts = MyTextSanitizer::getInstance();
 
-        $CateID           = intval($_POST['CateID']);
-        $WebID            = intval($_POST['WebID']);
+        $CateID           = (int)$_POST['CateID'];
+        $WebID            = (int)$_POST['WebID'];
         $file_link        = $myts->addSlashes($_POST['file_link']);
         $file_description = $myts->addSlashes($_POST['file_description']);
         $newCateName      = $myts->addSlashes($_POST['newCateName']);
