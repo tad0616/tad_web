@@ -155,7 +155,7 @@ class tad_web_video
             return;
         }
 
-        $VideoID = intval($VideoID);
+        $VideoID = (int)$VideoID;
         $this->add_counter($VideoID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='{$VideoID}'";
@@ -303,13 +303,18 @@ class tad_web_video
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);
+<<<<<<< HEAD
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name   = $myts->addSlashes($_POST['tag_name']);
         $CateID    = intval($_POST['CateID']);
         $WebID     = intval($_POST['WebID']);
+=======
+        $CateID    = (int)$_POST['CateID'];
+        $WebID     = (int)$_POST['WebID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
-        $VideoCount = intval($_POST['VideoCount']);
+        $VideoCount = (int)$_POST['VideoCount'];
 
         $CateID    = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $VideoSort = $this->max_sort($WebID, $CateID);
@@ -350,14 +355,19 @@ class tad_web_video
         $VideoName = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube   = $myts->addSlashes($_POST['Youtube']);
+<<<<<<< HEAD
         $newCateName   = $myts->addSlashes($_POST['newCateName']);
         $tag_name   = $myts->addSlashes($_POST['tag_name']);
         $CateID    = intval($_POST['CateID']);
         $WebID     = intval($_POST['WebID']);
+=======
+        $CateID    = (int)$_POST['CateID'];
+        $WebID     = (int)$_POST['WebID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
-        $VideoCount = intval($_POST['VideoCount']);
-        $VideoSort  = intval($_POST['VideoSort']);
+        $VideoCount = (int)$_POST['VideoCount'];
+        $VideoSort  = (int)$_POST['VideoSort'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 

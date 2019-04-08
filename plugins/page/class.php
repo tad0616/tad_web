@@ -161,7 +161,7 @@ class tad_web_page
             return;
         }
 
-        $PageID = intval($PageID);
+        $PageID = (int)$PageID;
         $this->add_counter($PageID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_page") . " where PageID='{$PageID}'";
@@ -345,7 +345,7 @@ class tad_web_page
         if (isset($_SESSION['isAssistant']['page'])) {
             $uid = $WebOwnerUid;
         } elseif (!empty($_POST['uid'])) {
-            $uid = intval($_POST['uid']);
+            $uid = (int)$_POST['uid'];
         } else {
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
@@ -353,8 +353,8 @@ class tad_web_page
         $myts        = MyTextSanitizer::getInstance();
         $PageTitle   = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
+        $CateID      = (int)$_POST['CateID'];
+        $WebID       = (int)$_POST['WebID'];
         $PageSort    = $this->max_sort($WebID, $CateID);
         $PageDate    = date("Y-m-d H:i:s");
         $PageCSS     = $myts->addSlashes($_POST['PageCSS']);
@@ -387,8 +387,8 @@ class tad_web_page
         $myts        = MyTextSanitizer::getInstance();
         $PageTitle   = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
+        $CateID      = (int)$_POST['CateID'];
+        $WebID       = (int)$_POST['WebID'];
         $PageDate    = date("Y-m-d H:i:s");
         $PageCSS     = $myts->addSlashes($_POST['PageCSS']);
         $newCateName     = $myts->addSlashes($_POST['newCateName']);

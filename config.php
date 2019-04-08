@@ -45,7 +45,7 @@ function tad_web_config($WebID, $configs)
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
     // die(var_export($Web));
-    $WebOwnerUid = intval($Web['WebOwnerUid']);
+    $WebOwnerUid = (int)$Web['WebOwnerUid'];
     $xoopsTpl->assign('Web', $Web);
     $xoopsTpl->assign('WebName', $Web['WebName']);
     $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
@@ -74,8 +74,8 @@ function tad_web_config($WebID, $configs)
 
     //登入設定
     // $login_method   = '';
-    $modhandler     = xoops_gethandler('module');
-    $config_handler = xoops_gethandler('config');
+    $modhandler     = xoops_getHandler('module');
+    $config_handler = xoops_getHandler('config');
 
     $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
     $login_method        = $login_defval        = array();
@@ -83,8 +83,8 @@ function tad_web_config($WebID, $configs)
         global $xoopsConfig;
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-        $config_handler = xoops_gethandler('config');
-        $modConfig      = &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $config_handler = xoops_getHandler('config');
+        $modConfig      = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method = $modConfig['auth_method'];
         foreach ($auth_method as $method) {
@@ -187,10 +187,17 @@ function update_tad_web()
 {
     global $xoopsDB, $xoopsUser, $WebID;
 
+<<<<<<< HEAD
     $myts     = MyTextSanitizer::getInstance();
     $WebName  = $myts->addSlashes($_POST['WebName']);
     $WebOwner = $myts->addSlashes($_POST['WebOwner']);
     $CateID   = intval($_POST['CateID']);
+=======
+    $myts              = MyTextSanitizer::getInstance();
+    $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
+    $_POST['WebOwner'] = $myts->addSlashes($_POST['WebOwner']);
+    $CateID            = (int)$_POST['CateID'];
+>>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$WebName}', `WebOwner` = '{$WebOwner}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
