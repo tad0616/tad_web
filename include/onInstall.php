@@ -1,7 +1,7 @@
 <?php
 function xoops_module_install_tad_web(&$module)
 {
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web");
+    tad_web_mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web");
     chk_sql();
     add_log('install');
     return true;
@@ -44,13 +44,9 @@ function add_log($status)
     if ($status == 'install') {
         $web_amount = 0;
     } else {
-<<<<<<< HEAD
         $sql        = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-=======
-        $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
-        $result = $xoopsDB->query($sql) or web_error($sql);
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+
         $web_amount = $xoopsDB->getRowsNum($result);
     }
     $sitename      = urlencode($xoopsConfig['sitename']);
@@ -73,7 +69,7 @@ function add_log($status)
 }
 
 //建立目錄
-function mk_dir($dir = "")
+function tad_web_mk_dir($dir = "")
 {
     //若無目錄名稱秀出警告訊息
     if (empty($dir)) {
