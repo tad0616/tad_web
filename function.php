@@ -722,11 +722,8 @@ function get_tad_web($WebID = "", $enable = false)
 
         $sql = "select * from " . $xoopsDB->prefix("tad_web") . " where WebID='$WebID' {$andEnable}";
 
-<<<<<<< HEAD
         $result                      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-=======
-    $result = $xoopsDB->query($sql) or web_error($sql);
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+
         $data                        = $xoopsDB->fetchArray($result);
         $_SESSION['tad_web'][$WebID] = $data;
 
@@ -1347,17 +1344,12 @@ function check_quota($WebID = "")
 //檢查已使用空間
 function get_quota($WebID = "")
 {
-<<<<<<< HEAD
     global $xoopsModuleConfig, $Web;
     $Web              = get_tad_web($WebID);
     $defalt_used_size = round($Web['used_size'] / (1024 * 1024), 2);
     // $size               = get_web_config("used_size", $WebID);
-    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : intval($xoopsModuleConfig['user_space_quota']);
-=======
-    global $xoopsModuleConfig;
-    $size               = get_web_config("used_size", $WebID);
-    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : (int) $xoopsModuleConfig['user_space_quota'];
+
     $space_quota        = get_web_config("space_quota", $WebID);
     $user_space_quota   = (empty($space_quota) or $space_quota == 'default') ? $user_default_quota : (int)$space_quota;
 

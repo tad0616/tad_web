@@ -187,17 +187,10 @@ function update_tad_web()
 {
     global $xoopsDB, $xoopsUser, $WebID;
 
-<<<<<<< HEAD
-    $myts     = MyTextSanitizer::getInstance();
+    $myts              = MyTextSanitizer::getInstance();
     $WebName  = $myts->addSlashes($_POST['WebName']);
     $WebOwner = $myts->addSlashes($_POST['WebOwner']);
-    $CateID   = intval($_POST['CateID']);
-=======
-    $myts              = MyTextSanitizer::getInstance();
-    $_POST['WebName']  = $myts->addSlashes($_POST['WebName']);
-    $_POST['WebOwner'] = $myts->addSlashes($_POST['WebOwner']);
     $CateID            = (int)$_POST['CateID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
     $sql = "update " . $xoopsDB->prefix("tad_web") . " set CateID='{$CateID}', `WebName` = '{$WebName}', `WebOwner` = '{$WebOwner}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
