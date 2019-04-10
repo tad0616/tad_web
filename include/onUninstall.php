@@ -20,13 +20,9 @@ function add_log($status)
     if ($status == 'install') {
         $web_amount = 0;
     } else {
-<<<<<<< HEAD
         $sql        = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-=======
-        $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_web") . " WHERE `WebEnable`='1' ORDER BY WebSort";
-        $result = $xoopsDB->query($sql) or web_error($sql);
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+
         $web_amount = $xoopsDB->getRowsNum($result);
     }
     $sitename      = urlencode($xoopsConfig['sitename']);
