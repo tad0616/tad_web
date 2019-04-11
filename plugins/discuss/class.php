@@ -167,7 +167,7 @@ class tad_web_discuss
             return;
         }
 
-        $DiscussID = (int)$DiscussID;
+        $DiscussID = (int) $DiscussID;
         $this->add_counter($DiscussID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_discuss") . " where DiscussID='{$DiscussID}' ";
@@ -444,22 +444,14 @@ class tad_web_discuss
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
         }
 
-        $myts                    = MyTextSanitizer::getInstance();
-<<<<<<< HEAD
+        $myts           = MyTextSanitizer::getInstance();
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $CateID        = intval($_POST['CateID']);
-        $WebID          = intval($_POST['WebID']);
-        $ReDiscussID    = intval($_POST['ReDiscussID']);
-=======
-        $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
-        $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
-        $_POST['CateID']         = (int)$_POST['CateID'];
-        $_POST['WebID']          = (int)$_POST['WebID'];
-        $_POST['ReDiscussID']    = (int)$_POST['ReDiscussID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $newCateName    = $myts->addSlashes($_POST['newCateName']);
+        $tag_name       = $myts->addSlashes($_POST['tag_name']);
+        $CateID         = (int) $_POST['CateID'];
+        $WebID          = (int) $_POST['WebID'];
+        $ReDiscussID    = (int) $_POST['ReDiscussID'];
 
         if ($isMyWeb) {
             $uid      = $xoopsUser->uid();
@@ -535,22 +527,14 @@ class tad_web_discuss
             $anduid   = "and `ParentID`='{$ParentID}'";
         }
 
-        $myts                    = MyTextSanitizer::getInstance();
-<<<<<<< HEAD
+        $myts           = MyTextSanitizer::getInstance();
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $CateID         = intval($_POST['CateID']);
-        $WebID          = intval($_POST['WebID']);
-        $ReDiscussID    = intval($_POST['ReDiscussID']);
-=======
-        $_POST['DiscussTitle']   = $myts->addSlashes($_POST['DiscussTitle']);
-        $_POST['DiscussContent'] = $myts->addSlashes($_POST['DiscussContent']);
-        $_POST['CateID']         = (int)$_POST['CateID'];
-        $_POST['WebID']          = (int)$_POST['WebID'];
-        $_POST['ReDiscussID']    = (int)$_POST['ReDiscussID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $newCateName    = $myts->addSlashes($_POST['newCateName']);
+        $tag_name       = $myts->addSlashes($_POST['tag_name']);
+        $CateID         = (int) $_POST['CateID'];
+        $WebID          = (int) $_POST['WebID'];
+        $ReDiscussID    = (int) $_POST['ReDiscussID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 

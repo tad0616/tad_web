@@ -300,18 +300,11 @@ class tad_web_schedule
         }
 
         $myts                     = MyTextSanitizer::getInstance();
-<<<<<<< HEAD
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $CateID          = intval($_POST['CateID']);
-        $WebID           = intval($_POST['WebID']);
-=======
-        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
-        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $_POST['CateID']          = (int)$_POST['CateID'];
-        $_POST['WebID']           = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $CateID          = (int)$_POST['CateID'];
+        $WebID           = (int)$_POST['WebID'];
         $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
@@ -334,18 +327,11 @@ class tad_web_schedule
         global $xoopsDB;
 
         $myts                     = MyTextSanitizer::getInstance();
-<<<<<<< HEAD
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $CateID          = intval($_POST['CateID']);
-        $WebID           = intval($_POST['WebID']);
-=======
-        $_POST['ScheduleName']    = $myts->addSlashes($_POST['ScheduleName']);
-        $_POST['ScheduleDisplay'] = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $_POST['CateID']          = (int)$_POST['CateID'];
-        $_POST['WebID']           = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $CateID          = (int)$_POST['CateID'];
+        $WebID           = (int)$_POST['WebID'];
         $ScheduleTime             = date("Y-m-d H:i:s");
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
