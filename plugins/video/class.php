@@ -155,7 +155,7 @@ class tad_web_video
             return;
         }
 
-        $VideoID = (int)$VideoID;
+        $VideoID = (int) $VideoID;
         $this->add_counter($VideoID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='{$VideoID}'";
@@ -299,22 +299,17 @@ class tad_web_video
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts      = MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube   = $myts->addSlashes($_POST['Youtube']);
-<<<<<<< HEAD
+        $myts        = MyTextSanitizer::getInstance();
+        $VideoName   = $myts->addSlashes($_POST['VideoName']);
+        $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
+        $Youtube     = $myts->addSlashes($_POST['Youtube']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name   = $myts->addSlashes($_POST['tag_name']);
-        $CateID    = intval($_POST['CateID']);
-        $WebID     = intval($_POST['WebID']);
-=======
-        $CateID    = (int)$_POST['CateID'];
-        $WebID     = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
-        $VideoCount = (int)$_POST['VideoCount'];
+        $VideoCount = (int) $_POST['VideoCount'];
 
         $CateID    = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $VideoSort = $this->max_sort($WebID, $CateID);
@@ -351,23 +346,18 @@ class tad_web_video
     {
         global $xoopsDB;
 
-        $myts      = MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube   = $myts->addSlashes($_POST['Youtube']);
-<<<<<<< HEAD
-        $newCateName   = $myts->addSlashes($_POST['newCateName']);
-        $tag_name   = $myts->addSlashes($_POST['tag_name']);
-        $CateID    = intval($_POST['CateID']);
-        $WebID     = intval($_POST['WebID']);
-=======
-        $CateID    = (int)$_POST['CateID'];
-        $WebID     = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $myts        = MyTextSanitizer::getInstance();
+        $VideoName   = $myts->addSlashes($_POST['VideoName']);
+        $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
+        $Youtube     = $myts->addSlashes($_POST['Youtube']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
-        $VideoCount = (int)$_POST['VideoCount'];
-        $VideoSort  = (int)$_POST['VideoSort'];
+        $VideoCount = (int) $_POST['VideoCount'];
+        $VideoSort  = (int) $_POST['VideoSort'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 

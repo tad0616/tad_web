@@ -171,7 +171,7 @@ class tad_web_works
             return;
         }
 
-        $WorksID = (int)$WorksID;
+        $WorksID = (int) $WorksID;
         $this->add_counter($WorksID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='{$WorksID}'";
@@ -350,7 +350,6 @@ class tad_web_works
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-<<<<<<< HEAD
         $myts        = MyTextSanitizer::getInstance();
         $WorkName    = $myts->addSlashes($_POST['WorkName']);
         $WorkDesc    = $myts->addSlashes($_POST['WorkDesc']);
@@ -358,18 +357,9 @@ class tad_web_works
         $WorksDate   = $myts->addSlashes($_POST['WorksDate']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
-        $WorksEnable = intval($_POST['WorksEnable']);
-=======
-        $myts                 = MyTextSanitizer::getInstance();
-        $_POST['WorkName']    = $myts->addSlashes($_POST['WorkName']);
-        $_POST['WorkDesc']    = $myts->addSlashes($_POST['WorkDesc']);
-        $_POST['WorksKind']   = $myts->addSlashes($_POST['WorksKind']);
-        $_POST['CateID']      = (int)$_POST['CateID'];
-        $_POST['WebID']       = (int)$_POST['WebID'];
-        $_POST['WorksEnable'] = (int)$_POST['WorksEnable'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
+        $WorksEnable = (int) $_POST['WorksEnable'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
@@ -396,7 +386,6 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-<<<<<<< HEAD
         $myts        = MyTextSanitizer::getInstance();
         $WorkName    = $myts->addSlashes($_POST['WorkName']);
         $WorkDesc    = $myts->addSlashes($_POST['WorkDesc']);
@@ -404,18 +393,9 @@ class tad_web_works
         $WorksDate   = $myts->addSlashes($_POST['WorksDate']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
-        $WorksEnable = intval($_POST['WorksEnable']);
-=======
-        $myts                 = MyTextSanitizer::getInstance();
-        $_POST['WorkName']    = $myts->addSlashes($_POST['WorkName']);
-        $_POST['WorkDesc']    = $myts->addSlashes($_POST['WorkDesc']);
-        $_POST['WorksKind']   = $myts->addSlashes($_POST['WorksKind']);
-        $_POST['CateID']      = (int)$_POST['CateID'];
-        $_POST['WebID']       = (int)$_POST['WebID'];
-        $_POST['WorksEnable'] = (int)$_POST['WorksEnable'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
+        $WorksEnable = (int) $_POST['WorksEnable'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
