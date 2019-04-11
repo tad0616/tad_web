@@ -25,4 +25,13 @@ class Tad_WebCorePreload extends XoopsPreloadItem
             $_REQUEST['xoops_theme_select'] = $GLOBALS['xoopsConfig']['theme_set'];
         }
     }
+    
+            // to add PSR-4 autoloader
+    /**
+     * @param $args
+     */
+    public static function eventCoreIncludeCommonEnd($args)
+    {
+        include __DIR__ . '/autoloader.php';
+    }
 }
