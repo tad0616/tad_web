@@ -885,7 +885,7 @@ class tad_web_aboutus
         $MemUname      = $myts->addSlashes($_POST['MemUname']);
         $MemPasswd     = $myts->addSlashes($_POST['MemPasswd']);
         $MemNum     = $myts->addSlashes($_POST['MemNum']);
-        $MemSort     = intval($_POST['MemSort']);
+        $MemSort     = (int)$_POST['MemSort'];
 
         $sql = "update " . $xoopsDB->prefix("tad_web_mems") . " set
            `MemName` = '{$MemName}' ,

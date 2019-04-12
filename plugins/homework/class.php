@@ -445,8 +445,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = intval($_POST['CateID']);
-        $WebID = intval($_POST['WebID']);
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $HomeworkDate = date("Y-m-d H:i:s");
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
@@ -530,8 +530,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = intval($_POST['CateID']);
-        $WebID = intval($_POST['WebID']);
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $HomeworkDate = date("Y-m-d H:i:s");
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);

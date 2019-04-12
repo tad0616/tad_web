@@ -370,10 +370,10 @@ function update_tad_web($WebID = "")
     $myts        = MyTextSanitizer::getInstance();
     $WebName     = $myts->addSlashes($_POST['WebName']);
     $WebTitle    = $myts->addSlashes($_POST['WebTitle']);
-    $CateID      = intval($_POST['CateID']);
-    $WebSort     = intval($_POST['WebSort']);
-    $WebEnable   = intval($_POST['WebEnable']);
-    $WebOwnerUid = intval($_POST['WebOwnerUid']);
+    $CateID      = (int)$_POST['CateID'];
+    $WebSort     = (int)$_POST['WebSort'];
+    $WebEnable   = (int)$_POST['WebEnable'];
+    $WebOwnerUid = (int)$_POST['WebOwnerUid'];
 
     $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 1);
     if (empty($WebOwner)) {

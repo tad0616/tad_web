@@ -26,7 +26,7 @@ if ($op == "get_reationship") {
     $result                              = $xoopsDB->query($sql) or die($sql);
     $option                              = "";
     list($ParentID, $Reationship, $code) = $xoopsDB->fetchRow($result);
-    die("<a href='" . XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$WebID}&op=send_signup_mail&ParentID={$ParentID}&chk_code={$code}' class='btn btn-success'>" . _MD_TCW_ABOUTUS_RE_SENDMAIL_TO . "{$MemName}" . _MD_TCW_ABOUTUS_S . "{$Reationship}</a>");
+    die("<a href='" . XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$WebID}&op=send_signup_mail&ParentID={$ParentID}&chk_code={$code}' class='btn btn-success'>" . _MD_TCW_ABOUTUS_RE_SENDMAIL_TO . (string)($MemName) . _MD_TCW_ABOUTUS_S . "{$Reationship}</a>");
 } elseif ($op == "get_parents") {
     if (empty($CateID)) {
         die(_MD_TCW_ABOUTUS_SELECT_CLASS);
