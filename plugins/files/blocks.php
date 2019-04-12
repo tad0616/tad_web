@@ -1,5 +1,5 @@
 <?php
-function list_files($WebID, $config = array())
+function list_files($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;

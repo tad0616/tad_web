@@ -35,7 +35,7 @@ function news_search($WebID, $queryarray, $limit = 10)
     $sql .= " ORDER BY  `{$date_col}` DESC";
 
     $result = $xoopsDB->query($sql, $limit);
-    $ret    = array();
+    $ret    = [];
     $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $power_result = $power->check_power("read", $id_col, $myrow[$id_col]);

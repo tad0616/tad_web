@@ -1,6 +1,6 @@
 <?php
 /************** list_video *************/
-function list_video($WebID, $config = array())
+function list_video($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -17,14 +17,14 @@ function list_video($WebID, $config = array())
 
 /************** random_video *************/
 
-function random_video($WebID, $config = array())
+function random_video($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
         retuen;
     }
-    $block = array();
+    $block = [];
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by rand() limit 0,1";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
@@ -50,14 +50,14 @@ function random_video($WebID, $config = array())
 
 /************** latest_video *************/
 
-function latest_video($WebID, $config = array())
+function latest_video($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
         retuen;
     }
-    $block  = array();
+    $block  = [];
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' order by VideoDate desc , VideoID desc limit 0,1";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);

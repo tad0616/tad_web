@@ -1,5 +1,5 @@
 <?php
-function list_page($WebID, $config = array())
+function list_page($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -15,7 +15,7 @@ function list_page($WebID, $config = array())
     return $block;
 }
 
-function page_menu($WebID, $config = array())
+function page_menu($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl;
@@ -33,7 +33,7 @@ function page_menu($WebID, $config = array())
 
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-    $main = array();
+    $main = [];
 
     $i = 0;
 
@@ -43,7 +43,7 @@ function page_menu($WebID, $config = array())
         FROM `" . $xoopsDB->prefix("tad_web_page") . "` WHERE `CateID` = '$CateID'
         ORDER BY `PageSort`";
         $result2 = $xoopsDB->query($sql2) or web_error($sql2);
-        $content = array();
+        $content = [];
         $j       = 0;
         while (list($PageID, $PageTitle, $PageCount) = $xoopsDB->fetchRow($result2)) {
             $content[$j]['PageCount'] = $PageCount;

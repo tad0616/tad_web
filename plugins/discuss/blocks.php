@@ -1,5 +1,5 @@
 <?php
-function list_discuss($WebID, $config = array())
+function list_discuss($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;

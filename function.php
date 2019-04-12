@@ -24,7 +24,7 @@ include_once XOOPS_ROOT_PATH . "/modules/tad_web/class/tags.php";
 //判斷是否對該模組有管理權限
 $isAdmin    = false;
 $LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = $LoginParentID = $LoginParentName = $LoginParentMemID = '';
-$MyWebs     = array();
+$MyWebs     = [];
 $isMyWeb    = false;
 if ($xoopsUser) {
     if (!isset($xoopsModule)) {
@@ -51,7 +51,7 @@ if ($xoopsUser) {
 
 //區塊位置
 include_once XOOPS_ROOT_PATH . "/modules/tad_web/language/{$xoopsConfig['language']}/main.php";
-$BlockPositionTitle = array('block1' => _MD_TCW_TOP_CENTER_BLOCK, 'block2' => _MD_TCW_TOP_LEFT_BLOCK, 'block3' => _MD_TCW_TOP_LEFT_BLOCK, 'block4' => _MD_TCW_BOTTOM_CENTER_BLOCK, 'block5' => _MD_TCW_BOTTOM_LEFT_BLOCK, 'block6' => _MD_TCW_BOTTOM_RIGHT_BLOCK, 'side' => _MD_TCW_SIDE_BLOCK, 'uninstall' => _MD_TCW_UNINSTALL_BLOCK);
+$BlockPositionTitle = ['block1' => _MD_TCW_TOP_CENTER_BLOCK, 'block2' => _MD_TCW_TOP_LEFT_BLOCK, 'block3' => _MD_TCW_TOP_LEFT_BLOCK, 'block4' => _MD_TCW_BOTTOM_CENTER_BLOCK, 'block5' => _MD_TCW_BOTTOM_LEFT_BLOCK, 'block6' => _MD_TCW_BOTTOM_RIGHT_BLOCK, 'side' => _MD_TCW_SIDE_BLOCK, 'uninstall' => _MD_TCW_UNINSTALL_BLOCK];
 
 /********************* 自訂函數 *********************/
 
@@ -61,7 +61,7 @@ function get_blocks($WebID)
     global $xoopsDB;
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' order by `BlockSort`";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    $Blocks = array();
+    $Blocks = [];
     while ($all = $xoopsDB->fetchArray($result)) {
         $Blocks[] = $all;
     }
@@ -76,7 +76,7 @@ function get_dir_blocks($mode = '')
     if (file_exists($dir_blocks_file) and $mode == '') {
         $Config = get_json_file($dir_blocks_file);
     } else {
-        $Config  = array();
+        $Config  = [];
     $plugins = get_dir_plugins();
 
     foreach ($plugins as $plugin) {
@@ -85,7 +85,7 @@ function get_dir_blocks($mode = '')
             include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
             include $config_blocks_file;
                 $Config[$plugin] = $blocksArr;
-                $blocksArr       = array();
+                $blocksArr       = [];
             } else {
             }
         }
@@ -127,7 +127,7 @@ function get_all_blocks($value = 'title')
     global $xoopsDB, $isAdmin;
 
     $myts = MyTextSanitizer::getInstance();
-    $block_option = array();
+    $block_option = [];
     //來自plugin的區塊
     $allBlockConfig = get_dir_blocks();
     // if ($isAdmin) {
@@ -174,7 +174,7 @@ function get_position_blocks($WebID, $BlockPosition, $plugin = '')
     }
     $sql    = "select * from " . $xoopsDB->prefix("tad_web_blocks") . " where  $andBlockPosition order by `BlockSort`";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    $Blocks = array();
+    $Blocks = [];
     $i      = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         $plugin = $all['plugin'];
@@ -201,7 +201,7 @@ function get_position_blocks($WebID, $BlockPosition, $plugin = '')
 function get_share_blocks($WebID)
 {
     global $xoopsDB;
-    $share_blocks = array();
+    $share_blocks = [];
     $sql          = "select ShareFrom from " . $xoopsDB->prefix("tad_web_blocks") . " where `WebID`='{$WebID}' and `plugin`='custom' and `ShareFrom` > 0";
     $result       = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     while (list($ShareFromID) = $xoopsDB->fetchRow($result)) {
@@ -225,7 +225,7 @@ function get_web_blocks($WebID, $plugin = '', $BlockEnable = 1)
     $result         = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $i      = 0;
-    $Blocks = array();
+    $Blocks = [];
     while ($all = $xoopsDB->fetchArray($result)) {
         $Blocks[$i] = $all;
         $i++;
@@ -253,7 +253,7 @@ function get_web_roles($defWebID = '', $defRole = '')
     $andRole  = empty($defRole) ? "" : "and `role`='$defRole'";
     $sql      = "select uid from " . $xoopsDB->prefix("tad_web_roles") . " where 1 $andRole $andWebID ";
     $result   = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    $users    = array();
+    $users    = [];
     $i        = 0;
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         $users[$i] = $uid;
@@ -661,7 +661,7 @@ function isAdmin()
 }
 
 //登出按鈕
-function logout_button($interface_menu = array())
+function logout_button($interface_menu = [])
 {
     return $interface_menu;
 }
@@ -689,7 +689,7 @@ function get_seme()
 //
 function getAllCateName($ColName = "", $WebID = "", $CateID = "")
 {
-    return array();
+    return [];
 }
 
 //更新刪除時是否限制身份
@@ -741,7 +741,7 @@ function getAllWebInfo($get_col = 'WebTitle')
 
     $sql    = "select `WebID`, `{$get_col}` from " . $xoopsDB->prefix("tad_web") . " order by WebSort";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    $Webs   = array();
+    $Webs   = [];
     while (list($WebID, $data) = $xoopsDB->fetchRow($result)) {
         $Webs[$WebID] = $data;
     }
@@ -950,7 +950,7 @@ function import_img($path = '', $col_name = "logo", $col_sn = '', $desc = "", $s
         return;
     }
 
-    $db_files = array();
+    $db_files = [];
 
     $sql = "select files_sn,file_name,original_filename from " . $xoopsDB->prefix("tad_web_files_center") . " where col_name='{$col_name}' and col_sn='{$col_sn}'";
 
@@ -1080,7 +1080,7 @@ function get_web_cate_arr()
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web") . "` where WebEnable='1' and WebID > 0 order by WebSort,WebTitle";
     $result = $xoopsDB->query($sql)
     or web_error($sql, __FILE__, __LINE__);
-    $data_arr = array();
+    $data_arr = [];
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -1368,7 +1368,7 @@ function size2mb($size)
 function roundsize($size)
 {
     $i   = 0;
-    $iec = array('B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB');
+    $iec = ['B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB'];
     while (($size / 1024) > 1) {
         $size = $size / 1024;
         $i++;}
@@ -1411,7 +1411,7 @@ function get_plugin_setup_values($WebID = "", $plugin = "")
     $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_web_plugins_setup") . " where `WebID`='{$WebID}' and plugin='{$plugin}'";
     // die($sql);
     $result          = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    $setup_db_values = array();
+    $setup_db_values = [];
     //`theme_id`, `name`, `type`, `value`
     while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
 
@@ -1542,7 +1542,7 @@ function get_article_content($content, $page = 1)
 
     $page = $page ? (int)$page :
 
-    $article = array('info' => array(), 'pages' => 1);
+    $article = ['info' => [], 'pages' => 1];
 
     if (!empty($content)) {
 
@@ -1605,7 +1605,7 @@ function get_tad_web_notice($NoticeID = '')
 function get_sys_openid()
 {
     global $xoopsConfig;
-    $auth_method         = array();
+    $auth_method         = [];
     $modhandler          = xoops_getHandler('module');
     $config_handler      = xoops_getHandler('config');
     $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
@@ -1650,7 +1650,7 @@ function get_assistant($CateID = "")
     if (empty($CateID)) {
         return;
     }
-    $mem    = array();
+    $mem    = [];
     $sql    = "select `AssistantType`, `AssistantID` from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}'";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);

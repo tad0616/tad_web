@@ -9,7 +9,7 @@ include_once "../class/cate.php";
 //環境檢查
 function chk_evn()
 {
-    $error = array();
+    $error = [];
     if (!function_exists('imagecreatetruecolor')) {
         $error[_MA_TCW_NEED_IMAGECREATETURECOLOR] = _MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT;
     }
@@ -50,7 +50,7 @@ function list_all_web($defCateID = '')
     $result  = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $xoopsTpl->assign('bar', $bar);
 
-    $data = array();
+    $data = [];
     $i    = 1;
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/jeditable.php";
     $file = "save.php";
@@ -71,7 +71,7 @@ function list_all_web($defCateID = '')
 
             $result2   = $xoopsDB->queryF($sql2) or web_error($sql2);
             $j         = 0;
-            $admin_arr = array();
+            $admin_arr = [];
             while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result2)) {
                 $admin_arr[$j]['uid']   = $uid;
                 $admin_arr[$j]['name']  = $name;
@@ -80,7 +80,7 @@ function list_all_web($defCateID = '')
                 $j++;
             }
         } else {
-            $admin_arr = array();
+            $admin_arr = [];
         }
         $data[$i]['admin_arr'] = $admin_arr;
         //$jeditable->setSelectCol(".Class{$WebID}",$file,"{{$teacher_option}, 'selected':'{$WebOwnerUid}'}","{'WebID' : $WebID , 'op' : 'save_teacher'}",_MA_TCW_CLICK_TO_EDIT);
@@ -130,7 +130,7 @@ function create_by_user()
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     $myts = MyTextSanitizer::getInstance();
-    $opt  = array();
+    $opt  = [];
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -220,7 +220,7 @@ function tad_web_form($WebID = null)
     if (!empty($WebID)) {
         $DBV = get_tad_web($WebID);
     } else {
-        $DBV = array();
+        $DBV = [];
     }
 
     //預設值設定
@@ -397,7 +397,7 @@ function update_tad_web($WebID = "")
     return $WebID;
 }
 
-function save_webs_title($webTitles = array(), $old_webTitle = array())
+function save_webs_title($webTitles = [], $old_webTitle = [])
 {
     global $xoopsDB, $TadUpFiles;
 

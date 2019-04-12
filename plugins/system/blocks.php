@@ -1,18 +1,18 @@
 <?php
 
-function search($WebID, $config = array())
+function search($WebID, $config = [])
 {
     $block['main_data'] = true;
     return $block;
 }
 
-function qrcode($WebID, $config = array())
+function qrcode($WebID, $config = [])
 {
     $block['main_data'] = urlencode("http://" . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
     return $block;
 }
 
-function web_list($WebID, $config = array())
+function web_list($WebID, $config = [])
 {
     global $xoopsDB;
     $block['DefWebID'] = $DefWebID = $WebID;
@@ -37,7 +37,7 @@ function web_list($WebID, $config = array())
 }
 
 //按讚工具
-function rrssb($WebID, $config = array())
+function rrssb($WebID, $config = [])
 {
     // $block['main_data'] = urlencode("http://" . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
     $block['main_data'] = push_url();
@@ -45,7 +45,7 @@ function rrssb($WebID, $config = array())
 }
 
 //萌典查生字
-function moedict($WebID, $config = array())
+function moedict($WebID, $config = [])
 {
     if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/colorbox.php")) {
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
@@ -58,7 +58,7 @@ function moedict($WebID, $config = array())
 }
 
 //Dr.eye 英文字典
-function dreye($WebID, $config = array())
+function dreye($WebID, $config = [])
 {
     if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/colorbox.php")) {
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
@@ -71,7 +71,7 @@ function dreye($WebID, $config = array())
 }
 
 //WIKI維基百科查詢
-function wiki($WebID, $config = array())
+function wiki($WebID, $config = [])
 {
     if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/colorbox.php")) {
         redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
@@ -84,21 +84,21 @@ function wiki($WebID, $config = array())
 }
 
 //即時細懸浮微粒預測
-function pm25($WebID, $config = array())
+function pm25($WebID, $config = [])
 {
     $block['main_data'] = true;
     return $block;
 }
 
 //空氣品質 (PSI) 預報
-function psi($WebID, $config = array())
+function psi($WebID, $config = [])
 {
     $block['main_data'] = true;
     return $block;
 }
 
 //聊天室
-function tlkio($WebID, $config = array())
+function tlkio($WebID, $config = [])
 {
     $block['main_data'] = true;
     $block['config']    = $config;
@@ -107,7 +107,7 @@ function tlkio($WebID, $config = array())
 }
 
 //倒數計時
-function countdown($WebID, $config = array())
+function countdown($WebID, $config = [])
 {
     $block['main_data'] = true;
     $block['config']    = $config;
@@ -124,7 +124,7 @@ function countdown($WebID, $config = array())
 // }
 
 //標籤
-function tags($WebID, $config = array())
+function tags($WebID, $config = [])
 {
     $tags     = new tags($WebID);
     $tags_arr = $tags->get_tags();

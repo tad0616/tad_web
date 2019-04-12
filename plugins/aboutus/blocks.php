@@ -1,6 +1,6 @@
 <?php
 
-function list_web_adm($WebID, $config = array())
+function list_web_adm($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl;
@@ -37,7 +37,7 @@ function list_web_adm($WebID, $config = array())
 }
 
 //以流水號秀出某筆tad_web_mems資料內容
-function list_web_student($WebID, $config = array())
+function list_web_student($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb;
     // include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';

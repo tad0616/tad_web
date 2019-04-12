@@ -28,19 +28,19 @@ function getUrlData($url)
             $names     = $match[1];
             $values    = $match[2];
             if (count($originals) == count($names) && count($names) == count($values)) {
-                $metaTags = array();
+                $metaTags = [];
                 for ($i = 0, $limiti = count($names); $i < $limiti; $i++) {
-                    $metaTags[$names[$i]] = array(
+                    $metaTags[$names[$i]] = [
                         'html'  => htmlentities($originals[$i]),
                         'value' => $values[$i],
-                    );
+                    ];
                 }
             }
         }
-        $result = array(
+        $result = [
             'title'    => $title,
             'metaTags' => $metaTags,
-        );
+        ];
     }
     //die(var_export($result));
     return $result;

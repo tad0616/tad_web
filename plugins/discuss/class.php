@@ -90,7 +90,7 @@ class tad_web_discuss
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = 0;
 
@@ -305,7 +305,7 @@ class tad_web_discuss
         if (!empty($DiscussID)) {
             $DBV = $this->get_one_data($DiscussID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定

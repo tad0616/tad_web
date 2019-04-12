@@ -21,7 +21,7 @@ function list_all_assistant($WebID = "", $plugin = "")
 {
     global $xoopsTpl, $plugin_menu_var, $xoopsDB;
 
-    $all_assistant = array();
+    $all_assistant = [];
     $sql           = "select a.*,b.* from `" . $xoopsDB->prefix("tad_web_cate_assistant") . "` as a
     left join `" . $xoopsDB->prefix("tad_web_cate") . "` as b on a.CateID=b.CateID
     where b.`WebID` = '{$WebID}' ";
@@ -51,7 +51,7 @@ function list_all_assistant($WebID = "", $plugin = "")
 
     $sql     = "select a.MemID, a.MemNum ,b.MemName from " . $xoopsDB->prefix("tad_web_link_mems") . " as a left join " . $xoopsDB->prefix("tad_web_mems") . " as b on a.MemID=b.MemID where a.`CateID` = '{$default_class}'  order by a.MemNum";
     $result  = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    $AllMems = array();
+    $AllMems = [];
     while ($mem = $xoopsDB->fetchArray($result)) {
         $AllMems[] = $mem;
     }

@@ -1,5 +1,5 @@
 <?php
-function list_news($WebID, $config = array())
+function list_news($WebID, $config = [])
 {
 
     global $xoopsDB;
@@ -15,7 +15,7 @@ function list_news($WebID, $config = array())
     return $block;
 }
 
-function news_rss($WebID, $config = array())
+function news_rss($WebID, $config = [])
 {
 
     global $xoopsDB;

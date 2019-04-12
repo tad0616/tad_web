@@ -97,7 +97,7 @@ class tad_web_works
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = 0;
 
@@ -270,7 +270,7 @@ class tad_web_works
         if (!empty($WorksID)) {
             $DBV = $this->get_one_data($WorksID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定

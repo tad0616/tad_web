@@ -81,13 +81,13 @@ class tad_web_homework
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = 0;
 
         $Webs = getAllWebInfo();
         $WebNames = getAllWebInfo('WebName');
-        $cweek = array(0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT);
+        $cweek = [0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT];
 
         $cate = $this->web_cate->get_tad_web_cate_arr();
         $yet = "";
@@ -149,7 +149,7 @@ class tad_web_homework
         $sweet_alert->render("delete_homework_func", "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
 
         //找出尚未發布的聯絡簿
-        $yet_data = array();
+        $yet_data = [];
         if ($isMyWeb) {
             $i = 0;
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_homework") . " as a left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID where a.HomeworkPostDate > '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkPostDate desc";
@@ -304,7 +304,7 @@ class tad_web_homework
         if (!empty($HomeworkID)) {
             $DBV = $this->get_one_data($HomeworkID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //設定「HomeworkID」欄位預設值
@@ -652,7 +652,7 @@ class tad_web_homework
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql = "select HomeworkID,CateID from " . $xoopsDB->prefix("tad_web_homework") . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($HomeworkID, $CateID) = $xoopsDB->fetchRow($result)) {

@@ -13,7 +13,7 @@ function tad_web_cate_form($CateID = '')
     if (!empty($CateID) and is_numeric($CateID)) {
         $DBV = get_tad_web_cate($CateID);
     } else {
-        $DBV = array();
+        $DBV = [];
     }
 
     //預設值設定
@@ -199,7 +199,7 @@ function tad_web_list_cate()
     $sql    = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_cate") . "` WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-    $all_content = array();
+    $all_content = [];
 
     $i = 0;
 

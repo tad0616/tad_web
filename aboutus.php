@@ -119,7 +119,7 @@ switch ($op) {
     case "mem_logout":
         $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = "";
         $GLOBALS["sess_handler"]->regenerate_id(true);
-        $_SESSION = array();
+        $_SESSION = [];
         setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
         // clear entry from online users table
@@ -204,7 +204,7 @@ switch ($op) {
     case "parent_logout":
         $_SESSION['LoginParentID'] = $_SESSION['LoginParentName'] = $_SESSION['LoginParentMemID'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = "";
         $GLOBALS["sess_handler"]->regenerate_id(true);
-        $_SESSION = array();
+        $_SESSION = [];
         setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
         // clear entry from online users table

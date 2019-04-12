@@ -1,6 +1,6 @@
 <?php
 //列出帳目
-function list_account($WebID, $config = array())
+function list_account($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;

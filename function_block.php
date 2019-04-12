@@ -7,7 +7,7 @@ if (!function_exists('MyWebID')) {
     function MyWebID($WebEnable = '1')
     {
         global $xoopsUser, $xoopsDB;
-        $MyWebs = array();
+        $MyWebs = [];
         if ($xoopsUser) {
             $uid          = $xoopsUser->uid();
             $andWebEnable = $WebEnable == 'all' ? "" : "and `WebEnable`='{$WebEnable}'";
@@ -35,7 +35,7 @@ if (!function_exists('get_web_config')) {
     {
         global $xoopsDB;
         $andWebID     = '';
-        $ConfigValues = array();
+        $ConfigValues = [];
         if (!is_null($defWebID)) {
             if ($form != 'file') {
                 $sql               = "select `ConfigValue` from " . $xoopsDB->prefix("tad_web_config") . " where `ConfigName`='$ConfigName' and WebID='$defWebID'";

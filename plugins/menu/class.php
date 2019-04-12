@@ -80,7 +80,7 @@ class tad_web_menu
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = $cate_data = $cate_size = array();
+        $main_data = $cate_data = $cate_size = [];
 
         $i = 0;
 
@@ -180,7 +180,7 @@ class tad_web_menu
         if (!empty($MenuID)) {
             $DBV = $this->get_one_data($MenuID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -439,7 +439,7 @@ class tad_web_menu
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql       = "select MenuID,CateID from " . $xoopsDB->prefix("tad_web_menu") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($MenuID, $CateID) = $xoopsDB->fetchRow($result)) {

@@ -13,7 +13,7 @@ class tad_web_system
     public function list_all($CateID = "", $limit = null, $mode = "assign")
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb;
-        $main_data = array();
+        $main_data = [];
         $total     = "";
 
         if ($mode == "return") {

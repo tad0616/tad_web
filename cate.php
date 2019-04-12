@@ -89,7 +89,7 @@ function list_all_cate($WebID = "", $ColName = "", $table = "")
 }
 
 //執行分類動作
-function save_cate($WebID = "", $ColName = "", $act_arr = array(), $table = "")
+function save_cate($WebID = "", $ColName = "", $act_arr = [], $table = "")
 {
     global $xoopsTpl;
     if (empty($WebID) or empty($ColName)) {

@@ -1,5 +1,5 @@
 <?php
-$modversion = array();
+$modversion = [];
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
@@ -24,7 +24,7 @@ $modversion['min_php']             = 5.4;
 $modversion['min_xoops']           = '2.5';
 
 //---paypal資訊---//
-$modversion['paypal']                  = array();
+$modversion['paypal']                  = [];
 $modversion['paypal']['business']      = 'tad0616@gmail.com';
 $modversion['paypal']['item_name']     = 'Donation : ' . _MI_TAD_WEB;
 $modversion['paypal']['amount']        = 0;
@@ -211,8 +211,8 @@ $modversion['config'][$i]['title']       = '_MI_TADWEB_ABOUTUS_MODE';
 $modversion['config'][$i]['description'] = '_MI_TADWEB_ABOUTUS_MODE_DESC';
 $modversion['config'][$i]['formtype']    = 'select_multi';
 $modversion['config'][$i]['valuetype']   = 'array';
-$modversion['config'][$i]['default']     = array('counter', 'web', 'schedule', 'homework');
-$modversion['config'][$i]['options']     = array(_MI_TADWEB_ABOUTUS_MODE_KEY1 => 'counter', _MI_TADWEB_ABOUTUS_MODE_KEY2 => 'web', _MI_TADWEB_ABOUTUS_MODE_KEY3 => 'schedule', _MI_TADWEB_ABOUTUS_MODE_KEY4 => 'homework');
+$modversion['config'][$i]['default']     = ['counter', 'web', 'schedule', 'homework'];
+$modversion['config'][$i]['options']     = [_MI_TADWEB_ABOUTUS_MODE_KEY1 => 'counter', _MI_TADWEB_ABOUTUS_MODE_KEY2 => 'web', _MI_TADWEB_ABOUTUS_MODE_KEY3 => 'schedule', _MI_TADWEB_ABOUTUS_MODE_KEY4 => 'homework'];
 
 $i++;
 $modversion['config'][$i]['name']        = 'cal_cols';
@@ -220,8 +220,8 @@ $modversion['config'][$i]['title']       = '_MI_TADWEB_CAL_COLS';
 $modversion['config'][$i]['description'] = '_MI_TADWEB_CAL_COLS_DESC';
 $modversion['config'][$i]['formtype']    = 'select_multi';
 $modversion['config'][$i]['valuetype']   = 'array';
-$modversion['config'][$i]['default']     = array('all', 'web', 'news', 'homework');
-$modversion['config'][$i]['options']     = array(_MI_TADWEB_CAL_COLS_KEY1 => 'all', _MI_TADWEB_CAL_COLS_KEY2 => 'web', _MI_TADWEB_CAL_COLS_KEY3 => 'news', _MI_TADWEB_CAL_COLS_KEY4 => 'homework');
+$modversion['config'][$i]['default']     = ['all', 'web', 'news', 'homework'];
+$modversion['config'][$i]['options']     = [_MI_TADWEB_CAL_COLS_KEY1 => 'all', _MI_TADWEB_CAL_COLS_KEY2 => 'web', _MI_TADWEB_CAL_COLS_KEY3 => 'news', _MI_TADWEB_CAL_COLS_KEY4 => 'homework'];
 
 $i++;
 $modversion['config'][$i]['name']        = 'user_space_quota';
@@ -238,4 +238,4 @@ $modversion['config'][$i]['description'] = '_MI_TCW_LIST_WEB_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'WebSort';
-$modversion['config'][$i]['options']     = array(_MI_TCW_LIST_WEB_OPT1 => 'WebSort', _MI_TCW_LIST_WEB_OPT2 => 'WebCounter', _MI_TCW_LIST_WEB_OPT3 => 'WebCounter desc', _MI_TCW_LIST_WEB_OPT4 => 'CreatDate', _MI_TCW_LIST_WEB_OPT5 => 'CreatDate desc');
+$modversion['config'][$i]['options']     = [_MI_TCW_LIST_WEB_OPT1 => 'WebSort', _MI_TCW_LIST_WEB_OPT2 => 'WebCounter', _MI_TCW_LIST_WEB_OPT3 => 'WebCounter desc', _MI_TCW_LIST_WEB_OPT4 => 'CreatDate', _MI_TCW_LIST_WEB_OPT5 => 'CreatDate desc'];

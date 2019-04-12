@@ -78,7 +78,7 @@ function tad_web_config($WebID, $configs)
     $config_handler = xoops_getHandler('config');
 
     $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
-    $login_method        = $login_defval        = array();
+    $login_method        = $login_defval        = [];
     if ($TadLoginXoopsModule) {
         global $xoopsConfig;
         include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
@@ -348,7 +348,7 @@ function default_color($WebID = "")
     if (empty($WebID) or !$isMyWeb) {
         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
     }
-    $del_item = array(
+    $del_item = [
         'bg_color',
         'container_bg_color',
         'side_bg_color',
@@ -366,7 +366,7 @@ function default_color($WebID = "")
         'navbar_color',
         'navbar_hover',
         'navbar_color_hover',
-    );
+    ];
     foreach ($del_item as $ConfigName) {
         $sql = "delete from " . $xoopsDB->prefix("tad_web_config") . " where WebID ='{$WebID}' and ConfigName='{$ConfigName}'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);

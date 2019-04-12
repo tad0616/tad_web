@@ -82,7 +82,7 @@ function get_marquee()
     $sql    = "select * from `" . $xoopsDB->prefix("tad_web_notice") . "` where `NoticeWho` like '%{$user_kind}%' or `NoticeWho`='' order by NoticeDate desc limit 0,5";
     $result = $xoopsDB->query($sql)
     or web_error($sql, __FILE__, __LINE__);
-    $data_arr = array();
+    $data_arr = [];
     while ($data = $xoopsDB->fetchArray($result)) {
         $NoticeID                               = $data['NoticeID'];
         $data_arr[$NoticeID]                    = $data;
@@ -116,7 +116,7 @@ function tad_web_my_menu($WebID)
             $defaltWebID = $_SESSION['LoginWebID'];
             $back_home   = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $defaltWebID = $_SESSION['LoginWebID'];
-            $add_power   = array('discuss');
+            $add_power   = ['discuss'];
             //小幫手
             $sql    = "select a.`CateID`,b.ColName from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as a join `" . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
@@ -133,7 +133,7 @@ function tad_web_my_menu($WebID)
             $defaltWebID = $_SESSION['LoginWebID'];
             $back_home   = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $defaltWebID = $_SESSION['LoginWebID'];
-            $add_power   = array('discuss'); //小幫手
+            $add_power   = ['discuss']; //小幫手
             $sql         = "select a.`CateID`,b.ColName from `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as a join `" . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
             $result      = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
@@ -145,7 +145,7 @@ function tad_web_my_menu($WebID)
         } else {
             $user_kind = 'xoops';
             $user_name = $xoopsUser->name();
-            $add_power = array();
+            $add_power = [];
             $MyWebID   = MyWebID('1');
             $DefWebID  = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
 
@@ -264,7 +264,7 @@ function tad_web_my_menu($WebID)
 }
 
 //以流水號秀出某筆tad_web_mems資料內容
-function tad_web_login($WebID, $config = array())
+function tad_web_login($WebID, $config = [])
 {
     global $xoopsUser, $xoopsConfig, $xoopsTpl;
 
@@ -282,7 +282,7 @@ function tad_web_login($WebID, $config = array())
     // $_SESSION['login_from'] = $login_from;
 
     $login_config = get_web_config('login_config', $WebID);
-    $login_config = empty($login_config) ? array() : explode(';', $login_config);
+    $login_config = empty($login_config) ? [] : explode(';', $login_config);
     // die(var_export($login_config));
     $about_setup = get_plugin_setup_values($WebID, "aboutus");
     if ($_GET['test'] == '1') {
@@ -357,7 +357,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 
     $power           = new power($WebID);
     $myts            = MyTextSanitizer::getInstance();
-    $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = array();
+    $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 
     $block_tpl = get_all_blocks('tpl');
     $dir       = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/";
