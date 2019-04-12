@@ -1,6 +1,6 @@
 <?php
 /************** list_work *************/
-function list_work($WebID, $config = array())
+function list_work($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -16,7 +16,7 @@ function list_work($WebID, $config = array())
 
 /************** random_work *************/
 
-function random_work($WebID, $config = array())
+function random_work($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -33,7 +33,7 @@ function random_work($WebID, $config = array())
 
 /************** latest_work *************/
 
-function latest_work($WebID, $config = array())
+function latest_work($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;

@@ -22,7 +22,7 @@ function plugin_setup($WebID, $plugin)
     }
 
     $myts        = MyTextSanitizer::getInstance();
-    $pluginSetup = array();
+    $pluginSetup = [];
     $setup_file  = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
     if (file_exists($setup_file)) {
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";

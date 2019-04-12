@@ -17,7 +17,7 @@ function tad_web_notice_form($NoticeID = '')
     if (!empty($NoticeID)) {
         $DBV = get_tad_web_notice($NoticeID);
     } else {
-        $DBV = array();
+        $DBV = [];
     }
 
     //預設值設定
@@ -238,7 +238,7 @@ function list_tad_web_notice()
     $result = $xoopsDB->query($sql)
     or web_error($sql, __FILE__, __LINE__);
 
-    $all_content = array();
+    $all_content = [];
     $i           = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate

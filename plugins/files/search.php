@@ -33,7 +33,7 @@ function files_search($WebID, $queryarray, $limit = 10)
     $sql .= " ORDER BY  a.`{$date_col}` DESC";
     // die($sql);
     $result = $xoopsDB->query($sql, $limit);
-    $ret    = array();
+    $ret    = [];
     $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $ret[$i]['link']  = "{$plugin}.php?WebID=" . $myrow['WebID'] . "&op=tufdl&{$id_col2}=" . $myrow[$id_col2];

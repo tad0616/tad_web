@@ -3,7 +3,7 @@ include_once "../../mainfile.php";
 $start           = time();
 $folders['bg']   = XOOPS_ROOT_PATH . "/modules/tad_web/images/bg/";
 $folders['head'] = XOOPS_ROOT_PATH . "/modules/tad_web/images/head/";
-$form_files      = array();
+$form_files      = [];
 foreach ($folders as $kind => $dir) {
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {

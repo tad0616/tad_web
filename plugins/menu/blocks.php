@@ -1,6 +1,6 @@
 <?php
 //選項剪影
-function list_menu($WebID, $config = array())
+function list_menu($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;

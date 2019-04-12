@@ -123,7 +123,7 @@ class tags
     }
 
     //新增資料到tad_web_tags中
-    public function save_tags($col_name = "", $col_sn = "", $tag_name = "", $tags = array())
+    public function save_tags($col_name = "", $col_sn = "", $tag_name = "", $tags = [])
     {
         global $xoopsDB, $xoopsUser;
 
@@ -193,7 +193,7 @@ class tags
     public function get_tags($col_name = "", $col_sn = "")
     {
         global $xoopsDB;
-        $tags_arr     = array();
+        $tags_arr     = [];
         $and_col_name = empty($col_name) ? '' : "and `col_name`='{$col_name}'";
         $and_col_sn   = empty($col_sn) ? '' : "and `col_sn`='{$col_sn}'";
         $sql          = "select tag_name , count(*) from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";

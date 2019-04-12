@@ -90,10 +90,10 @@ class tad_web_files
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = $data = array();
+        $main_data = $data = [];
 
         $i        = 0;
-        $need_del = $no_need_del = array();
+        $need_del = $no_need_del = [];
 
         $Webs = getAllWebInfo();
 
@@ -192,7 +192,7 @@ class tad_web_files
         if (!empty($fsn)) {
             $DBV = $this->get_one_data($fsn);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -370,7 +370,7 @@ class tad_web_files
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql       = "select fsn,CateID from " . $xoopsDB->prefix("tad_web_files") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($fsn, $CateID) = $xoopsDB->fetchRow($result)) {
@@ -420,7 +420,7 @@ class tad_web_files
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
-        $main_data = array();
+        $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

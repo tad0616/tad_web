@@ -391,7 +391,7 @@ class web_cate
         include_once XOOPS_ROOT_PATH . "/modules/tad_web/function.php";
 
         $counter    = $counter ? $this->tad_web_cate_data_counter() : '';
-        $arr        = array();
+        $arr        = [];
         $andWebID   = empty($this->WebID) ? '' : "and `WebID` = '{$this->WebID}'";
         $andColName = empty($this->ColName) ? '' : "and `ColName`='{$this->ColName}'";
         $sql        = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "` where 1 $andWebID $andColName order by CateSort";
@@ -488,7 +488,7 @@ class web_cate
         } else {
             $table = $this->table;
         }
-        $counter = array();
+        $counter = [];
         $sql     = "select count(*),CateID from `" . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
         $result  = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {

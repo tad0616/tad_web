@@ -22,7 +22,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
     $xoopsTpl->assign('power_form', $power_form);
 
     $shareBlockCount = '';
-    $webs            = array();
+    $webs            = [];
     $shareBlockID    = get_share_block_id($BlockID);
 
     if ($BlockID) {
@@ -110,7 +110,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = "config")
 }
 
 //區塊設定表單
-function array2form($form_arr = array(), $config = array())
+function array2form($form_arr = [], $config = [])
 {
     if ($_GET['test'] == '1') {
         var_export($form_arr);
@@ -270,7 +270,7 @@ function max_custom_block_num($WebID)
 }
 
 //產生區塊標題
-function mk_block_pic($WebID = "", $block_pic = array(), $use_block_pic = '')
+function mk_block_pic($WebID = "", $block_pic = [], $use_block_pic = '')
 {
     global $xoopsDB;
     foreach ($block_pic as $item => $val) {
@@ -501,7 +501,7 @@ function chk_newblock($WebID)
 
             //找出某區塊安裝在該網站的 $BlockID 以及現有設定
             foreach ($db_blocks_config[$BlockName] as $BlockID => $BlockConfig) {
-                $new_config = $db_config = array();
+                $new_config = $db_config = [];
 
                 //已安裝區塊的設定值陣列
                 $db_config = json_decode($BlockConfig, true);

@@ -1,6 +1,6 @@
 <?php
 //活動剪影
-function list_action($WebID, $config = array())
+function list_action($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -16,7 +16,7 @@ function list_action($WebID, $config = array())
 }
 
 //活動剪影秀
-function action_slide($WebID, $config = array())
+function action_slide($WebID, $config = [])
 {
     global $xoopsDB;
     $power = new power($WebID);

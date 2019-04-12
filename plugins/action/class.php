@@ -85,7 +85,7 @@ class tad_web_action
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = 0;
 

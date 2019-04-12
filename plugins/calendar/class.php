@@ -134,7 +134,7 @@ class tad_web_calendar
         if (!empty($CalendarID)) {
             $DBV = $this->get_one_data($CalendarID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定

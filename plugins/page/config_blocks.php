@@ -20,20 +20,20 @@ $blocksArr['list_page']['plugin']               = 'page';
 $blocksArr['list_page']['tpl']                  = 'list_page.tpl';
 $blocksArr['list_page']['position']             = 'block4';
 $blocksArr['list_page']['config']['limit']      = 20;
-$blocksArr['list_page']['colset']['limit']      = array('label' => _MD_TCW_BLOCK_LIMIT, 'type' => 'text');
+$blocksArr['list_page']['colset']['limit']      = ['label' => _MD_TCW_BLOCK_LIMIT, 'type' => 'text'];
 $blocksArr['list_page']['config']['show_count'] = 0;
-$blocksArr['list_page']['colset']['show_count'] = array('label' => _MD_TCW_PAGE_BLOCK_SHOW_COUNT, 'type' => 'radio', 'options' => array(_YES => 1, _NO => 0));
+$blocksArr['list_page']['colset']['show_count'] = ['label' => _MD_TCW_PAGE_BLOCK_SHOW_COUNT, 'type' => 'radio', 'options' => [_YES => 1, _NO => 0]];
 $blocksArr['list_page']['config']['CateID']     = '';
-$blocksArr['list_page']['colset']['CateID']     = array('label' => _MD_TCW_PAGE_CATE, 'type' => 'radio', 'options' => $page_cates);
+$blocksArr['list_page']['colset']['CateID']     = ['label' => _MD_TCW_PAGE_CATE, 'type' => 'radio', 'options' => $page_cates];
 
 $blocksArr['page_menu']['name']                 = _MD_TCW_PAGE_BLOCK_MENU;
 $blocksArr['page_menu']['plugin']               = 'page';
 $blocksArr['page_menu']['tpl']                  = 'page_menu.tpl';
 $blocksArr['page_menu']['position']             = 'side';
 $blocksArr['page_menu']['config']['limit']      = 40;
-$blocksArr['page_menu']['colset']['limit']      = array('label' => _MD_TCW_BLOCK_LIMIT, 'type' => 'text');
+$blocksArr['page_menu']['colset']['limit']      = ['label' => _MD_TCW_BLOCK_LIMIT, 'type' => 'text'];
 $blocksArr['page_menu']['config']['show_count'] = 0;
-$blocksArr['page_menu']['colset']['show_count'] = array('label' => _MD_TCW_PAGE_BLOCK_SHOW_COUNT, 'type' => 'radio', 'options' => array(_YES => 1, _NO => 0));
+$blocksArr['page_menu']['colset']['show_count'] = ['label' => _MD_TCW_PAGE_BLOCK_SHOW_COUNT, 'type' => 'radio', 'options' => [_YES => 1, _NO => 0]];
 
 //不能刪，否則會導致無法設定
 $blockConfig['page'] = $blocksArr;

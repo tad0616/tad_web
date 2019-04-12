@@ -10,7 +10,7 @@ define('_IS_EZCLASS', $is_ezclass);
 
 //目前觀看的班級
 $WebName = $WebTitle = $WebOwner = $WebOwnerUid = "";
-$Web = $menu_var = $plugin_menu_var = $web_all_config = array();
+$Web = $menu_var = $plugin_menu_var = $web_all_config = [];
 
 $i = 0;
 if (!empty($WebID)) {
@@ -124,7 +124,7 @@ if ($isMyWeb) {
     $menu_var[$i]['icon'] = "fa-check-square-o";
 
     $j = 0;
-    $sub_menu_var = array();
+    $sub_menu_var = [];
 
     $sub_menu_var[$j]['id'] = $j;
     $sub_menu_var[$j]['title'] = _MD_TCW_WEB_TOOLS;
@@ -152,7 +152,7 @@ $menu_var[$i]['target'] = "_blank";
 $menu_var[$i]['icon'] = "fa-share-square-o";
 
 $j = 0;
-$sub_menu_var = array();
+$sub_menu_var = [];
 
 $sub_menu_var[$j]['id'] = $j;
 $sub_menu_var[$j]['title'] = _MD_TCW_HOME;
@@ -201,7 +201,7 @@ if ($isAdmin) {
     $menu_var[$i]['icon'] = "fa-check-square-o";
 
     $j = 0;
-    $sub_menu_var = array();
+    $sub_menu_var = [];
 
     $sub_menu_var[$j]['id'] = $j;
     $sub_menu_var[$j]['title'] = _MD_TCW_ADMINPAGE;

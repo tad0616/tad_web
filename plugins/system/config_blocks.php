@@ -51,20 +51,20 @@ $blocksArr['tlkio']['plugin']                 = 'system';
 $blocksArr['tlkio']['tpl']                    = 'tlkio.tpl';
 $blocksArr['tlkio']['position']               = 'side';
 $blocksArr['tlkio']['config']['tlkio_name']   = "chat_room_{{WebID}}";
-$blocksArr['tlkio']['colset']['tlkio_name']   = array('label' => _MD_TCW_SYSTEM_BLOCK_TLKIO_NAME, 'type' => 'text');
+$blocksArr['tlkio']['colset']['tlkio_name']   = ['label' => _MD_TCW_SYSTEM_BLOCK_TLKIO_NAME, 'type' => 'text'];
 $blocksArr['tlkio']['config']['tlkio_theme']  = "day";
-$blocksArr['tlkio']['colset']['tlkio_theme']  = array('label' => _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME, 'type' => 'select', 'options' => array(_MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_DAY => 'day', _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_NIGHT => 'night', _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_POP => 'pop', _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_MINIMAL => 'minimal'));
+$blocksArr['tlkio']['colset']['tlkio_theme']  = ['label' => _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME, 'type' => 'select', 'options' => [_MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_DAY => 'day', _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_NIGHT => 'night', _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_POP => 'pop', _MD_TCW_SYSTEM_BLOCK_TLKIO_THEME_MINIMAL => 'minimal']];
 $blocksArr['tlkio']['config']['tlkio_height'] = "400";
-$blocksArr['tlkio']['colset']['tlkio_height'] = array('label' => _MD_TCW_SYSTEM_BLOCK_TLKIO_HEIGHT, 'type' => 'text');
+$blocksArr['tlkio']['colset']['tlkio_height'] = ['label' => _MD_TCW_SYSTEM_BLOCK_TLKIO_HEIGHT, 'type' => 'text'];
 
 $blocksArr['countdown']['name']                      = _MD_TCW_SYSTEM_BLOCK_COUNTDOWN;
 $blocksArr['countdown']['plugin']                    = 'system';
 $blocksArr['countdown']['tpl']                       = 'countdown.tpl';
 $blocksArr['countdown']['position']                  = 'side';
 $blocksArr['countdown']['config']['countdown_title'] = _MD_TCW_SYSTEM_BLOCK_COUNTDOWN_TITLE_DEF;
-$blocksArr['countdown']['colset']['countdown_title'] = array('label' => _MD_TCW_SYSTEM_BLOCK_COUNTDOWN_TITLE, 'type' => 'text');
+$blocksArr['countdown']['colset']['countdown_title'] = ['label' => _MD_TCW_SYSTEM_BLOCK_COUNTDOWN_TITLE, 'type' => 'text'];
 $blocksArr['countdown']['config']['countdown_date']  = date("12/25/Y 00:00:00");
-$blocksArr['countdown']['colset']['countdown_date']  = array('label' => _MD_TCW_SYSTEM_BLOCK_COUNTDOWN_DATE, 'type' => 'datetime');
+$blocksArr['countdown']['colset']['countdown_date']  = ['label' => _MD_TCW_SYSTEM_BLOCK_COUNTDOWN_DATE, 'type' => 'datetime'];
 
 // $blocksArr['flickrit']['name']                     = _MD_TCW_SYSTEM_BLOCK_FLICKRIT;
 // $blocksArr['flickrit']['plugin']   = 'system';
@@ -82,9 +82,9 @@ $blocksArr['tags']['plugin']               = 'system';
 $blocksArr['tags']['tpl']                  = 'tags.tpl';
 $blocksArr['tags']['position']             = 'side';
 $blocksArr['tags']['config']['tags_mode']  = 'list';
-$blocksArr['tags']['colset']['tags_mode']  = array('label' => _MD_TCW_SYSTEM_BLOCK_TAGS_MODE, 'type' => 'radio', 'options' => array(_MD_TCW_SYSTEM_BLOCK_TAGS_MODE_LIST => 'list', _MD_TCW_SYSTEM_BLOCK_TAGS_MODE_CLOUD => 'cloud'));
+$blocksArr['tags']['colset']['tags_mode']  = ['label' => _MD_TCW_SYSTEM_BLOCK_TAGS_MODE, 'type' => 'radio', 'options' => [_MD_TCW_SYSTEM_BLOCK_TAGS_MODE_LIST => 'list', _MD_TCW_SYSTEM_BLOCK_TAGS_MODE_CLOUD => 'cloud']];
 $blocksArr['tags']['config']['min_height'] = '250';
-$blocksArr['tags']['colset']['min_height'] = array('label' => _MD_TCW_SYSTEM_BLOCK_MIN_HEIGHT, 'type' => 'text');
+$blocksArr['tags']['colset']['min_height'] = ['label' => _MD_TCW_SYSTEM_BLOCK_MIN_HEIGHT, 'type' => 'text'];
 
 //不能刪，否則會導致無法設定
 $blockConfig['system'] = $blocksArr;

@@ -85,7 +85,7 @@ class tad_web_page
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $total  = $xoopsDB->getRowsNum($result);
 
-        $main_data = $cate_data = $cate_size = array();
+        $main_data = $cate_data = $cate_size = [];
 
         $i = 0;
 
@@ -256,7 +256,7 @@ class tad_web_page
         if (!empty($PageID)) {
             $DBV = $this->get_one_data($PageID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -442,7 +442,7 @@ class tad_web_page
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql       = "select PageID,CateID from " . $xoopsDB->prefix("tad_web_page") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($PageID, $CateID) = $xoopsDB->fetchRow($result)) {
@@ -503,7 +503,7 @@ class tad_web_page
     {
         global $xoopsDB;
         $DefPageSort = '';
-        $all         = $main         = array();
+        $all         = $main         = [];
         $sql         = "select PageID,PageTitle,PageSort from " . $xoopsDB->prefix("tad_web_page") . " where CateID='{$DefCateID}' order by PageSort";
         // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);

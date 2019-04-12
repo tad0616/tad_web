@@ -36,7 +36,7 @@ class tad_web_aboutus
             $sql       = "select a.*,b.* from " . $xoopsDB->prefix("tad_web") . " as a left join " . $xoopsDB->prefix("apply") . " as b on a.WebOwnerUid=b.uid where a.`WebEnable`='1' {$and_county} {$and_city} {$and_SchoolName} order by b.zip, {$list_web_order}";
             $result    = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             $total_web = 0;
-            $all_webs  = array();
+            $all_webs  = [];
             while ($all = $xoopsDB->fetchArray($result)) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
                 foreach ($all as $k => $v) {
@@ -59,7 +59,7 @@ class tad_web_aboutus
                 $total_web++;
             }
 
-            $data = array();
+            $data = [];
             $i    = 0;
             if (!empty($def_SchoolName)) {
                 foreach ($all_webs as $key => $item) {
@@ -112,7 +112,7 @@ class tad_web_aboutus
             $sql    = "select * from " . $xoopsDB->prefix("tad_web") . " where `WebEnable`='1' order by {$list_web_order}";
             $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-            $data = array();
+            $data = [];
             $i    = 0;
             while ($all = $xoopsDB->fetchArray($result)) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
@@ -510,7 +510,7 @@ class tad_web_aboutus
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
 
-        $students = array();
+        $students = [];
 
         while ($all = $xoopsDB->fetchArray($result)) {
 
@@ -586,7 +586,7 @@ class tad_web_aboutus
             $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             $i      = 0;
 
-            $students = array();
+            $students = [];
             while ($all = $xoopsDB->fetchArray($result)) {
                 $students[$i]           = $all;
                 $students[$i]['color']  = ($all['MemSex'] == '1') ? 'blue' : 'red';
@@ -662,7 +662,7 @@ class tad_web_aboutus
             $DBV  = get_tad_web_mems($MemID);
             $DBV2 = get_tad_web_link_mems($MemID, $DefCateID);
         } else {
-            $DBV = $DBV2 = array();
+            $DBV = $DBV2 = [];
         }
 
         //`MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
@@ -782,7 +782,7 @@ class tad_web_aboutus
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
 
-        $students = array();
+        $students = [];
         while ($all = $xoopsDB->fetchArray($result)) {
             $students[$i]           = $all;
             $students[$i]['color']  = ($all['MemSex'] == '1') ? 'blue' : 'red';
@@ -1144,7 +1144,7 @@ class tad_web_aboutus
         $web_cate = new web_cate('0', "web_cate", $table);
         $cate     = $web_cate->get_tad_web_cate_arr();
         $webs     = get_web_cate_arr();
-        $data_arr = array();
+        $data_arr = [];
         if (is_array($cate)) {
             foreach ($cate as $CateID => $data) {
                 $data_arr[$CateID]         = $data;
@@ -1219,7 +1219,7 @@ class tad_web_aboutus
         }
 
         $i                 = 0;
-        $config_plugin_arr = array();
+        $config_plugin_arr = [];
         foreach ($menu_var as $k => $plugin) {
             // die(var_export($plugin));
             $dirname = $plugin['dirname'];
@@ -1609,7 +1609,7 @@ class tad_web_aboutus
         $row       = 1;
         $real_num  = ($row_num * 4) - 4;
         $more_num  = $real_num - $mem_total;
-        $all_mems  = array();
+        $all_mems  = [];
 
         if ($more_num) {
             $sql2 .= $sql . " limit 0, $more_num";
@@ -1693,11 +1693,11 @@ class tad_web_aboutus
             if (($row == 1 or $row == $row_num) and $i >= $row_num) {
                 $row++;
                 $i        = 1;
-                $all_main = array();
+                $all_main = [];
             } elseif ($row > 1 and $row < $row_num and $i >= 2) {
                 $row++;
                 $i        = 1;
-                $all_main = array();
+                $all_main = [];
             } else {
                 $i++;
             }

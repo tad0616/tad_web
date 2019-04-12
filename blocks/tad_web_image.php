@@ -21,7 +21,7 @@ function tad_web_image()
     if (empty($ActionID)) {
         return;
     }
-    $slide_images = array();
+    $slide_images = [];
 
     $block['WebTitle']   = $WebTitle;
     $block['WebID']      = $WebID;

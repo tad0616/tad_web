@@ -4,9 +4,9 @@ $blocksArr['list_video']['plugin']          = 'video';
 $blocksArr['list_video']['tpl']             = 'list_video.tpl';
 $blocksArr['list_video']['position']        = 'block4';
 $blocksArr['list_video']['config']['limit'] = 5;
-$blocksArr['list_video']['colset']['limit'] = array('label' => _MD_TCW_VIDEO_BLOCK_LIMIT, 'type' => 'text');
+$blocksArr['list_video']['colset']['limit'] = ['label' => _MD_TCW_VIDEO_BLOCK_LIMIT, 'type' => 'text'];
 $blocksArr['list_video']['config']['mode']  = 'list';
-$blocksArr['list_video']['colset']['mode']  = array('label' => _MD_TCW_VIDEO_BLOCK_MODE, 'type' => 'radio', 'options' => array(_MD_TCW_VIDEO_BLOCK_LIST_MODE => 'list', _MD_TCW_VIDEO_BLOCK_THUMB_MODE => 'thumb'));
+$blocksArr['list_video']['colset']['mode']  = ['label' => _MD_TCW_VIDEO_BLOCK_MODE, 'type' => 'radio', 'options' => [_MD_TCW_VIDEO_BLOCK_LIST_MODE => 'list', _MD_TCW_VIDEO_BLOCK_THUMB_MODE => 'thumb']];
 
 $blocksArr['random_video']['name']     = _MD_TCW_VIDEO_BLOCK_RANDOM;
 $blocksArr['random_video']['plugin']   = 'video';

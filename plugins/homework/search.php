@@ -31,7 +31,7 @@ function homework_search($WebID, $queryarray, $limit = 10)
     $sql .= " ORDER BY  `{$date_col}` DESC";
 
     $result = $xoopsDB->query($sql, $limit);
-    $ret    = array();
+    $ret    = [];
     $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $ret[$i]['link']  = "{$plugin}.php?WebID=" . $myrow['WebID'] . "&{$id_col}=" . $myrow[$id_col];

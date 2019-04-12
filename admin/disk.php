@@ -21,7 +21,7 @@ function list_all_web($defCateID = '')
 
     $result            = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $_SESSION['quota'] = '';
-    $data              = array();
+    $data              = [];
     $dir               = XOOPS_ROOT_PATH . "/uploads/tad_web/";
 
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
@@ -79,7 +79,7 @@ function get_all_dir_size()
 function get_free_space()
 {
     $bytes     = disk_free_space(".");
-    $si_prefix = array('B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB');
+    $si_prefix = ['B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB'];
     $base      = 1024;
     $class     = min((int) log($bytes, $base), count($si_prefix) - 1);
     $space     = sprintf('%1.2f', $bytes / pow($base, $class)) . ' ' . $si_prefix[$class];
@@ -110,11 +110,11 @@ function view_file($WebID = '')
 function dirToJson($dir, $i = 1, $j = 0)
 {
     $data   = "";
-    $result = array();
+    $result = [];
 
     $cdir = scandir($dir);
     foreach ($cdir as $key => $value) {
-        if (!in_array($value, array(".", ".."))) {
+        if (!in_array($value, [".", ".."])) {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
                 $data .= "{ id:{$i}, pId:{$j}, name:'{$dir}/{$value}', url:'{$url}', target:'_self', open:'true'}, \n";
                 $data .= dirToJson($dir . DIRECTORY_SEPARATOR . $value, $i, $i);
@@ -150,12 +150,12 @@ function dirToJson($dir, $i = 1, $j = 0)
 
 function dirToArray($dir)
 {
-    $result = array();
+    $result = [];
     $i      = 0;
 
     $cdir = scandir($dir);
     foreach ($cdir as $key => $value) {
-        if (!in_array($value, array(".", ".."))) {
+        if (!in_array($value, [".", ".."])) {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
                 $result[$value]['name'] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
                 $result[$value]['size'] = '';

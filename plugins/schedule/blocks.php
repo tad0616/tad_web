@@ -1,5 +1,5 @@
 <?php
-function list_schedule($WebID, $config = array())
+function list_schedule($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;

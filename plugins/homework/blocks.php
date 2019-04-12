@@ -1,5 +1,5 @@
 <?php
-function list_homework($WebID, $config = array())
+function list_homework($WebID, $config = [])
 {
 
     global $xoopsDB, $xoopsTpl, $TadUpFiles;

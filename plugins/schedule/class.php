@@ -66,7 +66,7 @@ class tad_web_schedule
         }
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = $total = 0;
 
@@ -198,7 +198,7 @@ class tad_web_schedule
         if (!empty($ScheduleID)) {
             $DBV = $this->get_one_data($ScheduleID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -259,7 +259,7 @@ class tad_web_schedule
 
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        $SubjectArr = array();
+        $SubjectArr = [];
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
                 $$k = $v;
