@@ -10,11 +10,11 @@ define('_MD_TCW_MEM_CLASSORGAN', 'School title');
 define('_MD_TCW_MEM_EXPERTISES', 'Specialty');
 define('_MD_TCW_MEMURL', 'Personal page');
 define('_MD_TCW_MEMTEAMORGAN', 'Team title');
-define("_MD_TCW_MEM_ABOUTME", "About");
+define('_MD_TCW_MEM_ABOUTME', 'About');
 define('_MD_TCW_MEMORDER', 'Sorting');
 define('_MD_TCW_MEMENABLE', 'State');
 define('_MD_TCW_UPLOAD_MY_PHOTO', 'Admin photo');
-define("_MD_TCW_UPLOAD_MEM_PHOTO", "photo");
+define('_MD_TCW_UPLOAD_MEM_PHOTO', 'photo');
 define('_MD_TCW_COMMING_SOON', 'Still working ...');
 define('_MD_TCW_CLASS_WEB_NAME', 'Class network name');
 define('_MD_TCW_IMPORT', 'Import');
@@ -55,38 +55,38 @@ define('_MD_TCW_IMPORT_LINK', "
    <li style = 'color: red;' > only supports xls format(csv, xlsx not support) </li >
 </ul > ");
 
-define("_MD_TCW_NO_WEB", "There is no any personal website, wait for the administrator establishment.");
-define("_MD_TCW_NO_WEB_ADMIN", "There are no personal website, ask the administrator as soon as possible to the management page to specify a user can have a personal Web site.");
+define('_MD_TCW_NO_WEB', 'There is no any personal website, wait for the administrator establishment.');
+define('_MD_TCW_NO_WEB_ADMIN', 'There are no personal website, ask the administrator as soon as possible to the management page to specify a user can have a personal Web site.');
 
-define("_MD_TCW_ABOUTUS_HOMEWORK", "Homework");
-define("_MD_TCW_ABOUTUS_SCHEDULE", "Schedule Table");
-define("_MD_TCW_ABOUTUS_NO_HOMEWORK", "No Homework");
-define("_MD_TCW_ABOUTUS_NO_SCHEDULE", "No Schedule");
-define("_MD_TCW_ABOUT_BLOCK_LIST_ADM", "Administrator");
-define("_MD_TCW_ABOUTUS_BLOCK_LIST", "About Us");
-define("_MD_TCW_ABOUT_BLOCK_LIST_STUD", "About Us");
+define('_MD_TCW_ABOUTUS_HOMEWORK', 'Homework');
+define('_MD_TCW_ABOUTUS_SCHEDULE', 'Schedule Table');
+define('_MD_TCW_ABOUTUS_NO_HOMEWORK', 'No Homework');
+define('_MD_TCW_ABOUTUS_NO_SCHEDULE', 'No Schedule');
+define('_MD_TCW_ABOUT_BLOCK_LIST_ADM', 'Administrator');
+define('_MD_TCW_ABOUTUS_BLOCK_LIST', 'About Us');
+define('_MD_TCW_ABOUT_BLOCK_LIST_STUD', 'About Us');
 
-define("_MD_TCW_SEME_CATE", "%s Year");
-define("_MD_TCW_SET_SEME", "Setting %s");
-define("_MD_TCW_SELECT_SEME", "Select %s");
-define("_MD_TCW_NO_MEM", "No any %s");
-define("_MD_TCW_CLASS_PIC", "%s photo");
+define('_MD_TCW_SEME_CATE', '%s Year');
+define('_MD_TCW_SET_SEME', 'Setting %s');
+define('_MD_TCW_SELECT_SEME', 'Select %s');
+define('_MD_TCW_NO_MEM', 'No any %s');
+define('_MD_TCW_CLASS_PIC', '%s photo');
 
-define("_MD_TCW_CLASS_LIST", "All my %s");
-define("_MD_TCW_CLASS_TITLE", "%s title");
-define("_MD_TCW_ADD_CLASS", "Add %s");
+define('_MD_TCW_CLASS_LIST', 'All my %s');
+define('_MD_TCW_CLASS_TITLE', '%s title');
+define('_MD_TCW_ADD_CLASS', 'Add %s');
 define('_MD_TCW_CLASS_SETUP', 'Setup %s');
-define("_MD_TCW_NO_CLASS_PIC", "No %s photo");
-define("_MD_TCW_EDIT_CLASS_TITLE", "%s title");
-define("_MD_TCW_SELECT_CLASS", "Select %s");
+define('_MD_TCW_NO_CLASS_PIC', 'No %s photo');
+define('_MD_TCW_EDIT_CLASS_TITLE', '%s title');
+define('_MD_TCW_SELECT_CLASS', 'Select %s');
 
 define('_MD_TCW_MEM_AMOUNT', '%s amounts');
-define("_MD_TCW_EDIT_MEM", "Edit %s");
+define('_MD_TCW_EDIT_MEM', 'Edit %s');
 define('_MD_TCW_STUDENT_SETUP', 'Setup %s');
-define("_MD_TCW_STUDENT_NO_COPY", "Not to copy, import or manually add or retain the current status");
-define("_MD_TCW_STUDENT_COPY", "copy from \"%s\"");
-define("_MD_TCW_STUDENT_POSITION", "Rows of seats");
-define("_MD_TCW_ADD_STUDENT", "Add %s");
+define('_MD_TCW_STUDENT_NO_COPY', 'Not to copy, import or manually add or retain the current status');
+define('_MD_TCW_STUDENT_COPY', 'copy from "%s"');
+define('_MD_TCW_STUDENT_POSITION', 'Rows of seats');
+define('_MD_TCW_ADD_STUDENT', 'Add %s');
 define('_MD_TCW_ADD_MEM', 'Manually add %s');
 
 define('_MD_TCW_OWNER_NAME', '%s name');
@@ -100,7 +100,7 @@ define('_MD_TCW_ABOUTUS_S2_DEFAULT', 'class');
 define('_MD_TCW_ABOUTUS_S3_TEXT', 'The "student" to');
 define('_MD_TCW_ABOUTUS_S3_DESC', 'The "student" to the new string, for example: members, players and so on。');
 
-define("_MD_TCW_ABOUT_RESET", "Reset");
+define('_MD_TCW_ABOUT_RESET', 'Reset');
 
 define('_MD_TCW_ABOUTUS_S4_TEXT', 'Display Mode');
 define('_MD_TCW_ABOUTUS_S4_DESC', 'How to display members?');

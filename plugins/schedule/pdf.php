@@ -1,19 +1,19 @@
 <?php
-include_once "../../../../mainfile.php";
-include_once "../../function.php";
-include_once "../../class/cate.php";
-include_once "class.php";
+include_once '../../../../mainfile.php';
+include_once '../../function.php';
+include_once '../../class/cate.php';
+include_once 'class.php';
 
 set_time_limit(0);
-ini_set("memory_limit", "150M");
+ini_set('memory_limit', '150M');
 
-$WebID      = empty($_REQUEST['WebID']) ? "" : (int)$_REQUEST['WebID'];
-$ScheduleID = empty($_REQUEST['ScheduleID']) ? "" : (int)$_REQUEST['ScheduleID'];
+$WebID = empty($_REQUEST['WebID']) ? '' : (int)$_REQUEST['WebID'];
+$ScheduleID = empty($_REQUEST['ScheduleID']) ? '' : (int)$_REQUEST['ScheduleID'];
 
-$schedule      = new tad_web_schedule($WebID);
+$schedule = new tad_web_schedule($WebID);
 $schedule_data = $schedule->get_one_data($ScheduleID);
 $schedule_data = $schedule->get_one_data($ScheduleID);
-$content       = "<h2>{$schedule_data['ScheduleName']}</h2>";
+$content = "<h2>{$schedule_data['ScheduleName']}</h2>";
 $content .= $schedule->get_one_schedule($ScheduleID);
 $html = html5($content, false, false, null, false);
 $html = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $html);

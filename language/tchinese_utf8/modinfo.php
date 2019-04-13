@@ -1,10 +1,10 @@
 <?php
 include_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/modinfo_common.php";
 
-define("_MI_TCW_NAME", "多人網頁系統");
-define("_MI_TCW_AUTHOR", "tad(tad0616@gmail.com)");
-define("_MI_TCW_CREDITS", "tad");
-define("_MI_TCW_DESC", "XOOPS多人網頁系統，可用來當作班級網頁，或者使用者的個人網頁");
+define('_MI_TCW_NAME', '多人網頁系統');
+define('_MI_TCW_AUTHOR', 'tad(tad0616@gmail.com)');
+define('_MI_TCW_CREDITS', 'tad');
+define('_MI_TCW_DESC', 'XOOPS多人網頁系統，可用來當作班級網頁，或者使用者的個人網頁');
 
 define('_MI_TCW_ABOUTUS', '關於我們');
 define('_MI_TCW_NEWS', '最新消息');
@@ -21,21 +21,21 @@ define('_MI_TCW_ADMENU4', '使用空間');
 define('_MI_TCW_ADMENU5', '課表樣板');
 define('_MI_TCW_ADMENU6', '全域通知');
 
-define("_MI_TCW_BNAME1", "網頁列表選單");
-define("_MI_TCW_BDESC1", "列出所有個人網頁的選單");
+define('_MI_TCW_BNAME1', '網頁列表選單');
+define('_MI_TCW_BDESC1', '列出所有個人網頁的選單');
 
-define("_MI_TCW_BNAME2", "最新討論");
-define("_MI_TCW_BDESC2", "最新討論");
+define('_MI_TCW_BNAME2', '最新討論');
+define('_MI_TCW_BDESC2', '最新討論');
 
-define("_MI_TCW_BNAME3", "活動剪影");
-define("_MI_TCW_BDESC3", "活動剪影");
+define('_MI_TCW_BNAME3', '活動剪影');
+define('_MI_TCW_BDESC3', '活動剪影');
 
-define("_MI_TCW_BNAME4", "選單");
-define("_MI_TCW_BDESC4", "選單");
+define('_MI_TCW_BNAME4', '選單');
+define('_MI_TCW_BDESC4', '選單');
 
-define("_MI_TCW_WEB_MODE_TITLE", "模組首頁標題");
-define("_MI_TCW_WEB_MODE_DESC", "此模組首頁欲呈現的標題");
-define("_MI_TCW_WEB_MODE_DEF", "班級網頁一覽");
+define('_MI_TCW_WEB_MODE_TITLE', '模組首頁標題');
+define('_MI_TCW_WEB_MODE_DESC', '此模組首頁欲呈現的標題');
+define('_MI_TCW_WEB_MODE_DEF', '班級網頁一覽');
 
 define('_MI_TCW_WEB_DIRNAME', basename(dirname(dirname(__DIR__))));
 define('_MI_TCW_WEB_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');

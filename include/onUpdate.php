@@ -10,7 +10,7 @@ function xoops_module_update_tad_web($module, $old_version)
     $is_ezclass = XOOPS_URL == _EZCLASS ? true : false;
     define('_IS_EZCLASS', $is_ezclass);
 
-    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web");
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web');
     //重新產生外掛設定
     get_dir_plugins('force');
     //重新產生區塊設定
@@ -111,7 +111,6 @@ function xoops_module_update_tad_web($module, $old_version)
         if (Utility::chk_fc_tag()) {
             Utility::go_fc_tag();
         }
-
     }
 
     Utility::chk_sql_update();
@@ -124,5 +123,6 @@ function xoops_module_update_tad_web($module, $old_version)
 
     Utility::chk_plugin_update();
     Utility::fiexd_block();
+
     return true;
 }

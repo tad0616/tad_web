@@ -12,7 +12,7 @@ if (works_onUpdate2_chk()) {
 function works_onUpdate1_chk()
 {
     global $xoopsDB;
-    $sql    = "SELECT count(`WorksKind`) FROM " . $xoopsDB->prefix("tad_web_works");
+    $sql = 'SELECT count(`WorksKind`) FROM ' . $xoopsDB->prefix('tad_web_works');
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -24,9 +24,10 @@ function works_onUpdate1_chk()
 function works_onUpdate1_go()
 {
     global $xoopsDB;
-    $sql = "ALTER TABLE " . $xoopsDB->prefix("tad_web_works") . " ADD `WorksKind` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '上傳方式',
+    $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tad_web_works') . " ADD `WorksKind` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '上傳方式',
     ADD `WorksEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '是否啟用'";
     $xoopsDB->queryF($sql);
+
     return true;
 }
 
@@ -34,7 +35,7 @@ function works_onUpdate1_go()
 function works_onUpdate2_chk()
 {
     global $xoopsDB;
-    $sql    = "SELECT count(*) FROM " . $xoopsDB->prefix("tad_web_works_content");
+    $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_works_content');
     $result = $xoopsDB->query($sql);
     if (empty($result)) {
         return true;
@@ -46,7 +47,7 @@ function works_onUpdate2_chk()
 function works_onUpdate2_go()
 {
     global $xoopsDB;
-    $sql = "CREATE TABLE `" . $xoopsDB->prefix("tad_web_works_content") . "` (
+    $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_works_content') . "` (
       `WorksID` SMALLINT(5) UNSIGNED NOT NULL COMMENT '作品主題流水號',
       `MemID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0,
       `MemName` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '上傳者',
