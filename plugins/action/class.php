@@ -138,7 +138,10 @@ class tad_web_action
             $data['main_data'] = $main_data;
             $data['total']     = $total;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
+<<<<<<< HEAD
 
+=======
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
             return $data;
         } else {
             $xoopsTpl->assign('bar', $bar);
@@ -163,7 +166,7 @@ class tad_web_action
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
-        $ActionID = (int)$ActionID;
+        $ActionID = (int) $ActionID;
         $this->add_counter($ActionID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_action") . " where ActionID='{$ActionID}'";
@@ -331,17 +334,21 @@ class tad_web_action
             $uid = $xoopsUser->getVar('uid');
         }
 
+<<<<<<< HEAD
         $myts                 = MyTextSanitizer::getInstance();
 
+=======
+        $myts        = MyTextSanitizer::getInstance();
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
         $ActionName  = $myts->addSlashes($_POST['ActionName']);
         $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
         $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
-        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $ActionDate  = $myts->addSlashes($_POST['ActionDate']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $ActionCount = intval($_POST['ActionCount']);
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
+        $ActionCount = (int) $_POST['ActionCount'];
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_action") . "
@@ -371,16 +378,26 @@ class tad_web_action
     {
         global $xoopsDB, $TadUpFiles;
 
+<<<<<<< HEAD
         $myts                 = MyTextSanitizer::getInstance();
+=======
+        $myts        = MyTextSanitizer::getInstance();
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
         $ActionName  = $myts->addSlashes($_POST['ActionName']);
         $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
         $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
-        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $ActionDate  = $myts->addSlashes($_POST['ActionDate']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
+<<<<<<< HEAD
         $read = $myts->addSlashes($_POST['read']);
         $CateID      = intval($_POST['CateID']);
         $WebID       = intval($_POST['WebID']);
+=======
+        $read        = $myts->addSlashes($_POST['read']);
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
@@ -441,7 +458,10 @@ class tad_web_action
         $allCateID = array();
         $sql       = "select ActionID,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+<<<<<<< HEAD
 
+=======
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
         while (list($ActionID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ActionID);
             $allCateID[$CateID] = $CateID;
