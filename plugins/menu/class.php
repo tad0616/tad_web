@@ -303,7 +303,7 @@ class tad_web_menu
         $WebID         = (int) $_POST['WebID'];
         $Status        = (int) $_POST['Status'];
         $menu_type     = $myts->addSlashes($_POST['menu_type']);
-        $CateID        = intval($_POST['CateID']);
+        $CateID        = (int)$_POST['CateID'];
         $newCateName   = $myts->addSlashes($_POST['newCateName']);
 
         $ColName = $ColSn = '';
@@ -353,18 +353,18 @@ class tad_web_menu
         $myts          = MyTextSanitizer::getInstance();
         $MenuTitle     = $myts->addSlashes($_POST['MenuTitle']);
         $Plugin        = $myts->addSlashes($_POST['Plugin']);
-        $PluginCate    = intval($_POST['PluginCate']);
-        $PluginContent = intval($_POST['PluginContent']);
+        $PluginCate    = (int)$_POST['PluginCate'];
+        $PluginContent = (int)$_POST['PluginContent'];
         $Link          = $myts->addSlashes($_POST['Link']);
         $Target        = $myts->addSlashes($_POST['Target']);
         $Icon          = $myts->addSlashes($_POST['Icon']);
         $Color         = $myts->addSlashes($_POST['Color']);
         $BgColor       = $myts->addSlashes($_POST['BgColor']);
-        $ParentMenuID  = intval($_POST['ParentMenuID']);
-        $WebID         = intval($_POST['WebID']);
-        $Status        = intval($_POST['Status']);
+        $ParentMenuID  = (int)$_POST['ParentMenuID'];
+        $WebID         = (int)$_POST['WebID'];
+        $Status        = (int)$_POST['Status'];
         $menu_type     = $myts->addSlashes($_POST['menu_type']);
-        $CateID        = intval($_POST['CateID']);
+        $CateID        = (int)$_POST['CateID'];
         $newCateName   = $myts->addSlashes($_POST['newCateName']);
         $read          = $myts->addSlashes($_POST['read']);
 
