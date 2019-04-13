@@ -10,7 +10,7 @@ $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 $MemID = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
 $MemName = system_CleanVars($_REQUEST, 'MemName', '', 'string');
 
-if ('get_reationship' == $op) {
+if ('get_reationship' === $op) {
     $sql = 'select Reationship from ' . $xoopsDB->prefix('tad_web_mem_parents') . " where  `MemID`='{$MemID}' and `ParentEnable`='1'";
     // die('<option>' . $sql . '</option>');
     $result = $xoopsDB->query($sql) or die($sql);
@@ -19,14 +19,14 @@ if ('get_reationship' == $op) {
         $option .= "<option vlaue='{$Reationship}'>{$Reationship}</option>";
     }
     die($option);
-} elseif ('chk_unable' == $op) {
+} elseif ('chk_unable' === $op) {
     $sql = 'select `ParentID`, `Reationship` ,`code` from ' . $xoopsDB->prefix('tad_web_mem_parents') . " where  `MemID`='{$MemID}' and `ParentEnable`='0'";
     // die('<option>' . $sql . '</option>');
     $result = $xoopsDB->query($sql) or die($sql);
     $option = '';
     list($ParentID, $Reationship, $code) = $xoopsDB->fetchRow($result);
     die("<a href='" . XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$WebID}&op=send_signup_mail&ParentID={$ParentID}&chk_code={$code}' class='btn btn-success'>" . _MD_TCW_ABOUTUS_RE_SENDMAIL_TO . (string)($MemName) . _MD_TCW_ABOUTUS_S . "{$Reationship}</a>");
-} elseif ('get_parents' == $op) {
+} elseif ('get_parents' === $op) {
     if (empty($CateID)) {
         die(_MD_TCW_ABOUTUS_SELECT_CLASS);
     }

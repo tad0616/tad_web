@@ -8,7 +8,7 @@ foreach ($folders as $kind => $dir) {
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
             while (false !== ($file = readdir($dh))) {
-                if ('.' == mb_substr($file, 0, 1)) {
+                if ('.' === mb_substr($file, 0, 1)) {
                     continue;
                 }
                 $form_files[$kind][$file] = $dir . $file;
@@ -32,7 +32,7 @@ while (list($WebID) = $xoopsDB->fetchRow($result)) {
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (false !== ($file = readdir($dh))) {
-                    if ('.' == mb_substr($file, 0, 1)) {
+                    if ('.' === mb_substr($file, 0, 1)) {
                         continue;
                     }
                     if (in_array($file, $filenames, true)) {

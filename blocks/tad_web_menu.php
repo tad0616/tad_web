@@ -128,9 +128,9 @@ function tad_web_menu($options)
             $method_const = '_' . mb_strtoupper($method);
             $loginTitle = sprintf(_MB_TCW_OPENID_LOGIN, constant($method_const));
 
-            if ('facebook' == $method) {
+            if ('facebook' === $method) {
                 $tlogin[$i]['link'] = facebook_login('return');
-            } elseif ('google' == $method) {
+            } elseif ('google' === $method) {
                 $tlogin[$i]['link'] = google_login('return');
             } else {
                 $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";

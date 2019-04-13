@@ -46,7 +46,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
 
     $form = $editor = '';
     //新增
-    if ('add' == $mode) {
+    if ('add' === $mode) {
         include_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/image");
@@ -65,7 +65,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
         $block_plugin = isset($block['plugin']) ? $block['plugin'] : $plugin;
         $config = isset($block['plugin']) ? json_decode($block['BlockConfig'], true) : '';
 
-        if ('custom' == $block_plugin) {
+        if ('custom' === $block_plugin) {
             include_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
             $ck = new CKEditor("tad_web/{$WebID}/block", 'BlockContent[html]', $block['BlockContent']);
             $ck->setHeight(250);
@@ -417,10 +417,10 @@ function demo_block($BlockID, $WebID)
     $config = json_decode($BlockConfig, true);
     $blocks_arr['config'] = $config;
     // die(var_export($blocks_arr));
-    if ('custom' == $plugin or 'share' == $plugin) {
-        if ('iframe' == $config['content_type']) {
+    if ('custom' === $plugin or 'share' === $plugin) {
+        if ('iframe' === $config['content_type']) {
             $blocks_arr['BlockContent'] = "<iframe title=\"{$BlockTitle}\" src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
-        } elseif ('js' == $config['content_type']) {
+        } elseif ('js' === $config['content_type']) {
             $blocks_arr['BlockContent'] = $BlockContent;
         } else {
             $blocks_arr['BlockContent'] = $myts->displayTarea($BlockContent, 1);
@@ -436,7 +436,7 @@ function demo_block($BlockID, $WebID)
     }
     // die(var_export($plugin_menu_var));
 
-    if ('share' == $plugin) {
+    if ('share' === $plugin) {
         $info = get_tad_web($blocks_arr['WebID']);
         $xoopsTpl->assign('share_info', $info);
     }

@@ -77,7 +77,7 @@ class tad_web_page
         $total = $PageBar['total'];
 
         $debug = 0;
-        if (isset($_GET['debug']) and 1 == $_GET['debug'] and 'all' == $CateID) {
+        if (isset($_GET['debug']) and 1 == $_GET['debug'] and 'all' === $CateID) {
             echo "<h2>{$sql}</h2>";
             $debug = 1;
         }
@@ -130,7 +130,7 @@ class tad_web_page
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_page_func', "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['cate_arr'] = $cate_arr;
             $data['cate_data'] = $cate_data;
             $data['main_data'] = $main_data;
@@ -166,7 +166,7 @@ class tad_web_page
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             return $all;
         }
 

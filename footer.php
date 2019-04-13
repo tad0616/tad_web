@@ -36,12 +36,12 @@ if (!defined('_DISPLAY_MODE')) {
 }
 $xoopsTpl->assign('web_display_mode', _DISPLAY_MODE);
 
-if ($WebID and _DISPLAY_MODE == 'home') {
+if ($WebID and _DISPLAY_MODE === 'home') {
     $xoopsTpl->assign('xoops_pagetitle', $WebTitle);
     $xoopsTpl->assign('xoops_sitename', $WebName);
     $xoopsTpl->assign('logo_img', XOOPS_URL . "/uploads/tad_web/{$WebID}/header_480.png");
     $xoopsTpl->assign('fb_description', $WebName);
-} elseif ($WebID and _DISPLAY_MODE != 'home') {
+} elseif ($WebID and _DISPLAY_MODE !== 'home') {
     $xoopsTpl->assign('xoops_sitename', $WebName);
     $xoopsTpl->assign('logo_img', XOOPS_URL . "/uploads/tad_web/{$WebID}/header_480.png");
 }
@@ -298,9 +298,9 @@ function tad_web_login($WebID, $config = [])
             $method_const = '_' . mb_strtoupper($method);
             $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
 
-            if ('facebook' == $method) {
+            if ('facebook' === $method) {
                 $tlogin[$i]['link'] = facebook_login('return');
-            } elseif ('google' == $method) {
+            } elseif ('google' === $method) {
                 $tlogin[$i]['link'] = google_login('return');
             } else {
                 $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
@@ -354,7 +354,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     $block_tpl = get_all_blocks('tpl');
     $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/';
 
-    $andBlockPosition = 'home' == $web_display_mode ? '' : "and `BlockPosition`='side'";
+    $andBlockPosition = 'home' === $web_display_mode ? '' : "and `BlockPosition`='side'";
     // die(var_export($Web));
     if (isset($Web['WebEnable']) and '1' != $Web['WebEnable']) {
         $andForceMenu = "and (`BlockEnable`='1' or `BlockName`='my_menu')";
@@ -380,19 +380,19 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
             continue;
         }
 
-        if ('1' != $Web['WebEnable'] and 'my_menu' == $BlockName) {
+        if ('1' != $Web['WebEnable'] and 'my_menu' === $BlockName) {
             $all['BlockPosition'] = $BlockPosition = 'side';
         }
         $blocks_arr = $all;
         $config = json_decode($BlockConfig, true);
         $blocks_arr['config'] = $config;
 
-        if ('xoops' == $plugin) {
+        if ('xoops' === $plugin) {
             $blocks_arr['tpl'] = '';
-        } elseif ('custom' == $plugin or 'share' == $plugin) {
-            if ('iframe' == $config['content_type']) {
+        } elseif ('custom' === $plugin or 'share' === $plugin) {
+            if ('iframe' === $config['content_type']) {
                 $blocks_arr['BlockContent'] = "<iframe title=\"{$BlockTitle}\" src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
-            } elseif ('js' == $config['content_type']) {
+            } elseif ('js' === $config['content_type']) {
                 $blocks_arr['BlockContent'] = $BlockContent;
             } else {
                 $blocks_arr['BlockContent'] = $myts->displayTarea($BlockContent, 1);

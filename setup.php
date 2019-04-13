@@ -47,12 +47,12 @@ function plugin_setup($WebID, $plugin)
         $pluginSetup[$k]['default'] = $setup['default'];
         $pluginSetup[$k]['options'] = $setup['options'];
 
-        if ('file' == $setup['type']) {
+        if ('file' === $setup['type']) {
             import_img($setup['default'], "{$plugin}_{$setup['name']}", $WebID, '');
             $TadUpFiles_plugin_setup->set_col("{$plugin}_{$setup['name']}", $WebID);
             $pluginSetup[$k]['form'] = $TadUpFiles_plugin_setup->upform(false, "{$plugin}_{$setup['name']}", null, false);
             $pluginSetup[$k]['list'] = $TadUpFiles_plugin_setup->get_file_for_smarty();
-        } elseif ('checkbox' == $setup['type']) {
+        } elseif ('checkbox' === $setup['type']) {
             if (is_array($pluginSetup[$k]['value'])) {
                 $pluginSetup[$k]['value'] = $value;
             } else {
@@ -82,7 +82,7 @@ function save_plugin_setup($WebID = '', $plugin = '')
         $myts = MyTextSanitizer::getInstance();
         foreach ($plugin_setup as $k => $setup) {
             $name = $setup['name'];
-            if ('checkbox' == $setup['type']) {
+            if ('checkbox' === $setup['type']) {
                 $value = isset($_POST[$name]) ? $myts->addSlashes(implode(',', $_POST[$name])) : implode(',', $setup['default']);
             } else {
                 $value = isset($_POST[$name]) ? $myts->addSlashes($_POST[$name]) : $setup['default'];

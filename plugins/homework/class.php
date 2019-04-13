@@ -23,7 +23,7 @@ class tad_web_homework
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
-        if ('assign' == $mode) {
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
@@ -113,7 +113,7 @@ class tad_web_homework
             while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result2)) {
                 $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
                 $main_data[$i][$HomeworkCol] = $Content;
-                if ('other' != $HomeworkCol) {
+                if ('other' !== $HomeworkCol) {
                     $ColsNum++;
                 }
             }
@@ -181,7 +181,7 @@ class tad_web_homework
         }
         $fullcalendar_code = $fullcalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['main_data'] = $main_data;
             $data['yet_data'] = $yet_data;
             $data['total'] = $total;
@@ -231,7 +231,7 @@ class tad_web_homework
         while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result)) {
             $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
             $xoopsTpl->assign($HomeworkCol, $Content);
-            if ('other' != $HomeworkCol) {
+            if ('other' !== $HomeworkCol) {
                 $ColsNum++;
             }
         }
@@ -704,7 +704,7 @@ class tad_web_homework
         while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result)) {
             $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
             $data[$HomeworkCol] = $Content;
-            if ('other' != $HomeworkCol) {
+            if ('other' !== $HomeworkCol) {
                 $ColsNum++;
             }
         }

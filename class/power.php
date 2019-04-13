@@ -90,15 +90,15 @@ class power
     public function power_menu($power_name = 'read', $col_name = '', $col_sn = '')
     {
         global $xoopsDB;
-        if ('read' == $power_name) {
+        if ('read' === $power_name) {
             $label = _MD_TCW_POWER_FOR;
         }
 
         $power_val = empty($col_sn) ? '' : $this->get_power($power_name, $col_name, $col_sn);
 
-        $select_users = 'users' == $power_val ? 'selected' : '';
-        $select_web_users = 'web_users' == $power_val ? 'selected' : '';
-        $select_web_admin = 'web_admin' == $power_val ? 'selected' : '';
+        $select_users = 'users' === $power_val ? 'selected' : '';
+        $select_web_users = 'web_users' === $power_val ? 'selected' : '';
+        $select_web_admin = 'web_admin' === $power_val ? 'selected' : '';
 
         $menu = '
         <!--權限設定-->
@@ -171,13 +171,13 @@ class power
         global $isMyWeb, $LoginWebID, $xoopsUser;
         $power = $this->get_power($power_name, $col_name, $col_sn);
 
-        if ('users' == $power and !$xoopsUser and empty($LoginWebID)) {
+        if ('users' === $power and !$xoopsUser and empty($LoginWebID)) {
             // die("沒有登入");
             return false;
-        } elseif ('web_users' == $power and $LoginWebID != $this->WebID and !$isMyWeb) {
+        } elseif ('web_users' === $power and $LoginWebID != $this->WebID and !$isMyWeb) {
             // die("非本站使用者" . $LoginWebID . "!=" . $this->WebID);
             return false;
-        } elseif ('web_admin' == $power and !$isMyWeb) {
+        } elseif ('web_admin' === $power and !$isMyWeb) {
             return false;
         }
 

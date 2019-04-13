@@ -56,7 +56,7 @@ class Utility
         }
 
         while ($file = readdir($dir_handle)) {
-            if ('.' != $file && '..' != $file) {
+            if ('.' !== $file && '..' !== $file) {
                 if (!is_dir($dirname . '/' . $file)) {
                     unlink($dirname . '/' . $file);
                 } else {
@@ -79,7 +79,7 @@ class Utility
             }
             $d = dir($source);
             while (false !== ($entry = $d->read())) {
-                if ('.' == $entry || '..' == $entry) {
+                if ('.' === $entry || '..' === $entry) {
                     continue;
                 }
 
@@ -145,7 +145,7 @@ class Utility
         $modhandler = xoops_getHandler('module');
         $xoopsModule = $modhandler->getByDirname('tad_web');
         $version = $xoopsModule->version();
-        if ('install' == $status) {
+        if ('install' === $status) {
             $web_amount = 0;
         } else {
             $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE `WebEnable`='1' ORDER BY WebSort";
@@ -636,14 +636,14 @@ class Utility
         global $xoopsDB;
 
         $updir = XOOPS_ROOT_PATH . '/uploads/tad_web';
-        $os = (PATH_SEPARATOR == ':') ? 'linux' : 'win';
+        $os = (PATH_SEPARATOR === ':') ? 'linux' : 'win';
 
         //修正子目錄，並找出實體檔案沒有真的在子目錄下的
         $sql = 'SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM ' . $xoopsDB->prefix('tad_web_files_center') . " WHERE `sub_dir` LIKE '//%'";
         $result = $xoopsDB->queryF($sql) or die($sql);
         while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
             $sub_dir = str_replace('//', '/', $sub_dir);
-            $typedir = 'img' == $kind ? 'image' : 'file';
+            $typedir = 'img' === $kind ? 'image' : 'file';
 
             $sql = 'update  ' . $xoopsDB->prefix('tad_web_files_center') . " set `sub_dir`='{$sub_dir}'  where `files_sn`='{$files_sn}'";
             $xoopsDB->queryF($sql) or die($sql);
@@ -655,26 +655,26 @@ class Utility
                 $from = "{$updir}/{$typedir}/{$file_name}";
                 $to = "{$updir}{$sub_dir}/{$typedir}/{$file_name}";
 
-                if ('win' == $os and _CHARSET == 'UTF-8') {
+                if ('win' === $os and _CHARSET === 'UTF-8') {
                     $from = iconv(_CHARSET, 'Big5', $from);
                     $to = iconv(_CHARSET, 'Big5', $to);
-                } elseif ('linux' == $os and _CHARSET == 'Big5') {
+                } elseif ('linux' === $os and _CHARSET === 'Big5') {
                     $from = iconv(_CHARSET, 'UTF-8', $from);
                     $to = iconv(_CHARSET, 'UTF-8', $to);
                 }
 
                 rename($from, $to);
-                if ('image' == $typedir) {
+                if ('image' === $typedir) {
                     mk_dir("{$updir}{$sub_dir}");
                     mk_dir("{$updir}{$sub_dir}/{$typedir}");
                     mk_dir("{$updir}{$sub_dir}/{$typedir}/.thumbs");
                     $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
                     $to = "{$updir}{$sub_dir}/{$typedir}/.thumbs/{$file_name}";
 
-                    if ('win' == $os and _CHARSET == 'UTF-8') {
+                    if ('win' === $os and _CHARSET === 'UTF-8') {
                         $from = iconv(_CHARSET, 'Big5', $from);
                         $to = iconv(_CHARSET, 'Big5', $to);
-                    } elseif ('linux' == $os and _CHARSET == 'Big5') {
+                    } elseif ('linux' === $os and _CHARSET === 'Big5') {
                         $from = iconv(_CHARSET, 'UTF-8', $from);
                         $to = iconv(_CHARSET, 'UTF-8', $to);
                     }
@@ -688,24 +688,24 @@ class Utility
         $sql = 'SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM ' . $xoopsDB->prefix('tad_web_files_center') . '';
         $result = $xoopsDB->queryF($sql) or die($sql);
         while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
-            $typedir = 'img' == $kind ? 'image' : 'file';
+            $typedir = 'img' === $kind ? 'image' : 'file';
             $WebID = (int)mb_substr($sub_dir, 1);
             if (empty($WebID)) {
-                if ('WebOwner' == $col_name or 'WebLogo' == $col_name) {
+                if ('WebOwner' === $col_name or 'WebLogo' === $col_name) {
                     $WebID = $col_sn;
-                } elseif ('MemID' == $col_name) {
+                } elseif ('MemID' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_link_mems') . " where `MemID` = '{$col_sn}'";
                     $result2 = $xoopsDB->queryF($sql) or die($sql);
                     list($WebID) = $xoopsDB->fetchRow($result2);
-                } elseif ('ActionID' == $col_name) {
+                } elseif ('ActionID' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_action') . " where `ActionID` = '{$col_sn}'";
                     $result2 = $xoopsDB->queryF($sql) or die($sql);
                     list($WebID) = $xoopsDB->fetchRow($result2);
-                } elseif ('fsn' == $col_name) {
+                } elseif ('fsn' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_files') . " where `fsn` = '{$col_sn}'";
                     $result2 = $xoopsDB->queryF($sql) or die($sql);
                     list($WebID) = $xoopsDB->fetchRow($result2);
-                } elseif ('NewsID' == $col_name) {
+                } elseif ('NewsID' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_news') . " where `NewsID` = '{$col_sn}'";
                     $result2 = $xoopsDB->queryF($sql) or die($sql);
                     list($WebID) = $xoopsDB->fetchRow($result2);
@@ -717,7 +717,7 @@ class Utility
 
             mk_dir("{$updir}/{$WebID}");
             mk_dir("{$updir}/{$WebID}/{$typedir}");
-            if ('image' == $typedir) {
+            if ('image' === $typedir) {
                 mk_dir("{$updir}/{$WebID}/{$typedir}");
                 mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
             }
@@ -725,16 +725,16 @@ class Utility
             $from = "{$updir}/{$typedir}/{$file_name}";
             $to = "{$updir}/{$WebID}/{$typedir}/{$file_name}";
 
-            if ('win' == $os and _CHARSET == 'UTF-8') {
+            if ('win' === $os and _CHARSET === 'UTF-8') {
                 $from = iconv(_CHARSET, 'Big5', $from);
                 $to = iconv(_CHARSET, 'Big5', $to);
-            } elseif ('linux' == $os and _CHARSET == 'Big5') {
+            } elseif ('linux' === $os and _CHARSET === 'Big5') {
                 $from = iconv(_CHARSET, 'UTF-8', $from);
                 $to = iconv(_CHARSET, 'UTF-8', $to);
             }
             if (file_exists($from)) {
                 rename($from, $to);
-                if ('image' == $typedir) {
+                if ('image' === $typedir) {
                     mk_dir("{$updir}/{$WebID}");
                     mk_dir("{$updir}/{$WebID}/{$typedir}");
                     mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
@@ -742,10 +742,10 @@ class Utility
                     $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
                     $to = "{$updir}/{$WebID}/{$typedir}/.thumbs/{$file_name}";
 
-                    if ('win' == $os and _CHARSET == 'UTF-8') {
+                    if ('win' === $os and _CHARSET === 'UTF-8') {
                         $from = iconv(_CHARSET, 'Big5', $from);
                         $to = iconv(_CHARSET, 'Big5', $to);
-                    } elseif ('linux' == $os and _CHARSET == 'Big5') {
+                    } elseif ('linux' === $os and _CHARSET === 'Big5') {
                         $from = iconv(_CHARSET, 'UTF-8', $from);
                         $to = iconv(_CHARSET, 'UTF-8', $to);
                     }
@@ -953,7 +953,7 @@ class Utility
             $Config = explode(',', $ConfigValue);
             $sort = 1;
             foreach ($block_option as $func => $name) {
-                if ($func == "list_{$block_plugin[$func]}") {
+                if ($func === "list_{$block_plugin[$func]}") {
                     $BlockPosition = 'block4';
                 } else {
                     $BlockPosition = 'side';

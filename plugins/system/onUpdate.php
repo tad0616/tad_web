@@ -39,17 +39,17 @@ function system_onUpdate1_go()
         while (list($BlockID, $BlockTitle, $BlockEnable, $BlockPosition, $BlockSort, $WebID) = $xoopsDB->fetchRow($result2)) {
             $BlockTitle = $myts->addSlashes($BlockTitle);
 
-            if ('tad_web_menu' == $show_func) {
+            if ('tad_web_menu' === $show_func) {
                 $sql3 = 'update ' . $xoopsDB->prefix('tad_web_blocks') . " set `BlockTitle`='{$BlockTitle}',BlockEnable='1',BlockPosition='{$BlockPosition}' ,BlockSort='{$BlockSort}'  where `plugin`='system' and BlockName='my_menu' and WebID='{$WebID}'";
                 $xoopsDB->queryF($sql3) or web_error($sql3);
 
                 $BlockSort = max_blocks_sort($WebID, 'side');
                 $sql3 = 'update ' . $xoopsDB->prefix('tad_web_blocks') . " set `BlockTitle`='" . _MD_TCW_SYSTEM_BLOCK_LOGIN . "',BlockEnable='1',BlockPosition='side' ,BlockSort='{$BlockSort}'  where `plugin`='system' and BlockName='login' and WebID='{$WebID}'";
                 $xoopsDB->queryF($sql3) or web_error($sql3);
-            } elseif ('tad_web_list' == $show_func) {
+            } elseif ('tad_web_list' === $show_func) {
                 $sql3 = 'update ' . $xoopsDB->prefix('tad_web_blocks') . " set `BlockTitle`='{$BlockTitle}',BlockEnable='{$BlockEnable}',BlockPosition='{$BlockPosition}' ,BlockSort='{$BlockSort}'  where `plugin`='system' and BlockName='web_list' and WebID='{$WebID}'";
                 $xoopsDB->queryF($sql3);
-            } elseif ('tad_web_image' == $show_func) {
+            } elseif ('tad_web_image' === $show_func) {
                 $sql3 = 'update ' . $xoopsDB->prefix('tad_web_blocks') . " set `BlockTitle`='{$BlockTitle}',BlockEnable='{$BlockEnable}',BlockPosition='{$BlockPosition}' ,BlockSort='{$BlockSort}'  where `plugin`='action' and BlockName='action_slide' and WebID='{$WebID}'";
                 $xoopsDB->queryF($sql3) or web_error($sql3);
             }

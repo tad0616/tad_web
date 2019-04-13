@@ -130,8 +130,8 @@ $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/';
 if (is_dir($dir)) {
     if ($dh = opendir($dir)) {
         while (false !== ($file = readdir($dh))) {
-            if ('dir' == filetype($dir . $file)) {
-                if ('.' == mb_substr($file, 0, 1)) {
+            if ('dir' === filetype($dir . $file)) {
+                if ('.' === mb_substr($file, 0, 1)) {
                     continue;
                 }
                 include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/english.php";

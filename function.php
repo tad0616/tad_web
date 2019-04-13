@@ -134,13 +134,13 @@ function get_all_blocks($value = 'title')
     // }
     foreach ($allBlockConfig as $plugin => $blockConfig) {
         foreach ($blockConfig as $func => $block) {
-            if ('plugin' == $value) {
+            if ('plugin' === $value) {
                 $block_option[$func] = $plugin;
-            } elseif (isset($block[$value]) and 'config' == $value) {
+            } elseif (isset($block[$value]) and 'config' === $value) {
                 $block_option[$func] = $block['config'];
-            } elseif (isset($block[$value]) and 'tpl' == $value) {
+            } elseif (isset($block[$value]) and 'tpl' === $value) {
                 $block_option[$func] = $block['tpl'];
-            } elseif (isset($block[$value]) and 'position' == $value) {
+            } elseif (isset($block[$value]) and 'position' === $value) {
                 $block_option[$func] = $block['position'];
             } else {
                 $name = $myts->htmlSpecialChars($block['name']);
@@ -157,7 +157,7 @@ function get_all_blocks($value = 'title')
 function get_position_blocks($WebID, $BlockPosition, $plugin = '')
 {
     global $xoopsDB, $plugin_menu_var;
-    if ('uninstall' == $BlockPosition) {
+    if ('uninstall' === $BlockPosition) {
         //找出這個網站已經安裝的分享區塊
         if (empty($plugin)) {
             $share_blocks_id = get_share_blocks($WebID);
@@ -176,7 +176,7 @@ function get_position_blocks($WebID, $BlockPosition, $plugin = '')
     $i = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         $plugin = $all['plugin'];
-        if ('custom' != $plugin and 'share' != $plugin and 'system' != $plugin) {
+        if ('custom' !== $plugin and 'share' !== $plugin and 'system' !== $plugin) {
             if (empty($plugin_menu_var[$plugin])) {
                 continue;
             }
@@ -374,8 +374,8 @@ function get_dir_plugins($mode = '')
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (false !== ($file = readdir($dh))) {
-                    if ('dir' == filetype($dir . $file)) {
-                        if ('.' == mb_substr($file, 0, 1)) {
+                    if ('dir' === filetype($dir . $file)) {
+                        if ('.' === mb_substr($file, 0, 1)) {
                             continue;
                         }
                         if (!empty($file)) {
@@ -428,7 +428,7 @@ function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
         $plugins[$i]['config'] = $pluginConfigs[$dirname];
         $plugins[$i]['db'] = $new_pluginsVal[$dirname];
 
-        if ('edit' == $mode) {
+        if ('edit' === $mode) {
             // $plugins[$i]['upform'] = $TadUpFiles->upform(true, $dirname, '1', false);
         }
 
@@ -479,7 +479,7 @@ function common_template($WebID, $web_all_config = '')
         }
         // die(var_export($web_all_config));
         foreach ($web_all_config as $ConfigName => $ConfigValue) {
-            if ('login_config' == $ConfigName) {
+            if ('login_config' === $ConfigName) {
                 $ConfigValue = explode(';', $ConfigValue);
             }
             $xoopsTpl->assign($ConfigName, $ConfigValue);
@@ -506,7 +506,7 @@ function mk_menu_var_file($WebID = null)
         // die(var_export($plugin));
         $dirname = $plugin['dirname'];
 
-        if ('system' == $dirname) {
+        if ('system' === $dirname) {
             continue;
         }
 
@@ -899,7 +899,7 @@ function mkTitlePic($WebID = '', $filename = '', $title = '', $color = '#ABBF6B'
     }
 
     imagettftext($im, $size, 0, $x, $y, $text_color, XOOPS_ROOT_PATH . "/modules/tad_web/class/{$font}", $title);
-    if ('transparent' != $border_color) {
+    if ('transparent' !== $border_color) {
         imagettftextoutline(
             $im, // image location ( you should use a variable )
             $size, // font size
@@ -966,13 +966,13 @@ function import_img($path = '', $col_name = 'logo', $col_sn = '', $desc = '', $s
     if (is_dir($path)) {
         if ($dh = opendir($path)) {
             while (false !== ($file = readdir($dh))) {
-                if ('.' == $file or '..' == $file or 'Thumbs.db' == $file) {
+                if ('.' === $file or '..' === $file or 'Thumbs.db' === $file) {
                     continue;
                 }
 
                 $type = filetype($path . '/' . $file);
 
-                if ('dir' != $type) {
+                if ('dir' !== $type) {
                     if (!in_array($file, $db_files, true)) {
                         import_file($path . '/' . $file, $col_name, $col_sn, null, null, $desc, $safe_name);
                     }
@@ -990,8 +990,8 @@ function import_file($file_name = '', $col_name = '', $col_sn = '', $main_width 
 {
     global $xoopsDB, $xoopsUser, $xoopsModule, $xoopsConfig;
 
-    $slink = (PATH_SEPARATOR == ':') ? true : false;
-    if ('bg' == $col_name) {
+    $slink = (PATH_SEPARATOR === ':') ? true : false;
+    if ('bg' === $col_name) {
         $TadUpFilesBg = TadUpFilesBg($col_sn);
         if (is_object($TadUpFilesBg)) {
             $TadUpFilesBg->set_col($col_name, $col_sn);
@@ -999,7 +999,7 @@ function import_file($file_name = '', $col_name = '', $col_sn = '', $main_width 
         } else {
             die('Need TadUpFilesBg Object!');
         }
-    } elseif ('logo' == $col_name) {
+    } elseif ('logo' === $col_name) {
         $TadUpFilesLogo = TadUpFilesLogo($col_sn);
         if (is_object($TadUpFilesLogo)) {
             $TadUpFilesLogo->set_col($col_name, $col_sn);
@@ -1007,7 +1007,7 @@ function import_file($file_name = '', $col_name = '', $col_sn = '', $main_width 
         } else {
             die('Need TadUpFilesLogo Object!');
         }
-    } elseif ('head' == $col_name) {
+    } elseif ('head' === $col_name) {
         $TadUpFilesHead = TadUpFilesHead($col_sn);
         if (is_object($TadUpFilesHead)) {
             $TadUpFilesHead->set_col($col_name, $col_sn);
@@ -1132,7 +1132,7 @@ function output_head_file($WebID)
         $rate = round($bg_width / $width, 2);
 
         $type = mb_strtolower(mb_substr(mb_strrchr($bg_filename, '.'), 1));
-        if ('jpeg' == $type) {
+        if ('jpeg' === $type) {
             $type = 'jpg';
         }
 
@@ -1160,7 +1160,7 @@ function output_head_file($WebID)
         list($logo_width, $logo_height) = getimagesize($logo_filename);
 
         $type = mb_strtolower(mb_substr(mb_strrchr($logo_filename, '.'), 1));
-        if ('jpeg' == $type) {
+        if ('jpeg' === $type) {
             $type = 'jpg';
         }
 
@@ -1230,7 +1230,7 @@ function output_head_file_480($WebID)
         $new_bg_width = $width;
 
         $type = mb_strtolower(mb_substr(mb_strrchr($bg_filename, '.'), 1));
-        if ('jpeg' == $type) {
+        if ('jpeg' === $type) {
             $type = 'jpg';
         }
 
@@ -1262,7 +1262,7 @@ function output_head_file_480($WebID)
         $new_logo_width = 380;
 
         $type = mb_strtolower(mb_substr(mb_strrchr($logo_filename, '.'), 1));
-        if ('jpeg' == $type) {
+        if ('jpeg' === $type) {
             $type = 'jpg';
         }
 
@@ -1309,7 +1309,7 @@ function delete_tad_web_directory($dirname)
     }
 
     while ($file = readdir($dir_handle)) {
-        if ('.' != $file && '..' != $file) {
+        if ('.' !== $file && '..' !== $file) {
             if (!is_dir($dirname . '/' . $file)) {
                 unlink($dirname . '/' . $file);
             } else {
@@ -1350,7 +1350,7 @@ function get_quota($WebID = '')
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : (int) $xoopsModuleConfig['user_space_quota'];
 
     $space_quota = get_web_config('space_quota', $WebID);
-    $user_space_quota = (empty($space_quota) or 'default' == $space_quota) ? $user_default_quota : (int)$space_quota;
+    $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int)$space_quota;
 
     if ($defalt_used_size >= $user_space_quota) {
         redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $size, $user_space_quota));
@@ -1383,7 +1383,7 @@ function get_dir_size($dir_name)
     if (is_dir($dir_name)) {
         if ($dh = opendir($dir_name)) {
             while (false !== ($file = readdir($dh))) {
-                if ('.' != $file && '..' != $file) {
+                if ('.' !== $file && '..' !== $file) {
                     if (is_file($dir_name . '/' . $file)) {
                         $dir_size += filesize($dir_name . '/' . $file);
                     }
@@ -1652,9 +1652,9 @@ function get_assistant($CateID = '')
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
     // die(var_export($all));
-    if ('MemID' == $all['AssistantType']) {
+    if ('MemID' === $all['AssistantType']) {
         $mem = get_tad_web_mems($all['AssistantID']);
-    } elseif ('ParentID' == $all['AssistantType']) {
+    } elseif ('ParentID' === $all['AssistantType']) {
         $mem = get_tad_web_parent($all['AssistantID']);
     }
     $mem['AssistantType'] = $all['AssistantType'];
@@ -1702,9 +1702,9 @@ function is_assistant($CateID = '', $ColName = '', $ColSN = '')
     $sql = 'select `AssistantType`,`AssistantID` from `' . $xoopsDB->prefix('tad_web_assistant_post') . "` where `ColName`='{$ColName}' and `ColSN`='{$ColSN}' and `CateID`='{$CateID}'";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
-    if ('MemID' == $all['AssistantType']) {
+    if ('MemID' === $all['AssistantType']) {
         $mem = get_tad_web_mems($all['AssistantID']);
-    } elseif ('ParentID' == $all['AssistantType']) {
+    } elseif ('ParentID' === $all['AssistantType']) {
         $mem = get_tad_web_parent($all['AssistantID']);
     }
 

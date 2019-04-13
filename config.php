@@ -2,7 +2,7 @@
 /*-----------引入檔案區--------------*/
 include_once 'header.php';
 
-if ('enable_my_web' == $_REQUEST['op']) {
+if ('enable_my_web' === $_REQUEST['op']) {
     $xoopsOption['template_main'] = 'tad_web_config.tpl';
 } else {
     if (!empty($_REQUEST['WebID']) and $isMyWeb) {
@@ -28,7 +28,7 @@ function tad_web_config($WebID, $configs)
     }
 
     foreach ($configs as $ConfigName => $ConfigValue) {
-        if ('login_config' == $ConfigName) {
+        if ('login_config' === $ConfigName) {
             $ConfigValue = explode(';', $ConfigValue);
         }
         $xoopsTpl->assign($ConfigName, $ConfigValue);

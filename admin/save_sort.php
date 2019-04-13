@@ -8,7 +8,7 @@ $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $sort = 1;
 
 $display_plugins = [];
-if ('plugin' == $op) {
+if ('plugin' === $op) {
     foreach ($_POST['tr'] as $dirname) {
         $sql = 'update ' . $xoopsDB->prefix('tad_web_plugins') . " set `PluginSort`='{$sort}' where `PluginDirname`='{$dirname}' and WebID='{$WebID}'";
         $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);

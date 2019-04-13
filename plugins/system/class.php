@@ -15,7 +15,7 @@ class tad_web_system
         $main_data = [];
         $total = '';
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['main_data'] = $main_data;
             $data['total'] = $total;
 

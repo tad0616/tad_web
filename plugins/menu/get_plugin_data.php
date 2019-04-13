@@ -9,7 +9,7 @@ $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 $dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
 
-if ('PluginContent' == $op) {
+if ('PluginContent' === $op) {
     $plugin_name = "tad_web_{$dirname}";
     include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
     $$plugin_name = new $plugin_name($WebID);

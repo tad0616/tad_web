@@ -26,7 +26,7 @@ class tad_web_menu
         $cate_arr = $this->web_cate->get_tad_web_cate_arr();
         // die(var_dump($cate_arr));
         $andCateID = '';
-        if ('assign' == $mode) {
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
 
             if (!empty($plugin_menu_var)) {
@@ -136,7 +136,7 @@ class tad_web_menu
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_menu_func', "menu.php?op=delete&WebID={$this->WebID}&MenuID=", 'MenuID');
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['cate_arr']  = $cate_arr;
             $data['cate_data'] = $cate_data;
             $data['main_data'] = $main_data;
@@ -307,7 +307,7 @@ class tad_web_menu
         $newCateName   = $myts->addSlashes($_POST['newCateName']);
 
         $ColName = $ColSn = '';
-        if ('Plugin' == $menu_type) {
+        if ('Plugin' === $menu_type) {
             if ($PluginContent) {
                 list($ColName, $ColSn) = explode('=', $PluginContent);
             } elseif ($PluginCate) {
@@ -369,7 +369,7 @@ class tad_web_menu
         $read          = $myts->addSlashes($_POST['read']);
 
         $ColName = $ColSn = '';
-        if ('Plugin' == $menu_type) {
+        if ('Plugin' === $menu_type) {
             if ($PluginContent) {
                 list($ColName, $ColSn) = explode('=', $PluginContent);
             } elseif ($PluginCate) {

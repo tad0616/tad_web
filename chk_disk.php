@@ -15,7 +15,7 @@ if (is_dir($dir)) {
         while (false !== ($file = readdir($dh))) {
             $type = filetype($dir . $file);
 
-            if ('dir' == $type and '.' != mb_substr($file, 0, 1) and 0 != $file) {
+            if ('dir' === $type and '.' !== mb_substr($file, 0, 1) and 0 != $file) {
                 $clean_dir = (int) $file;
                 if (XOOPS_ROOT_PATH . "/uploads/tad_web/{$clean_dir}" != $dir . $file) {
                     $del = $dir . $file . '無效資料夾';

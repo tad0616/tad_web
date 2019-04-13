@@ -22,7 +22,7 @@ class tad_web_video
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = $andCateDataSort = '';
-        if ('assign' == $mode) {
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['video']['short'] . _MD_TCW_CATE_TOOLS);
@@ -132,7 +132,7 @@ class tad_web_video
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_video_func', "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
             $data['display']   = $display;
@@ -331,9 +331,9 @@ class tad_web_video
     //抓取 Youtube ID
     public function tad_web_getYTid($ytURL = '')
     {
-        if ('http://youtu.be/' == substr($ytURL, 0, 16)) {
+        if ('http://youtu.be/' === substr($ytURL, 0, 16)) {
             return substr($ytURL, 16);
-        } elseif ('https://youtu.be/' == substr($ytURL, 0, 17)) {
+        } elseif ('https://youtu.be/' === substr($ytURL, 0, 17)) {
             return substr($ytURL, 17);
         } else {
             parse_str(parse_url($ytURL, PHP_URL_QUERY), $params);
