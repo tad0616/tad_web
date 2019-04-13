@@ -379,7 +379,7 @@ class tad_web_schedule
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql       = "select ScheduleID,CateID from " . $xoopsDB->prefix("tad_web_schedule") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result)) {
@@ -437,7 +437,7 @@ class tad_web_schedule
 
         $sql        = "select * from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='{$ScheduleID}'";
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        $SubjectArr = array();
+        $SubjectArr = [];
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount
             foreach ($all as $k => $v) {
@@ -472,7 +472,7 @@ class tad_web_schedule
             $schedule_subjects_arr = json_decode(file_get_contents($my_subject_file), true);
         } else {
             $schedule_subjects     = explode(';', $xoopsModuleConfig['schedule_subjects']);
-            $schedule_subjects_arr = array();
+            $schedule_subjects_arr = [];
 
             $i = 0;
             foreach ($schedule_subjects as $subject) {

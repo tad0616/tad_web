@@ -268,7 +268,7 @@ class tad_web_account
         if (!empty($AccountID)) {
             $DBV = $this->get_one_data($AccountID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -487,7 +487,7 @@ class tad_web_account
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql = "select AccountID,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($AccountID, $CateID) = $xoopsDB->fetchRow($result)) {
@@ -544,7 +544,7 @@ class tad_web_account
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
-        $main_data = array();
+        $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

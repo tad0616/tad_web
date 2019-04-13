@@ -292,7 +292,7 @@ class tad_web_news
         if (!empty($NewsID)) {
             $DBV = $this->get_one_data($NewsID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //設定「NewsID」欄位預設值
@@ -506,7 +506,7 @@ class tad_web_news
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql = "select NewsID,CateID from " . $xoopsDB->prefix("tad_web_news") . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($NewsID, $CateID) = $xoopsDB->fetchRow($result)) {
@@ -557,7 +557,7 @@ class tad_web_news
     {
         global $xoopsDB, $isMyWeb;
         $DefNewsSort = '';
-        $all         = $main         = array();
+        $all         = $main         = [];
         $andEnable   = $isMyWeb ? "" : "and `NewsEnable`='1'";
         $sql         = "select NewsID,NewsTitle from " . $xoopsDB->prefix("tad_web_news") . " where `WebID`='{$this->WebID}' $andEnable order by NewsDate desc";
         // if (isset($_GET['test'])) {
@@ -601,7 +601,7 @@ class tad_web_news
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
-        $main_data = array();
+        $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
