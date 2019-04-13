@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tad_web_adm_cate.tpl";
+$xoopsOption['template_main'] = 'tad_web_adm_cate.tpl';
 include_once 'header.php';
-include_once "../function.php";
+include_once '../function.php';
 /*-----------function區--------------*/
 //tad_web_cate編輯表單
 function tad_web_cate_form($CateID = '')
@@ -43,18 +43,18 @@ function tad_web_cate_form($CateID = '')
     $CateCounter = !isset($DBV['CateCounter']) ? '0' : $DBV['CateCounter'];
     $xoopsTpl->assign('CateCounter', $CateCounter);
 
-    $op = empty($CateID) ? "save_tad_web_cate" : "update_tad_web_cate";
+    $op = empty($CateID) ? 'save_tad_web_cate' : 'update_tad_web_cate';
     //$op = "replace_tad_web_cate";
 
     //套用formValidator驗證機制
-    if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
-        redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
+    if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . "/formValidator.php";
-    $formValidator      = new formValidator("#myForm", true);
+    include_once TADTOOLS_PATH . '/formValidator.php';
+    $formValidator = new formValidator('#myForm', true);
     $formValidator_code = $formValidator->render();
 
-    $xoopsTpl->assign('action', $_SERVER["PHP_SELF"]);
+    $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('formValidator_code', $formValidator_code);
     $xoopsTpl->assign('now_op', 'tad_web_cate_form');
     $xoopsTpl->assign('next_op', $op);
@@ -64,9 +64,10 @@ function tad_web_cate_form($CateID = '')
 function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
 {
     global $xoopsDB;
-    $sql        = "select max(`CateSort`) from `" . $xoopsDB->prefix("tad_web_cate") . "` where WebID='{$WebID}' and  ColName='{$ColName}' and ColSN='{$ColSN}'";
-    $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $sql = 'select max(`CateSort`) from `' . $xoopsDB->prefix('tad_web_cate') . "` where WebID='{$WebID}' and  ColName='{$ColName}' and ColSN='{$ColSN}'";
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     list($sort) = $xoopsDB->fetchRow($result);
+
     return ++$sort;
 }
 
@@ -77,17 +78,16 @@ function save_tad_web_cate()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $CateID      = (int) $_POST['CateID'];
-    $WebID       = (int) $_POST['WebID'];
-    $CateName    = $myts->addSlashes($_POST['CateName']);
-    $ColName     = $myts->addSlashes($_POST['ColName']);
-    $ColSN       = $myts->addSlashes($_POST['ColSN']);
-    $CateSort    = (int) $_POST['CateSort'];
-    $CateEnable  = (int) $_POST['CateEnable'];
+    $CateID = (int) $_POST['CateID'];
+    $WebID = (int) $_POST['WebID'];
+    $CateName = $myts->addSlashes($_POST['CateName']);
+    $ColName = $myts->addSlashes($_POST['ColName']);
+    $ColSN = $myts->addSlashes($_POST['ColSN']);
+    $CateSort = (int) $_POST['CateSort'];
+    $CateEnable = (int) $_POST['CateEnable'];
     $CateCounter = (int) $_POST['CateCounter'];
 
-
-    $sql = "insert into `" . $xoopsDB->prefix("tad_web_cate") . "` (
+    $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate') . "` (
         `WebID`,
         `CateName`,
         `ColName`,
@@ -117,10 +117,10 @@ function update_tad_web_cate($CateID = '')
 {
     global $xoopsDB, $isAdmin, $xoopsUser;
 
-    $myts     = MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     $CateName = $myts->addSlashes($_POST['CateName']);
 
-    $sql = "update `" . $xoopsDB->prefix("tad_web_cate") . "` set
+    $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
        `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
@@ -132,21 +132,21 @@ function update_tad_web_cate_arr($CateID = '')
 {
     global $xoopsDB, $isAdmin, $xoopsUser;
 
-    $myts               = MyTextSanitizer::getInstance();
-    $web_cate_arr       = $myts->addSlashes($_POST['web_cate_arr']);
+    $myts = MyTextSanitizer::getInstance();
+    $web_cate_arr = $myts->addSlashes($_POST['web_cate_arr']);
     $web_cate_blank_arr = $myts->addSlashes($_POST['web_cate_blank_arr']);
 
     $web_cate_array = explode(',', $web_cate_arr);
 
     $i = 1;
     foreach ($web_cate_array as $WebID) {
-        $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set `CateID` = '{$CateID}', WebSort='{$i}' where `WebID` ='{$WebID}'";
+        $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `CateID` = '{$CateID}', WebSort='{$i}' where `WebID` ='{$WebID}'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $i++;
     }
 
     if ($web_cate_blank_arr) {
-        $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set
+        $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set
        `CateID` = '0' where `WebID` in($web_cate_blank_arr)";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
@@ -163,14 +163,13 @@ function delete_tad_web_cate($CateID = '')
         return;
     }
 
-    $sql = "update `" . $xoopsDB->prefix("tad_web") . "` set
+    $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set
        `CateID` = '0' where `CateID`='{$CateID}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    $sql = "delete from `" . $xoopsDB->prefix("tad_web_cate") . "`
+    $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate') . "`
     where `CateID` = '{$CateID}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-
 }
 
 //以流水號取得某筆tad_web_cate資料
@@ -182,10 +181,11 @@ function get_tad_web_cate($CateID = '')
         return;
     }
 
-    $sql = "select * from `" . $xoopsDB->prefix("tad_web_cate") . "`
+    $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "`
     where `CateID` = '{$CateID}'";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    $data   = $xoopsDB->fetchArray($result);
+    $data = $xoopsDB->fetchArray($result);
+
     return $data;
 }
 
@@ -196,7 +196,7 @@ function tad_web_list_cate()
 
     $myts = MyTextSanitizer::getInstance();
 
-    $sql    = "SELECT * FROM `" . $xoopsDB->prefix("tad_web_cate") . "` WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . "` WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     $all_content = [];
@@ -212,39 +212,42 @@ function tad_web_list_cate()
         }
 
         //將是/否選項轉換為圖示
-        $CateEnable = $CateEnable == 1 ? '<img src="' . XOOPS_URL . '/modules/tad_web/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/tad_web/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
+        $CateEnable = 1 == $CateEnable ? '<img src="' . XOOPS_URL . '/modules/tad_web/images/yes.gif" alt="' . _YES . '" title="' . _YES . '">' : '<img src="' . XOOPS_URL . '/modules/tad_web/images/no.gif" alt="' . _NO . '" title="' . _NO . '">';
 
         //過濾讀出的變數值
         $CateName = $myts->htmlSpecialChars($CateName);
-        $ColName  = $myts->htmlSpecialChars($ColName);
-        $ColSN    = $myts->htmlSpecialChars($ColSN);
+        $ColName = $myts->htmlSpecialChars($ColName);
+        $ColSN = $myts->htmlSpecialChars($ColSN);
 
-        $all_content[$i]['CateID']      = $CateID;
-        $all_content[$i]['WebID']       = $WebID;
-        $all_content[$i]['CateName']    = $CateName;
-        $all_content[$i]['ColName']     = $ColName;
-        $all_content[$i]['ColSN']       = $ColSN;
-        $all_content[$i]['CateSort']    = $CateSort;
-        $all_content[$i]['CateEnable']  = $CateEnable;
+        $all_content[$i]['CateID'] = $CateID;
+        $all_content[$i]['WebID'] = $WebID;
+        $all_content[$i]['CateName'] = $CateName;
+        $all_content[$i]['ColName'] = $ColName;
+        $all_content[$i]['ColSN'] = $ColSN;
+        $all_content[$i]['CateSort'] = $CateSort;
+        $all_content[$i]['CateEnable'] = $CateEnable;
         $all_content[$i]['CateCounter'] = $CateCounter;
         //die(var_export($web_cate[0]));
         if (is_array($web_cate)) {
-            $all_content[$i]['repository']         = isset($web_cate[0]) ? $web_cate[0] : '';
-            $all_content[$i]['destination']        = isset($web_cate[$CateID]) ? $web_cate[$CateID] : '';
-            $all_content[$i]['web_cate_arr_str']   = isset($web_cate[$CateID]) ? implode(",", $web_cate[$CateID]['WebID']) : '';
-            $all_content[$i]['web_cate_blank_arr'] = isset($web_cate[0]) ? implode(",", $web_cate[0]['WebID']) : '';
+            $all_content[$i]['repository'] = isset($web_cate[0]) ? $web_cate[0] : '';
+            $all_content[$i]['destination'] = isset($web_cate[$CateID]) ? $web_cate[$CateID] : '';
+            $all_content[$i]['web_cate_arr_str'] = isset($web_cate[$CateID]) ? implode(',', $web_cate[$CateID]['WebID']) : '';
+            $all_content[$i]['web_cate_blank_arr'] = isset($web_cate[0]) ? implode(',', $web_cate[0]['WebID']) : '';
         }
         $i++;
     }
 
     //刪除確認的JS
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
+        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
     $sweet_alert_obj = new sweet_alert();
-    $sweet_alert_obj->render('delete_tad_web_cate_func',
-        "{$_SERVER['PHP_SELF']}?op=delete_tad_web_cate&CateID=", "CateID");
+    $sweet_alert_obj->render(
+        'delete_tad_web_cate_func',
+        "{$_SERVER['PHP_SELF']}?op=delete_tad_web_cate&CateID=",
+        'CateID'
+    );
 
     $xoopsTpl->assign('tad_web_cate_jquery_ui', get_jquery(true));
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
@@ -258,16 +261,17 @@ function update_tad_web_cate_sort()
     global $xoopsDB;
     $sort = 1;
     foreach ($_POST['tr'] as $CateID) {
-        $sql = "update " . $xoopsDB->prefix("tad_web_cate") . " set `CateSort`='{$sort}' where `CateID`='{$CateID}'";
-        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")");
+        $sql = 'update ' . $xoopsDB->prefix('tad_web_cate') . " set `CateSort`='{$sort}' where `CateID`='{$CateID}'";
+        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')');
         $sort++;
     }
-    return _TAD_SORTED . " (" . date("Y-m-d H:i:s") . ")";
+
+    return _TAD_SORTED . ' (' . date('Y-m-d H:i:s') . ')';
 }
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
+$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
 
 $xoopsTpl->assign('op', $op);
@@ -276,39 +280,34 @@ switch ($op) {
     /*---判斷動作請貼在下方---*/
 
     //新增資料
-    case "save_tad_web_cate":
+    case 'save_tad_web_cate':
         $CateID = save_tad_web_cate();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;
-
     //更新資料
-    case "update_tad_web_cate":
+    case 'update_tad_web_cate':
         update_tad_web_cate($CateID);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;
-
     //更新資料
-    case "update_tad_web_cate_arr":
+    case 'update_tad_web_cate_arr':
         update_tad_web_cate_arr($CateID);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;
-
     //刪除資料
-    case "delete_tad_web_cate":
+    case 'delete_tad_web_cate':
         delete_tad_web_cate($CateID);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;
-
     //預設動作
     default:
         tad_web_cate_form($CateID);
         tad_web_list_cate();
         break;
-
         /*---判斷動作請貼在上方---*/
 }
 

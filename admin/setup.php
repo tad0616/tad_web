@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tad_web_adm_setup.tpl";
+$xoopsOption['template_main'] = 'tad_web_adm_setup.tpl';
 include_once 'header.php';
-include_once "../function.php";
+include_once '../function.php';
 /*-----------function區--------------*/
 //tad_web_setup編輯表單
 function tad_web_setup_form()
@@ -17,7 +17,7 @@ function tad_web_setup_form()
     // die(var_export($plugins));
     $xoopsTpl->assign('plugins', $plugins);
     $web_plugin_display_arr = [];
-    $web_setup_show         = get_web_config('web_plugin_display_arr', '0');
+    $web_setup_show = get_web_config('web_plugin_display_arr', '0');
     if ($web_setup_show) {
         $web_plugin_display_arr = explode(',', $web_setup_show);
     }
@@ -37,22 +37,22 @@ function save_plugins()
 
     $i = 1;
 
-    $sql = "DELETE FROM " . $xoopsDB->prefix("tad_web_plugins") . " WHERE WebID='0'";
+    $sql = 'DELETE FROM ' . $xoopsDB->prefix('tad_web_plugins') . " WHERE WebID='0'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $display_plugins = [];
     foreach ($plugins as $plugin) {
-        $dirname     = $plugin['dirname'];
+        $dirname = $plugin['dirname'];
         $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
 
-        $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins") . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
+        $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-        if ($_POST['plugin_limit'][$dirname] != 'none') {
+        if ('none' != $_POST['plugin_limit'][$dirname]) {
             save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], 0);
         }
 
-        if ($_POST['plugin_display'][$dirname] == '1') {
+        if ('1' == $_POST['plugin_display'][$dirname]) {
             $display_plugins[] = $dirname;
         }
         mkTitlePic(0, $dirname, $PluginTitle);
@@ -71,17 +71,15 @@ switch ($op) {
     /*---判斷動作請貼在下方---*/
 
     //新增資料
-    case "save_plugins":
+    case 'save_plugins':
         save_plugins();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
         break;
-
     //預設動作
     default:
         tad_web_setup_form();
         break;
-
         /*---判斷動作請貼在上方---*/
 }
 

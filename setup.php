@@ -1,13 +1,13 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once "header.php";
+include_once 'header.php';
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
     $xoopsOption['template_main'] = 'tad_web_plugin_setup.tpl';
 } else {
     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
 }
 
-include_once XOOPS_ROOT_PATH . "/header.php";
+include_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //外掛設定功能
@@ -21,9 +21,9 @@ function plugin_setup($WebID, $plugin)
         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
     }
 
-    $myts        = MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     $pluginSetup = [];
-    $setup_file  = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
+    $setup_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
     if (file_exists($setup_file)) {
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
         require $setup_file;
@@ -39,20 +39,20 @@ function plugin_setup($WebID, $plugin)
         //     die(var_export($value));
         // }
 
-        $pluginSetup[$k]['name']    = $setup['name'];
-        $pluginSetup[$k]['text']    = $setup['text'];
-        $pluginSetup[$k]['desc']    = $setup['desc'];
-        $pluginSetup[$k]['type']    = $setup['type'];
-        $pluginSetup[$k]['value']   = $value;
+        $pluginSetup[$k]['name'] = $setup['name'];
+        $pluginSetup[$k]['text'] = $setup['text'];
+        $pluginSetup[$k]['desc'] = $setup['desc'];
+        $pluginSetup[$k]['type'] = $setup['type'];
+        $pluginSetup[$k]['value'] = $value;
         $pluginSetup[$k]['default'] = $setup['default'];
         $pluginSetup[$k]['options'] = $setup['options'];
 
-        if ($setup['type'] == "file") {
-            import_img($setup['default'], "{$plugin}_{$setup['name']}", $WebID, "");
+        if ('file' == $setup['type']) {
+            import_img($setup['default'], "{$plugin}_{$setup['name']}", $WebID, '');
             $TadUpFiles_plugin_setup->set_col("{$plugin}_{$setup['name']}", $WebID);
             $pluginSetup[$k]['form'] = $TadUpFiles_plugin_setup->upform(false, "{$plugin}_{$setup['name']}", null, false);
             $pluginSetup[$k]['list'] = $TadUpFiles_plugin_setup->get_file_for_smarty();
-        } elseif ($setup['type'] == "checkbox") {
+        } elseif ('checkbox' == $setup['type']) {
             if (is_array($pluginSetup[$k]['value'])) {
                 $pluginSetup[$k]['value'] = $value;
             } else {
@@ -71,7 +71,7 @@ function plugin_setup($WebID, $plugin)
 }
 
 //儲存額外設定值
-function save_plugin_setup($WebID = "", $plugin = "")
+function save_plugin_setup($WebID = '', $plugin = '')
 {
     global $xoopsDB, $xoopsConfig;
 
@@ -82,14 +82,13 @@ function save_plugin_setup($WebID = "", $plugin = "")
         $myts = MyTextSanitizer::getInstance();
         foreach ($plugin_setup as $k => $setup) {
             $name = $setup['name'];
-            if ($setup['type'] == "checkbox") {
+            if ('checkbox' == $setup['type']) {
                 $value = isset($_POST[$name]) ? $myts->addSlashes(implode(',', $_POST[$name])) : implode(',', $setup['default']);
-
             } else {
                 $value = isset($_POST[$name]) ? $myts->addSlashes($_POST[$name]) : $setup['default'];
             }
 
-            $sql = "replace into " . $xoopsDB->prefix("tad_web_plugins_setup") . " (`WebID`, `plugin`, `name`, `type`, `value`) values($WebID, '{$plugin}','{$setup['name']}' , '{$setup['type']}' , '{$value}')";
+            $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins_setup') . " (`WebID`, `plugin`, `name`, `type`, `value`) values($WebID, '{$plugin}','{$setup['name']}' , '{$setup['type']}' , '{$value}')";
             $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
     }
@@ -99,10 +98,11 @@ function TadUpFiles_plugin_setup($WebID, $plugin)
 {
     global $xoopsConfig;
 
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-    $TadUpFiles_plugin_setup = new TadUpFiles("tad_web", "/{$WebID}/{$plugin}", null, "", "/thumbs");
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
+    $TadUpFiles_plugin_setup = new TadUpFiles('tad_web', "/{$WebID}/{$plugin}", null, '', '/thumbs');
 
-    $TadUpFiles_plugin_setup->set_thumb("100px", "60px", "#000", "center center", "no-repeat", "contain");
+    $TadUpFiles_plugin_setup->set_thumb('100px', '60px', '#000', 'center center', 'no-repeat', 'contain');
+
     return $TadUpFiles_plugin_setup;
 }
 
@@ -120,37 +120,34 @@ function plugin_block_setup($WebID, $plugin)
     $web_install_blocks = get_web_blocks($WebID, $plugin, null);
     $xoopsTpl->assign('web_install_blocks', $web_install_blocks);
     $xoopsTpl->assign('BlockPositionTitle', $BlockPositionTitle);
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php")) {
-        redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
+        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
     $fancybox = new fancybox('.edit_block', '640px');
     $fancybox->render(false);
 }
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op     = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID  = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
+$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
 
 common_template($WebID, $web_all_config);
 
 switch ($op) {
-
     //新增資料
-    case "save_plugin_setup":
+    case 'save_plugin_setup':
         save_plugin_setup($WebID, $plugin);
         header("location: {$plugin}.php?WebID={$WebID}");
         exit;
         break;
-
     //預設動作
     default:
         plugin_setup($WebID, $plugin);
         plugin_block_setup($WebID, $plugin);
 
         break;
-
 }
 
 /*-----------秀出結果區--------------*/

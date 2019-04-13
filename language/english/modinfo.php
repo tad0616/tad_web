@@ -33,9 +33,9 @@ define('_MI_TCW_BDESC3', 'Events Action');
 define('_MI_TCW_BNAME4', 'Menu');
 define('_MI_TCW_BDESC4', 'Menu');
 
-define("_MI_TCW_WEB_MODE_TITLE", "Module Title");
-define("_MI_TCW_WEB_MODE_DESC", "The title that display in module homepage.");
-define("_MI_TCW_WEB_MODE_DEF", "All Webs");
+define('_MI_TCW_WEB_MODE_TITLE', 'Module Title');
+define('_MI_TCW_WEB_MODE_DESC', 'The title that display in module homepage.');
+define('_MI_TCW_WEB_MODE_DEF', 'All Webs');
 
 define('_MI_TCW_WEB_DIRNAME', basename(dirname(dirname(__DIR__))));
 define('_MI_TCW_WEB_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');

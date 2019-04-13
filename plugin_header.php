@@ -6,7 +6,7 @@ $web_all_config = get_web_all_config($WebID);
 $show_plugin = true;
 if ($WebID) {
     define('_DISPLAY_MODE', 'home_plugin');
-    $show_plugin = strrpos($web_all_config['web_plugin_enable_arr'], $plugin) !== false ? true : false;
+    $show_plugin = false !== mb_strrpos($web_all_config['web_plugin_enable_arr'], $plugin) ? true : false;
 } else {
     define('_DISPLAY_MODE', 'index_plugin');
 }
