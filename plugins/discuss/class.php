@@ -1,7 +1,6 @@
 <?php
 class tad_web_discuss
 {
-
     public $WebID = 0;
     public $web_cate;
     public $aboutus_setup;
@@ -130,7 +129,6 @@ class tad_web_discuss
                 } else {
                     $main_data[$i]['MemName'] = $MemName;
                 }
-
             } else {
                 $main_data[$i]['MemName'] = $MemName;
             }
@@ -191,7 +189,6 @@ class tad_web_discuss
             }
 
             $isMineDiscuss = $isMyWeb ? true : false;
-
         } elseif ($MemID) {
             $TadUpFiles->set_col("MemID", $MemID, "1");
             $pic = $TadUpFiles->get_pic_file("thumb");
@@ -681,7 +678,6 @@ class tad_web_discuss
                     $pic = "images/nobody.png";
                 }
                 $isMineDiscuss = $isMyWeb ? true : false;
-
             } elseif ($MemID) {
                 $TadUpFiles->set_col("MemID", $MemID, "1");
                 $pic = $TadUpFiles->get_pic_file("thumb");
@@ -776,7 +772,6 @@ class tad_web_discuss
     //匯出資料
     public function export_data($start_date, $end_date, $CateID = "")
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
         $andStart  = empty($start_date) ? "" : "and DiscussDate >= '{$start_date}'";

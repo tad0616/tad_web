@@ -1,7 +1,6 @@
 <?php
 class tad_web_news
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -70,8 +69,7 @@ class tad_web_news
             left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' {$andEnable} $andWebID $andCateID
             order by a.NewsDate desc";
-            // die($sql);
-
+        // die($sql);
         } else {
             $sql = "select a.* from " . $xoopsDB->prefix("tad_web_news") . " as a
             left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
@@ -280,7 +278,6 @@ class tad_web_news
         $xoopsTpl->assign("tags", $this->tags->list_tags("NewsID", $NewsID, 'news'));
 
         // $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'NewsID', $NewsID));
-
     }
 
     //tad_web_news編輯表單
@@ -382,7 +379,6 @@ class tad_web_news
         //標籤設定
         $tags_form = $this->tags->tags_menu("NewsID", $NewsID);
         $xoopsTpl->assign('tags_form', $tags_form);
-
     }
 
     //新增資料到tad_web_news中
@@ -596,7 +592,6 @@ class tad_web_news
     //匯出資料
     public function export_data($start_date, $end_date, $CateID = "")
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
         $andStart  = empty($start_date) ? "" : "and NewsDate >= '{$start_date}'";

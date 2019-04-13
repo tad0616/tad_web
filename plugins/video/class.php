@@ -2,7 +2,6 @@
 
 class tad_web_video
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -449,7 +448,6 @@ class tad_web_video
     //匯出資料
     public function export_data($start_date, $end_date, $CateID = "")
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
         $andStart  = empty($start_date) ? "" : "and VideoDate >= '{$start_date}'";

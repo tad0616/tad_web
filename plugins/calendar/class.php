@@ -1,7 +1,6 @@
 <?php
 class tad_web_calendar
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -65,7 +64,6 @@ class tad_web_calendar
             $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
             $xoopsTpl->assign('calendar_data', $calendar_data);
         }
-
     }
 
     //以流水號秀出某筆tad_web_calendar資料內容

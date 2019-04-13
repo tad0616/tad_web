@@ -1,7 +1,6 @@
 <?php
 class tad_web_menu
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -63,7 +62,7 @@ class tad_web_menu
             left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and d.CateEnable='1' $andCounty $andCity $andSchoolName
             order by a.Sort";
-            // } elseif (!empty($tag)) {
+        // } elseif (!empty($tag)) {
             //     $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_menu") . " as a
             //     left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
             //     join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='MenuID' and c.col_sn=a.MenuID
@@ -488,7 +487,6 @@ class tad_web_menu
     //匯出資料
     public function export_data($start_date = "", $end_date = "", $CateID = "")
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         return;
     }

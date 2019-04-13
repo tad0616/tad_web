@@ -1,7 +1,6 @@
 <?php
 class tad_web_works
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -255,7 +254,6 @@ class tad_web_works
         $xoopsTpl->assign('show_score_form', $show_score_form);
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("WorksID", $WorksID, 'works'));
-
     }
 
     //tad_web_works編輯表單
@@ -614,13 +612,11 @@ class tad_web_works
             where WorksID='$WorksID' and `MemID` = '{$MemID}'";
             $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
-
     }
 
     //匯出資料
     public function export_data($start_date, $end_date, $CateID = "")
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
         $andStart  = empty($start_date) ? "" : "and WorksDate >= '{$start_date}'";
