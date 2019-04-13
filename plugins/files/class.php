@@ -19,7 +19,7 @@ class tad_web_files
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
-        if ('assign' == $mode) {
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['files']['short'] . _MD_TCW_CATE_TOOLS);
@@ -157,7 +157,7 @@ class tad_web_files
             }
         }
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['main_data'] = $main_data;
             $data['total'] = $total;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'files', $CateID, 'fsn', $fsn);
@@ -282,7 +282,7 @@ class tad_web_files
         $fsn = $xoopsDB->getInsertId();
         save_assistant_post($CateID, 'fsn', $fsn);
 
-        if ('upload_file' == $file_method) {
+        if ('upload_file' === $file_method) {
             $TadUpFiles->set_col('fsn', $fsn);
             $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
             check_quota($this->WebID);
@@ -324,7 +324,7 @@ class tad_web_files
         // die($sql);
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-        if ('upload_file' == $file_method) {
+        if ('upload_file' === $file_method) {
             $TadUpFiles->set_col('fsn', $fsn);
             $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
             check_quota($this->WebID);

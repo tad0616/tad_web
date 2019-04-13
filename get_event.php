@@ -18,7 +18,7 @@ $cal_cols = $xoopsModuleConfig['cal_cols'];
 // $myEvents[0]['start'] = date("Y-m-d");
 // die(json_encode($myEvents));
 
-if ('homework' == $_REQUEST['CalKind']) {
+if ('homework' === $_REQUEST['CalKind']) {
     //抓取聯絡簿
     $myEvents = get_homework_event($start, $end, $WebID);
 } else {

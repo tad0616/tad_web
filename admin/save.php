@@ -4,7 +4,7 @@ include_once 'header.php';
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
-if ('save_sort' == $op) {
+if ('save_sort' === $op) {
     $sort = 1;
     foreach ($_POST['tr'] as $WebID) {
         $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebSort`='{$sort}' where `WebID`='{$WebID}'";
@@ -13,7 +13,7 @@ if ('save_sort' == $op) {
     }
 
     echo _MA_TCW_SAVE_SORT_OK . ' (' . date('Y-m-d H:i:s') . ')';
-} elseif ('save_teacher' == $op) {
+} elseif ('save_teacher' === $op) {
     $WebOwnerUid = $_POST['value'];
     $WebID = $_POST['WebID'];
 

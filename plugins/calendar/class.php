@@ -54,7 +54,7 @@ class tad_web_calendar
             die(var_export($fullcalendar_code));
         }
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['fullcalendar_code'] = $fullcalendar_code;
             $data['main_data']         = $calendar_data;
             $data['calendar_data']     = $calendar_data;

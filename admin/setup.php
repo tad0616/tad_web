@@ -48,7 +48,7 @@ function save_plugins()
         $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-        if ('none' != $_POST['plugin_limit'][$dirname]) {
+        if ('none' !== $_POST['plugin_limit'][$dirname]) {
             save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], 0);
         }
 

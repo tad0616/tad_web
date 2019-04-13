@@ -17,7 +17,7 @@ switch ($op) {
     case 'save_position':
         // 安裝共享區塊
         $newBlockID = '';
-        if ('share' == $plugin and 'uninstall' != $PositionName) {
+        if ('share' === $plugin and 'uninstall' !== $PositionName) {
             //讀出共享區塊內容
             $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `BlockID`='{$BlockID}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
@@ -49,7 +49,7 @@ switch ($op) {
 
         $sort = 1;
         $shareBlockID = '';
-        if ('share' == $plugin) {
+        if ('share' === $plugin) {
             $shareBlockID = $BlockID;
             $copyBlockID = get_share_to_custom_blockid($BlockID, $WebID);
         }
@@ -70,7 +70,7 @@ switch ($op) {
         break;
     case 'save_sort':
         $sort = 1;
-        if ('share' != $plugin) {
+        if ('share' !== $plugin) {
             foreach ($order_arr as $BlockID) {
                 // if ($BlockID == $shareBlockID) {
                 //     $BlockID = $copyBlockID;

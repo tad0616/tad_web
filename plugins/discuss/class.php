@@ -27,7 +27,7 @@ class tad_web_discuss
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
-        if ('assign' == $mode) {
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['discuss']['short'] . _MD_TCW_CATE_TOOLS);
@@ -144,7 +144,7 @@ class tad_web_discuss
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_discuss_func', "discuss.php?op=delete&WebID={$this->WebID}&DiscussID=", 'DiscussID');
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
             return $data;
@@ -271,7 +271,7 @@ class tad_web_discuss
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (false !== ($file = readdir($dh))) {
-                    if ('.' == substr($file, 0, 1) or 'e' != substr($file, 0, 1)) {
+                    if ('.' === substr($file, 0, 1) or 'e' !== substr($file, 0, 1)) {
                         continue;
                     }
 
@@ -414,7 +414,7 @@ class tad_web_discuss
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (false !== ($file = readdir($dh))) {
-                    if ('.' == substr($file, 0, 1) or 'e' != substr($file, 0, 1)) {
+                    if ('.' === substr($file, 0, 1) or 'e' !== substr($file, 0, 1)) {
                         continue;
                     }
 

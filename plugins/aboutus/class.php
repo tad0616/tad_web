@@ -206,7 +206,7 @@ class tad_web_aboutus
             $all_main[$i]['MemName'] = $MemName;
             $all_main[$i]['MemSexTitle'] = ('1' == $MemSex) ? _MD_TCW_BOY : _MD_TCW_GIRL;
 
-            $StuUrl = ('mem_adm' == $mode) ? "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu" : '#';
+            $StuUrl = ('mem_adm' === $mode) ? "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu" : '#';
 
             $students = "<div id='{$MemNum}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size:11px;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
 
@@ -222,7 +222,7 @@ class tad_web_aboutus
             $i++;
         }
 
-        if ('mem_adm' == $mode) {
+        if ('mem_adm' === $mode) {
             $xoopsTpl->assign('mode', 'mem_adm');
         }
 
@@ -1211,7 +1211,7 @@ class tad_web_aboutus
         foreach ($menu_var as $k => $plugin) {
             // die(var_export($plugin));
             $dirname = $plugin['dirname'];
-            if ('aboutus' == $dirname) {
+            if ('aboutus' === $dirname) {
                 $aboutus['cates'] = $cates['aboutus'];
             }
             if ('1' != $plugin['export']) {

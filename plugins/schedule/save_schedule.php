@@ -11,7 +11,7 @@ $Subject = system_CleanVars($_REQUEST, 'Subject', '', 'string');
 
 list($SDWeek, $SDSort) = explode('-', $tag);
 
-if ('delete' == $op) {
+if ('delete' === $op) {
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where `ScheduleID`='{$ScheduleID}'and `SDWeek`='{$SDWeek}' and `SDSort`='{$SDSort}' ";
 } else {
     $my_subject_file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/my_subject.json";

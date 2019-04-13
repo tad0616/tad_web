@@ -34,7 +34,7 @@ class tad_web_account
         }
 
         $andCateID = '';
-        if ('assign' == $mode) {
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             $this->web_cate->set_button_value(_MD_TCW_ACCOUNT_BOOK_TOOL);
             $this->web_cate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
@@ -148,7 +148,7 @@ class tad_web_account
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_account_func', "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['main_data']    = $main_data;
             $data['AccountTotal'] = $AccountTotal;
             $data['total'] = $total;
@@ -375,7 +375,7 @@ class tad_web_account
         $CateID       = (int) $_POST['CateID'];
         $WebID        = (int) $_POST['WebID'];
 
-        if ('AccountIncome' == $AccountKind) {
+        if ('AccountIncome' === $AccountKind) {
             $AccountIncome = (int) $AccountMoney;
             $AccountOutgoings = 0;
         } else {
@@ -421,7 +421,7 @@ class tad_web_account
         $CateID       = (int) $_POST['CateID'];
         $WebID        = (int) $_POST['WebID'];
 
-        if ('AccountIncome' == $AccountKind) {
+        if ('AccountIncome' === $AccountKind) {
             $AccountIncome    = $AccountMoney;
             $AccountOutgoings = '';
         } else {

@@ -195,7 +195,7 @@ class web_cate
         {$option}
         </select>";
 
-        if ('menu' == $mode) {
+        if ('menu' === $mode) {
             return $menu;
         }
 
@@ -248,12 +248,12 @@ class web_cate
           {$show_label_txt}
           </label>" : '';
 
-        $row = ('form' == $mode) ? 'form-group' : 'row';
+        $row = ('form' === $mode) ? 'form-group' : 'row';
 
         $op = isset($_REQUEST['op']) ? $_REQUEST['op'] : '';
         $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op={$op}&CateID=' + $('#CateID').val();" : '';
 
-        $newCate_js = ('form' == $mode) ? "if(\$('#CateID').val()==''){\$('#newCate').show(); }else{ \$('#newCate').hide();}" : '';
+        $newCate_js = ('form' === $mode) ? "if(\$('#CateID').val()==''){\$('#newCate').show(); }else{ \$('#newCate').hide();}" : '';
 
         $hide_newCate_js = empty($defCateID) ? '' : "\$('#newCate').hide();";
 

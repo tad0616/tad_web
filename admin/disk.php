@@ -35,7 +35,7 @@ function list_all_web($defCateID = '')
         $size = size2mb($dir_size);
 
         $space_quota = get_web_config('space_quota', $WebID);
-        $user_space_quota = (empty($space_quota) or 'default' == $space_quota) ? $user_default_quota : (int)$space_quota;
+        $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int)$space_quota;
 
         $data[$WebID]['space_quota'] = $user_space_quota;
         $data[$WebID]['disk_used_space'] = $size;
@@ -167,9 +167,9 @@ function dirToArray($dir)
                 $unit = mb_substr($size, -2);
                 $result[$i]['size'] = $size;
                 $result[$i]['url'] = str_replace(XOOPS_ROOT_PATH, XOOPS_URL, $dir . '/' . $value);
-                if ('MB' == $unit) {
+                if ('MB' === $unit) {
                     $result[$i]['color'] = 'red';
-                } elseif ('GB' == $unit) {
+                } elseif ('GB' === $unit) {
                     $result[$i]['color'] = '#C32DCE';
                 } else {
                     $result[$i]['color'] = '#afafaf';

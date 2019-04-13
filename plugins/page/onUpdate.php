@@ -19,7 +19,7 @@ function page_onUpdate1_chk()
     $sql = "SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '" . $xoopsDB->prefix('tad_web_page') . "' AND COLUMN_NAME = 'PageContent'";
     $result = $xoopsDB->query($sql);
     list($type) = $xoopsDB->fetchRow($result);
-    if ('text' == $type) {
+    if ('text' === $type) {
         return true;
     }
 

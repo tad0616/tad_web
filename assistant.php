@@ -34,9 +34,9 @@ function list_all_assistant($WebID = '', $plugin = '')
 
         $all_assistant[$i] = $data;
         $all_assistant[$i]['plugin'] = $plugin_menu_var[$ColName];
-        if ('MemID' == $AssistantType) {
+        if ('MemID' === $AssistantType) {
             $all_assistant[$i]['mem'] = get_tad_web_mems($AssistantID);
-        } elseif ('ParentID' == $AssistantType) {
+        } elseif ('ParentID' === $AssistantType) {
             $all_assistant[$i]['mem'] = get_tad_web_parent($AssistantID);
         }
         $i++;

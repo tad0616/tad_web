@@ -19,7 +19,7 @@ class tad_web_schedule
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
-        if ('assign' == $mode) {
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
@@ -30,7 +30,7 @@ class tad_web_schedule
             }
         }
 
-        if (!empty($CateID) and 'assign' == $mode) {
+        if (!empty($CateID) and 'assign' === $mode) {
             //取得單一分類資料
             $cate = $this->web_cate->get_tad_web_cate($CateID);
             if ($CateID and '1' != $cate['CateEnable']) {
@@ -103,7 +103,7 @@ class tad_web_schedule
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
-        if ('return' == $mode) {
+        if ('return' === $mode) {
             $data['schedule_amount'] = $i;
             $data['main_data']       = $main_data;
             $data['total']           = $total;
