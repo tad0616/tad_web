@@ -4,7 +4,7 @@ function list_account($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
 
     $web_cate = new web_cate($WebID, 'account', 'tad_web_account');

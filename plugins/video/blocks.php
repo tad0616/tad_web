@@ -4,7 +4,7 @@ function list_video($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     include_once 'class.php';
 
@@ -21,7 +21,7 @@ function random_video($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     $block = [];
 
@@ -53,7 +53,7 @@ function latest_video($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     $block = [];
     $sql = 'select * from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='$WebID' order by VideoDate desc , VideoID desc limit 0,1";

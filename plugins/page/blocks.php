@@ -3,7 +3,7 @@ function list_page($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     include_once 'class.php';
 
@@ -19,7 +19,7 @@ function page_menu($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
 
     $limit = (isset($config['limit']) and !empty($config['limit'])) ? "limit 0,{$config['limit']}" : '';

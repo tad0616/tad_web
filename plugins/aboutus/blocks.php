@@ -4,7 +4,7 @@ function list_web_adm($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
 
     $sql = 'SELECT `WebOwnerUid` FROM `' . $xoopsDB->prefix('tad_web') . "` WHERE `WebID` = '$WebID'";

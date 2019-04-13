@@ -3,7 +3,7 @@ function list_homework($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     include_once 'class.php';
     $tad_web_homework = new tad_web_homework($WebID);

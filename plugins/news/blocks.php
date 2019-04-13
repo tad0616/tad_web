@@ -3,7 +3,7 @@ function list_news($WebID, $config = [])
 {
     global $xoopsDB;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     include_once 'class.php';
 
