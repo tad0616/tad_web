@@ -4,7 +4,7 @@ function list_work($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     include_once 'class.php';
 
@@ -20,7 +20,7 @@ function random_work($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
 
     include_once 'class.php';
@@ -37,7 +37,7 @@ function latest_work($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     include_once 'class.php';
 

@@ -4,7 +4,7 @@ function list_menu($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
     include_once 'class.php';
 
