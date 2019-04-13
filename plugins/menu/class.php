@@ -498,11 +498,7 @@ class tad_web_menu
     {
         global $xoopsDB;
         $sql        = "select max(`Sort`) from " . $xoopsDB->prefix("tad_web_menu") . " where WebID='$WebID' and CateID='{$CateID}'";
-<<<<<<< HEAD
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-=======
-        $result = $xoopsDB->query($sql) or web_error($sql);
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }

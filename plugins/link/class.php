@@ -243,7 +243,6 @@ class tad_web_link
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-<<<<<<< HEAD
         $myts        = MyTextSanitizer::getInstance();
         $LinkTitle   = $myts->addSlashes($_POST['LinkTitle']);
         $LinkDesc    = $myts->addSlashes($_POST['LinkDesc']);
@@ -254,16 +253,6 @@ class tad_web_link
         $LinkSort    = intval($_POST['LinkSort']);
         $CateID      = intval($_POST['CateID']);
         $WebID       = intval($_POST['WebID']);
-=======
-        $myts                 = MyTextSanitizer::getInstance();
-        $_POST['LinkTitle']   = $myts->addSlashes($_POST['LinkTitle']);
-        $_POST['LinkDesc']    = $myts->addSlashes($_POST['LinkDesc']);
-        $_POST['LinkUrl']     = $myts->addSlashes($_POST['LinkUrl']);
-        $_POST['LinkCounter'] = (int)$_POST['LinkCounter'];
-        $_POST['LinkSort']    = (int)$_POST['LinkSort'];
-        $_POST['CateID']      = (int)$_POST['CateID'];
-        $_POST['WebID']       = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
@@ -287,7 +276,6 @@ class tad_web_link
     {
         global $xoopsDB, $xoopsUser;
 
-<<<<<<< HEAD
         $myts        = MyTextSanitizer::getInstance();
         $LinkTitle   = $myts->addSlashes($_POST['LinkTitle']);
         $LinkDesc    = $myts->addSlashes($_POST['LinkDesc']);
@@ -296,15 +284,6 @@ class tad_web_link
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
         $CateID      = intval($_POST['CateID']);
         $WebID       = intval($_POST['WebID']);
-=======
-        $myts               = MyTextSanitizer::getInstance();
-        $_POST['LinkTitle'] = $myts->addSlashes($_POST['LinkTitle']);
-        $_POST['LinkDesc']  = $myts->addSlashes($_POST['LinkDesc']);
-        $_POST['LinkUrl']   = $myts->addSlashes($_POST['LinkUrl']);
-        $_POST['CateID']    = (int)$_POST['CateID'];
-        $_POST['WebID']     = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
-
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'LinkID', $LinkID)) {

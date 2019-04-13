@@ -1,4 +1,5 @@
 <?php
+
 class tad_web_video
 {
 
@@ -158,9 +159,9 @@ class tad_web_video
         $VideoID = (int)$VideoID;
         $this->add_counter($VideoID);
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='{$VideoID}'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='{$VideoID}'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        $all    = $xoopsDB->fetchArray($result);
+        $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount , $Youtube, $VideoSort
         foreach ($all as $k => $v) {
@@ -299,19 +300,14 @@ class tad_web_video
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-        $myts      = MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube   = $myts->addSlashes($_POST['Youtube']);
-<<<<<<< HEAD
+        $myts        = MyTextSanitizer::getInstance();
+        $VideoName   = $myts->addSlashes($_POST['VideoName']);
+        $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
+        $Youtube     = $myts->addSlashes($_POST['Youtube']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name   = $myts->addSlashes($_POST['tag_name']);
-        $CateID    = intval($_POST['CateID']);
-        $WebID     = intval($_POST['WebID']);
-=======
-        $CateID    = (int)$_POST['CateID'];
-        $WebID     = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int)$_POST['VideoCount'];
@@ -351,19 +347,14 @@ class tad_web_video
     {
         global $xoopsDB;
 
-        $myts      = MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube   = $myts->addSlashes($_POST['Youtube']);
-<<<<<<< HEAD
-        $newCateName   = $myts->addSlashes($_POST['newCateName']);
-        $tag_name   = $myts->addSlashes($_POST['tag_name']);
-        $CateID    = intval($_POST['CateID']);
-        $WebID     = intval($_POST['WebID']);
-=======
-        $CateID    = (int)$_POST['CateID'];
-        $WebID     = (int)$_POST['WebID'];
->>>>>>> 826dbd105d48639c01fd80ed38edf4d75ec4d744
+        $myts        = MyTextSanitizer::getInstance();
+        $VideoName   = $myts->addSlashes($_POST['VideoName']);
+        $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
+        $Youtube     = $myts->addSlashes($_POST['Youtube']);
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = intval($_POST['CateID']);
+        $WebID       = intval($_POST['WebID']);
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int)$_POST['VideoCount'];
@@ -393,8 +384,8 @@ class tad_web_video
     public function delete($VideoID = "")
     {
         global $xoopsDB;
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $sql = "select CateID from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID'";
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'VideoID', $VideoID)) {
             $anduid = onlyMine();
@@ -412,7 +403,7 @@ class tad_web_video
         global $xoopsDB, $TadUpFiles;
         $allCateID = array();
         $sql       = "select VideoID,CateID from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($VideoID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($VideoID);
             $allCateID[$CateID] = $CateID;
@@ -427,8 +418,8 @@ class tad_web_video
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $sql = "select count(*) from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -449,9 +440,9 @@ class tad_web_video
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_web_video") . " where VideoID='$VideoID'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        $data   = $xoopsDB->fetchArray($result);
+        $data = $xoopsDB->fetchArray($result);
         return $data;
     }
 
@@ -464,7 +455,7 @@ class tad_web_video
         $andStart  = empty($start_date) ? "" : "and VideoDate >= '{$start_date}'";
         $andEnd    = empty($end_date) ? "" : "and VideoDate <= '{$end_date}'";
 
-        $sql    = "select VideoID,VideoName,VideoDate,CateID from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by VideoDate";
+        $sql = "select VideoID,VideoName,VideoDate,CateID from " . $xoopsDB->prefix("tad_web_video") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by VideoDate";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
@@ -485,8 +476,8 @@ class tad_web_video
     public function max_sort($WebID, $CateID)
     {
         global $xoopsDB;
-        $sql        = "select max(`VideoSort`) from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' and CateID='{$CateID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $sql = "select max(`VideoSort`) from " . $xoopsDB->prefix("tad_web_video") . " where WebID='$WebID' and CateID='{$CateID}'";
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
