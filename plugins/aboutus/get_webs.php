@@ -13,7 +13,7 @@ $xoopsModule       = $modhandler->getByDirname("tad_web");
 $config_handler    = xoops_getHandler('config');
 $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
-$CateID = (int)$_GET['CateID'];
+$CateID = (int) $_GET['CateID'];
 $today  = date("Y-m-d");
 $now    = date("Y-m-d H:i:s");
 //我的班級ID（陣列）
@@ -30,7 +30,10 @@ while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
 //找出各班功課表
 $sql    = "SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM " . $xoopsDB->prefix("tad_web_schedule") . " WHERE `ScheduleDisplay` = '1'";
 $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+<<<<<<< HEAD
 
+=======
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule[$WebID]       = $ScheduleID;
     $schedule_title[$WebID] = $ScheduleName;

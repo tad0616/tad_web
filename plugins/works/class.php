@@ -171,7 +171,7 @@ class tad_web_works
             return;
         }
 
-        $WorksID = (int)$WorksID;
+        $WorksID = (int) $WorksID;
         $this->add_counter($WorksID);
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='{$WorksID}'";
@@ -357,9 +357,15 @@ class tad_web_works
         $WorksDate   = $myts->addSlashes($_POST['WorksDate']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
+<<<<<<< HEAD
         $CateID      = intval($_POST['CateID']);
         $WebID       = intval($_POST['WebID']);
         $WorksEnable = intval($_POST['WorksEnable']);
+=======
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
+        $WorksEnable = (int) $_POST['WorksEnable'];
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
@@ -393,9 +399,15 @@ class tad_web_works
         $WorksDate   = $myts->addSlashes($_POST['WorksDate']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
+<<<<<<< HEAD
         $CateID      = intval($_POST['CateID']);
         $WebID       = intval($_POST['WebID']);
         $WorksEnable = intval($_POST['WorksEnable']);
+=======
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
+        $WorksEnable = (int) $_POST['WorksEnable'];
+>>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
