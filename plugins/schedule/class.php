@@ -299,15 +299,6 @@ class tad_web_schedule
             $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
         }
 
-<<<<<<< HEAD
-        $myts                     = MyTextSanitizer::getInstance();
-        $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
-        $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $CateID          = intval($_POST['CateID']);
-        $WebID           = intval($_POST['WebID']);
-        $ScheduleTime             = date("Y-m-d H:i:s");
-=======
         $myts            = MyTextSanitizer::getInstance();
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
@@ -315,7 +306,6 @@ class tad_web_schedule
         $CateID          = (int) $_POST['CateID'];
         $WebID           = (int) $_POST['WebID'];
         $ScheduleTime    = date("Y-m-d H:i:s");
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = "insert into " . $xoopsDB->prefix("tad_web_schedule") . "
@@ -336,15 +326,6 @@ class tad_web_schedule
     {
         global $xoopsDB;
 
-<<<<<<< HEAD
-        $myts                     = MyTextSanitizer::getInstance();
-        $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
-        $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $CateID          = intval($_POST['CateID']);
-        $WebID           = intval($_POST['WebID']);
-        $ScheduleTime             = date("Y-m-d H:i:s");
-=======
         $myts            = MyTextSanitizer::getInstance();
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
@@ -352,7 +333,6 @@ class tad_web_schedule
         $CateID          = (int) $_POST['CateID'];
         $WebID           = (int) $_POST['WebID'];
         $ScheduleTime    = date("Y-m-d H:i:s");
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 

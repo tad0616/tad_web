@@ -444,16 +444,6 @@ class tad_web_discuss
             redirect_header("index.php", 3, _MD_TCW_LOGIN_TO_POST);
         }
 
-<<<<<<< HEAD
-        $myts                    = MyTextSanitizer::getInstance();
-        $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
-        $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $CateID        = intval($_POST['CateID']);
-        $WebID          = intval($_POST['WebID']);
-        $ReDiscussID    = intval($_POST['ReDiscussID']);
-=======
         $myts           = MyTextSanitizer::getInstance();
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
@@ -462,7 +452,6 @@ class tad_web_discuss
         $CateID         = (int) $_POST['CateID'];
         $WebID          = (int) $_POST['WebID'];
         $ReDiscussID    = (int) $_POST['ReDiscussID'];
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         if ($isMyWeb) {
             $uid      = $xoopsUser->uid();
@@ -538,16 +527,6 @@ class tad_web_discuss
             $anduid   = "and `ParentID`='{$ParentID}'";
         }
 
-<<<<<<< HEAD
-        $myts                    = MyTextSanitizer::getInstance();
-        $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
-        $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $CateID         = intval($_POST['CateID']);
-        $WebID          = intval($_POST['WebID']);
-        $ReDiscussID    = intval($_POST['ReDiscussID']);
-=======
         $myts           = MyTextSanitizer::getInstance();
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
@@ -557,7 +536,6 @@ class tad_web_discuss
         $WebID          = (int) $_POST['WebID'];
         $ReDiscussID    = (int) $_POST['ReDiscussID'];
 
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         $sql = "update " . $xoopsDB->prefix("tad_web_discuss") . " set

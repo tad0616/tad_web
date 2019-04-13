@@ -306,13 +306,8 @@ class tad_web_video
         $Youtube     = $myts->addSlashes($_POST['Youtube']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
-<<<<<<< HEAD
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
-=======
         $CateID      = (int) $_POST['CateID'];
         $WebID       = (int) $_POST['WebID'];
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
@@ -358,13 +353,8 @@ class tad_web_video
         $Youtube     = $myts->addSlashes($_POST['Youtube']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
-<<<<<<< HEAD
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
-=======
         $CateID      = (int) $_POST['CateID'];
         $WebID       = (int) $_POST['WebID'];
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
