@@ -260,7 +260,7 @@ class tad_web_calendar
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql       = "select CalendarID,CateID from " . $xoopsDB->prefix("tad_web_calendar") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($CalendarID, $CateID) = $xoopsDB->fetchRow($result)) {

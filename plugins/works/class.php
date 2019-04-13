@@ -490,7 +490,7 @@ class tad_web_works
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql       = "select WorksID,CateID from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($WorksID, $CateID) = $xoopsDB->fetchRow($result)) {
@@ -550,7 +550,7 @@ class tad_web_works
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         if (empty($MemID)) {
             $i    = 0;
-            $data = array();
+            $data = [];
             while ($all = $xoopsDB->fetchArray($result)) {
                 $TadUpFiles->set_files_sn(explode(',', $all['all_files_sn']));
                 $all['list_del_file'] = $TadUpFiles->show_files('upfile', true, null, true);
@@ -599,7 +599,7 @@ class tad_web_works
         }
     }
 
-    public function save_score($WorksID = "", $WorkScoreArr = array(), $WorkJudgmentArr = array())
+    public function save_score($WorksID = "", $WorkScoreArr = [], $WorkJudgmentArr = [])
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
         $myts = MyTextSanitizer::getInstance();
@@ -626,7 +626,7 @@ class tad_web_works
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
-        $main_data = array();
+        $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

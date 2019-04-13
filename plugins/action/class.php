@@ -247,7 +247,7 @@ class tad_web_action
         if (!empty($ActionID)) {
             $DBV = $this->get_one_data($ActionID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -435,7 +435,7 @@ class tad_web_action
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
+        $allCateID = [];
         $sql       = "select ActionID,CateID from " . $xoopsDB->prefix("tad_web_action") . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($ActionID, $CateID) = $xoopsDB->fetchRow($result)) {
@@ -529,12 +529,12 @@ class tad_web_action
     public function mk_blur_pic($filepath, $new_name)
     {
         $type         = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize()
-        $allowedTypes = array(
+        $allowedTypes = [
             1, // [] gif
             2, // [] jpg
             3, // [] png
             6, // [] bmp
-        );
+        ];
         if (!in_array($type, $allowedTypes)) {
             return false;
         }
@@ -580,7 +580,7 @@ class tad_web_action
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
-        $main_data = array();
+        $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
