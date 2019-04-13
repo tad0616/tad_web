@@ -1,7 +1,6 @@
 <?php
 class tad_web_schedule
 {
-
     public $WebID = 0;
     public $web_cate;
 
@@ -29,7 +28,6 @@ class tad_web_schedule
                 $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
-
         }
 
         if (!empty($CateID) and $mode == "assign") {
@@ -184,7 +182,6 @@ class tad_web_schedule
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
         $sweet_alert = new sweet_alert();
         $sweet_alert->render("delete_schedule_func", "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
-
     }
 
     //tad_web_schedule編輯表單
@@ -286,7 +283,6 @@ class tad_web_schedule
 
         $xoopsTpl->assign('schedule_template', $schedule_template);
         $xoopsTpl->assign('schedule_subjects', $this->get_subjects());
-
     }
 
     //新增資料到tad_web_schedule中
@@ -371,14 +367,12 @@ class tad_web_schedule
         }
         $sql = "delete from " . $xoopsDB->prefix("tad_web_schedule") . " where ScheduleID='$ScheduleID' $anduid";
         if ($xoopsDB->queryF($sql)) {
-
             $sql = "delete from " . $xoopsDB->prefix("tad_web_schedule_data") . " where ScheduleID='$ScheduleID'";
             $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         } else {
             web_error($sql, __FILE__, __LINE__);
         }
         check_quota($this->WebID);
-
     }
 
     //刪除所有資料
@@ -435,7 +429,6 @@ class tad_web_schedule
     {
         global $xoopsDB, $xoopsModuleConfig;
         if (!isset($xoopsModuleConfig)) {
-
             $modhandler        = xoops_getHandler('module');
             $xoopsModule       = $modhandler->getByDirname("tad_web");
             $config_handler    = xoops_getHandler('config');
@@ -518,7 +511,6 @@ class tad_web_schedule
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/mColorPicker.php";
         $mColorPicker      = new mColorPicker('.color');
         $mColorPicker_code = $mColorPicker->render();
-
     }
 
     //儲存科目設定

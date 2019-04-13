@@ -233,7 +233,6 @@ class tad_web_action
         $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign("tags", $this->tags->list_tags("ActionID", $ActionID, 'action'));
-
     }
 
     //tad_web_action編輯表單
