@@ -63,7 +63,7 @@ while ($web = $xoopsDB->fetchArray($result)) {
     $web_counter = !empty($other_web_url) ? "<a href=\"{$other_web_url}\" target=\"_blank\"><span class='label label-info'>{$web['WebCounter']}</span></a>" : '<a href="'
                                                                                                                                                               . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\"><span class='label label-info'>{$web['WebCounter']}</span></a>";
 
-    if (empty($web_plugin_enable_arr) or strpos($web_plugin_enable_arr, 'homework') !== false) {
+    if (empty($web_plugin_enable_arr) or false !== strpos($web_plugin_enable_arr, 'homework')) {
         $no_homework   = $isMyWeb ? '<a href="' . XOOPS_URL . "/modules/tad_web/homework.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</a>' : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</span>';
         $have_homework = (isset($homework[$WebID]) and !empty($homework[$WebID])) ? '<a href="'
                                                                                     . XOOPS_URL . "/modules/tad_web/homework.php?WebID={$WebID}&HomeworkID={$homework[$WebID]}\" target=\"_blank\"><i class='fa fa-pencil-square-o' style='color: #AA6A31;'> {$homework_date[$WebID]} " . _MD_TCW_ABOUTUS_HOMEWORK . '</i></a>' : $no_homework;
@@ -71,7 +71,7 @@ while ($web = $xoopsDB->fetchArray($result)) {
         $have_homework = '';
     }
 
-    if (empty($web_plugin_enable_arr) or strpos($web_plugin_enable_arr, 'schedule') !== false) {
+    if (empty($web_plugin_enable_arr) or false !== strpos($web_plugin_enable_arr, 'schedule')) {
         $no_schedule   = $isMyWeb ? '<a href="' . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_SCHEDULE . '</a>' : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_SCHEDULE . '</span>';
         $have_schedule = (isset($schedule[$WebID]) and !empty($schedule[$WebID])) ? '<a href="' . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&ScheduleID={$schedule[$WebID]}\" target=\"_blank\" style='color: #6F8232;'><i class='fa fa-table'> " . _MD_TCW_ABOUTUS_SCHEDULE . '</i></a>' : $no_schedule;
     } else {

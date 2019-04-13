@@ -19,7 +19,7 @@ class tad_web_schedule
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
-        if ($mode == 'assign') {
+        if ('assign' == $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
@@ -30,10 +30,10 @@ class tad_web_schedule
             }
         }
 
-        if (!empty($CateID) and $mode == 'assign') {
+        if (!empty($CateID) and 'assign' == $mode) {
             //取得單一分類資料
             $cate = $this->web_cate->get_tad_web_cate($CateID);
-            if ($CateID and $cate['CateEnable'] != '1') {
+            if ($CateID and '1' != $cate['CateEnable']) {
                 return;
             }
             $xoopsTpl->assign('cate', $cate);
@@ -103,7 +103,7 @@ class tad_web_schedule
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
-        if ($mode == 'return') {
+        if ('return' == $mode) {
             $data['schedule_amount'] = $i;
             $data['main_data']       = $main_data;
             $data['total']           = $total;
@@ -165,7 +165,7 @@ class tad_web_schedule
         $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($ScheduleName), 0, 300));
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
-        if ($CateID and $cate['CateEnable'] != '1') {
+        if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
         $xoopsTpl->assign('cate', $cate);
@@ -344,7 +344,7 @@ class tad_web_schedule
         where ScheduleID='$ScheduleID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-        if ($ScheduleDisplay == '1') {
+        if ('1' == $ScheduleDisplay) {
             $sql = 'update ' . $xoopsDB->prefix('tad_web_schedule') . " set
              `ScheduleDisplay` = '0'
             where WebID='{$WebID}' and ScheduleID!='{$ScheduleID}' $anduid";

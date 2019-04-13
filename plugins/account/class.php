@@ -34,7 +34,7 @@ class tad_web_account
         }
 
         $andCateID = '';
-        if ($mode == 'assign') {
+        if ('assign' == $mode) {
             //取得tad_web_cate所有資料陣列
             $this->web_cate->set_button_value(_MD_TCW_ACCOUNT_BOOK_TOOL);
             $this->web_cate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
@@ -45,7 +45,7 @@ class tad_web_account
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
-                if ($CateID and $cate['CateEnable'] != '1') {
+                if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
                 $xoopsTpl->assign('cate', $cate);
@@ -148,7 +148,7 @@ class tad_web_account
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_account_func', "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
 
-        if ($mode == 'return') {
+        if ('return' == $mode) {
             $data['main_data']    = $main_data;
             $data['AccountTotal'] = $AccountTotal;
             $data['total'] = $total;
@@ -239,7 +239,7 @@ class tad_web_account
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
-        if ($CateID and $cate['CateEnable'] != '1') {
+        if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
         $xoopsTpl->assign('cate', $cate);
@@ -375,7 +375,7 @@ class tad_web_account
         $CateID       = (int) $_POST['CateID'];
         $WebID        = (int) $_POST['WebID'];
 
-        if ($AccountKind == 'AccountIncome') {
+        if ('AccountIncome' == $AccountKind) {
             $AccountIncome = (int) $AccountMoney;
             $AccountOutgoings = 0;
         } else {
@@ -421,7 +421,7 @@ class tad_web_account
         $CateID       = (int) $_POST['CateID'];
         $WebID        = (int) $_POST['WebID'];
 
-        if ($AccountKind == 'AccountIncome') {
+        if ('AccountIncome' == $AccountKind) {
             $AccountIncome    = $AccountMoney;
             $AccountOutgoings = '';
         } else {

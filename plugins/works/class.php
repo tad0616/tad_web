@@ -20,7 +20,7 @@ class tad_web_works
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
-        if ($mode == 'assign') {
+        if ('assign' == $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['works']['short'] . _MD_TCW_CATE_TOOLS);
@@ -32,7 +32,7 @@ class tad_web_works
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
-                if ($CateID and $cate['CateEnable'] != '1') {
+                if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
                 $xoopsTpl->assign('cate', $cate);
@@ -44,15 +44,15 @@ class tad_web_works
         $now  = date('Y-m-d H:i:s');
         $time = time();
         //列出學生可上傳的
-        if ($kind == 'list_mem_need_upload') {
+        if ('list_mem_need_upload' == $kind) {
             $andWorksKind = "and a.WorksKind !='' and a.WorksDate >= '{$now}'";
-        } elseif ($kind == 'list_mem_upload') {
+        } elseif ('list_mem_upload' == $kind) {
             $andWorksKind = "and a.WorksKind !='' and a.WorksDate < '{$now}'";
         } else {
             $andWorksKind = $isMyWeb ? '' : "and ((a.WorksKind ='mem_after_end' and a.WorksDate < '$now') or a.WorksKind!='mem_after_end')";
         }
 
-        if ($order == '') {
+        if ('' == $order) {
             $order = 'order by a.WorksDate desc';
         }
 
@@ -117,7 +117,7 @@ class tad_web_works
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
             $this->web_cate->set_WebID($WebID);
 
-            if ($pic !== false) {
+            if (false !== $pic) {
                 if (empty($pic)) {
                     $pic = 12;
                 }
@@ -133,7 +133,7 @@ class tad_web_works
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb']   = $isMyWeb;
             $main_data[$i]['WorksDate'] = $WorksDate;
-            if (strtotime($WorksDate) > $time and $WorksKind == 'mem_after_end') {
+            if (strtotime($WorksDate) > $time and 'mem_after_end' == $WorksKind) {
                 $main_data[$i]['hide'] = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
             } else {
                 $main_data[$i]['hide'] = false;
@@ -148,7 +148,7 @@ class tad_web_works
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_works_func', "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
 
-        if ($mode == 'return') {
+        if ('return' == $mode) {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
@@ -185,11 +185,11 @@ class tad_web_works
 
         $deadline             = strtotime($WorksDate);
         $time                 = time();
-        $show_score_form      = ($isMyWeb and $WorksKind != '') ? true : false;
-        $is_mem_upload        = ($_SESSION['LoginWebID'] == $WebID and !empty($_SESSION['LoginWebID']) and $WorksKind != '') ? true : false;
+        $show_score_form      = ($isMyWeb and '' != $WorksKind) ? true : false;
+        $is_mem_upload        = ($_SESSION['LoginWebID'] == $WebID and !empty($_SESSION['LoginWebID']) and '' != $WorksKind) ? true : false;
         $show_mem_upload_form = ($is_mem_upload and $deadline >= $time) ? true : false;
 
-        if ($WorksKind == 'mem_after_end' and $deadline >= $time and !$isMyWeb and ($_SESSION['LoginWebID'] != $WebID or empty($_SESSION['LoginWebID']))) {
+        if ('mem_after_end' == $WorksKind and $deadline >= $time and !$isMyWeb and ($_SESSION['LoginWebID'] != $WebID or empty($_SESSION['LoginWebID']))) {
             redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate));
         }
 
@@ -211,7 +211,7 @@ class tad_web_works
         $xoopsTpl->assign('isAssistant', $isAssistant);
         $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID));
 
-        if (strtotime($WorksDate) > $time and $WorksKind == 'mem_after_end') {
+        if (strtotime($WorksDate) > $time and 'mem_after_end' == $WorksKind) {
             $hide = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
         } else {
             $hide = false;
@@ -230,7 +230,7 @@ class tad_web_works
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
-        if ($CateID and $cate['CateEnable'] != '1') {
+        if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
         $xoopsTpl->assign('cate', $cate);
@@ -575,10 +575,10 @@ class tad_web_works
         }
         $deadline        = strtotime($WorksDate);
         $time            = time();
-        $show_score_form = ($isMyWeb and $WorksKind != '') ? true : false;
+        $show_score_form = ($isMyWeb and '' != $WorksKind) ? true : false;
         $uid_name        = XoopsUser::getUnameFromId($uid, 1);
 
-        if (strtotime($WorksDate) > $time and $WorksKind == 'mem_after_end') {
+        if (strtotime($WorksDate) > $time and 'mem_after_end' == $WorksKind) {
             $hide = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
         } else {
             $hide = false;
