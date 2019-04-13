@@ -249,17 +249,10 @@ class tad_web_link
         $LinkUrl     = $myts->addSlashes($_POST['LinkUrl']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
-<<<<<<< HEAD
-        $LinkCounter = intval($_POST['LinkCounter']);
-        $LinkSort    = intval($_POST['LinkSort']);
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
-=======
         $LinkCounter = (int) $_POST['LinkCounter'];
         $LinkSort    = (int) $_POST['LinkSort'];
         $CateID      = (int) $_POST['CateID'];
         $WebID       = (int) $_POST['WebID'];
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
@@ -289,14 +282,9 @@ class tad_web_link
         $LinkUrl     = $myts->addSlashes($_POST['LinkUrl']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name    = $myts->addSlashes($_POST['tag_name']);
-<<<<<<< HEAD
-        $CateID      = intval($_POST['CateID']);
-        $WebID       = intval($_POST['WebID']);
-=======
         $CateID      = (int) $_POST['CateID'];
         $WebID       = (int) $_POST['WebID'];
 
->>>>>>> c99e60fb8b4b8badace8ac18eabbbc5f3aff51ee
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'LinkID', $LinkID)) {
