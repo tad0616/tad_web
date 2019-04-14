@@ -1,48 +1,48 @@
 <?php
 /************** list_work *************/
-function list_work($WebID, $config = array())
+function list_work($WebID, $config = [])
 {
-
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
-    include_once "class.php";
+    include_once 'class.php';
 
     $tad_web_works = new tad_web_works($WebID);
-    $block         = $tad_web_works->list_all("", $config['limit'], 'return');
+    $block = $tad_web_works->list_all('', $config['limit'], 'return');
+
     return $block;
 }
 
 /************** random_work *************/
 
-function random_work($WebID, $config = array())
+function random_work($WebID, $config = [])
 {
-
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
 
-    include_once "class.php";
+    include_once 'class.php';
 
     $tad_web_works = new tad_web_works($WebID);
-    $block         = $tad_web_works->list_all("", 1, 'return', '', '', 'order by rand()', $config['limit']);
+    $block = $tad_web_works->list_all('', 1, 'return', '', '', 'order by rand()', $config['limit']);
+
     return $block;
 }
 
 /************** latest_work *************/
 
-function latest_work($WebID, $config = array())
+function latest_work($WebID, $config = [])
 {
-
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
-    include_once "class.php";
+    include_once 'class.php';
 
     $tad_web_works = new tad_web_works($WebID);
-    $block         = $tad_web_works->list_all("", 1, 'return', '', '', 'order by WorksDate desc', $config['limit']);
+    $block = $tad_web_works->list_all('', 1, 'return', '', '', 'order by WorksDate desc', $config['limit']);
+
     return $block;
 }

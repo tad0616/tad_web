@@ -1,6 +1,6 @@
 <?php
 define('_MD_TCW_LINK', 'Links');
-define("_MD_TCW_LINK_ADD", "Add Website");
+define('_MD_TCW_LINK_ADD', 'Add Website');
 define('_MD_TCW_LINK_SHORT', 'Website');
 define('_MD_TCW_LINKURL', 'Links URL');
 define('_MD_TCW_LINKID', 'Number');
@@ -10,7 +10,7 @@ define('_MD_TCW_LINKSORT', 'Sorting');
 define('_MD_TCW_LINKUID', 'Link Author');
 define('_MD_TCW_LINKCOUNTER', 'Popular');
 define('_MD_TCW_LINK_AUTO_GET', 'Auto-screenshot');
-define("_MD_TCW_LINK_BLOCK_LIST", "Links");
-define("_MD_TCW_LINK_BLOCK_LIMIT", "Displays the number of links");
-define("_MD_TCW_LINK_HIDE_LINK", "Do you want to hide url?");
-define("_MD_TCW_LINK_HIDE_DESC", "Do you want to hide description?");
+define('_MD_TCW_LINK_BLOCK_LIST', 'Links');
+define('_MD_TCW_LINK_BLOCK_LIMIT', 'Displays the number of links');
+define('_MD_TCW_LINK_HIDE_LINK', 'Do you want to hide url?');
+define('_MD_TCW_LINK_HIDE_DESC', 'Do you want to hide description?');

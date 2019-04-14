@@ -1,16 +1,16 @@
 <?php
-function list_calendar($WebID, $config = array())
+function list_calendar($WebID, $config = [])
 {
-
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
     if (empty($WebID)) {
-        retuen;
+        return;
     }
-    include_once "class.php";
+    include_once 'class.php';
 
-    $tad_web_calendar   = new tad_web_calendar($WebID);
-    $limit              = isset($config['limit']) ? $config['limit'] : '';
-    $block              = $tad_web_calendar->list_all("", $limit, 'return');
+    $tad_web_calendar = new tad_web_calendar($WebID);
+    $limit = isset($config['limit']) ? $config['limit'] : '';
+    $block = $tad_web_calendar->list_all('', $limit, 'return');
     $block['main_data'] = true;
+
     return $block;
 }

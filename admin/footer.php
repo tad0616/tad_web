@@ -16,9 +16,8 @@
  * @author       Tad
  * @version      $Id $
  **/
-
-echo "<div align=\"center\"><a href=\"https://xoops.org\" target=\"_blank\"><img src=\"../images/admin/xoopsmicrobutton.gif\" alt=\"XOOPS\" title=\"XOOPS\"></a></div>";
-echo "<div class='center smallsmall italic pad5'><strong>" . $xoopsModule->getVar("name") . "</strong> is maintained by the <a class='tooltip' rel='external' href='https://xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>";
+echo '<div align="center"><a href="https://xoops.org" target="_blank"><img src="../images/admin/xoopsmicrobutton.gif" alt="XOOPS" title="XOOPS"></a></div>';
+echo "<div class='center smallsmall italic pad5'><strong>" . $xoopsModule->getVar('name') . "</strong> is maintained by the <a class='tooltip' rel='external' href='https://xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>";
 
 $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
 

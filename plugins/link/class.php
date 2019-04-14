@@ -8,19 +8,19 @@ class tad_web_link
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, "link", "tad_web_link");
+        $this->web_cate = new web_cate($WebID, 'link', 'tad_web_link');
         $this->tags     = new tags($WebID);
     }
 
     //好站連結
-    public function list_all($CateID = "", $limit = "", $mode = "assign", $tag = '', $hide_link = 0, $hide_desc = 0)
+    public function list_all($CateID = '', $limit = '', $mode = 'assign', $tag = '', $hide_link = 0, $hide_desc = 0)
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
-        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
-        $andCateID = "";
-        if ($mode == "assign") {
+        $andCateID = '';
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['link']['short'] . _MD_TCW_CATE_TOOLS);
@@ -33,7 +33,7 @@ class tad_web_link
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
-                if ($CateID and $cate['CateEnable'] != '1') {
+                if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
                 $xoopsTpl->assign('cate', $cate);
@@ -48,27 +48,27 @@ class tad_web_link
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
-            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
-            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
-            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_link') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            left join ' . $xoopsDB->prefix('apply') . ' as c on b.WebOwnerUid=c.uid
+            left join ' . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName
             order by a.LinkID desc";
         } elseif (!empty($tag)) {
-            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_link") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='LinkID' and c.col_sn=a.LinkID
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            $sql = 'select distinct a.* from ' . $xoopsDB->prefix('tad_web_link') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            join ' . $xoopsDB->prefix('tad_web_tags') . " as c on c.col_name='LinkID' and c.col_sn=a.LinkID
+            left join " . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.LinkID desc";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_link") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
+            $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_link') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
             where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID
             order by a.LinkSort, a.LinkID desc";
         }
@@ -85,7 +85,7 @@ class tad_web_link
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = 0;
 
@@ -121,14 +121,14 @@ class tad_web_link
         }
 
         //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
+            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
-        $sweet_alert->render("delete_link_func", "link.php?op=delete&WebID={$this->WebID}&LinkID=", 'LinkID');
+        $sweet_alert->render('delete_link_func', "link.php?op=delete&WebID={$this->WebID}&LinkID=", 'LinkID');
 
-        if ($mode == "return") {
+        if ('return' === $mode) {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
             return $data;
@@ -141,7 +141,7 @@ class tad_web_link
     }
 
     //以流水號秀出某筆tad_web_link資料內容
-    public function show_one($LinkID = "")
+    public function show_one($LinkID = '')
     {
         global $xoopsDB;
         if (empty($LinkID)) {
@@ -151,7 +151,7 @@ class tad_web_link
         $LinkID = (int) $LinkID;
         $this->add_counter($LinkID);
 
-        $sql           = "select LinkUrl from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='{$LinkID}'";
+        $sql           = 'select LinkUrl from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='{$LinkID}'";
         $result        = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($LinkUrl) = $xoopsDB->fetchRow($result);
 
@@ -160,7 +160,7 @@ class tad_web_link
     }
 
     //tad_web_link編輯表單
-    public function edit_form($LinkID = "")
+    public function edit_form($LinkID = '')
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $plugin_menu_var;
 
@@ -171,29 +171,29 @@ class tad_web_link
         if (!empty($LinkID)) {
             $DBV = $this->get_one_data($LinkID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
 
         //設定「LinkID」欄位預設值
-        $LinkID = (!isset($DBV['LinkID'])) ? "" : $DBV['LinkID'];
+        $LinkID = (!isset($DBV['LinkID'])) ? '' : $DBV['LinkID'];
         $xoopsTpl->assign('LinkID', $LinkID);
 
         //設定「LinkTitle」欄位預設值
-        $LinkTitle = (!isset($DBV['LinkTitle'])) ? "" : $DBV['LinkTitle'];
+        $LinkTitle = (!isset($DBV['LinkTitle'])) ? '' : $DBV['LinkTitle'];
         $xoopsTpl->assign('LinkTitle', $LinkTitle);
 
         //設定「LinkDesc」欄位預設值
-        $LinkDesc = (!isset($DBV['LinkDesc'])) ? "" : $DBV['LinkDesc'];
+        $LinkDesc = (!isset($DBV['LinkDesc'])) ? '' : $DBV['LinkDesc'];
         $xoopsTpl->assign('LinkDesc', $LinkDesc);
 
         //設定「LinkUrl」欄位預設值
-        $LinkUrl = (!isset($DBV['LinkUrl'])) ? "" : $DBV['LinkUrl'];
+        $LinkUrl = (!isset($DBV['LinkUrl'])) ? '' : $DBV['LinkUrl'];
         $xoopsTpl->assign('LinkUrl', $LinkUrl);
 
         //設定「LinkCounter」欄位預設值
-        $LinkCounter = (!isset($DBV['LinkCounter'])) ? "" : $DBV['LinkCounter'];
+        $LinkCounter = (!isset($DBV['LinkCounter'])) ? '' : $DBV['LinkCounter'];
         $xoopsTpl->assign('LinkCounter', $LinkCounter);
 
         //設定「LinkSort」欄位預設值
@@ -205,7 +205,7 @@ class tad_web_link
         $xoopsTpl->assign('WebID', $WebID);
 
         //設定「uid」欄位預設值
-        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
         $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
 
         //設定「CateID」欄位預設值
@@ -216,20 +216,20 @@ class tad_web_link
         $cate_menu = isset($_SESSION['isAssistant']['link']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
-        $op = (empty($LinkID)) ? "insert" : "update";
+        $op = (empty($LinkID)) ? 'insert' : 'update';
         //$op="replace_tad_web_link";
 
-        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
-            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
+            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . "/formValidator.php";
-        $formValidator      = new formValidator("#myForm", true);
+        include_once TADTOOLS_PATH . '/formValidator.php';
+        $formValidator      = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
 
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
-        $tags_form = $this->tags->tags_menu("LinkID", $LinkID);
+        $tags_form = $this->tags->tags_menu('LinkID', $LinkID);
         $xoopsTpl->assign('tags_form', $tags_form);
     }
 
@@ -240,7 +240,7 @@ class tad_web_link
         if (isset($_SESSION['isAssistant']['link'])) {
             $uid = $WebOwnerUid;
         } else {
-            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
         $myts        = MyTextSanitizer::getInstance();
@@ -256,7 +256,7 @@ class tad_web_link
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
-        $sql = "insert into " . $xoopsDB->prefix("tad_web_link") . "
+        $sql = 'insert into ' . $xoopsDB->prefix('tad_web_link') . "
           (`CateID`, `LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
           values('{$CateID}', '{$LinkTitle}' , '{$LinkDesc}' , '{$LinkUrl}' , '{$LinkCounter}' , '{$LinkSort}' , '{$WebID}' , '{$uid}')";
         $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
@@ -267,12 +267,12 @@ class tad_web_link
         check_quota($this->WebID);
 
         //儲存標籤
-        $this->tags->save_tags("LinkID", $LinkID, $tag_name, $_POST['tags']);
+        $this->tags->save_tags('LinkID', $LinkID, $tag_name, $_POST['tags']);
         return $LinkID;
     }
 
     //更新tad_web_link某一筆資料
-    public function update($LinkID = "")
+    public function update($LinkID = '')
     {
         global $xoopsDB, $xoopsUser;
 
@@ -291,7 +291,7 @@ class tad_web_link
             $anduid = onlyMine();
         }
 
-        $sql = "update " . $xoopsDB->prefix("tad_web_link") . " set
+        $sql = 'update ' . $xoopsDB->prefix('tad_web_link') . " set
        `CateID` = '{$CateID}' ,
        `LinkTitle` = '{$LinkTitle}' ,
        `LinkDesc` = '{$LinkDesc}' ,
@@ -302,16 +302,16 @@ class tad_web_link
         check_quota($this->WebID);
 
         //儲存標籤
-        $this->tags->save_tags("LinkID", $LinkID, $tag_name, $_POST['tags']);
+        $this->tags->save_tags('LinkID', $LinkID, $tag_name, $_POST['tags']);
         return $LinkID;
     }
 
     //刪除tad_web_link某筆資料資料
-    public function delete($LinkID = "")
+    public function delete($LinkID = '')
     {
         global $xoopsDB;
 
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
+        $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID'";
         $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
@@ -319,22 +319,22 @@ class tad_web_link
             $anduid = onlyMine();
         }
 
-        $sql = "delete from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID' $anduid";
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
 
         $myts     = MyTextSanitizer::getInstance();
         $tag_name = $myts->addSlashes($_POST['tag_name']);
         //儲存標籤
-        $this->tags->save_tags("LinkID", $LinkID, $tag_name, $_POST['tags']);
+        $this->tags->save_tags('LinkID', $LinkID, $tag_name, $_POST['tags']);
     }
 
     //刪除所有資料
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
-        $sql       = "select LinkID,CateID from " . $xoopsDB->prefix("tad_web_link") . " where WebID='{$this->WebID}'";
+        $allCateID = [];
+        $sql       = 'select LinkID,CateID from ' . $xoopsDB->prefix('tad_web_link') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($LinkID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($LinkID);
@@ -350,7 +350,7 @@ class tad_web_link
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_link") . " where WebID='{$this->WebID}'";
+        $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_link') . " where WebID='{$this->WebID}'";
         $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
@@ -360,7 +360,7 @@ class tad_web_link
     public function max_sort()
     {
         global $xoopsDB;
-        $sql        = "SELECT max(`LinkSort`) FROM " . $xoopsDB->prefix("tad_web_link");
+        $sql        = 'SELECT max(`LinkSort`) FROM ' . $xoopsDB->prefix('tad_web_link');
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
@@ -370,19 +370,19 @@ class tad_web_link
     public function add_counter($LinkID = '')
     {
         global $xoopsDB;
-        $sql = "update " . $xoopsDB->prefix("tad_web_link") . " set `LinkCounter`=`LinkCounter`+1 where `LinkID`='{$LinkID}'";
+        $sql = 'update ' . $xoopsDB->prefix('tad_web_link') . " set `LinkCounter`=`LinkCounter`+1 where `LinkID`='{$LinkID}'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_link資料
-    public function get_one_data($LinkID = "")
+    public function get_one_data($LinkID = '')
     {
         global $xoopsDB;
         if (empty($LinkID)) {
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_link") . " where LinkID='$LinkID'";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
