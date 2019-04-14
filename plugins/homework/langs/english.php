@@ -15,7 +15,7 @@ define('_MD_TCW_HOMEWORK_POST_AT', '(It wiil display at %s)');
 define('_MD_TCW_HOMEWORKCOUNTER', 'Counter');
 define('_MD_TCW_HOMEWORK_DEFAULT', '<div class="row three-col">
 <div class="col-sm-4 col-1">
-<p><img alt="Today\'s Homework" src="' . XOOPS_URL . '/modules/tad_web/images/today_homework.png" /></p>
+<p><img alt="Today\'s Homework" src="' . XOOPS_URL . '/modules/tad_web/images/today_homework.png"></p>
 
 <ol>
   <li>&nbsp;</li>
@@ -23,7 +23,7 @@ define('_MD_TCW_HOMEWORK_DEFAULT', '<div class="row three-col">
 </div>
 
 <div class="col-sm-4 col-2">
-<p><img alt="Tomorrow Preparation" src="' . XOOPS_URL . '/modules/tad_web/images/bring.png" /></p>
+<p><img alt="Tomorrow Preparation" src="' . XOOPS_URL . '/modules/tad_web/images/bring.png"></p>
 
 <ol>
   <li>&nbsp;</li>
@@ -31,7 +31,7 @@ define('_MD_TCW_HOMEWORK_DEFAULT', '<div class="row three-col">
 </div>
 
 <div class="col-sm-4 col-3">
-<p><img alt="Teacher say..." src="' . XOOPS_URL . '/modules/tad_web/images/teacher_say.png" /></p>
+<p><img alt="Teacher say..." src="' . XOOPS_URL . '/modules/tad_web/images/teacher_say.png"></p>
 
 <ol>
   <li>&nbsp;</li>

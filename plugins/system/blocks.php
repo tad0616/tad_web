@@ -22,7 +22,7 @@ function web_list($WebID, $config = [])
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -54,7 +54,7 @@ function moedict($WebID, $config = [])
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
     $colorbox = new colorbox('#get_moedict');
     $colorbox->render();
     $block['main_data'] = true;
@@ -68,7 +68,7 @@ function dreye($WebID, $config = [])
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
     $colorbox = new colorbox('#get_dreyedict', '640');
     $colorbox->render();
     $block['main_data'] = true;
@@ -82,7 +82,7 @@ function wiki($WebID, $config = [])
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
     $colorbox = new colorbox('#get_wiki');
     $colorbox->render();
     $block['main_data'] = true;

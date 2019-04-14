@@ -28,7 +28,7 @@ function tad_web_image()
     $block['ActionID'] = $ActionID;
     $block['ActionName'] = $ActionName;
 
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
     $tad_web_action_image = new TadUpFiles('tad_web');
 
     $subdir = isset($WebID) ? "/{$WebID}" : '';
@@ -37,7 +37,7 @@ function tad_web_image()
     $photos = $tad_web_action_image->get_file();
 
     if (file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/ResponsiveSlides.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/ResponsiveSlides.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/ResponsiveSlides.php';
         $ResponsiveSlides = new slider(120, false);
         $i = 1;
         foreach ($photos as $pic) {

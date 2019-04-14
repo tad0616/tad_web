@@ -1,6 +1,6 @@
 <?php
-include_once '../../mainfile.php';
-include_once 'function.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once __DIR__ . '/function.php';
 $sort = 1;
 if (isset($_POST['CateID'])) {
     foreach ($_POST['CateID'] as $CateID) {

@@ -200,7 +200,7 @@ class tags
         $sql = 'select tag_name , count(*) from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($tag_name, $count) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($tag_name, $count) = $xoopsDB->fetchRow($result))) {
             $tags_arr[$tag_name] = $count;
         }
 

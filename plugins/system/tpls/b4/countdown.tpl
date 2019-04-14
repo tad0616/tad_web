@@ -1,7 +1,7 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
 
-<link href="<{$xoops_url}>/modules/tad_web/class/Countdown/timeTo.css" rel="stylesheet" />
+<link href="<{$xoops_url}>/modules/tad_web/class/Countdown/timeTo.css" rel="stylesheet">
 <script src="<{$xoops_url}>/modules/tad_web/class/Countdown/jquery.time-to.js"></script>
 
 <div class="text-center">

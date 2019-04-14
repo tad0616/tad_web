@@ -1,6 +1,6 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 $sql = 'SELECT HomeworkID,HomeworkContent FROM ' . $xoopsDB->prefix('tad_web_homework') . ' ORDER BY HomeworkID DESC LIMIT 0,150';
 $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 // $main   = "<table border=1>";
@@ -9,7 +9,7 @@ $r_start = '<table class="table"><tbody><tr>';
 $r_end = '</td></tr></tbody></table>';
 
 $today_homework = $bring = $teacher_say = false;
-while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
+while (false !== (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result))) {
     if (false === mb_strpos($HomeworkContent, '<table class="table">')) {
         continue;
     }
@@ -36,24 +36,24 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     $content = explode('</td><td>', $tr_content_body);
 
     if ($today_homework and $bring and $teacher_say) {
-        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
-        $data .= '<div class="col-sm-4 col-sm-4 span4 col-3"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[2] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png"></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png"></p>' . $content[1] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-3"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png"></p>' . $content[2] . '</div>';
     } elseif ($today_homework and !$bring and $teacher_say) {
-        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png"></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png"></p>' . $content[1] . '</div>';
     } elseif ($today_homework and $bring and !$teacher_say) {
-        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png"></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png"></p>' . $content[1] . '</div>';
     } elseif (!$today_homework and $bring and $teacher_say) {
-        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
-        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[1] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png"></p>' . $content[0] . '</div>';
+        $data .= '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png"></p>' . $content[1] . '</div>';
     } elseif ($today_homework and !$bring and !$teacher_say) {
-        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="今日作業" src="' . _EZCLASS . '/modules/tad_web/images/today_homework.png"></p>' . $content[0] . '</div>';
     } elseif (!$today_homework and $bring and !$teacher_say) {
-        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="明日準備事項" src="' . _EZCLASS . '/modules/tad_web/images/bring.png"></p>' . $content[0] . '</div>';
     } elseif (!$today_homework and !$bring and $teacher_say) {
-        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png" /></p>' . $content[0] . '</div>';
+        $data = '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img alt="老師的叮嚀" src="' . _EZCLASS . '/modules/tad_web/images/teacher_say.png"></p>' . $content[0] . '</div>';
     }
 
     $tr_content_title = nl2br(htmlspecialchars($tr_content_title));

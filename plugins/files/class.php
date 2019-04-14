@@ -45,7 +45,7 @@ class tad_web_files
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
@@ -98,7 +98,7 @@ class tad_web_files
         $this->web_cate->set_WebID($this->WebID);
         $cate = $this->web_cate->get_tad_web_cate_arr();
         // die(var_export($cate));
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $fsn , $uid , $CateID , $file_date  , $WebID
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -144,7 +144,7 @@ class tad_web_files
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_files_func', "files.php?op=delete&WebID={$this->WebID}&fsn=", 'fsn');
 
@@ -242,7 +242,7 @@ class tad_web_files
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator = new formValidator('#myForm', true);
         $formValidator->render();
 
@@ -370,7 +370,7 @@ class tad_web_files
         $allCateID = [];
         $sql = 'select fsn,CateID from ' . $xoopsDB->prefix('tad_web_files') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($fsn, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($fsn, $CateID) = $xoopsDB->fetchRow($result))) {
             $this->delete($fsn);
             $allCateID[$CateID] = $CateID;
         }
@@ -419,7 +419,7 @@ class tad_web_files
 
         $i = 0;
         $main_data = [];
-        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result))) {
             $main_data[$i]['ID'] = $ID;
             $main_data[$i]['CateID'] = $CateID;
             $main_data[$i]['title'] = $title;

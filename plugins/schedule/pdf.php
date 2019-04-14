@@ -1,8 +1,8 @@
 <?php
-include_once '../../../../mainfile.php';
-include_once '../../function.php';
-include_once '../../class/cate.php';
-include_once 'class.php';
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/function.php';
+require_once dirname(dirname(__DIR__)) . '/class/cate.php';
+require_once __DIR__ . '/class.php';
 
 set_time_limit(0);
 ini_set('memory_limit', '150M');

@@ -37,7 +37,7 @@
             <td><input type="text" name="plugin_name[<{$plugin.dirname}>]" value="<{if $plugin.db.PluginTitle}><{$plugin.db.PluginTitle}><{else}><{$plugin.config.name}><{/if}>" class="form-control" style="width: 120px;"></td>
             <td>
               <{if $plugin.config.common==1}>
-                <label class="checkbox"><input type="checkbox" name="plugin_display[<{$plugin.dirname}>]" value="1" <{if $web_plugin_display_arr=="" or $plugin.dirname|in_array:$web_plugin_display_arr}>checked="checked"<{/if}>></label>
+                <label class="checkbox"><input type="checkbox" name="plugin_display[<{$plugin.dirname}>]" value="1" <{if $web_plugin_display_arr=="" or $plugin.dirname|in_array:$web_plugin_display_arr}>checked<{/if}>></label>
               <{else}>
                 <input type="hidden" name="plugin_display[<{$plugin.dirname}>]" value="0">
               <{/if}>

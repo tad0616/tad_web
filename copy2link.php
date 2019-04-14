@@ -1,5 +1,5 @@
 <?php
-include_once '../../mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 $start = time();
 $folders['bg'] = XOOPS_ROOT_PATH . '/modules/tad_web/images/bg/';
 $folders['head'] = XOOPS_ROOT_PATH . '/modules/tad_web/images/head/';
@@ -21,7 +21,7 @@ foreach ($folders as $kind => $dir) {
 $sql = 'select WebID from xx_tad_web where WebID >=6000 and WebID < 7000 order by WebID';
 $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 $sum = 0;
-while (list($WebID) = $xoopsDB->fetchRow($result)) {
+while (false !== (list($WebID) = $xoopsDB->fetchRow($result))) {
     echo "<h3>開始處理 {$WebID}</h3>";
     $ok = 0;
     $folder['bg'] = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/";

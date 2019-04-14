@@ -43,7 +43,7 @@ class tad_web_schedule
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
@@ -72,7 +72,7 @@ class tad_web_schedule
 
         $cate = $this->web_cate->get_tad_web_cate_arr();
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount , $ScheduleTime
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -99,7 +99,7 @@ class tad_web_schedule
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
@@ -179,7 +179,7 @@ class tad_web_schedule
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
     }
@@ -247,7 +247,7 @@ class tad_web_schedule
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator      = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
 
@@ -257,7 +257,7 @@ class tad_web_schedule
         $sql        = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $SubjectArr = [];
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
@@ -382,7 +382,7 @@ class tad_web_schedule
         $allCateID = [];
         $sql       = 'select ScheduleID,CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result))) {
             $this->delete($ScheduleID);
             $allCateID[$CateID] = $CateID;
         }
@@ -429,16 +429,16 @@ class tad_web_schedule
     {
         global $xoopsDB, $xoopsModuleConfig;
         if (!isset($xoopsModuleConfig)) {
-            $modhandler        = xoops_getHandler('module');
-            $xoopsModule       = $modhandler->getByDirname('tad_web');
-            $config_handler    = xoops_getHandler('config');
-            $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+            $moduleHandler        = xoops_getHandler('module');
+            $xoopsModule       = $moduleHandler->getByDirname('tad_web');
+            $configHandler    = xoops_getHandler('config');
+            $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
         }
 
         $sql        = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
         $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $SubjectArr = [];
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -508,7 +508,7 @@ class tad_web_schedule
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
         $mColorPicker      = new mColorPicker('.color');
         $mColorPicker_code = $mColorPicker->render();
     }

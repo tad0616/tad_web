@@ -12,10 +12,10 @@ if ($WebID) {
 }
 
 if ($show_plugin) {
-    $xoopsOption['template_main'] = 'tad_web_tpl.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_tpl.tpl';
 } else {
-    $xoopsOption['template_main'] = 'tad_web_unable.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_unable.tpl';
 }
 
-include_once "plugins/{$plugin}/class.php";
+require_once "plugins/{$plugin}/class.php";
 $$plugin_name = new $plugin_name($WebID);

@@ -1,7 +1,7 @@
 <?php
-include_once '../../mainfile.php';
-include_once 'function.php';
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once __DIR__ . '/function.php';
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
@@ -22,7 +22,7 @@ function get_cate_options($WebID = '', $plugin = '')
     $sql = 'select CateID, CateName from ' . $xoopsDB->prefix('tad_web_cate') . " where `ColName` = '{$plugin}' AND `CateEnable` = '1' AND `WebID` = '{$WebID}' order by CateSort";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $option = '';
-    while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($CateID, $CateName) = $xoopsDB->fetchRow($result))) {
         $option .= "<option value='{$CateID}'>{$CateName}</option>";
     }
 
@@ -40,7 +40,7 @@ function get_default_class_mems($WebID = '', $default_class = '')
     $sql = 'select a.MemID, a.MemNum ,b.MemName from ' . $xoopsDB->prefix('tad_web_link_mems') . ' as a left join ' . $xoopsDB->prefix('tad_web_mems') . " as b on a.MemID=b.MemID where a.`CateID` = '{$default_class}'  order by a.MemNum";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $options = "<option value=''>" . _MD_TCW_CATE_SET_ASSISTANT . '</option>';
-    while (list($MemID, $MemNum, $MemName) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($MemID, $MemNum, $MemName) = $xoopsDB->fetchRow($result))) {
         $options .= "<option value='{$MemID}'>{$MemNum} {$MemName}</option>";
     }
     die($options);

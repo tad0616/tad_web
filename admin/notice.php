@@ -1,9 +1,9 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = 'tad_web_adm_notice.tpl';
-include_once 'header.php';
-include_once '../function.php';
-include_once '../class/cate.php';
+$GLOBALS['xoopsOption']['template_main'] = 'tad_web_adm_notice.tpl';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
+require_once dirname(__DIR__) . '/class/cate.php';
 /*-----------function區--------------*/
 //tad_web_notice編輯表單
 function tad_web_notice_form($NoticeID = '')
@@ -48,7 +48,7 @@ function tad_web_notice_form($NoticeID = '')
     if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
         redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . '/formValidator.php';
+    require_once TADTOOLS_PATH . '/formValidator.php';
     $formValidator = new formValidator('#myForm', true);
     $formValidator_code = $formValidator->render();
 
@@ -56,14 +56,14 @@ function tad_web_notice_form($NoticeID = '')
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/ck.php')) {
         redirect_header('http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1', 3, _TAD_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
     $ck = new CKEditor('tad_web', 'NoticeContent', $NoticeContent);
     $ck->setHeight(400);
     $editor = $ck->render();
     $xoopsTpl->assign('NoticeContent_editor', $editor);
 
     //加入Token安全機制
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     $token = new XoopsFormHiddenToken();
     $token_form = $token->render();
     $xoopsTpl->assign('token_form', $token_form);
@@ -83,7 +83,7 @@ function insert_tad_web_notice()
 
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
-        $error = implode('<br />', $GLOBALS['xoopsSecurity']->getErrors());
+        $error = implode('<br>', $GLOBALS['xoopsSecurity']->getErrors());
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
@@ -127,7 +127,7 @@ function update_tad_web_notice($NoticeID = '')
 
     //XOOPS表單安全檢查
     if (!$GLOBALS['xoopsSecurity']->check()) {
-        $error = implode('<br />', $GLOBALS['xoopsSecurity']->getErrors());
+        $error = implode('<br>', $GLOBALS['xoopsSecurity']->getErrors());
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
@@ -209,7 +209,7 @@ function show_one_tad_web_notice($NoticeID = '')
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
 
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
     $sweet_alert_obj = new sweet_alert();
     $delete_tad_web_notice_func = $sweet_alert_obj->render('delete_tad_web_notice_func', "{$_SERVER['PHP_SELF']}?op=delete_tad_web_notice&NoticeID=", 'NoticeID');
     $xoopsTpl->assign('delete_tad_web_notice_func', $delete_tad_web_notice_func);
@@ -238,7 +238,7 @@ function list_tad_web_notice()
 
     $all_content = [];
     $i = 0;
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -263,7 +263,7 @@ function list_tad_web_notice()
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
     $sweet_alert_obj = new sweet_alert();
     $delete_tad_web_notice_func = $sweet_alert_obj->render(
         'delete_tad_web_notice_func',
@@ -280,7 +280,7 @@ function list_tad_web_notice()
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -323,4 +323,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

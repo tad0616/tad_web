@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
-    $xoopsOption['template_main'] = 'tad_web_block.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_block.tpl';
 } elseif (!$isMyWeb and $MyWebs) {
     redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
 } else {
@@ -11,7 +11,7 @@ if (!empty($_REQUEST['WebID']) and $isMyWeb) {
 
 //權限設定
 $power = new power($WebID);
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 function config_block($WebID, $BlockID, $plugin, $mode = 'config')
 {
@@ -37,7 +37,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
 
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $shareBlockCount = 0;
-            while ($all = $xoopsDB->fetchArray($result)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $webs[$shareBlockCount] = $all;
                 $shareBlockCount++;
             }
@@ -47,7 +47,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
     $form = $editor = '';
     //新增
     if ('add' === $mode) {
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/image");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/file");
@@ -66,14 +66,14 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
         $config = isset($block['plugin']) ? json_decode($block['BlockConfig'], true) : '';
 
         if ('custom' === $block_plugin) {
-            include_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
+            require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
             $ck = new CKEditor("tad_web/{$WebID}/block", 'BlockContent[html]', $block['BlockContent']);
             $ck->setHeight(250);
             $editor = $ck->render();
             $iframeContent = strip_tags($block['BlockContent']);
         } else {
             $func = isset($block['BlockName']) ? $block['BlockName'] : '';
-            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
+            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
             $form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
             if ('1' == $_GET['test']) {
                 die(var_export($form));
@@ -100,7 +100,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
     $sweet_alert = new sweet_alert();
     $sweet_alert->render('delete_block_func', "block.php?WebID={$WebID}&op=delete_block&BlockID=", 'BlockID');
 }
@@ -271,7 +271,7 @@ function mk_block_pic($WebID = '', $block_pic = [], $use_block_pic = '')
     $sql = 'select BlockID,BlockName,BlockTitle from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}'";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while (list($BlockID, $BlockName, $BlockTitle) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($BlockID, $BlockName, $BlockTitle) = $xoopsDB->fetchRow($result))) {
         mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $block_pic['block_pic_text_color'], $block_pic['block_pic_border_color'], $block_pic['block_pic_text_size'], $block_pic['block_pic_font']);
     }
 }
@@ -284,7 +284,7 @@ function block_setup($WebID = '')
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
     $mColorPicker = new mColorPicker('.color');
     $mColorPicker_code = $mColorPicker->render();
 
@@ -306,7 +306,7 @@ function block_setup($WebID = '')
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
     $fancybox = new fancybox('.edit_block', '480px');
     $fancybox->render(false);
 }
@@ -427,7 +427,7 @@ function demo_block($BlockID, $WebID)
         }
     } else {
         if (file_exists("{$dir}{$plugin}/blocks.php")) {
-            include_once "{$dir}{$plugin}/blocks.php";
+            require_once "{$dir}{$plugin}/blocks.php";
         }
         $blocks_arr['tpl'] = $block_tpl[$BlockName];
         $blocks_arr['BlockContent'] = $BlockContent = call_user_func($BlockName, $WebID, $config);
@@ -459,7 +459,7 @@ function chk_newblock($WebID)
     //找出目前已安裝的區塊
     $sql = 'select BlockID,BlockName,BlockConfig from ' . $xoopsDB->prefix('tad_web_blocks') . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result))) {
         $db_blocks[$BlockName] = $BlockName;
         $db_blocks_config[$BlockName][$BlockID] = $BlockConfig;
     }
@@ -536,7 +536,7 @@ function chk_newblock($WebID)
     }
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $BlockID = system_CleanVars($_REQUEST, 'BlockID', 0, 'int');
@@ -602,5 +602,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

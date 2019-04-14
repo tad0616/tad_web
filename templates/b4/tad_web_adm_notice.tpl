@@ -49,15 +49,15 @@
         <div class="col-md-10">
 
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" name="NoticeWho[]" id="NoticeWho_def0" value="master" <{if 'master'|in_array:$NoticeWho}>checked="checked"<{/if}>>
+          <input class="form-check-input" type="checkbox" name="NoticeWho[]" id="NoticeWho_def0" value="master" <{if 'master'|in_array:$NoticeWho}>checked<{/if}>>
           <label class="form-check-label" for="NoticeWho_def0"><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF0}></label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" name="NoticeWho[]" id="NoticeWho_def1" value="mem" <{if 'mem'|in_array:$NoticeWho}>checked="checked"<{/if}>>
+          <input class="form-check-input" type="checkbox" name="NoticeWho[]" id="NoticeWho_def1" value="mem" <{if 'mem'|in_array:$NoticeWho}>checked<{/if}>>
           <label class="form-check-label" for="NoticeWho_def1"><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF1}></label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" name="NoticeWho[]" id="NoticeWho_def2" value="parent" <{if 'parent'|in_array:$NoticeWho}>checked="checked"<{/if}>>
+          <input class="form-check-input" type="checkbox" name="NoticeWho[]" id="NoticeWho_def2" value="parent" <{if 'parent'|in_array:$NoticeWho}>checked<{/if}>>
           <label class="form-check-label" for="NoticeWho_def2"><{$smarty.const._MA_TADWEB_NOTICEWHO_DEF2}></label>
         </div>
         </div>

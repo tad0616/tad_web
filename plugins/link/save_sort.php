@@ -1,6 +1,6 @@
 <?php
-include_once '../../../../mainfile.php';
-include_once '../../function.php';
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/function.php';
 $sort = 1;
 foreach ($_POST['LinkID'] as $LinkID) {
     $sql = 'update ' . $xoopsDB->prefix('tad_web_link') . " set `LinkSort`='{$sort}' where LinkID='{$LinkID}'";

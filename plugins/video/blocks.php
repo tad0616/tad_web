@@ -6,7 +6,7 @@ function list_video($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $block = '';
     $tad_web_video = new tad_web_video($WebID);

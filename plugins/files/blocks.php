@@ -5,7 +5,7 @@ function list_files($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_files = new tad_web_files($WebID);
 

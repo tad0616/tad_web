@@ -9,13 +9,13 @@ function list_web_adm($WebID, $config = [])
 
     $sql = 'SELECT `WebOwnerUid` FROM `' . $xoopsDB->prefix('tad_web') . "` WHERE `WebID` = '$WebID'";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($uid) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($uid) = $xoopsDB->fetchRow($result))) {
         $admin[$uid] = $uid;
     }
 
     $sql = 'SELECT `uid` FROM `' . $xoopsDB->prefix('tad_web_roles') . "` WHERE `WebID` = '$WebID' and `role` = 'admin'";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($uid) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($uid) = $xoopsDB->fetchRow($result))) {
         $admin[$uid] = $uid;
     }
 
@@ -24,7 +24,7 @@ function list_web_adm($WebID, $config = [])
     $sql = 'SELECT `uid`,`name`,`uname`,`email` FROM `' . $xoopsDB->prefix('users') . "` WHERE `uid` in('{$admin_str}')";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result))) {
         $admin_arr[$i]['uid'] = $uid;
         $admin_arr[$i]['name'] = $name;
         $admin_arr[$i]['uname'] = $uname;
@@ -39,12 +39,12 @@ function list_web_adm($WebID, $config = [])
 function list_web_student($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb;
-    // include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    // require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     $Web = get_tad_web($WebID, true);
     // die('WebID=' . $WebID);
     $setup = get_plugin_setup_values($WebID, 'aboutus');
     // die('WebID=' . $WebID . var_export($setup));
-    include_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
     $web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
 
     $DefCateID = get_web_config('default_class', $WebID);
@@ -72,7 +72,7 @@ function list_web_student($WebID, $config = [])
 
     $class_total = $class_boy = $class_girl = 0;
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
             // $all_main[$i][$k] = $v;

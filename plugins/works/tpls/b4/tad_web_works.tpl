@@ -59,11 +59,11 @@
         </label>
         <div class="col-md-4">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_1" value="1" <{if $WorksEnable != "0"}>checked="checked"<{/if}>>
+            <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_1" value="1" <{if $WorksEnable != "0"}>checked<{/if}>>
             <label class="form-check-label" for="WorksEnable_1"><{$smarty.const._YES}></label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_0" value="0" <{if $WorksEnable == "0"}>checked="checked"<{/if}>>
+            <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_0" value="0" <{if $WorksEnable == "0"}>checked<{/if}>>
             <label class="form-check-label" for="WorksEnable_0"><{$smarty.const._NO}></label>
           </div>
         </div>
