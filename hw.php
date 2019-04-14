@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once "header.php";
-$sql    = "SELECT HomeworkID,HomeworkContent FROM " . $xoopsDB->prefix("tad_web_homework") . " ORDER BY HomeworkID DESC LIMIT 0,150";
+include_once 'header.php';
+$sql = 'SELECT HomeworkID,HomeworkContent FROM ' . $xoopsDB->prefix('tad_web_homework') . ' ORDER BY HomeworkID DESC LIMIT 0,150';
 $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 // $main   = "<table border=1>";
 $r_start = '<table class="table"><tbody><tr>';
@@ -10,25 +10,25 @@ $r_end = '</td></tr></tbody></table>';
 
 $today_homework = $bring = $teacher_say = false;
 while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
-    if (strpos($HomeworkContent, '<table class="table">') === false) {
+    if (false === mb_strpos($HomeworkContent, '<table class="table">')) {
         continue;
     }
 
-    $newHomeworkContent                 = preg_replace('/(?![ ])\s+/', '', trim($HomeworkContent));
-    list($table, $other)                = explode('</tbody></table>', $newHomeworkContent);
+    $newHomeworkContent = preg_replace('/(?![ ])\s+/', '', trim($HomeworkContent));
+    list($table, $other) = explode('</tbody></table>', $newHomeworkContent);
     list($content_title, $content_body) = explode('</tr><tr>', $table);
 
     $tr_content_title = str_replace($r_start, '', $content_title);
-    $tr_content_body  = str_replace($r_end, '', $content_body);
+    $tr_content_body = str_replace($r_end, '', $content_body);
 
     //有無今日作業
-    $today_homework = strpos($tr_content_title, 'today_homework.png') ? true : false;
+    $today_homework = mb_strpos($tr_content_title, 'today_homework.png') ? true : false;
 
     //有無明日準備事項
-    $bring = strpos($tr_content_title, 'bring.png') ? true : false;
+    $bring = mb_strpos($tr_content_title, 'bring.png') ? true : false;
 
     //有無老師的叮嚀
-    $teacher_say = strpos($tr_content_title, 'teacher_say.png') ? true : false;
+    $teacher_say = mb_strpos($tr_content_title, 'teacher_say.png') ? true : false;
 
     $tr_content_body = str_replace('<pre>', '<div class="well">', $tr_content_body);
     $tr_content_body = str_replace('</pre>', '</div>', $tr_content_body);
@@ -60,7 +60,7 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     $main .= "<div class='alert alert-info'>{$today_homework}-{$bring}-{$teacher_say}<br>{$tr_content_title}</div>";
     $main .= $HomeworkContent;
     if (empty($other)) {
-        $other = "<p>&nbsp;</p>";
+        $other = '<p>&nbsp;</p>';
     }
     $main .= "<div class=\"row three-col\">{$data}</div>{$other}";
 }

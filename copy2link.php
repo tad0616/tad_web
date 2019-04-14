@@ -1,14 +1,14 @@
 <?php
-include_once "../../mainfile.php";
-$start           = time();
-$folders['bg']   = XOOPS_ROOT_PATH . "/modules/tad_web/images/bg/";
-$folders['head'] = XOOPS_ROOT_PATH . "/modules/tad_web/images/head/";
-$form_files      = array();
+include_once '../../mainfile.php';
+$start = time();
+$folders['bg'] = XOOPS_ROOT_PATH . '/modules/tad_web/images/bg/';
+$folders['head'] = XOOPS_ROOT_PATH . '/modules/tad_web/images/head/';
+$form_files = [];
 foreach ($folders as $kind => $dir) {
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) {
-                if (substr($file, 0, 1) == '.') {
+            while (false !== ($file = readdir($dh))) {
+                if ('.' === mb_substr($file, 0, 1)) {
                     continue;
                 }
                 $form_files[$kind][$file] = $dir . $file;
@@ -18,25 +18,24 @@ foreach ($folders as $kind => $dir) {
     }
 }
 
-$sql    = "select WebID from xx_tad_web where WebID >=6000 and WebID < 7000 order by WebID";
+$sql = 'select WebID from xx_tad_web where WebID >=6000 and WebID < 7000 order by WebID';
 $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-$sum    = 0;
+$sum = 0;
 while (list($WebID) = $xoopsDB->fetchRow($result)) {
     echo "<h3>開始處理 {$WebID}</h3>";
-    $ok             = 0;
-    $folder['bg']   = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/";
+    $ok = 0;
+    $folder['bg'] = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/";
     $folder['head'] = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/";
     foreach ($folder as $kind => $dir) {
-
         $filenames = array_keys($form_files[$kind]);
 
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
-                while (($file = readdir($dh)) !== false) {
-                    if (substr($file, 0, 1) == '.') {
+                while (false !== ($file = readdir($dh))) {
+                    if ('.' === mb_substr($file, 0, 1)) {
                         continue;
                     }
-                    if (in_array($file, $filenames)) {
+                    if (in_array($file, $filenames, true)) {
                         if (unlink($dir . $file)) {
                             if (symlink($form_files[$kind][$file], $dir . $file)) {
                                 // echo "<div style='color: blue'>移除 {$dir}{$file}，新增軟連結 {$form_files[$kind][$file]}成功！</div>";

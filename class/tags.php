@@ -35,12 +35,12 @@ class tags
 {
     public $WebID = 0;
     public $col_name;
-    public $col_sn       = 0;
-    public $label        = '';
+    public $col_sn = 0;
+    public $label = '';
     public $label_col_md = '2';
-    public $menu_col_md  = '10';
+    public $menu_col_md = '10';
 
-    public function __construct($WebID = "0")
+    public function __construct($WebID = '0')
     {
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
@@ -51,19 +51,19 @@ class tags
         }
     }
 
-    public function set_WebID($WebID = "")
+    public function set_WebID($WebID = '')
     {
         $WebID = (int)$WebID;
 
         $this->WebID = $WebID;
     }
 
-    public function set_col_name($col_name = "")
+    public function set_col_name($col_name = '')
     {
         $this->col_name = $col_name;
     }
 
-    public function set_col_sn($col_sn = "")
+    public function set_col_sn($col_sn = '')
     {
         $this->col_sn = $col_sn;
     }
@@ -71,17 +71,17 @@ class tags
     public function set_col_md($label_md, $menu_md)
     {
         $this->label_col_md = $label_md;
-        $this->menu_col_md  = $menu_md;
+        $this->menu_col_md = $menu_md;
     }
 
     //標籤選單
-    public function tags_menu($col_name = "", $col_sn = "")
+    public function tags_menu($col_name = '', $col_sn = '')
     {
         global $xoopsDB;
 
-        $tag_name       = '';
+        $tag_name = '';
         $plugin_tag_arr = $this->get_tags($col_name, $col_sn);
-        $tag_arr        = array_keys($plugin_tag_arr);
+        $tag_arr = array_keys($plugin_tag_arr);
         if (!empty($col_sn)) {
             $tag_name = implode(',', $tag_arr);
         }
@@ -89,7 +89,7 @@ class tags
         $tags_select = '';
         $tag_all_arr = $this->get_tags();
         foreach ($tag_all_arr as $tag => $count) {
-            $checked = (in_array($tag, $tag_arr) and !empty($tag_name)) ? 'checked' : '';
+            $checked = (in_array($tag, $tag_arr, true) and !empty($tag_name)) ? 'checked' : '';
             $tags_select .= "
             <label class='checkbox-inline'>
                 <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>{$tag} <span class='badge'>{$count}</span>
@@ -119,16 +119,17 @@ class tags
             </div>
             ';
         }
+
         return $menu;
     }
 
     //新增資料到tad_web_tags中
-    public function save_tags($col_name = "", $col_sn = "", $tag_name = "", $tags = array())
+    public function save_tags($col_name = '', $col_sn = '', $tag_name = '', $tags = [])
     {
         global $xoopsDB, $xoopsUser;
 
         $myts = MyTextSanitizer::getInstance();
-        $sql  = "delete from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID`='{$this->WebID}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
+        $sql = 'delete from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID`='{$this->WebID}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         if ($tags) {
             foreach ($tags as $tag) {
@@ -137,7 +138,7 @@ class tags
                 if (empty($tag)) {
                     continue;
                 }
-                $sql = "insert into `" . $xoopsDB->prefix("tad_web_tags") . "` (
+                $sql = 'insert into `' . $xoopsDB->prefix('tad_web_tags') . "` (
                   `WebID`,
                   `col_name`,
                   `col_sn`,
@@ -159,7 +160,7 @@ class tags
             if (empty($tag)) {
                 continue;
             }
-            $sql = "replace into `" . $xoopsDB->prefix("tad_web_tags") . "` (
+            $sql = 'replace into `' . $xoopsDB->prefix('tad_web_tags') . "` (
               `WebID`,
               `col_name`,
               `col_sn`,
@@ -172,31 +173,31 @@ class tags
             )";
             $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         }
-
     }
 
     //取得tad_web_tags資料陣列
-    public function list_tags($col_name = "", $col_sn = "", $plugin = "")
+    public function list_tags($col_name = '', $col_sn = '', $plugin = '')
     {
         global $xoopsDB;
-        $tags_arr  = $this->get_tags($col_name, $col_sn);
+        $tags_arr = $this->get_tags($col_name, $col_sn);
         $list_tags = '';
         foreach ($tags_arr as $tag => $count) {
             // $tags_link[] = "<a href='{$plugin}.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
             $tags_link[] = "<a href='tag.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
         }
         $list_tags = implode(' , ', $tags_link);
+
         return $list_tags;
     }
 
     //取得tad_web_tags資料陣列
-    public function get_tags($col_name = "", $col_sn = "")
+    public function get_tags($col_name = '', $col_sn = '')
     {
         global $xoopsDB;
-        $tags_arr     = array();
+        $tags_arr = [];
         $and_col_name = empty($col_name) ? '' : "and `col_name`='{$col_name}'";
-        $and_col_sn   = empty($col_sn) ? '' : "and `col_sn`='{$col_sn}'";
-        $sql          = "select tag_name , count(*) from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
+        $and_col_sn = empty($col_sn) ? '' : "and `col_sn`='{$col_sn}'";
+        $sql = 'select tag_name , count(*) from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($tag_name, $count) = $xoopsDB->fetchRow($result)) {
@@ -207,14 +208,12 @@ class tags
     }
 
     //刪除tad_web_tags某筆資料資料
-    public function delete_tags($col_name = "", $col_sn = "", $tag_name = "")
+    public function delete_tags($col_name = '', $col_sn = '', $tag_name = '')
     {
         global $xoopsDB;
         $and_tag_name = empty($tag_name) ? '' : "and `tag_name`='{$tag_name}'";
 
-        $sql = "delete from `" . $xoopsDB->prefix("tad_web_tags") . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' {$and_tag_name}";
+        $sql = 'delete from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' {$and_tag_name}";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-
     }
-
 }

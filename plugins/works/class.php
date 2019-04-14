@@ -1,7 +1,6 @@
 <?php
 class tad_web_works
 {
-
     public $WebID = 0;
     public $web_cate;
     public $setup;
@@ -9,19 +8,19 @@ class tad_web_works
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, "works", "tad_web_works");
-        $this->setup    = get_plugin_setup_values($WebID, "works");
+        $this->web_cate = new web_cate($WebID, 'works', 'tad_web_works');
+        $this->setup    = get_plugin_setup_values($WebID, 'works');
         $this->tags     = new tags($WebID);
     }
 
     //作品分享
-    public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '', $kind = '', $order = '', $pic = false)
+    public function list_all($CateID = '', $limit = null, $mode = 'assign', $tag = '', $kind = '', $order = '', $pic = false)
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $TadUpFiles, $plugin_menu_var;
-        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
-        $andCateID = "";
-        if ($mode == "assign") {
+        $andCateID = '';
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
                 $this->web_cate->set_button_value($plugin_menu_var['works']['short'] . _MD_TCW_CATE_TOOLS);
@@ -33,7 +32,7 @@ class tad_web_works
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
-                if ($CateID and $cate['CateEnable'] != '1') {
+                if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
                 $xoopsTpl->assign('cate', $cate);
@@ -42,18 +41,18 @@ class tad_web_works
             }
         }
 
-        $now  = date("Y-m-d H:i:s");
+        $now  = date('Y-m-d H:i:s');
         $time = time();
         //列出學生可上傳的
-        if ($kind == "list_mem_need_upload") {
+        if ('list_mem_need_upload' === $kind) {
             $andWorksKind = "and a.WorksKind !='' and a.WorksDate >= '{$now}'";
-        } elseif ($kind == "list_mem_upload") {
+        } elseif ('list_mem_upload' === $kind) {
             $andWorksKind = "and a.WorksKind !='' and a.WorksDate < '{$now}'";
         } else {
             $andWorksKind = $isMyWeb ? '' : "and ((a.WorksKind ='mem_after_end' and a.WorksDate < '$now') or a.WorksKind!='mem_after_end')";
         }
 
-        if ($order == '') {
+        if ('' == $order) {
             $order = 'order by a.WorksDate desc';
         }
 
@@ -63,26 +62,26 @@ class tad_web_works
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
-            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
-            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
-            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_works') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            left join ' . $xoopsDB->prefix('apply') . ' as c on b.WebOwnerUid=c.uid
+            left join ' . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName $order";
         } elseif (!empty($tag)) {
-            $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_works") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            join " . $xoopsDB->prefix("tad_web_tags") . " as c on c.col_name='WorksID' and c.col_sn=a.WorksID
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            $sql = 'select distinct a.* from ' . $xoopsDB->prefix('tad_web_works') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            join ' . $xoopsDB->prefix('tad_web_tags') . " as c on c.col_name='WorksID' and c.col_sn=a.WorksID
+            left join " . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.WorksID desc";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_works") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
+            $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_works') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
             where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID $andWorksKind $order";
         }
 
@@ -97,7 +96,7 @@ class tad_web_works
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = 0;
 
@@ -118,12 +117,12 @@ class tad_web_works
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
             $this->web_cate->set_WebID($WebID);
 
-            if ($pic !== false) {
+            if (false !== $pic) {
                 if (empty($pic)) {
                     $pic = 12;
                 }
 
-                $TadUpFiles->set_col("WorksID", $WorksID);
+                $TadUpFiles->set_col('WorksID', $WorksID);
                 $main_data[$i]['pics'] = $TadUpFiles->show_files('upfile', true, null, true, null, $pic);
             } else {
                 $main_data[$i]['pics'] = '';
@@ -134,7 +133,7 @@ class tad_web_works
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb']   = $isMyWeb;
             $main_data[$i]['WorksDate'] = $WorksDate;
-            if (strtotime($WorksDate) > $time and $WorksKind == 'mem_after_end') {
+            if (strtotime($WorksDate) > $time and 'mem_after_end' === $WorksKind) {
                 $main_data[$i]['hide'] = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
             } else {
                 $main_data[$i]['hide'] = false;
@@ -142,14 +141,14 @@ class tad_web_works
             $i++;
         }
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
+            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
-        $sweet_alert->render("delete_works_func", "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
+        $sweet_alert->render('delete_works_func', "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
 
-        if ($mode == "return") {
+        if ('return' === $mode) {
             $data['main_data'] = $main_data;
             $data['total']     = $total;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
@@ -164,7 +163,7 @@ class tad_web_works
     }
 
     //以流水號秀出某筆tad_web_works資料內容
-    public function show_one($WorksID = "")
+    public function show_one($WorksID = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
         if (empty($WorksID)) {
@@ -174,7 +173,7 @@ class tad_web_works
         $WorksID = (int) $WorksID;
         $this->add_counter($WorksID);
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='{$WorksID}'";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='{$WorksID}'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
@@ -186,11 +185,11 @@ class tad_web_works
 
         $deadline             = strtotime($WorksDate);
         $time                 = time();
-        $show_score_form      = ($isMyWeb and $WorksKind != '') ? true : false;
-        $is_mem_upload        = ($_SESSION['LoginWebID'] == $WebID and !empty($_SESSION['LoginWebID']) and $WorksKind != '') ? true : false;
+        $show_score_form      = ($isMyWeb and '' != $WorksKind) ? true : false;
+        $is_mem_upload        = ($_SESSION['LoginWebID'] == $WebID and !empty($_SESSION['LoginWebID']) and '' != $WorksKind) ? true : false;
         $show_mem_upload_form = ($is_mem_upload and $deadline >= $time) ? true : false;
 
-        if ($WorksKind == 'mem_after_end' and $deadline >= $time and !$isMyWeb and ($_SESSION['LoginWebID'] != $WebID or empty($_SESSION['LoginWebID']))) {
+        if ('mem_after_end' === $WorksKind and $deadline >= $time and !$isMyWeb and ($_SESSION['LoginWebID'] != $WebID or empty($_SESSION['LoginWebID']))) {
             redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate));
         }
 
@@ -198,7 +197,7 @@ class tad_web_works
             redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $TadUpFiles->set_col("WorksID", $WorksID);
+        $TadUpFiles->set_col('WorksID', $WorksID);
         $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
         $uid_name = XoopsUser::getUnameFromId($uid, 1);
@@ -209,10 +208,10 @@ class tad_web_works
         $assistant   = is_assistant($CateID, 'WorksID', $WorksID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
-        $xoopsTpl->assign("isAssistant", $isAssistant);
-        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID));
+        $xoopsTpl->assign('isAssistant', $isAssistant);
+        $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID));
 
-        if (strtotime($WorksDate) > $time and $WorksKind == 'mem_after_end') {
+        if (strtotime($WorksDate) > $time and 'mem_after_end' === $WorksKind) {
             $hide = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
         } else {
             $hide = false;
@@ -231,18 +230,18 @@ class tad_web_works
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
-        if ($CateID and $cate['CateEnable'] != '1') {
+        if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
         $xoopsTpl->assign('cate', $cate);
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
+            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert      = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render("delete_works_func", "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
-        $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
+        $sweet_alert_code = $sweet_alert->render('delete_works_func', "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
+        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign('show_mem_upload_form', $show_mem_upload_form);
         if ($show_mem_upload_form) {
@@ -254,12 +253,11 @@ class tad_web_works
         }
         $xoopsTpl->assign('show_score_form', $show_score_form);
 
-        $xoopsTpl->assign("tags", $this->tags->list_tags("WorksID", $WorksID, 'works'));
-
+        $xoopsTpl->assign('tags', $this->tags->list_tags('WorksID', $WorksID, 'works'));
     }
 
     //tad_web_works編輯表單
-    public function edit_form($WorksID = "")
+    public function edit_form($WorksID = '')
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
@@ -270,7 +268,7 @@ class tad_web_works
         if (!empty($WorksID)) {
             $DBV = $this->get_one_data($WorksID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -280,19 +278,19 @@ class tad_web_works
         $xoopsTpl->assign('WorksID', $WorksID);
 
         //設定「WorkName」欄位預設值
-        $WorkName = (!isset($DBV['WorkName'])) ? "" : $DBV['WorkName'];
+        $WorkName = (!isset($DBV['WorkName'])) ? '' : $DBV['WorkName'];
         $xoopsTpl->assign('WorkName', $WorkName);
 
         //設定「WorkDesc」欄位預設值
-        $WorkDesc = (!isset($DBV['WorkDesc'])) ? "" : $DBV['WorkDesc'];
+        $WorkDesc = (!isset($DBV['WorkDesc'])) ? '' : $DBV['WorkDesc'];
         $xoopsTpl->assign('WorkDesc', $WorkDesc);
 
         //設定「WorksDate」欄位預設值
-        $WorksDate = (!isset($DBV['WorksDate'])) ? date("Y-m-d H:i:00") : $DBV['WorksDate'];
+        $WorksDate = (!isset($DBV['WorksDate'])) ? date('Y-m-d H:i:00') : $DBV['WorksDate'];
         $xoopsTpl->assign('WorksDate', $WorksDate);
 
         //設定「uid」欄位預設值
-        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
         $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
 
         //設定「WebID」欄位預設值
@@ -300,15 +298,15 @@ class tad_web_works
         $xoopsTpl->assign('WebID', $WebID);
 
         //設定「WorksCount」欄位預設值
-        $WorksCount = (!isset($DBV['WorksCount'])) ? "" : $DBV['WorksCount'];
+        $WorksCount = (!isset($DBV['WorksCount'])) ? '' : $DBV['WorksCount'];
         $xoopsTpl->assign('WorksCount', $WorksCount);
 
         //設定「WorksKind」欄位預設值
-        $WorksKind = (!isset($DBV['WorksKind'])) ? "" : $DBV['WorksKind'];
+        $WorksKind = (!isset($DBV['WorksKind'])) ? '' : $DBV['WorksKind'];
         $xoopsTpl->assign('WorksKind', $WorksKind);
 
         //設定「WorksEnable」欄位預設值
-        $WorksEnable = (!isset($DBV['WorksEnable'])) ? "1" : $DBV['WorksEnable'];
+        $WorksEnable = (!isset($DBV['WorksEnable'])) ? '1' : $DBV['WorksEnable'];
         $xoopsTpl->assign('WorksEnable', $WorksEnable);
 
         //設定「CateID」欄位預設值
@@ -319,13 +317,13 @@ class tad_web_works
         $cate_menu = isset($_SESSION['isAssistant']['works']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
-        $op = (empty($WorksID)) ? "insert" : "update";
+        $op = (empty($WorksID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
-            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
+            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . "/formValidator.php";
-        $formValidator      = new formValidator("#myForm", true);
+        include_once TADTOOLS_PATH . '/formValidator.php';
+        $formValidator      = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
 
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
@@ -335,7 +333,7 @@ class tad_web_works
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
-        $tags_form = $this->tags->tags_menu("WorksID", $WorksID);
+        $tags_form = $this->tags->tags_menu('WorksID', $WorksID);
         $xoopsTpl->assign('tags_form', $tags_form);
     }
 
@@ -347,7 +345,7 @@ class tad_web_works
         if (isset($_SESSION['isAssistant']['works'])) {
             $uid = $WebOwnerUid;
         } else {
-            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
         $myts        = MyTextSanitizer::getInstance();
@@ -363,7 +361,7 @@ class tad_web_works
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
-        $sql = "insert into " . $xoopsDB->prefix("tad_web_works") . "
+        $sql = 'insert into ' . $xoopsDB->prefix('tad_web_works') . "
         (`CateID`,`WorkName` , `WorkDesc` , `WorksDate` ,  `uid` , `WebID` , `WorksCount` , `WorksKind` , `WorksEnable`)
         values('{$CateID}' , '{$WorkName}' , '{$WorkDesc}' , '{$WorksDate}' , '{$uid}' , '{$WebID}' , '0', '{$WorksKind}', '{$WorksEnable}')";
         $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
@@ -377,12 +375,12 @@ class tad_web_works
 
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("WorksID", $WorksID, $tag_name, $_POST['tags']);
+        $this->tags->save_tags('WorksID', $WorksID, $tag_name, $_POST['tags']);
         return $WorksID;
     }
 
     //更新tad_web_works某一筆資料
-    public function update($WorksID = "")
+    public function update($WorksID = '')
     {
         global $xoopsDB, $TadUpFiles;
 
@@ -403,7 +401,7 @@ class tad_web_works
             $anduid = onlyMine();
         }
 
-        $sql = "update " . $xoopsDB->prefix("tad_web_works") . " set
+        $sql = 'update ' . $xoopsDB->prefix('tad_web_works') . " set
          `CateID` = '{$CateID}' ,
          `WorkName` = '{$WorkName}' ,
          `WorkDesc` = '{$WorkDesc}' ,
@@ -418,12 +416,12 @@ class tad_web_works
 
         check_quota($this->WebID);
         //儲存標籤
-        $this->tags->save_tags("WorksID", $WorksID, $tag_name, $_POST['tags']);
+        $this->tags->save_tags('WorksID', $WorksID, $tag_name, $_POST['tags']);
         return $WorksID;
     }
 
     //交作業
-    public function mem_upload($WorksID = "")
+    public function mem_upload($WorksID = '')
     {
         global $xoopsDB, $TadUpFiles;
 
@@ -431,7 +429,7 @@ class tad_web_works
         $WorkDesc = $myts->addSlashes($_POST['WorkDesc']);
 
         //讀出原有分數及評語
-        $sql = "select WorkScore , WorkJudgment from " . $xoopsDB->prefix("tad_web_works_content") . " where `WorksID`='{$WorksID}' and `MemID`='{$_SESSION['LoginMemID']}' and  `WebID`='{$this->WebID}'";
+        $sql = 'select WorkScore , WorkJudgment from ' . $xoopsDB->prefix('tad_web_works_content') . " where `WorksID`='{$WorksID}' and `MemID`='{$_SESSION['LoginMemID']}' and  `WebID`='{$this->WebID}'";
 
         $result                         = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($WorkScore, $WorkJudgment) = $xoopsDB->fetchRow($result);
@@ -454,9 +452,9 @@ class tad_web_works
         }
 
         $all_files_arr = implode(',', $all_files_sn);
-        $UploadDate    = date("Y-m-d H:i:s");
+        $UploadDate    = date('Y-m-d H:i:s');
 
-        $sql = "replace into " . $xoopsDB->prefix("tad_web_works_content") . "
+        $sql = 'replace into ' . $xoopsDB->prefix('tad_web_works_content') . "
         (`WorksID`,`MemID` , `MemName` , `WebID` , `WorkDesc` , `UploadDate` , `WorkScore`, `WorkJudgment` ,`all_files_sn`)
         values('{$WorksID}' , '{$_SESSION['LoginMemID']}' , '{$_SESSION['LoginMemName']}' , '{$this->WebID}' , '{$WorkDesc}' , '{$UploadDate}', '{$WorkScore}', '{$WorkJudgment}', '{$all_files_arr}')";
         $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
@@ -466,34 +464,34 @@ class tad_web_works
     }
 
     //刪除tad_web_works某筆資料資料
-    public function delete($WorksID = "")
+    public function delete($WorksID = '')
     {
         global $xoopsDB, $TadUpFiles;
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID'";
+        $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='$WorksID'";
         $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'WorksID', $WorksID)) {
             $anduid = onlyMine();
         }
-        $sql = "delete from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID' $anduid";
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='$WorksID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $sql = "delete from " . $xoopsDB->prefix("tad_web_works_content") . " where WorksID='$WorksID'";
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_works_content') . " where WorksID='$WorksID'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->del_files();
         check_quota($this->WebID);
         //刪除標籤
-        $this->tags->delete_tags("WorksID", $WorksID);
+        $this->tags->delete_tags('WorksID', $WorksID);
     }
 
     //刪除所有資料
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
-        $sql       = "select WorksID,CateID from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}'";
+        $allCateID = [];
+        $sql       = 'select WorksID,CateID from ' . $xoopsDB->prefix('tad_web_works') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($WorksID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($WorksID);
@@ -509,7 +507,7 @@ class tad_web_works
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}'";
+        $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_works') . " where WebID='{$this->WebID}'";
         $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
@@ -519,26 +517,26 @@ class tad_web_works
     public function add_counter($WorksID = '')
     {
         global $xoopsDB;
-        $sql = "update " . $xoopsDB->prefix("tad_web_works") . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
+        $sql = 'update ' . $xoopsDB->prefix('tad_web_works') . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_works資料
-    public function get_one_data($WorksID = "")
+    public function get_one_data($WorksID = '')
     {
         global $xoopsDB;
         if (empty($WorksID)) {
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_works") . " where WorksID='$WorksID'";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='$WorksID'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
 
     //取得某人上傳資料
-    public function get_mem_upload_content($WorksID = "", $MemID = "")
+    public function get_mem_upload_content($WorksID = '', $MemID = '')
     {
         global $xoopsDB, $TadUpFiles;
         if (empty($WorksID)) {
@@ -546,13 +544,13 @@ class tad_web_works
         }
         $TadUpFiles->set_col('WorksID', $WorksID);
 
-        $andMemID = empty($MemID) ? "" : "and MemID='$MemID'";
+        $andMemID = empty($MemID) ? '' : "and MemID='$MemID'";
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_works_content") . " where WebID='{$this->WebID}' and WorksID='$WorksID' {$andMemID}";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_works_content') . " where WebID='{$this->WebID}' and WorksID='$WorksID' {$andMemID}";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         if (empty($MemID)) {
             $i    = 0;
-            $data = array();
+            $data = [];
             while ($all = $xoopsDB->fetchArray($result)) {
                 $TadUpFiles->set_files_sn(explode(',', $all['all_files_sn']));
                 $all['list_del_file'] = $TadUpFiles->show_files('upfile', true, null, true);
@@ -567,7 +565,7 @@ class tad_web_works
         return $data;
     }
 
-    public function score_form($WorksID = "")
+    public function score_form($WorksID = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
         $work = $this->get_one_data($WorksID);
@@ -577,10 +575,10 @@ class tad_web_works
         }
         $deadline        = strtotime($WorksDate);
         $time            = time();
-        $show_score_form = ($isMyWeb and $WorksKind != '') ? true : false;
+        $show_score_form = ($isMyWeb and '' != $WorksKind) ? true : false;
         $uid_name        = XoopsUser::getUnameFromId($uid, 1);
 
-        if (strtotime($WorksDate) > $time and $WorksKind == 'mem_after_end') {
+        if (strtotime($WorksDate) > $time and 'mem_after_end' === $WorksKind) {
             $hide = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
         } else {
             $hide = false;
@@ -601,36 +599,34 @@ class tad_web_works
         }
     }
 
-    public function save_score($WorksID = "", $WorkScoreArr = array(), $WorkJudgmentArr = array())
+    public function save_score($WorksID = '', $WorkScoreArr = [], $WorkJudgmentArr = [])
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
         $myts = MyTextSanitizer::getInstance();
         foreach ($WorkScoreArr as $MemID => $WorkScore) {
             $WorkScore    = $myts->addSlashes($WorkScore);
             $WorkJudgment = $myts->addSlashes($WorkJudgmentArr[$MemID]);
-            $sql          = "update " . $xoopsDB->prefix("tad_web_works_content") . " set
+            $sql          = 'update ' . $xoopsDB->prefix('tad_web_works_content') . " set
              `WorkScore` = '{$WorkScore}' ,
              `WorkJudgment` = '{$WorkJudgment}'
             where WorksID='$WorksID' and `MemID` = '{$MemID}'";
             $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         }
-
     }
 
     //匯出資料
-    public function export_data($start_date, $end_date, $CateID = "")
+    public function export_data($start_date, $end_date, $CateID = '')
     {
-
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
-        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
-        $andStart  = empty($start_date) ? "" : "and WorksDate >= '{$start_date}'";
-        $andEnd    = empty($end_date) ? "" : "and WorksDate <= '{$end_date}'";
+        $andCateID = empty($CateID) ? '' : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? '' : "and WorksDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? '' : "and WorksDate <= '{$end_date}'";
 
-        $sql    = "select WorksID,WorkName,WorksDate,CateID from " . $xoopsDB->prefix("tad_web_works") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by WorksDate";
+        $sql    = 'select WorksID,WorkName,WorksDate,CateID from ' . $xoopsDB->prefix('tad_web_works') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by WorksDate";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
-        $main_data = array();
+        $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;

@@ -1,6 +1,6 @@
 <?php
 define('_MD_TCW_VIDEO', 'Online video');
-define("_MD_TCW_VIDEO_ADD", "Add video");
+define('_MD_TCW_VIDEO_ADD', 'Add video');
 define('_MD_TCW_VIDEO_SHORT', 'Film');
 define('_MD_TCW_VIDEOID', 'Video number');
 define('_MD_TCW_VIDEONAME', 'Video name');
@@ -11,10 +11,10 @@ define('_MD_TCW_VIDEOUID', 'Author');
 define('_MD_TCW_VIDEOCOUNT', 'Popular');
 define('_MD_TCW_VIDEOYOUTUBE', 'Youtube URL');
 define('_MD_TCW_VIDEOCOUNTINFO', 'People watched a total of %s');
-define("_MD_TCW_VIDEO_BLOCK_LIST", "List Video");
-define("_MD_TCW_VIDEO_BLOCK_RANDOM", "Random Video");
-define("_MD_TCW_VIDEO_BLOCK_LATEST", "Latest Video");
-define("_MD_TCW_VIDEO_BLOCK_LIMIT", "Displays the number of videos");
-define("_MD_TCW_VIDEO_BLOCK_MODE", "Display mode");
-define("_MD_TCW_VIDEO_BLOCK_LIST_MODE", "List");
-define("_MD_TCW_VIDEO_BLOCK_THUMB_MODE", "Thumb");
+define('_MD_TCW_VIDEO_BLOCK_LIST', 'List Video');
+define('_MD_TCW_VIDEO_BLOCK_RANDOM', 'Random Video');
+define('_MD_TCW_VIDEO_BLOCK_LATEST', 'Latest Video');
+define('_MD_TCW_VIDEO_BLOCK_LIMIT', 'Displays the number of videos');
+define('_MD_TCW_VIDEO_BLOCK_MODE', 'Display mode');
+define('_MD_TCW_VIDEO_BLOCK_LIST_MODE', 'List');
+define('_MD_TCW_VIDEO_BLOCK_THUMB_MODE', 'Thumb');

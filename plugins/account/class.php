@@ -9,14 +9,14 @@ class tad_web_account
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, "account", "tad_web_account");
+        $this->web_cate = new web_cate($WebID, 'account', 'tad_web_account');
         // $this->power    = new power($WebID);
         // $this->tags     = new tags($WebID);
-        $this->setup = get_plugin_setup_values($WebID, "account");
+        $this->setup = get_plugin_setup_values($WebID, 'account');
     }
 
     //列出帳目
-    public function list_all($CateID = "", $limit = null, $mode = "assign", $tag = '')
+    public function list_all($CateID = '', $limit = null, $mode = 'assign', $tag = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isAdmin, $isMyWeb;
 
@@ -28,13 +28,13 @@ class tad_web_account
         //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
         // }
 
-        $andWebID = (empty($this->WebID)) ? "" : "and a.WebID='{$this->WebID}'";
+        $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
         if (empty($CateID)) {
             $CateID = $this->get_last_account_book();
         }
 
-        $andCateID = "";
-        if ($mode == "assign") {
+        $andCateID = '';
+        if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             $this->web_cate->set_button_value(_MD_TCW_ACCOUNT_BOOK_TOOL);
             $this->web_cate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
@@ -45,7 +45,7 @@ class tad_web_account
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
                 $cate = $this->web_cate->get_tad_web_cate($CateID);
-                if ($CateID and $cate['CateEnable'] != '1') {
+                if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
                 $xoopsTpl->assign('cate', $cate);
@@ -60,20 +60,20 @@ class tad_web_account
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
-            $andCounty     = !empty($county) ? "and c.county='{$county}'" : "";
-            $andCity       = !empty($city) ? "and c.city='{$city}'" : "";
-            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : "";
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
+            $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            left join " . $xoopsDB->prefix("apply") . " as c on b.WebOwnerUid=c.uid
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as d on a.CateID=d.CateID
+            $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_account') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            left join ' . $xoopsDB->prefix('apply') . ' as c on b.WebOwnerUid=c.uid
+            left join ' . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName
             order by a.AccountDate ,a.AccountID";
         } else {
-            $sql = "select a.* from " . $xoopsDB->prefix("tad_web_account") . " as a
-            left join " . $xoopsDB->prefix("tad_web") . " as b on a.WebID=b.WebID
-            left join " . $xoopsDB->prefix("tad_web_cate") . " as c on a.CateID=c.CateID
+            $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_account') . ' as a
+            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
             where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID
             order by a.AccountDate ,a.AccountID";
         }
@@ -87,7 +87,7 @@ class tad_web_account
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        $main_data = array();
+        $main_data = [];
 
         $i = 0;
 
@@ -121,9 +121,9 @@ class tad_web_account
             $main_data[$i]['isMyWeb'] = $isMyWeb;
             $main_data[$i]['Money']   = !empty($AccountOutgoings) ? "<span class='text-danger'>-{$AccountOutgoings}</span>" : "<span class='text-primary'>$AccountIncome</span>";
 
-            $subdir = isset($WebID) ? "/{$WebID}" : "";
+            $subdir = isset($WebID) ? "/{$WebID}" : '';
             $TadUpFiles->set_dir('subdir', $subdir);
-            $TadUpFiles->set_col("AccountID", $AccountID);
+            $TadUpFiles->set_col('AccountID', $AccountID);
             $AccountPic                  = $TadUpFiles->get_pic_file('thumb');
             $main_data[$i]['AccountPic'] = $AccountPic;
             if (!empty($AccountIncome)) {
@@ -141,18 +141,18 @@ class tad_web_account
         }
 
         //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
+            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
-        $sweet_alert->render("delete_account_func", "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
+        $sweet_alert->render('delete_account_func', "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
 
-        if ($mode == "return") {
+        if ('return' === $mode) {
             $data['main_data']    = $main_data;
             $data['AccountTotal'] = $AccountTotal;
-            $data['total']        = $total;
-            $data['isCanEdit']    = isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
+            $data['total'] = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
             return $data;
         } else {
             $xoopsTpl->assign('bar', $bar);
@@ -165,7 +165,7 @@ class tad_web_account
     }
 
     //以流水號秀出某筆tad_web_account資料內容
-    public function show_one($AccountID = "")
+    public function show_one($AccountID = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb, $xoopsUser, $isAdmin, $isMyWeb;
 
@@ -185,7 +185,7 @@ class tad_web_account
         $AccountID = (int) $AccountID;
         $this->add_counter($AccountID);
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='{$AccountID}'";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='{$AccountID}'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
@@ -199,7 +199,7 @@ class tad_web_account
         }
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
-        $TadUpFiles->set_col("AccountID", $AccountID);
+        $TadUpFiles->set_col('AccountID', $AccountID);
         $pics = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
         // $TadUpFiles->set_col("AccountID", $AccountID, 1);
@@ -220,8 +220,8 @@ class tad_web_account
         $assistant   = is_assistant($CateID, 'AccountID', $AccountID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
-        $xoopsTpl->assign("isAssistant", $isAssistant);
-        $xoopsTpl->assign("isCanEdit", isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID));
+        $xoopsTpl->assign('isAssistant', $isAssistant);
+        $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID));
 
         $xoopsTpl->assign('AccountTitle', $AccountTitle);
         $xoopsTpl->assign('AccountDate', $AccountDate);
@@ -239,25 +239,25 @@ class tad_web_account
 
         //取得單一分類資料
         $cate = $this->web_cate->get_tad_web_cate($CateID);
-        if ($CateID and $cate['CateEnable'] != '1') {
+        if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
         $xoopsTpl->assign('cate', $cate);
 
         //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php")) {
-            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
+            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
-        $sweet_alert->render("delete_account_func", "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
-        $xoopsTpl->assign("fb_comments", fb_comments($this->setup['use_fb_comments']));
+        $sweet_alert->render('delete_account_func', "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
+        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         // $xoopsTpl->assign("tags", $this->tags->list_tags("AccountID", $AccountID, 'account'));
     }
 
     //tad_web_account編輯表單
-    public function edit_form($AccountID = "")
+    public function edit_form($AccountID = '')
     {
         global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $WebTitle;
 
@@ -268,7 +268,7 @@ class tad_web_account
         if (!empty($AccountID)) {
             $DBV = $this->get_one_data($AccountID);
         } else {
-            $DBV = array();
+            $DBV = [];
         }
 
         //預設值設定
@@ -278,27 +278,27 @@ class tad_web_account
         $xoopsTpl->assign('AccountID', $AccountID);
 
         //設定「AccountTitle」欄位預設值
-        $AccountTitle = (!isset($DBV['AccountTitle'])) ? "" : $DBV['AccountTitle'];
+        $AccountTitle = (!isset($DBV['AccountTitle'])) ? '' : $DBV['AccountTitle'];
         $xoopsTpl->assign('AccountTitle', $AccountTitle);
 
         //設定「AccountDesc」欄位預設值
-        $AccountDesc = (!isset($DBV['AccountDesc'])) ? "" : $DBV['AccountDesc'];
+        $AccountDesc = (!isset($DBV['AccountDesc'])) ? '' : $DBV['AccountDesc'];
         $xoopsTpl->assign('AccountDesc', $AccountDesc);
 
         //設定「AccountDate」欄位預設值
-        $AccountDate = (!isset($DBV['AccountDate'])) ? date("Y-m-d") : $DBV['AccountDate'];
+        $AccountDate = (!isset($DBV['AccountDate'])) ? date('Y-m-d') : $DBV['AccountDate'];
         $xoopsTpl->assign('AccountDate', $AccountDate);
 
         //設定「AccountIncome」欄位預設值
-        $AccountIncome = (!isset($DBV['AccountIncome'])) ? "" : $DBV['AccountIncome'];
+        $AccountIncome = (!isset($DBV['AccountIncome'])) ? '' : $DBV['AccountIncome'];
         $xoopsTpl->assign('AccountIncome', $AccountIncome);
 
         //設定「AccountOutgoings」欄位預設值
-        $AccountOutgoings = (!isset($DBV['AccountOutgoings'])) ? "" : $DBV['AccountOutgoings'];
+        $AccountOutgoings = (!isset($DBV['AccountOutgoings'])) ? '' : $DBV['AccountOutgoings'];
         $xoopsTpl->assign('AccountOutgoings', $AccountOutgoings);
 
         //設定「uid」欄位預設值
-        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
         $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
         $xoopsTpl->assign('uid', $uid);
 
@@ -307,14 +307,14 @@ class tad_web_account
         $xoopsTpl->assign('WebID', $WebID);
 
         //設定「AccountCount」欄位預設值
-        $AccountCount = (!isset($DBV['AccountCount'])) ? "" : $DBV['AccountCount'];
+        $AccountCount = (!isset($DBV['AccountCount'])) ? '' : $DBV['AccountCount'];
         $xoopsTpl->assign('AccountCount', $AccountCount);
 
         if (!empty($AccountIncome)) {
-            $AccountKind  = "AccountIncome";
+            $AccountKind  = 'AccountIncome';
             $AccountMoney = $AccountIncome;
         } else {
-            $AccountKind  = "AccountOutgoings";
+            $AccountKind  = 'AccountOutgoings';
             $AccountMoney = $AccountOutgoings;
         }
         $xoopsTpl->assign('AccountKind', $AccountKind);
@@ -329,13 +329,13 @@ class tad_web_account
         $cate_menu = isset($_SESSION['isAssistant']['account']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
-        $op = (empty($AccountID)) ? "insert" : "update";
+        $op = (empty($AccountID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
-            redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
+            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . "/formValidator.php";
-        $formValidator      = new formValidator("#myForm", true);
+        include_once TADTOOLS_PATH . '/formValidator.php';
+        $formValidator      = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
 
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
@@ -361,7 +361,7 @@ class tad_web_account
         if (isset($_SESSION['isAssistant']['account'])) {
             $uid = $WebOwnerUid;
         } else {
-            $uid = ($xoopsUser) ? $xoopsUser->uid() : "";
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
         $myts         = MyTextSanitizer::getInstance();
@@ -375,8 +375,8 @@ class tad_web_account
         $CateID       = (int) $_POST['CateID'];
         $WebID        = (int) $_POST['WebID'];
 
-        if ($AccountKind == "AccountIncome") {
-            $AccountIncome    = (int) $AccountMoney;
+        if ('AccountIncome' === $AccountKind) {
+            $AccountIncome = (int) $AccountMoney;
             $AccountOutgoings = 0;
         } else {
             $AccountIncome    = 0;
@@ -384,7 +384,7 @@ class tad_web_account
         }
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
-        $sql    = "insert into " . $xoopsDB->prefix("tad_web_account") . "
+        $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_account') . "
         (`CateID`,`AccountTitle` , `AccountDesc` , `AccountDate` , `AccountIncome` , `AccountOutgoings` , `uid` , `WebID` , `AccountCount`)
         values('{$CateID}' ,'{$AccountTitle}' , '{$AccountDesc}' , '{$AccountDate}' , '{$AccountIncome}' , '{$AccountOutgoings}' , '{$uid}' , '{$WebID}' , '{$AccountCount}')";
         $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
@@ -407,7 +407,7 @@ class tad_web_account
     }
 
     //更新tad_web_account某一筆資料
-    public function update($AccountID = "")
+    public function update($AccountID = '')
     {
         global $xoopsDB, $TadUpFiles;
 
@@ -421,11 +421,11 @@ class tad_web_account
         $CateID       = (int) $_POST['CateID'];
         $WebID        = (int) $_POST['WebID'];
 
-        if ($AccountKind == "AccountIncome") {
+        if ('AccountIncome' === $AccountKind) {
             $AccountIncome    = $AccountMoney;
-            $AccountOutgoings = "";
+            $AccountOutgoings = '';
         } else {
-            $AccountIncome    = "";
+            $AccountIncome    = '';
             $AccountOutgoings = $AccountMoney;
         }
 
@@ -435,7 +435,7 @@ class tad_web_account
             $anduid = onlyMine();
         }
 
-        $sql = "update " . $xoopsDB->prefix("tad_web_account") . " set
+        $sql = 'update ' . $xoopsDB->prefix('tad_web_account') . " set
          `CateID` = '{$CateID}' ,
          `AccountTitle` = '{$AccountTitle}' ,
          `AccountDesc` = '{$AccountDesc}' ,
@@ -460,16 +460,16 @@ class tad_web_account
     }
 
     //刪除tad_web_account某筆資料資料
-    public function delete($AccountID = "")
+    public function delete($AccountID = '')
     {
         global $xoopsDB, $TadUpFiles;
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
+        $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='$AccountID'";
         $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'AccountID', $AccountID)) {
             $anduid = onlyMine();
         }
-        $sql = "delete from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID' $anduid";
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='$AccountID' $anduid";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
@@ -487,9 +487,9 @@ class tad_web_account
     public function delete_all()
     {
         global $xoopsDB, $TadUpFiles;
-        $allCateID = array();
-        $sql       = "select AccountID,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $allCateID = [];
+        $sql = 'select AccountID,CateID from ' . $xoopsDB->prefix('tad_web_account') . " where WebID='{$this->WebID}'";
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (list($AccountID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($AccountID);
             $allCateID[$CateID] = $CateID;
@@ -504,7 +504,7 @@ class tad_web_account
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = "select count(*) from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}'";
+        $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_account') . " where WebID='{$this->WebID}'";
         $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
@@ -514,37 +514,37 @@ class tad_web_account
     public function add_counter($AccountID = '')
     {
         global $xoopsDB;
-        $sql = "update " . $xoopsDB->prefix("tad_web_account") . " set `AccountCount`=`AccountCount`+1 where `AccountID`='{$AccountID}'";
+        $sql = 'update ' . $xoopsDB->prefix('tad_web_account') . " set `AccountCount`=`AccountCount`+1 where `AccountID`='{$AccountID}'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_account資料
-    public function get_one_data($AccountID = "")
+    public function get_one_data($AccountID = '')
     {
         global $xoopsDB;
         if (empty($AccountID)) {
             return;
         }
 
-        $sql    = "select * from " . $xoopsDB->prefix("tad_web_account") . " where AccountID='$AccountID'";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='$AccountID'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
 
     //匯出資料
-    public function export_data($start_date = "", $end_date = "", $CateID = "")
+    public function export_data($start_date = '', $end_date = '', $CateID = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
-        $andCateID = empty($CateID) ? "" : "and `CateID`='$CateID'";
-        $andStart  = empty($start_date) ? "" : "and AccountDate >= '{$start_date}'";
-        $andEnd    = empty($end_date) ? "" : "and AccountDate <= '{$end_date}'";
+        $andCateID = empty($CateID) ? '' : "and `CateID`='$CateID'";
+        $andStart  = empty($start_date) ? '' : "and AccountDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? '' : "and AccountDate <= '{$end_date}'";
 
-        $sql    = "select AccountID,AccountTitle,AccountDate,CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by AccountDate";
+        $sql    = 'select AccountID,AccountTitle,AccountDate,CateID from ' . $xoopsDB->prefix('tad_web_account') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by AccountDate";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
-        $main_data = array();
+        $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
@@ -561,7 +561,7 @@ class tad_web_account
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
-        $sql          = "select CateID from " . $xoopsDB->prefix("tad_web_account") . " where WebID='{$this->WebID}' order by AccountDate desc limit 0,1";
+        $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_account') . " where WebID='{$this->WebID}' order by AccountDate desc limit 0,1";
         $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         return $CateID;
