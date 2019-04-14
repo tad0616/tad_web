@@ -1,13 +1,13 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
-    $xoopsOption['template_main'] = 'tad_web_plugin_setup.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_plugin_setup.tpl';
 } else {
     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
 }
 
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //外掛設定功能
@@ -98,7 +98,7 @@ function TadUpFiles_plugin_setup($WebID, $plugin)
 {
     global $xoopsConfig;
 
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
     $TadUpFiles_plugin_setup = new TadUpFiles('tad_web', "/{$WebID}/{$plugin}", null, '', '/thumbs');
 
     $TadUpFiles_plugin_setup->set_thumb('100px', '60px', '#000', 'center center', 'no-repeat', 'contain');
@@ -112,7 +112,7 @@ function plugin_block_setup($WebID, $plugin)
     global $xoopsTpl, $BlockPositionTitle;
     // $config_blocks_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/config_blocks.php";
     // if (file_exists($config_blocks_file)) {
-    //     include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+    //     require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
     //     include $config_blocks_file;
 
     //     $xoopsTpl->assign('plugin_blocks', $blockConfig[$plugin]);
@@ -123,12 +123,12 @@ function plugin_block_setup($WebID, $plugin)
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
     $fancybox = new fancybox('.edit_block', '640px');
     $fancybox->render(false);
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
@@ -151,5 +151,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

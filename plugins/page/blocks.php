@@ -5,7 +5,7 @@ function list_page($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_page = new tad_web_page($WebID);
     $limit = isset($config['limit']) ? $config['limit'] : '';
@@ -36,14 +36,14 @@ function page_menu($WebID, $config = [])
 
     $i = 0;
 
-    while (list($CateName, $CateID) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($CateName, $CateID) = $xoopsDB->fetchRow($result))) {
         $sql2 = 'SELECT `PageID`, `PageTitle`, `PageCount`
         FROM `' . $xoopsDB->prefix('tad_web_page') . "` WHERE `CateID` = '$CateID'
         ORDER BY `PageSort`";
         $result2 = $xoopsDB->query($sql2) or web_error($sql2);
         $content = [];
         $j = 0;
-        while (list($PageID, $PageTitle, $PageCount) = $xoopsDB->fetchRow($result2)) {
+        while (false !== (list($PageID, $PageTitle, $PageCount) = $xoopsDB->fetchRow($result2))) {
             $content[$j]['PageCount'] = $PageCount;
             $content[$j]['WebID'] = $WebID;
             $content[$j]['PageID'] = $PageID;

@@ -32,11 +32,11 @@ function aboutus_onUpdate1_go()
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     $year = get_seme_year();
-    include_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
 
     $sql = 'SELECT WebID,WebTitle FROM `' . $xoopsDB->prefix('tad_web') . '` GROUP BY `WebID`';
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($WebID, $WebTitle) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($WebID, $WebTitle) = $xoopsDB->fetchRow($result))) {
         $web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
         $CateID = $web_cate->save_tad_web_cate('', sprintf(_MD_TCW_SEME_CATE, $year) . " {$WebTitle}");
 

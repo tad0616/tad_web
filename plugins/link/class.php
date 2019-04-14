@@ -44,7 +44,7 @@ class tad_web_link
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
@@ -93,7 +93,7 @@ class tad_web_link
 
         $cate = $this->web_cate->get_tad_web_cate_arr();
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $LinkID , $LinkTitle , $LinkDesc , $LinkUrl , $LinkCounter , $LinkSort , $WebID , $uid
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -124,7 +124,7 @@ class tad_web_link
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_link_func', "link.php?op=delete&WebID={$this->WebID}&LinkID=", 'LinkID');
 
@@ -222,7 +222,7 @@ class tad_web_link
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator      = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
 
@@ -336,7 +336,7 @@ class tad_web_link
         $allCateID = [];
         $sql       = 'select LinkID,CateID from ' . $xoopsDB->prefix('tad_web_link') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($LinkID, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($LinkID, $CateID) = $xoopsDB->fetchRow($result))) {
             $this->delete($LinkID);
             $allCateID[$CateID] = $CateID;
         }

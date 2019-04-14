@@ -48,7 +48,7 @@ class tad_web_news
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
@@ -100,7 +100,7 @@ class tad_web_news
 
         $cate = $this->web_cate->get_tad_web_cate_arr();
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal  , $NewsUrl , $WebID  , $NewsCounter , $NewsEnable
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -148,7 +148,7 @@ class tad_web_news
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_news_func', "news.php?op=delete&WebID={$this->WebID}&NewsID=", 'NewsID');
 
@@ -259,18 +259,18 @@ class tad_web_news
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_news_func', "news.php?op=delete&WebID={$WebID}&NewsID=", 'NewsID');
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php';
         $print_preview = new print_preview('a.print-preview');
         $print_preview->render();
 
-        $xoopsTpl->assign('module_css', '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print" />');
+        $xoopsTpl->assign('module_css', '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print">');
 
         $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
@@ -353,12 +353,12 @@ class tad_web_news
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator      = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
 
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/image");
         mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/file");
@@ -509,7 +509,7 @@ class tad_web_news
         $allCateID = [];
         $sql = 'select NewsID,CateID from ' . $xoopsDB->prefix('tad_web_news') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($NewsID, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($NewsID, $CateID) = $xoopsDB->fetchRow($result))) {
             $this->delete($NewsID);
             $allCateID[$CateID] = $CateID;
         }
@@ -565,7 +565,7 @@ class tad_web_news
         // }
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i = 0;
-        while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result))) {
 
             //檢查權限
             $power = $this->power->check_power('read', 'NewsID', $NewsID);
@@ -602,7 +602,7 @@ class tad_web_news
 
         $i         = 0;
         $main_data = [];
-        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result))) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
             $main_data[$i]['title']  = $title;

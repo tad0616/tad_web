@@ -1,8 +1,8 @@
 <?php
-include_once '../../../../mainfile.php';
-include_once '../../function.php';
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/function.php';
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $ScheduleID = system_CleanVars($_REQUEST, 'ScheduleID', 0, 'int');

@@ -1,8 +1,8 @@
 <?php
-include_once '../../mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //務必要在function.php之前，因為function.php會用到$WebID。
 $WebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
-include_once 'function.php';
+require_once __DIR__ . '/function.php';
 
 define('_EZCLASS', 'https://class.tn.edu.tw');
 $is_ezclass = XOOPS_URL == _EZCLASS ? true : false;
@@ -53,7 +53,7 @@ if (!empty($WebID)) {
             if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php")) {
                 mk_menu_var_file($WebID);
             }
-            include_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+            require_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
             $plugin_menu_var = $menu_var;
 
             // $menu_var[100]['id']     = $i;
@@ -77,7 +77,7 @@ if (!empty($WebID)) {
             if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php")) {
                 mk_menu_var_file($WebID);
             }
-            include_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+            require_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
             $plugin_menu_var = $menu_var;
 
             // $menu_var[100]['id']     = $i;
@@ -107,7 +107,7 @@ if (!empty($WebID)) {
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php")) {
             mk_menu_var_file($WebID);
         }
-        include_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+        require_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
         $plugin_menu_var = $menu_var;
     } else {
         define('_DISPLAY_MODE', 'no');

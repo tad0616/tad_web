@@ -5,7 +5,7 @@ function list_schedule($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_schedule = new tad_web_schedule($WebID);
     $limit = isset($config['limit']) ? $config['limit'] : '';

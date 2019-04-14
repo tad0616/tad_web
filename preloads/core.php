@@ -1,5 +1,5 @@
 <?php
-defined('XOOPS_ROOT_PATH') or die('Restricted access');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class to allow <{if $homepage}>Your code here<{/if}> in templates
@@ -10,7 +10,7 @@ class Tad_WebCorePreload extends XoopsPreloadItem
     public static function eventCoreHeaderStart($args)
     {
         global $xoopsDB;
-        include_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
         $WebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
 
         if (!empty($WebID) and false !== mb_strpos($_SERVER['PHP_SELF'], 'modules/tad_web') and false !== mb_strpos($_SERVER['REQUEST_URI'], '?WebID=')) {
@@ -33,6 +33,6 @@ class Tad_WebCorePreload extends XoopsPreloadItem
      */
     public static function eventCoreIncludeCommonEnd($args)
     {
-        include __DIR__ . '/autoloader.php';
+        require __DIR__ . '/autoloader.php';
     }
 }

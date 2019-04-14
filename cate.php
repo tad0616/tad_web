@@ -1,19 +1,19 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once __DIR__ . '/header.php';
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 if (!$isMyWeb) {
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
 }
 if (!empty($WebID)) {
-    $xoopsOption['template_main'] = 'tad_web_cate.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_cate.tpl';
 } else {
     header('location: index.php');
     exit;
 }
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //分類設定
@@ -67,7 +67,7 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
     left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
     where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$default_class}'";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         $students[] = $all;
     }
 
@@ -82,7 +82,7 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
     if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
         redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . '/formValidator.php';
+    require_once TADTOOLS_PATH . '/formValidator.php';
     $formValidator = new formValidator('#myForm', true);
     $formValidator_code = $formValidator->render();
 }
@@ -154,5 +154,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

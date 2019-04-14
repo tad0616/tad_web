@@ -52,7 +52,7 @@ class web_cate
 
     public function __construct($WebID = '0', $ColName = '', $table = '')
     {
-        include_once 'power.php';
+        require_once __DIR__ . '/power.php';
         $this->power = new power($WebID);
 
         if (!empty($WebID)) {
@@ -164,7 +164,7 @@ class web_cate
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='aboutus' and `CateEnable`='1' order by CateSort";
         // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while ($data = $xoopsDB->fetchArray($result)) {
+        while (false !== ($data = $xoopsDB->fetchArray($result))) {
             foreach ($data as $k => $v) {
                 $$k = $v;
             }
@@ -175,7 +175,7 @@ class web_cate
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
         // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while ($data = $xoopsDB->fetchArray($result)) {
+        while (false !== ($data = $xoopsDB->fetchArray($result))) {
             foreach ($data as $k => $v) {
                 $$k = $v;
             }
@@ -390,7 +390,7 @@ class web_cate
     {
         global $xoopsDB;
 
-        include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
 
         $counter = $counter ? $this->tad_web_cate_data_counter() : '';
         $arr = [];
@@ -399,7 +399,7 @@ class web_cate
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where 1 $andWebID $andColName order by CateSort";
         // echo $sql . '<br>';
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while ($data = $xoopsDB->fetchArray($result)) {
+        while (false !== ($data = $xoopsDB->fetchArray($result))) {
             $CateID = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID] = $data;
@@ -491,7 +491,7 @@ class web_cate
         $counter = [];
         $sql = 'select count(*),CateID from `' . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($count, $CateID) = $xoopsDB->fetchRow($result))) {
             $counter[$CateID] = $count;
         }
 

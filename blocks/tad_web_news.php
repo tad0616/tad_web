@@ -4,7 +4,7 @@
 function tad_web_news()
 {
     global $xoopsDB;
-    include_once 'plugin/news/class.php';
+    require_once __DIR__ . '/plugin/news/class.php';
 
     return $block;
 }

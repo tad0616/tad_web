@@ -29,7 +29,7 @@ $this->power->delete_power("NewsID", $NewsID, 'read');
 //*****搜尋部份*****
 
 //起始函數
-include_once XOOPS_ROOT_PATH . "/class/power.php";
+require_once XOOPS_ROOT_PATH . "/class/power.php";
 $power = new power($WebID);
 
 $power_result = $power->check_power("read", $id_col, $myrow[$id_col]);

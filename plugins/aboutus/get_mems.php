@@ -1,9 +1,9 @@
 <?php
-include_once '../../../../mainfile.php';
-include_once '../../function.php';
-include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/aboutus/langs/{$xoopsConfig['language']}.php";
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/function.php';
+require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/aboutus/langs/{$xoopsConfig['language']}.php";
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -15,7 +15,7 @@ if ('get_reationship' === $op) {
     // die('<option>' . $sql . '</option>');
     $result = $xoopsDB->query($sql) or die($sql);
     $option = '';
-    while (list($Reationship) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($Reationship) = $xoopsDB->fetchRow($result))) {
         $option .= "<option vlaue='{$Reationship}'>{$Reationship}</option>";
     }
     die($option);
@@ -36,7 +36,7 @@ if ('get_reationship' === $op) {
     $i = 0;
     $stud = "<option value=''>" . _MD_TCW_ABOUTUS_SELECT_MEM . '</option>';
 
-    while (list($MemID, $Reationship, $MemNum, $MemName, $MemNickName) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($MemID, $Reationship, $MemNum, $MemName, $MemNickName) = $xoopsDB->fetchRow($result))) {
         $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
         $showMemName = empty($MemNickName) ? $MemName : $MemName . ' (' . $MemNickName . ')';
         $num = ($MemNum) ? '(' . $MemNum . ') ' : '';
@@ -54,7 +54,7 @@ if ('get_reationship' === $op) {
 
     $sql = 'select a.MemID,count(*) from ' . $xoopsDB->prefix('tad_web_mem_parents') . ' as a left join ' . $xoopsDB->prefix('tad_web_link_mems') . " as b on a.MemID=b.MemID where b.WebID ='{$WebID}' and b.CateID='{$CateID}' group by a.MemID";
     $result = $xoopsDB->query($sql) or die($sql);
-    while (list($MemID, $count) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($MemID, $count) = $xoopsDB->fetchRow($result))) {
         $count_arr[$MemID] = $count;
     }
 
@@ -62,7 +62,7 @@ if ('get_reationship' === $op) {
     $result = $xoopsDB->query($sql) or die($sql);
     $i = 0;
     $stud = "<option value=''>" . _MD_TCW_ABOUTUS_SELECT_MEM . '</option>';
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
         foreach ($all as $k => $v) {
             $$k = $v;

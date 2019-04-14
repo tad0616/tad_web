@@ -1,9 +1,9 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 $plugin = 'news';
-include_once 'plugin_header.php';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once __DIR__ . '/plugin_header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 $all_news = $tad_web_news->list_all('', 50, 'return');
@@ -31,7 +31,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 
   <channel>
-    <atom:link href="' . XOOPS_URL . "/modules/tad_web/rss.php?WebID={$WebID}\" rel=\"self\" type=\"application/rss+xml\" />
+    <atom:link href="' . XOOPS_URL . "/modules/tad_web/rss.php?WebID={$WebID}\" rel=\"self\" type=\"application/rss+xml\">
     <title>{$WebTitle}</title>
     <link>" . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}</link>
     <description>{$WebTitle}</description>

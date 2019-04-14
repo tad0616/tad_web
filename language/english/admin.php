@@ -1,5 +1,5 @@
 <?php
-include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
+require_once dirname(dirname(__DIR__)) . '/tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
 
 //main.php
 define('_MA_TCW_TEAMID', 'Number');

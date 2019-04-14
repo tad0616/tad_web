@@ -1,19 +1,19 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 
 if ('enable_my_web' === $_REQUEST['op']) {
-    $xoopsOption['template_main'] = 'tad_web_config.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_config.tpl';
 } else {
     if (!empty($_REQUEST['WebID']) and $isMyWeb) {
-        $xoopsOption['template_main'] = 'tad_web_config.tpl';
+        $GLOBALS['xoopsOption']['template_main'] = 'tad_web_config.tpl';
     } elseif (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
     } else {
         redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
     }
 }
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //網站設定
@@ -61,30 +61,30 @@ function tad_web_config($WebID, $configs)
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
     $sweet_alert = new sweet_alert();
     $sweet_alert->render('delete_my_web', "config.php?WebID=$WebID&op=delete_tad_web_chk&delWebID=", 'WebID');
 
     if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . '/formValidator.php';
+    require_once TADTOOLS_PATH . '/formValidator.php';
     $formValidator = new formValidator('.myForm', true);
     $formValidator->render();
 
     //登入設定
     // $login_method   = '';
-    $modhandler = xoops_getHandler('module');
-    $config_handler = xoops_getHandler('config');
+    $moduleHandler = xoops_getHandler('module');
+    $configHandler = xoops_getHandler('config');
 
-    $TadLoginXoopsModule = $modhandler->getByDirname('tad_login');
+    $TadLoginXoopsModule = $moduleHandler->getByDirname('tad_login');
     $login_method = $login_defval = [];
     if ($TadLoginXoopsModule) {
         global $xoopsConfig;
-        include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+        require_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-        $config_handler = xoops_getHandler('config');
-        $modConfig = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $configHandler = xoops_getHandler('config');
+        $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method = $modConfig['auth_method'];
         foreach ($auth_method as $method) {
@@ -142,7 +142,7 @@ function tad_web_config($WebID, $configs)
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
     $mColorPicker = new mColorPicker('.color');
     $mColorPicker_code = $mColorPicker->render();
     $xoopsTpl->assign('mColorPicker_code', $mColorPicker_code);
@@ -157,7 +157,7 @@ function tad_web_config($WebID, $configs)
     // }
     $myts = MyTextSanitizer::getInstance();
     $user_ok = $user_yet = '';
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -372,7 +372,7 @@ function default_color($WebID = '')
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $MemID = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
@@ -537,5 +537,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

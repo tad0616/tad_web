@@ -41,7 +41,7 @@
           <{$students1}>
         </div>
 
-        <br style="clear:both;" />
+        <br style="clear:both;">
         <{$students2}>
       </div>
     </div>

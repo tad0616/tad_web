@@ -5,7 +5,7 @@ use XoopsModules\Tad_web\Utility;
 function xoops_module_update_tad_web($module, $old_version)
 {
     global $xoopsDB;
-    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
     define('_EZCLASS', 'https://class.tn.edu.tw');
     $is_ezclass = XOOPS_URL == _EZCLASS ? true : false;
     define('_IS_EZCLASS', $is_ezclass);

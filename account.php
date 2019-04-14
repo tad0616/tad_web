@@ -1,14 +1,14 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 $plugin = 'account';
-include_once 'plugin_header.php';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once __DIR__ . '/plugin_header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 //$xoopsTpl->assign('plugin', $plugin);
 /*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $AccountID = system_CleanVars($_REQUEST, 'AccountID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -59,5 +59,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

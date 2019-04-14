@@ -40,7 +40,7 @@ class tad_web_calendar
             $calendar_data = $total + $total2 + $total3;
         }
         // die('$calendar_data=' . $calendar_data);
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/fullcalendar.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/fullcalendar.php';
         $fullcalendar = new fullcalendar();
 
         //$fullcalendar->add_js_parameter('dayClick', "function(date, jsEvent, view) {alert('新增事件')}", false);
@@ -114,7 +114,7 @@ class tad_web_calendar
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_calendar_func', "calendar.php?op=delete&WebID={$this->WebID}&CalendarID=", 'CalendarID');
         $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
@@ -180,7 +180,7 @@ class tad_web_calendar
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator      = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
 
@@ -263,7 +263,7 @@ class tad_web_calendar
         $allCateID = [];
         $sql       = 'select CalendarID,CateID from ' . $xoopsDB->prefix('tad_web_calendar') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($CalendarID, $CateID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($CalendarID, $CateID) = $xoopsDB->fetchRow($result))) {
             $this->delete($CalendarID);
             $allCateID[$CateID] = $CateID;
         }

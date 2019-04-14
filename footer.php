@@ -48,7 +48,7 @@ if ($WebID and _DISPLAY_MODE === 'home') {
     // $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
 
 if (file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php')) {
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php';
     $FooTable = new FooTable();
     $FooTableJS = $FooTable->render();
     $xoopsTpl->assign('FooTableJS', $FooTableJS);
@@ -81,7 +81,7 @@ function get_marquee()
     $result = $xoopsDB->query($sql)
     or web_error($sql, __FILE__, __LINE__);
     $data_arr = [];
-    while ($data = $xoopsDB->fetchArray($result)) {
+    while (false !== ($data = $xoopsDB->fetchArray($result))) {
         $NoticeID = $data['NoticeID'];
         $data_arr[$NoticeID] = $data;
         $data_arr[$NoticeID]['NoticeShortDate'] = mb_substr($data['NoticeDate'], 0, 10);
@@ -92,7 +92,7 @@ function get_marquee()
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
         $fancybox = new fancybox('.sho_notice', '480px', '480px');
         $fancybox->render(false);
     }
@@ -102,7 +102,7 @@ function get_marquee()
 function tad_web_my_menu($WebID)
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser, $MyWebID, $xoopsModuleConfig, $WebTitle, $isAdmin;
-    include_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
     //未登入
     if (!$xoopsUser and empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID'])) {
     } else {
@@ -116,7 +116,7 @@ function tad_web_my_menu($WebID)
             //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
+            while (false !== (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result))) {
                 $add_power[] = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
                 $_SESSION['AssistantType'][$CateID] = 'MemID';
@@ -132,7 +132,7 @@ function tad_web_my_menu($WebID)
             $add_power = ['discuss']; //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
+            while (false !== (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result))) {
                 $add_power[] = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
                 $_SESSION['AssistantType'][$CateID] = 'ParentID';
@@ -157,7 +157,7 @@ function tad_web_my_menu($WebID)
                 $i = $defalt_used_size = 0;
 
                 $defaltWebID = 0;
-                while ($all = $xoopsDB->fetchArray($result)) {
+                while (false !== ($all = $xoopsDB->fetchArray($result))) {
                     foreach ($all as $k => $v) {
                         $$k = $v;
                     }
@@ -226,7 +226,7 @@ function tad_web_my_menu($WebID)
                 $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
                 $i = 0;
 
-                while ($all = $xoopsDB->fetchArray($result)) {
+                while (false !== ($all = $xoopsDB->fetchArray($result))) {
                     foreach ($all as $k => $v) {
                         $$k = $v;
                     }
@@ -247,7 +247,7 @@ function tad_web_my_menu($WebID)
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php")) {
             mk_menu_var_file($defaltWebID);
         }
-        include XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
+        require XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
 
         $xoopsTpl->assign('user_kind', $user_kind);
         $xoopsTpl->assign('say_hi', sprintf(_MD_TCW_HI, $user_name));
@@ -324,7 +324,7 @@ function tad_web_login($WebID, $config = [])
 
     if ('1' == $about_setup['mem_parents']) {
         $ys = get_seme();
-        include_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
         $web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
         // $web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
         $web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $about_setup['class_title']));
@@ -369,7 +369,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     // }
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -402,7 +402,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
                 // if ($isAdmin) {
                 //     echo "{$dir}{$plugin}/blocks.php<br>";
                 // }
-                include_once "{$dir}{$plugin}/blocks.php";
+                require_once "{$dir}{$plugin}/blocks.php";
             }
 
             $blocks_arr['tpl'] = $block_tpl[$BlockName];

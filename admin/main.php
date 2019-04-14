@@ -1,9 +1,9 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = 'tad_web_adm_main.tpl';
-include_once 'header.php';
-include_once '../function.php';
-include_once '../class/cate.php';
+$GLOBALS['xoopsOption']['template_main'] = 'tad_web_adm_main.tpl';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
+require_once dirname(__DIR__) . '/class/cate.php';
 /*-----------function區--------------*/
 
 //環境檢查
@@ -18,8 +18,8 @@ function chk_evn()
         $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
     }
 
-    $modhandler = xoops_getHandler('module');
-    $ttxoopsModule = $modhandler->getByDirname('tadtools');
+    $moduleHandler = xoops_getHandler('module');
+    $ttxoopsModule = $moduleHandler->getByDirname('tadtools');
     $version = $ttxoopsModule->version();
     if ($version < 274) {
         $error[_MA_TCW_NEED_TADTOOLS] = _MA_TCW_NEED_TADTOOLS_CONTENT;
@@ -54,10 +54,10 @@ function list_all_web($defCateID = '')
 
     $data = [];
     $i = 1;
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/jeditable.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/jeditable.php';
     $file = 'save.php';
     //$jeditable = new jeditable(false);
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -74,7 +74,7 @@ function list_all_web($defCateID = '')
             $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
             $j = 0;
             $admin_arr = [];
-            while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result2)) {
+            while (false !== (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result2))) {
                 $admin_arr[$j]['uid'] = $uid;
                 $admin_arr[$j]['name'] = $name;
                 $admin_arr[$j]['uname'] = $uname;
@@ -117,7 +117,7 @@ function create_by_user()
 
     $sql = 'select uid from ' . $xoopsDB->prefix('groups_users_link') . " where `groupid`='$groupid' order by uid";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($uid) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($uid) = $xoopsDB->fetchRow($result))) {
         if (!empty($uid)) {
             $ok_uid[$uid] = $uid;
         }
@@ -129,7 +129,7 @@ function create_by_user()
 
     $myts = MyTextSanitizer::getInstance();
     $opt = [];
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -266,7 +266,7 @@ function tad_web_form($WebID = null)
     if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . '/formValidator.php';
+    require_once TADTOOLS_PATH . '/formValidator.php';
     $formValidator = new formValidator('#myForm', true);
     $formValidator->render();
 
@@ -274,7 +274,7 @@ function tad_web_form($WebID = null)
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     $user_menu = "<select name='WebOwnerUid' class='form-control'>";
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -458,7 +458,7 @@ function order_by_teamtitle()
     $sql = 'select WebID from ' . $xoopsDB->prefix('tad_web') . ' order by WebTitle';
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 1;
-    while (list($WebID) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($WebID) = $xoopsDB->fetchRow($result))) {
         $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebSort` = '{$i}' where WebID='$WebID'";
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $i++;
@@ -466,7 +466,7 @@ function order_by_teamtitle()
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -541,4 +541,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

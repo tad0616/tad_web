@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
-$xoopsOption['template_main'] = 'tad_web_index.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once __DIR__ . '/header.php';
+$GLOBALS['xoopsOption']['template_main'] = 'tad_web_index.tpl';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //首頁
@@ -25,7 +25,7 @@ function ClassHome($WebID = '')
         if (empty($dirname)) {
             continue;
         }
-        include_once "plugins/{$dirname}/class.php";
+        require_once "plugins/{$dirname}/class.php";
         $plugin_name = "tad_web_{$dirname}";
         $$plugin_name = new $plugin_name($WebID);
         $plugin_data_total += $$plugin_name->get_total();
@@ -61,7 +61,7 @@ function list_all_class()
         if (empty($dirname)) {
             continue;
         }
-        include_once "plugins/{$dirname}/class.php";
+        require_once "plugins/{$dirname}/class.php";
         $limit = get_web_config("{$dirname}_limit", 0);
         $plugin_name = "tad_web_{$dirname}";
         $$plugin_name = new $plugin_name(0);
@@ -80,7 +80,7 @@ function view_notice($NoticeID = '')
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $NoticeID = system_CleanVars($_REQUEST, 'NoticeID', 0, 'int');
@@ -103,5 +103,5 @@ switch ($op) {
         }
 }
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

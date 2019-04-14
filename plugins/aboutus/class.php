@@ -22,7 +22,7 @@ class tad_web_aboutus
         }
         //全國版
         if (_IS_EZCLASS) {
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 
             $def_county = system_CleanVars($_REQUEST, 'county', '', 'string');
             $def_city = system_CleanVars($_REQUEST, 'city', '', 'string');
@@ -36,7 +36,7 @@ class tad_web_aboutus
             $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             $total_web = 0;
             $all_webs = [];
-            while ($all = $xoopsDB->fetchArray($result)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
                 foreach ($all as $k => $v) {
                     $$k = $v;
@@ -110,7 +110,7 @@ class tad_web_aboutus
 
             $data = [];
             $i = 0;
-            while ($all = $xoopsDB->fetchArray($result)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
                 foreach ($all as $k => $v) {
                     $data[$i][$k] = $v;
@@ -166,7 +166,7 @@ class tad_web_aboutus
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -324,7 +324,7 @@ class tad_web_aboutus
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('del_class', "aboutus.php?op=del_class&WebID={$this->WebID}&CateID=", 'CateID');
 
@@ -356,7 +356,7 @@ class tad_web_aboutus
             $form_CateID = (int)$_POST['form_CateID'];
             $sql = 'select * from ' . $xoopsDB->prefix('tad_web_link_mems') . " where CateID='{$form_CateID}' order by MemNum";
             $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-            while ($all = $xoopsDB->fetchArray($result)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $sql = 'insert into ' . $xoopsDB->prefix('tad_web_link_mems') . "
               (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable` , `top` ,`left`)
               values('{$all['MemID']}' , '{$this->WebID}' , '{$CateID}', '{$all['MemNum']}' , '{$all['MemSort']}' , '{$all['MemEnable']}' , '{$all['top']}' , '{$all['left']}' )";
@@ -423,7 +423,7 @@ class tad_web_aboutus
         $students1 = $students2 = '';
         $class_total = $class_boy = $class_girl = 0;
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -504,7 +504,7 @@ class tad_web_aboutus
 
         $students = [];
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -578,7 +578,7 @@ class tad_web_aboutus
             $i = 0;
 
             $students = [];
-            while ($all = $xoopsDB->fetchArray($result)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $students[$i] = $all;
                 $students[$i]['color'] = ('1' == $all['MemSex']) ? 'blue' : 'red';
                 $students[$i]['MemSex'] = ('1' == $all['MemSex']) ? _MD_TCW_BOY : _MD_TCW_GIRL;
@@ -597,7 +597,7 @@ class tad_web_aboutus
 
         //作品分享
         if (false !== mb_strpos($web_all_config['web_plugin_enable_arr'], 'works')) {
-            include_once XOOPS_ROOT_PATH . '/modules/tad_web/plugins/works/class.php';
+            require_once XOOPS_ROOT_PATH . '/modules/tad_web/plugins/works/class.php';
             $works = new tad_web_works($this->WebID);
             //未繳交的
             $stud_works = $works->list_all('', null, 'return', null, 'list_mem_need_upload');
@@ -770,7 +770,7 @@ class tad_web_aboutus
         $i = 0;
 
         $students = [];
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             $students[$i] = $all;
             $students[$i]['color'] = ('1' == $all['MemSex']) ? 'blue' : 'red';
             $students[$i]['MemSex'] = ('1' == $all['MemSex']) ? _MD_TCW_BOY : _MD_TCW_GIRL;
@@ -781,7 +781,7 @@ class tad_web_aboutus
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
@@ -789,7 +789,7 @@ class tad_web_aboutus
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_student_func', "aboutus.php?op=delete&WebID={$this->WebID}&CateID={$DefCateID}&MemID=", 'MemID');
 
@@ -934,7 +934,7 @@ class tad_web_aboutus
 
         $sql = 'select MemID from ' . $xoopsDB->prefix('tad_web_link_mems') . " where WebID='{$this->WebID}' order by MemNum";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (list($MemID) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($MemID) = $xoopsDB->fetchRow($result))) {
             $this->delete($MemID);
         }
 
@@ -989,7 +989,7 @@ class tad_web_aboutus
 
         $myts = MyTextSanitizer::getInstance();
 
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/PHPExcel/IOFactory.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/PHPExcel/IOFactory.php';
         $reader = PHPExcel_IOFactory::createReader('Excel5');
         $PHPExcel = $reader->load($file); // 檔案名稱
         $sheet = $PHPExcel->getSheet(0); // 讀取第一個工作表(編號從 0 開始)
@@ -1094,7 +1094,7 @@ class tad_web_aboutus
         $myts = MyTextSanitizer::getInstance();
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_link_mems') . " where CateID='{$CateID}' order by MemNum";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             $top = 80 + $i * 90;
             $left = 65 + ($j % 6) * 90;
             $sql = 'update ' . $xoopsDB->prefix('tad_web_link_mems') . " set `top`='{$top}', `left`='{$left}' where MemID='{$all['MemID']}' and WebID='{$this->WebID}' and CateID='{$CateID}'";
@@ -1200,7 +1200,7 @@ class tad_web_aboutus
         //取得所有分類
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `CateEnable`='1' order by CateSort";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while ($data = $xoopsDB->fetchArray($result)) {
+        while (false !== ($data = $xoopsDB->fetchArray($result))) {
             $plugin_name = $data['ColName'];
             $CateID = $data['CateID'];
             $cates[$plugin_name][$CateID] = $data;
@@ -1219,7 +1219,7 @@ class tad_web_aboutus
             }
             $plugin['cates'] = $cates[$dirname];
 
-            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
+            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
 
             $plugin_name = "tad_web_{$dirname}";
             $$plugin_name = new $plugin_name($this->WebID);
@@ -1266,7 +1266,7 @@ class tad_web_aboutus
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
     }
@@ -1461,7 +1461,7 @@ class tad_web_aboutus
 
         //作品分享
         if (false !== mb_strpos($web_all_config['web_plugin_enable_arr'], 'works')) {
-            include_once XOOPS_ROOT_PATH . '/modules/tad_web/plugins/works/class.php';
+            require_once XOOPS_ROOT_PATH . '/modules/tad_web/plugins/works/class.php';
             $works = new tad_web_works($this->WebID);
             //已繳交的
             $stud_scores = $works->list_all('', null, 'return', null, 'list_mem_upload');
@@ -1549,7 +1549,7 @@ class tad_web_aboutus
         if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
             redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
         }
-        include_once TADTOOLS_PATH . '/formValidator.php';
+        require_once TADTOOLS_PATH . '/formValidator.php';
         $formValidator = new formValidator('#myForm', true);
         $formValidator_code = $formValidator->render();
     }
@@ -1602,7 +1602,7 @@ class tad_web_aboutus
         if ($more_num) {
             $sql2 .= $sql . " limit 0, $more_num";
             $result2 = $xoopsDB->query($sql2) or web_error($sql2);
-            while ($all = $xoopsDB->fetchArray($result2)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result2))) {
                 foreach ($all as $k => $v) {
                     $$k = $v;
                     $all_main[$i][$k] = $v;
@@ -1633,7 +1633,7 @@ class tad_web_aboutus
                 $slot_sort++;
             }
         }
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
                 $$k = $v;
