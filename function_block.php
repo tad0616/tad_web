@@ -15,14 +15,14 @@ if (!function_exists('MyWebID')) {
             $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
             while (list($WebID) = $xoopsDB->fetchRow($result)) {
-                $MyWebs[$WebID] = $WebID;
+                $MyWebs[$WebID] = (int) $WebID;
             }
 
             $andWebEnable = 'all' === $WebEnable ? '' : "and b.`WebEnable`='{$WebEnable}'";
             $sql = 'select a.WebID from ' . $xoopsDB->prefix('tad_web_roles') . ' as a left join ' . $xoopsDB->prefix('tad_web') . " as b on a.WebID=b.WebID where a.uid='$uid' {$andWebEnable}";
             $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
             while (list($WebID) = $xoopsDB->fetchRow($result)) {
-                $MyWebs[$WebID] = $WebID;
+                $MyWebs[$WebID] = (int) $WebID;
             }
         }
 
