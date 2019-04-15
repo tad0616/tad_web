@@ -1,5 +1,7 @@
 <?php
 
+use XoopsModules\Tadtools\Utility;
+
 require_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 
 //是否為網站擁有者
@@ -57,7 +59,7 @@ if (!function_exists('get_web_config')) {
                     $web_config[$ConfigName] = $ConfigValue;
                     $content .= "\$web_config['$ConfigName'] = '$ConfigValue';\n";
                 }
-                mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/");
+                Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/");
                 file_put_contents($file, $content);
             }
             // die(var_export($web_config));

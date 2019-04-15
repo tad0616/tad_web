@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 $GLOBALS['xoopsOption']['template_main'] = 'tad_web_adm_schedule.tpl';
 require_once __DIR__ . '/header.php';
@@ -11,9 +14,9 @@ function schedule_template()
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
-    mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web/schedule');
-    mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web/schedule/image');
-    mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web/schedule/file');
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web/schedule');
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web/schedule/image');
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web/schedule/file');
     $schedule_template = $xoopsModuleConfig['schedule_template'];
 
     $ck = new CKEditor('tad_web/schedule', 'schedule_template', $schedule_template);

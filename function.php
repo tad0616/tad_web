@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 define('TADTOOLS_PATH', XOOPS_ROOT_PATH . '/modules/tadtools');
 define('TADTOOLS_URL', XOOPS_URL . '/modules/tadtools');
 
@@ -276,10 +279,10 @@ function get_web_all_config($WebID = '')
         } elseif (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php')) {
             require XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php';
         }
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo");
 
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}")) {
             copy(XOOPS_ROOT_PATH . "/modules/tad_web/images/bg/{$tad_web_config['web_bg']}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}");
@@ -856,8 +859,8 @@ function mklogoPic($WebID = '')
         1// outline width
     );
 
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo");
+    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
+    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo");
 
     imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png");
     imagedestroy($im);
@@ -913,8 +916,8 @@ function mkTitlePic($WebID = '', $filename = '', $title = '', $color = '#ABBF6B'
             2// outline width
         );
     }
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/");
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/image/");
+    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/");
+    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/image/");
 
     imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/image/{$filename}.png");
     imagedestroy($im);

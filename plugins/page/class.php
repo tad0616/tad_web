@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_page
 {
     public $WebID = 0;
@@ -322,9 +325,9 @@ class tad_web_page
         $xoopsTpl->assign('upform', $upform);
 
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/image");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/file");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/image");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/file");
         $ck = new CKEditor("tad_web/{$this->WebID}/page", 'PageContent', $PageContent);
         $ck->setHeight(500);
         $editor = $ck->render();
