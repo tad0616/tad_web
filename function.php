@@ -25,10 +25,8 @@ $LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = $LoginParentID =
 $MyWebs = [];
 $isMyWeb = false;
 if ($xoopsUser) {
-    if (!isset($xoopsModule)) {
-        $modhandler = xoops_getHandler('module');
-        $xoopsModule = $modhandler->getByDirname('tad_web');
-    }
+    $modhandler = xoops_getHandler('module');
+    $xoopsModule = $modhandler->getByDirname('tad_web');
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin = $xoopsUser->isAdmin($module_id);
     //我的班級ID（陣列）
@@ -1350,7 +1348,7 @@ function get_quota($WebID = '')
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : (int) $xoopsModuleConfig['user_space_quota'];
 
     $space_quota = get_web_config('space_quota', $WebID);
-    $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int)$space_quota;
+    $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int) $space_quota;
 
     if ($defalt_used_size >= $user_space_quota) {
         redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $size, $user_space_quota));
@@ -1539,7 +1537,7 @@ function update_last_accessed($WebID = '')
  */
 function get_article_content($content, $page = 1)
 {
-    $page = $page ? (int)$page :
+    $page = $page ? (int) $page :
 
     $article = ['info' => [], 'pages' => 1];
 
@@ -1674,7 +1672,7 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
     $sql = 'delete from `' . $xoopsDB->prefix('tad_web_assistant_post') . "` where `plugin`='{$ColName}' and `ColName`='{$ColName}' and `ColSN`='{$ColSN}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    $AssistantID = (int)$_SESSION['AssistantID'][$CateID];
+    $AssistantID = (int) $_SESSION['AssistantID'][$CateID];
 
     $sql = 'insert into `' . $xoopsDB->prefix('tad_web_assistant_post') . "` (
             `plugin`,
