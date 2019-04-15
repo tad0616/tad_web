@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_homework
 {
     public $WebID = 0;
@@ -385,9 +388,9 @@ class tad_web_homework
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
 
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/image");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/file");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/image");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/file");
 
         if (!empty($DBV['HomeworkContent'])) {
             $ck = new CKEditor("tad_web/{$this->WebID}/homework", 'HomeworkContent', $HomeworkContent);

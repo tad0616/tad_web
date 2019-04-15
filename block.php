@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
@@ -48,9 +51,9 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
     //新增
     if ('add' === $mode) {
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/image");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/file");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/image");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block/file");
         if (!isset($block)) {
             $block['BlockTitle'] = '';
             $block['BlockID'] = '';

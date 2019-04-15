@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_news
 {
     public $WebID = 0;
@@ -359,9 +362,9 @@ class tad_web_news
         $xoopsTpl->assign('formValidator_code', $formValidator_code);
 
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/image");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/file");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/image");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/file");
         $ck = new CKEditor("tad_web/{$this->WebID}/news", 'NewsContent', $NewsContent);
         $ck->setHeight(300);
         $editor = $ck->render();

@@ -649,8 +649,8 @@ class Utility
             $xoopsDB->queryF($sql) or die($sql);
 
             if (!file_exists("{$updir}{$sub_dir}/{$typedir}/{$file_name}")) {
-                mk_dir("{$updir}{$sub_dir}");
-                mk_dir("{$updir}{$sub_dir}/{$typedir}");
+                self::mk_dir("{$updir}{$sub_dir}");
+                self::mk_dir("{$updir}{$sub_dir}/{$typedir}");
 
                 $from = "{$updir}/{$typedir}/{$file_name}";
                 $to = "{$updir}{$sub_dir}/{$typedir}/{$file_name}";
@@ -665,9 +665,9 @@ class Utility
 
                 rename($from, $to);
                 if ('image' === $typedir) {
-                    mk_dir("{$updir}{$sub_dir}");
-                    mk_dir("{$updir}{$sub_dir}/{$typedir}");
-                    mk_dir("{$updir}{$sub_dir}/{$typedir}/.thumbs");
+                    self::mk_dir("{$updir}{$sub_dir}");
+                    self::mk_dir("{$updir}{$sub_dir}/{$typedir}");
+                    self::mk_dir("{$updir}{$sub_dir}/{$typedir}/.thumbs");
                     $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
                     $to = "{$updir}{$sub_dir}/{$typedir}/.thumbs/{$file_name}";
 
@@ -715,11 +715,11 @@ class Utility
             $sql = 'update ' . $xoopsDB->prefix('tad_web_files_center') . " set `sub_dir`='/{$WebID}'  where `files_sn`='{$files_sn}'";
             $xoopsDB->queryF($sql) or die($sql);
 
-            mk_dir("{$updir}/{$WebID}");
-            mk_dir("{$updir}/{$WebID}/{$typedir}");
+            self::mk_dir("{$updir}/{$WebID}");
+            self::mk_dir("{$updir}/{$WebID}/{$typedir}");
             if ('image' === $typedir) {
-                mk_dir("{$updir}/{$WebID}/{$typedir}");
-                mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
+                self::mk_dir("{$updir}/{$WebID}/{$typedir}");
+                self::mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
             }
 
             $from = "{$updir}/{$typedir}/{$file_name}";
@@ -735,9 +735,9 @@ class Utility
             if (file_exists($from)) {
                 rename($from, $to);
                 if ('image' === $typedir) {
-                    mk_dir("{$updir}/{$WebID}");
-                    mk_dir("{$updir}/{$WebID}/{$typedir}");
-                    mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
+                    self::mk_dir("{$updir}/{$WebID}");
+                    self::mk_dir("{$updir}/{$WebID}/{$typedir}");
+                    self::mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
 
                     $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
                     $to = "{$updir}/{$WebID}/{$typedir}/.thumbs/{$file_name}";

@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 
@@ -108,8 +111,8 @@ function tad_web_config($WebID, $configs)
     //背景圖設定
     $bg_path = XOOPS_ROOT_PATH . '/modules/tad_web/images/bg';
     $bg_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg";
-    mk_dir($bg_user_path);
-    mk_dir("{$bg_user_path}/thumbs");
+    Utility::mk_dir($bg_user_path);
+    Utility::mk_dir("{$bg_user_path}/thumbs");
     import_img($bg_path, 'bg', $WebID);
     $TadUpFilesBg = TadUpFilesBg($WebID);
     $xoopsTpl->assign('upform_bg', $TadUpFilesBg->upform(false, 'bg', null, false));
@@ -119,8 +122,8 @@ function tad_web_config($WebID, $configs)
     //標題設定
     $head_path = XOOPS_ROOT_PATH . '/modules/tad_web/images/head';
     $head_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head";
-    mk_dir($head_user_path);
-    mk_dir("{$head_user_path}/thumbs");
+    Utility::mk_dir($head_user_path);
+    Utility::mk_dir("{$head_user_path}/thumbs");
     import_img($head_path, 'head', $WebID);
     $TadUpFilesHead = TadUpFilesHead($WebID);
     $xoopsTpl->assign('upform_head', $TadUpFilesHead->upform(false, 'head', null, false));
@@ -130,8 +133,8 @@ function tad_web_config($WebID, $configs)
     //logo設定
     $logo_path = XOOPS_ROOT_PATH . '/modules/tad_web/images/logo';
     $logo_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo";
-    mk_dir($logo_user_path);
-    mk_dir("{$logo_user_path}/thumbs");
+    Utility::mk_dir($logo_user_path);
+    Utility::mk_dir("{$logo_user_path}/thumbs");
     import_img($logo_path, 'logo', $WebID);
     $TadUpFilesLogo = TadUpFilesLogo($WebID);
     $xoopsTpl->assign('upform_logo', $TadUpFilesLogo->upform(false, 'logo', null, false));
