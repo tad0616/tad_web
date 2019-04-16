@@ -151,7 +151,7 @@ class tad_web_files
         //刪除檔案
         if (is_array($need_del)) {
             foreach ($need_del as $fsn) {
-                if (!in_array($fsn, $no_need_del, true)) {
+                if (!in_array($fsn, $no_need_del)) {
                     $this->delete($fsn);
                 }
             }
@@ -262,8 +262,8 @@ class tad_web_files
 
         $myts = MyTextSanitizer::getInstance();
 
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $file_link = $myts->addSlashes($_POST['file_link']);
         $file_description = $myts->addSlashes($_POST['file_description']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
@@ -301,8 +301,8 @@ class tad_web_files
 
         $myts = MyTextSanitizer::getInstance();
 
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $file_link = $myts->addSlashes($_POST['file_link']);
         $file_description = $myts->addSlashes($_POST['file_description']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);

@@ -24,7 +24,7 @@ function list_all_web($defCateID = '')
     $data = [];
     $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
 
-    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
+    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int) $xoopsModuleConfig['user_space_quota'];
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
         $WebID = $all['WebID'];
@@ -35,7 +35,7 @@ function list_all_web($defCateID = '')
         $size = size2mb($dir_size);
 
         $space_quota = get_web_config('space_quota', $WebID);
-        $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int)$space_quota;
+        $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int) $space_quota;
 
         $data[$WebID]['space_quota'] = $user_space_quota;
         $data[$WebID]['disk_used_space'] = $size;
@@ -116,7 +116,7 @@ function dirToJson($dir, $i = 1, $j = 0)
 
     $cdir = scandir($dir);
     foreach ($cdir as $key => $value) {
-        if (!in_array($value, ['.', '..'], true)) {
+        if (!in_array($value, ['.', '..'])) {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
                 $data .= "{ id:{$i}, pId:{$j}, name:'{$dir}/{$value}', url:'{$url}', target:'_self', open:'true'}, \n";
                 $data .= dirToJson($dir . DIRECTORY_SEPARATOR . $value, $i, $i);
@@ -157,7 +157,7 @@ function dirToArray($dir)
 
     $cdir = scandir($dir);
     foreach ($cdir as $key => $value) {
-        if (!in_array($value, ['.', '..'], true)) {
+        if (!in_array($value, ['.', '..'])) {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
                 $result[$value]['name'] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
                 $result[$value]['size'] = '';
@@ -186,7 +186,7 @@ function save_disk_setup()
 {
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
     foreach ($_POST['space_quota'] as $WebID => $user_space_quota) {
-        $space_quota = ($user_space_quota == $xoopsModuleConfig['user_space_quota']) ? 'default' : (int)$user_space_quota;
+        $space_quota = ($user_space_quota == $xoopsModuleConfig['user_space_quota']) ? 'default' : (int) $user_space_quota;
         save_web_config('space_quota', $space_quota, $WebID);
     }
 }

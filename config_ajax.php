@@ -92,7 +92,7 @@ function keyman($WebID, $keyman)
         $name = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
         $name = empty($name) ? '' : " ({$name})";
-        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr, true) or $uid == $WebOwnerUid) {
+        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr) or $uid == $WebOwnerUid) {
             $user_ok .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
         } else {
             $user_yet .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
