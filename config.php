@@ -45,7 +45,7 @@ function tad_web_config($WebID, $configs)
     $xoopsTpl->assign('cate_menu', $cate_menu);
 
     // die(var_export($Web));
-    $WebOwnerUid = (int)$Web['WebOwnerUid'];
+    $WebOwnerUid = (int) $Web['WebOwnerUid'];
     $xoopsTpl->assign('Web', $Web);
     $xoopsTpl->assign('WebName', $Web['WebName']);
     $xoopsTpl->assign('WebOwner', $Web['WebOwner']);
@@ -164,7 +164,7 @@ function tad_web_config($WebID, $configs)
         $name = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
         $name = empty($name) ? '' : " ({$name})";
-        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr, true)) {
+        if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr)) {
             $user_ok .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
         } else {
             $user_yet .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
@@ -188,7 +188,7 @@ function update_tad_web()
     $myts = MyTextSanitizer::getInstance();
     $WebName = $myts->addSlashes($_POST['WebName']);
     $WebOwner = $myts->addSlashes($_POST['WebOwner']);
-    $CateID = (int)$_POST['CateID'];
+    $CateID = (int) $_POST['CateID'];
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set CateID='{$CateID}', `WebName` = '{$WebName}', `WebOwner` = '{$WebOwner}' where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
@@ -327,7 +327,7 @@ function enable_my_web($WebID)
 {
     global $xoopsDB, $isAdmin;
     $MyWebs = MyWebID('0');
-    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs, true);
+    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
     if (empty($WebID) or !$isMyWeb) {
         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
     }
@@ -530,8 +530,8 @@ switch ($op) {
             header('location: index.php');
             exit;
         }
-            common_template($WebID, $web_all_config);
-            tad_web_config($WebID, $web_all_config);
+        common_template($WebID, $web_all_config);
+        tad_web_config($WebID, $web_all_config);
 
         break;
 }

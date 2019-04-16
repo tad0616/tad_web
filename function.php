@@ -33,7 +33,7 @@ if ($xoopsUser) {
     $MyWebs = MyWebID('all');
 
     //目前瀏覽的是否是我的班級？
-    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs, true);
+    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
 } else {
     $LoginMemID = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
     $LoginMemName = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
@@ -693,7 +693,7 @@ function onlyMine($uid_col = 'uid')
     global $xoopsUser, $isAdmin, $MyWebs, $WebID;
     if ($isAdmin) {
         return;
-    } elseif (in_array($WebID, $MyWebs, true)) {
+    } elseif (in_array($WebID, $MyWebs)) {
         return;
     }
     $uid = $xoopsUser->uid();
@@ -971,7 +971,7 @@ function import_img($path = '', $col_name = 'logo', $col_sn = '', $desc = '', $s
                 $type = filetype($path . '/' . $file);
 
                 if ('dir' !== $type) {
-                    if (!in_array($file, $db_files, true)) {
+                    if (!in_array($file, $db_files)) {
                         import_file($path . '/' . $file, $col_name, $col_sn, null, null, $desc, $safe_name);
                     }
                 }
@@ -1087,7 +1087,7 @@ function get_web_cate_arr()
             continue;
         }
         $all['other_web_url'] = isset($other_web_url_arr[$WebID]) ? $other_web_url_arr[$WebID] : '';
-        $all['isMyWeb'] = ($isAdmin) ? true : in_array($WebID, $MyWebs, true);
+        $all['isMyWeb'] = ($isAdmin) ? true : in_array($WebID, $MyWebs);
         $data_arr[$CateID][$WebID] = $all;
         $data_arr[$CateID]['WebID'][$WebID] = $WebID;
     }

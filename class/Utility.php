@@ -3,16 +3,16 @@
 namespace XoopsModules\Tad_web;
 
 /*
- Utility Class Definition
+Utility Class Definition
 
- You may not change or alter any portion of this comment or credits of
- supporting developers from this source code or any supporting source code
- which is considered copyrighted (c) material of the original comment or credit
- authors.
+You may not change or alter any portion of this comment or credits of
+supporting developers from this source code or any supporting source code
+which is considered copyrighted (c) material of the original comment or credit
+authors.
 
- This program is distributed in the hope that it will be useful, but
- WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
 /**
@@ -339,7 +339,7 @@ class Utility
         foreach ($all_blocks as $BlockName => $BlockTitle) {
             foreach ($allWebID as $WebID) {
                 //若該區塊還沒有安裝在該網站
-                if (!in_array($BlockName, $db_blocks[$WebID], true)) {
+                if (!in_array($BlockName, $db_blocks[$WebID])) {
                     if (is_array($block_config[$BlockName])) {
                         if (PHP_VERSION_ID >= 50400) {
                             $config = json_encode($block_config[$BlockName], JSON_UNESCAPED_UNICODE);
@@ -356,8 +356,8 @@ class Utility
                     }
                     $config = str_replace('{{WebID}}', $WebID, $config);
                     $sql = 'insert into `'
-                              . $xoopsDB->prefix('tad_web_blocks')
-                              . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
+                    . $xoopsDB->prefix('tad_web_blocks')
+                        . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
                     $xoopsDB->queryF($sql) or web_error($sql);
                 } else {
                     //檢查區塊設定值是否需要更新
@@ -689,7 +689,7 @@ class Utility
         $result = $xoopsDB->queryF($sql) or die($sql);
         while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
             $typedir = 'img' === $kind ? 'image' : 'file';
-            $WebID = (int)mb_substr($sub_dir, 1);
+            $WebID = (int) mb_substr($sub_dir, 1);
             if (empty($WebID)) {
                 if ('WebOwner' === $col_name or 'WebLogo' === $col_name) {
                     $WebID = $col_sn;
@@ -958,7 +958,7 @@ class Utility
                 } else {
                     $BlockPosition = 'side';
                 }
-                $BlockEnable = in_array($func, $Config, true) ? 1 : 0;
+                $BlockEnable = in_array($func, $Config) ? 1 : 0;
 
                 if ($block_config[$func]) {
                     if (PHP_VERSION_ID >= 50400) {
@@ -976,8 +976,8 @@ class Utility
                 }
                 $config = str_replace('{{WebID}}', $WebID, $config);
                 $sql = 'insert into `'
-                          . $xoopsDB->prefix('tad_web_blocks')
-                          . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
+                . $xoopsDB->prefix('tad_web_blocks')
+                    . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
                 $xoopsDB->queryF($sql) or web_error($sql);
                 $sort++;
             }

@@ -22,7 +22,7 @@ if (is_dir($dir)) {
                     $color = 'red';
                     $bad++;
                     delete_directory($dir . $file);
-                } elseif (!in_array($clean_dir, $web, true)) {
+                } elseif (!in_array($clean_dir, $web)) {
                     $del = $dir . $file . '不存在的網站';
                     $color = 'blue';
                     $no++;

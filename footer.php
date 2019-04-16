@@ -45,7 +45,7 @@ if ($WebID and _DISPLAY_MODE === 'home') {
     $xoopsTpl->assign('xoops_sitename', $WebName);
     $xoopsTpl->assign('logo_img', XOOPS_URL . "/uploads/tad_web/{$WebID}/header_480.png");
 }
-    // $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+// $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
 
 if (file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php')) {
     include_once XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php';
@@ -143,7 +143,7 @@ function tad_web_my_menu($WebID)
             $user_name = $xoopsUser->name();
             $add_power = [];
             $MyWebID = MyWebID('1');
-            $DefWebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
+            $DefWebID = isset($_REQUEST['WebID']) ? (int) $_REQUEST['WebID'] : '';
 
             $uid = $xoopsUser->uid();
 
@@ -291,7 +291,7 @@ function tad_web_login($WebID, $config = [])
 
         // $login_method_arr = explode(';', $login_method);
         foreach ($auth_method as $method) {
-            if (!empty($login_config) and !in_array($method, $login_config, true)) {
+            if (!empty($login_config) and !in_array($method, $login_config)) {
                 // die(var_export($login_config));
                 continue;
             }
