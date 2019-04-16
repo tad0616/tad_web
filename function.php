@@ -28,17 +28,15 @@ $LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = $LoginParentID =
 $MyWebs = [];
 $isMyWeb = false;
 if ($xoopsUser) {
-    if (!isset($xoopsModule)) {
         $moduleHandler = xoops_getHandler('module');
         $xoopsModule = $moduleHandler->getByDirname('tad_web');
-    }
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin = $xoopsUser->isAdmin($module_id);
     //我的班級ID（陣列）
     $MyWebs = MyWebID('all');
 
     //目前瀏覽的是否是我的班級？
-    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs, true);
+    $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
 } else {
     $LoginMemID = isset($_SESSION['LoginMemID']) ? $_SESSION['LoginMemID'] : null;
     $LoginMemName = isset($_SESSION['LoginMemName']) ? $_SESSION['LoginMemName'] : null;
@@ -205,7 +203,7 @@ function get_share_blocks($WebID)
     $share_blocks = [];
     $sql = 'select ShareFrom from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' and `plugin`='custom' and `ShareFrom` > 0";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while (false !== (list($ShareFromID) = $xoopsDB->fetchRow($result))) {
+    while (list($ShareFromID) = $xoopsDB->fetchRow($result)) {
         $share_blocks[] = $ShareFromID;
     }
 
@@ -257,7 +255,7 @@ function get_web_roles($defWebID = '', $defRole = '')
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $users = [];
     $i = 0;
-    while (false !== (list($uid) = $xoopsDB->fetchRow($result))) {
+    while (list($uid) = $xoopsDB->fetchRow($result)) {
         $users[$i] = $uid;
         $i++;
     }
@@ -306,7 +304,7 @@ function get_web_all_config($WebID = '')
 
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while (false !== (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result))) {
+    while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
         $tad_web_config[$ConfigName] = $ConfigValue;
     }
 
@@ -698,7 +696,7 @@ function onlyMine($uid_col = 'uid')
     global $xoopsUser, $isAdmin, $MyWebs, $WebID;
     if ($isAdmin) {
         return;
-    } elseif (in_array($WebID, $MyWebs, true)) {
+    } elseif (in_array($WebID, $MyWebs)) {
         return;
     }
     $uid = $xoopsUser->uid();
@@ -744,7 +742,7 @@ function getAllWebInfo($get_col = 'WebTitle')
     $sql = "select `WebID`, `{$get_col}` from " . $xoopsDB->prefix('tad_web') . ' order by WebSort';
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $Webs = [];
-    while (false !== (list($WebID, $data) = $xoopsDB->fetchRow($result))) {
+    while (list($WebID, $data) = $xoopsDB->fetchRow($result)) {
         $Webs[$WebID] = $data;
     }
 
@@ -813,7 +811,7 @@ function mklogoPic($WebID = '')
     $pic_size = ($pic_size1 > $pic_size2) ? $pic_size1 : $pic_size2;
 
     // header('Content-type: image/png');
-    $im = @imagecreatetruecolor($pic_size, 140) || die(_MD_TCW_MKPIC_ERROR);
+    $im = @imagecreatetruecolor($pic_size, 140) or die(_MD_TCW_MKPIC_ERROR);
     imagesavealpha($im, true);
 
     $white = imagecolorallocate($im, 255, 255, 255);
@@ -887,7 +885,7 @@ function mkTitlePic($WebID = '', $filename = '', $title = '', $color = '#ABBF6B'
     list($border_color_r, $border_color_g, $border_color_b) = sscanf($border_color, '#%02x%02x%02x');
 
     // header('Content-type: image/png');
-    $im = @imagecreatetruecolor($width, $height) || die(_MD_TCW_MKPIC_ERROR . "({$title}->{$size} , {$width} x {$height})");
+    $im = @imagecreatetruecolor($width, $height) or die(_MD_TCW_MKPIC_ERROR . "({$title}->{$size} , {$width} x {$height})");
     imagesavealpha($im, true);
 
     $trans_colour = imagecolorallocatealpha($im, 255, 255, 255, 127);
@@ -958,7 +956,7 @@ function import_img($path = '', $col_name = 'logo', $col_sn = '', $desc = '', $s
 
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $db_files_amount = 0;
-    while (false !== (list($files_sn, $file_name, $original_filename) = $xoopsDB->fetchRow($result))) {
+    while (list($files_sn, $file_name, $original_filename) = $xoopsDB->fetchRow($result)) {
         $db_files[$files_sn] = $original_filename;
         $db_files_amount++;
     }
@@ -976,7 +974,7 @@ function import_img($path = '', $col_name = 'logo', $col_sn = '', $desc = '', $s
                 $type = filetype($path . '/' . $file);
 
                 if ('dir' !== $type) {
-                    if (!in_array($file, $db_files, true)) {
+                    if (!in_array($file, $db_files)) {
                         import_file($path . '/' . $file, $col_name, $col_sn, null, null, $desc, $safe_name);
                     }
                 }
@@ -1061,7 +1059,7 @@ function get_tad_web_cate_menu_options($default_CateID = '0')
     or web_error($sql, __FILE__, __LINE__);
 
     $option = '';
-    while (false !== (list($CateID, $CateName) = $xoopsDB->fetchRow($result))) {
+    while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
         $selected = ($CateID == $default_CateID) ? 'selected = "selected"' : '';
         $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
     }
@@ -1092,7 +1090,7 @@ function get_web_cate_arr()
             continue;
         }
         $all['other_web_url'] = isset($other_web_url_arr[$WebID]) ? $other_web_url_arr[$WebID] : '';
-        $all['isMyWeb'] = ($isAdmin) ? true : in_array($WebID, $MyWebs, true);
+        $all['isMyWeb'] = ($isAdmin) ? true : in_array($WebID, $MyWebs);
         $data_arr[$CateID][$WebID] = $all;
         $data_arr[$CateID]['WebID'][$WebID] = $WebID;
     }
@@ -1419,7 +1417,7 @@ function get_plugin_setup_values($WebID = '', $plugin = '')
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $setup_db_values = [];
     //`theme_id`, `name`, `type`, `value`
-    while (false !== (list($name, $type, $value) = $xoopsDB->fetchRow($result))) {
+    while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
         $setup_db_values[$name] = $value;
     }
 

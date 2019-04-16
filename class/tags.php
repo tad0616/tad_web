@@ -53,7 +53,7 @@ class tags
 
     public function set_WebID($WebID = '')
     {
-        $WebID = (int)$WebID;
+        $WebID = (int) $WebID;
 
         $this->WebID = $WebID;
     }
@@ -89,7 +89,7 @@ class tags
         $tags_select = '';
         $tag_all_arr = $this->get_tags();
         foreach ($tag_all_arr as $tag => $count) {
-            $checked = (in_array($tag, $tag_arr, true) and !empty($tag_name)) ? 'checked' : '';
+            $checked = (in_array($tag, $tag_arr) and !empty($tag_name)) ? 'checked' : '';
             $tags_select .= "
             <label class='checkbox-inline'>
                 <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>{$tag} <span class='badge'>{$count}</span>

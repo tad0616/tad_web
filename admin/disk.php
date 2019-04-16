@@ -116,7 +116,7 @@ function dirToJson($dir, $i = 1, $j = 0)
 
     $cdir = scandir($dir);
     foreach ($cdir as $key => $value) {
-        if (!in_array($value, ['.', '..'], true)) {
+        if (!in_array($value, ['.', '..'])) {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
                 $data .= "{ id:{$i}, pId:{$j}, name:'{$dir}/{$value}', url:'{$url}', target:'_self', open:'true'}, \n";
                 $data .= dirToJson($dir . DIRECTORY_SEPARATOR . $value, $i, $i);
@@ -157,7 +157,7 @@ function dirToArray($dir)
 
     $cdir = scandir($dir);
     foreach ($cdir as $key => $value) {
-        if (!in_array($value, ['.', '..'], true)) {
+        if (!in_array($value, ['.', '..'])) {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
                 $result[$value]['name'] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
                 $result[$value]['size'] = '';

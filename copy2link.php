@@ -35,7 +35,7 @@ while (false !== (list($WebID) = $xoopsDB->fetchRow($result))) {
                     if ('.' === mb_substr($file, 0, 1)) {
                         continue;
                     }
-                    if (in_array($file, $filenames, true)) {
+                    if (in_array($file, $filenames)) {
                         if (unlink($dir . $file)) {
                             if (symlink($form_files[$kind][$file], $dir . $file)) {
                                 // echo "<div style='color: blue'>移除 {$dir}{$file}，新增軟連結 {$form_files[$kind][$file]}成功！</div>";
