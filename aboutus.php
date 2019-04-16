@@ -106,7 +106,7 @@ switch ($op) {
     //登出
     case 'mem_logout':
         $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = '';
-        $GLOBALS['sessHandler']->regenerate_id(true);
+        $GLOBALS['sess_handler']->regenerate_id(true);
         $_SESSION = [];
         setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
@@ -183,7 +183,7 @@ switch ($op) {
     //登出
     case 'parent_logout':
         $_SESSION['LoginParentID'] = $_SESSION['LoginParentName'] = $_SESSION['LoginParentMemID'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = '';
-        $GLOBALS['sessHandler']->regenerate_id(true);
+        $GLOBALS['sess_handler']->regenerate_id(true);
         $_SESSION = [];
         setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
