@@ -140,7 +140,7 @@ function array2form($form_arr = [], $config = [])
             case 'checkbox':
                 // die(var_export($form['options']));
                 foreach ($form['options'] as $title => $value) {
-                    $checked = in_array($value, $config[$config_name], true) ? 'checked' : '';
+                    $checked = in_array($value, $config[$config_name]) ? 'checked' : '';
                     $form_code .= '<label class="checkbox"><input type="checkbox" name="config[' . $config_name . '][]" value="' . $value . '" ' . $checked . '>' . $title . '</label>';
                 }
                 break;
@@ -318,7 +318,7 @@ function block_setup($WebID = '')
 function delete_block($BlockID, $WebID)
 {
     global $xoopsDB, $MyWebs, $isAdmin, $power;
-    if (!$isAdmin and !in_array($WebID, $MyWebs, true)) {
+    if (!$isAdmin and !in_array($WebID, $MyWebs)) {
         return;
     }
     //若有分享區塊，先刪除之
@@ -339,7 +339,7 @@ function delete_block($BlockID, $WebID)
 function delete_share_block($BlockID, $WebID)
 {
     global $xoopsDB, $MyWebs, $isAdmin;
-    if (!$isAdmin and !in_array($WebID, $MyWebs, true)) {
+    if (!$isAdmin and !in_array($WebID, $MyWebs)) {
         return;
     }
 
@@ -470,7 +470,7 @@ function chk_newblock($WebID)
     //安裝新區塊
     foreach ($all_blocks as $BlockName => $BlockTitle) {
         //若該區塊還沒有安裝在該網站
-        if (!in_array($BlockName, $db_blocks, true)) {
+        if (!in_array($BlockName, $db_blocks)) {
             if (is_array($block_config[$BlockName])) {
                 if (PHP_VERSION_ID >= 50400) {
                     $config = json_encode($block_config[$BlockName], JSON_UNESCAPED_UNICODE);

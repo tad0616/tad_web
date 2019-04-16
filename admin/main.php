@@ -136,7 +136,7 @@ function create_by_user()
         $name = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
         $name = empty($name) ? '' : " ({$name})";
-        if (in_array($uid, $ok_uid, true)) {
+        if (in_array($uid, $ok_uid)) {
             $opt2[$uid] = "{$uname} {$name}";
         } else {
             $opt[$uid] = "{$uname} {$name}";
@@ -342,7 +342,7 @@ function insert_tad_web($CateID = '', $WebName = '', $WebSort = '', $WebEnable =
         $WebYear = date('Y');
     }
 
-    $WebSort = (int)$$WebSort;
+    $WebSort = (int) $$WebSort;
 
     $sql = 'insert into ' . $xoopsDB->prefix('tad_web') . "
     (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`,`used_size`, `last_accessed`)
@@ -369,10 +369,10 @@ function update_tad_web($WebID = '')
     $myts = MyTextSanitizer::getInstance();
     $WebName = $myts->addSlashes($_POST['WebName']);
     $WebTitle = $myts->addSlashes($_POST['WebTitle']);
-    $CateID = (int)$_POST['CateID'];
-    $WebSort = (int)$_POST['WebSort'];
-    $WebEnable = (int)$_POST['WebEnable'];
-    $WebOwnerUid = (int)$_POST['WebOwnerUid'];
+    $CateID = (int) $_POST['CateID'];
+    $WebSort = (int) $_POST['WebSort'];
+    $WebEnable = (int) $_POST['WebEnable'];
+    $WebOwnerUid = (int) $_POST['WebOwnerUid'];
 
     $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 1);
     if (empty($WebOwner)) {
