@@ -1,7 +1,5 @@
 <?php
 /**
- * Tad Web module
- *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
  * which is considered copyrighted (c) material of the original comment or credit authors.
@@ -11,14 +9,12 @@
  *
  * @copyright    XOOPS Project (https://xoops.org)
  * @license      http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package      Tad Web
+ * @package
  * @since        2.5.0
- * @author       Tad
+ * @author
  * @version      $Id $
  **/
 echo '<div align="center"><a href="https://xoops.org" target="_blank"><img src="../images/admin/xoopsmicrobutton.gif" alt="XOOPS" title="XOOPS"></a></div>';
 echo "<div class='center smallsmall italic pad5'><strong>" . $xoopsModule->getVar('name') . "</strong> is maintained by the <a class='tooltip' rel='external' href='https://xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>";
-
-$xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
 
 xoops_cp_footer();
