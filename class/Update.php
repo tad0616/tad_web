@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 namespace XoopsModules\Tad_web;
 
@@ -45,7 +46,7 @@ class Update
                 }
             }
             $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$pluginConfig['name']}', '{$sort}', '1', '0')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             $sort++;
             $display_plugins[] = $dirname;
         }
@@ -56,7 +57,6 @@ class Update
     public static function add_log($status)
     {
         global $xoopsConfig, $xoopsDB;
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
         $modhandler = xoops_getHandler('module');
         $xoopsModule = $modhandler->getByDirname('tad_web');
         $version = $xoopsModule->version();
@@ -64,7 +64,7 @@ class Update
             $web_amount = 0;
         } else {
             $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE `WebEnable`='1' ORDER BY WebSort";
-            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $web_amount = $xoopsDB->getRowsNum($result);
         }
@@ -114,7 +114,7 @@ class Update
         foreach ($allBlockConfig as $plugin => $BlockConfig) {
             foreach ($BlockConfig as $BlockName => $Block) {
                 $sql = 'update  ' . $xoopsDB->prefix('tad_web_blocks') . " set plugin='{$plugin}' where `BlockName`='{$BlockName}' and plugin!='{$plugin}'";
-                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
         }
     }
@@ -167,7 +167,6 @@ class Update
     public static function chk_newblock()
     {
         global $xoopsDB;
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 
         $myts = \MyTextSanitizer::getInstance();
 
@@ -180,14 +179,14 @@ class Update
         //找出所有網站
         $allWebID = '';
         $sql = 'SELECT WebID FROM `' . $xoopsDB->prefix('tad_web') . '` GROUP BY `WebID`';
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         while (list($WebID) = $xoopsDB->fetchRow($result)) {
             $allWebID[] = $WebID;
         }
 
         //修正自訂區塊名稱（並用序號排序）
         $sql = 'SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE plugin='custom' ORDER BY BlockID";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
             $BlockTitle = $myts->addSlashes($BlockTitle);
             $BlockContent = $myts->addSlashes($BlockContent);
@@ -196,12 +195,12 @@ class Update
             if ($new_name != $BlockName) {
                 //修改自己
                 $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockName`='{$new_name}' where `BlockID`='{$BlockID}'";
-                $xoopsDB->queryF($sql) or web_error($sql);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql);
             }
 
             //搜尋該自訂區塊有無分享區塊
             $sql2 = 'select BlockID from ' . $xoopsDB->prefix('tad_web_blocks') . " where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and WebID='{$WebID}' and plugin='share'";
-            $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
+            $result2 = $xoopsDB->queryF($sql2) or Utility::web_error($sql2);
 
             list($share_BlockID) = $xoopsDB->fetchRow($result2);
 
@@ -209,18 +208,18 @@ class Update
             if ($share_BlockID) {
                 //修改分享區塊
                 $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockName`='share_{$WebID}_{$share_BlockID}', `ShareFrom`='{$BlockID}' where BlockID='{$share_BlockID}'";
-                $xoopsDB->queryF($sql) or web_error($sql);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
                 //修改其他網站已經使用該分享區塊的
                 $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `ShareFrom`='{$share_BlockID}' where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and plugin='custom' and WebID!='{$WebID}'";
-                $xoopsDB->queryF($sql) or web_error($sql);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql);
             }
         }
 
         foreach ($allWebID as $WebID) {
             //找出目前已安裝的區塊
             $sql = 'select BlockID,BlockName,BlockConfig from ' . $xoopsDB->prefix('tad_web_blocks') . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
-            $result = $xoopsDB->queryF($sql) or web_error($sql);
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
             while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
                 $db_blocks[$WebID][$BlockName] = $BlockName;
                 $db_blocks_config[$WebID][$BlockName][$BlockID] = $BlockConfig;
@@ -273,7 +272,7 @@ class Update
                     $sql = 'insert into `'
                     . $xoopsDB->prefix('tad_web_blocks')
                         . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
-                    $xoopsDB->queryF($sql) or web_error($sql);
+                    $xoopsDB->queryF($sql) or Utility::web_error($sql);
                 } else {
                     //檢查區塊設定值是否需要更新
 
@@ -317,7 +316,7 @@ class Update
                         $new_block_config = str_replace('{{WebID}}', $WebID, $new_block_config);
                         $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockConfig`='{$new_block_config}' where `BlockID`='{$BlockID}'";
                         // echo "<div>$sql</div>";
-                        $xoopsDB->queryF($sql) or web_error($sql);
+                        $xoopsDB->queryF($sql) or Utility::web_error($sql);
                     }
                 }
             }
@@ -329,14 +328,13 @@ class Update
     public static function modify_share_block()
     {
         global $xoopsDB;
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 
         $myts = \MyTextSanitizer::getInstance();
 
         //修正自訂區塊名稱（並用序號排序）
         if (!_IS_EZCLASS) {
             $sql = 'SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE plugin='custom' ORDER BY BlockID";
-            $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
                 $BlockTitle = $myts->addSlashes($BlockTitle);
                 $BlockContent = $myts->addSlashes($BlockContent);
@@ -345,12 +343,12 @@ class Update
                 if ($new_name != $BlockName) {
                     //修改自己
                     $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockName`='{$new_name}' where `BlockID`='{$BlockID}'";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
 
                 //搜尋該自訂區塊有無分享區塊
                 $sql2 = 'select BlockID from ' . $xoopsDB->prefix('tad_web_blocks') . " where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and WebID='{$WebID}' and plugin='share'";
-                $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
+                $result2 = $xoopsDB->queryF($sql2) or Utility::web_error($sql2);
 
                 list($share_BlockID) = $xoopsDB->fetchRow($result2);
 
@@ -358,11 +356,11 @@ class Update
                 if ($share_BlockID) {
                     //修改分享區塊
                     $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockName`='share_{$WebID}_{$share_BlockID}', `ShareFrom`='{$BlockID}' where BlockID='{$share_BlockID}'";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
                     //修改其他網站已經使用該分享區塊的
                     $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `ShareFrom`='{$share_BlockID}' where (BlockTitle='{$BlockTitle}' or BlockContent='{$BlockContent}') and plugin='custom' and WebID!='{$WebID}'";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
             }
         }
@@ -564,8 +562,8 @@ class Update
             $xoopsDB->queryF($sql) or die($sql);
 
             if (!file_exists("{$updir}{$sub_dir}/{$typedir}/{$file_name}")) {
-                mk_dir("{$updir}{$sub_dir}");
-                mk_dir("{$updir}{$sub_dir}/{$typedir}");
+                Utility::mk_dir("{$updir}{$sub_dir}");
+                Utility::mk_dir("{$updir}{$sub_dir}/{$typedir}");
 
                 $from = "{$updir}/{$typedir}/{$file_name}";
                 $to = "{$updir}{$sub_dir}/{$typedir}/{$file_name}";
@@ -580,9 +578,9 @@ class Update
 
                 rename($from, $to);
                 if ('image' === $typedir) {
-                    mk_dir("{$updir}{$sub_dir}");
-                    mk_dir("{$updir}{$sub_dir}/{$typedir}");
-                    mk_dir("{$updir}{$sub_dir}/{$typedir}/.thumbs");
+                    Utility::mk_dir("{$updir}{$sub_dir}");
+                    Utility::mk_dir("{$updir}{$sub_dir}/{$typedir}");
+                    Utility::mk_dir("{$updir}{$sub_dir}/{$typedir}/.thumbs");
                     $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
                     $to = "{$updir}{$sub_dir}/{$typedir}/.thumbs/{$file_name}";
 
@@ -630,11 +628,11 @@ class Update
             $sql = 'update ' . $xoopsDB->prefix('tad_web_files_center') . " set `sub_dir`='/{$WebID}'  where `files_sn`='{$files_sn}'";
             $xoopsDB->queryF($sql) or die($sql);
 
-            mk_dir("{$updir}/{$WebID}");
-            mk_dir("{$updir}/{$WebID}/{$typedir}");
+            Utility::mk_dir("{$updir}/{$WebID}");
+            Utility::mk_dir("{$updir}/{$WebID}/{$typedir}");
             if ('image' === $typedir) {
-                mk_dir("{$updir}/{$WebID}/{$typedir}");
-                mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
+                Utility::mk_dir("{$updir}/{$WebID}/{$typedir}");
+                Utility::mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
             }
 
             $from = "{$updir}/{$typedir}/{$file_name}";
@@ -650,9 +648,9 @@ class Update
             if (file_exists($from)) {
                 rename($from, $to);
                 if ('image' === $typedir) {
-                    mk_dir("{$updir}/{$WebID}");
-                    mk_dir("{$updir}/{$WebID}/{$typedir}");
-                    mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
+                    Utility::mk_dir("{$updir}/{$WebID}");
+                    Utility::mk_dir("{$updir}/{$WebID}/{$typedir}");
+                    Utility::mk_dir("{$updir}/{$WebID}/{$typedir}/.thumbs");
 
                     $from = "{$updir}/{$typedir}/.thumbs/{$file_name}";
                     $to = "{$updir}/{$WebID}/{$typedir}/.thumbs/{$file_name}";
@@ -893,7 +891,7 @@ class Update
                 $sql = 'insert into `'
                 . $xoopsDB->prefix('tad_web_blocks')
                     . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
-                $xoopsDB->queryF($sql) or web_error($sql);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql);
                 $sort++;
             }
         }
@@ -922,7 +920,7 @@ class Update
                 }
 
                 $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockEnable`='1',`BlockPosition`='block4',`BlockConfig`='{$config}',`BlockSort`='{$sort}' where `BlockName`='list_{$plugin}' and `WebID`='{$WebID}'";
-                $xoopsDB->queryF($sql) or web_error($sql);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql);
                 $sort++;
             }
         }
@@ -1016,12 +1014,12 @@ class Update
 
         include_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
         $sql = 'SELECT WebID FROM `' . $xoopsDB->prefix('tad_web') . '`';
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         while (list($WebID) = $xoopsDB->fetchRow($result)) {
             $dir_size = get_dir_size("{$dir}{$WebID}/");
 
             $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
-            $xoopsDB->queryF($sql) or web_error($sql);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql);
         }
 
         return true;
@@ -1108,10 +1106,10 @@ class Update
     {
         global $xoopsDB;
         $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tad_web_blocks') . "` CHANGE `plugin` `plugin` VARCHAR(100) COLLATE 'utf8_general_ci' NOT NULL COMMENT '所屬外掛' AFTER `WebID`;";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
         $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tad_web_blocks') . '` ADD UNIQUE `BlockName_BlockCopy_WebID_plugin` (`BlockName`, `BlockCopy`, `WebID`, `plugin`);';
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
         return true;
     }
@@ -1178,7 +1176,7 @@ class Update
         global $xoopsDB;
 
         $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tad_web_power') . '` ADD PRIMARY KEY `power_primary` (`col_name`, `col_sn`, `power_name`), DROP INDEX `PRIMARY`;';
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
         return true;
     }

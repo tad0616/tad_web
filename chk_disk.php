@@ -1,10 +1,11 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 include_once 'header.php';
 
 $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
 $web = [];
 $sql = 'select WebID from xx_tad_web';
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID) = $xoopsDB->fetchRow($result)) {
     $web[] = $WebID;
 }
@@ -21,12 +22,12 @@ if (is_dir($dir)) {
                     $del = $dir . $file . '無效資料夾';
                     $color = 'red';
                     $bad++;
-                    delete_directory($dir . $file);
+                    Utility::delete_directory($dir . $file);
                 } elseif (!in_array($clean_dir, $web)) {
                     $del = $dir . $file . '不存在的網站';
                     $color = 'blue';
                     $no++;
-                    delete_directory($dir . $file);
+                    Utility::delete_directory($dir . $file);
                 } else {
                     continue;
                 }
@@ -38,7 +39,7 @@ if (is_dir($dir)) {
 }
 echo "無效資料夾 $bad 個，不存在網站 $no 個";
 
-function delete_directory($dirname)
+function Utility::delete_directory($dirname)
 {
     if (is_dir($dirname)) {
         $dir_handle = opendir($dirname);
@@ -53,7 +54,7 @@ function delete_directory($dirname)
             if (!is_dir($dirname . '/' . $file)) {
                 unlink($dirname . '/' . $file);
             } else {
-                delete_directory($dirname . '/' . $file);
+                Utility::delete_directory($dirname . '/' . $file);
             }
         }
     }

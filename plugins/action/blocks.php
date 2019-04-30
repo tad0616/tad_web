@@ -1,4 +1,8 @@
 <?php
+use XoopsModules\Tadtools\ResponsiveSlides;
+use XoopsModules\Tadtools\TadUpFiles;
+use XoopsModules\Tadtools\Utility;
+
 //活動剪影
 function list_action($WebID, $config = [])
 {
@@ -23,7 +27,7 @@ function action_slide($WebID, $config = [])
 
     $sql = 'select ActionName,ActionID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$WebID}' order by rand()";
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     while (list($ActionName, $ActionID) = $xoopsDB->fetchRow($result)) {
         //檢查權限
         $the_power = $power->check_power('read', 'ActionID', $ActionID);
@@ -40,27 +44,24 @@ function action_slide($WebID, $config = [])
     }
     $slide_images = '';
 
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
     $tad_web_action_image = new TadUpFiles('tad_web');
 
     $tad_web_action_image->set_dir('subdir', "/{$WebID}");
     $tad_web_action_image->set_col('ActionID', $ActionID);
     $photos = $tad_web_action_image->get_file();
     // die(var_export($photos));
-    if (file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/ResponsiveSlides.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/ResponsiveSlides.php';
-        $ResponsiveSlides = new slider(120, false);
-        $i = 1;
-        foreach ($photos as $pic) {
-            if ($pic['description'] == $pic['original_filename']) {
-                $pic['description'] = '';
-            }
-            $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
-            $i++;
-        }
 
-        $slide_images = $ResponsiveSlides->render();
+    $ResponsiveSlides = new ResponsiveSlides(120, false);
+    $i = 1;
+    foreach ($photos as $pic) {
+        if ($pic['description'] == $pic['original_filename']) {
+            $pic['description'] = '';
+        }
+        $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
+        $i++;
     }
+
+    $slide_images = $ResponsiveSlides->render();
 
     $block['main_data'] = $slide_images;
     $block['ActionID'] = $ActionID;

@@ -1,11 +1,12 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 //區塊主函式 (班級選單(tad_web_menu))
 function tad_web_menu($options)
 {
     global $xoopsUser, $xoopsDB, $MyWebs, $xoopsConfig;
     include_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
     $MyWebID = MyWebID(1);
-    $DefWebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
+    $DefWebID = isset($_REQUEST['WebID']) ? (int) $_REQUEST['WebID'] : '';
     $block['DefWebID'] = $DefWebID;
 
     if ($xoopsUser) {
@@ -15,7 +16,7 @@ function tad_web_menu($options)
         if ($MyWebID) {
             $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyWebID}') order by WebSort";
             //die($sql);
-            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             //$web_num = $xoopsDB->getRowsNum($result);
             $i = $defalt_used_size = 0;
 
@@ -81,7 +82,7 @@ function tad_web_menu($options)
         $AllMyClosedWebID = implode("','", $MyClosedWebID);
         if ($MyClosedWebID) {
             $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyClosedWebID}') order by WebSort";
-            $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             $i = 0;
 
             while ($all = $xoopsDB->fetchArray($result)) {
@@ -116,7 +117,7 @@ function tad_web_menu($options)
     $TadLoginXoopsModule = $modhandler->getByDirname('tad_login');
     if ($TadLoginXoopsModule) {
         include_once XOOPS_ROOT_PATH . '/modules/tad_login/function.php';
-        include_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+        xoops_loadLanguage('county', 'tad_login');
 
         $config_handler = xoops_getHandler('config');
         $modConfig = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));

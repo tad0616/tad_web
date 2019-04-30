@@ -3,7 +3,7 @@
   <!--顯示表單-->
   <{if $now_op=="tad_web_cate_form"}>
     <{$delete_tad_web_cate_func}>
-    <{$formValidator_code}>
+
     <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
       <!--分類名稱-->

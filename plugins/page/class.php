@@ -1,4 +1,10 @@
 <?php
+use XoopsModules\Tadtools\CkEditor;
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\JqueryPrintPreview;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_page
 {
     public $WebID = 0;
@@ -71,7 +77,7 @@ class tad_web_page
         $to_limit = empty($limit) ? '200' : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar = getPageBar($sql, $to_limit, 10);
+        $PageBar = Utility::getPageBar($sql, $to_limit, 10);
         $bar = $PageBar['bar'];
         $sql = $PageBar['sql'];
         $total = $PageBar['total'];
@@ -81,7 +87,7 @@ class tad_web_page
             echo "<h2>{$sql}</h2>";
             $debug = 1;
         }
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $total = $xoopsDB->getRowsNum($result);
 
         $main_data = $cate_data = $cate_size = [];
@@ -123,12 +129,9 @@ class tad_web_page
         if (1 == $debug) {
             die(var_dump($cate_size));
         }
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
-        }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_page_func', "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
+
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_page_func', "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
 
         if ('return' === $mode) {
             $data['cate_arr'] = $cate_arr;
@@ -159,11 +162,11 @@ class tad_web_page
             return;
         }
 
-        $PageID = (int)$PageID;
+        $PageID = (int) $PageID;
         $this->add_counter($PageID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='{$PageID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
         if ('return' === $mode) {
@@ -221,19 +224,11 @@ class tad_web_page
         }
         $xoopsTpl->assign('cate', $cate);
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
-        }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_page_func', "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_page_func', "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
-        }
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php';
-        $print_preview = new print_preview('a.print-preview');
-        $print_preview->render();
+        $JqueryPrintPreview = new JqueryPrintPreview('a.print-preview');
+        $JqueryPrintPreview->render();
 
         $xoopsTpl->assign('module_css', '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/page/print.css" type="text/css" media="print" />');
         $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
@@ -307,28 +302,21 @@ class tad_web_page
 
         $op = (empty($PageID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-        }
-        include_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator = new formValidator('#myForm', true);
-        $formValidator_code = $formValidator->render();
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
-        $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
         $TadUpFiles->set_col('PageID', $PageID); //若 $show_list_del_file ==true 時一定要有
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/image");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/file");
-        $ck = new CKEditor("tad_web/{$this->WebID}/page", 'PageContent', $PageContent);
-        $ck->setHeight(500);
-        $editor = $ck->render();
-        $xoopsTpl->assign('PageContent_editor', $editor);
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/image");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/file");
+        $CkEditor = new CkEditor("tad_web/{$this->WebID}/page", 'PageContent', $PageContent);
+        $CkEditor->setHeight(500);
+        $CkEditor->render();
 
         $tags_form = $this->tags->tags_menu('PageID', $PageID);
         $xoopsTpl->assign('tags_form', $tags_form);
@@ -341,16 +329,16 @@ class tad_web_page
         if (isset($_SESSION['isAssistant']['page'])) {
             $uid = $WebOwnerUid;
         } elseif (!empty($_POST['uid'])) {
-            $uid = (int)$_POST['uid'];
+            $uid = (int) $_POST['uid'];
         } else {
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $PageTitle = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $PageSort = $this->max_sort($WebID, $CateID);
         $PageDate = date('Y-m-d H:i:s');
         $PageCSS = $myts->addSlashes($_POST['PageCSS']);
@@ -361,7 +349,7 @@ class tad_web_page
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_page') . "
         (`CateID`,`PageTitle` , `PageContent` , `PageDate` , `PageSort` , `uid` , `WebID` , `PageCount` , `PageCSS`)
         values('{$CateID}' ,'{$PageTitle}' , '{$PageContent}' , '{$PageDate}' , '{$PageSort}' , '{$uid}' , '{$WebID}' , '0' , '{$PageCSS}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $PageID = $xoopsDB->getInsertId();
@@ -381,11 +369,11 @@ class tad_web_page
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $PageTitle = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $PageDate = date('Y-m-d H:i:s');
         $PageCSS = $myts->addSlashes($_POST['PageCSS']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
@@ -404,7 +392,7 @@ class tad_web_page
          `PageDate` = '{$PageDate}',
          `PageCSS` = '{$PageCSS}'
         where PageID='$PageID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -420,14 +408,14 @@ class tad_web_page
     {
         global $xoopsDB, $TadUpFiles;
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='$PageID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
         if (!is_assistant($CateID, 'PageID', $PageID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='$PageID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->del_files();
@@ -442,7 +430,7 @@ class tad_web_page
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql = 'select PageID,CateID from ' . $xoopsDB->prefix('tad_web_page') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($PageID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($PageID);
             $allCateID[$CateID] = $CateID;
@@ -459,7 +447,7 @@ class tad_web_page
         global $xoopsDB;
         $andCate = empty($CateID) ? '' : "and CateID='$CateID'";
         $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_page') . " where WebID='{$this->WebID}' {$andCate}";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
 
         return $count;
@@ -470,7 +458,7 @@ class tad_web_page
     {
         global $xoopsDB;
         $sql = 'update ' . $xoopsDB->prefix('tad_web_page') . " set `PageCount`=`PageCount`+1 where `PageID`='{$PageID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_page資料
@@ -482,7 +470,7 @@ class tad_web_page
         }
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='$PageID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
 
         return $data;
@@ -493,7 +481,7 @@ class tad_web_page
     {
         global $xoopsDB;
         $sql = 'select max(`PageSort`) from ' . $xoopsDB->prefix('tad_web_page') . " where WebID='$WebID' and CateID='{$CateID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
 
         return ++$sort;
@@ -507,7 +495,7 @@ class tad_web_page
         $all = $main = [];
         $sql = 'select PageID,PageTitle,PageSort from ' . $xoopsDB->prefix('tad_web_page') . " where CateID='{$DefCateID}' order by PageSort";
         // die($sql);
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($PageID, $PageTitle, $PageSort) = $xoopsDB->fetchRow($result)) {
             $all[$PageSort]['PageID'] = $PageID;
             $all[$PageSort]['PageTitle'] = $PageTitle;

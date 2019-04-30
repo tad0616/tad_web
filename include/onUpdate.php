@@ -1,6 +1,7 @@
 <?php
 
-use XoopsModules\Tad_web\Utility;
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Update;
 
 function xoops_module_update_tad_web($module, $old_version)
 {
@@ -18,111 +19,111 @@ function xoops_module_update_tad_web($module, $old_version)
 
     if (!_IS_EZCLASS) {
         //修改討論區計數欄位名稱
-        if (!Utility::chk_chk1()) {
-            Utility::go_update1();
+        if (!Update::chk_chk1()) {
+            Update::go_update1();
         }
 
         //修改討論區發布者uid編號
-        if (!Utility::chk_chk2()) {
-            Utility::go_update2();
+        if (!Update::chk_chk2()) {
+            Update::go_update2();
         }
         //修改討論區發布者編號
-        if (!Utility::chk_chk3()) {
-            Utility::go_update3();
+        if (!Update::chk_chk3()) {
+            Update::go_update3();
         }
         //新增討論區發布者姓名欄位
-        if (!Utility::chk_chk4()) {
-            Utility::go_update4();
+        if (!Update::chk_chk4()) {
+            Update::go_update4();
         }
         //新增original_filename欄位
-        if (!Utility::chk_chk5()) {
-            Utility::go_update5();
+        if (!Update::chk_chk5()) {
+            Update::go_update5();
         }
         //將各班檔案收攏到各個子目錄下
-        Utility::go_update6();
+        Update::go_update6();
         //刪除錯誤的重複欄位及樣板檔
-        Utility::chk_tad_web_block();
+        Update::chk_tad_web_block();
 
         //修改分類名稱欄位名稱
-        if (Utility::chk_chk7()) {
-            Utility::go_update7();
+        if (Update::chk_chk7()) {
+            Update::go_update7();
         }
         //新增外掛表格
-        if (Utility::chk_chk10()) {
-            Utility::go_update10();
+        if (Update::chk_chk10()) {
+            Update::go_update10();
         }
         //新增角色表格
-        if (Utility::chk_chk11()) {
-            Utility::go_update11();
+        if (Update::chk_chk11()) {
+            Update::go_update11();
         }
         //新增區塊設定表格
-        if (Utility::chk_chk12()) {
-            Utility::go_update12();
+        if (Update::chk_chk12()) {
+            Update::go_update12();
         }
         //新增外掛偏好設定表格
-        if (Utility::chk_chk14()) {
-            Utility::go_update14();
+        if (Update::chk_chk14()) {
+            Update::go_update14();
         }
         //新增已使用空間
-        if (Utility::chk_chk15()) {
-            Utility::go_update15();
+        if (Update::chk_chk15()) {
+            Update::go_update15();
         }
         //新增權限表格
-        if (Utility::chk_chk16()) {
-            Utility::go_update16();
+        if (Update::chk_chk16()) {
+            Update::go_update16();
         }
         //新增標籤表格
-        if (Utility::chk_chk17()) {
-            Utility::go_update17();
+        if (Update::chk_chk17()) {
+            Update::go_update17();
         }
         //修正區塊索引
-        if (Utility::chk_chk18()) {
-            Utility::go_update18();
+        if (Update::chk_chk18()) {
+            Update::go_update18();
         }
         //刪除分享區塊設訂
-        if (Utility::chk_chk19()) {
-            Utility::go_update19();
+        if (Update::chk_chk19()) {
+            Update::go_update19();
         }
         //刪除分享區塊設訂
-        if (Utility::chk_chk19_1()) {
-            Utility::go_update19_1();
+        if (Update::chk_chk19_1()) {
+            Update::go_update19_1();
         }
         //修正權限表格索引
-        if (Utility::chk_chk20()) {
-            Utility::go_update20();
+        if (Update::chk_chk20()) {
+            Update::go_update20();
         }
         //新增通知表格
-        if (Utility::chk_chk21()) {
-            Utility::go_update21();
+        if (Update::chk_chk21()) {
+            Update::go_update21();
         }
         //新增寄信紀錄表格
-        if (Utility::chk_chk22()) {
-            Utility::go_update22();
+        if (Update::chk_chk22()) {
+            Update::go_update22();
         }
         //新增小幫手
-        if (Utility::chk_chk23()) {
-            Utility::go_update23();
+        if (Update::chk_chk23()) {
+            Update::go_update23();
         }
         //新增小幫手權限資料表
-        if (Utility::chk_chk24()) {
-            Utility::go_update24();
+        if (Update::chk_chk24()) {
+            Update::go_update24();
         }
         //新增檔案欄位
-        if (Utility::chk_fc_tag()) {
-            Utility::go_fc_tag();
+        if (Update::chk_fc_tag()) {
+            Update::go_fc_tag();
         }
     }
 
-    Utility::chk_sql_update();
+    Update::chk_sql_update();
 
     if (!_IS_EZCLASS) {
-        Utility::modify_share_block();
-        Utility::go_update_var();
-        Utility::add_log('update');
+        Update::modify_share_block();
+        Update::go_update_var();
+        Update::add_log('update');
     }
 
-    Utility::chk_plugin_update();
-    Utility::fiexd_block();
+    Update::chk_plugin_update();
+    Update::fiexd_block();
 
     return true;
 }

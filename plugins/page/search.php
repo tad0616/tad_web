@@ -11,7 +11,7 @@ function page_search($WebID, $queryarray, $limit = 10)
     $date_col = 'PageDate';
     $content_col = 'PageContent';
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
         $arr[$k] = $myts->addSlashes($v);
     }

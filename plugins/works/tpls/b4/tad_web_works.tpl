@@ -16,7 +16,7 @@
     });
   </script>
 
-  <{$formValidator_code}>
+
 
 
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
@@ -279,7 +279,7 @@
     </div>
   <{/if}>
   <{if $works_data}>
-    <{$FooTableJS}>
+
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/works/tpls/b4/tad_web_common_works.tpl"}>
   <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h2>

@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\FormValidator;
 /*-----------引入檔案區--------------*/
 include_once 'header.php';
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -66,7 +68,7 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
     left join ' . $xoopsDB->prefix('tad_web_mems') . ' as b on a.MemID=b.MemID
     left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
     where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$default_class}'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     while ($all = $xoopsDB->fetchArray($result)) {
         $students[] = $all;
     }
@@ -79,12 +81,8 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
     $xoopsTpl->assign('students', $students);
     // die(var_export($menu_var[$ColName]));
 
-    if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-        redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-    }
-    include_once TADTOOLS_PATH . '/formValidator.php';
-    $formValidator = new formValidator('#myForm', true);
-    $formValidator_code = $formValidator->render();
+    $FormValidator = new FormValidator('#myForm', true);
+    $FormValidator->render();
 }
 
 //執行分類動作

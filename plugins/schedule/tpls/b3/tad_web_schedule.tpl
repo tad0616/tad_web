@@ -1,7 +1,7 @@
 <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
 <{if $op=="edit_form"}>
 
-  <{$formValidator_code}>
+
 
 
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
@@ -157,7 +157,7 @@
     }
   </script>
 
-  <{$mColorPicker_code}>
+
   <form schedule="schedule.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
     <table class="table">
       <tr>
@@ -201,7 +201,7 @@
   <{if $WebID}>
     <{$cate_menu}>
   <{/if}>
-  <{$FooTableJS}>
+
 
   <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/b3/tad_web_common_schedule.tpl"}>
 

@@ -15,7 +15,7 @@ function menu_search($WebID, $queryarray, $limit = 10)
     $date_col = 'MenuDate';
     $content_col = 'MenuDesc';
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
         $arr[$k] = $myts->addSlashes($v);
     }

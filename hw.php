@@ -1,8 +1,9 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 include_once 'header.php';
 $sql = 'SELECT HomeworkID,HomeworkContent FROM ' . $xoopsDB->prefix('tad_web_homework') . ' ORDER BY HomeworkID DESC LIMIT 0,150';
-$result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+$result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 // $main   = "<table border=1>";
 $r_start = '<table class="table"><tbody><tr>';
 
@@ -65,4 +66,4 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     $main .= "<div class=\"row three-col\">{$data}</div>{$other}";
 }
 // $main .= "</table>";
-echo html5($main);
+echo Utility::html5($main);
