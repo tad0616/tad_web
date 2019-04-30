@@ -62,7 +62,7 @@
                 </div>
             </div>
 
-            <div class="text-center">            
+            <div class="text-center">
                 <input type="hidden" name="WebSort" size="20" value="<{$WebSort}>" id="WebSort">
 
                 <!--編號-->
@@ -174,7 +174,6 @@
         }
         </script>
 
-        <!--{$jeditable_set}-->
 
         <div>
         <a href="main.php?op=tad_web_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MA_TCW_TEAM}></a>

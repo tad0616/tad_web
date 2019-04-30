@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 /************** list_video *************/
 function list_video($WebID, $config = [])
 {
@@ -26,7 +27,7 @@ function random_video($WebID, $config = [])
     $block = [];
 
     $sql = 'select * from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='$WebID' order by rand() limit 0,1";
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount
@@ -57,7 +58,7 @@ function latest_video($WebID, $config = [])
     }
     $block = [];
     $sql = 'select * from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='$WebID' order by VideoDate desc , VideoID desc limit 0,1";
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount

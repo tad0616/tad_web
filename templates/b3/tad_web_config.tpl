@@ -509,7 +509,7 @@
       </div>
 
       <div id='tad_web_config_tab-6'>
-        <{$mColorPicker_code}>
+
         <div class="row">
           <div class="col-sm-12">
             <script language="JavaScript">

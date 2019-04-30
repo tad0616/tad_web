@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 /*
 
 $web_cate = new web_cate($WebID, "news","tad_web_news");
@@ -70,7 +72,7 @@ class web_cate
 
     public function set_WebID($WebID = '')
     {
-        $WebID = (int)$WebID;
+        $WebID = (int) $WebID;
 
         $this->WebID = $WebID;
     }
@@ -163,7 +165,7 @@ class web_cate
 
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='aboutus' and `CateEnable`='1' order by CateSort";
         // die($sql);
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while ($data = $xoopsDB->fetchArray($result)) {
             foreach ($data as $k => $v) {
                 $$k = $v;
@@ -174,7 +176,7 @@ class web_cate
 
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
         // die($sql);
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while ($data = $xoopsDB->fetchArray($result)) {
             foreach ($data as $k => $v) {
                 $$k = $v;
@@ -299,7 +301,7 @@ class web_cate
     {
         global $xoopsDB, $xoopsUser;
         if (!empty($newCateName) and empty($CateID)) {
-            $myts = MyTextSanitizer::getInstance();
+            $myts = \MyTextSanitizer::getInstance();
             $CateName = $myts->addSlashes($newCateName);
             $CateSort = $this->tad_web_cate_max_sort();
 
@@ -320,7 +322,7 @@ class web_cate
               '1',
               0
             )";
-            $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             //取得最後新增資料的流水編號
             $CateID = $xoopsDB->getInsertId();
@@ -334,7 +336,7 @@ class web_cate
     {
         global $xoopsDB;
         $sql = 'select max(`CateSort`) from `' . $xoopsDB->prefix('tad_web_cate') . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
 
         return ++$sort;
@@ -346,11 +348,11 @@ class web_cate
         global $xoopsDB;
 
         $sql = 'select max(`CateSort`) from `' . $xoopsDB->prefix('tad_web_cate') . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
 
         $sql = 'select `CateID` from `' . $xoopsDB->prefix('tad_web_cate') . "` where WebID='{$this->WebID}' and  ColName='{$this->ColName}' and ColSN='{$this->ColSN}' and CateSort='{$sort}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
         return $CateID;
@@ -361,12 +363,12 @@ class web_cate
     {
         global $xoopsDB, $isAdmin, $xoopsUser;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $CateName = $myts->addSlashes($newCateName);
 
         $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
        `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         return $CateID;
     }
@@ -379,7 +381,7 @@ class web_cate
             return;
         }
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `CateID` = '{$CateID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
 
         return $data;
@@ -398,7 +400,7 @@ class web_cate
         $andColName = empty($this->ColName) ? '' : "and `ColName`='{$this->ColName}'";
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where 1 $andWebID $andColName order by CateSort";
         // echo $sql . '<br>';
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while ($data = $xoopsDB->fetchArray($result)) {
             $CateID = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
@@ -427,7 +429,7 @@ class web_cate
 
         $sql = 'update `' . $xoopsDB->prefix($table) . "` set
        `CateID` = '{$move2CateID}' where `CateID`='{$CateID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //刪除tad_web_cate某筆資料資料
@@ -447,15 +449,15 @@ class web_cate
 
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_assistant_post') . "`
         where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "`
         where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate') . "`
         where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //刪除tad_web_cate某筆資料資料
@@ -475,7 +477,7 @@ class web_cate
 
         $sql = 'delete from `' . $xoopsDB->prefix($table) . "`
         where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //取得各分類下的檔案數
@@ -490,7 +492,7 @@ class web_cate
         }
         $counter = [];
         $sql = 'select count(*),CateID from `' . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {
             $counter[$CateID] = $count;
         }
@@ -508,6 +510,6 @@ class web_cate
         }
 
         $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set `CateEnable`='{$enable}' where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }

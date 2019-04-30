@@ -23,7 +23,7 @@
     });
   </script>
 
-  <{$formValidator_code}>
+
   <h2><{$smarty.const._MD_TCW_VIDEO_ADD}></h2>
   <div class="well">
     <form action="video.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
@@ -116,7 +116,7 @@
     </div>
   <{/if}>
   <{if $video_data}>
-    <{$FooTableJS}>
+
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/video/tpls/b3/tad_web_common_video.tpl"}>
   <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h2>

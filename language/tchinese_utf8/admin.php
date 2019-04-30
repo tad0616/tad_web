@@ -1,6 +1,5 @@
 <?php
-include_once '../../tadtools/language/' . $xoopsConfig['language'] . '/admin_common.php';
-
+xoops_loadLanguage('admin_common', 'tadtools');
 //main.php
 define('_MA_TCW_TEAMID', '編號');
 define('_MA_TCW_TEAMNAME', '網站名稱');

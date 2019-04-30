@@ -3,7 +3,7 @@
     請先登入
   <{else}>
 
-    <{$formValidator_code}>
+
     <script type="text/javascript">
 
       function typeInTextarea(Field, newText) {
@@ -191,7 +191,7 @@
     </div>
   <{/if}>
   <{if $discuss_data}>
-    <{$FooTableJS}>
+
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/b4/tad_web_common_discuss.tpl"}>
   <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h2>

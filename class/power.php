@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 /*
 //起始函數
 $this->power    = new power($WebID);
@@ -60,7 +62,7 @@ class power
 
     public function set_WebID($WebID = '')
     {
-        $WebID = (int)$WebID;
+        $WebID = (int) $WebID;
 
         $this->WebID = $WebID;
     }
@@ -125,7 +127,7 @@ class power
     {
         global $xoopsDB, $xoopsUser;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $power_name = $myts->addSlashes($power_name);
         $power_val = empty($power_val) ? $myts->addSlashes($_REQUEST[$power_name]) : $myts->addSlashes($power_val);
 
@@ -142,7 +144,7 @@ class power
           '{$power_name}',
           '{$power_val}'
         )";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //取得tad_web_power資料陣列
@@ -150,7 +152,7 @@ class power
     {
         global $xoopsDB;
         $sql = 'select power_val from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($power_val) = $xoopsDB->fetchRow($result);
 
         return $power_val;
@@ -162,7 +164,7 @@ class power
         global $xoopsDB;
 
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //檢查權限

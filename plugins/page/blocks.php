@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 function list_page($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -30,7 +31,7 @@ function page_menu($WebID, $config = [])
     WHERE `WebID` = '$WebID' AND `ColName` = 'page' AND `CateEnable` = '1'
     ORDER BY `CateSort` {$limit}";
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $main = [];
 
@@ -40,7 +41,7 @@ function page_menu($WebID, $config = [])
         $sql2 = 'SELECT `PageID`, `PageTitle`, `PageCount`
         FROM `' . $xoopsDB->prefix('tad_web_page') . "` WHERE `CateID` = '$CateID'
         ORDER BY `PageSort`";
-        $result2 = $xoopsDB->query($sql2) or web_error($sql2);
+        $result2 = $xoopsDB->query($sql2) or Utility::web_error($sql2);
         $content = [];
         $j = 0;
         while (list($PageID, $PageTitle, $PageCount) = $xoopsDB->fetchRow($result2)) {

@@ -1,6 +1,6 @@
 <{if $op=="edit_form"}>
 
-  <{$formValidator_code}>
+
   <link rel="stylesheet" href="class/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css">
 
   <h2><{$smarty.const._MD_TCW_MENU_ADD}></h2>
@@ -154,7 +154,7 @@
   <{if $WebID}>
     <{$cate_menu}>
   <{/if}>
-  <{$FooTableJS}>
+
   <div class="row">
     <div class="col-md-12">
       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/menu/tpls/b4/tad_web_common_menu.tpl"}>

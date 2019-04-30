@@ -491,7 +491,7 @@
 
   <hr>
   <h2><{$smarty.const._MD_TCW_BLOCK_TITLE_PIC}></h2>
-  <{$mColorPicker_code}>
+
   <form action="block.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
     <div class="form-group">
       <label class="col-sm-2 control-label">

@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 include_once 'header.php';
 
 // if (!$isMyWeb and $MyWebs) {
@@ -81,9 +82,9 @@ function keyman($WebID, $keyman)
     $where = !empty($keyman) ? "where name like '%{$keyman}%' or uname like '%{$keyman}%'" : '';
 
     $sql = 'select uid,uname,name from ' . $xoopsDB->prefix('users') . " $where order by uname";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $user_ok = $user_yet = '';
     while ($all = $xoopsDB->fetchArray($result)) {
         foreach ($all as $k => $v) {

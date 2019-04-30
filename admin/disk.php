@@ -1,4 +1,7 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Ztree;
+
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_disk.tpl';
 include_once 'header.php';
@@ -14,12 +17,12 @@ function list_all_web($defCateID = '')
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . '  ORDER BY used_size DESC';
 
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 50, 10);
+    $PageBar = Utility::getPageBar($sql, 50, 10);
     $bar = $PageBar['bar'];
     $sql = $PageBar['sql'];
     $total = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $_SESSION['quota'] = '';
     $data = [];
     $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
@@ -70,7 +73,7 @@ function get_all_dir_size()
 {
     global $xoopsDB;
     $sql = 'SELECT sum(`used_size`) FROM ' . $xoopsDB->prefix('tad_web') . ' ';
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     list($used_size) = $xoopsDB->fetchRow($result);
 
     return $used_size;
@@ -96,13 +99,9 @@ function view_file($WebID = '')
 
     $json = "{ id:0, pId:0, name:'{$dir}', url:'', target:'_self', open:'true'}, \n";
     $json .= dirToJson($dir);
-    // die($json);
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/ztree.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/ztree.php';
-    $ztree = new ztree('link_tree', $json, 'save_drag.php', 'save_sort.php', 'of_cate_sn', 'cate_sn');
-    $ztree_code = $ztree->render();
+
+    $Ztree = new Ztree('link_tree', $json, 'save_drag.php', 'save_sort.php', 'of_cate_sn', 'cate_sn');
+    $ztree_code = $Ztree->render();
     $xoopsTpl->assign('ztree_code', $ztree_code);
 
     // $xoopsTpl->assign('files', $files);

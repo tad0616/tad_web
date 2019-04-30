@@ -15,7 +15,7 @@ function news_search($WebID, $queryarray, $limit = 10)
     $date_col = 'NewsDate';
     $content_col = 'NewsContent';
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
         $arr[$k] = $myts->addSlashes($v);
     }
