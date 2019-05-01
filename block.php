@@ -63,7 +63,8 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
         }
         $CkEditor = new CkEditor("tad_web/{$WebID}/block", 'BlockContent[html]', $block['BlockContent']);
         $CkEditor->setHeight(250);
-        $CkEditor->render();
+        $editor = $CkEditor->render();
+        $xoopsTpl->assign('editor', $editor);
     } else {
         //修改
         $block_plugin = isset($block['plugin']) ? $block['plugin'] : $plugin;

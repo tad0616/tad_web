@@ -53,7 +53,8 @@ function tad_web_notice_form($NoticeID = '')
 
     $CkEditor = new CkEditor('tad_web', 'NoticeContent', $NoticeContent);
     $CkEditor->setHeight(400);
-    $CkEditor->render();
+    $NoticeContent_editor = $CkEditor->render();
+    $xoopsTpl->assign('NoticeContent_editor', $NoticeContent_editor);
 
     //加入Token安全機制
     include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';

@@ -352,7 +352,8 @@ class tad_web_news
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/file");
         $CkEditor = new CkEditor("tad_web/{$this->WebID}/news", 'NewsContent', $NewsContent);
         $CkEditor->setHeight(300);
-        $CkEditor->render();
+        $NewsContent_editor = $CkEditor->render();
+        $xoopsTpl->assign('NewsContent_editor', $NewsContent_editor);
 
         $xoopsTpl->assign('next_op', $op);
 

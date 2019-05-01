@@ -20,7 +20,8 @@ function schedule_template()
     $CkEditor = new CkEditor('tad_web/schedule', 'schedule_template', $schedule_template);
     $CkEditor->setHeight(300);
     $CkEditor->setContentCss(XOOPS_URL . '/modules/tad_web/plugins/schedule/schedule.css');
-    $CkEditor->render();
+    $schedule_template = $CkEditor->render();
+    $xoopsTpl->assign('schedule_template', $schedule_template);
     $xoopsTpl->assign('schedule_subjects', $xoopsModuleConfig['schedule_subjects']);
 }
 
