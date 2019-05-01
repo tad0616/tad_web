@@ -316,7 +316,8 @@ class tad_web_page
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/page/file");
         $CkEditor = new CkEditor("tad_web/{$this->WebID}/page", 'PageContent', $PageContent);
         $CkEditor->setHeight(500);
-        $CkEditor->render();
+        $PageContent_editor = $CkEditor->render();
+        $xoopsTpl->assign('PageContent_editor', $PageContent_editor);
 
         $tags_form = $this->tags->tags_menu('PageID', $PageID);
         $xoopsTpl->assign('tags_form', $tags_form);
