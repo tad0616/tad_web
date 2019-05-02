@@ -78,7 +78,7 @@ function tad_web_config($WebID, $configs)
         global $xoopsConfig;
         xoops_loadLanguage('county', 'tad_login');
         xoops_loadLanguage('blocks', 'tad_login');
-        include_once XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
+        require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
 
         $config_handler = xoops_getHandler('config');
         $modConfig = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));

@@ -284,6 +284,11 @@ function tad_web_login($WebID, $config = [])
 
     $auth_method = get_sys_openid();
     if ($auth_method) {
+
+        require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
+        xoops_loadLanguage('county', 'tad_login');
+        xoops_loadLanguage('blocks', 'tad_login');
+
         $i = 0;
 
         // $login_method_arr = explode(';', $login_method);
@@ -292,8 +297,8 @@ function tad_web_login($WebID, $config = [])
                 // die(var_export($login_config));
                 continue;
             }
-            $method_const = '_' . mb_strtoupper($method);
-            $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
+            // $method_const = '_' . mb_strtoupper($method);
+            // $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
 
             if ('facebook' === $method) {
                 $tlogin[$i]['link'] = facebook_login('return');
@@ -302,9 +307,18 @@ function tad_web_login($WebID, $config = [])
             } else {
                 $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
             }
-            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
-            $tlogin[$i]['text'] = $loginTitle;
+            // $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+            // $tlogin[$i]['text'] = $loginTitle;
 
+            $tlogin[$i]['img'] = in_array($method, $oidc_array) ? XOOPS_URL . "/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png" : XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+
+            if (in_array($method, $oidc_array)) {
+                $tlogin[$i]['text'] = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . ' OIDC ' . _MB_TADLOGIN_LOGIN;
+            } elseif (in_array($method, $oidc_array2)) {
+                $tlogin[$i]['text'] = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . _MB_TADLOGIN_LOGIN;
+            } else {
+                $tlogin[$i]['text'] = constant('_' . mb_strtoupper($method)) . ' OpenID ' . _MB_TADLOGIN_LOGIN;
+            }
             $i++;
         }
 
