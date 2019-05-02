@@ -116,6 +116,7 @@ function tad_web_menu($options)
 
     $TadLoginXoopsModule = $modhandler->getByDirname('tad_login');
     if ($TadLoginXoopsModule) {
+        require XOOPS_ROOT_PATH . '/modules/tad_login/function.php';
         require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
         xoops_loadLanguage('county', 'tad_login');
         xoops_loadLanguage('blocks', 'tad_login');
