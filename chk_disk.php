@@ -1,5 +1,6 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+
 include_once 'header.php';
 
 $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
@@ -38,28 +39,3 @@ if (is_dir($dir)) {
     }
 }
 echo "無效資料夾 $bad 個，不存在網站 $no 個";
-
-function Utility::delete_directory($dirname)
-{
-    if (is_dir($dirname)) {
-        $dir_handle = opendir($dirname);
-    }
-
-    if (!$dir_handle) {
-        return false;
-    }
-
-    while ($file = readdir($dir_handle)) {
-        if ('.' !== $file && '..' !== $file) {
-            if (!is_dir($dirname . '/' . $file)) {
-                unlink($dirname . '/' . $file);
-            } else {
-                Utility::delete_directory($dirname . '/' . $file);
-            }
-        }
-    }
-    closedir($dir_handle);
-    rmdir($dirname);
-
-    return true;
-}

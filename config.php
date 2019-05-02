@@ -77,6 +77,8 @@ function tad_web_config($WebID, $configs)
     if ($TadLoginXoopsModule) {
         global $xoopsConfig;
         xoops_loadLanguage('county', 'tad_login');
+        xoops_loadLanguage('blocks', 'tad_login');
+        include_once XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
 
         $config_handler = xoops_getHandler('config');
         $modConfig = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
@@ -84,11 +86,19 @@ function tad_web_config($WebID, $configs)
         $auth_method = $modConfig['auth_method'];
         foreach ($auth_method as $method) {
             $method_const = '_' . mb_strtoupper($method);
-            $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
+            if (in_array($method, $oidc_array)) {
+                $loginTitle = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . ' OIDC ' . _MB_TADLOGIN_LOGIN;
+            } elseif (in_array($method, $oidc_array2)) {
+                $loginTitle = constant('_' . mb_strtoupper($all_oidc2[$method]['tail'])) . ' ' . _TADLOGIN_LDAP;
+            } else {
+                $loginTitle = constant('_' . mb_strtoupper($method)) . ' OpenID ' . _MB_TADLOGIN_LOGIN;
+
+            }
 
             $login_defval[] = $method;
             $login_method[$loginTitle] = $method;
         }
+
     }
 
     $xoopsTpl->assign('login_method_count', count($login_defval));
