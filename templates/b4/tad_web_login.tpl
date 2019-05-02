@@ -199,7 +199,7 @@
         <div id="openid_login" style="margin: 0px auto;">
           <{foreach from=$tlogin item=login}>
             <a href="<{$login.link}>" style="padding: 3px; margin: 5px; display: inline-block;">
-              <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
+              <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" style="width: 32px; height: 32px;">
             </a>
           <{/foreach}>
         </div>
