@@ -182,7 +182,7 @@
                 <{/if}>
                 <div class="col-md-4">
                   <label class="checkbox">
-                    <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}><{$openid}>
+                    <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}>
                   </label>
                 </div>
                 <{assign var="i" value=$i+1}>
