@@ -3,6 +3,10 @@ use XoopsModules\Tadtools\ResponsiveSlides;
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
 
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+
 //區塊主函式 (相簿(tad_web_image))
 function tad_web_image()
 {

@@ -1,5 +1,10 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+
 //區塊主函式 (班級選單(tad_webs))
 function tad_web_list($options)
 {
