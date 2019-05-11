@@ -1,6 +1,9 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Ztree;
+
 /*-----------引入檔案區--------------*/
-$GLOBALS['xoopsOption']['template_main'] = 'tad_web_adm_disk.tpl';
+$xoopsOption['template_main'] = 'tad_web_adm_disk.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
 require_once dirname(__DIR__) . '/class/cate.php';
@@ -14,17 +17,17 @@ function list_all_web($defCateID = '')
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . '  ORDER BY used_size DESC';
 
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 50, 10);
+    $PageBar = Utility::getPageBar($sql, 50, 10);
     $bar = $PageBar['bar'];
     $sql = $PageBar['sql'];
     $total = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $_SESSION['quota'] = '';
     $data = [];
     $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
 
-    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int)$xoopsModuleConfig['user_space_quota'];
+    $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int) $xoopsModuleConfig['user_space_quota'];
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
         $WebID = $all['WebID'];
@@ -35,7 +38,7 @@ function list_all_web($defCateID = '')
         $size = size2mb($dir_size);
 
         $space_quota = get_web_config('space_quota', $WebID);
-        $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int)$space_quota;
+        $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int) $space_quota;
 
         $data[$WebID]['space_quota'] = $user_space_quota;
         $data[$WebID]['disk_used_space'] = $size;
@@ -70,7 +73,7 @@ function get_all_dir_size()
 {
     global $xoopsDB;
     $sql = 'SELECT sum(`used_size`) FROM ' . $xoopsDB->prefix('tad_web') . ' ';
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     list($used_size) = $xoopsDB->fetchRow($result);
 
     return $used_size;
@@ -96,13 +99,9 @@ function view_file($WebID = '')
 
     $json = "{ id:0, pId:0, name:'{$dir}', url:'', target:'_self', open:'true'}, \n";
     $json .= dirToJson($dir);
-    // die($json);
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/ztree.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/ztree.php';
-    $ztree = new ztree('link_tree', $json, 'save_drag.php', 'save_sort.php', 'of_cate_sn', 'cate_sn');
-    $ztree_code = $ztree->render();
+
+    $Ztree = new Ztree('link_tree', $json, 'save_drag.php', 'save_sort.php', 'of_cate_sn', 'cate_sn');
+    $ztree_code = $Ztree->render();
     $xoopsTpl->assign('ztree_code', $ztree_code);
 
     // $xoopsTpl->assign('files', $files);
@@ -186,7 +185,7 @@ function save_disk_setup()
 {
     global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
     foreach ($_POST['space_quota'] as $WebID => $user_space_quota) {
-        $space_quota = ($user_space_quota == $xoopsModuleConfig['user_space_quota']) ? 'default' : (int)$user_space_quota;
+        $space_quota = ($user_space_quota == $xoopsModuleConfig['user_space_quota']) ? 'default' : (int) $user_space_quota;
         save_web_config('space_quota', $space_quota, $WebID);
     }
 }

@@ -1,5 +1,8 @@
 <?php
-
+use XoopsModules\Tadtools\CkEditor;
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\JqueryPrintPreview;
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 
 class tad_web_news
@@ -88,12 +91,12 @@ class tad_web_news
         $to_limit = empty($limit) ? 10 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar = getPageBar($sql, $to_limit, 10);
+        $PageBar = Utility::getPageBar($sql, $to_limit, 10);
         $bar     = $PageBar['bar'];
         $sql     = $PageBar['sql'];
         $total   = $PageBar['total'];
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = [];
 
@@ -148,12 +151,8 @@ class tad_web_news
             $i++;
         }
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_news_func', "news.php?op=delete&WebID={$this->WebID}&NewsID=", 'NewsID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_news_func', "news.php?op=delete&WebID={$this->WebID}&NewsID=", 'NewsID');
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
@@ -183,7 +182,7 @@ class tad_web_news
         $andEnable = $isMyWeb ? '' : "and `NewsEnable`='1'";
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='{$NewsID}' {$andEnable}";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
         $data   = $all;
 
@@ -259,19 +258,11 @@ class tad_web_news
         }
         $xoopsTpl->assign('cate', $cate);
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_news_func', "news.php?op=delete&WebID={$WebID}&NewsID=", 'NewsID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_news_func', "news.php?op=delete&WebID={$WebID}&NewsID=", 'NewsID');
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php';
-        $print_preview = new print_preview('a.print-preview');
-        $print_preview->render();
+        $JqueryPrintPreview = new JqueryPrintPreview('a.print-preview');
+        $JqueryPrintPreview->render();
 
         $xoopsTpl->assign('module_css', '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print">');
 
@@ -353,22 +344,16 @@ class tad_web_news
 
         $op = (empty($NewsID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-        }
-        require_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator      = new formValidator('#myForm', true);
-        $formValidator_code = $formValidator->render();
-        $xoopsTpl->assign('formValidator_code', $formValidator_code);
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/ck.php';
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/image");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/file");
-        $ck = new CKEditor("tad_web/{$this->WebID}/news", 'NewsContent', $NewsContent);
-        $ck->setHeight(300);
-        $editor = $ck->render();
-        $xoopsTpl->assign('NewsContent_editor', $editor);
+        $CkEditor = new CkEditor("tad_web/{$this->WebID}/news", 'NewsContent', $NewsContent);
+        $CkEditor->setHeight(300);
+        $NewsContent_editor = $CkEditor->render();
+        $xoopsTpl->assign('NewsContent_editor', $NewsContent_editor);
 
         $xoopsTpl->assign('next_op', $op);
 
@@ -396,7 +381,7 @@ class tad_web_news
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $NewsTitle = $myts->addSlashes($_POST['NewsTitle']);
         $NewsUrl = $myts->addSlashes($_POST['NewsUrl']);
         $NewsContent = $myts->addSlashes($_POST['NewsContent']);
@@ -416,7 +401,7 @@ class tad_web_news
         $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_news') . "
         (`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsUrl` , `WebID` , `NewsCounter` , `uid` , `NewsEnable`)
         values('{$CateID}','{$NewsTitle}' , '{$NewsContent}' , '{$NewsDate}' , '{$toCal}' , '{$NewsUrl}' , '{$WebID}'  , '0' , '{$uid}', '{$NewsEnable}' )";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $NewsID = $xoopsDB->getInsertId();
@@ -439,7 +424,7 @@ class tad_web_news
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts        = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $NewsTitle   = $myts->addSlashes($_POST['NewsTitle']);
         $NewsUrl     = $myts->addSlashes($_POST['NewsUrl']);
         $NewsContent = $myts->addSlashes($_POST['NewsContent']);
@@ -470,7 +455,7 @@ class tad_web_news
          `NewsUrl` = '{$NewsUrl}',
          `NewsEnable`='{$NewsEnable}'
         where NewsID='$NewsID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('NewsID', $NewsID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -488,13 +473,13 @@ class tad_web_news
     {
         global $xoopsDB, $TadUpFiles;
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='$NewsID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'NewsID', $NewsID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='$NewsID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('NewsID', $NewsID);
         $TadUpFiles->del_files();
@@ -511,7 +496,7 @@ class tad_web_news
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql = 'select NewsID,CateID from ' . $xoopsDB->prefix('tad_web_news') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($NewsID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($NewsID);
             $allCateID[$CateID] = $CateID;
@@ -527,7 +512,7 @@ class tad_web_news
     {
         global $xoopsDB;
         $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_news') . " where WebID='{$this->WebID}' and `NewsEnable`='1'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -538,7 +523,7 @@ class tad_web_news
         global $xoopsDB;
         $sql = 'update ' . $xoopsDB->prefix('tad_web_news') . " set `NewsCounter`=`NewsCounter`+1 where `NewsID`='{$NewsID}' and `NewsEnable`='1'";
         // echo $sql . time() . "<br>";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_news資料
@@ -550,7 +535,7 @@ class tad_web_news
         }
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='$NewsID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -566,7 +551,7 @@ class tad_web_news
         // if (isset($_GET['test'])) {
         //     die(var_export($sql));
         // }
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
         while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
 
@@ -601,7 +586,7 @@ class tad_web_news
         $andEnd    = empty($end_date) ? '' : "and NewsDate <= '{$end_date}'";
 
         $sql    = 'select NewsID,NewsTitle,NewsDate,CateID from ' . $xoopsDB->prefix('tad_web_news') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by NewsDate";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
         $main_data = [];

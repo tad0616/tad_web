@@ -1,15 +1,16 @@
 <?php
-
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\MColorPicker;
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 
 if ('enable_my_web' === $_REQUEST['op']) {
-    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_config.tpl';
+    $xoopsOption['template_main'] = 'tad_web_config.tpl';
 } else {
     if (!empty($_REQUEST['WebID']) and $isMyWeb) {
-        $GLOBALS['xoopsOption']['template_main'] = 'tad_web_config.tpl';
+        $xoopsOption['template_main'] = 'tad_web_config.tpl';
     } elseif (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
     } else {
@@ -24,7 +25,7 @@ function tad_web_config($WebID, $configs)
 {
     global $xoopsDB, $xoopsTpl, $MyWebs, $op, $TadUpFiles, $isMyWeb;
 
-    get_jquery(true);
+    Utility::get_jquery(true);
     $xoopsTpl->assign('config', true);
     if (empty($configs)) {
         $configs = get_web_all_config($WebID);
@@ -60,20 +61,11 @@ function tad_web_config($WebID, $configs)
     $upform = $TadUpFiles->upform(true, 'upfile', '1', false);
     $xoopsTpl->assign('upform_teacher', $upform);
 
-    //可愛刪除
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-    $sweet_alert = new sweet_alert();
-    $sweet_alert->render('delete_my_web', "config.php?WebID=$WebID&op=delete_tad_web_chk&delWebID=", 'WebID');
+    $SweetAlert = new SweetAlert();
+    $SweetAlert->render('delete_my_web', "config.php?WebID=$WebID&op=delete_tad_web_chk&delWebID=", 'WebID');
 
-    if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once TADTOOLS_PATH . '/formValidator.php';
-    $formValidator = new formValidator('.myForm', true);
-    $formValidator->render();
+    $FormValidator = new FormValidator('.myForm', true);
+    $FormValidator->render();
 
     //登入設定
     // $login_method   = '';
@@ -84,7 +76,9 @@ function tad_web_config($WebID, $configs)
     $login_method = $login_defval = [];
     if ($TadLoginXoopsModule) {
         global $xoopsConfig;
-        require_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+        xoops_loadLanguage('county', 'tad_login');
+        xoops_loadLanguage('blocks', 'tad_login');
+        require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
 
         $configHandler = xoops_getHandler('config');
         $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
@@ -92,11 +86,19 @@ function tad_web_config($WebID, $configs)
         $auth_method = $modConfig['auth_method'];
         foreach ($auth_method as $method) {
             $method_const = '_' . mb_strtoupper($method);
-            $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
+            if (in_array($method, $oidc_array)) {
+                $loginTitle = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . ' OIDC ' . _MB_TADLOGIN_LOGIN;
+            } elseif (in_array($method, $oidc_array2)) {
+                $loginTitle = constant('_' . mb_strtoupper($all_oidc2[$method]['tail'])) . ' ' . _TADLOGIN_LDAP;
+            } else {
+                $loginTitle = constant('_' . mb_strtoupper($method)) . ' OpenID ' . _MB_TADLOGIN_LOGIN;
+
+            }
 
             $login_defval[] = $method;
             $login_method[$loginTitle] = $method;
         }
+
     }
 
     $xoopsTpl->assign('login_method_count', count($login_defval));
@@ -141,24 +143,18 @@ function tad_web_config($WebID, $configs)
     $TadUpFilesLogo->set_col('logo', $WebID);
     $xoopsTpl->assign('all_logo', $TadUpFilesLogo->get_file_for_smarty());
 
-    //顏色設定
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
-    $mColorPicker = new mColorPicker('.color');
-    $mColorPicker_code = $mColorPicker->render();
-    $xoopsTpl->assign('mColorPicker_code', $mColorPicker_code);
+    $MColorPicker = new MColorPicker('.color');
+    $MColorPicker->render();
 
     //管理員設定
     $web_admin_arr = get_web_roles($WebID, 'admin');
     $web_admins = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
     $sql = 'SELECT uid,uname,name FROM ' . $xoopsDB->prefix('users') . ' ORDER BY uname';
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     // if($_GET['test']==1){
     // die($web_admins);
     // }
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $user_ok = $user_yet = '';
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
@@ -188,13 +184,13 @@ function update_tad_web()
 {
     global $xoopsDB, $xoopsUser, $WebID;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $WebName = $myts->addSlashes($_POST['WebName']);
     $WebOwner = $myts->addSlashes($_POST['WebOwner']);
     $CateID = (int) $_POST['CateID'];
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set CateID='{$CateID}', `WebName` = '{$WebName}', `WebOwner` = '{$WebOwner}' where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     unset($_SESSION['tad_web'][$WebID]);
 
@@ -215,7 +211,7 @@ function delete_web_config($ConfigName = '')
     global $xoopsDB, $xoopsUser, $WebID, $MyWebs;
 
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_config') . " where `ConfigName`='{$ConfigName}' and `WebID`='{$MyWebs}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
 }
@@ -225,20 +221,20 @@ function save_plugins($WebID)
 {
     global $xoopsDB;
     $plugins = get_plugins($WebID);
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_plugins') . " where WebID='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     foreach ($plugins as $plugin) {
         $dirname = $plugin['dirname'];
         $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
         $PluginEnable = ('1' == $_POST['plugin_enable'][$dirname]) ? '1' : '0';
 
         $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$plugin['db']['PluginSort']}', '{$PluginEnable}', '{$WebID}')";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         // $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set BlockEnable='$PluginEnable' where `WebID`='{$WebID}' and `plugin`='{$dirname}'";
-        // $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     mk_menu_var_file($WebID);
@@ -253,13 +249,13 @@ function save_adm($web_admins, $WebID)
     }
 
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_roles') . " where `role`='admin' and `WebID`='$WebID' ";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     if ($web_admins) {
         $web_admin_arr = explode(',', $web_admins);
         foreach ($web_admin_arr as $uid) {
             $sql = 'insert into ' . $xoopsDB->prefix('tad_web_roles') . " (`uid`, `role`, `term`, `enable`, `WebID`) values('{$uid}', 'admin', '0000-00-00', '1', '{$WebID}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
 }
@@ -296,18 +292,18 @@ function enabe_plugin($dirname = '', $WebID = '')
 {
     global $xoopsDB;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $dirname = $myts->addSlashes($dirname);
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web_plugins') . " set
    `PluginEnable` = '1'
     where WebID ='{$WebID}' and `PluginDirname`='{$dirname}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web_blocks') . " set
    `BlockEnable` = '1'
     where WebID ='{$WebID}' and `plugin`='{$dirname}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     mk_menu_var_file($WebID);
 }
@@ -321,7 +317,7 @@ function unable_my_web($WebID)
     }
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebEnable` = '0' where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $_SESSION['tad_web'][$WebID]['WebEnable'] = 0;
 }
 
@@ -336,7 +332,7 @@ function enable_my_web($WebID)
     }
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebEnable` = '1' where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $_SESSION['tad_web'][$WebID]['WebEnable'] = 1;
 }
 
@@ -368,7 +364,7 @@ function default_color($WebID = '')
     ];
     foreach ($del_item as $ConfigName) {
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_config') . " where WebID ='{$WebID}' and ConfigName='{$ConfigName}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);

@@ -10,7 +10,7 @@
   <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h2>
 <{/if}>
 
-<{$FooTableJS}>
+
 
 <{if $video_data}>
   <{if $isMyWeb}>

@@ -1,6 +1,9 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
-$GLOBALS['xoopsOption']['template_main'] = 'tad_web_adm_cate.tpl';
+$xoopsOption['template_main'] = 'tad_web_adm_cate.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
 /*-----------function區--------------*/
@@ -46,16 +49,10 @@ function tad_web_cate_form($CateID = '')
     $op = empty($CateID) ? 'save_tad_web_cate' : 'update_tad_web_cate';
     //$op = "replace_tad_web_cate";
 
-    //套用formValidator驗證機制
-    if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once TADTOOLS_PATH . '/formValidator.php';
-    $formValidator = new formValidator('#myForm', true);
-    $formValidator_code = $formValidator->render();
+    $FormValidator = new FormValidator('#myForm', true);
+    $FormValidator->render();
 
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('formValidator_code', $formValidator_code);
     $xoopsTpl->assign('now_op', 'tad_web_cate_form');
     $xoopsTpl->assign('next_op', $op);
 }
@@ -65,7 +62,7 @@ function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
 {
     global $xoopsDB;
     $sql = 'select max(`CateSort`) from `' . $xoopsDB->prefix('tad_web_cate') . "` where WebID='{$WebID}' and  ColName='{$ColName}' and ColSN='{$ColSN}'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     list($sort) = $xoopsDB->fetchRow($result);
 
     return ++$sort;
@@ -76,7 +73,7 @@ function save_tad_web_cate()
 {
     global $xoopsDB, $xoopsUser, $isAdmin;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     $CateID = (int) $_POST['CateID'];
     $WebID = (int) $_POST['WebID'];
@@ -104,7 +101,7 @@ function save_tad_web_cate()
         '{$CateEnable}',
         0
     )";
-    $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $CateID = $xoopsDB->getInsertId();
@@ -117,12 +114,12 @@ function update_tad_web_cate($CateID = '')
 {
     global $xoopsDB, $isAdmin, $xoopsUser;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $CateName = $myts->addSlashes($_POST['CateName']);
 
     $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
        `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return $CateID;
 }
@@ -132,7 +129,7 @@ function update_tad_web_cate_arr($CateID = '')
 {
     global $xoopsDB, $isAdmin, $xoopsUser;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $web_cate_arr = $myts->addSlashes($_POST['web_cate_arr']);
     $web_cate_blank_arr = $myts->addSlashes($_POST['web_cate_blank_arr']);
 
@@ -141,14 +138,14 @@ function update_tad_web_cate_arr($CateID = '')
     $i = 1;
     foreach ($web_cate_array as $WebID) {
         $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `CateID` = '{$CateID}', WebSort='{$i}' where `WebID` ='{$WebID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i++;
     }
 
     if ($web_cate_blank_arr) {
         $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set
        `CateID` = '0' where `WebID` in($web_cate_blank_arr)";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     return $CateID;
@@ -165,11 +162,11 @@ function delete_tad_web_cate($CateID = '')
 
     $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set
        `CateID` = '0' where `CateID`='{$CateID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate') . "`
     where `CateID` = '{$CateID}'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 }
 
 //以流水號取得某筆tad_web_cate資料
@@ -183,7 +180,7 @@ function get_tad_web_cate($CateID = '')
 
     $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "`
     where `CateID` = '{$CateID}'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $data = $xoopsDB->fetchArray($result);
 
     return $data;
@@ -194,10 +191,10 @@ function tad_web_list_cate()
 {
     global $xoopsDB, $xoopsTpl, $isAdmin;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
-    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . "` WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web_cate') . " WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $all_content = [];
 
@@ -237,19 +234,14 @@ function tad_web_list_cate()
         $i++;
     }
 
-    //刪除確認的JS
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-    $sweet_alert_obj = new sweet_alert();
-    $sweet_alert_obj->render(
+    $SweetAlert = new SweetAlert();
+    $SweetAlert->render(
         'delete_tad_web_cate_func',
         "{$_SERVER['PHP_SELF']}?op=delete_tad_web_cate&CateID=",
         'CateID'
     );
 
-    $xoopsTpl->assign('tad_web_cate_jquery_ui', get_jquery(true));
+    $xoopsTpl->assign('tad_web_cate_jquery_ui', Utility::get_jquery(true));
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
     $xoopsTpl->assign('isAdmin', $isAdmin);
     $xoopsTpl->assign('all_content', $all_content);

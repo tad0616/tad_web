@@ -1,14 +1,20 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+
 //區塊主函式 (班級選單(tad_webs))
 function tad_web_list($options)
 {
     global $xoopsDB;
 
-    $DefWebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
+    $DefWebID = isset($_REQUEST['WebID']) ? (int) $_REQUEST['WebID'] : '';
     $block['DefWebID'] = $DefWebID;
 
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {

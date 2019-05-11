@@ -1,4 +1,8 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_files
 {
     public $WebID = 0;
@@ -81,12 +85,12 @@ class tad_web_files
         //     die($sql);
         // }
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar = getPageBar($sql, $to_limit, 10);
+        $PageBar = Utility::getPageBar($sql, $to_limit, 10);
         $bar = $PageBar['bar'];
         $sql = $PageBar['sql'];
         $total = $PageBar['total'];
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = $data = [];
 
@@ -140,13 +144,8 @@ class tad_web_files
             $i++;
         }
 
-        //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_files_func', "files.php?op=delete&WebID={$this->WebID}&fsn=", 'fsn');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_files_func', "files.php?op=delete&WebID={$this->WebID}&fsn=", 'fsn');
 
         //刪除檔案
         if (is_array($need_del)) {
@@ -238,13 +237,8 @@ class tad_web_files
         $upform = $TadUpFiles->upform(true, 'upfile', '1', true);
         $xoopsTpl->assign('upform', $upform);
 
-        //套用formValidator驗證機制
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator = new formValidator('#myForm', true);
-        $formValidator->render();
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
         $tags_form = $this->tags->tags_menu('fsn', $fsn);
         $xoopsTpl->assign('tags_form', $tags_form);
@@ -260,7 +254,7 @@ class tad_web_files
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
 
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
@@ -276,7 +270,7 @@ class tad_web_files
           (`uid` , `CateID` , `file_date`  , `WebID` , `file_link` , `file_description`)
           values('{$uid}' , '{$CateID}' , now()  , '{$WebID}' , '{$file_link}' , '{$file_description}')";
 
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $fsn = $xoopsDB->getInsertId();
@@ -299,7 +293,7 @@ class tad_web_files
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
 
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
@@ -322,7 +316,7 @@ class tad_web_files
         `file_description` = '{$file_description}'
         where fsn='$fsn' $anduid";
         // die($sql);
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ('upload_file' === $file_method) {
             $TadUpFiles->set_col('fsn', $fsn);
@@ -341,7 +335,7 @@ class tad_web_files
     {
         global $xoopsDB, $TadUpFiles;
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_files') . " where fsn='$fsn'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'fsn', $fsn)) {
             $anduid = onlyMine();
@@ -353,7 +347,7 @@ class tad_web_files
         }
 
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_files') . " where fsn='$fsn' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('fsn', $fsn);
 
@@ -369,7 +363,7 @@ class tad_web_files
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql = 'select fsn,CateID from ' . $xoopsDB->prefix('tad_web_files') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($fsn, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($fsn);
             $allCateID[$CateID] = $CateID;
@@ -385,7 +379,7 @@ class tad_web_files
     {
         global $xoopsDB;
         $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_files') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
 
         return $count;
@@ -400,7 +394,7 @@ class tad_web_files
         }
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_files') . " where fsn='$fsn'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
 
         return $data;
@@ -415,7 +409,7 @@ class tad_web_files
         $andEnd = empty($end_date) ? '' : "and file_date <= '{$end_date}'";
 
         $sql = 'select fsn,file_description,file_date,CateID from ' . $xoopsDB->prefix('tad_web_files') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by file_date";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i = 0;
         $main_data = [];

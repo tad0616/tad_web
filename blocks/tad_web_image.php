@@ -1,4 +1,11 @@
 <?php
+use XoopsModules\Tadtools\ResponsiveSlides;
+use XoopsModules\Tadtools\TadUpFiles;
+use XoopsModules\Tadtools\Utility;
+
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
 
 //區塊主函式 (相簿(tad_web_image))
 function tad_web_image()
@@ -14,7 +21,7 @@ function tad_web_image()
 
     $sql = 'select a.ActionName,a.ActionID,b.WebTitle,a.WebID from ' . $xoopsDB->prefix('tad_web_action') . ' as a join ' . $xoopsDB->prefix('tad_web') . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $and_webid order by rand() limit 0,1";
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     list($ActionName, $ActionID, $WebTitle, $WebID) = $xoopsDB->fetchRow($result);
 
@@ -28,7 +35,6 @@ function tad_web_image()
     $block['ActionID'] = $ActionID;
     $block['ActionName'] = $ActionName;
 
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
     $tad_web_action_image = new TadUpFiles('tad_web');
 
     $subdir = isset($WebID) ? "/{$WebID}" : '';
@@ -36,9 +42,7 @@ function tad_web_image()
     $tad_web_action_image->set_col('ActionID', $ActionID);
     $photos = $tad_web_action_image->get_file();
 
-    if (file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/ResponsiveSlides.php')) {
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/ResponsiveSlides.php';
-        $ResponsiveSlides = new slider(120, false);
+    $ResponsiveSlides = new ResponsiveSlides(120, false);
         $i = 1;
         foreach ($photos as $pic) {
             if ($pic['description'] == $pic['original_filename']) {
@@ -49,7 +53,6 @@ function tad_web_image()
         }
 
         $slide_images = $ResponsiveSlides->render();
-    }
 
     $block['slide_images'] = $slide_images;
 

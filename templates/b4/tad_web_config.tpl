@@ -182,7 +182,7 @@
                 <{/if}>
                 <div class="col-md-4">
                   <label class="checkbox">
-                    <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}><{$openid}>
+                    <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}>
                   </label>
                 </div>
                 <{assign var="i" value=$i+1}>
@@ -517,7 +517,7 @@
       </div>
 
       <div id='tad_web_config_tab-6'>
-        <{$mColorPicker_code}>
+
         <div class="row">
           <div class="col-md-12">
             <script language="JavaScript">

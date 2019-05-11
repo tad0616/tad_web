@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 if (video_onUpdate1_chk()) {
     video_onUpdate1_go();
@@ -21,7 +22,7 @@ function video_onUpdate1_go()
 {
     global $xoopsDB;
     $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tad_web_video') . " ADD `VideoSort` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '影片排序'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return true;
 }

@@ -2,6 +2,8 @@
 
 namespace XoopsModules\Tad_web;
 
+use XoopsModules\Tadtools\Utility;
+
 /*
 //起始函數
 $this->tags    = new  \XoopsModules\Tad_web\Tags($WebID);
@@ -131,9 +133,9 @@ class Tags
     {
         global $xoopsDB, $xoopsUser;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID`='{$this->WebID}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         if ($tags) {
             foreach ($tags as $tag) {
                 $tag = trim($tag);
@@ -152,7 +154,7 @@ class Tags
                   '{$col_sn}',
                   '{$tag}'
                 )";
-                $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+                $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
         }
 
@@ -174,7 +176,7 @@ class Tags
               '{$col_sn}',
               '{$tag}'
             )";
-            $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
 
@@ -202,7 +204,7 @@ class Tags
         $and_col_sn = empty($col_sn) ? '' : "and `col_sn`='{$col_sn}'";
         $sql = 'select tag_name , count(*) from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($tag_name, $count) = $xoopsDB->fetchRow($result)) {
             $tags_arr[$tag_name] = $count;
         }
@@ -217,6 +219,6 @@ class Tags
         $and_tag_name = empty($tag_name) ? '' : "and `tag_name`='{$tag_name}'";
 
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' {$and_tag_name}";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }

@@ -1,4 +1,9 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\MColorPicker;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_schedule
 {
     public $WebID = 0;
@@ -62,7 +67,7 @@ class tad_web_schedule
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
             where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID order by a.ScheduleDisplay desc, b.WebSort";
         }
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = [];
 
@@ -96,12 +101,8 @@ class tad_web_schedule
             $total++;
         }
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
 
         if ('return' === $mode) {
             $data['schedule_amount'] = $i;
@@ -130,7 +131,7 @@ class tad_web_schedule
         $this->add_counter($ScheduleID);
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='{$ScheduleID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount ,$ScheduleTime
@@ -176,12 +177,9 @@ class tad_web_schedule
         // }
 
         $xoopsTpl->assign('schedule_template', $schedule_template);
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
+
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_schedule_func', "schedule.php?op=delete&PageID={$this->WebID}&ScheduleID=", 'ScheduleID');
     }
 
     //tad_web_schedule編輯表單
@@ -244,18 +242,13 @@ class tad_web_schedule
 
         $op = (empty($ScheduleID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-        }
-        require_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator      = new formValidator('#myForm', true);
-        $formValidator_code = $formValidator->render();
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
-        $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
         $sql        = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $SubjectArr = [];
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             foreach ($all as $k => $v) {
@@ -295,7 +288,7 @@ class tad_web_schedule
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts            = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
         $newCateName     = $myts->addSlashes($_POST['newCateName']);
@@ -307,7 +300,7 @@ class tad_web_schedule
         $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_schedule') . "
         (`CateID`,`ScheduleName` , `ScheduleDisplay` , `uid` , `WebID` , `ScheduleCount` , `ScheduleTime`)
         values('{$CateID}' ,'{$ScheduleName}' , '{$ScheduleDisplay}'  , '{$uid}' , '{$WebID}' , '0' , '{$ScheduleTime}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $ScheduleID = $xoopsDB->getInsertId();
@@ -322,7 +315,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
 
-        $myts            = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
         $newCateName     = $myts->addSlashes($_POST['newCateName']);
@@ -342,13 +335,13 @@ class tad_web_schedule
          `ScheduleDisplay` = '{$ScheduleDisplay}',
          `ScheduleTime` = '{$ScheduleTime}'
         where ScheduleID='$ScheduleID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ('1' == $ScheduleDisplay) {
             $sql = 'update ' . $xoopsDB->prefix('tad_web_schedule') . " set
              `ScheduleDisplay` = '0'
             where WebID='{$WebID}' and ScheduleID!='{$ScheduleID}' $anduid";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
 
         check_quota($this->WebID);
@@ -360,7 +353,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
         $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
             $anduid = onlyMine();
@@ -368,9 +361,9 @@ class tad_web_schedule
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID' $anduid";
         if ($xoopsDB->queryF($sql)) {
             $sql = 'delete from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='$ScheduleID'";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         } else {
-            web_error($sql, __FILE__, __LINE__);
+            Utility::web_error($sql, __FILE__, __LINE__);
         }
         check_quota($this->WebID);
     }
@@ -381,7 +374,7 @@ class tad_web_schedule
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql       = 'select ScheduleID,CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ScheduleID);
             $allCateID[$CateID] = $CateID;
@@ -397,7 +390,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
         $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -407,7 +400,7 @@ class tad_web_schedule
     {
         global $xoopsDB;
         $sql = 'update ' . $xoopsDB->prefix('tad_web_schedule') . " set `ScheduleCount`=`ScheduleCount`+1 where `ScheduleID`='{$ScheduleID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_schedule資料
@@ -419,7 +412,7 @@ class tad_web_schedule
         }
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -436,7 +429,7 @@ class tad_web_schedule
         }
 
         $sql        = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $SubjectArr = [];
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount
@@ -504,13 +497,8 @@ class tad_web_schedule
         $xoopsTpl->assign('schedule_subjects_arr', $schedule_subjects_arr);
         $xoopsTpl->assign('item_form_index_start', $schedule_subjects_max_key);
 
-        //顏色設定
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
-        $mColorPicker      = new mColorPicker('.color');
-        $mColorPicker_code = $mColorPicker->render();
+        $MColorPicker = new MColorPicker('.color');
+        $MColorPicker->render();
     }
 
     //儲存科目設定
@@ -527,7 +515,7 @@ class tad_web_schedule
         $schedule_subjects = json_encode($schedule_subjects_arr);
         file_put_contents($my_subject_file, $schedule_subjects);
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
             $old_Subject = $myts->addSlashes($old_Subject);
             $Subject     = $myts->addSlashes($_POST['Subject'][$k]);
@@ -536,7 +524,7 @@ class tad_web_schedule
             $bg_color    = $myts->addSlashes($_POST['bg_color'][$k]);
 
             $sql2 = 'update ' . $xoopsDB->prefix('tad_web_schedule_data') . " set `Subject`='{$Subject}', `Teacher`='{$Teacher}', `color`='{$color}', `bg_color`='{$bg_color}' where ScheduleID='{$ScheduleID}' and `Subject`='{$old_Subject}'";
-            $xoopsDB->queryF($sql2) or web_error($sql2);
+            $xoopsDB->queryF($sql2) or Utility::web_error($sql2);
         }
         //}
     }

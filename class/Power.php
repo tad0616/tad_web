@@ -2,6 +2,8 @@
 
 namespace XoopsModules\Tad_web;
 
+use XoopsModules\Tadtools\Utility;
+
 /*
 //起始函數
 $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
@@ -32,7 +34,7 @@ $this->power->delete_power("NewsID", $NewsID, 'read');
 //*****搜尋部份*****
 
 //起始函數
-require_once XOOPS_ROOT_PATH . "/class/power.php";
+//require_once XOOPS_ROOT_PATH . "/class/power.php";
 $power = new  \XoopsModules\Tad_web\Power($WebID);
 
 $power_result = $power->check_power("read", $id_col, $myrow[$id_col]);
@@ -128,7 +130,7 @@ class Power
     {
         global $xoopsDB, $xoopsUser;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $power_name = $myts->addSlashes($power_name);
         $power_val = empty($power_val) ? $myts->addSlashes($_REQUEST[$power_name]) : $myts->addSlashes($power_val);
 
@@ -145,7 +147,7 @@ class Power
           '{$power_name}',
           '{$power_val}'
         )";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //取得tad_web_power資料陣列
@@ -153,7 +155,7 @@ class Power
     {
         global $xoopsDB;
         $sql = 'select power_val from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($power_val) = $xoopsDB->fetchRow($result);
 
         return $power_val;
@@ -165,7 +167,7 @@ class Power
         global $xoopsDB;
 
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //檢查權限

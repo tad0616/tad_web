@@ -1,7 +1,5 @@
 <?php
 /**
- * Tad Web module
- *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
  * which is considered copyrighted (c) material of the original comment or credit authors.
@@ -11,21 +9,17 @@
  *
  * @copyright    XOOPS Project (https://xoops.org)
  * @license      http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package      Tad Web
+ * @package
  * @since        2.5.0
- * @author       Tad
+ * @author
  * @version      $Id $
  **/
 include dirname(__DIR__) . '/preloads/autoloader.php';
 
-require  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
-
-//defined('FRAMEWORKS_ART_FUNCTIONS_INI') || require_once XOOPS_ROOT_PATH . '/Frameworks/art/functions.ini.php';
-// require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
-
-// load_functions('admin');
+require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 
 xoops_loadLanguage('main', $xoopsModule->getVar('dirname'));
+
 if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
     require_once XOOPS_ROOT_PATH . '/class/template.php';
     $xoopsTpl = new \XoopsTpl();

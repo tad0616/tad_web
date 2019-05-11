@@ -1,4 +1,7 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
 
 class tad_web_link
 {
@@ -77,13 +80,13 @@ class tad_web_link
             $to_limit = empty($limit) ? 20 : $limit;
 
             //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, $to_limit, 10);
+            $PageBar = Utility::getPageBar($sql, $to_limit, 10);
             $bar     = $PageBar['bar'];
             $sql     = $PageBar['sql'];
             $total   = $PageBar['total'];
         }
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = [];
 
@@ -120,13 +123,8 @@ class tad_web_link
             $i++;
         }
 
-        //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_link_func', "link.php?op=delete&WebID={$this->WebID}&LinkID=", 'LinkID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_link_func', "link.php?op=delete&WebID={$this->WebID}&LinkID=", 'LinkID');
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
@@ -152,7 +150,7 @@ class tad_web_link
         $this->add_counter($LinkID);
 
         $sql           = 'select LinkUrl from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='{$LinkID}'";
-        $result        = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($LinkUrl) = $xoopsDB->fetchRow($result);
 
         header("location: {$LinkUrl}");
@@ -219,14 +217,9 @@ class tad_web_link
         $op = (empty($LinkID)) ? 'insert' : 'update';
         //$op="replace_tad_web_link";
 
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-        }
-        require_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator      = new formValidator('#myForm', true);
-        $formValidator_code = $formValidator->render();
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
-        $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
         $tags_form = $this->tags->tags_menu('LinkID', $LinkID);
@@ -243,7 +236,7 @@ class tad_web_link
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts        = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $LinkTitle   = $myts->addSlashes($_POST['LinkTitle']);
         $LinkDesc    = $myts->addSlashes($_POST['LinkDesc']);
         $LinkUrl     = $myts->addSlashes($_POST['LinkUrl']);
@@ -259,7 +252,7 @@ class tad_web_link
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_link') . "
           (`CateID`, `LinkTitle` , `LinkDesc` , `LinkUrl` , `LinkCounter` , `LinkSort` , `WebID` , `uid`)
           values('{$CateID}', '{$LinkTitle}' , '{$LinkDesc}' , '{$LinkUrl}' , '{$LinkCounter}' , '{$LinkSort}' , '{$WebID}' , '{$uid}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $LinkID = $xoopsDB->getInsertId();
@@ -276,7 +269,7 @@ class tad_web_link
     {
         global $xoopsDB, $xoopsUser;
 
-        $myts        = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $LinkTitle   = $myts->addSlashes($_POST['LinkTitle']);
         $LinkDesc    = $myts->addSlashes($_POST['LinkDesc']);
         $LinkUrl     = $myts->addSlashes($_POST['LinkUrl']);
@@ -298,7 +291,7 @@ class tad_web_link
        `LinkUrl` = '{$LinkUrl}' ,
        `WebID` = '{$WebID}'
         where LinkID='$LinkID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
 
         //儲存標籤
@@ -312,7 +305,7 @@ class tad_web_link
         global $xoopsDB;
 
         $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID'";
-        $result       = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
         if (!is_assistant($CateID, 'LinkID', $LinkID)) {
@@ -320,10 +313,10 @@ class tad_web_link
         }
 
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
 
-        $myts     = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $tag_name = $myts->addSlashes($_POST['tag_name']);
         //儲存標籤
         $this->tags->save_tags('LinkID', $LinkID, $tag_name, $_POST['tags']);
@@ -335,7 +328,7 @@ class tad_web_link
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql       = 'select LinkID,CateID from ' . $xoopsDB->prefix('tad_web_link') . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($LinkID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($LinkID);
             $allCateID[$CateID] = $CateID;
@@ -351,7 +344,7 @@ class tad_web_link
     {
         global $xoopsDB;
         $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_link') . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -361,7 +354,7 @@ class tad_web_link
     {
         global $xoopsDB;
         $sql        = 'SELECT max(`LinkSort`) FROM ' . $xoopsDB->prefix('tad_web_link');
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
@@ -371,7 +364,7 @@ class tad_web_link
     {
         global $xoopsDB;
         $sql = 'update ' . $xoopsDB->prefix('tad_web_link') . " set `LinkCounter`=`LinkCounter`+1 where `LinkID`='{$LinkID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_link資料
@@ -383,7 +376,7 @@ class tad_web_link
         }
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
