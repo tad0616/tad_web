@@ -113,7 +113,7 @@ class tad_web_homework
             $result2 = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
             $ColsNum = 0;
-            while (false !== (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result2))) {
+            while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result2)) {
                 $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
                 $main_data[$i][$HomeworkCol] = $Content;
                 if ('other' !== $HomeworkCol) {
@@ -144,7 +144,7 @@ class tad_web_homework
         // die(var_export($main_data));
         //可愛刪除
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -231,7 +231,7 @@ class tad_web_homework
         $sql = 'select `HomeworkCol`, `Content` from ' . $xoopsDB->prefix('tad_web_homework_content') . " where HomeworkID='{$HomeworkID}'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $ColsNum = 0;
-        while (false !== (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result))) {
+        while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result)) {
             $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
             $xoopsTpl->assign($HomeworkCol, $Content);
             if ('other' !== $HomeworkCol) {
@@ -246,9 +246,9 @@ class tad_web_homework
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $TadUpFiles->set_col('HomeworkID', $HomeworkID);
@@ -283,7 +283,7 @@ class tad_web_homework
 
         //可愛刪除
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -658,7 +658,7 @@ class tad_web_homework
         $allCateID = [];
         $sql = 'select HomeworkID,CateID from ' . $xoopsDB->prefix('tad_web_homework') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($HomeworkID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($HomeworkID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($HomeworkID);
             $allCateID[$CateID] = $CateID;
         }
@@ -704,7 +704,7 @@ class tad_web_homework
         $sql = 'select `HomeworkCol`, `Content` from ' . $xoopsDB->prefix('tad_web_homework_content') . " where HomeworkID='{$data['HomeworkID']}'";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $ColsNum = 0;
-        while (false !== (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result))) {
+        while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result)) {
             $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
             $data[$HomeworkCol] = $Content;
             if ('other' !== $HomeworkCol) {

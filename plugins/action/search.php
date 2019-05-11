@@ -6,7 +6,7 @@ function action_search($WebID, $queryarray, $limit = 10)
 
     //起始函數
     require_once XOOPS_ROOT_PATH . '/class/power.php';
-    $power = new power($WebID);
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
 
     $plugin = 'action';
     $plugin_tbl = 'tad_web_action';

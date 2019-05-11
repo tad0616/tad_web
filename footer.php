@@ -90,7 +90,7 @@ function get_marquee()
 
     if ($data_arr) {
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
         $fancybox = new fancybox('.sho_notice', '480px', '480px');
@@ -116,7 +116,7 @@ function tad_web_my_menu($WebID)
             //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-            while (false !== (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result))) {
+            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[] = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
                 $_SESSION['AssistantType'][$CateID] = 'MemID';
@@ -132,7 +132,7 @@ function tad_web_my_menu($WebID)
             $add_power = ['discuss']; //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-            while (false !== (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result))) {
+            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[] = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
                 $_SESSION['AssistantType'][$CateID] = 'ParentID';
@@ -347,7 +347,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 {
     global $xoopsTpl, $xoopsDB, $Web, $isAdmin;
 
-    $power = new power($WebID);
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
     $myts = MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 

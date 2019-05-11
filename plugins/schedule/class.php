@@ -97,7 +97,7 @@ class tad_web_schedule
         }
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -142,9 +142,9 @@ class tad_web_schedule
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $assistant   = is_assistant($CateID, 'ScheduleID', $ScheduleID);
@@ -177,7 +177,7 @@ class tad_web_schedule
 
         $xoopsTpl->assign('schedule_template', $schedule_template);
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -382,7 +382,7 @@ class tad_web_schedule
         $allCateID = [];
         $sql       = 'select ScheduleID,CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ScheduleID);
             $allCateID[$CateID] = $CateID;
         }
@@ -506,7 +506,7 @@ class tad_web_schedule
 
         //顏色設定
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
         $mColorPicker      = new mColorPicker('.color');

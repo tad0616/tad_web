@@ -13,7 +13,7 @@ class tad_web_page
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
         $this->web_cate = new web_cate($WebID, 'page', 'tad_web_page');
-        $this->tags = new tags($WebID);
+        $this->tags = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'page');
     }
 
@@ -127,7 +127,7 @@ class tad_web_page
             die(var_dump($cate_size));
         }
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -188,9 +188,9 @@ class tad_web_page
         $TadUpFiles->set_col('PageID', $PageID);
         $files = $TadUpFiles->show_files('upfile', true, '', true, false, null, null, false, '');
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $assistant = is_assistant($CateID, 'PageID', $PageID);
@@ -225,14 +225,14 @@ class tad_web_page
         $xoopsTpl->assign('cate', $cate);
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_page_func', "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php';
         $print_preview = new print_preview('a.print-preview');
@@ -446,7 +446,7 @@ class tad_web_page
         $allCateID = [];
         $sql = 'select PageID,CateID from ' . $xoopsDB->prefix('tad_web_page') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($PageID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($PageID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($PageID);
             $allCateID[$CateID] = $CateID;
         }
@@ -511,7 +511,7 @@ class tad_web_page
         $sql = 'select PageID,PageTitle,PageSort from ' . $xoopsDB->prefix('tad_web_page') . " where CateID='{$DefCateID}' order by PageSort";
         // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($PageID, $PageTitle, $PageSort) = $xoopsDB->fetchRow($result))) {
+        while (list($PageID, $PageTitle, $PageSort) = $xoopsDB->fetchRow($result)) {
             $all[$PageSort]['PageID'] = $PageID;
             $all[$PageSort]['PageTitle'] = $PageTitle;
             if ($PageID == $DefPageID) {

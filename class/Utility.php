@@ -266,14 +266,14 @@ class Utility
         $allWebID = '';
         $sql = 'SELECT WebID FROM `' . $xoopsDB->prefix('tad_web') . '` GROUP BY `WebID`';
         $result = $xoopsDB->queryF($sql) or web_error($sql);
-        while (false !== (list($WebID) = $xoopsDB->fetchRow($result))) {
+        while (list($WebID) = $xoopsDB->fetchRow($result)) {
             $allWebID[] = $WebID;
         }
 
         //修正自訂區塊名稱（並用序號排序）
         $sql = 'SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE plugin='custom' ORDER BY BlockID";
         $result = $xoopsDB->queryF($sql) or web_error($sql);
-        while (false !== (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result))) {
+        while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
             $BlockTitle = $myts->addSlashes($BlockTitle);
             $BlockContent = $myts->addSlashes($BlockContent);
 
@@ -306,7 +306,7 @@ class Utility
             //找出目前已安裝的區塊
             $sql = 'select BlockID,BlockName,BlockConfig from ' . $xoopsDB->prefix('tad_web_blocks') . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
             $result = $xoopsDB->queryF($sql) or web_error($sql);
-            while (false !== (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result))) {
+            while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
                 $db_blocks[$WebID][$BlockName] = $BlockName;
                 $db_blocks_config[$WebID][$BlockName][$BlockID] = $BlockConfig;
             }
@@ -422,7 +422,7 @@ class Utility
         if (!_IS_EZCLASS) {
             $sql = 'SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE plugin='custom' ORDER BY BlockID";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-            while (false !== (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result))) {
+            while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
                 $BlockTitle = $myts->addSlashes($BlockTitle);
                 $BlockContent = $myts->addSlashes($BlockContent);
 
@@ -500,7 +500,7 @@ class Utility
         //找出目前所有的樣板檔
         $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . "` WHERE `dirname` = 'tad_web' ORDER BY `func_num`";
         $result = $xoopsDB->query($sql);
-        while (false !== (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result))) {
+        while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
             //假如現有的區塊和樣板對不上就刪掉
             if ($template != $tpl_file_arr[$show_func]) {
                 $sql = 'delete from ' . $xoopsDB->prefix('newblocks') . " where bid='{$bid}'";
@@ -640,13 +640,13 @@ class Utility
 
         //修正子目錄，並找出實體檔案沒有真的在子目錄下的
         $sql = 'SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM ' . $xoopsDB->prefix('tad_web_files_center') . " WHERE `sub_dir` LIKE '//%'";
-        $result = $xoopsDB->queryF($sql) or die($sql);
-        while (false !== (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result))) {
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
             $sub_dir = str_replace('//', '/', $sub_dir);
             $typedir = 'img' === $kind ? 'image' : 'file';
 
             $sql = 'update  ' . $xoopsDB->prefix('tad_web_files_center') . " set `sub_dir`='{$sub_dir}'  where `files_sn`='{$files_sn}'";
-            $xoopsDB->queryF($sql) or die($sql);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
             if (!file_exists("{$updir}{$sub_dir}/{$typedir}/{$file_name}")) {
                 self::mk_dir("{$updir}{$sub_dir}");
@@ -686,8 +686,8 @@ class Utility
 
         //找出沒有放到子目錄的
         $sql = 'SELECT `files_sn`,`col_name`,`col_sn`,`kind`,`file_name`,`sub_dir` FROM ' . $xoopsDB->prefix('tad_web_files_center') . '';
-        $result = $xoopsDB->queryF($sql) or die($sql);
-        while (false !== (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result))) {
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        while (list($files_sn, $col_name, $col_sn, $kind, $file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
             $typedir = 'img' === $kind ? 'image' : 'file';
             $WebID = (int) mb_substr($sub_dir, 1);
             if (empty($WebID)) {
@@ -695,25 +695,25 @@ class Utility
                     $WebID = $col_sn;
                 } elseif ('MemID' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_link_mems') . " where `MemID` = '{$col_sn}'";
-                    $result2 = $xoopsDB->queryF($sql) or die($sql);
+                    $result2 = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     list($WebID) = $xoopsDB->fetchRow($result2);
                 } elseif ('ActionID' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_action') . " where `ActionID` = '{$col_sn}'";
-                    $result2 = $xoopsDB->queryF($sql) or die($sql);
+                    $result2 = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     list($WebID) = $xoopsDB->fetchRow($result2);
                 } elseif ('fsn' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_files') . " where `fsn` = '{$col_sn}'";
-                    $result2 = $xoopsDB->queryF($sql) or die($sql);
+                    $result2 = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     list($WebID) = $xoopsDB->fetchRow($result2);
                 } elseif ('NewsID' === $col_name) {
                     $sql = 'select `WebID` from ' . $xoopsDB->prefix('tad_web_news') . " where `NewsID` = '{$col_sn}'";
-                    $result2 = $xoopsDB->queryF($sql) or die($sql);
+                    $result2 = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     list($WebID) = $xoopsDB->fetchRow($result2);
                 }
             }
 
             $sql = 'update ' . $xoopsDB->prefix('tad_web_files_center') . " set `sub_dir`='/{$WebID}'  where `files_sn`='{$files_sn}'";
-            $xoopsDB->queryF($sql) or die($sql);
+            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
             self::mk_dir("{$updir}/{$WebID}");
             self::mk_dir("{$updir}/{$WebID}/{$typedir}");
@@ -838,7 +838,7 @@ class Utility
         $xoopsDB->queryF($sql);
 
         $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_news') . "` WHERE NewsKind='homework'";
-        $result = $xoopsDB->queryF($sql) or die($sql);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -948,8 +948,8 @@ class Utility
 
         //存入既有設定
         $sql = 'SELECT ConfigValue, WebID FROM `' . $xoopsDB->prefix('tad_web_config') . "` WHERE ConfigName='display_blocks'";
-        $result = $xoopsDB->queryF($sql) or die($sql);
-        while (false !== (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result))) {
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
             $Config = explode(',', $ConfigValue);
             $sort = 1;
             foreach ($block_option as $func => $name) {
@@ -985,8 +985,8 @@ class Utility
 
         //將首頁轉為區塊
         $sql = 'SELECT ConfigValue, WebID FROM `' . $xoopsDB->prefix('tad_web_config') . "` WHERE ConfigName='web_plugin_display_arr'";
-        $result = $xoopsDB->queryF($sql) or die($sql);
-        while (false !== (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result))) {
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
             $web_plugin_display_arr = explode(',', $ConfigValue);
 
             $sort = 1;
@@ -1102,7 +1102,7 @@ class Utility
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
         $sql = 'SELECT WebID FROM `' . $xoopsDB->prefix('tad_web') . '`';
         $result = $xoopsDB->queryF($sql) or web_error($sql);
-        while (false !== (list($WebID) = $xoopsDB->fetchRow($result))) {
+        while (list($WebID) = $xoopsDB->fetchRow($result)) {
             $dir_size = get_dir_size("{$dir}{$WebID}/");
 
             $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";

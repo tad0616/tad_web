@@ -33,10 +33,10 @@ function system_onUpdate1_go()
 
     $myts = MyTextSanitizer::getInstance();
     //來自系統的區塊
-    while (false !== (list($bid, $show_func) = $xoopsDB->fetchRow($result))) {
+    while (list($bid, $show_func) = $xoopsDB->fetchRow($result)) {
         $sql2 = 'select BlockID,BlockTitle,BlockEnable,BlockPosition,BlockSort,WebID from ' . $xoopsDB->prefix('tad_web_blocks') . " where `plugin`='xoops' and BlockName='{$bid}'";
         $result2 = $xoopsDB->queryF($sql2) or web_error($sql2);
-        while (false !== (list($BlockID, $BlockTitle, $BlockEnable, $BlockPosition, $BlockSort, $WebID) = $xoopsDB->fetchRow($result2))) {
+        while (list($BlockID, $BlockTitle, $BlockEnable, $BlockPosition, $BlockSort, $WebID) = $xoopsDB->fetchRow($result2)) {
             $BlockTitle = $myts->addSlashes($BlockTitle);
 
             if ('tad_web_menu' === $show_func) {
@@ -82,7 +82,7 @@ function system_onUpdate2_go()
     $auth_method = get_sys_openid();
     $sql = 'SELECT `BlockConfig`,`WebID` FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE `BlockName`='login'";
     $result = $xoopsDB->query($sql);
-    while (false !== (list($BlockConfig, $WebID) = $xoopsDB->fetchRow($result))) {
+    while (list($BlockConfig, $WebID) = $xoopsDB->fetchRow($result)) {
         $BlockConfig = json_decode($BlockConfig, true);
         $login_method = implode(';', $BlockConfig['login_method']);
         if (empty($login_method)) {

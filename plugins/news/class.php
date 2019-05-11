@@ -12,8 +12,8 @@ class tad_web_news
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, 'news', 'tad_web_news');
-        $this->power    = new power($WebID);
-        $this->tags     = new tags($WebID);
+        $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
+        $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup    = get_plugin_setup_values($WebID, 'news');
     }
 
@@ -149,7 +149,7 @@ class tad_web_news
         }
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -208,9 +208,9 @@ class tad_web_news
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $NewsUrlTxt = empty($NewsUrl) ? '' : '<div>' . _MD_TCW_NEWSURL . _TAD_FOR . "<a href='$NewsUrl' target='_blank'>$NewsUrl</a></div>";
@@ -260,14 +260,14 @@ class tad_web_news
         $xoopsTpl->assign('cate', $cate);
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert->render('delete_news_func', "news.php?op=delete&WebID={$WebID}&NewsID=", 'NewsID');
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/jquery-print-preview.php';
         $print_preview = new print_preview('a.print-preview');
@@ -512,7 +512,7 @@ class tad_web_news
         $allCateID = [];
         $sql = 'select NewsID,CateID from ' . $xoopsDB->prefix('tad_web_news') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($NewsID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($NewsID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($NewsID);
             $allCateID[$CateID] = $CateID;
         }
@@ -568,7 +568,7 @@ class tad_web_news
         // }
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $i = 0;
-        while (false !== (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result))) {
+        while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
 
             //檢查權限
             $power = $this->power->check_power('read', 'NewsID', $NewsID);
@@ -605,7 +605,7 @@ class tad_web_news
 
         $i         = 0;
         $main_data = [];
-        while (false !== (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
             $main_data[$i]['title']  = $title;

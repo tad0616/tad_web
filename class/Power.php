@@ -1,7 +1,10 @@
 <?php
+
+namespace XoopsModules\Tad_web;
+
 /*
 //起始函數
-$this->power    = new power($WebID);
+$this->power    = new  \XoopsModules\Tad_web\Power($WebID);
 
 //權限設定
 $power_form = $this->power->power_menu('read', "NewsID", $NewsID);
@@ -30,14 +33,14 @@ $this->power->delete_power("NewsID", $NewsID, 'read');
 
 //起始函數
 require_once XOOPS_ROOT_PATH . "/class/power.php";
-$power = new power($WebID);
+$power = new  \XoopsModules\Tad_web\Power($WebID);
 
 $power_result = $power->check_power("read", $id_col, $myrow[$id_col]);
 if (!$power_result) {
 continue;
 }
  */
-class power
+class Power
 {
     public $WebID = 0;
     public $col_name;

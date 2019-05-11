@@ -15,7 +15,7 @@ if ('get_reationship' === $op) {
     // die('<option>' . $sql . '</option>');
     $result = $xoopsDB->query($sql) or die($sql);
     $option = '';
-    while (false !== (list($Reationship) = $xoopsDB->fetchRow($result))) {
+    while (list($Reationship) = $xoopsDB->fetchRow($result)) {
         $option .= "<option vlaue='{$Reationship}'>{$Reationship}</option>";
     }
     die($option);
@@ -36,7 +36,7 @@ if ('get_reationship' === $op) {
     $i = 0;
     $stud = "<option value=''>" . _MD_TCW_ABOUTUS_SELECT_MEM . '</option>';
 
-    while (false !== (list($MemID, $Reationship, $MemNum, $MemName, $MemNickName) = $xoopsDB->fetchRow($result))) {
+    while (list($MemID, $Reationship, $MemNum, $MemName, $MemNickName) = $xoopsDB->fetchRow($result)) {
         $MemName = mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY;
         $showMemName = empty($MemNickName) ? $MemName : $MemName . ' (' . $MemNickName . ')';
         $num = ($MemNum) ? '(' . $MemNum . ') ' : '';
@@ -54,7 +54,7 @@ if ('get_reationship' === $op) {
 
     $sql = 'select a.MemID,count(*) from ' . $xoopsDB->prefix('tad_web_mem_parents') . ' as a left join ' . $xoopsDB->prefix('tad_web_link_mems') . " as b on a.MemID=b.MemID where b.WebID ='{$WebID}' and b.CateID='{$CateID}' group by a.MemID";
     $result = $xoopsDB->query($sql) or die($sql);
-    while (false !== (list($MemID, $count) = $xoopsDB->fetchRow($result))) {
+    while (list($MemID, $count) = $xoopsDB->fetchRow($result)) {
         $count_arr[$MemID] = $count;
     }
 

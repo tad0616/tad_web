@@ -28,6 +28,7 @@ define('_MA_TCW_DEL_VIDEOS', 'Online video data');
 define('_MA_TCW_DEL_DISCUSS', 'Message Discussion Materials');
 define('_MA_TCW_DELETE', 'Yes! I want to delete it! ');
 define('_MA_TCW_UPLOAD_OWNER_PIC', 'Upload page image file');
+define('_MA_TCW_ORDER_BY_TEAMTITLE', 'Sort by team name');
 
 //save_sort.php save.php
 define('_MA_TCW_UPDATE_FAIL', 'Update Failed!');

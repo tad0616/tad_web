@@ -9,8 +9,8 @@ class tad_web_menu
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, 'menu', 'tad_web_menu');
-        $this->power    = new power($WebID);
-        // $this->tags     = new tags($WebID);
+        $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
+        // $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'menu');
     }
 
@@ -130,7 +130,7 @@ class tad_web_menu
         }
         //可愛刪除
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -277,7 +277,7 @@ class tad_web_menu
 
         //顏色設定
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
         $mColorPicker = new mColorPicker('.color');
@@ -441,7 +441,7 @@ class tad_web_menu
         $allCateID = [];
         $sql       = 'select MenuID,CateID from ' . $xoopsDB->prefix('tad_web_menu') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($MenuID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($MenuID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($MenuID);
             $allCateID[$CateID] = $CateID;
         }

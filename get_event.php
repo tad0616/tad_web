@@ -71,9 +71,9 @@ function get_homework_event($start, $end, $WebID)
     $andWebID = empty($WebID) ? '' : "and `WebID`='{$WebID}'";
     $now = date('Y-m-d H:i:s');
     $sql = 'select HomeworkID,HomeworkTitle,toCal,WebID from ' . $xoopsDB->prefix('tad_web_homework') . " where toCal >= '$start' and toCal <= '$end' and HomeworkPostDate <= '$now' $andWebID order by toCal";
-    $result = $xoopsDB->queryF($sql) or die($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while (false !== (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result))) {
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
         $toCal = userTimeToServerTime(strtotime($toCal));
 
         $myEvents[$i]['id'] = $ID;
@@ -97,9 +97,9 @@ function get_news_event($start, $end, $WebID)
     $andWebID = empty($WebID) ? '' : "and `WebID`='{$WebID}'";
 
     $sql = 'select NewsID,NewsTitle,toCal,WebID from ' . $xoopsDB->prefix('tad_web_news') . " where toCal >= '$start' and toCal <= '$end' $andWebID order by toCal";
-    $result = $xoopsDB->queryF($sql) or die($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while (false !== (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result))) {
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
         $toCal = userTimeToServerTime(strtotime($toCal));
 
         $myEvents[$i]['id'] = $ID;
@@ -131,9 +131,9 @@ function get_all_event($start, $end, $WebID)
     }
 
     $sql = 'select CalendarID,CalendarName,CalendarDate,WebID from ' . $xoopsDB->prefix('tad_web_calendar') . " where CalendarDate >= '$start' and CalendarDate <= '$end' and CalendarType='all' $andWebID order by CalendarDate";
-    $result = $xoopsDB->queryF($sql) or die($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while (false !== (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result))) {
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
         $toCal = userTimeToServerTime(strtotime($toCal));
 
         $myEvents[$i]['id'] = $ID;
@@ -157,9 +157,9 @@ function get_web_event($start, $end, $WebID)
     $andWebID = empty($WebID) ? '' : "and `WebID`='{$WebID}'";
 
     $sql = 'select CalendarID,CalendarName,CalendarDate,WebID from ' . $xoopsDB->prefix('tad_web_calendar') . " where CalendarDate >= '$start' and CalendarDate <= '$end' $andWebID  and CalendarType!='all' order by CalendarDate";
-    $result = $xoopsDB->queryF($sql) or die($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while (false !== (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result))) {
+    while (list($ID, $Title, $toCal, $WebID) = $xoopsDB->fetchRow($result)) {
         $toCal = userTimeToServerTime(strtotime($toCal));
 
         $myEvents[$i]['id'] = $ID;

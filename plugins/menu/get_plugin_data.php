@@ -24,7 +24,7 @@ if ('PluginContent' === $op) {
 } else {
     $sql = 'select CateID, CateName from ' . $xoopsDB->prefix('tad_web_cate') . " where `CateEnable`='1' and `ColName`='{$ColName}' and `WebID`='{$WebID}' order by CateSort";
     $result = $xoopsDB->queryF($sql) or die("<option value=''>$sql</option>");
-    while (false !== (list($CateID, $CateName) = $xoopsDB->fetchRow($result))) {
+    while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
         echo "<option value='$CateID'>$CateName</option>\n";
     }
 }

@@ -8,7 +8,7 @@ $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
 $main = '';
 $today_homework = $bring = $teacher_say = false;
-while (false !== (list($HomeworkID, $WebID, $WebOwnerUid) = $xoopsDB->fetchRow($result))) {
+while (list($HomeworkID, $WebID, $WebOwnerUid) = $xoopsDB->fetchRow($result)) {
     $sql = 'update ' . $xoopsDB->prefix('tad_web_homework') . " set uid='$WebOwnerUid' where HomeworkID='$HomeworkID'";
     // $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $main .= "<div>{$HomeworkID}=>{$WebID}=><b>$WebOwnerUid</b></div>$sql";

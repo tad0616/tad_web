@@ -41,7 +41,7 @@ function list_all_web($defCateID = '')
         $data[$WebID]['disk_used_space'] = $size;
         $data[$WebID]['disk_space'] = "{$dir}{$WebID}/";
         $data[$WebID]['memAmount'] = memAmount($WebID);
-        $data[$WebID]['uname'] = XoopsUser::getUnameFromId($all['WebOwnerUid'], 0);
+        $data[$WebID]['uname'] = \XoopsUser::getUnameFromId($all['WebOwnerUid'], 0);
         $percentage = round(($size / $user_space_quota), 2) * 100;
         $data[$WebID]['quota'] = $percentage;
         if ($percentage <= 70) {
@@ -98,7 +98,7 @@ function view_file($WebID = '')
     $json .= dirToJson($dir);
     // die($json);
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/ztree.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/ztree.php';
     $ztree = new ztree('link_tree', $json, 'save_drag.php', 'save_sort.php', 'of_cate_sn', 'cate_sn');

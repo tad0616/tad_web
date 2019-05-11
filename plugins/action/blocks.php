@@ -19,12 +19,12 @@ function list_action($WebID, $config = [])
 function action_slide($WebID, $config = [])
 {
     global $xoopsDB;
-    $power = new power($WebID);
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
 
     $sql = 'select ActionName,ActionID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$WebID}' order by rand()";
 
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (false !== (list($ActionName, $ActionID) = $xoopsDB->fetchRow($result))) {
+    while (list($ActionName, $ActionID) = $xoopsDB->fetchRow($result)) {
         //檢查權限
         $the_power = $power->check_power('read', 'ActionID', $ActionID);
         if (!$the_power) {
