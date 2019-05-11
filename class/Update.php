@@ -1,5 +1,4 @@
 <?php
-use XoopsModules\Tadtools\Utility;
 
 namespace XoopsModules\Tad_web;
 
