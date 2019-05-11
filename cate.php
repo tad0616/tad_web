@@ -95,7 +95,7 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
         return;
     }
 
-    $power = new power($WebID);
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
 
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);

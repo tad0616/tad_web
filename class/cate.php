@@ -32,6 +32,8 @@ $cate = $web_cate->get_tad_web_cate_arr();
 <{/if}>
  */
 
+use  XoopsModules\Tad_web;
+
 class web_cate
 {
     public $WebID = 0;
@@ -52,8 +54,8 @@ class web_cate
 
     public function __construct($WebID = '0', $ColName = '', $table = '')
     {
-        require_once __DIR__ . '/power.php';
-        $this->power = new power($WebID);
+
+        $this->power = new  Tad_web\Power($WebID);
 
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
@@ -491,7 +493,7 @@ class web_cate
         $counter = [];
         $sql = 'select count(*),CateID from `' . $xoopsDB->prefix($table) . "` where `WebID` = '{$this->WebID}' group by CateID";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($count, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {
             $counter[$CateID] = $count;
         }
 

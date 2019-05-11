@@ -6,7 +6,7 @@ function news_search($WebID, $queryarray, $limit = 10)
 
     //起始函數
     require_once XOOPS_ROOT_PATH . '/class/power.php';
-    $power = new power($WebID);
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
 
     $plugin = 'news';
     $plugin_tbl = 'tad_web_news';

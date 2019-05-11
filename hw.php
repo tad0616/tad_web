@@ -9,7 +9,7 @@ $r_start = '<table class="table"><tbody><tr>';
 $r_end = '</td></tr></tbody></table>';
 
 $today_homework = $bring = $teacher_say = false;
-while (false !== (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result))) {
+while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     if (false === mb_strpos($HomeworkContent, '<table class="table">')) {
         continue;
     }

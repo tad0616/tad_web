@@ -10,7 +10,7 @@ class tad_web_video
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, 'video', 'tad_web_video');
-        $this->tags     = new tags($WebID);
+        $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup    = get_plugin_setup_values($WebID, 'video');
     }
 
@@ -126,7 +126,7 @@ class tad_web_video
         }
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -171,9 +171,9 @@ class tad_web_video
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $xoopsTpl->assign('VideoName', $VideoName);
@@ -197,7 +197,7 @@ class tad_web_video
         $xoopsTpl->assign('cate', $cate);
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -403,7 +403,7 @@ class tad_web_video
         $allCateID = [];
         $sql       = 'select VideoID,CateID from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($VideoID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($VideoID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($VideoID);
             $allCateID[$CateID] = $CateID;
         }
@@ -458,7 +458,7 @@ class tad_web_video
 
         $i         = 0;
         $main_data = [];
-        while (false !== (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
             $main_data[$i]['title']  = $title;

@@ -5,7 +5,7 @@ $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
 $web = [];
 $sql = 'select WebID from xx_tad_web';
 $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-while (false !== (list($WebID) = $xoopsDB->fetchRow($result))) {
+while (list($WebID) = $xoopsDB->fetchRow($result)) {
     $web[] = $WebID;
 }
 $bad = $no = 0;

@@ -1,7 +1,10 @@
 <?php
+
+namespace XoopsModules\Tad_web;
+
 /*
 //起始函數
-$this->tags    = new tags($WebID);
+$this->tags    = new  \XoopsModules\Tad_web\Tags($WebID);
 
 //外掛頁面
 
@@ -31,7 +34,7 @@ $this->tags->save_tags("NewsID", $NewsID, $_POST['tag_name'],$_POST['tags']);
 $this->tags->delete_tags("NewsID", $NewsID, $tag_name);
 
  */
-class tags
+class Tags
 {
     public $WebID = 0;
     public $col_name;
@@ -200,7 +203,7 @@ class tags
         $sql = 'select tag_name , count(*) from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
 
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($tag_name, $count) = $xoopsDB->fetchRow($result))) {
+        while (list($tag_name, $count) = $xoopsDB->fetchRow($result)) {
             $tags_arr[$tag_name] = $count;
         }
 

@@ -13,7 +13,7 @@ if (!empty($_REQUEST['WebID']) and $isMyWeb) {
 }
 
 //權限設定
-$power = new power($WebID);
+$power = new  \XoopsModules\Tad_web\Power($WebID);
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 function config_block($WebID, $BlockID, $plugin, $mode = 'config')
@@ -101,7 +101,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
     $xoopsTpl->assign('use_share_web', $webs);
 
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
     $sweet_alert = new sweet_alert();
@@ -274,7 +274,7 @@ function mk_block_pic($WebID = '', $block_pic = [], $use_block_pic = '')
     $sql = 'select BlockID,BlockName,BlockTitle from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}'";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while (false !== (list($BlockID, $BlockName, $BlockTitle) = $xoopsDB->fetchRow($result))) {
+    while (list($BlockID, $BlockName, $BlockTitle) = $xoopsDB->fetchRow($result)) {
         mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $block_pic['block_pic_text_color'], $block_pic['block_pic_border_color'], $block_pic['block_pic_text_size'], $block_pic['block_pic_font']);
     }
 }
@@ -285,7 +285,7 @@ function block_setup($WebID = '')
 
     //顏色設定
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
     $mColorPicker = new mColorPicker('.color');
@@ -307,7 +307,7 @@ function block_setup($WebID = '')
     $xoopsTpl->assign('block_pic_text_size', $block_pic_text_size);
     $xoopsTpl->assign('block_pic_font', $block_pic_font);
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
     $fancybox = new fancybox('.edit_block', '480px');
@@ -462,7 +462,7 @@ function chk_newblock($WebID)
     //找出目前已安裝的區塊
     $sql = 'select BlockID,BlockName,BlockConfig from ' . $xoopsDB->prefix('tad_web_blocks') . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while (false !== (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result))) {
+    while (list($BlockID, $BlockName, $BlockConfig) = $xoopsDB->fetchRow($result)) {
         $db_blocks[$BlockName] = $BlockName;
         $db_blocks_config[$BlockName][$BlockID] = $BlockConfig;
     }

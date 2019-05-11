@@ -9,7 +9,7 @@ class tad_web_link
     {
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, 'link', 'tad_web_link');
-        $this->tags     = new tags($WebID);
+        $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
     }
 
     //好站連結
@@ -122,7 +122,7 @@ class tad_web_link
 
         //可愛刪除
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -336,7 +336,7 @@ class tad_web_link
         $allCateID = [];
         $sql       = 'select LinkID,CateID from ' . $xoopsDB->prefix('tad_web_link') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($LinkID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($LinkID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($LinkID);
             $allCateID[$CateID] = $CateID;
         }

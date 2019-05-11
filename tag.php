@@ -48,7 +48,7 @@ function list_tags($WebID)
 {
     global $xoopsTpl;
     // require_once "class/tags.php";
-    $tags = new tags($WebID);
+    $tags = new  \XoopsModules\Tad_web\Tags($WebID);
     $tags_arr = $tags->get_tags();
     arsort($tags_arr);
     $xoopsTpl->assign('tags_arr', $tags_arr);

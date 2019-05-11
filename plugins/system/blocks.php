@@ -52,7 +52,7 @@ function rrssb($WebID, $config = [])
 function moedict($WebID, $config = [])
 {
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
     $colorbox = new colorbox('#get_moedict');
@@ -66,7 +66,7 @@ function moedict($WebID, $config = [])
 function dreye($WebID, $config = [])
 {
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
     $colorbox = new colorbox('#get_dreyedict', '640');
@@ -80,7 +80,7 @@ function dreye($WebID, $config = [])
 function wiki($WebID, $config = [])
 {
     if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
     $colorbox = new colorbox('#get_wiki');
@@ -137,7 +137,7 @@ function countdown($WebID, $config = [])
 //標籤
 function tags($WebID, $config = [])
 {
-    $tags = new tags($WebID);
+    $tags = new  \XoopsModules\Tad_web\Tags($WebID);
     $tags_arr = $tags->get_tags();
     arsort($tags_arr);
     $block['main_data'] = true;

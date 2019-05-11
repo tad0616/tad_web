@@ -8,10 +8,10 @@ CREATE TABLE `tad_web` (
   `WebOwner` varchar(255) NOT NULL default '' COMMENT '擁有者',
   `WebOwnerUid` mediumint(8) unsigned NOT NULL default 0 COMMENT '擁有者uid',
   `WebTitle` varchar(255) NOT NULL default '' COMMENT '全銜',
-  `CreatDate` datetime NOT NULL,
+  `CreatDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `WebYear` year(4) NOT NULL default '0000',
   `used_size` int(10) unsigned NOT NULL default 0 COMMENT '已使用空間',
-  `last_accessed` datetime NOT NULL COMMENT '最後被拜訪時間',
+  `last_accessed` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最後被拜訪時間',
   PRIMARY KEY (`WebID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -68,7 +68,7 @@ CREATE TABLE `tad_web_files_center` (
   `original_filename` varchar(255) NOT NULL COMMENT '檔案名稱',
   `hash_filename` varchar(255) NOT NULL COMMENT '加密檔案名稱',
   `sub_dir` varchar(255) NOT NULL COMMENT '檔案子路徑',
-  `upload_date` datetime NOT NULL COMMENT '上傳時間',
+  `upload_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '上傳時間',
   `uid` mediumint(8) unsigned NOT NULL default 0 COMMENT '上傳者',
   `tag` varchar(255) NOT NULL default '' COMMENT '註記',
   PRIMARY KEY (`files_sn`),
@@ -149,7 +149,7 @@ CREATE TABLE `tad_web_notice` (
   `NoticeContent` text NOT NULL  COMMENT '通知內容',
   `NoticeWeb` text NOT NULL COMMENT '通知網站',
   `NoticeWho` varchar(255) NOT NULL default '' COMMENT '通知對象',
-  `NoticeDate` datetime NOT NULL COMMENT '通知日期',
+  `NoticeDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '通知日期',
   PRIMARY KEY  (`NoticeID`)
 )  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -158,6 +158,6 @@ CREATE TABLE `tad_web_mail_log` (
   `ColSN` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
   `WebID` smallint(5) unsigned NOT NULL  COMMENT '所屬網站',
   `Mail` varchar(100) NOT NULL default '' COMMENT '信箱',
-  `MailDate` datetime NOT NULL COMMENT '寄信日期',
+  `MailDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '寄信日期',
   PRIMARY KEY  (`ColName`,`ColSN`,`WebID`,`Mail`)
 )  ENGINE=MyISAM DEFAULT CHARSET=utf8;

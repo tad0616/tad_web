@@ -32,7 +32,7 @@ function list_top()
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $top = [];
         $j = 1;
-        while (false !== (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result))) {
+        while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
             $top[$j]['count'] = $count;
             $top[$j]['WebName'] = $WebName;
             $top[$j]['WebTitle'] = $WebTitle;
@@ -56,7 +56,7 @@ function list_top()
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $top = [];
     $j = 1;
-    while (false !== (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result))) {
+    while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
         $top[$j]['count'] = $count;
         $top[$j]['WebName'] = $WebName;
         $top[$j]['WebTitle'] = $WebTitle;
@@ -79,7 +79,7 @@ function list_top()
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $top = [];
     $j = 1;
-    while (false !== (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result))) {
+    while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
         $top[$j]['count'] = $count;
         $top[$j]['WebName'] = $WebName;
         $top[$j]['WebTitle'] = $WebTitle;
@@ -106,7 +106,7 @@ function list_top()
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $top = [];
     $j = 1;
-    while (false !== (list($WebID, $count, $ShareFrom, $WebName, $WebTitle) = $xoopsDB->fetchRow($result))) {
+    while (list($WebID, $count, $ShareFrom, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
         $top[$j]['count'] = $count;
         $top[$j]['WebName'] = $WebName;
         $top[$j]['WebTitle'] = $WebTitle;

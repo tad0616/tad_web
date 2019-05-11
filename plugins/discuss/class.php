@@ -10,7 +10,7 @@ class tad_web_discuss
     {
         $this->WebID         = $WebID;
         $this->web_cate      = new web_cate($WebID, 'discuss', 'tad_web_discuss');
-        $this->tags          = new tags($WebID);
+        $this->tags          = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->aboutus_setup = get_plugin_setup_values($WebID, 'aboutus');
         $this->discuss_setup = get_plugin_setup_values($WebID, 'discuss');
     }
@@ -138,7 +138,7 @@ class tad_web_discuss
 
         //可愛刪除
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -260,7 +260,7 @@ class tad_web_discuss
 
         //可愛刪除
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -592,7 +592,7 @@ class tad_web_discuss
         $allCateID = [];
         $sql       = 'select DiscussID,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID='0'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($DiscussID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($DiscussID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($DiscussID);
             $allCateID[$CateID] = $CateID;
         }
@@ -782,7 +782,7 @@ class tad_web_discuss
 
         $i         = 0;
         $main_data = [];
-        while (false !== (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
             $main_data[$i]['title']  = $title;

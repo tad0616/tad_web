@@ -10,7 +10,7 @@ class tad_web_works
         $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, 'works', 'tad_web_works');
         $this->setup    = get_plugin_setup_values($WebID, 'works');
-        $this->tags     = new tags($WebID);
+        $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
     }
 
     //作品分享
@@ -142,7 +142,7 @@ class tad_web_works
         }
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
@@ -200,9 +200,9 @@ class tad_web_works
         $TadUpFiles->set_col('WorksID', $WorksID);
         $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $assistant   = is_assistant($CateID, 'WorksID', $WorksID);
@@ -236,7 +236,7 @@ class tad_web_works
         $xoopsTpl->assign('cate', $cate);
 
         if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
         }
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert      = new sweet_alert();
@@ -493,7 +493,7 @@ class tad_web_works
         $allCateID = [];
         $sql       = 'select WorksID,CateID from ' . $xoopsDB->prefix('tad_web_works') . " where WebID='{$this->WebID}'";
         $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while (false !== (list($WorksID, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($WorksID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($WorksID);
             $allCateID[$CateID] = $CateID;
         }
@@ -576,7 +576,7 @@ class tad_web_works
         $deadline        = strtotime($WorksDate);
         $time            = time();
         $show_score_form = ($isMyWeb and '' != $WorksKind) ? true : false;
-        $uid_name        = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name        = \XoopsUser::getUnameFromId($uid, 1);
 
         if (strtotime($WorksDate) > $time and 'mem_after_end' === $WorksKind) {
             $hide = sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate);
@@ -627,7 +627,7 @@ class tad_web_works
 
         $i         = 0;
         $main_data = [];
-        while (false !== (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result))) {
+        while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
             $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
             $main_data[$i]['title']  = $title;
