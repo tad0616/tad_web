@@ -1,4 +1,8 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_discuss
 {
     public $WebID = 0;
@@ -82,12 +86,12 @@ class tad_web_discuss
         $to_limit = empty($limit) ? 20 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-        $PageBar = getPageBar($sql, $to_limit, 10);
+        $PageBar = Utility::getPageBar($sql, $to_limit, 10);
         $bar     = $PageBar['bar'];
         $sql     = $PageBar['sql'];
         $total   = $PageBar['total'];
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = [];
 
@@ -136,13 +140,8 @@ class tad_web_discuss
             $i++;
         }
 
-        //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_discuss_func', "discuss.php?op=delete&WebID={$this->WebID}&DiscussID=", 'DiscussID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_discuss_func', "discuss.php?op=delete&WebID={$this->WebID}&DiscussID=", 'DiscussID');
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
@@ -169,7 +168,7 @@ class tad_web_discuss
         $this->add_counter($DiscussID);
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='{$DiscussID}' ";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $DiscussID , $ReDiscussID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
@@ -258,13 +257,8 @@ class tad_web_discuss
         $upform = $TadUpFiles->upform(false, 'upfile', null, false);
         $xoopsTpl->assign('upform', $upform);
 
-        //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_discuss_func', "discuss.php?op=delete&WebID={$this->WebID}&DefDiscussID={$DiscussID}&DiscussID=", 'DiscussID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_discuss_func', "discuss.php?op=delete&WebID={$this->WebID}&DefDiscussID={$DiscussID}&DiscussID=", 'DiscussID');
 
         //找出表情圖
         $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/discuss/smiles/';
@@ -395,14 +389,9 @@ class tad_web_discuss
 
         $op = (empty($DiscussID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-        }
-        require_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator      = new formValidator('#myForm', true);
-        $formValidator_code = $formValidator->render();
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
-        $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
         $TadUpFiles->set_col('DiscussID', $DiscussID);
@@ -441,7 +430,7 @@ class tad_web_discuss
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);
         }
 
-        $myts           = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
         $newCateName    = $myts->addSlashes($_POST['newCateName']);
@@ -472,7 +461,7 @@ class tad_web_discuss
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_discuss') . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
         values('{$CateID}'  ,'{$ReDiscussID}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$DiscussTitle}' , '{$DiscussContent}' , now() , '{$WebID}' , now() , 0)";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $DiscussID = $xoopsDB->getInsertId();
@@ -483,7 +472,7 @@ class tad_web_discuss
         if (!empty($ReDiscussID)) {
             $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set `LastTime` = now()
             where `DiscussID` = '{$ReDiscussID}' or `ReDiscussID` = '{$ReDiscussID}'";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
 
         if (!empty($ReDiscussID)) {
@@ -524,7 +513,7 @@ class tad_web_discuss
             $anduid   = "and `ParentID`='{$ParentID}'";
         }
 
-        $myts           = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
         $newCateName    = $myts->addSlashes($_POST['newCateName']);
@@ -542,7 +531,7 @@ class tad_web_discuss
          `DiscussContent` = '{$DiscussContent}' ,
          `LastTime` = now()
         where DiscussID='{$DiscussID}' {$anduid}";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('DiscussID', $DiscussID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -573,10 +562,10 @@ class tad_web_discuss
         }
 
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_discuss') . " where `DiscussID`='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_discuss') . " where `ReDiscussID`='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('DiscussID', $DiscussID);
         $TadUpFiles->del_files();
@@ -591,7 +580,7 @@ class tad_web_discuss
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql       = 'select DiscussID,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID='0'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($DiscussID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($DiscussID);
             $allCateID[$CateID] = $CateID;
@@ -607,7 +596,7 @@ class tad_web_discuss
     {
         global $xoopsDB;
         $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}'";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -617,7 +606,7 @@ class tad_web_discuss
     {
         global $xoopsDB;
         $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_discuss資料
@@ -629,7 +618,7 @@ class tad_web_discuss
         }
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='$DiscussID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -661,7 +650,7 @@ class tad_web_discuss
         $desc = ('1' == $this->discuss_setup['new2old']) ? 'desc' : '';
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where ReDiscussID='$DiscussID' order by DiscussDate $desc";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $re_data = '';
 
@@ -755,7 +744,7 @@ class tad_web_discuss
 
         $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_discuss') . " where ReDiscussID='$DiscussID'";
 
-        $result        = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($counter) = $xoopsDB->fetchRow($result);
         return $counter;
     }
@@ -778,7 +767,7 @@ class tad_web_discuss
         $andEnd    = empty($end_date) ? '' : "and DiscussDate <= '{$end_date}'";
 
         $sql    = 'select DiscussID,DiscussTitle,DiscussDate,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID=0 {$andStart} {$andEnd} {$andCateID} order by DiscussDate";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
         $main_data = [];

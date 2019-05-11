@@ -113,7 +113,7 @@
     </div>
   <{/if}>
   <{if $file_data}>
-    <{$FooTableJS}>
+
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/files/tpls/b3/tad_web_common_files.tpl"}>
   <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h2>

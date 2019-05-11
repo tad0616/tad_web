@@ -1,6 +1,6 @@
 <{if $op=="edit_form"}>
 
-  <{$formValidator_code}>
+
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript">
     function chang_title(){
@@ -202,7 +202,7 @@
     </div>
   <{/if}>
   <{if $homework_data or $yet_data}>
-    <{$FooTableJS}>
+
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/b4/tad_web_common_homework.tpl"}>
   <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h2>

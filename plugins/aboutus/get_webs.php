@@ -1,12 +1,13 @@
 <?php
+use XoopsModules\Tadtools\FooTable;
+use XoopsModules\Tadtools\Utility;
+
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 require_once "langs/{$xoopsConfig['language']}.php";
-if (file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php')) {
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php';
-    $FooTable   = new FooTable();
-    $FooTableJS = $FooTable->render();
-}
+
+$FooTable   = new FooTable();
+$FooTable->render();
 
 $moduleHandler        = xoops_getHandler('module');
 $xoopsModule       = $moduleHandler->getByDirname('tad_web');
@@ -21,7 +22,7 @@ $MyWebs = MyWebID();
 
 //找出各班最新聯絡簿
 $sql    = 'select `WebID`,max(`HomeworkID`),max(`toCal`) from ' . $xoopsDB->prefix('tad_web_homework') . " where HomeworkPostDate <= '$now' group by `WebID`";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
     $homework[$WebID]      = $HomeworkID;
     $homework_date[$WebID] = substr($toCal, 0, 10);
@@ -29,7 +30,7 @@ while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
 
 //找出各班功課表
 $sql    = 'SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM ' . $xoopsDB->prefix('tad_web_schedule') . " WHERE `ScheduleDisplay` = '1'";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule[$WebID]       = $ScheduleID;
     $schedule_title[$WebID] = $ScheduleName;
@@ -41,7 +42,7 @@ if (empty($list_web_order)) {
 }
 
 $sql    = 'select * from ' . $xoopsDB->prefix('tad_web') . " where `WebEnable`='1' and CateID='{$CateID}' order by {$list_web_order}";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
 $web_tr = '';
 while (false !== ($web = $xoopsDB->fetchArray($result))) {
@@ -120,5 +121,5 @@ $content = $FooTableJS . '
 </html>';
 die($content);
 
-// html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)
+// Utility::html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)
 // die(html5($content, false, true, 3, false));

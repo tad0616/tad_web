@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 require_once dirname(dirname(__DIR__)) . '/class/cate.php';
@@ -15,7 +18,7 @@ $schedule_data = $schedule->get_one_data($ScheduleID);
 $schedule_data = $schedule->get_one_data($ScheduleID);
 $content = "<h2>{$schedule_data['ScheduleName']}</h2>";
 $content .= $schedule->get_one_schedule($ScheduleID);
-$html = html5($content, false, false, null, false);
+$html = Utility::html5($content, false, false, null, false);
 $html = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $html);
 $html = preg_replace('/(<[^>]+) style=\'.*?\'/i', '$1', $html);
 $html = preg_replace('/(<[^>]+) class=".*?"/i', '$1', $html);

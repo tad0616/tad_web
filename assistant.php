@@ -1,4 +1,7 @@
 <?php
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\FormValidator;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -8,7 +11,7 @@ if (!$isMyWeb) {
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
 }
 if (!empty($WebID)) {
-    $GLOBALS['xoopsOption']['template_main'] = 'tad_web_assistant.tpl';
+    $xoopsOption['template_main'] = 'tad_web_assistant.tpl';
 } else {
     header('location: index.php');
     exit;
@@ -25,7 +28,7 @@ function list_all_assistant($WebID = '', $plugin = '')
     $sql = 'select a.*,b.* from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a
     left join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.CateID=b.CateID
     where b.`WebID` = '{$WebID}' ";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
     while (false !== ($data = $xoopsDB->fetchArray($result))) {
         foreach ($data as $k => $v) {
@@ -50,7 +53,7 @@ function list_all_assistant($WebID = '', $plugin = '')
     $default_class = get_web_config('default_class', $WebID);
 
     $sql = 'select a.MemID, a.MemNum ,b.MemName from ' . $xoopsDB->prefix('tad_web_link_mems') . ' as a left join ' . $xoopsDB->prefix('tad_web_mems') . " as b on a.MemID=b.MemID where a.`CateID` = '{$default_class}'  order by a.MemNum";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $AllMems = [];
     while (false !== ($mem = $xoopsDB->fetchArray($result))) {
         $AllMems[] = $mem;
@@ -58,19 +61,11 @@ function list_all_assistant($WebID = '', $plugin = '')
     $xoopsTpl->assign('default_class', $default_class);
     $xoopsTpl->assign('AllMems', $AllMems);
 
-    if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-        redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-    }
-    require_once TADTOOLS_PATH . '/formValidator.php';
-    $formValidator = new formValidator('#myForm', true);
-    $formValidator_code = $formValidator->render();
+    $FormValidator = new FormValidator('#myForm', true);
+    $FormValidator->render();
 
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-    $sweet_alert = new sweet_alert();
-    $sweet_alert->render('delete_assistant_func', "assistant.php?WebID={$WebID}&op=del_assistant&plugin={$plugin}&CateID=", 'CateID');
+    $SweetAlert = new SweetAlert();
+    $SweetAlert->render('delete_assistant_func', "assistant.php?WebID={$WebID}&op=del_assistant&plugin={$plugin}&CateID=", 'CateID');
 }
 
 function del_assistant($CateID = '')
@@ -82,7 +77,7 @@ function del_assistant($CateID = '')
     }
 
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_cate_assistant') . " where CateID='$CateID'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 }
 
 /*-----------執行動作判斷區----------*/

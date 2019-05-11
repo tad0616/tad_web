@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 $GLOBALS['xoopsOption']['template_main'] = 'tad_web_adm_setup.tpl';
 require_once __DIR__ . '/header.php';
@@ -23,7 +24,7 @@ function tad_web_setup_form()
     }
 
     $xoopsTpl->assign('web_plugin_display_arr', $web_plugin_display_arr);
-    get_jquery(true);
+    Utility::get_jquery(true);
 }
 
 //新增資料到tad_web_setup中
@@ -33,12 +34,12 @@ function save_plugins()
     global $xoopsDB;
     $plugins = get_plugins(0);
     //die(var_export($plugins));
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     $i = 1;
 
     $sql = 'DELETE FROM ' . $xoopsDB->prefix('tad_web_plugins') . " WHERE WebID='0'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $display_plugins = [];
     foreach ($plugins as $plugin) {
@@ -46,7 +47,7 @@ function save_plugins()
         $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
 
         $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ('none' !== $_POST['plugin_limit'][$dirname]) {
             save_web_config($dirname . '_limit', $_POST['plugin_limit'][$dirname], 0);

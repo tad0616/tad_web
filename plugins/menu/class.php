@@ -1,4 +1,9 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\MColorPicker;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
+
 class tad_web_menu
 {
     public $WebID = 0;
@@ -77,7 +82,7 @@ class tad_web_menu
             order by a.Sort";
         }
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = $cate_data = $cate_size = [];
 
@@ -128,13 +133,9 @@ class tad_web_menu
             // $main_data[$i]['MenuPic'] = $MenuPic;
             $i++;
         }
-        //可愛刪除
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_menu_func', "menu.php?op=delete&WebID={$this->WebID}&MenuID=", 'MenuID');
+
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_menu_func', "menu.php?op=delete&WebID={$this->WebID}&MenuID=", 'MenuID');
 
         if ('return' === $mode) {
             $data['cate_arr']  = $cate_arr;
@@ -253,14 +254,9 @@ class tad_web_menu
 
         $op = (empty($MenuID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-        }
-        require_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator      = new formValidator('#myForm', true);
-        $formValidator_code = $formValidator->render();
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
-        $xoopsTpl->assign('formValidator_code', $formValidator_code);
         $xoopsTpl->assign('next_op', $op);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
@@ -275,13 +271,8 @@ class tad_web_menu
         // $tags_form = $this->tags->tags_menu("MenuID", $MenuID);
         // $xoopsTpl->assign('tags_form', $tags_form);
 
-        //顏色設定
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/mColorPicker.php';
-        $mColorPicker = new mColorPicker('.color');
-        $mColorPicker->render();
+        $MColorPicker = new MColorPicker('.color');
+        $MColorPicker->render();
     }
 
     //新增資料到tad_web_menu中
@@ -289,7 +280,7 @@ class tad_web_menu
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
 
-        $myts          = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $MenuTitle     = $myts->addSlashes($_POST['MenuTitle']);
         $Plugin        = $myts->addSlashes($_POST['Plugin']);
         $PluginCate    = (int) $_POST['PluginCate'];
@@ -325,7 +316,7 @@ class tad_web_menu
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_menu') . "
         (`ParentMenuID`,`WebID`,`MenuTitle`,`Plugin`,`CateID`,`ColName`,`ColSn`,`Link`,`Target`,`Icon`,`Color`,`BgColor`,`Status`,`Sort`,`MenuCount`)
         values('{$ParentMenuID}' ,'{$WebID}' , '{$MenuTitle}' , '{$Plugin}' , '{$CateID}' ,'{$ColName}' , '{$ColSn}' ,'{$Link}' ,'{$Target}' ,'{$Icon}' ,'{$Color}' ,'{$BgColor}','{$Status}','{$Sort}',0)";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $MenuID = $xoopsDB->getInsertId();
@@ -348,9 +339,9 @@ class tad_web_menu
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
 
-        $myts          = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $MenuTitle     = $myts->addSlashes($_POST['MenuTitle']);
         $Plugin        = $myts->addSlashes($_POST['Plugin']);
         $PluginCate    = (int)$_POST['PluginCate'];
@@ -398,7 +389,7 @@ class tad_web_menu
             `BgColor` = '{$BgColor}' ,
             `Status` = '{$Status}'
             where MenuID='$MenuID'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -421,7 +412,7 @@ class tad_web_menu
         $anduid = onlyMine();
 
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_menu') . " where MenuID='$MenuID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -440,7 +431,7 @@ class tad_web_menu
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql       = 'select MenuID,CateID from ' . $xoopsDB->prefix('tad_web_menu') . " where WebID='{$this->WebID}'";
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($MenuID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($MenuID);
             $allCateID[$CateID] = $CateID;
@@ -457,7 +448,7 @@ class tad_web_menu
         global $xoopsDB;
         $andCate     = empty($CateID) ? '' : "and CateID='$CateID'";
         $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_menu') . " where WebID='{$this->WebID}' {$andCate}";
-        $result      = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -467,7 +458,7 @@ class tad_web_menu
     {
         global $xoopsDB;
         $sql = 'update ' . $xoopsDB->prefix('tad_web_menu') . " set `MenuCount`=`MenuCount`+1 where `MenuID`='{$MenuID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_menu資料
@@ -479,7 +470,7 @@ class tad_web_menu
         }
 
         $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_menu') . " where MenuID='$MenuID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -496,7 +487,7 @@ class tad_web_menu
     {
         global $xoopsDB;
         $sql        = 'select max(`Sort`) from ' . $xoopsDB->prefix('tad_web_menu') . " where WebID='$WebID' and CateID='{$CateID}'";
-        $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }

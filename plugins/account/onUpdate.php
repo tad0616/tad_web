@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 if (account_onUpdate1_chk()) {
     account_onUpdate1_go();
@@ -22,7 +23,7 @@ function account_onUpdate1_go()
     global $xoopsDB;
 
     $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tad_web_account') . " CHANGE `AccountIncome` `AccountIncome` mediumint NOT NULL DEFAULT '0' COMMENT '收入' AFTER `AccountDate`,CHANGE `AccountOutgoings` `AccountOutgoings` mediumint NOT NULL DEFAULT '0' COMMENT '支出' AFTER `AccountIncome`";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return true;
 }

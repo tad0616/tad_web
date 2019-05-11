@@ -1,8 +1,5 @@
 <{if $op=="edit_form"}>
 
-  <{$formValidator_code}>
-
-
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
   <h2><{$smarty.const._MD_TCW_PAGE_ADD}></h2>

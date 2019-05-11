@@ -1,5 +1,5 @@
 <{if $isMyWeb}>
-  <{$formValidator_code}>
+
 
   <script type="text/javascript">
     $(document).ready(function() {

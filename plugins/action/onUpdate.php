@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 if (action_onUpdate1_chk()) {
     action_onUpdate1_go();
@@ -21,7 +22,7 @@ function action_onUpdate1_go()
 {
     global $xoopsDB;
     $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tad_web_action') . ' DROP `ActionKind`';
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return true;
 }

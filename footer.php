@@ -1,4 +1,8 @@
 <?php
+use XoopsModules\Tadtools\FancyBox;
+use XoopsModules\Tadtools\FooTable;
+use XoopsModules\Tadtools\Utility;
+
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
 $xoopsTpl->assign('Web', $Web);
@@ -45,14 +49,10 @@ if ($WebID and _DISPLAY_MODE === 'home') {
     $xoopsTpl->assign('xoops_sitename', $WebName);
     $xoopsTpl->assign('logo_img', XOOPS_URL . "/uploads/tad_web/{$WebID}/header_480.png");
 }
-// $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+// $xoopsTpl->assign("toolbar", Utility::toolbar_bootstrap($interface_menu));
 
-if (file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php')) {
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/FooTable.php';
-    $FooTable = new FooTable();
-    $FooTableJS = $FooTable->render();
-    $xoopsTpl->assign('FooTableJS', $FooTableJS);
-}
+$FooTable = new FooTable();
+$FooTable->render();
 
 //區塊
 get_tad_web_blocks($WebID, _DISPLAY_MODE);
@@ -78,8 +78,7 @@ function get_marquee()
     }
 
     $sql = 'select * from `' . $xoopsDB->prefix('tad_web_notice') . "` where `NoticeWho` like '%{$user_kind}%' or `NoticeWho`='' order by NoticeDate desc limit 0,5";
-    $result = $xoopsDB->query($sql)
-    or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $data_arr = [];
     while (false !== ($data = $xoopsDB->fetchArray($result))) {
         $NoticeID = $data['NoticeID'];
@@ -89,12 +88,9 @@ function get_marquee()
     $xoopsTpl->assign('marquee_arr', $data_arr);
 
     if ($data_arr) {
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
-        $fancybox = new fancybox('.sho_notice', '480px', '480px');
-        $fancybox->render(false);
+
+        $FancyBox = new FancyBox('.sho_notice', '480px', '480px');
+        $FancyBox->render(false);
     }
 }
 
@@ -115,7 +111,7 @@ function tad_web_my_menu($WebID)
             $add_power = ['discuss'];
             //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
-            $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[] = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
@@ -131,7 +127,7 @@ function tad_web_my_menu($WebID)
             $defaltWebID = $_SESSION['LoginWebID'];
             $add_power = ['discuss']; //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
-            $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[] = $plugin_dir;
                 $_SESSION['isAssistant'][$plugin_dir] = $CateID;
@@ -152,7 +148,7 @@ function tad_web_my_menu($WebID)
             if ($MyWebID) {
                 $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyWebID}') order by WebSort";
                 //die($sql);
-                $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 //$web_num = $xoopsDB->getRowsNum($result);
                 $i = $defalt_used_size = 0;
 
@@ -223,7 +219,7 @@ function tad_web_my_menu($WebID)
             $AllMyClosedWebID = implode("','", $MyClosedWebID);
             if ($MyClosedWebID) {
                 $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyClosedWebID}') order by WebSort";
-                $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 $i = 0;
 
                 while (false !== ($all = $xoopsDB->fetchArray($result))) {
@@ -287,6 +283,11 @@ function tad_web_login($WebID, $config = [])
 
     $auth_method = get_sys_openid();
     if ($auth_method) {
+
+        require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
+        xoops_loadLanguage('county', 'tad_login');
+        xoops_loadLanguage('blocks', 'tad_login');
+
         $i = 0;
 
         // $login_method_arr = explode(';', $login_method);
@@ -295,8 +296,8 @@ function tad_web_login($WebID, $config = [])
                 // die(var_export($login_config));
                 continue;
             }
-            $method_const = '_' . mb_strtoupper($method);
-            $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
+            // $method_const = '_' . mb_strtoupper($method);
+            // $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
 
             if ('facebook' === $method) {
                 $tlogin[$i]['link'] = facebook_login('return');
@@ -305,9 +306,18 @@ function tad_web_login($WebID, $config = [])
             } else {
                 $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
             }
-            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
-            $tlogin[$i]['text'] = $loginTitle;
+            // $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+            // $tlogin[$i]['text'] = $loginTitle;
 
+            $tlogin[$i]['img'] = in_array($method, $oidc_array) ? XOOPS_URL . "/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png" : XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+
+            if (in_array($method, $oidc_array)) {
+                $tlogin[$i]['text'] = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . ' OIDC ' . _MB_TADLOGIN_LOGIN;
+            } elseif (in_array($method, $oidc_array2)) {
+                $tlogin[$i]['text'] = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . _MB_TADLOGIN_LOGIN;
+            } else {
+                $tlogin[$i]['text'] = constant('_' . mb_strtoupper($method)) . ' OpenID ' . _MB_TADLOGIN_LOGIN;
+            }
             $i++;
         }
 
@@ -348,7 +358,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     global $xoopsTpl, $xoopsDB, $Web, $isAdmin;
 
     $power = new  \XoopsModules\Tad_web\Power($WebID);
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 
     $block_tpl = get_all_blocks('tpl');
@@ -367,7 +377,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     // if ($isAdmin) {
     //     die($sql);
     // }
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {

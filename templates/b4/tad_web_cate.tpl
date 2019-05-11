@@ -1,4 +1,4 @@
-<{$formValidator_code}>
+
 <script type="text/javascript">
   $(document).ready(function(){
     $('#sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {

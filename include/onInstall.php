@@ -1,14 +1,20 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Update;
 
-use XoopsModules\Tad_web\Utility;
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+if (!class_exists('XoopsModules\Tad_web\Update')) {
+    include dirname(__DIR__) . '/preloads/autoloader.php';
+}
 
-include dirname(__DIR__) . '/preloads/autoloader.php';
 
 function xoops_module_install_tad_web(&$module)
 {
     Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web');
-    Utility::chk_sql_install();
-    Utility::add_log('install');
+    Update::chk_sql_install();
+    Update::add_log('install');
 
     return true;
 }

@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\ColorBox;
+use XoopsModules\Tadtools\Utility;
 
 function search($WebID, $config = [])
 {
@@ -20,7 +22,7 @@ function web_list($WebID, $config = [])
     $block['DefWebID'] = $DefWebID = $WebID;
 
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
@@ -43,7 +45,7 @@ function web_list($WebID, $config = [])
 function rrssb($WebID, $config = [])
 {
     // $block['main_data'] = urlencode("http://" . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
-    $block['main_data'] = push_url();
+    $block['main_data'] = Utility::push_url();
 
     return $block;
 }
@@ -51,12 +53,9 @@ function rrssb($WebID, $config = [])
 //萌典查生字
 function moedict($WebID, $config = [])
 {
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
-    $colorbox = new colorbox('#get_moedict');
-    $colorbox->render();
+
+    $ColorBox = new ColorBox('#get_moedict');
+    $ColorBox->render();
     $block['main_data'] = true;
 
     return $block;
@@ -65,12 +64,9 @@ function moedict($WebID, $config = [])
 //Dr.eye 英文字典
 function dreye($WebID, $config = [])
 {
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
-    $colorbox = new colorbox('#get_dreyedict', '640');
-    $colorbox->render();
+
+    $ColorBox = new ColorBox('#get_dreyedict', '640');
+    $ColorBox->render();
     $block['main_data'] = true;
 
     return $block;
@@ -79,12 +75,8 @@ function dreye($WebID, $config = [])
 //WIKI維基百科查詢
 function wiki($WebID, $config = [])
 {
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/colorbox.php';
-    $colorbox = new colorbox('#get_wiki');
-    $colorbox->render();
+    $ColorBox = new ColorBox('#get_wiki');
+    $ColorBox->render();
     $block['main_data'] = true;
 
     return $block;
@@ -121,7 +113,7 @@ function countdown($WebID, $config = [])
 {
     $block['main_data'] = true;
     $block['config'] = $config;
-    $block['randStr'] = randStr(4);
+    $block['randStr'] = Utility::randStr(4);
 
     return $block;
 }

@@ -942,7 +942,7 @@
 
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/b4/tad_web_mem_slot.tpl"}>
 <{else}>
-  <{$FooTableJS}>
+
   <div class="row">
     <div class="col-md-12">
        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/b4/tad_web_common_aboutus.tpl"}>

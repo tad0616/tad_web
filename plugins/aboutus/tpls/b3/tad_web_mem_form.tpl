@@ -1,4 +1,4 @@
-<{$formValidator_code}>
+
 
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 

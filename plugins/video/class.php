@@ -1,4 +1,7 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\Utility;
 
 class tad_web_video
 {
@@ -79,13 +82,13 @@ class tad_web_video
             $to_limit = empty($limit) ? 20 : $limit;
 
             //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-            $PageBar = getPageBar($sql, $to_limit, 10);
+            $PageBar = Utility::getPageBar($sql, $to_limit, 10);
             $bar     = $PageBar['bar'];
             $sql     = $PageBar['sql'];
             $total   = $PageBar['total'];
         }
 
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = [];
 
@@ -118,19 +121,15 @@ class tad_web_video
                 if (!empty($VideoPlace)) {
                     $main_data[$i]['VideoPlace'] = $VideoPlace;
                     $sql                         = 'update ' . $xoopsDB->prefix('tad_web_video') . " set `VideoPlace` = '{$VideoPlace}' where VideoID='{$VideoID}'";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
             }
 
             $i++;
         }
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_video_func', "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_video_func', "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
@@ -159,7 +158,7 @@ class tad_web_video
         $this->add_counter($VideoID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='{$VideoID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID , $VideoCount , $Youtube, $VideoSort
@@ -196,12 +195,8 @@ class tad_web_video
         }
         $xoopsTpl->assign('cate', $cate);
 
-        if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php')) {
-            redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-        }
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert->render('delete_video_func', "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('delete_video_func', "video.php?op=delete&WebID={$this->WebID}&VideoID=", 'VideoID');
         $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign('tags', $this->tags->list_tags('VideoID', $VideoID, 'video'));
@@ -275,13 +270,8 @@ class tad_web_video
 
         $op = (empty($VideoID)) ? 'insert' : 'update';
 
-        if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-            redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
-        }
-        require_once TADTOOLS_PATH . '/formValidator.php';
-        $formValidator      = new formValidator('#myForm', true);
-        $formValidator_code = $formValidator->render();
-        $xoopsTpl->assign('formValidator_code', $formValidator_code);
+        $FormValidator = new FormValidator('#myForm', true);
+        $FormValidator->render();
 
         $xoopsTpl->assign('next_op', $op);
 
@@ -299,7 +289,7 @@ class tad_web_video
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts        = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $VideoName   = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube     = $myts->addSlashes($_POST['Youtube']);
@@ -317,7 +307,7 @@ class tad_web_video
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_video') . "
         (`CateID`, `VideoName` , `VideoDesc` , `VideoDate` , `VideoPlace` , `uid` , `WebID` , `VideoCount` , `Youtube` , `VideoSort`)
         values('{$CateID}', '{$VideoName}' , '{$VideoDesc}' , now() , '{$VideoPlace}' , '{$uid}' , '{$WebID}' , '{$VideoCount}' , '{$Youtube}' , '{$VideoSort}')";
-        $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $VideoID = $xoopsDB->getInsertId();
@@ -346,7 +336,7 @@ class tad_web_video
     {
         global $xoopsDB;
 
-        $myts        = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $VideoName   = $myts->addSlashes($_POST['VideoName']);
         $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
         $Youtube     = $myts->addSlashes($_POST['Youtube']);
@@ -372,7 +362,7 @@ class tad_web_video
          `VideoDate` = now() ,
          `VideoPlace` = '{$VideoPlace}'
         where VideoID='$VideoID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
         //儲存標籤
         $this->tags->save_tags('VideoID', $VideoID, $tag_name, $_POST['tags']);
@@ -384,13 +374,13 @@ class tad_web_video
     {
         global $xoopsDB;
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='$VideoID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'VideoID', $VideoID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='$VideoID' $anduid";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
         //刪除標籤
         $this->tags->delete_tags('VideoID', $VideoID);
@@ -402,7 +392,7 @@ class tad_web_video
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
         $sql       = 'select VideoID,CateID from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($VideoID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($VideoID);
             $allCateID[$CateID] = $CateID;
@@ -418,7 +408,7 @@ class tad_web_video
     {
         global $xoopsDB;
         $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -428,7 +418,7 @@ class tad_web_video
     {
         global $xoopsDB;
         $sql = 'update ' . $xoopsDB->prefix('tad_web_video') . " set `VideoCount`=`VideoCount`+1 where `VideoID`='{$VideoID}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //以流水號取得某筆tad_web_video資料
@@ -440,7 +430,7 @@ class tad_web_video
         }
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='$VideoID'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
         return $data;
     }
@@ -454,7 +444,7 @@ class tad_web_video
         $andEnd    = empty($end_date) ? '' : "and VideoDate <= '{$end_date}'";
 
         $sql = 'select VideoID,VideoName,VideoDate,CateID from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by VideoDate";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i         = 0;
         $main_data = [];
@@ -475,7 +465,7 @@ class tad_web_video
     {
         global $xoopsDB;
         $sql = 'select max(`VideoSort`) from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='$WebID' and CateID='{$CateID}'";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }

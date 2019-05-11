@@ -1,6 +1,5 @@
 <?php
 xoops_loadLanguage('modinfo_common', 'tadtools');
-
 define('_MI_TCW_NAME', '多人網頁系統');
 define('_MI_TCW_AUTHOR', 'tad(tad0616@gmail.com)');
 define('_MI_TCW_CREDITS', 'tad');

@@ -24,7 +24,7 @@
 
   </script>
 
-  <{$formValidator_code}>
+
   <h2><{$smarty.const._MD_TCW_LINK}></h2>
   <div class="well">
     <form action="link.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
@@ -99,7 +99,7 @@
     </div>
   <{/if}>
   <{if $link_data}>
-    <{$FooTableJS}>
+
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/link/tpls/b3/tad_web_common_link.tpl"}>
   <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$link.PluginTitle}></h2>

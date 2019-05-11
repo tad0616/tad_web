@@ -1,4 +1,8 @@
 <?php
+use XoopsModules\Tadtools\FancyBox;
+use XoopsModules\Tadtools\TadUpFiles;
+use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
@@ -21,7 +25,7 @@ function plugin_setup($WebID, $plugin)
         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
     }
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $pluginSetup = [];
     $setup_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
     if (file_exists($setup_file)) {
@@ -79,7 +83,7 @@ function save_plugin_setup($WebID = '', $plugin = '')
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
 
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         foreach ($plugin_setup as $k => $setup) {
             $name = $setup['name'];
             if ('checkbox' === $setup['type']) {
@@ -89,7 +93,7 @@ function save_plugin_setup($WebID = '', $plugin = '')
             }
 
             $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins_setup') . " (`WebID`, `plugin`, `name`, `type`, `value`) values($WebID, '{$plugin}','{$setup['name']}' , '{$setup['type']}' , '{$value}')";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
 }
@@ -98,7 +102,6 @@ function TadUpFiles_plugin_setup($WebID, $plugin)
 {
     global $xoopsConfig;
 
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
     $TadUpFiles_plugin_setup = new TadUpFiles('tad_web', "/{$WebID}/{$plugin}", null, '', '/thumbs');
 
     $TadUpFiles_plugin_setup->set_thumb('100px', '60px', '#000', 'center center', 'no-repeat', 'contain');
@@ -120,12 +123,9 @@ function plugin_block_setup($WebID, $plugin)
     $web_install_blocks = get_web_blocks($WebID, $plugin, null);
     $xoopsTpl->assign('web_install_blocks', $web_install_blocks);
     $xoopsTpl->assign('BlockPositionTitle', $BlockPositionTitle);
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
-        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
-    $fancybox = new fancybox('.edit_block', '640px');
-    $fancybox->render(false);
+
+    $FancyBox = new FancyBox('.edit_block', '640px');
+    $FancyBox->render(false);
 }
 /*-----------執行動作判斷區----------*/
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
