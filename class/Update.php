@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 namespace XoopsModules\Tad_web;
 
@@ -57,7 +58,7 @@ class Update
     //擷取網站網址、名稱、站長信箱、多人網頁版本、子網站數等資訊以供統計或日後更新通知
     public static function add_log($status)
     {
-        global $xoopsConfig, $xoopsDB;       
+        global $xoopsConfig, $xoopsDB;
         $moduleHandler = xoops_getHandler('module');
         $xoopsModule = $moduleHandler->getByDirname('tad_web');
         $version = $xoopsModule->version();
@@ -412,7 +413,7 @@ class Update
         }
 
         //找出目前所有的樣板檔
-        $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . "` WHERE `dirname` = 'tad_web' ORDER BY `func_num`";
+        $sql    = 'SELECT bid,name,visible,show_func,template FROM ' . $xoopsDB->prefix('newblocks') . " WHERE `dirname` = 'tad_web' ORDER BY `func_num`";
         $result = $xoopsDB->query($sql);
         while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
             //假如現有的區塊和樣板對不上就刪掉
