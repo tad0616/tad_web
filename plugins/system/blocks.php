@@ -24,7 +24,7 @@ function web_list($WebID, $config = [])
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -129,7 +129,7 @@ function countdown($WebID, $config = [])
 //標籤
 function tags($WebID, $config = [])
 {
-    $tags = new tags($WebID);
+    $tags = new  \XoopsModules\Tad_web\Tags($WebID);
     $tags_arr = $tags->get_tags();
     arsort($tags_arr);
     $block['main_data'] = true;

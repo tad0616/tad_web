@@ -69,11 +69,11 @@
         </label>
         <div class="col-md-4">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_1" value="1" <{if $NewsEnable !='0'}>checked="checked"<{/if}>>
+            <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_1" value="1" <{if $NewsEnable !='0'}>checked<{/if}>>
             <label class="form-check-label" for="NewsEnable_1"><{$smarty.const._YES}></label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_0" value="0" <{if $NewsEnable =='0'}>checked="checked"<{/if}>>
+            <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_0" value="0" <{if $NewsEnable =='0'}>checked<{/if}>>
             <label class="form-check-label" for="NewsEnable_0"><{$smarty.const._NO}></label>
           </div>
         </div>

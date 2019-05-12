@@ -16,7 +16,7 @@ class tad_web_page
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
         $this->web_cate = new web_cate($WebID, 'page', 'tad_web_page');
-        $this->tags = new tags($WebID);
+        $this->tags = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'page');
     }
 
@@ -46,7 +46,7 @@ class tad_web_page
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
@@ -96,7 +96,7 @@ class tad_web_page
 
         $Webs = getAllWebInfo();
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $PageID , $PageTitle , $PageContent , $PageDate , $PageSort , $uid , $WebID , $PageCount, $PageCSS
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -162,7 +162,7 @@ class tad_web_page
             return;
         }
 
-        $PageID = (int) $PageID;
+        $PageID = (int)$PageID;
         $this->add_counter($PageID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='{$PageID}'";
@@ -188,9 +188,9 @@ class tad_web_page
         $TadUpFiles->set_col('PageID', $PageID);
         $files = $TadUpFiles->show_files('upfile', true, '', true, false, null, null, false, '');
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $assistant = is_assistant($CateID, 'PageID', $PageID);
@@ -230,7 +230,7 @@ class tad_web_page
         $JqueryPrintPreview = new JqueryPrintPreview('a.print-preview');
         $JqueryPrintPreview->render();
 
-        $xoopsTpl->assign('module_css', '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/page/print.css" type="text/css" media="print" />');
+        $xoopsTpl->assign('module_css', '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/page/print.css" type="text/css" media="print">');
         $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign('tags', $this->tags->list_tags('PageID', $PageID, 'page'));
@@ -330,7 +330,7 @@ class tad_web_page
         if (isset($_SESSION['isAssistant']['page'])) {
             $uid = $WebOwnerUid;
         } elseif (!empty($_POST['uid'])) {
-            $uid = (int) $_POST['uid'];
+            $uid = (int)$_POST['uid'];
         } else {
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
@@ -338,8 +338,8 @@ class tad_web_page
         $myts = \MyTextSanitizer::getInstance();
         $PageTitle = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $PageSort = $this->max_sort($WebID, $CateID);
         $PageDate = date('Y-m-d H:i:s');
         $PageCSS = $myts->addSlashes($_POST['PageCSS']);
@@ -373,8 +373,8 @@ class tad_web_page
         $myts = \MyTextSanitizer::getInstance();
         $PageTitle = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $PageDate = date('Y-m-d H:i:s');
         $PageCSS = $myts->addSlashes($_POST['PageCSS']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);

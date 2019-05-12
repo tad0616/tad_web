@@ -4,8 +4,8 @@ use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_cate.tpl';
-include_once 'header.php';
-include_once '../function.php';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
 /*-----------function區--------------*/
 //tad_web_cate編輯表單
 function tad_web_cate_form($CateID = '')
@@ -202,7 +202,7 @@ function tad_web_list_cate()
 
     $web_cate = get_web_cate_arr();
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $CateID, $WebID, $CateName, $ColName, $ColSN, $CateSort, $CateEnable, $CateCounter
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -261,7 +261,7 @@ function update_tad_web_cate_sort()
     return _TAD_SORTED . ' (' . date('Y-m-d H:i:s') . ')';
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -304,4 +304,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

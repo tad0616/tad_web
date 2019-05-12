@@ -3,7 +3,7 @@
 <{if $bc.main_data}>
   <{if $bc.config.tags_mode=="cloud"}>
     <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/jQCloud/jqcloud-1.0.4.js"></script>
-    <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_web/class/jQCloud/jqcloud.css" />
+    <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_web/class/jQCloud/jqcloud.css">
     <script type="text/javascript">
       var word_list = [
       <{foreach from=$bc.tags_arr key=tag item=count}>

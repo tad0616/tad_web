@@ -5,7 +5,7 @@ function list_link($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_link = new tad_web_link($WebID);
 

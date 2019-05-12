@@ -1,14 +1,14 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 $plugin = 'aboutus';
-include_once 'plugin_header.php';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once __DIR__ . '/plugin_header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 //$xoopsTpl->assign('plugin', $plugin);
 /*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $MemID = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
 $year = system_CleanVars($_REQUEST, 'year', '', 'string');
@@ -112,8 +112,8 @@ switch ($op) {
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
         // clear entry from online users table
         if (is_object($xoopsUser)) {
-            $online_handler = xoops_getHandler('online');
-            $online_handler->destroy($xoopsUser->getVar('uid'));
+            $onlineHandler = xoops_getHandler('online');
+            $onlineHandler->destroy($xoopsUser->getVar('uid'));
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
@@ -189,8 +189,8 @@ switch ($op) {
         setcookie($xoopsConfig['usercookie'], 0, -1, '/');
         // clear entry from online users table
         if (is_object($xoopsUser)) {
-            $online_handler = xoops_getHandler('online');
-            $online_handler->destroy($xoopsUser->getVar('uid'));
+            $onlineHandler = xoops_getHandler('online');
+            $onlineHandler->destroy($xoopsUser->getVar('uid'));
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
@@ -229,5 +229,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

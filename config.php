@@ -4,7 +4,7 @@ use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 
 if ('enable_my_web' === $_REQUEST['op']) {
     $xoopsOption['template_main'] = 'tad_web_config.tpl';
@@ -17,7 +17,7 @@ if ('enable_my_web' === $_REQUEST['op']) {
         redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
     }
 }
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //網站設定
@@ -69,10 +69,10 @@ function tad_web_config($WebID, $configs)
 
     //登入設定
     // $login_method   = '';
-    $modhandler = xoops_getHandler('module');
-    $config_handler = xoops_getHandler('config');
+    $moduleHandler = xoops_getHandler('module');
+    $configHandler = xoops_getHandler('config');
 
-    $TadLoginXoopsModule = $modhandler->getByDirname('tad_login');
+    $TadLoginXoopsModule = $moduleHandler->getByDirname('tad_login');
     $login_method = $login_defval = [];
     if ($TadLoginXoopsModule) {
         global $xoopsConfig;
@@ -80,8 +80,8 @@ function tad_web_config($WebID, $configs)
         xoops_loadLanguage('blocks', 'tad_login');
         require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
 
-        $config_handler = xoops_getHandler('config');
-        $modConfig = $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $configHandler = xoops_getHandler('config');
+        $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method = $modConfig['auth_method'];
         foreach ($auth_method as $method) {
@@ -156,7 +156,7 @@ function tad_web_config($WebID, $configs)
     // }
     $myts = \MyTextSanitizer::getInstance();
     $user_ok = $user_yet = '';
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -371,7 +371,7 @@ function default_color($WebID = '')
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $MemID = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
@@ -536,5 +536,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

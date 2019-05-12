@@ -1,9 +1,9 @@
 <?php
-include_once '../../../../mainfile.php';
-include_once '../../function.php';
-include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/aboutus/langs/{$xoopsConfig['language']}.php";
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/function.php';
+require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/aboutus/langs/{$xoopsConfig['language']}.php";
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -62,7 +62,7 @@ if ('get_reationship' === $op) {
     $result = $xoopsDB->query($sql) or die($sql);
     $i = 0;
     $stud = "<option value=''>" . _MD_TCW_ABOUTUS_SELECT_MEM . '</option>';
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
         foreach ($all as $k => $v) {
             $$k = $v;

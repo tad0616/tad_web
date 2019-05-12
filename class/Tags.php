@@ -1,9 +1,12 @@
 <?php
+
+namespace XoopsModules\Tad_web;
+
 use XoopsModules\Tadtools\Utility;
 
 /*
 //起始函數
-$this->tags    = new tags($WebID);
+$this->tags    = new  \XoopsModules\Tad_web\Tags($WebID);
 
 //外掛頁面
 
@@ -33,7 +36,7 @@ $this->tags->save_tags("NewsID", $NewsID, $_POST['tag_name'],$_POST['tags']);
 $this->tags->delete_tags("NewsID", $NewsID, $tag_name);
 
  */
-class tags
+class Tags
 {
     public $WebID = 0;
     public $col_name;

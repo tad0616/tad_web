@@ -4,9 +4,9 @@ use XoopsModules\Tadtools\Ztree;
 
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_disk.tpl';
-include_once 'header.php';
-include_once '../function.php';
-include_once '../class/cate.php';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
+require_once dirname(__DIR__) . '/class/cate.php';
 /*-----------function區--------------*/
 
 //取得所有班級
@@ -28,7 +28,7 @@ function list_all_web($defCateID = '')
     $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
 
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : (int) $xoopsModuleConfig['user_space_quota'];
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
         $WebID = $all['WebID'];
         $dir_size = $all['used_size'];
@@ -44,7 +44,7 @@ function list_all_web($defCateID = '')
         $data[$WebID]['disk_used_space'] = $size;
         $data[$WebID]['disk_space'] = "{$dir}{$WebID}/";
         $data[$WebID]['memAmount'] = memAmount($WebID);
-        $data[$WebID]['uname'] = XoopsUser::getUnameFromId($all['WebOwnerUid'], 0);
+        $data[$WebID]['uname'] = \XoopsUser::getUnameFromId($all['WebOwnerUid'], 0);
         $percentage = round(($size / $user_space_quota), 2) * 100;
         $data[$WebID]['quota'] = $percentage;
         if ($percentage <= 70) {
@@ -191,7 +191,7 @@ function save_disk_setup()
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -217,4 +217,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

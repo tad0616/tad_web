@@ -12,7 +12,7 @@ class tad_web_files
     {
         $this->WebID = $WebID;
         $this->web_cate = new web_cate($WebID, 'files', 'tad_web_files');
-        $this->tags = new tags($WebID);
+        $this->tags = new  \XoopsModules\Tad_web\Tags($WebID);
     }
 
     //檔案下載
@@ -49,7 +49,7 @@ class tad_web_files
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
@@ -102,7 +102,7 @@ class tad_web_files
         $this->web_cate->set_WebID($this->WebID);
         $cate = $this->web_cate->get_tad_web_cate_arr();
         // die(var_export($cate));
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $fsn , $uid , $CateID , $file_date  , $WebID
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -129,9 +129,9 @@ class tad_web_files
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb'] = $isMyWeb;
 
-            $uid_name = XoopsUser::getUnameFromId($uid, 1);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 1);
             if (empty($uid_name)) {
-                $uid_name = XoopsUser::getUnameFromId($uid, 0);
+                $uid_name = \XoopsUser::getUnameFromId($uid, 0);
             }
 
             $file_date = mb_substr($file_date, 0, 10);

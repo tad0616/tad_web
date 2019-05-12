@@ -248,7 +248,7 @@
                 <{else}>
                   <tr id="tr_<{$plugin.dirname}>">
                     <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>>
-                      <label class="checkbox-inline"><input type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked="checked"<{elseif $plugin.db.PluginEnable=='0'}><{else}>checked="checked"<{/if}>><{$plugin.dirname}></label>
+                      <label class="checkbox-inline"><input type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked<{elseif $plugin.db.PluginEnable=='0'}><{else}>checked<{/if}>><{$plugin.dirname}></label>
                     </td>
                     <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>><{$plugin.config.name}></td>
                     <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>><input type="text" name="plugin_name[<{$plugin.dirname}>]" value="<{if $plugin.db.PluginTitle}><{$plugin.db.PluginTitle}><{else}><{$plugin.config.name}><{/if}>" class="form-control" style="width: 120px;"></td>

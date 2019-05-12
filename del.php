@@ -1,7 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 $sql = 'SELECT a.HomeworkID, a.WebID, b.WebOwnerUid FROM ' . $xoopsDB->prefix('tad_web_homework') . ' as a
 left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
 where a.uid=0';

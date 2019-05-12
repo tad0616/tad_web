@@ -10,7 +10,7 @@ function list_action($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_action = new tad_web_action($WebID);
 
@@ -23,7 +23,7 @@ function list_action($WebID, $config = [])
 function action_slide($WebID, $config = [])
 {
     global $xoopsDB;
-    $power = new power($WebID);
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
 
     $sql = 'select ActionName,ActionID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$WebID}' order by rand()";
 
@@ -52,16 +52,16 @@ function action_slide($WebID, $config = [])
     // die(var_export($photos));
 
     $ResponsiveSlides = new ResponsiveSlides(120, false);
-    $i = 1;
-    foreach ($photos as $pic) {
-        if ($pic['description'] == $pic['original_filename']) {
-            $pic['description'] = '';
+        $i = 1;
+        foreach ($photos as $pic) {
+            if ($pic['description'] == $pic['original_filename']) {
+                $pic['description'] = '';
+            }
+            $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
+            $i++;
         }
-        $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
-        $i++;
-    }
 
-    $slide_images = $ResponsiveSlides->render();
+        $slide_images = $ResponsiveSlides->render();
 
     $block['main_data'] = $slide_images;
     $block['ActionID'] = $ActionID;

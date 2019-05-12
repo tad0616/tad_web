@@ -55,7 +55,7 @@ class tad_web_homework
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
             $county = system_CleanVars($_REQUEST, 'county', '', 'string');
             $city = system_CleanVars($_REQUEST, 'city', '', 'string');
             $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
@@ -96,7 +96,7 @@ class tad_web_homework
 
         $cate = $this->web_cate->get_tad_web_cate_arr();
         $yet = '';
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -154,7 +154,7 @@ class tad_web_homework
             $i = 0;
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_homework') . ' as a left join ' . $xoopsDB->prefix('tad_web') . " as b on a.WebID=b.WebID where a.HomeworkPostDate > '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkPostDate desc";
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            while ($all = $xoopsDB->fetchArray($result)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $yet_data[$i] = $all;
                 $yet_data[$i]['display_at'] = sprintf(_MD_TCW_HOMEWORK_POST_AT, $all['HomeworkPostDate']);
                 $w = date('w', strtotime($toCal));
@@ -203,7 +203,7 @@ class tad_web_homework
             return;
         }
         $myts = \MyTextSanitizer::getInstance();
-        $HomeworkID = (int) $HomeworkID;
+        $HomeworkID = (int)$HomeworkID;
         $this->add_counter($HomeworkID);
 
         $now = date('Y-m-d H:i:s');
@@ -236,9 +236,9 @@ class tad_web_homework
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $TadUpFiles->set_col('HomeworkID', $HomeworkID);
@@ -425,8 +425,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
@@ -511,8 +511,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);

@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
-$xoopsOption['template_main'] = 'tad_web_tag.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once __DIR__ . '/header.php';
+$GLOBALS['xoopsOption']['template_main'] = 'tad_web_tag.tpl';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //搜尋
@@ -26,11 +26,11 @@ function search_tag($WebID = '', $tag = '')
             continue;
         }
         $pluginConfig = [];
-        include_once "plugins/{$dirname}/config.php";
+        require_once "plugins/{$dirname}/config.php";
         if (true !== $pluginConfig['tag']) {
             continue;
         }
-        include_once "plugins/{$dirname}/class.php";
+        require_once "plugins/{$dirname}/class.php";
         $plugin_name = "tad_web_{$dirname}";
         $$plugin_name = new $plugin_name($WebID);
         $data_count[$dirname] = $$plugin_name->list_all('', 50, 'assign', $tag);
@@ -47,15 +47,15 @@ function search_tag($WebID = '', $tag = '')
 function list_tags($WebID)
 {
     global $xoopsTpl;
-    // include_once "class/tags.php";
-    $tags = new tags($WebID);
+    // require_once "class/tags.php";
+    $tags = new  \XoopsModules\Tad_web\Tags($WebID);
     $tags_arr = $tags->get_tags();
     arsort($tags_arr);
     $xoopsTpl->assign('tags_arr', $tags_arr);
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $tag = system_CleanVars($_REQUEST, 'tag', '', 'string');
@@ -75,5 +75,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

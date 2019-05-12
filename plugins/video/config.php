@@ -1,6 +1,6 @@
 <?php
 global $xoopsConfig;
-include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/video/langs/{$xoopsConfig['language']}.php";
+require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/video/langs/{$xoopsConfig['language']}.php";
 $pluginConfig['name'] = _MD_TCW_VIDEO;
 $pluginConfig['short'] = _MD_TCW_VIDEO_SHORT;
 $pluginConfig['icon'] = 'fa-film';

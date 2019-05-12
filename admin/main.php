@@ -3,9 +3,9 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_main.tpl';
-include_once 'header.php';
-include_once '../function.php';
-include_once '../class/cate.php';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
+require_once dirname(__DIR__) . '/class/cate.php';
 /*-----------function區--------------*/
 
 //環境檢查
@@ -20,8 +20,8 @@ function chk_evn()
         $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
     }
 
-    $modhandler = xoops_getHandler('module');
-    $ttxoopsModule = $modhandler->getByDirname('tadtools');
+    $moduleHandler = xoops_getHandler('module');
+    $ttxoopsModule = $moduleHandler->getByDirname('tadtools');
     $version = $ttxoopsModule->version();
     if ($version < 274) {
         $error[_MA_TCW_NEED_TADTOOLS] = _MA_TCW_NEED_TADTOOLS_CONTENT;
@@ -57,7 +57,7 @@ function list_all_web($defCateID = '')
     $data = [];
     $i = 1;
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -65,7 +65,7 @@ function list_all_web($defCateID = '')
         }
 
         $data[$i]['memAmount'] = memAmount($WebID);
-        $data[$i]['uname'] = XoopsUser::getUnameFromId($WebOwnerUid, 0);
+        $data[$i]['uname'] = \XoopsUser::getUnameFromId($WebOwnerUid, 0);
         $web_admin_arr = get_web_roles($WebID, 'admin');
         if ($web_admin_arr) {
             $admin_str = implode("','", $web_admin_arr);
@@ -126,7 +126,7 @@ function create_by_user()
 
     $myts = \MyTextSanitizer::getInstance();
     $opt = [];
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -172,9 +172,9 @@ function batch_add_class_by_user()
             continue;
         }
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $WebName = $WebTitle = sprintf(_MA_TCW_SOMEBODY_WEB, $uid_name);
@@ -267,7 +267,7 @@ function tad_web_form($WebID = null)
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $user_menu = "<select name='WebOwnerUid' class='form-control'>";
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -317,9 +317,9 @@ function insert_tad_web($CateID = '', $WebName = '', $WebSort = '', $WebEnable =
     global $xoopsDB, $xoopsUser;
 
     if (empty($WebOwner)) {
-        $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 1);
+        $WebOwner = \XoopsUser::getUnameFromId($WebOwnerUid, 1);
         if (empty($WebOwner)) {
-            $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 0);
+            $WebOwner = \XoopsUser::getUnameFromId($WebOwnerUid, 0);
         }
     }
 
@@ -339,7 +339,7 @@ function insert_tad_web($CateID = '', $WebName = '', $WebSort = '', $WebEnable =
 
     $sql = 'insert into ' . $xoopsDB->prefix('tad_web') . "
     (`CateID`, `WebName`, `WebSort`, `WebEnable`, `WebCounter`, `WebOwner`, `WebOwnerUid`, `WebTitle`, `CreatDate`, `WebYear`,`used_size`, `last_accessed`)
-    values('{$CateID}' , '{$WebName}' , '{$WebSort}', '{$WebEnable}', '0' , '{$WebOwner}', '{$WebOwnerUid}', '{$WebTitle}', now() , '{$WebYear}', 0, '0000-00-00 00:00:00')";
+    values('{$CateID}' , '{$WebName}' , '{$WebSort}', '{$WebEnable}', '0' , '{$WebOwner}', '{$WebOwnerUid}', '{$WebTitle}', now() , '{$WebYear}', 0, now()  )";
     $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
@@ -367,9 +367,9 @@ function update_tad_web($WebID = '')
     $WebEnable = (int) $_POST['WebEnable'];
     $WebOwnerUid = (int) $_POST['WebOwnerUid'];
 
-    $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 1);
+    $WebOwner = \XoopsUser::getUnameFromId($WebOwnerUid, 1);
     if (empty($WebOwner)) {
-        $WebOwner = XoopsUser::getUnameFromId($WebOwnerUid, 0);
+        $WebOwner = \XoopsUser::getUnameFromId($WebOwnerUid, 0);
     }
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set
     `CateID`='{$CateID}',
@@ -459,7 +459,7 @@ function order_by_teamtitle()
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
@@ -534,4 +534,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

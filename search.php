@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
-$xoopsOption['template_main'] = 'tad_web_search.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once __DIR__ . '/header.php';
+$GLOBALS['xoopsOption']['template_main'] = 'tad_web_search.tpl';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //搜尋
@@ -18,7 +18,7 @@ function search_web($WebID = '', $search_keyword = '')
     foreach ($web_plugin_arr as $plugin) {
         $plugin_name = $menu_var[$plugin]['title'];
         if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/search.php")) {
-            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/search.php";
+            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/search.php";
             $result[$plugin_name] = call_user_func("{$plugin}_search", $WebID, $keyword_arr, '10');
         }
     }
@@ -29,7 +29,7 @@ function search_web($WebID = '', $search_keyword = '')
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $search_keyword = system_CleanVars($_REQUEST, 'search_keyword', '', 'string');
@@ -44,5 +44,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';
