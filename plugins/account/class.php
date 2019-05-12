@@ -12,7 +12,7 @@ class tad_web_account
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, 'account', 'tad_web_account');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'account', 'tad_web_account');
         // $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
         // $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'account');

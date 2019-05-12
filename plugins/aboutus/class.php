@@ -12,7 +12,7 @@ class tad_web_aboutus
     public function __construct($WebID)
     {
         $this->WebID = $WebID;
-        $this->web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'aboutus', 'tad_web_link_mems');
         $this->setup = get_plugin_setup_values($WebID, 'aboutus');
     }
 
@@ -1118,7 +1118,7 @@ class tad_web_aboutus
     public function get_tad_web_cate_all($table)
     {
         global $xoopsDB;
-        $web_cate = new web_cate('0', 'web_cate', $table);
+        $web_cate = new \XoopsModules\Tad_web\Cate('0', 'web_cate', $table);
         $cate = $web_cate->get_tad_web_cate_arr();
         $webs = get_web_cate_arr();
         $data_arr = [];

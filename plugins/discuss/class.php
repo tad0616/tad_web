@@ -13,7 +13,7 @@ class tad_web_discuss
     public function __construct($WebID)
     {
         $this->WebID         = $WebID;
-        $this->web_cate      = new web_cate($WebID, 'discuss', 'tad_web_discuss');
+        $this->web_cate      = new \XoopsModules\Tad_web\Cate($WebID, 'discuss', 'tad_web_discuss');
         $this->tags          = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->aboutus_setup = get_plugin_setup_values($WebID, 'aboutus');
         $this->discuss_setup = get_plugin_setup_values($WebID, 'discuss');

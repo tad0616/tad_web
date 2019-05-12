@@ -15,7 +15,7 @@ class tad_web_homework
     public function __construct($WebID)
     {
         $this->WebID = $WebID;
-        $this->web_cate = new web_cate($WebID, 'homework', 'tad_web_homework');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'homework', 'tad_web_homework');
         $this->setup = get_plugin_setup_values($WebID, 'homework');
         $this->calendar_setup = get_plugin_setup_values($WebID, 'calendar');
     }

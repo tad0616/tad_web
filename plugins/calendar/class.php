@@ -13,7 +13,7 @@ class tad_web_calendar
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, 'calendar', 'tad_web_calendar');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'calendar', 'tad_web_calendar');
         $this->setup    = get_plugin_setup_values($WebID, 'calendar');
     }
 

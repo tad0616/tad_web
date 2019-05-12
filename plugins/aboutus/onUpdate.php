@@ -38,7 +38,7 @@ function aboutus_onUpdate1_go()
     $sql = 'SELECT WebID,WebTitle FROM `' . $xoopsDB->prefix('tad_web') . '` GROUP BY `WebID`';
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     while (list($WebID, $WebTitle) = $xoopsDB->fetchRow($result)) {
-        $web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
+        $web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'aboutus', 'tad_web_link_mems');
         $CateID = $web_cate->save_tad_web_cate('', sprintf(_MD_TCW_SEME_CATE, $year) . " {$WebTitle}");
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_link_mems') . " set CateID='{$CateID}' where WebID='{$WebID}'";
