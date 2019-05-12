@@ -108,9 +108,9 @@
           <label class="col-sm-4 control-label">
           </label>
           <div class="col-sm-8">
-            <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
-            <input type="hidden" name="rememberme" value="On" />
-            <input type="hidden" name="op" value="login" />
+            <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+            <input type="hidden" name="rememberme" value="On">
+            <input type="hidden" name="op" value="login">
             <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
           </div>
         </div>

@@ -1,8 +1,11 @@
 <?php
+
 use XoopsModules\Tadtools\Utility;
-include_once '../../mainfile.php';
-include_once 'function.php';
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once __DIR__ . '/function.php';
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+
 // die(var_export($_REQUEST) . '<hr>');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $PositionName = system_CleanVars($_REQUEST, 'PositionName', '', 'string');

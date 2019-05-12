@@ -129,7 +129,7 @@ if (is_dir($dir)) {
                 if ('.' === mb_substr($file, 0, 1)) {
                     continue;
                 }
-                include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/tchinese_utf8.php";
+                require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/tchinese_utf8.php";
             }
         }
         closedir($dh);

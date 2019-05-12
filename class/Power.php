@@ -1,9 +1,12 @@
 <?php
+
+namespace XoopsModules\Tad_web;
+
 use XoopsModules\Tadtools\Utility;
 
 /*
 //起始函數
-$this->power    = new power($WebID);
+$this->power    = new  \XoopsModules\Tad_web\Power($WebID);
 
 //權限設定
 $power_form = $this->power->power_menu('read', "NewsID", $NewsID);
@@ -31,15 +34,15 @@ $this->power->delete_power("NewsID", $NewsID, 'read');
 //*****搜尋部份*****
 
 //起始函數
-include_once XOOPS_ROOT_PATH . "/class/power.php";
-$power = new power($WebID);
+//require_once XOOPS_ROOT_PATH . "/class/power.php";
+$power = new  \XoopsModules\Tad_web\Power($WebID);
 
 $power_result = $power->check_power("read", $id_col, $myrow[$id_col]);
 if (!$power_result) {
 continue;
 }
  */
-class power
+class Power
 {
     public $WebID = 0;
     public $col_name;
@@ -62,7 +65,7 @@ class power
 
     public function set_WebID($WebID = '')
     {
-        $WebID = (int) $WebID;
+        $WebID = (int)$WebID;
 
         $this->WebID = $WebID;
     }

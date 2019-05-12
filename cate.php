@@ -1,9 +1,10 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tad_web;
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once __DIR__ . '/header.php';
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 if (!$isMyWeb) {
@@ -15,7 +16,7 @@ if (!empty($WebID)) {
     header('location: index.php');
     exit;
 }
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 //分類設定
@@ -69,7 +70,7 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
     left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
     where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$default_class}'";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         $students[] = $all;
     }
 
@@ -93,7 +94,7 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
         return;
     }
 
-    $power = new power($WebID);
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
 
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
@@ -152,5 +153,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

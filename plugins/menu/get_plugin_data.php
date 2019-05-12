@@ -1,8 +1,8 @@
 <?php
-include_once '../../../../mainfile.php';
-include_once '../../function.php';
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/function.php';
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $ColName = system_CleanVars($_REQUEST, 'ColName', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
@@ -11,7 +11,7 @@ $dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
 
 if ('PluginContent' === $op) {
     $plugin_name = "tad_web_{$dirname}";
-    include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
+    require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
     $$plugin_name = new $plugin_name($WebID);
 
     $data = $$plugin_name->list_all($CateID, '', 'return', '');

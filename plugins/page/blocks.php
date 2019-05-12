@@ -6,7 +6,7 @@ function list_page($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_page = new tad_web_page($WebID);
     $limit = isset($config['limit']) ? $config['limit'] : '';

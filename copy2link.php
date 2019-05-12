@@ -1,6 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
-include_once '../../mainfile.php';
+
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 $start = time();
 $folders['bg'] = XOOPS_ROOT_PATH . '/modules/tad_web/images/bg/';
 $folders['head'] = XOOPS_ROOT_PATH . '/modules/tad_web/images/head/';

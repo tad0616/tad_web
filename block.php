@@ -5,7 +5,7 @@ use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
     $xoopsOption['template_main'] = 'tad_web_block.tpl';
 } elseif (!$isMyWeb and $MyWebs) {
@@ -16,7 +16,7 @@ if (!empty($_REQUEST['WebID']) and $isMyWeb) {
 
 //權限設定
 $power = new power($WebID);
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 function config_block($WebID, $BlockID, $plugin, $mode = 'config')
 {
@@ -42,7 +42,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
 
             $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             $shareBlockCount = 0;
-            while ($all = $xoopsDB->fetchArray($result)) {
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $webs[$shareBlockCount] = $all;
                 $shareBlockCount++;
             }
@@ -77,7 +77,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
             $iframeContent = strip_tags($block['BlockContent']);
         } else {
             $func = isset($block['BlockName']) ? $block['BlockName'] : '';
-            include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
+            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
             $form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
             if ('1' == $_GET['test']) {
                 die(var_export($form));
@@ -418,7 +418,7 @@ function demo_block($BlockID, $WebID)
         }
     } else {
         if (file_exists("{$dir}{$plugin}/blocks.php")) {
-            include_once "{$dir}{$plugin}/blocks.php";
+            require_once "{$dir}{$plugin}/blocks.php";
         }
         $blocks_arr['tpl'] = $block_tpl[$BlockName];
         $blocks_arr['BlockContent'] = $BlockContent = call_user_func($BlockName, $WebID, $config);
@@ -527,7 +527,7 @@ function chk_newblock($WebID)
     }
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $BlockID = system_CleanVars($_REQUEST, 'BlockID', 0, 'int');
@@ -593,5 +593,5 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

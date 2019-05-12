@@ -5,8 +5,8 @@ function news_search($WebID, $queryarray, $limit = 10)
     global $xoopsDB;
 
     //起始函數
-    include_once XOOPS_ROOT_PATH . '/class/power.php';
-    $power = new power($WebID);
+    require_once XOOPS_ROOT_PATH . '/class/power.php';
+    $power = new  \XoopsModules\Tad_web\Power($WebID);
 
     $plugin = 'news';
     $plugin_tbl = 'tad_web_news';
@@ -37,7 +37,7 @@ function news_search($WebID, $queryarray, $limit = 10)
     $result = $xoopsDB->query($sql, $limit);
     $ret = [];
     $i = 0;
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $power_result = $power->check_power('read', $id_col, $myrow[$id_col]);
         if (!$power_result) {
             continue;

@@ -1,6 +1,6 @@
 <?php
 global $xoopsConfig;
-include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/link/langs/{$xoopsConfig['language']}.php";
+require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/link/langs/{$xoopsConfig['language']}.php";
 $pluginConfig['name'] = _MD_TCW_LINK;
 $pluginConfig['short'] = _MD_TCW_LINK_SHORT;
 $pluginConfig['icon'] = 'fa-globe';

@@ -1,6 +1,6 @@
 <?php
-include_once '../../../../mainfile.php';
-include_once '../../function.php';
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/function.php';
 $sort = 1;
 foreach ($_POST['VideoID'] as $VideoID) {
     $sql = 'update ' . $xoopsDB->prefix('tad_web_video') . " set `VideoSort`='{$sort}' where VideoID='{$VideoID}'";

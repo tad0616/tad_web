@@ -1,7 +1,7 @@
 <?php
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 if ('save_sort' === $op) {
@@ -18,8 +18,8 @@ if ('save_sort' === $op) {
     $WebID = $_POST['WebID'];
 
     //以uid取得使用者名稱
-    $uid_name = XoopsUser::getUnameFromId($WebOwnerUid, 1);
-    $uname = XoopsUser::getUnameFromId($WebOwnerUid, 0);
+    $uid_name = \XoopsUser::getUnameFromId($WebOwnerUid, 1);
+    $uname = \XoopsUser::getUnameFromId($WebOwnerUid, 0);
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebOwnerUid` ='{$WebOwnerUid}', `WebOwner`='$uid_name' where `WebID`='{$WebID}'";
 

@@ -6,7 +6,7 @@ function list_work($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_works = new tad_web_works($WebID);
     $block = $tad_web_works->list_all('', $config['limit'], 'return');
@@ -23,7 +23,7 @@ function random_work($WebID, $config = [])
         return;
     }
 
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_works = new tad_web_works($WebID);
     $block = $tad_web_works->list_all('', 1, 'return', '', '', 'order by rand()', $config['limit']);
@@ -39,7 +39,7 @@ function latest_work($WebID, $config = [])
     if (empty($WebID)) {
         return;
     }
-    include_once 'class.php';
+    require_once __DIR__ . '/class.php';
 
     $tad_web_works = new tad_web_works($WebID);
     $block = $tad_web_works->list_all('', 1, 'return', '', '', 'order by WorksDate desc', $config['limit']);

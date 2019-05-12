@@ -16,7 +16,7 @@ define('_MD_TCW_HOMEWORKCOUNTER', '人氣');
 
 define('_MD_TCW_HOMEWORK_DEFAULT', '<div class="row three-col">
 <div class="col-sm-4 col-1">
-<p><img alt="今日作業" src="' . XOOPS_URL . '/modules/tad_web/images/today_homework.png" /></p>
+<p><img alt="今日作業" src="' . XOOPS_URL . '/modules/tad_web/images/today_homework.png"></p>
 
 <ol>
   <li>&nbsp;</li>
@@ -24,7 +24,7 @@ define('_MD_TCW_HOMEWORK_DEFAULT', '<div class="row three-col">
 </div>
 
 <div class="col-sm-4 col-2">
-<p><img alt="明日準備事項" src="' . XOOPS_URL . '/modules/tad_web/images/bring.png" /></p>
+<p><img alt="明日準備事項" src="' . XOOPS_URL . '/modules/tad_web/images/bring.png"></p>
 
 <ol>
   <li>&nbsp;</li>
@@ -32,7 +32,7 @@ define('_MD_TCW_HOMEWORK_DEFAULT', '<div class="row three-col">
 </div>
 
 <div class=col-sm-4 col-3">
-<p><img alt="老師的叮嚀" src="' . XOOPS_URL . '/modules/tad_web/images/teacher_say.png" /></p>
+<p><img alt="老師的叮嚀" src="' . XOOPS_URL . '/modules/tad_web/images/teacher_say.png"></p>
 
 <ol>
   <li>&nbsp;</li>

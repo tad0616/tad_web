@@ -33,7 +33,7 @@ function video_search($WebID, $queryarray, $limit = 10)
     $result = $xoopsDB->query($sql, $limit);
     $ret = [];
     $i = 0;
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $ret[$i]['link'] = "{$plugin}.php?WebID=" . $myrow['WebID'] . "&{$id_col}=" . $myrow[$id_col];
         $ret[$i]['title'] = $myrow[$title_col];
         $ret[$i]['time'] = mb_substr($myrow[$date_col], 0, 10);

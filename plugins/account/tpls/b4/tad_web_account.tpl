@@ -38,11 +38,11 @@
             </label>
             <div class="col-md-7">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="AccountKind" id="AccountIncome" value="AccountIncome" class="validate[required]" <{if $AccountIncome}>checked="checked"<{/if}>>
+                <input class="form-check-input" type="radio" name="AccountKind" id="AccountIncome" value="AccountIncome" class="validate[required]" <{if $AccountIncome}>checked<{/if}>>
                 <label class="form-check-label" for="AccountIncome"><{$smarty.const._MD_TCW_ACCOUNT_INCOME}></label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="AccountKind" id="AccountOutgoings" value="AccountOutgoings" class="validate[required]" <{if $AccountOutgoings}>checked="checked"<{/if}>>
+                <input class="form-check-input" type="radio" name="AccountKind" id="AccountOutgoings" value="AccountOutgoings" class="validate[required]" <{if $AccountOutgoings}>checked<{/if}>>
                 <label class="form-check-label" for="AccountOutgoings"><{$smarty.const._MD_TCW_ACCOUNT_OUTGOINGS}></label>
               </div>
             </div>

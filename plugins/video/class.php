@@ -11,10 +11,10 @@ class tad_web_video
 
     public function __construct($WebID)
     {
-        $this->WebID = $WebID;
+        $this->WebID    = $WebID;
         $this->web_cate = new web_cate($WebID, 'video', 'tad_web_video');
-        $this->tags = new tags($WebID);
-        $this->setup = get_plugin_setup_values($WebID, 'video');
+        $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
+        $this->setup    = get_plugin_setup_values($WebID, 'video');
     }
 
     //影片
@@ -42,19 +42,19 @@ class tad_web_video
                     return;
                 }
                 $xoopsTpl->assign('cate', $cate);
-                $andCateID = "and a.`CateID`='$CateID'";
+                $andCateID       = "and a.`CateID`='$CateID'";
                 $andCateDataSort = 'a.VideoSort,';
                 $xoopsTpl->assign('VideoDefCateID', $CateID);
             }
         }
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-            $county = system_CleanVars($_REQUEST, 'county', '', 'string');
-            $city = system_CleanVars($_REQUEST, 'city', '', 'string');
-            $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
-            $andCounty = !empty($county) ? "and c.county='{$county}'" : '';
-            $andCity = !empty($city) ? "and c.city='{$city}'" : '';
+            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_video') . ' as a
@@ -83,9 +83,9 @@ class tad_web_video
 
             //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
             $PageBar = Utility::getPageBar($sql, $to_limit, 10);
-            $bar = $PageBar['bar'];
-            $sql = $PageBar['sql'];
-            $total = $PageBar['total'];
+            $bar     = $PageBar['bar'];
+            $sql     = $PageBar['sql'];
+            $total   = $PageBar['total'];
         }
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -98,21 +98,21 @@ class tad_web_video
 
         $cate = $this->web_cate->get_tad_web_cate_arr();
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID, $VideoCount , $Youtube, $VideoSort
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
 
-            $main_data[$i] = $all;
-            $main_data[$i]['id'] = $VideoID;
-            $main_data[$i]['id_name'] = 'VideoID';
-            $main_data[$i]['title'] = $VideoName;
+            $main_data[$i]                = $all;
+            $main_data[$i]['id']          = $VideoID;
+            $main_data[$i]['id_name']     = 'VideoID';
+            $main_data[$i]['title']       = $VideoName;
             $main_data[$i]['isAssistant'] = is_assistant($CateID, 'VideoID', $VideoID);
 
             $this->web_cate->set_WebID($WebID);
 
-            $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb'] = $isMyWeb;
@@ -120,7 +120,7 @@ class tad_web_video
                 $VideoPlace = $this->tad_web_getYTid($Youtube);
                 if (!empty($VideoPlace)) {
                     $main_data[$i]['VideoPlace'] = $VideoPlace;
-                    $sql = 'update ' . $xoopsDB->prefix('tad_web_video') . " set `VideoPlace` = '{$VideoPlace}' where VideoID='{$VideoID}'";
+                    $sql                         = 'update ' . $xoopsDB->prefix('tad_web_video') . " set `VideoPlace` = '{$VideoPlace}' where VideoID='{$VideoID}'";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
             }
@@ -133,8 +133,8 @@ class tad_web_video
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
-            $data['total'] = $total;
-            $data['display'] = $display;
+            $data['total']     = $total;
+            $data['display']   = $display;
 
             return $data;
         } else {
@@ -170,9 +170,9 @@ class tad_web_video
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $uid_name = XoopsUser::getUnameFromId($uid, 1);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
-            $uid_name = XoopsUser::getUnameFromId($uid, 0);
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
         $xoopsTpl->assign('VideoName', $VideoName);
@@ -241,7 +241,7 @@ class tad_web_video
 
         //設定「uid」欄位預設值
         $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
-        $uid = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
+        $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
         $xoopsTpl->assign('uid', $uid);
 
         //設定「WebID」欄位預設值
@@ -262,7 +262,7 @@ class tad_web_video
 
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['video']) ? $_SESSION['isAssistant']['video'] : '';
-        $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->web_cate->set_button_value($plugin_menu_var['video']['short'] . _MD_TCW_CATE_TOOLS);
         $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['video']['short']));
         $cate_menu = isset($_SESSION['isAssistant']['video']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
@@ -290,18 +290,18 @@ class tad_web_video
         }
 
         $myts = \MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube = $myts->addSlashes($_POST['Youtube']);
+        $VideoName   = $myts->addSlashes($_POST['VideoName']);
+        $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
+        $Youtube     = $myts->addSlashes($_POST['Youtube']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID    = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
         $VideoSort = $this->max_sort($WebID, $CateID);
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_video') . "
@@ -337,17 +337,17 @@ class tad_web_video
         global $xoopsDB;
 
         $myts = \MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube = $myts->addSlashes($_POST['Youtube']);
+        $VideoName   = $myts->addSlashes($_POST['VideoName']);
+        $VideoDesc   = $myts->addSlashes($_POST['VideoDesc']);
+        $Youtube     = $myts->addSlashes($_POST['Youtube']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
-        $VideoSort = (int) $_POST['VideoSort'];
+        $VideoSort  = (int) $_POST['VideoSort'];
 
         $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
 
@@ -391,7 +391,7 @@ class tad_web_video
     {
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
-        $sql = 'select VideoID,CateID from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='{$this->WebID}'";
+        $sql       = 'select VideoID,CateID from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($VideoID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($VideoID);
@@ -440,19 +440,19 @@ class tad_web_video
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? '' : "and `CateID`='$CateID'";
-        $andStart = empty($start_date) ? '' : "and VideoDate >= '{$start_date}'";
-        $andEnd = empty($end_date) ? '' : "and VideoDate <= '{$end_date}'";
+        $andStart  = empty($start_date) ? '' : "and VideoDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? '' : "and VideoDate <= '{$end_date}'";
 
         $sql = 'select VideoID,VideoName,VideoDate,CateID from ' . $xoopsDB->prefix('tad_web_video') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by VideoDate";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $i = 0;
+        $i         = 0;
         $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
-            $main_data[$i]['ID'] = $ID;
+            $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
-            $main_data[$i]['title'] = $title;
-            $main_data[$i]['date'] = $date;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
 
             $i++;
         }

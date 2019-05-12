@@ -1,6 +1,6 @@
 <?php
 global $xoopsConfig;
-include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/system/langs/{$xoopsConfig['language']}.php";
+require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/system/langs/{$xoopsConfig['language']}.php";
 $pluginConfig['name'] = _MD_TCW_SYSTEM;
 $pluginConfig['short'] = _MD_TCW_SYSTEM_SHORT;
 $pluginConfig['icon'] = 'fa-lock';

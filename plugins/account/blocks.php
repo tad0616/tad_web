@@ -14,7 +14,7 @@ function list_account($WebID, $config = [])
     // die(var_export($cate_menu));
     $block['cate_menu'] = $cate_menu;
     $block['main_data'] = true;
-    // include_once "class.php";
+    // require_once "class.php";
 
     // $tad_web_account = new tad_web_account($WebID);
 

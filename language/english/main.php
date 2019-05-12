@@ -60,7 +60,7 @@ define('_MD_TCW_RAND_IMAGE', 'Select random background');
 define('_MD_TCW_BG_TOP', 'Ton');
 define('_MD_TCW_BG_CENTER', 'Medium');
 define('_MD_TCW_BG_BOTTOM', 'Bottom');
-define('_MD_TCW_LOGIN', 'Login');
+//define('_MD_TCW_LOGIN', 'Login');
 define('_MD_TCW_HELLO', 'Hello!');
 define('_MD_TCW_EXIT', 'Exit');
 
@@ -134,7 +134,7 @@ if (is_dir($dir)) {
                 if ('.' === mb_substr($file, 0, 1)) {
                     continue;
                 }
-                include_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/english.php";
+                require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$file}/langs/english.php";
             }
         }
         closedir($dh);
