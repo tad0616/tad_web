@@ -1,11 +1,11 @@
 <?php
-use XoopsModules\Tad_web\web_cate;
+use XoopsModules\Tad_web\WebCate;
 
 // if (!isset($_SESSION['page_cates'])) {
 $arr[_MD_TCW_PAGE_ALLCATE] = 'all';
 if ($WebID) {
-    $web_cate = new web_cate($WebID, 'page', 'tad_web_page');
-    $tad_web_cate_arr = $web_cate->get_tad_web_cate_arr();
+    $WebCate = new WebCate($WebID, 'page', 'tad_web_page');
+    $tad_web_cate_arr = $WebCate->get_tad_web_cate_arr();
     // if (isset($_GET['debug']) and $_GET['debug'] == 1) {
     //     die(var_export($tad_web_cate_arr));
     // }

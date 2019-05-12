@@ -1,5 +1,5 @@
 <?php
-use XoopsModules\Tad_web\web_cate;
+use XoopsModules\Tad_web\WebCate;
 
 //列出帳目
 function list_account($WebID, $config = [])
@@ -9,10 +9,10 @@ function list_account($WebID, $config = [])
         return;
     }
 
-    $web_cate = new web_cate($WebID, 'account', 'tad_web_account');
-    $web_cate->set_button_value(_MD_TCW_ACCOUNT_BOOK_TOOL);
-    $web_cate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
-    $cate_menu = $web_cate->get_tad_web_cate_arr(false);
+    $WebCate = new WebCate($WebID, 'account', 'tad_web_account');
+    $WebCate->set_button_value(_MD_TCW_ACCOUNT_BOOK_TOOL);
+    $WebCate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
+    $cate_menu = $WebCate->get_tad_web_cate_arr(false);
     // die(var_export($cate_menu));
     $block['cate_menu'] = $cate_menu;
     $block['main_data'] = true;

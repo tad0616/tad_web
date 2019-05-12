@@ -1,7 +1,7 @@
 <?php
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\web_cate;
+use XoopsModules\Tad_web\WebCate;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -28,11 +28,11 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
         return;
     }
 
-    $web_cate = new web_cate($WebID, $ColName, $table);
-    $web_cate->set_WebID($WebID);
-    $cate = $web_cate->get_tad_web_cate_arr();
+    $WebCate = new WebCate($WebID, $ColName, $table);
+    $WebCate->set_WebID($WebID);
+    $cate = $WebCate->get_tad_web_cate_arr();
 
-    $cate_menu_form = $web_cate->cate_menu($CateID, 'form', true, false, true, false, false);
+    $cate_menu_form = $WebCate->cate_menu($CateID, 'form', true, false, true, false, false);
     $xoopsTpl->assign('cate_menu_form', $cate_menu_form);
 
     // die(var_export($cate));
@@ -97,35 +97,35 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
 
     $power = new \XoopsModules\Tad_web\Power($WebID);
 
-    $web_cate = new web_cate($WebID, $ColName, $table);
-    $web_cate->set_WebID($WebID);
+    $WebCate = new WebCate($WebID, $ColName, $table);
+    $WebCate->set_WebID($WebID);
     //新增分類
     if ($_POST['newCateName']) {
-        $web_cate->save_tad_web_cate('', $_POST['newCateName']);
+        $WebCate->save_tad_web_cate('', $_POST['newCateName']);
     }
 
     foreach ($act_arr as $CateID => $act) {
         switch ($act) {
             case 'move':
-                $web_cate->move_tad_web_cate($CateID, $_POST['move2'][$CateID]);
+                $WebCate->move_tad_web_cate($CateID, $_POST['move2'][$CateID]);
                 break;
             case 'rename':
-                $web_cate->update_tad_web_cate($CateID, $_POST['newName'][$CateID]);
+                $WebCate->update_tad_web_cate($CateID, $_POST['newName'][$CateID]);
                 break;
             case 'delete':
-                $web_cate->delete_tad_web_cate($CateID, $_POST['move2'][$CateID]);
+                $WebCate->delete_tad_web_cate($CateID, $_POST['move2'][$CateID]);
                 break;
             case 'del_all':
-                $web_cate->delete_tad_web_cate($CateID);
+                $WebCate->delete_tad_web_cate($CateID);
                 break;
             case 'set_assistant':
                 set_assistant($CateID, $_POST['MemID'][$CateID]);
                 break;
             case 'enable':
-                $web_cate->enable_tad_web_cate($CateID, 1);
+                $WebCate->enable_tad_web_cate($CateID, 1);
                 break;
             case 'unable':
-                $web_cate->enable_tad_web_cate($CateID, 0);
+                $WebCate->enable_tad_web_cate($CateID, 0);
                 break;
             case 'power':
                 $power->save_power('CateID', $CateID, 'read', $_POST['power'][$CateID]);

@@ -1,7 +1,6 @@
 <?php
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\web_cate;
-
+use XoopsModules\Tad_web\WebCate;
 
 if (aboutus_onUpdate1_chk()) {
     aboutus_onUpdate1_go();
@@ -40,8 +39,8 @@ function aboutus_onUpdate1_go()
     $sql = 'SELECT WebID,WebTitle FROM `' . $xoopsDB->prefix('tad_web') . '` GROUP BY `WebID`';
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     while (list($WebID, $WebTitle) = $xoopsDB->fetchRow($result)) {
-        $web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
-        $CateID = $web_cate->save_tad_web_cate('', sprintf(_MD_TCW_SEME_CATE, $year) . " {$WebTitle}");
+        $WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
+        $CateID = $WebCate->save_tad_web_cate('', sprintf(_MD_TCW_SEME_CATE, $year) . " {$WebTitle}");
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_link_mems') . " set CateID='{$CateID}' where WebID='{$WebID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
