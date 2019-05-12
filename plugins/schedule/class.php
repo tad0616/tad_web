@@ -3,6 +3,8 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\web_cate;
+
 
 class tad_web_schedule
 {

@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tad_web\web_cate;
+
 //列出帳目
 function list_account($WebID, $config = [])
 {
