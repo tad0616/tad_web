@@ -3,6 +3,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_schedule
 {
@@ -13,7 +14,7 @@ class tad_web_schedule
     {
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
-        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'schedule', 'tad_web_schedule');
+        $this->WebCate = new WebCate($WebID, 'schedule', 'tad_web_schedule');
     }
 
     //課表
@@ -27,17 +28,17 @@ class tad_web_schedule
         if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
-                $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
-                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
-                $this->web_cate->set_col_md(0, 6);
-                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
+                $this->WebCate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
+                $this->WebCate->set_col_md(0, 6);
+                $cate_menu = $this->WebCate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
         }
 
         if (!empty($CateID) and 'assign' === $mode) {
             //取得單一分類資料
-            $cate = $this->web_cate->get_tad_web_cate($CateID);
+            $cate = $this->WebCate->get_tad_web_cate($CateID);
             if ($CateID and '1' != $cate['CateEnable']) {
                 return;
             }
@@ -75,7 +76,7 @@ class tad_web_schedule
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->web_cate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr();
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount , $ScheduleTime
@@ -90,7 +91,7 @@ class tad_web_schedule
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
 
-            $this->web_cate->set_WebID($WebID);
+            $this->WebCate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -165,7 +166,7 @@ class tad_web_schedule
         $xoopsTpl->assign('xoops_pagetitle', $ScheduleName);
         $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($ScheduleName), 0, 300));
         //取得單一分類資料
-        $cate = $this->web_cate->get_tad_web_cate($CateID);
+        $cate = $this->WebCate->get_tad_web_cate($CateID);
         if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
@@ -234,10 +235,10 @@ class tad_web_schedule
         $ys = get_seme();
         $xoopsTpl->assign('ys', $ys);
 
-        $this->web_cate->set_demo_txt(sprintf(_MD_TCW_SCHEDULE_CATE_DEMO, $ys[0], $ys[1]));
-        $this->web_cate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
-        $cate_menu = isset($_SESSION['isAssistant']['schedule']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
+        $this->WebCate->set_demo_txt(sprintf(_MD_TCW_SCHEDULE_CATE_DEMO, $ys[0], $ys[1]));
+        $this->WebCate->set_button_value($plugin_menu_var['schedule']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['schedule']['short']));
+        $cate_menu = isset($_SESSION['isAssistant']['schedule']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($ScheduleID)) ? 'insert' : 'update';
@@ -296,7 +297,7 @@ class tad_web_schedule
         $WebID           = (int) $_POST['WebID'];
         $ScheduleTime    = date('Y-m-d H:i:s');
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_schedule') . "
         (`CateID`,`ScheduleName` , `ScheduleDisplay` , `uid` , `WebID` , `ScheduleCount` , `ScheduleTime`)
         values('{$CateID}' ,'{$ScheduleName}' , '{$ScheduleDisplay}'  , '{$uid}' , '{$WebID}' , '0' , '{$ScheduleTime}')";
@@ -323,7 +324,7 @@ class tad_web_schedule
         $WebID           = (int) $_POST['WebID'];
         $ScheduleTime    = date('Y-m-d H:i:s');
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
             $anduid = onlyMine();
@@ -380,7 +381,7 @@ class tad_web_schedule
             $allCateID[$CateID] = $CateID;
         }
         foreach ($allCateID as $CateID) {
-            $this->web_cate->delete_tad_web_cate($CateID);
+            $this->WebCate->delete_tad_web_cate($CateID);
         }
         check_quota($this->WebID);
     }

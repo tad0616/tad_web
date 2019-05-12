@@ -3,24 +3,27 @@
 namespace XoopsModules\Tad_web;
 
 use XoopsModules\Tadtools\Utility;
-use  XoopsModules\Tad_web;
-
+use XoopsModules\Tad_web;
 
 /*
 
+<<<<<<< HEAD:class/Cate.php
 $web_cate = new \XoopsModules\Tad_web\Cate($WebID, "news","tad_web_news");
+=======
+$WebCate = new WebCate($WebID, "news","tad_web_news");
+>>>>>>> 0f23823726cca5242f343ebc2f4326482f42b8e1:class/WebCate.php
 
 //設定「CateID」欄位預設值
 $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
 //表單
-$cate_menu = $web_cate->cate_menu($CateID);
+$cate_menu = $WebCate->cate_menu($CateID);
 $xoopsTpl->assign('cate_menu', $cate_menu);
 
 //儲存
-$CateID = $web_cate->save_tad_web_cate($CateID, $newCateName);
+$CateID = $WebCate->save_tad_web_cate($CateID, $newCateName);
 
 //取得單一分類資料
-$cate = $web_cate->get_tad_web_cate($CateID);
+$cate = $WebCate->get_tad_web_cate($CateID);
 $xoopsTpl->assign('cate', $cate);
 
 <ol class="breadcrumb">
@@ -30,16 +33,26 @@ $xoopsTpl->assign('cate', $cate);
 </ol>
 
 //取得tad_web_cate所有資料陣列
+<<<<<<< HEAD:class/Cate.php
 $web_cate = new \XoopsModules\Tad_web\Cate($WebID, "news","tad_web_news");
 $web_cate->set_WebID($WebID);
 $cate = $web_cate->get_tad_web_cate_arr();
+=======
+$WebCate = new WebCate($WebID, "news","tad_web_news");
+$WebCate->set_WebID($WebID);
+$cate = $WebCate->get_tad_web_cate_arr();
+>>>>>>> 0f23823726cca5242f343ebc2f4326482f42b8e1:class/WebCate.php
 
 <{if isset($news.cate.CateID)}>
 <span class="label label-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
 <{/if}>
  */
 
+<<<<<<< HEAD:class/Cate.php
 class Cate
+=======
+class WebCate
+>>>>>>> 0f23823726cca5242f343ebc2f4326482f42b8e1:class/WebCate.php
 {
     public $WebID = 0;
     public $ColName;
@@ -60,7 +73,7 @@ class Cate
     public function __construct($WebID = '0', $ColName = '', $table = '')
     {
 
-        $this->power = new  Tad_web\Power($WebID);
+        $this->power = new Tad_web\Power($WebID);
 
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
@@ -77,7 +90,7 @@ class Cate
 
     public function set_WebID($WebID = '')
     {
-        $WebID = (int)$WebID;
+        $WebID = (int) $WebID;
 
         $this->WebID = $WebID;
     }

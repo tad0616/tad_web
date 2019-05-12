@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_action
 {
@@ -12,7 +13,7 @@ class tad_web_action
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'action', 'tad_web_action');
+        $this->WebCate = new WebCate($WebID, 'action', 'tad_web_action');
         $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
         $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup    = get_plugin_setup_values($WebID, 'action');
@@ -29,16 +30,16 @@ class tad_web_action
         if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
-                $this->web_cate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
-                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
-                $this->web_cate->set_col_md(0, 6);
-                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
+                $this->WebCate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
+                $this->WebCate->set_col_md(0, 6);
+                $cate_menu = $this->WebCate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
-                $cate = $this->web_cate->get_tad_web_cate($CateID);
+                $cate = $this->WebCate->get_tad_web_cate($CateID);
                 if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
@@ -94,7 +95,7 @@ class tad_web_action
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->web_cate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr();
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
@@ -113,7 +114,7 @@ class tad_web_action
             $main_data[$i]['title']   = $ActionName;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
-            $this->web_cate->set_WebID($WebID);
+            $this->WebCate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -215,7 +216,7 @@ class tad_web_action
         $xoopsTpl->assign('fb_description', $ActionPlace . $ActionDate . xoops_substr(strip_tags($ActionDesc), 0, 300));
 
         //取得單一分類資料
-        $cate = $this->web_cate->get_tad_web_cate($CateID);
+        $cate = $this->WebCate->get_tad_web_cate($CateID);
         if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
@@ -282,9 +283,9 @@ class tad_web_action
         $DefCateID = isset($_SESSION['isAssistant']['action']) ? $_SESSION['isAssistant']['action'] : '';
         $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
 
-        $this->web_cate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
-        $cate_menu = isset($_SESSION['isAssistant']['action']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
+        $this->WebCate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
+        $cate_menu = isset($_SESSION['isAssistant']['action']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($ActionID)) ? 'insert' : 'update';
@@ -328,7 +329,7 @@ class tad_web_action
         $CateID      = (int) $_POST['CateID'];
         $WebID       = (int) $_POST['WebID'];
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_action') . "
         (`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
         values('{$CateID}' ,'{$ActionName}' , '{$ActionDesc}' , '{$ActionDate}' , '{$ActionPlace}' , '{$uid}' , '{$WebID}' , '{$ActionCount}')";
@@ -367,7 +368,7 @@ class tad_web_action
         $CateID      = (int) $_POST['CateID'];
         $WebID       = (int) $_POST['WebID'];
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'ActionID', $ActionID)) {
             $anduid = onlyMine();
@@ -431,7 +432,7 @@ class tad_web_action
             $allCateID[$CateID] = $CateID;
         }
         foreach ($allCateID as $CateID) {
-            $this->web_cate->delete_tad_web_cate($CateID);
+            $this->WebCate->delete_tad_web_cate($CateID);
         }
         check_quota($this->WebID);
     }

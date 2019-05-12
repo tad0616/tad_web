@@ -3,6 +3,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\FullCalendar;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_calendar
 {
@@ -13,7 +14,7 @@ class tad_web_calendar
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'calendar', 'tad_web_calendar');
+        $this->WebCate = new WebCate($WebID, 'calendar', 'tad_web_calendar');
         $this->setup    = get_plugin_setup_values($WebID, 'calendar');
     }
 
@@ -164,7 +165,7 @@ class tad_web_calendar
 
         //設定「CateID」欄位預設值
         // $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
-        // $cate_menu = $this->web_cate->cate_menu($CateID);
+        // $cate_menu = $this->WebCate->cate_menu($CateID);
         // $xoopsTpl->assign('cate_menu', $cate_menu);
 
         $op = (empty($CalendarID)) ? 'insert' : 'update';
@@ -191,7 +192,7 @@ class tad_web_calendar
         $CateID        = (int) $_POST['CateID'];
         $WebID         = (int) $_POST['WebID'];
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_calendar') . "
         (`CateID`,`CalendarName`,`CalendarType` , `CalendarDesc` , `CalendarDate` , `uid` , `WebID` , `CalendarCount`)
         values('0' ,'{$CalendarName}' ,'{$CalendarType}' , '{$CalendarDesc}' , '{$CalendarDate}' , '{$uid}' , '{$WebID}' , '{$CalendarCount}')";
@@ -217,7 +218,7 @@ class tad_web_calendar
         $newCateName  = $myts->addSlashes($_POST['newCateName']);
         $CateID       = (int) $_POST['CateID'];
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
         $anduid = onlyMine();
 
@@ -255,7 +256,7 @@ class tad_web_calendar
             $allCateID[$CateID] = $CateID;
         }
         foreach ($allCateID as $CateID) {
-            $this->web_cate->delete_tad_web_cate($CateID);
+            $this->WebCate->delete_tad_web_cate($CateID);
         }
         check_quota($this->WebID);
     }

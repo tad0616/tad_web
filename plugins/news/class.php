@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\JqueryPrintPreview;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_news
 {
@@ -14,7 +15,7 @@ class tad_web_news
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'news', 'tad_web_news');
+        $this->WebCate = new WebCate($WebID, 'news', 'tad_web_news');
         $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
         $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup    = get_plugin_setup_values($WebID, 'news');
@@ -31,16 +32,16 @@ class tad_web_news
         if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
-                $this->web_cate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
-                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
-                $this->web_cate->set_col_md(0, 6);
-                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
+                $this->WebCate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
+                $this->WebCate->set_col_md(0, 6);
+                $cate_menu = $this->WebCate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
-                $cate = $this->web_cate->get_tad_web_cate($CateID);
+                $cate = $this->WebCate->get_tad_web_cate($CateID);
                 if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
@@ -104,7 +105,7 @@ class tad_web_news
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->web_cate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr();
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal  , $NewsUrl , $WebID  , $NewsCounter , $NewsEnable
@@ -126,7 +127,7 @@ class tad_web_news
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'NewsID', $NewsID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
 
-            $this->web_cate->set_WebID($WebID);
+            $this->WebCate->set_WebID($WebID);
 
             $Content = get_article_content($NewsContent);
 
@@ -252,7 +253,7 @@ class tad_web_news
         $xoopsTpl->assign('fb_description', xoops_substr(strip_tags($NewsContent), 0, 300));
 
         //取得單一分類資料
-        $cate = $this->web_cate->get_tad_web_cate($CateID);
+        $cate = $this->WebCate->get_tad_web_cate($CateID);
         if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
@@ -328,9 +329,9 @@ class tad_web_news
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['news']) ? $_SESSION['isAssistant']['news'] : '';
         $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
-        $this->web_cate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
-        $cate_menu = isset($_SESSION['isAssistant']['news']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
+        $this->WebCate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
+        $cate_menu = isset($_SESSION['isAssistant']['news']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         //設定「NewsEnable」欄位預設值
@@ -397,7 +398,7 @@ class tad_web_news
             $toCal = '0000-00-00 00:00:00';
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_news') . "
         (`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsUrl` , `WebID` , `NewsCounter` , `uid` , `NewsEnable`)
         values('{$CateID}','{$NewsTitle}' , '{$NewsContent}' , '{$NewsDate}' , '{$toCal}' , '{$NewsUrl}' , '{$WebID}'  , '0' , '{$uid}', '{$NewsEnable}' )";
@@ -440,7 +441,7 @@ class tad_web_news
             $toCal = '0000-00-00 00:00:00';
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'NewsID', $NewsID)) {
             $anduid = onlyMine();
@@ -502,7 +503,7 @@ class tad_web_news
             $allCateID[$CateID] = $CateID;
         }
         foreach ($allCateID as $CateID) {
-            $this->web_cate->delete_tad_web_cate($CateID);
+            $this->WebCate->delete_tad_web_cate($CateID);
         }
         check_quota($this->WebID);
     }
