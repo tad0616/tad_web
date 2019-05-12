@@ -1,7 +1,8 @@
 <?php
-use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tadtools\FormValidator;
-use XoopsModules\Tad_web;
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\web_cate;
+
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -94,7 +95,7 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
         return;
     }
 
-    $power = new  \XoopsModules\Tad_web\Power($WebID);
+    $power = new \XoopsModules\Tad_web\Power($WebID);
 
     $web_cate = new web_cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);

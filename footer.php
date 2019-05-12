@@ -2,6 +2,8 @@
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\FooTable;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\web_cate;
+
 
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);

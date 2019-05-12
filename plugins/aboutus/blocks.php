@@ -1,5 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\web_cate;
+
 
 function list_web_adm($WebID, $config = [])
 {

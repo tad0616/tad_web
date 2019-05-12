@@ -1,5 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\web_cate;
+
 
 if (aboutus_onUpdate1_chk()) {
     aboutus_onUpdate1_go();

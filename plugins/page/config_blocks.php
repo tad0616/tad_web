@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tad_web\web_cate;
+
 // if (!isset($_SESSION['page_cates'])) {
 $arr[_MD_TCW_PAGE_ALLCATE] = 'all';
 if ($WebID) {
