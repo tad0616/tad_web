@@ -48,7 +48,10 @@ if ($xoopsUser) {
 xoops_loadLanguage('main', 'tad_web');
 $BlockPositionTitle = ['block1' => _MD_TCW_TOP_CENTER_BLOCK, 'block2' => _MD_TCW_TOP_LEFT_BLOCK, 'block3' => _MD_TCW_TOP_LEFT_BLOCK, 'block4' => _MD_TCW_BOTTOM_CENTER_BLOCK, 'block5' => _MD_TCW_BOTTOM_LEFT_BLOCK, 'block6' => _MD_TCW_BOTTOM_RIGHT_BLOCK, 'side' => _MD_TCW_SIDE_BLOCK, 'uninstall' => _MD_TCW_UNINSTALL_BLOCK];
 
-/********************* 自訂函數 *********************/
+/********************* 自訂函數 ********************
+ * @param $WebID
+ * @return array
+ */
 
 //取得已安裝的區塊
 function get_blocks($WebID)

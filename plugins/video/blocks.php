@@ -1,6 +1,11 @@
 <?php
 use XoopsModules\Tadtools\Utility;
-/************** list_video *************/
+
+/************** list_video ************
+ * @param       $WebID
+ * @param array $config
+ * @return string|void
+ */
 function list_video($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -16,7 +21,11 @@ function list_video($WebID, $config = [])
     return $block;
 }
 
-/************** random_video *************/
+/************** random_video ************
+ * @param       $WebID
+ * @param array $config
+ * @return array|void
+ */
 
 function random_video($WebID, $config = [])
 {
@@ -48,7 +57,11 @@ function random_video($WebID, $config = [])
     return $block;
 }
 
-/************** latest_video *************/
+/************** latest_video ************
+ * @param       $WebID
+ * @param array $config
+ * @return array|void
+ */
 
 function latest_video($WebID, $config = [])
 {
