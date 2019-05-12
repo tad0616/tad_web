@@ -2,8 +2,7 @@
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\FooTable;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\web_cate;
-
+use XoopsModules\Tad_web\WebCate;
 
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
@@ -337,16 +336,16 @@ function tad_web_login($WebID, $config = [])
     if ('1' == $about_setup['mem_parents']) {
         $ys = get_seme();
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
-        $web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
-        // $web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
-        $web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $about_setup['class_title']));
-        $web_cate->set_col_md(3, 12);
-        $web_cate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_parents', WebID: '{$WebID}', CateID: $('#loginCateID').val()}, function(data){
+        $WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
+        // $WebCate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        $WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $about_setup['class_title']));
+        $WebCate->set_col_md(3, 12);
+        $WebCate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_parents', WebID: '{$WebID}', CateID: $('#loginCateID').val()}, function(data){
                       $('#select_mems').html(data);
                       $('#select_mems').show();
                   });");
-        $web_cate->set_var('menu_id', 'loginCateID');
-        $cate_menu = $web_cate->cate_menu('', 'page', false, false, false);
+        $WebCate->set_var('menu_id', 'loginCateID');
+        $cate_menu = $WebCate->cate_menu('', 'page', false, false, false);
         $xoopsTpl->assign('login_cate_menu', $cate_menu);
         $xoopsTpl->assign('mem_parents', $about_setup['mem_parents']);
     }
@@ -359,7 +358,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 {
     global $xoopsTpl, $xoopsDB, $Web, $isAdmin;
 
-    $power = new  \XoopsModules\Tad_web\Power($WebID);
+    $power = new \XoopsModules\Tad_web\Power($WebID);
     $myts = \MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 

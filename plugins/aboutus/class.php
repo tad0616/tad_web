@@ -2,8 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\web_cate;
-
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_aboutus
 {
@@ -14,7 +13,7 @@ class tad_web_aboutus
     public function __construct($WebID)
     {
         $this->WebID = $WebID;
-        $this->web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
+        $this->WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
         $this->setup = get_plugin_setup_values($WebID, 'aboutus');
     }
 
@@ -153,13 +152,13 @@ class tad_web_aboutus
         $ys = get_seme();
         $xoopsTpl->assign('ys', $ys);
 
-        $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
-        $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
-        $this->web_cate->set_col_md(3, 12);
+        $this->WebCate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        $this->WebCate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->WebCate->set_col_md(3, 12);
         //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false)
-        $cate_menu = $this->web_cate->cate_menu($DefCateID, 'page', false, true, false, false);
-        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $cate_menu = $this->WebCate->cate_menu($DefCateID, 'page', false, true, false, false);
+        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate_menu', $cate_menu);
         $xoopsTpl->assign('cate', $cate);
 
@@ -296,7 +295,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('next_year', sprintf(_MD_TCW_SEME_CATE, $next_year));
 
         //所有曾經的班級
-        $cate = $this->web_cate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr();
         // die(var_export($cate));
         foreach ($cate as $key => $value) {
             // _MD_TCW_STUDENT_COPY
@@ -308,7 +307,7 @@ class tad_web_aboutus
 
         //目前欲編輯的班級
         if ($DefCateID) {
-            $now_cate = $this->web_cate->get_tad_web_cate($DefCateID);
+            $now_cate = $this->WebCate->get_tad_web_cate($DefCateID);
             $xoopsTpl->assign('now_cate', $now_cate);
             $xoopsTpl->assign('CateID', $DefCateID);
             $xoopsTpl->assign('next_op', 'update_class');
@@ -343,7 +342,7 @@ class tad_web_aboutus
         $myts = \MyTextSanitizer::getInstance();
         $and_year = empty($year) ? '' : "{$year} ";
         $newCateName = $myts->addSlashes($and_year . $newCateName);
-        $CateID = $this->web_cate->save_tad_web_cate('', $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate('', $newCateName);
         $TadUpFiles->set_col('ClassPic', $CateID, 1);
         $TadUpFiles->upload_file('upfile', 1280, 300, null, null, true);
 
@@ -353,7 +352,7 @@ class tad_web_aboutus
         }
 
         if (!empty($_POST['form_CateID'])) {
-            $form_CateID = (int)$_POST['form_CateID'];
+            $form_CateID = (int) $_POST['form_CateID'];
             $sql = 'select * from ' . $xoopsDB->prefix('tad_web_link_mems') . " where CateID='{$form_CateID}' order by MemNum";
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
@@ -378,7 +377,7 @@ class tad_web_aboutus
         $newCateName = $myts->addSlashes($and_year . $newCateName);
         $TadUpFiles->set_col('ClassPic', $CateID, 1);
         $TadUpFiles->upload_file('upfile', 1280, 300, null, null, true);
-        $this->web_cate->update_tad_web_cate($CateID, $newCateName);
+        $this->WebCate->update_tad_web_cate($CateID, $newCateName);
 
         if ('1' == $_POST['default_class']) {
             save_web_config('default_class', $CateID, $this->WebID);
@@ -399,7 +398,7 @@ class tad_web_aboutus
         $TadUpFiles->del_files();
 
         //刪除班級
-        $this->web_cate->delete_tad_web_cate($CateID);
+        $this->WebCate->delete_tad_web_cate($CateID);
     }
 
     //排座位
@@ -478,12 +477,12 @@ class tad_web_aboutus
         $xoopsTpl->assign('no_student', sprintf(_MD_TCW_NO_MEM, $this->setup['student_title']));
         $xoopsTpl->assign('import_excel', sprintf(_MD_TCW_IMPORT_EXCEL, $this->setup['student_title']));
 
-        // $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
-        $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
-        $this->web_cate->set_col_md(2, 10);
-        $cate_menu = $this->web_cate->cate_menu($DefCateID, 'page', false, true, true, false, true, false, false);
-        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        // $this->WebCate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        $this->WebCate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->WebCate->set_col_md(2, 10);
+        $cate_menu = $this->WebCate->cate_menu($DefCateID, 'page', false, true, true, false, true, false, false);
+        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate_menu', $cate_menu);
         $xoopsTpl->assign('cate', $cate);
     }
@@ -530,7 +529,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('no_student', sprintf(_MD_TCW_NO_MEM, $this->setup['student_title']));
         $xoopsTpl->assign('import_excel', sprintf(_MD_TCW_IMPORT_EXCEL, $this->setup['student_title']));
 
-        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate', $cate);
     }
 
@@ -568,7 +567,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('MemID', $MemID);
         $xoopsTpl->assign('mem', $mem);
         $xoopsTpl->assign('class_mem', $class_mem);
-        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate', $cate);
 
         if ($isMyWeb) {
@@ -693,10 +692,10 @@ class tad_web_aboutus
         //設定「CateID」欄位預設值
         $CateID = (!isset($DBV2['CateID'])) ? $DefCateID : $DBV2['CateID'];
 
-        // $this->web_cate->set_label(sprintf(_MD_TCW_SELECT_CLASS, $this->setup['class_title']));
-        // $this->web_cate->set_col_md(3, 9);
-        // $cate_menu = $this->web_cate->cate_menu($CateID, 'menu', true, false, true, false, true, true, false);
-        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        // $this->WebCate->set_label(sprintf(_MD_TCW_SELECT_CLASS, $this->setup['class_title']));
+        // $this->WebCate->set_col_md(3, 9);
+        // $cate_menu = $this->WebCate->cate_menu($CateID, 'menu', true, false, true, false, true, true, false);
+        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate', $cate);
 
         //設定「top」欄位預設值
@@ -811,7 +810,7 @@ class tad_web_aboutus
         $MemPasswd = $myts->addSlashes($_POST['MemPasswd']);
         $MemNum = $myts->addSlashes($_POST['MemNum']);
 
-        $CateID = (int)$_POST['CateID'];
+        $CateID = (int) $_POST['CateID'];
 
         $MemSort = $this->max_sort($CateID);
 
@@ -863,7 +862,7 @@ class tad_web_aboutus
         $MemUname = $myts->addSlashes($_POST['MemUname']);
         $MemPasswd = $myts->addSlashes($_POST['MemPasswd']);
         $MemNum = $myts->addSlashes($_POST['MemNum']);
-        $MemSort = (int)$_POST['MemSort'];
+        $MemSort = (int) $_POST['MemSort'];
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_mems') . " set
            `MemName` = '{$MemName}' ,
@@ -960,7 +959,7 @@ class tad_web_aboutus
     public function import_excel_form($DefCateID = '')
     {
         global $xoopsDB, $xoopsTpl;
-        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate', $cate);
         $xoopsTpl->assign('edit_student', sprintf(_MD_TCW_EDIT_MEM, $this->setup['student_title']));
         $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
@@ -1120,8 +1119,8 @@ class tad_web_aboutus
     public function get_tad_web_cate_all($table)
     {
         global $xoopsDB;
-        $web_cate = new web_cate('0', 'web_cate', $table);
-        $cate = $web_cate->get_tad_web_cate_arr();
+        $WebCate = new WebCate('0', 'web_cate', $table);
+        $cate = $WebCate->get_tad_web_cate_arr();
         $webs = get_web_cate_arr();
         $data_arr = [];
         if (is_array($cate)) {
@@ -1241,15 +1240,15 @@ class tad_web_aboutus
         $ys = get_seme();
         $xoopsTpl->assign('ys', $ys);
 
-        $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
-        // $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
-        $this->web_cate->set_col_md(3, 12);
-        $this->web_cate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_mems', WebID: '{$this->WebID}', CateID: $('#CateID').val()}, function(data){
+        $this->WebCate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        // $this->WebCate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->WebCate->set_col_md(3, 12);
+        $this->WebCate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_mems', WebID: '{$this->WebID}', CateID: $('#CateID').val()}, function(data){
                   $('#list_mems').html(data);
               });");
         //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false)
-        $cate_menu = $this->web_cate->cate_menu('', 'page', false, false, false);
+        $cate_menu = $this->WebCate->cate_menu('', 'page', false, false, false);
         $xoopsTpl->assign('cate_menu', $cate_menu);
         // $xoopsTpl->assign('cate', $cate);
         $xoopsTpl->assign('cate_label', sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
@@ -1267,7 +1266,7 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
         }
 
-        $MemID = (int)$_POST['MemID'];
+        $MemID = (int) $_POST['MemID'];
         $mem = get_tad_web_mems($MemID);
 
         if ($_POST['MemBirthday'] != $mem['MemBirthday']) {
@@ -1443,7 +1442,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('mem', $mem);
         $xoopsTpl->assign('parent', $parent);
         $xoopsTpl->assign('class_mem', $class_mem);
-        $cate = $this->web_cate->get_tad_web_cate($DefCateID);
+        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate', $cate);
 
         //作品分享
@@ -1520,15 +1519,15 @@ class tad_web_aboutus
         $ys = get_seme();
         $xoopsTpl->assign('ys', $ys);
 
-        $this->web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
-        // $this->web_cate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
-        $this->web_cate->set_col_md(3, 12);
-        $this->web_cate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_mems', WebID: '{$this->WebID}', CateID: $('#CateID').val()}, function(data){
+        $this->WebCate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
+        // $this->WebCate->set_label(sprintf(_MD_TCW_SET_SEME, $this->setup['class_title']));
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
+        $this->WebCate->set_col_md(3, 12);
+        $this->WebCate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_mems', WebID: '{$this->WebID}', CateID: $('#CateID').val()}, function(data){
                   $('#list_mems').html(data);
               });");
         //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false)
-        $cate_menu = $this->web_cate->cate_menu('', 'page', false, false, false);
+        $cate_menu = $this->WebCate->cate_menu('', 'page', false, false, false);
         $xoopsTpl->assign('cate_menu', $cate_menu);
         // $xoopsTpl->assign('cate', $cate);
         $xoopsTpl->assign('cate_label', sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
@@ -1567,7 +1566,7 @@ class tad_web_aboutus
         // $Web = get_tad_web($this->WebID, true);
         $xoopsTpl->assign('isAdmin', $isAdmin);
         $xoopsTpl->assign('CateID', $DefCateID);
-        $xoopsTpl->assign('cate', $this->web_cate->get_tad_web_cate($DefCateID));
+        $xoopsTpl->assign('cate', $this->WebCate->get_tad_web_cate($DefCateID));
 
         $sql = 'select a.*,b.* from ' . $xoopsDB->prefix('tad_web_link_mems') . ' as a left join ' . $xoopsDB->prefix('tad_web_mems') . " as b on a.MemID=b.MemID where a.WebID ='{$this->WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}' order by rand()";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);

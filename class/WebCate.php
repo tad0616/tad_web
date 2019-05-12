@@ -3,24 +3,23 @@
 namespace XoopsModules\Tad_web;
 
 use XoopsModules\Tadtools\Utility;
-use  XoopsModules\Tad_web;
-
+use XoopsModules\Tad_web;
 
 /*
 
-$web_cate = new web_cate($WebID, "news","tad_web_news");
+$WebCate = new WebCate($WebID, "news","tad_web_news");
 
 //設定「CateID」欄位預設值
 $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
 //表單
-$cate_menu = $web_cate->cate_menu($CateID);
+$cate_menu = $WebCate->cate_menu($CateID);
 $xoopsTpl->assign('cate_menu', $cate_menu);
 
 //儲存
-$CateID = $web_cate->save_tad_web_cate($CateID, $newCateName);
+$CateID = $WebCate->save_tad_web_cate($CateID, $newCateName);
 
 //取得單一分類資料
-$cate = $web_cate->get_tad_web_cate($CateID);
+$cate = $WebCate->get_tad_web_cate($CateID);
 $xoopsTpl->assign('cate', $cate);
 
 <ol class="breadcrumb">
@@ -30,16 +29,16 @@ $xoopsTpl->assign('cate', $cate);
 </ol>
 
 //取得tad_web_cate所有資料陣列
-$web_cate = new web_cate($WebID, "news","tad_web_news");
-$web_cate->set_WebID($WebID);
-$cate = $web_cate->get_tad_web_cate_arr();
+$WebCate = new WebCate($WebID, "news","tad_web_news");
+$WebCate->set_WebID($WebID);
+$cate = $WebCate->get_tad_web_cate_arr();
 
 <{if isset($news.cate.CateID)}>
 <span class="label label-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
 <{/if}>
  */
 
-class web_cate
+class WebCate
 {
     public $WebID = 0;
     public $ColName;
@@ -60,7 +59,7 @@ class web_cate
     public function __construct($WebID = '0', $ColName = '', $table = '')
     {
 
-        $this->power = new  Tad_web\Power($WebID);
+        $this->power = new Tad_web\Power($WebID);
 
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
@@ -77,7 +76,7 @@ class web_cate
 
     public function set_WebID($WebID = '')
     {
-        $WebID = (int)$WebID;
+        $WebID = (int) $WebID;
 
         $this->WebID = $WebID;
     }

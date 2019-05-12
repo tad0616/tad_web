@@ -3,7 +3,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\web_cate;
+use XoopsModules\Tad_web\WebCate;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -43,10 +43,10 @@ function tad_web_config($WebID, $configs)
     $Web = get_tad_web($WebID, true);
 
     //網站設定
-    $web_cate = new web_cate(0, 'web_cate', 'tad_web');
-    $web_cate->set_col_md(3, 9);
+    $WebCate = new WebCate(0, 'web_cate', 'tad_web');
+    $WebCate->set_col_md(3, 9);
     //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
-    $cate_menu = $web_cate->cate_menu($Web['CateID'], 'page', false, false, true, false, true, true, false);
+    $cate_menu = $WebCate->cate_menu($Web['CateID'], 'page', false, false, true, false, true, true, false);
 
     $xoopsTpl->assign('cate_menu', $cate_menu);
 

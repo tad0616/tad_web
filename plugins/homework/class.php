@@ -4,8 +4,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\FullCalendar;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\web_cate;
-
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_homework
 {
@@ -17,7 +16,7 @@ class tad_web_homework
     public function __construct($WebID)
     {
         $this->WebID = $WebID;
-        $this->web_cate = new web_cate($WebID, 'homework', 'tad_web_homework');
+        $this->WebCate = new WebCate($WebID, 'homework', 'tad_web_homework');
         $this->setup = get_plugin_setup_values($WebID, 'homework');
         $this->calendar_setup = get_plugin_setup_values($WebID, 'calendar');
     }
@@ -34,16 +33,16 @@ class tad_web_homework
         if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
             if (!empty($plugin_menu_var)) {
-                $this->web_cate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
-                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
-                $this->web_cate->set_col_md(0, 6);
-                $cate_menu = $this->web_cate->cate_menu($CateID, 'page', false, true, false, false);
+                $this->WebCate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
+                $this->WebCate->set_col_md(0, 6);
+                $cate_menu = $this->WebCate->cate_menu($CateID, 'page', false, true, false, false);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
-                $cate = $this->web_cate->get_tad_web_cate($CateID);
+                $cate = $this->WebCate->get_tad_web_cate($CateID);
                 if ($CateID and '1' != $cate['CateEnable']) {
                     return;
                 }
@@ -96,7 +95,7 @@ class tad_web_homework
         $WebNames = getAllWebInfo('WebName');
         $cweek = [0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT];
 
-        $cate = $this->web_cate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr();
         $yet = '';
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
@@ -129,7 +128,7 @@ class tad_web_homework
             $ColWidth = empty($ColsNum) ? 1 : 12 / $ColsNum;
             $main_data[$i]['ColsNum'] = $ColsNum;
             $main_data[$i]['ColWidth'] = $ColWidth;
-            $this->web_cate->set_WebID($WebID);
+            $this->WebCate->set_WebID($WebID);
 
             $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebName'] = $WebNames[$WebID];
@@ -205,7 +204,7 @@ class tad_web_homework
             return;
         }
         $myts = \MyTextSanitizer::getInstance();
-        $HomeworkID = (int)$HomeworkID;
+        $HomeworkID = (int) $HomeworkID;
         $this->add_counter($HomeworkID);
 
         $now = date('Y-m-d H:i:s');
@@ -267,7 +266,7 @@ class tad_web_homework
         $xoopsTpl->assign('fb_description', $HomeworkDate . xoops_substr(strip_tags($HomeworkContent), 0, 300));
 
         //取得單一分類資料
-        $cate = $this->web_cate->get_tad_web_cate($CateID);
+        $cate = $this->WebCate->get_tad_web_cate($CateID);
         if ($CateID and '1' != $cate['CateEnable']) {
             return;
         }
@@ -359,9 +358,9 @@ class tad_web_homework
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['homework']) ? $_SESSION['isAssistant']['homework'] : '';
         $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
-        $this->web_cate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
-        $cate_menu = isset($_SESSION['isAssistant']['homework']) ? $this->web_cate->hidden_cate_menu($CateID) : $this->web_cate->cate_menu($CateID);
+        $this->WebCate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
+        $cate_menu = isset($_SESSION['isAssistant']['homework']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         $op = (empty($HomeworkID)) ? 'insert' : 'update';
@@ -427,8 +426,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
@@ -456,7 +455,7 @@ class tad_web_homework
             $HomeworkPostDate = $HomeworkDate;
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_homework') . "
         (`CateID`,`HomeworkTitle` , `HomeworkContent` , `HomeworkDate` , `toCal` , `WebID` , `HomeworkCounter` , `uid` , `HomeworkPostDate`)
@@ -513,8 +512,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
@@ -542,7 +541,7 @@ class tad_web_homework
             $HomeworkPostDate = $HomeworkDate;
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
         if (!is_assistant($CateID, 'HomeworkID', $HomeworkID)) {
             $anduid = onlyMine();
@@ -644,7 +643,7 @@ class tad_web_homework
             $allCateID[$CateID] = $CateID;
         }
         foreach ($allCateID as $CateID) {
-            $this->web_cate->delete_tad_web_cate($CateID);
+            $this->WebCate->delete_tad_web_cate($CateID);
         }
         check_quota($this->WebID);
     }
