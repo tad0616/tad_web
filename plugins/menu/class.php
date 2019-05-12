@@ -3,6 +3,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_menu
 {
@@ -13,7 +14,7 @@ class tad_web_menu
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'menu', 'tad_web_menu');
+        $this->WebCate = new WebCate($WebID, 'menu', 'tad_web_menu');
         $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
         // $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'menu');
@@ -28,23 +29,23 @@ class tad_web_menu
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         //取得tad_web_cate所有資料陣列
-        $cate_arr = $this->web_cate->get_tad_web_cate_arr();
+        $cate_arr = $this->WebCate->get_tad_web_cate_arr();
         // die(var_dump($cate_arr));
         $andCateID = '';
         if ('assign' === $mode) {
             //取得tad_web_cate所有資料陣列
 
             if (!empty($plugin_menu_var)) {
-                $this->web_cate->set_button_value($plugin_menu_var['menu']['short'] . _MD_TCW_CATE_TOOLS);
-                $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['menu']['short']));
-                $this->web_cate->set_col_md(0, 6);
-                $cate_menu = $this->web_cate->cate_menu($CateID, 'menu', false, true, false, true);
+                $this->WebCate->set_button_value($plugin_menu_var['menu']['short'] . _MD_TCW_CATE_TOOLS);
+                $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['menu']['short']));
+                $this->WebCate->set_col_md(0, 6);
+                $cate_menu = $this->WebCate->cate_menu($CateID, 'menu', false, true, false, true);
                 $xoopsTpl->assign('cate_menu', $cate_menu);
             }
 
             if (!empty($CateID) and is_numeric($CateID)) {
                 //取得單一分類資料
-                $cate = $this->web_cate->get_tad_web_cate($CateID);
+                $cate = $this->WebCate->get_tad_web_cate($CateID);
                 $xoopsTpl->assign('cate', $cate);
                 $andCateID = "and a.`CateID`='$CateID'";
                 $xoopsTpl->assign('MenuDefCateID', $CateID);
@@ -90,7 +91,7 @@ class tad_web_menu
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->web_cate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr();
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $MenuID , $MenuTitle , $MenuDesc , $MenuDate , $MenuPlace , $uid , $WebID , $MenuCount
@@ -116,7 +117,7 @@ class tad_web_menu
             $main_data[$i]['id_name'] = 'MenuID';
             $main_data[$i]['title']   = $MenuTitle;
 
-            $this->web_cate->set_WebID($WebID);
+            $this->WebCate->set_WebID($WebID);
 
             $main_data[$i]['cate']     = $cate_arr[$CateID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -207,9 +208,9 @@ class tad_web_menu
 
         //設定「CateID」欄位預設值
         $CateID = (!isset($DBV['CateID'])) ? '' : $DBV['CateID'];
-        $this->web_cate->set_button_value($plugin_menu_var['menu']['short'] . _MD_TCW_CATE_TOOLS);
-        $this->web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['menu']['short']));
-        $cate_menu = $this->web_cate->cate_menu($CateID);
+        $this->WebCate->set_button_value($plugin_menu_var['menu']['short'] . _MD_TCW_CATE_TOOLS);
+        $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['menu']['short']));
+        $cate_menu = $this->WebCate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 
         //設定「ColName」欄位預設值
@@ -310,7 +311,7 @@ class tad_web_menu
             $Plugin = '';
         }
 
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $Sort   = $this->max_sort($WebID, $CateID);
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_menu') . "
@@ -371,7 +372,7 @@ class tad_web_menu
         } else {
             $Plugin = '';
         }
-        $CateID = $this->web_cate->save_tad_web_cate($CateID, $newCateName);
+        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $Sort   = $this->max_sort($WebID, $CateID);
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_menu') . " set
@@ -437,7 +438,7 @@ class tad_web_menu
             $allCateID[$CateID] = $CateID;
         }
         foreach ($allCateID as $CateID) {
-            $this->web_cate->delete_tad_web_cate($CateID);
+            $this->WebCate->delete_tad_web_cate($CateID);
         }
         check_quota($this->WebID);
     }

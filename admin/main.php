@@ -1,6 +1,8 @@
 <?php
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\WebCate;
+
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_main.tpl';
 require_once __DIR__ . '/header.php';
@@ -98,8 +100,8 @@ function list_all_web($defCateID = '')
         $xoopsTpl->assign('jquery', $jquery);
         $xoopsTpl->assign('CateID', $defCateID);
 
-        $web_cate = new \XoopsModules\Tad_web\Cate('', 'web_cate', 'tad_web');
-        $cate = $web_cate->get_tad_web_cate_arr();
+        $WebCate = new WebCate('', 'web_cate', 'tad_web');
+        $cate = $WebCate->get_tad_web_cate_arr();
         $xoopsTpl->assign('cate', $cate);
     }
 }
@@ -293,10 +295,10 @@ function tad_web_form($WebID = null)
     $xoopsTpl->assign('next_year', sprintf(_MD_TCW_SEME_CATE, $next_year));
 
     //網站設定
-    $web_cate = new \XoopsModules\Tad_web\Cate(0, 'web_cate', 'tad_web');
-    $web_cate->set_col_md(3, 3);
+    $WebCate = new WebCate(0, 'web_cate', 'tad_web');
+    $WebCate->set_col_md(3, 3);
     //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
-    $cate_menu = $web_cate->cate_menu($CateID, 'page', false, false, false, false, true, true, false);
+    $cate_menu = $WebCate->cate_menu($CateID, 'page', false, false, false, false, true, true, false);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 }
 
@@ -346,8 +348,8 @@ function insert_tad_web($CateID = '', $WebName = '', $WebSort = '', $WebEnable =
     $WebID = $xoopsDB->getInsertId();
 
     //新增一個預設班級
-    $web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'aboutus', 'tad_web_link_mems');
-    $ClassCateID = $web_cate->save_tad_web_cate('', $WebTitle);
+    $WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
+    $ClassCateID = $WebCate->save_tad_web_cate('', $WebTitle);
 
     save_one_web_title($WebID, $WebTitle);
 

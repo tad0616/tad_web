@@ -1,5 +1,6 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\WebCate;
 
 function list_web_adm($WebID, $config = [])
 {
@@ -46,14 +47,14 @@ function list_web_student($WebID, $config = [])
     $setup = get_plugin_setup_values($WebID, 'aboutus');
     // die('WebID=' . $WebID . var_export($setup));
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
-    $web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'aboutus', 'tad_web_link_mems');
+    $WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
 
     $DefCateID = get_web_config('default_class', $WebID);
     if (empty($DefCateID)) {
-        $DefCateID = $web_cate->tad_web_cate_max_id();
+        $DefCateID = $WebCate->tad_web_cate_max_id();
     }
 
-    $cate = $web_cate->get_tad_web_cate($DefCateID);
+    $cate = $WebCate->get_tad_web_cate($DefCateID);
     $block['cate'] = $cate;
     $block['CateID'] = $DefCateID;
 
