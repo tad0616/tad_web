@@ -2,7 +2,7 @@
 // if (!isset($_SESSION['page_cates'])) {
 $arr[_MD_TCW_PAGE_ALLCATE] = 'all';
 if ($WebID) {
-    $web_cate = new web_cate($WebID, 'page', 'tad_web_page');
+    $web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'page', 'tad_web_page');
     $tad_web_cate_arr = $web_cate->get_tad_web_cate_arr();
     // if (isset($_GET['debug']) and $_GET['debug'] == 1) {
     //     die(var_export($tad_web_cate_arr));

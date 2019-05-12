@@ -27,7 +27,7 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
         return;
     }
 
-    $web_cate = new web_cate($WebID, $ColName, $table);
+    $web_cate = new \XoopsModules\Tad_web\Cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
     $cate = $web_cate->get_tad_web_cate_arr();
 
@@ -96,7 +96,7 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
 
     $power = new  \XoopsModules\Tad_web\Power($WebID);
 
-    $web_cate = new web_cate($WebID, $ColName, $table);
+    $web_cate = new \XoopsModules\Tad_web\Cate($WebID, $ColName, $table);
     $web_cate->set_WebID($WebID);
     //新增分類
     if ($_POST['newCateName']) {

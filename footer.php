@@ -335,7 +335,7 @@ function tad_web_login($WebID, $config = [])
     if ('1' == $about_setup['mem_parents']) {
         $ys = get_seme();
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
-        $web_cate = new web_cate($WebID, 'aboutus', 'tad_web_link_mems');
+        $web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'aboutus', 'tad_web_link_mems');
         // $web_cate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
         $web_cate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $about_setup['class_title']));
         $web_cate->set_col_md(3, 12);

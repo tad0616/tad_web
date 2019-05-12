@@ -13,7 +13,7 @@ class tad_web_schedule
     {
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
-        $this->web_cate = new web_cate($WebID, 'schedule', 'tad_web_schedule');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'schedule', 'tad_web_schedule');
     }
 
     //課表

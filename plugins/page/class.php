@@ -15,7 +15,7 @@ class tad_web_page
     {
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
-        $this->web_cate = new web_cate($WebID, 'page', 'tad_web_page');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'page', 'tad_web_page');
         $this->tags = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'page');
     }

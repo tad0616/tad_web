@@ -41,7 +41,7 @@ function tad_web_config($WebID, $configs)
     $Web = get_tad_web($WebID, true);
 
     //網站設定
-    $web_cate = new web_cate(0, 'web_cate', 'tad_web');
+    $web_cate = new \XoopsModules\Tad_web\Cate(0, 'web_cate', 'tad_web');
     $web_cate->set_col_md(3, 9);
     //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     $cate_menu = $web_cate->cate_menu($Web['CateID'], 'page', false, false, true, false, true, true, false);

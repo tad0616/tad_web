@@ -14,7 +14,7 @@ class tad_web_news
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, 'news', 'tad_web_news');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'news', 'tad_web_news');
         $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
         $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup    = get_plugin_setup_values($WebID, 'news');

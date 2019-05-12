@@ -11,7 +11,7 @@ class tad_web_link
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, 'link', 'tad_web_link');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'link', 'tad_web_link');
         $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
     }
 

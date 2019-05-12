@@ -8,7 +8,7 @@ use  XoopsModules\Tad_web;
 
 /*
 
-$web_cate = new web_cate($WebID, "news","tad_web_news");
+$web_cate = new \XoopsModules\Tad_web\Cate($WebID, "news","tad_web_news");
 
 //設定「CateID」欄位預設值
 $CateID    = (!isset($DBV['CateID'])) ? "" : $DBV['CateID'];
@@ -30,7 +30,7 @@ $xoopsTpl->assign('cate', $cate);
 </ol>
 
 //取得tad_web_cate所有資料陣列
-$web_cate = new web_cate($WebID, "news","tad_web_news");
+$web_cate = new \XoopsModules\Tad_web\Cate($WebID, "news","tad_web_news");
 $web_cate->set_WebID($WebID);
 $cate = $web_cate->get_tad_web_cate_arr();
 
@@ -39,7 +39,7 @@ $cate = $web_cate->get_tad_web_cate_arr();
 <{/if}>
  */
 
-class web_cate
+class Cate
 {
     public $WebID = 0;
     public $ColName;

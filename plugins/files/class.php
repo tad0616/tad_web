@@ -11,7 +11,7 @@ class tad_web_files
     public function __construct($WebID)
     {
         $this->WebID = $WebID;
-        $this->web_cate = new web_cate($WebID, 'files', 'tad_web_files');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'files', 'tad_web_files');
         $this->tags = new  \XoopsModules\Tad_web\Tags($WebID);
     }
 

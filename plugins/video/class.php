@@ -12,7 +12,7 @@ class tad_web_video
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, 'video', 'tad_web_video');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'video', 'tad_web_video');
         $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup    = get_plugin_setup_values($WebID, 'video');
     }

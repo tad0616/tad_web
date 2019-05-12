@@ -13,7 +13,7 @@ class tad_web_menu
     public function __construct($WebID)
     {
         $this->WebID    = $WebID;
-        $this->web_cate = new web_cate($WebID, 'menu', 'tad_web_menu');
+        $this->web_cate = new \XoopsModules\Tad_web\Cate($WebID, 'menu', 'tad_web_menu');
         $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
         // $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'menu');
