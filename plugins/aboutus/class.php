@@ -352,7 +352,7 @@ class tad_web_aboutus
         }
 
         if (!empty($_POST['form_CateID'])) {
-            $form_CateID = (int) $_POST['form_CateID'];
+            $form_CateID = (int)$_POST['form_CateID'];
             $sql = 'select * from ' . $xoopsDB->prefix('tad_web_link_mems') . " where CateID='{$form_CateID}' order by MemNum";
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
@@ -810,7 +810,7 @@ class tad_web_aboutus
         $MemPasswd = $myts->addSlashes($_POST['MemPasswd']);
         $MemNum = $myts->addSlashes($_POST['MemNum']);
 
-        $CateID = (int) $_POST['CateID'];
+        $CateID = (int)$_POST['CateID'];
 
         $MemSort = $this->max_sort($CateID);
 
@@ -862,7 +862,7 @@ class tad_web_aboutus
         $MemUname = $myts->addSlashes($_POST['MemUname']);
         $MemPasswd = $myts->addSlashes($_POST['MemPasswd']);
         $MemNum = $myts->addSlashes($_POST['MemNum']);
-        $MemSort = (int) $_POST['MemSort'];
+        $MemSort = (int)$_POST['MemSort'];
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_mems') . " set
            `MemName` = '{$MemName}' ,
@@ -1266,7 +1266,7 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_ABOUTUS_STOP_PARENT_REGISTERED);
         }
 
-        $MemID = (int) $_POST['MemID'];
+        $MemID = (int)$_POST['MemID'];
         $mem = get_tad_web_mems($MemID);
 
         if ($_POST['MemBirthday'] != $mem['MemBirthday']) {

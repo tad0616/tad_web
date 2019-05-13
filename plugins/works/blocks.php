@@ -1,5 +1,9 @@
 <?php
-/************** list_work *************/
+/************** list_work ************
+ * @param       $WebID
+ * @param array $config
+ * @return void
+ */
 function list_work($WebID, $config = [])
 {
     global $xoopsDB, $xoopsTpl, $TadUpFiles;
@@ -14,7 +18,11 @@ function list_work($WebID, $config = [])
     return $block;
 }
 
-/************** random_work *************/
+/************** random_work ************
+ * @param       $WebID
+ * @param array $config
+ * @return void
+ */
 
 function random_work($WebID, $config = [])
 {
@@ -31,7 +39,11 @@ function random_work($WebID, $config = [])
     return $block;
 }
 
-/************** latest_work *************/
+/************** latest_work ************
+ * @param       $WebID
+ * @param array $config
+ * @return void
+ */
 
 function latest_work($WebID, $config = [])
 {
