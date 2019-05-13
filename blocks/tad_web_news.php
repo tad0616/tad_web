@@ -4,7 +4,7 @@
 function tad_web_news()
 {
     global $xoopsDB;
-    require_once __DIR__ . '/plugin/news/class.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_web/plugins/news/class.php';
 
     return $block;
 }
