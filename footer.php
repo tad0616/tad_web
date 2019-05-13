@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\FooTable;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
 $xoopsTpl->assign('op', $op);
@@ -335,7 +336,7 @@ function tad_web_login($WebID, $config = [])
 
     if ('1' == $about_setup['mem_parents']) {
         $ys = get_seme();
-        require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/WebCate.php';
         $WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
         // $WebCate->set_default_value(sprintf(_MD_TCW_SEME_CATE, $ys[0]));
         $WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $about_setup['class_title']));
@@ -358,7 +359,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
 {
     global $xoopsTpl, $xoopsDB, $Web, $isAdmin;
 
-    $power = new  \XoopsModules\Tad_web\Power($WebID);
+    $power = new Power($WebID);
     $myts = \MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 

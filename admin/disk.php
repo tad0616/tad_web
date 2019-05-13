@@ -6,7 +6,7 @@ use XoopsModules\Tadtools\Ztree;
 $xoopsOption['template_main'] = 'tad_web_adm_disk.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
-require_once dirname(__DIR__) . '/class/cate.php';
+require_once dirname(__DIR__) . '/class/WebCate.php';
 /*-----------function區--------------*/
 
 //取得所有班級

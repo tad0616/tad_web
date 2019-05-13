@@ -46,7 +46,7 @@ function list_web_student($WebID, $config = [])
     // die('WebID=' . $WebID);
     $setup = get_plugin_setup_values($WebID, 'aboutus');
     // die('WebID=' . $WebID . var_export($setup));
-    require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/WebCate.php';
     $WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
 
     $DefCateID = get_web_config('default_class', $WebID);

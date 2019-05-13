@@ -7,7 +7,7 @@ use XoopsModules\Tad_web\WebCate;
 $xoopsOption['template_main'] = 'tad_web_adm_main.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
-require_once dirname(__DIR__) . '/class/cate.php';
+require_once dirname(__DIR__) . '/class/WebCate.php';
 /*-----------function區--------------*/
 
 //環境檢查

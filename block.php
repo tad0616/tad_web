@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
@@ -15,7 +16,7 @@ if (!empty($_REQUEST['WebID']) and $isMyWeb) {
 }
 
 //權限設定
-$power = new \XoopsModules\Tad_web\Power($WebID);
+$power = new Power($WebID);
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 function config_block($WebID, $BlockID, $plugin, $mode = 'config')

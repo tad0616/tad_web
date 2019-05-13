@@ -7,7 +7,7 @@ use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'tad_web_adm_notice.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
-require_once dirname(__DIR__) . '/class/cate.php';
+require_once dirname(__DIR__) . '/class/WebCate.php';
 /*-----------function區--------------*/
 //tad_web_notice編輯表單
 function tad_web_notice_form($NoticeID = '')
@@ -83,7 +83,7 @@ function insert_tad_web_notice()
 
     $myts = \MyTextSanitizer::getInstance();
 
-    $NoticeID = (int)$_POST['NoticeID'];
+    $NoticeID = (int) $_POST['NoticeID'];
     $NoticeTitle = $myts->addSlashes($_POST['NoticeTitle']);
     $NoticeContent = $myts->addSlashes($_POST['NoticeContent']);
     $NoticeWeb = $myts->addSlashes($_POST['NoticeWeb']);
@@ -127,7 +127,7 @@ function update_tad_web_notice($NoticeID = '')
 
     $myts = \MyTextSanitizer::getInstance();
 
-    $NoticeID = (int)$_POST['NoticeID'];
+    $NoticeID = (int) $_POST['NoticeID'];
     $NoticeTitle = $myts->addSlashes($_POST['NoticeTitle']);
     $NoticeContent = $myts->addSlashes($_POST['NoticeContent']);
     $NoticeWeb = $myts->addSlashes($_POST['NoticeWeb']);
@@ -171,7 +171,7 @@ function show_one_tad_web_notice($NoticeID = '')
     if (empty($NoticeID)) {
         return;
     }
-    $NoticeID = (int)$NoticeID;
+    $NoticeID = (int) $NoticeID;
 
     $myts = \MyTextSanitizer::getInstance();
 
@@ -295,7 +295,7 @@ switch ($op) {
     default:
         if (empty($NoticeID)) {
             list_tad_web_notice();
-        //$main .= tad_web_notice_form($NoticeID);
+            //$main .= tad_web_notice_form($NoticeID);
         } else {
             show_one_tad_web_notice($NoticeID);
         }

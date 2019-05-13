@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tad_web\Tags;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'tad_web_tag.tpl';
@@ -47,8 +48,7 @@ function search_tag($WebID = '', $tag = '')
 function list_tags($WebID)
 {
     global $xoopsTpl;
-    // require_once "class/tags.php";
-    $tags = new  \XoopsModules\Tad_web\Tags($WebID);
+    $tags = new Tags($WebID);
     $tags_arr = $tags->get_tags();
     arsort($tags_arr);
     $xoopsTpl->assign('tags_arr', $tags_arr);

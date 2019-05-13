@@ -14,9 +14,7 @@ $TadUpFiles->set_dir('subdir', $subdir);
 //引入TadTools的函式庫
 require_once __DIR__ . '/function_block.php';
 
-require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
-//require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/power.php';
-//require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/tags.php';
+require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/WebCate.php';
 
 //判斷是否對該模組有管理權限
 $isAdmin = false;
@@ -24,8 +22,8 @@ $LoginMemID = $LoginMemName = $LoginMemNickName = $LoginWebID = $LoginParentID =
 $MyWebs = [];
 $isMyWeb = false;
 if ($xoopsUser) {
-        $moduleHandler = xoops_getHandler('module');
-        $xoopsModule = $moduleHandler->getByDirname('tad_web');
+    $moduleHandler = xoops_getHandler('module');
+    $xoopsModule = $moduleHandler->getByDirname('tad_web');
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin = $xoopsUser->isAdmin($module_id);
     //我的班級ID（陣列）
