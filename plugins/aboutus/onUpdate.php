@@ -34,7 +34,7 @@ function aboutus_onUpdate1_go()
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $year = get_seme_year();
-    require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/cate.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/WebCate.php';
 
     $sql = 'SELECT WebID,WebTitle FROM `' . $xoopsDB->prefix('tad_web') . '` GROUP BY `WebID`';
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);

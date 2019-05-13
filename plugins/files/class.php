@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
 
 class tad_web_files
@@ -13,7 +14,7 @@ class tad_web_files
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'files', 'tad_web_files');
-        $this->tags = new  \XoopsModules\Tad_web\Tags($WebID);
+        $this->tags = new Tags($WebID);
     }
 
     //檔案下載

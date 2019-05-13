@@ -1,6 +1,7 @@
 <?php
 use XoopsModules\Tadtools\ColorBox;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Tags;
 
 function search($WebID, $config = [])
 {
@@ -129,7 +130,7 @@ function countdown($WebID, $config = [])
 //標籤
 function tags($WebID, $config = [])
 {
-    $tags = new  \XoopsModules\Tad_web\Tags($WebID);
+    $tags = new Tags($WebID);
     $tags_arr = $tags->get_tags();
     arsort($tags_arr);
     $block['main_data'] = true;

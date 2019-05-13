@@ -1,12 +1,12 @@
 <?php
+use XoopsModules\Tad_web\Power;
 //搜尋
 function action_search($WebID, $queryarray, $limit = 10)
 {
     global $xoopsDB;
 
     //起始函數
-    require_once XOOPS_ROOT_PATH . '/class/power.php';
-    $power = new  \XoopsModules\Tad_web\Power($WebID);
+    $power = new Power($WebID);
 
     $plugin = 'action';
     $plugin_tbl = 'tad_web_action';

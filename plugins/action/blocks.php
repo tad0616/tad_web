@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\ResponsiveSlides;
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 
 //活動剪影
 function list_action($WebID, $config = [])
@@ -23,7 +24,7 @@ function list_action($WebID, $config = [])
 function action_slide($WebID, $config = [])
 {
     global $xoopsDB;
-    $power = new  \XoopsModules\Tad_web\Power($WebID);
+    $power = new Power($WebID);
 
     $sql = 'select ActionName,ActionID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$WebID}' order by rand()";
 
@@ -52,16 +53,16 @@ function action_slide($WebID, $config = [])
     // die(var_export($photos));
 
     $ResponsiveSlides = new ResponsiveSlides(120, false);
-        $i = 1;
-        foreach ($photos as $pic) {
-            if ($pic['description'] == $pic['original_filename']) {
-                $pic['description'] = '';
-            }
-            $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
-            $i++;
+    $i = 1;
+    foreach ($photos as $pic) {
+        if ($pic['description'] == $pic['original_filename']) {
+            $pic['description'] = '';
         }
+        $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
+        $i++;
+    }
 
-        $slide_images = $ResponsiveSlides->render();
+    $slide_images = $ResponsiveSlides->render();
 
     $block['main_data'] = $slide_images;
     $block['ActionID'] = $ActionID;

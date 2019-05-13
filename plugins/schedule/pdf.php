@@ -4,14 +4,14 @@ use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
-require_once dirname(dirname(__DIR__)) . '/class/cate.php';
+require_once dirname(dirname(__DIR__)) . '/class/WebCate.php';
 require_once __DIR__ . '/class.php';
 
 set_time_limit(0);
 ini_set('memory_limit', '150M');
 
-$WebID = empty($_REQUEST['WebID']) ? '' : (int)$_REQUEST['WebID'];
-$ScheduleID = empty($_REQUEST['ScheduleID']) ? '' : (int)$_REQUEST['ScheduleID'];
+$WebID = empty($_REQUEST['WebID']) ? '' : (int) $_REQUEST['WebID'];
+$ScheduleID = empty($_REQUEST['ScheduleID']) ? '' : (int) $_REQUEST['ScheduleID'];
 
 $schedule = new tad_web_schedule($WebID);
 $schedule_data = $schedule->get_one_data($ScheduleID);

@@ -3,6 +3,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\WebCate;
+use XoopsModules\Tad_web\Tags;
 
 class tad_web_discuss
 {
@@ -15,7 +16,7 @@ class tad_web_discuss
     {
         $this->WebID         = $WebID;
         $this->WebCate = new WebCate($WebID, 'discuss', 'tad_web_discuss');
-        $this->tags          = new  \XoopsModules\Tad_web\Tags($WebID);
+        $this->tags          = new Tags($WebID);
         $this->aboutus_setup = get_plugin_setup_values($WebID, 'aboutus');
         $this->discuss_setup = get_plugin_setup_values($WebID, 'discuss');
     }

@@ -5,8 +5,9 @@ namespace XoopsModules\Tad_web;
 use XoopsModules\Tadtools\Utility;
 
 /*
+use XoopsModules\Tad_web\Power;
 //起始函數
-$this->power    = new  \XoopsModules\Tad_web\Power($WebID);
+$this->power    = new  Power($WebID);
 
 //權限設定
 $power_form = $this->power->power_menu('read', "NewsID", $NewsID);
@@ -33,9 +34,9 @@ $this->power->delete_power("NewsID", $NewsID, 'read');
 
 //*****搜尋部份*****
 
+use XoopsModules\Tad_web\Power;
 //起始函數
-//require_once XOOPS_ROOT_PATH . "/class/power.php";
-$power = new  \XoopsModules\Tad_web\Power($WebID);
+$power = new Power($WebID);
 
 $power_result = $power->check_power("read", $id_col, $myrow[$id_col]);
 if (!$power_result) {
@@ -65,7 +66,7 @@ class Power
 
     public function set_WebID($WebID = '')
     {
-        $WebID = (int)$WebID;
+        $WebID = (int) $WebID;
 
         $this->WebID = $WebID;
     }

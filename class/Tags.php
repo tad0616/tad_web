@@ -5,8 +5,9 @@ namespace XoopsModules\Tad_web;
 use XoopsModules\Tadtools\Utility;
 
 /*
+use XoopsModules\Tad_web\Tags;
 //起始函數
-$this->tags    = new  \XoopsModules\Tad_web\Tags($WebID);
+$this->tags    = new Tags($WebID);
 
 //外掛頁面
 

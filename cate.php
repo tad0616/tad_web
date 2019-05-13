@@ -1,6 +1,7 @@
 <?php
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
 /*-----------引入檔案區--------------*/
@@ -95,7 +96,7 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
         return;
     }
 
-    $power = new  \XoopsModules\Tad_web\Power($WebID);
+    $power = new Power($WebID);
 
     $WebCate = new WebCate($WebID, $ColName, $table);
     $WebCate->set_WebID($WebID);
