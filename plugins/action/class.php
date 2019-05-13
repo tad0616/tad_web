@@ -12,11 +12,11 @@ class tad_web_action
 
     public function __construct($WebID)
     {
-        $this->WebID = $WebID;
+        $this->WebID    = $WebID;
         $this->WebCate = new WebCate($WebID, 'action', 'tad_web_action');
-        $this->power = new \XoopsModules\Tad_web\Power($WebID);
-        $this->tags = new \XoopsModules\Tad_web\Tags($WebID);
-        $this->setup = get_plugin_setup_values($WebID, 'action');
+        $this->power    = new  \XoopsModules\Tad_web\Power($WebID);
+        $this->tags     = new  \XoopsModules\Tad_web\Tags($WebID);
+        $this->setup    = get_plugin_setup_values($WebID, 'action');
     }
 
     //活動剪影
@@ -52,11 +52,11 @@ class tad_web_action
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-            $county = system_CleanVars($_REQUEST, 'county', '', 'string');
-            $city = system_CleanVars($_REQUEST, 'city', '', 'string');
-            $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
-            $andCounty = !empty($county) ? "and c.county='{$county}'" : '';
-            $andCity = !empty($city) ? "and c.city='{$city}'" : '';
+            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_action') . ' as a
@@ -83,9 +83,9 @@ class tad_web_action
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
         $PageBar = Utility::getPageBar($sql, $to_limit, 10);
-        $bar = $PageBar['bar'];
-        $sql = $PageBar['sql'];
-        $total = $PageBar['total'];
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -108,15 +108,15 @@ class tad_web_action
                 continue;
             }
 
-            $main_data[$i] = $all;
-            $main_data[$i]['id'] = $ActionID;
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $ActionID;
             $main_data[$i]['id_name'] = 'ActionID';
-            $main_data[$i]['title'] = $ActionName;
+            $main_data[$i]['title']   = $ActionName;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             $this->WebCate->set_WebID($WebID);
 
-            $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb'] = $isMyWeb;
@@ -135,7 +135,7 @@ class tad_web_action
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
-            $data['total'] = $total;
+            $data['total']     = $total;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             return $data;
         } else {
@@ -164,9 +164,9 @@ class tad_web_action
         $ActionID = (int) $ActionID;
         $this->add_counter($ActionID);
 
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='{$ActionID}'";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='{$ActionID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $all = $xoopsDB->fetchArray($result);
+        $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
         foreach ($all as $k => $v) {
@@ -196,9 +196,9 @@ class tad_web_action
             $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $assistant = is_assistant($CateID, 'ActionID', $ActionID);
+        $assistant   = is_assistant($CateID, 'ActionID', $ActionID);
         $isAssistant = !empty($assistant) ? true : false;
-        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
         $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID));
 
@@ -268,7 +268,7 @@ class tad_web_action
 
         //設定「uid」欄位預設值
         $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
-        $uid = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
+        $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
         $xoopsTpl->assign('uid', $uid);
 
         //設定「WebID」欄位預設值
@@ -281,7 +281,7 @@ class tad_web_action
 
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['action']) ? $_SESSION['isAssistant']['action'] : '';
-        $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
 
         $this->WebCate->set_button_value($plugin_menu_var['action']['short'] . _MD_TCW_CATE_TOOLS);
         $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['action']['short']));
@@ -319,18 +319,18 @@ class tad_web_action
         }
 
         $myts = \MyTextSanitizer::getInstance();
-        $ActionName = $myts->addSlashes($_POST['ActionName']);
-        $ActionDesc = $myts->addSlashes($_POST['ActionDesc']);
+        $ActionName  = $myts->addSlashes($_POST['ActionName']);
+        $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
         $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
-        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $ActionDate  = $myts->addSlashes($_POST['ActionDate']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $ActionCount = (int) $_POST['ActionCount'];
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
 
         $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
-        $sql = 'insert into ' . $xoopsDB->prefix('tad_web_action') . "
+        $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_action') . "
         (`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`)
         values('{$CateID}' ,'{$ActionName}' , '{$ActionDesc}' , '{$ActionDate}' , '{$ActionPlace}' , '{$uid}' , '{$WebID}' , '{$ActionCount}')";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -358,15 +358,15 @@ class tad_web_action
         global $xoopsDB, $TadUpFiles;
 
         $myts = \MyTextSanitizer::getInstance();
-        $ActionName = $myts->addSlashes($_POST['ActionName']);
-        $ActionDesc = $myts->addSlashes($_POST['ActionDesc']);
+        $ActionName  = $myts->addSlashes($_POST['ActionName']);
+        $ActionDesc  = $myts->addSlashes($_POST['ActionDesc']);
         $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
-        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $ActionDate  = $myts->addSlashes($_POST['ActionDate']);
+        $tag_name    = $myts->addSlashes($_POST['tag_name']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $read = $myts->addSlashes($_POST['read']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $read        = $myts->addSlashes($_POST['read']);
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
 
         $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
@@ -400,7 +400,7 @@ class tad_web_action
     public function delete($ActionID = '')
     {
         global $xoopsDB, $TadUpFiles;
-        $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID'";
+        $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'ActionID', $ActionID)) {
@@ -425,7 +425,7 @@ class tad_web_action
     {
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
-        $sql = 'select ActionID,CateID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$this->WebID}'";
+        $sql       = 'select ActionID,CateID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($ActionID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ActionID);
@@ -441,7 +441,7 @@ class tad_web_action
     public function get_total()
     {
         global $xoopsDB;
-        $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$this->WebID}'";
+        $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
@@ -463,9 +463,9 @@ class tad_web_action
             return;
         }
 
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID'";
+        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $data = $xoopsDB->fetchArray($result);
+        $data   = $xoopsDB->fetchArray($result);
         return $data;
     }
 
@@ -474,21 +474,21 @@ class tad_web_action
         // blurFactor has to be an integer
         $blurFactor = round($blurFactor);
 
-        $originalWidth = imagesx($gdImageResource);
+        $originalWidth  = imagesx($gdImageResource);
         $originalHeight = imagesy($gdImageResource);
 
-        $smallestWidth = ceil($originalWidth * pow(0.5, $blurFactor));
+        $smallestWidth  = ceil($originalWidth * pow(0.5, $blurFactor));
         $smallestHeight = ceil($originalHeight * pow(0.5, $blurFactor));
 
         // for the first run, the previous image is the original input
-        $prevImage = $gdImageResource;
-        $prevWidth = $originalWidth;
+        $prevImage  = $gdImageResource;
+        $prevWidth  = $originalWidth;
         $prevHeight = $originalHeight;
 
         // scale way down and gradually scale back up, blurring all the way
         for ($i = 0; $i < $blurFactor; $i += 1) {
             // determine dimensions of next image
-            $nextWidth = $smallestWidth * pow(2, $i);
+            $nextWidth  = $smallestWidth * pow(2, $i);
             $nextHeight = $smallestHeight * pow(2, $i);
 
             // resize previous image to next size
@@ -499,8 +499,8 @@ class tad_web_action
             imagefilter($nextImage, IMG_FILTER_GAUSSIAN_BLUR);
 
             // now the new image becomes the previous image for the next step
-            $prevImage = $nextImage;
-            $prevWidth = $nextWidth;
+            $prevImage  = $nextImage;
+            $prevWidth  = $nextWidth;
             $prevHeight = $nextHeight;
         }
 
@@ -517,7 +517,7 @@ class tad_web_action
 
     public function mk_blur_pic($filepath, $new_name)
     {
-        $type = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize()
+        $type         = exif_imagetype($filepath); // [] if you don't have exif you could use getImageSize()
         $allowedTypes = [
             1, // [] gif
             2, // [] jpg
@@ -562,19 +562,19 @@ class tad_web_action
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? '' : "and `CateID`='$CateID'";
-        $andStart = empty($start_date) ? '' : "and ActionDate >= '{$start_date}'";
-        $andEnd = empty($end_date) ? '' : "and ActionDate <= '{$end_date}'";
+        $andStart  = empty($start_date) ? '' : "and ActionDate >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? '' : "and ActionDate <= '{$end_date}'";
 
-        $sql = 'select ActionID,ActionName,ActionDate,CateID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by ActionDate";
+        $sql    = 'select ActionID,ActionName,ActionDate,CateID from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by ActionDate";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $i = 0;
+        $i         = 0;
         $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
-            $main_data[$i]['ID'] = $ID;
+            $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
-            $main_data[$i]['title'] = $title;
-            $main_data[$i]['date'] = $date;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
 
             $i++;
         }

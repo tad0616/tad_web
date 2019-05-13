@@ -15,7 +15,7 @@ if (!empty($_REQUEST['WebID']) and $isMyWeb) {
 }
 
 //權限設定
-$power = new power($WebID);
+$power = new \XoopsModules\Tad_web\Power($WebID);
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 function config_block($WebID, $BlockID, $plugin, $mode = 'config')

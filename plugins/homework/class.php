@@ -204,7 +204,7 @@ class tad_web_homework
             return;
         }
         $myts = \MyTextSanitizer::getInstance();
-        $HomeworkID = (int) $HomeworkID;
+        $HomeworkID = (int)$HomeworkID;
         $this->add_counter($HomeworkID);
 
         $now = date('Y-m-d H:i:s');
@@ -426,8 +426,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
@@ -512,8 +512,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
+        $CateID = (int)$_POST['CateID'];
+        $WebID = (int)$_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
