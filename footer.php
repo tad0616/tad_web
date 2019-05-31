@@ -101,6 +101,7 @@ function tad_web_my_menu($WebID)
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser, $MyWebID, $xoopsModuleConfig, $WebTitle, $isAdmin;
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
+    $defaltWebID = $WebID;
     //未登入
     if (!$xoopsUser and empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID'])) {
     } else {
@@ -109,7 +110,6 @@ function tad_web_my_menu($WebID)
             $user_name = $_SESSION['LoginMemName'];
             $defaltWebID = $_SESSION['LoginWebID'];
             $back_home = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
-            $defaltWebID = $_SESSION['LoginWebID'];
             $add_power = ['discuss'];
             //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
@@ -126,7 +126,6 @@ function tad_web_my_menu($WebID)
             $user_name = $_SESSION['LoginParentName'];
             $defaltWebID = $_SESSION['LoginWebID'];
             $back_home = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
-            $defaltWebID = $_SESSION['LoginWebID'];
             $add_power = ['discuss']; //小幫手
             $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
             $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -242,10 +241,12 @@ function tad_web_my_menu($WebID)
             $xoopsTpl->assign('closed_webs', $closed_webs);
         }
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php")) {
-            mk_menu_var_file($defaltWebID);
+        if (!empty($defaltWebID)) {
+            if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php")) {
+                mk_menu_var_file($defaltWebID);
+            }
+            require XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
         }
-        require XOOPS_ROOT_PATH . "/uploads/tad_web/{$defaltWebID}/menu_var.php";
 
         $xoopsTpl->assign('user_kind', $user_kind);
         $xoopsTpl->assign('say_hi', sprintf(_MD_TCW_HI, $user_name));
