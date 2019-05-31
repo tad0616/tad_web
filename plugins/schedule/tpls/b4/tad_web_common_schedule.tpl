@@ -15,26 +15,17 @@
 <{if $schedule_data}>
   <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
   <{if $WebID==""}>
-    <{assign var="i" value=0}>
-    <{assign var="total" value=1}>
 
-    <{foreach item=act from=$schedule_data}>
-      <{if $act.ScheduleDisplay=='1'}>
-        <{if $i==0}>
-          <div class="row">
-          <{/if}>
-            <div class="col-md-3">
-              <a href="schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>" class="btn btn-link btn-block"><i class="fa fa-table"></i> <{$act.ScheduleName}>
-              </a>
-            </div>
-        <{assign var="i" value=$i+1}>
-        <{if $i == 4 || $total==$schedule_amount}>
+    <div class="row">
+      <{foreach item=act from=$schedule_data}>
+        <{if $act.ScheduleDisplay=='1'}>
+          <div class="col-md-4">
+            <a href="schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>"><i class="fa fa-table"></i> <{$act.ScheduleName}>
+            </a>
           </div>
-          <{assign var="i" value=0}>
         <{/if}>
-        <{assign var="total" value=$total+1}>
-      <{/if}>
-    <{/foreach}>
+      <{/foreach}>
+    </div>
   <{else}>
     <{foreach item=act from=$schedule_data}>
 
