@@ -51,8 +51,8 @@ define('_MD_TCW_SELECT_TO_EDIT', 'Click on the name of the member to edit the St
 define('_MD_TCW_IMPORT_LINK', "
 <ul>
   <li> <a href='https://campus-xoops.tn.edu.tw/modules/student_data/' target='_blank'> Tainan dedicated teacher member data import files made </a> </li>
-   < li> <a href = 'import.xls' > member data import Excel files example </a > </li >
-   <li style = 'color: red;' > only supports xls format(csv, xlsx not support) </li >
+   < li> <a href = 'import.xlsx' > member data import Excel files example </a > </li >
+   <li style = 'color: red;' > only supports xlsx format(csv, xls not support) </li >
 </ul > ");
 
 define('_MD_TCW_NO_WEB', 'There is no any personal website, wait for the administrator establishment.');
