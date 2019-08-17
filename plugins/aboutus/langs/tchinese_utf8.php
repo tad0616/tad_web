@@ -51,8 +51,8 @@ define('_MD_TCW_SELECT_TO_EDIT', '點選成員姓名可編輯該成員資料');
 define('_MD_TCW_IMPORT_LINK', "
 <ul>
   <li><a href='https://campus-xoops.tn.edu.tw/modules/student_data/' target='_blank'>臺南市老師專用取得成員資料匯入檔</a></li>
-  <li><a href='import.xls'>成員資料Excel匯入檔範例</a></li>
-  <li style='color:red;'>僅支援 xls 格式（csv、xlsx 均不支援）</li>
+  <li><a href='import.xlsx'>成員資料Excel匯入檔範例</a></li>
+  <li style='color:red;'>僅支援 xlsx 格式（csv、xls 均不支援）</li>
 </ul>");
 
 define('_MD_TCW_NO_WEB', '目前尚無任何的個人網站，等待管理員建立中。');

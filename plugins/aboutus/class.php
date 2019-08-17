@@ -980,7 +980,7 @@ class tad_web_aboutus
         $myts = \MyTextSanitizer::getInstance();
 
         require_once XOOPS_ROOT_PATH . '/modules/tadtools/PHPExcel/IOFactory.php';
-        $reader = PHPExcel_IOFactory::createReader('Excel5');
+        $reader = PHPExcel_IOFactory::createReader('Excel2007');
         $PHPExcel = $reader->load($file); // 檔案名稱
         $sheet = $PHPExcel->getSheet(0); // 讀取第一個工作表(編號從 0 開始)
         $highestRow = $sheet->getHighestRow(); // 取得總列數
