@@ -184,9 +184,9 @@ function batch_add_class_by_user()
         if (no_web($uid)) {
             insert_tad_web(0, $WebName, $i, '1', $uid_name, $uid, $WebTitle);
             $i++;
+            $sql = 'replace into ' . $xoopsDB->prefix('groups_users_link') . " (`uid` , `groupid`) values('{$uid}' , '{$groupid}')";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
-        $sql = 'replace into ' . $xoopsDB->prefix('groups_users_link') . " (`uid` , `groupid`) values('{$uid}' , '{$groupid}')";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }
 
