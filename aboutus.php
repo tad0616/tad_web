@@ -21,6 +21,7 @@ $result = system_CleanVars($_REQUEST, 'result', 0, 'int');
 $MemUname = system_CleanVars($_REQUEST, 'MemUname', '', 'string');
 $MemPasswd = system_CleanVars($_REQUEST, 'MemPasswd', '', 'string');
 $ParentPasswd = system_CleanVars($_REQUEST, 'ParentPasswd', '', 'string');
+$hide_class = system_CleanVars($_REQUEST, 'hide_class', 0, 'int');
 
 common_template($WebID, $web_all_config);
 
@@ -49,7 +50,7 @@ switch ($op) {
         exit;
 
     case 'update_class':
-        $tad_web_aboutus->update_class($CateID, $year, $newCateName);
+        $tad_web_aboutus->update_class($CateID, $year, $newCateName, $hide_class);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
 
@@ -101,8 +102,8 @@ switch ($op) {
             header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$_SESSION['LoginCateID']}&MemID={$_SESSION['LoginMemID']}&op=show_stu");
             exit;
         }
-            redirect_header("aboutus.php?WebID={$WebID}", 3, _MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED);
-            break;
+        redirect_header("aboutus.php?WebID={$WebID}", 3, _MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED);
+        break;
     //登出
     case 'mem_logout':
         $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = '';

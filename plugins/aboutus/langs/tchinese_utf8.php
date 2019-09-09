@@ -127,6 +127,8 @@ define('_MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC', '點入「關於我們」後，以�
 define('_MD_TCW_ABOUTUS_EDIT_ACCOUNT', '修改我的資料');
 define('_MD_TCW_ABOUTUS_READ_DISCUSS', '觀看留言簿');
 define('_MD_TCW_ABOUTUS_MY_ACCOUNT', '我的專屬頁面');
+define('_MD_TCW_ABOUTUS_HIDE_CLASS', '隱藏此班級');
+define('_MD_TCW_ABOUTUS_HIDE_CLASS_DESC', '此班級的資料將不再顯示');
 
 define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', '繳交作品');
 define('_MD_TCW_ABOUTUS_UPLOAD_NOW', '立即繳交');

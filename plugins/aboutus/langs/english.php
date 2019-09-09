@@ -126,6 +126,8 @@ define('_MD_TCW_ABOUTUS_DEFAULT_CLASS_DESC', 'As a pre-presented classes');
 define('_MD_TCW_ABOUTUS_EDIT_ACCOUNT', 'Edit my account');
 define('_MD_TCW_ABOUTUS_READ_DISCUSS', 'View discuss');
 define('_MD_TCW_ABOUTUS_MY_ACCOUNT', 'My Page');
+define('_MD_TCW_ABOUTUS_HIDE_CLASS', 'Hide Class');
+define('_MD_TCW_ABOUTUS_HIDE_CLASS_DESC', 'The data for this class will no longer be displayed.');
 
 define('_MD_TCW_ABOUTUS_UPLOAD_WORKS', 'Upload works');
 define('_MD_TCW_ABOUTUS_UPLOAD_NOW', 'Upload now');
