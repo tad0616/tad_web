@@ -1,7 +1,9 @@
 <?php
 namespace XoopsModules\Tad_web;
+
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web;
+
 /*
 $WebCate = new WebCate($WebID, "news","tad_web_news");
 //設定「CateID」欄位預設值
@@ -124,6 +126,7 @@ class WebCate
         ";
         return $menu;
     }
+
     //分類選單 $mode = "form" ,"menu","page"
     public function cate_menu($defCateID = '', $mode = 'form', $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     {
@@ -142,15 +145,19 @@ class WebCate
             $selected = ($defCateID == $CateID) ? 'selected' : '';
             $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
         }
-        $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
-        // die($sql);
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        while (false !== ($data = $xoopsDB->fetchArray($result))) {
-            foreach ($data as $k => $v) {
-                $$k = $v;
+
+        // 避免「關於我們」的下拉選單重複
+        if ($this->ColName != 'aboutus') {
+            $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='{$this->ColName}' and `CateEnable`='1' order by CateSort";
+            // die($sql);
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            while (false !== ($data = $xoopsDB->fetchArray($result))) {
+                foreach ($data as $k => $v) {
+                    $$k = $v;
+                }
+                $selected = ($defCateID == $CateID) ? 'selected' : '';
+                $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
             }
-            $selected = ($defCateID == $CateID) ? 'selected' : '';
-            $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
         }
         $button_value = empty($this->button_value) ? _MD_TCW_CATE_TOOLS : $this->button_value;
         $tools = $show_tools ? "<div class=\"col-sm-2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}&table={$this->table}' class='btn btn-warning' >$button_value</a></div>" : '';
@@ -297,13 +304,18 @@ class WebCate
         return $CateID;
     }
     //更新tad_web_cate某一筆資料
-    public function update_tad_web_cate($CateID = '', $newCateName = '')
+    public function update_tad_web_cate($CateID = '', $newCateName = '', $CateEnable = null)
     {
         global $xoopsDB, $isAdmin, $xoopsUser;
         $myts = \MyTextSanitizer::getInstance();
         $CateName = $myts->addSlashes($newCateName);
+        $and_enable = '';
+        if (!is_null($CateEnable)) {
+            $CateEnable = (int) $CateEnable;
+            $and_enable = ", `CateEnable` = '{$CateEnable}'";
+        }
         $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
-       `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
+        `CateName` = '{$CateName}' $and_enable where `CateID`='{$CateID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         return $CateID;
     }

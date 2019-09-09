@@ -353,6 +353,18 @@
             </div>
           </div>
 
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-sm-right">
+              <{$smarty.const._MD_TCW_ABOUTUS_HIDE_CLASS}>
+            </label>
+            <div class="col-md-9">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" id="hide_class" type="checkbox" name="hide_class" value='1' <{if $hide_class==$CateID}>checked<{/if}>>
+                <label class="form-check-label" for="hide_class"><{$smarty.const._MD_TCW_ABOUTUS_HIDE_CLASS_DESC}></label>
+              </div>
+            </div>
+          </div>
+
           <{if $op=="new_class" and $old_cate}>
             <div class="form-group row">
               <label class="col-md-3 col-form-label text-sm-right">
