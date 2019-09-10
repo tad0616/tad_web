@@ -1342,11 +1342,12 @@ function get_quota($WebID = '')
     // $size               = get_web_config("used_size", $WebID);
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : (int) $xoopsModuleConfig['user_space_quota'];
 
-    $space_quota = get_web_config('space_quota', $WebID);
+    $space_quota = get_web_config('space_quota', $WebID,'db');
+    // var_dump($space_quota));
     $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int) $space_quota;
 
     if ($defalt_used_size >= $user_space_quota) {
-        redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $size, $user_space_quota));
+        redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $defalt_used_size, $user_space_quota));
         exit;
     }
 }
