@@ -18,7 +18,7 @@ class tad_web_menu
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'menu', 'tad_web_menu');
-        $this->power = new Power(WebID);
+        $this->Power = new Power(WebID);
         // $this->tags     = new Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'menu');
     }
@@ -109,7 +109,7 @@ class tad_web_menu
             }
 
             //檢查權限
-            $power = $this->power->check_power('read', 'MenuID', $MenuID);
+            $power = $this->Power->check_power('read', 'MenuID', $MenuID);
             if (!$power) {
                 continue;
             }
@@ -269,7 +269,7 @@ class tad_web_menu
         // $upform = $TadUpFiles->upform(true, 'upfile');
         // $xoopsTpl->assign('upform', $upform);
 
-        $power_form = $this->power->power_menu('read', 'MenuID', $MenuID);
+        $power_form = $this->Power->power_menu('read', 'MenuID', $MenuID);
         $xoopsTpl->assign('power_form', $power_form);
 
         // $tags_form = $this->tags->tags_menu("MenuID", $MenuID);
@@ -332,7 +332,7 @@ class tad_web_menu
         // check_quota($this->WebID);
 
         //儲存權限
-        $this->power->save_power('MenuID', $MenuID, 'read');
+        $this->Power->save_power('MenuID', $MenuID, 'read');
         //儲存標籤
         // $this->tags->save_tags("MenuID", $MenuID, $_POST['tag_name'], $_POST['tags']);
         return $MenuID;
@@ -403,7 +403,7 @@ class tad_web_menu
 
         //儲存權限
         $read = $myts->addSlashes($read);
-        $this->power->save_power('MenuID', $MenuID, 'read', $read);
+        $this->Power->save_power('MenuID', $MenuID, 'read', $read);
         //儲存標籤
         // $this->tags->save_tags("MenuID", $MenuID, $_POST['tag_name'], $_POST['tags']);
         return $MenuID;
@@ -424,7 +424,7 @@ class tad_web_menu
         $TadUpFiles->del_files();
         check_quota($this->WebID);
 
-        $this->power->delete_power('MenuID', $MenuID, 'read');
+        $this->Power->delete_power('MenuID', $MenuID, 'read');
         //刪除標籤
         // $this->tags->delete_tags("MenuID", $MenuID);
     }

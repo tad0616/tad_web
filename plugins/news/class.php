@@ -18,7 +18,7 @@ class tad_web_news
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'news', 'tad_web_news');
-        $this->power = new Power($WebID);
+        $this->Power = new Power($WebID);
         $this->tags = new Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'news');
     }
@@ -116,7 +116,7 @@ class tad_web_news
             }
 
             //檢查權限
-            $power = $this->power->check_power('read', 'NewsID', $NewsID);
+            $power = $this->Power->check_power('read', 'NewsID', $NewsID);
             if (!$power) {
                 continue;
             }
@@ -195,7 +195,7 @@ class tad_web_news
         }
 
         //檢查權限
-        $power = $this->power->check_power('read', 'NewsID', $NewsID);
+        $power = $this->Power->check_power('read', 'NewsID', $NewsID);
         if (!$power) {
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
@@ -365,7 +365,7 @@ class tad_web_news
         $xoopsTpl->assign('upform', $upform);
 
         //權限設定
-        $power_form = $this->power->power_menu('read', 'NewsID', $NewsID);
+        $power_form = $this->Power->power_menu('read', 'NewsID', $NewsID);
         $xoopsTpl->assign('power_form', $power_form);
         //標籤設定
         $tags_form = $this->tags->tags_menu('NewsID', $NewsID);
@@ -415,7 +415,7 @@ class tad_web_news
         check_quota($this->WebID);
 
         //儲存權限
-        $this->power->save_power('NewsID', $NewsID, 'read');
+        $this->Power->save_power('NewsID', $NewsID, 'read');
         //儲存標籤
 
         $this->tags->save_tags('NewsID', $NewsID, $tag_name, $_POST['tags']);
@@ -465,7 +465,7 @@ class tad_web_news
         check_quota($this->WebID);
 
         //儲存權限
-        $this->power->save_power('NewsID', $NewsID, 'read');
+        $this->Power->save_power('NewsID', $NewsID, 'read');
         //儲存標籤
         $this->tags->save_tags('NewsID', $NewsID, $tag_name, $_POST['tags']);
         return $NewsID;
@@ -488,7 +488,7 @@ class tad_web_news
         $TadUpFiles->del_files();
         check_quota($this->WebID);
         //刪除權限
-        $this->power->delete_power('NewsID', $NewsID, 'read');
+        $this->Power->delete_power('NewsID', $NewsID, 'read');
         //刪除標籤
         $this->tags->delete_tags('NewsID', $NewsID);
     }
@@ -559,7 +559,7 @@ class tad_web_news
         while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
 
             //檢查權限
-            $power = $this->power->check_power('read', 'NewsID', $NewsID);
+            $power = $this->Power->check_power('read', 'NewsID', $NewsID);
             if (!$power) {
                 continue;
             }

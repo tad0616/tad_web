@@ -7,30 +7,30 @@ use XoopsModules\Tadtools\Utility;
 /*
 use XoopsModules\Tad_web\Power;
 //起始函數
-$this->power    = new  Power($WebID);
+$this->Power    = new  Power($WebID);
 
 //權限設定
-$power_form = $this->power->power_menu('read', "NewsID", $NewsID);
+$power_form = $this->Power->power_menu('read', "NewsID", $NewsID);
 $xoopsTpl->assign('power_form', $power_form);
 <{$power_form}>
 
 //檢查權限（列出全部）
-$power = $this->power->check_power("read", "NewsID", $NewsID);
+$power = $this->Power->check_power("read", "NewsID", $NewsID);
 if (!$power) {
 continue;
 }
 
 //檢查權限（單一）
-$power = $this->power->check_power("read", "NewsID", $NewsID);
+$power = $this->Power->check_power("read", "NewsID", $NewsID);
 if (!$power) {
 redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
 }
 
 //儲存權限
-$this->power->save_power("NewsID", $NewsID, 'read');
+$this->Power->save_power("NewsID", $NewsID, 'read');
 
 //刪除權限
-$this->power->delete_power("NewsID", $NewsID, 'read');
+$this->Power->delete_power("NewsID", $NewsID, 'read');
 
 //*****搜尋部份*****
 
@@ -83,7 +83,7 @@ class Power
 
     public function set_power_name($power_name = '')
     {
-        $this->power_name = $power_name;
+        $this->Power_name = $power_name;
     }
 
     public function set_col_md($label_md, $menu_md)

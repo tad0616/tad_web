@@ -48,7 +48,7 @@ class WebCate
     public $power;
     public function __construct($WebID = '0', $ColName = '', $table = '')
     {
-        $this->power = new Tad_web\Power($WebID);
+        $this->Power = new Tad_web\Power($WebID);
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
         }
@@ -291,6 +291,7 @@ class WebCate
         list($sort) = $xoopsDB->fetchRow($result);
         return ++$sort;
     }
+
     //自動取得 tad_web_cate 的最新排序編號
     public function tad_web_cate_max_id()
     {
@@ -303,20 +304,30 @@ class WebCate
         list($CateID) = $xoopsDB->fetchRow($result);
         return $CateID;
     }
+
     //更新tad_web_cate某一筆資料
     public function update_tad_web_cate($CateID = '', $newCateName = '', $CateEnable = null)
     {
         global $xoopsDB, $isAdmin, $xoopsUser;
-        $myts = \MyTextSanitizer::getInstance();
-        $CateName = $myts->addSlashes($newCateName);
+        $update=[];
+        if($newCateName!=''){
+            $myts = \MyTextSanitizer::getInstance();
+            $CateName = $myts->addSlashes($newCateName);
+            $update[] = "`CateName` = '{$CateName}'";
+        }
         $and_enable = '';
         if (!is_null($CateEnable)) {
             $CateEnable = (int) $CateEnable;
-            $and_enable = ", `CateEnable` = '{$CateEnable}'";
+            $update[] = "`CateEnable` = '{$CateEnable}'";
         }
-        $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
-        `CateName` = '{$CateName}' $and_enable where `CateID`='{$CateID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        $set_update=implode(', ',$update);
+
+        if($set_update){
+            $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
+            $set_update where `CateID`='{$CateID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
         return $CateID;
     }
     //取得tad_web_cate資料陣列
@@ -331,24 +342,42 @@ class WebCate
         $data = $xoopsDB->fetchArray($result);
         return $data;
     }
+
     //取得tad_web_cate所有資料陣列
-    public function get_tad_web_cate_arr($counter = true)
+    public function get_tad_web_cate_arr($counter = true, $onlyEnable = true)
     {
         global $xoopsDB;
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
         $counter = $counter ? $this->tad_web_cate_data_counter() : '';
         $arr = [];
-        $andWebID = empty($this->WebID) ? '' : "and `WebID` = '{$this->WebID}'";
-        $andColName = empty($this->ColName) ? '' : "and `ColName`='{$this->ColName}'";
-        $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where 1 $andWebID $andColName order by CateSort";
-        // echo $sql . '<br>';
+
+        $andCateEnable=$onlyEnable?"and `CateEnable`='1'":'';
+
+        $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='aboutus' $andCateEnable order by CateSort";
+        // die($sql);
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (false !== ($data = $xoopsDB->fetchArray($result))) {
             $CateID = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID] = $data;
             $arr[$CateID]['assistant'] = get_assistant($CateID);
-            $arr[$CateID]['power'] = $this->power->get_power('read', 'CateID', $CateID);
+            $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
+        }
+
+        // 避免「關於我們」的下拉選單重複
+        if ($this->ColName != 'aboutus') {
+            $andWebID = empty($this->WebID) ? '' : "and `WebID` = '{$this->WebID}'";
+            $andColName = empty($this->ColName) ? '' : "and `ColName`='{$this->ColName}'";
+            $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where 1 $andWebID $andColName $andCateEnable order by CateSort";
+            // echo $sql . '<br>';
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            while (false !== ($data = $xoopsDB->fetchArray($result))) {
+                $CateID = $data['CateID'];
+                $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
+                $arr[$CateID] = $data;
+                $arr[$CateID]['assistant'] = get_assistant($CateID);
+                $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
+            }
         }
         return $arr;
     }

@@ -231,7 +231,7 @@ define('_MD_TCW_TAGS', '標籤設定');
 define('_MD_TCW_TAG', '標籤');
 define('_MD_TCW_TAGS_LIST', '所有標籤');
 define('_MD_TCW_INPUT_TAGS', '請輸入新標籤，若有多個標籤請用小寫逗號「,」隔開');
-define('_MD_TCW_UNABLE', '關閉中');
+define('_MD_TCW_UNABLE', '關閉');
 
 define('_MD_TCW_PLUGIN_MENU', '功能選單');
 define('_MD_TCW_USER_SIMPLE_MENU', '簡化選單');
@@ -256,3 +256,5 @@ define('_MD_TCW_BLOCK_EMPTY', '目前無內容，無法展示');
 define('_MD_TCW_BLOCK_DEMO', '區塊預覽');
 
 define('_MD_TCW_UPDATE_MY_NAME', '管理者姓名');
+
+define('_MD_TCW_CATE_NOTE', '若有出現 <i class="fa fa-link"></i> 圖案，且為<span style="color: #a0062c;">紫紅色</span>的分類，會和班級連動，未來若隱藏該班級時，此分類下的內容亦會被隱藏。');

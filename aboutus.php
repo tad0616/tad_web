@@ -54,6 +54,16 @@ switch ($op) {
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
 
+    case 'class_enable':
+        $tad_web_aboutus->change_class($CateID, 1);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form");
+        exit;
+
+    case 'class_unable':
+        $tad_web_aboutus->change_class($CateID, 0);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form");
+        exit;
+
     case 'del_class':
         $tad_web_aboutus->del_class($CateID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form");

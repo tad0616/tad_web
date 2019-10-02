@@ -16,7 +16,7 @@ class tad_web_action
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'action', 'tad_web_action');
-        $this->power = new Power($WebID);
+        $this->Power = new Power($WebID);
         $this->tags = new Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'action');
     }
@@ -105,7 +105,7 @@ class tad_web_action
                 $$k = $v;
             }
             //檢查權限
-            $power = $this->power->check_power('read', 'ActionID', $ActionID);
+            $power = $this->Power->check_power('read', 'ActionID', $ActionID);
             if (!$power) {
                 continue;
             }
@@ -158,7 +158,7 @@ class tad_web_action
         }
 
         //檢查權限
-        $power = $this->power->check_power('read', 'ActionID', $ActionID);
+        $power = $this->Power->check_power('read', 'ActionID', $ActionID);
         if (!$power) {
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
@@ -303,7 +303,7 @@ class tad_web_action
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
-        $power_form = $this->power->power_menu('read', 'ActionID', $ActionID);
+        $power_form = $this->Power->power_menu('read', 'ActionID', $ActionID);
         $xoopsTpl->assign('power_form', $power_form);
 
         $tags_form = $this->tags->tags_menu('ActionID', $ActionID);
@@ -348,7 +348,7 @@ class tad_web_action
         check_quota($this->WebID);
 
         //儲存權限
-        $this->power->save_power('ActionID', $ActionID, 'read');
+        $this->Power->save_power('ActionID', $ActionID, 'read');
         //儲存標籤
         $this->tags->save_tags('ActionID', $ActionID, $tag_name, $_POST['tags']);
         return $ActionID;
@@ -392,7 +392,7 @@ class tad_web_action
         check_quota($this->WebID);
 
         //儲存權限
-        $this->power->save_power('ActionID', $ActionID, 'read', $read);
+        $this->Power->save_power('ActionID', $ActionID, 'read', $read);
         //儲存標籤
         $this->tags->save_tags('ActionID', $ActionID, $tag_name, $_POST['tags']);
         return $ActionID;
@@ -417,7 +417,7 @@ class tad_web_action
         $TadUpFiles->del_files();
         check_quota($this->WebID);
 
-        $this->power->delete_power('ActionID', $ActionID, 'read');
+        $this->Power->delete_power('ActionID', $ActionID, 'read');
         //刪除標籤
         $this->tags->delete_tags('ActionID', $ActionID);
     }
