@@ -295,7 +295,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('next_year', sprintf(_MD_TCW_SEME_CATE, $next_year));
 
         //所有曾經的班級
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null,false);
         // die(var_export($cate));
         foreach ($cate as $key => $value) {
             // _MD_TCW_STUDENT_COPY
@@ -385,6 +385,15 @@ class tad_web_aboutus
             $this->update_web_title($newCateName);
         }
     }
+
+    
+    //更新班級
+    public function change_class($CateID = '', $enable = 0)
+    {
+        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
+        $this->WebCate->update_tad_web_cate($CateID, '', $enable);
+    }
+
 
     //刪除班級
     public function del_class($CateID = '')

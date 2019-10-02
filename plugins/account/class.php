@@ -17,7 +17,7 @@ class tad_web_account
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'account', 'tad_web_account');
-        // $this->power    = new Power($WebID);
+        // $this->Power    = new Power($WebID);
         // $this->tags     = new Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'account');
     }
@@ -108,7 +108,7 @@ class tad_web_account
                 $$k = $v;
             }
             //檢查權限
-            // $power = $this->power->check_power("read", "AccountID", $AccountID);
+            // $power = $this->Power->check_power("read", "AccountID", $AccountID);
             // if (!$power) {
             //     continue;
             // }
@@ -179,7 +179,7 @@ class tad_web_account
         }
 
         //檢查權限
-        // $power = $this->power->check_power("read", "AccountID", $AccountID);
+        // $power = $this->Power->check_power("read", "AccountID", $AccountID);
         // if (!$power) {
         //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         // }
@@ -339,7 +339,7 @@ class tad_web_account
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
-        // $power_form = $this->power->power_menu('read', "AccountID", $AccountID);
+        // $power_form = $this->Power->power_menu('read', "AccountID", $AccountID);
         // $xoopsTpl->assign('power_form', $power_form);
 
         // $tags_form = $this->tags->tags_menu("AccountID", $AccountID);
@@ -392,7 +392,7 @@ class tad_web_account
         check_quota($this->WebID);
 
         //儲存權限
-        // $this->power->save_power("AccountID", $AccountID, 'read');
+        // $this->Power->save_power("AccountID", $AccountID, 'read');
         //儲存標籤
         // $this->tags->save_tags("AccountID", $AccountID, $_POST['tag_name'], $_POST['tags']);
         return $AccountID;
@@ -445,7 +445,7 @@ class tad_web_account
 
         //儲存權限
         // $read = $myts->addSlashes($_POST['read']);
-        // $this->power->save_power("AccountID", $AccountID, 'read', $read);
+        // $this->Power->save_power("AccountID", $AccountID, 'read', $read);
         //儲存標籤
         //$this->tags->save_tags("AccountID", $AccountID, $_POST['tag_name'], $_POST['tags']);
         return $AccountID;
@@ -470,7 +470,7 @@ class tad_web_account
         $TadUpFiles->del_files();
         check_quota($this->WebID);
 
-        // $this->power->delete_power("AccountID", $AccountID, 'read');
+        // $this->Power->delete_power("AccountID", $AccountID, 'read');
         //刪除標籤
         // $this->tags->delete_tags("AccountID", $AccountID);
     }

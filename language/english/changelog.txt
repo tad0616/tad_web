@@ -1,3 +1,12 @@
+Tad Web 1.7.9 (released from 2019-05-02)
+=========================================================
+1. Fixed custom block editing problem
+2. Fixed the problem that the student roster could not be imported.
+3. Fixed class management class recurring problems
+4. Join the off class function
+5. Fix the problem of incorrect use of space
+6. Fixed the problem that the classification setting could not be used normally.
+
 Tad Web 1.7.8 (released from 2019-05-10)
 =========================================================
 1. Support XOOPS 2.5.10

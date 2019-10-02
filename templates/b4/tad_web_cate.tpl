@@ -75,6 +75,7 @@
       </div>
     <{/if}>
     <{if $cate_opt_arr}>
+      <div class="alert alert-info"><{$smarty.const._MD_TCW_CATE_NOTE}></div>
       <div id="save_msg"></div>
       <div id="sort">
         <{foreach from=$cate_opt_arr key=i item=cate}>
@@ -91,11 +92,17 @@
               <{else}>
                 <span class="badge badge-danger"><{$smarty.const._MD_TCW_CATE_UNABLED}></span>
               <{/if}>
-              <{if $cate.assistant}>
+
+              <{if $cate.assistant.MemName}>
                 <i class="fa fa-male" alt="<{$cate.assistant.MemName}>" title="<{$cate.assistant.MemName}>"></i>
               <{/if}>
+              
+              <{if $cate.ColName=="aboutus"}>
+                <i class="fa fa-link"></i>
+              <{/if}>
 
-              <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
+
+              <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>" <{if $cate.ColName=="aboutus"}>style="color: #a0062c;"<{/if}>><{$cate.CateName}></a>
             </label>
             <div class="col-md-4">
               <select name="act[<{$cate.CateID}>]" id="<{$cate.CateID}>" class="form-control act">
