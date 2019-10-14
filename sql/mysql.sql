@@ -32,6 +32,7 @@ CREATE TABLE `tad_web_cate_assistant` (
   `CateID` smallint(6) unsigned NOT NULL COMMENT '編號',
   `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
   `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
+  `plugin` varchar(100) NOT NULL default '' COMMENT '',
   PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

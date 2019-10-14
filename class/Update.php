@@ -577,7 +577,7 @@ class Update
                     $to = iconv(_CHARSET, 'UTF-8', $to);
                 }
 
-                rename($from, $to);
+                Utility::full_copy($from, $to);
                 if ('image' === $typedir) {
                     Utility::mk_dir("{$updir}{$sub_dir}");
                     Utility::mk_dir("{$updir}{$sub_dir}/{$typedir}");
@@ -593,7 +593,7 @@ class Update
                         $to = iconv(_CHARSET, 'UTF-8', $to);
                     }
 
-                    rename($from, $to);
+                    Utility::full_copy($from, $to);
                 }
             }
         }
@@ -647,7 +647,7 @@ class Update
                 $to = iconv(_CHARSET, 'UTF-8', $to);
             }
             if (file_exists($from)) {
-                rename($from, $to);
+                Utility::full_copy($from, $to);
                 if ('image' === $typedir) {
                     Utility::mk_dir("{$updir}/{$WebID}");
                     Utility::mk_dir("{$updir}/{$WebID}/{$typedir}");
@@ -663,7 +663,7 @@ class Update
                         $from = iconv(_CHARSET, 'UTF-8', $from);
                         $to = iconv(_CHARSET, 'UTF-8', $to);
                     }
-                    rename($from, $to);
+                    Utility::full_copy($from, $to);
                 }
             }
         }
@@ -1079,12 +1079,12 @@ class Update
     {
         global $xoopsDB;
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_tags') . "` (
-      `WebID` SMALLINT(5) UNSIGNED NOT NULL  COMMENT '所屬網站',
-      `col_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
-      `col_sn` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '對應編號',
-      `tag_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
-      PRIMARY KEY  (`col_name`,`col_sn`,`tag_name`)
-    ) ENGINE=MyISAM";
+        `WebID` SMALLINT(5) UNSIGNED NOT NULL  COMMENT '所屬網站',
+        `col_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
+        `col_sn` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '對應編號',
+        `tag_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
+        PRIMARY KEY  (`col_name`,`col_sn`,`tag_name`)
+        ) ENGINE=MyISAM";
         $xoopsDB->queryF($sql);
 
         return true;
@@ -1199,14 +1199,14 @@ class Update
     {
         global $xoopsDB;
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_notice') . "` (
-      `NoticeID` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '通知編號',
-      `NoticeTitle` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '通知標題',
-      `NoticeContent` TEXT NOT NULL  COMMENT '通知內容',
-      `NoticeWeb` TEXT NOT NULL COMMENT '通知網站',
-      `NoticeWho` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '通知對象',
-      `NoticeDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '通知日期',
-      PRIMARY KEY  (`NoticeID`)
-    ) ENGINE=MyISAM";
+        `NoticeID` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '通知編號',
+        `NoticeTitle` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '通知標題',
+        `NoticeContent` TEXT NOT NULL  COMMENT '通知內容',
+        `NoticeWeb` TEXT NOT NULL COMMENT '通知網站',
+        `NoticeWho` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '通知對象',
+        `NoticeDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '通知日期',
+        PRIMARY KEY  (`NoticeID`)
+        ) ENGINE=MyISAM";
         $xoopsDB->queryF($sql);
 
         return true;
@@ -1229,13 +1229,13 @@ class Update
     {
         global $xoopsDB;
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_mail_log') . "` (
-      `ColName` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '欄位名稱',
-      `ColSN` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
-      `WebID` SMALLINT(5) UNSIGNED NOT NULL  COMMENT '所屬網站',
-      `Mail` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '信箱',
-      `MailDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '寄信日期',
-      PRIMARY KEY  (`ColName`,`ColSN`,`WebID`,`Mail`)
-    ) ENGINE=MyISAM";
+        `ColName` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '欄位名稱',
+        `ColSN` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+        `WebID` SMALLINT(5) UNSIGNED NOT NULL  COMMENT '所屬網站',
+        `Mail` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '信箱',
+        `MailDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '寄信日期',
+        PRIMARY KEY  (`ColName`,`ColSN`,`WebID`,`Mail`)
+        ) ENGINE=MyISAM";
         $xoopsDB->queryF($sql);
 
         return true;
@@ -1258,11 +1258,11 @@ class Update
     {
         global $xoopsDB;
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` (
-      `CateID` SMALLINT(6) UNSIGNED NOT NULL COMMENT '編號',
-      `AssistantType` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用戶種類',
-      `AssistantID` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用戶ID',
-      PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`)
-    ) ENGINE=MyISAM";
+        `CateID` SMALLINT(6) UNSIGNED NOT NULL COMMENT '編號',
+        `AssistantType` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用戶種類',
+        `AssistantID` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用戶ID',
+        PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`)
+        ) ENGINE=MyISAM";
         $xoopsDB->queryF($sql);
 
         return true;
@@ -1285,16 +1285,52 @@ class Update
     {
         global $xoopsDB;
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_assistant_post') . "` (
-      `plugin` VARCHAR(100) NOT NULL COMMENT '所屬外掛',
-      `ColName` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '欄位名稱',
-      `ColSN` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
-      `CateID` SMALLINT(6) UNSIGNED NOT NULL COMMENT '編號',
-      `AssistantType` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用戶種類',
-      `AssistantID` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用戶ID',
-      PRIMARY KEY (`plugin`,`ColName`,`ColSN`)
-    ) ENGINE=MyISAM";
+        `plugin` VARCHAR(100) NOT NULL COMMENT '所屬外掛',
+        `ColName` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '欄位名稱',
+        `ColSN` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '欄位編號',
+        `CateID` SMALLINT(6) UNSIGNED NOT NULL COMMENT '編號',
+        `AssistantType` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用戶種類',
+        `AssistantID` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用戶ID',
+        PRIMARY KEY (`plugin`,`ColName`,`ColSN`)
+        ) ENGINE=MyISAM";
         $xoopsDB->queryF($sql);
 
+        return true;
+    }
+
+    //小幫手加入plugin欄位
+    public static function chk_chk25()
+    {
+        global $xoopsDB;
+        $sql = 'SELECT count(`plugin`) FROM ' . $xoopsDB->prefix('tad_web_cate_assistant');
+        $result = $xoopsDB->query($sql);
+        if (empty($result)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function go_update25()
+    {
+        global $xoopsDB;
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tad_web_cate_assistant') . " ADD `plugin` varchar(100) NOT NULL default ''";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+
+        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tad_web_cate_assistant') . "`
+        ADD PRIMARY KEY `Cate_Assistant_ID` (`CateID`, `AssistantType`, `AssistantID`, `plugin`),
+        DROP INDEX `PRIMARY`";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+
+        $sql = 'select a.CateID,b.ColName from ' . $xoopsDB->prefix('tad_web_cate_assistant') . ' as a
+        left join ' . $xoopsDB->prefix('tad_web_cate') . " as b on a.CateID=b.CateID
+        where a.`plugin`='' ";
+        $result = $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+        while(list($CateID, $plugin)=$xoopsDB->fetchRow($result)){
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_cate_assistant') . " set `plugin`='$plugin'
+            where `CateID`='{$CateID}' and `plugin`='' ";
+            $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+        }
         return true;
     }
 }

@@ -107,7 +107,7 @@ class tad_web_homework
             $main_data[$i]['id'] = $HomeworkID;
             $main_data[$i]['id_name'] = 'HomeworkID';
             $main_data[$i]['title'] = $HomeworkTitle;
-            // $assistant = get_assistant($CateID);
+            // $assistant = get_assistant($CateID, 'homework');
             // die(var_dump($assistant));
             // $isAssistant                = is_assistant($CateID, 'HomeworkID', $HomeworkID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
@@ -408,7 +408,13 @@ class tad_web_homework
         $TadUpFiles->set_col('HomeworkID', $HomeworkID);
         $upform = $TadUpFiles->upform();
         $xoopsTpl->assign('upform', $upform);
-        $xoopsTpl->assign('uid', $xoopsUser->uid());
+
+        if (isset($_SESSION['isAssistant']['homework'])) {
+            $uid = $WebOwnerUid;
+        } else {
+            $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
+        }
+        $xoopsTpl->assign('uid', $uid);
     }
 
     //新增資料到tad_web_homework中

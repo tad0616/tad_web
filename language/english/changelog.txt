@@ -1,3 +1,7 @@
+Tad Web 1.8 (released from 2019-10-14)
+=========================================================
+1. Fix the problem that the little helper can't work properly
+
 Tad Web 1.7.9 (released from 2019-05-02)
 =========================================================
 1. Fixed custom block editing problem
