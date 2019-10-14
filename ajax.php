@@ -22,11 +22,19 @@ switch ($op) {
 function get_cate_options($WebID = '', $plugin = '')
 {
     global $xoopsDB;
-    $sql = 'select CateID, CateName from ' . $xoopsDB->prefix('tad_web_cate') . " where `ColName` = '{$plugin}' AND `CateEnable` = '1' AND `WebID` = '{$WebID}' order by CateSort";
+    $sql = 'select CateID, CateName from ' . $xoopsDB->prefix('tad_web_cate') . " where `ColName` = 'aboutus' AND `CateEnable` = '1' AND `WebID` = '{$WebID}' order by CateSort";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $option = '';
     while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
         $option .= "<option value='{$CateID}'>{$CateName}</option>";
+    }
+
+    if ($plugin != 'aboutus') {
+        $sql = 'select CateID, CateName from ' . $xoopsDB->prefix('tad_web_cate') . " where `ColName` = '{$plugin}' AND `CateEnable` = '1' AND `WebID` = '{$WebID}' order by CateSort";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (list($CateID, $CateName) = $xoopsDB->fetchRow($result)) {
+            $option .= "<option value='{$CateID}'>{$CateName}</option>";
+        }
     }
 
     if (empty($option)) {

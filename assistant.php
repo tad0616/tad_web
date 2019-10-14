@@ -1,7 +1,7 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\FormValidator;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -36,7 +36,7 @@ function list_all_assistant($WebID = '', $plugin = '')
         }
 
         $all_assistant[$i] = $data;
-        $all_assistant[$i]['plugin'] = $plugin_menu_var[$ColName];
+        $all_assistant[$i]['plugin'] = $plugin_menu_var[$plugin];
         if ('MemID' === $AssistantType) {
             $all_assistant[$i]['mem'] = get_tad_web_mems($AssistantID);
         } elseif ('ParentID' === $AssistantType) {
@@ -68,7 +68,7 @@ function list_all_assistant($WebID = '', $plugin = '')
     $SweetAlert->render('delete_assistant_func', "assistant.php?WebID={$WebID}&op=del_assistant&plugin={$plugin}&CateID=", 'CateID');
 }
 
-function del_assistant($CateID = '')
+function del_assistant($CateID = '', $plugin = '')
 {
     global $xoopsDB, $isMyWeb;
 
@@ -76,7 +76,7 @@ function del_assistant($CateID = '')
         redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_NOT_OWNER);
     }
 
-    $sql = 'delete from ' . $xoopsDB->prefix('tad_web_cate_assistant') . " where CateID='$CateID'";
+    $sql = 'delete from ' . $xoopsDB->prefix('tad_web_cate_assistant') . " where CateID='$CateID' and plugin='{$plugin}'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 }
 
@@ -90,15 +90,15 @@ common_template($WebID, $web_all_config);
 
 switch ($op) {
     case 'del_assistant':
-        del_assistant($CateID);
+        del_assistant($CateID, $plugin);
         header("location:{$_SERVER['PHP_SELF']}?WebID={$WebID}&plugin={$plugin}");
         exit;
-        break;
+
     case 'save_assistant':
-        set_assistant($CateID, $MemID);
+        set_assistant($CateID, $MemID, $plugin);
         header("location:{$_SERVER['PHP_SELF']}?WebID={$WebID}&plugin={$plugin}");
         exit;
-        break;
+
     default:
         list_all_assistant($WebID, $plugin);
         break;

@@ -1620,29 +1620,32 @@ function get_sys_openid()
 }
 
 //設定小幫手
-function set_assistant($CateID = '', $MemID = '')
+function set_assistant($CateID = '', $MemID = '', $plugin='')
 {
     global $xoopsDB;
     if (empty($CateID) or empty($MemID)) {
         return;
     }
 
-    $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `AssistantType`='MemID'";
+    $myts = \MyTextSanitizer::getInstance();
+    $plugin = $myts->addSlashes($plugin);
+
+    $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `AssistantType`='MemID' and `plugin`='$plugin'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`) values('{$CateID}', 'MemID', '{$MemID}')";
+    $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`, `plugin`) values('{$CateID}', 'MemID', '{$MemID}', '{$plugin}')";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 }
 
 //取得小幫手
-function get_assistant($CateID = '')
+function get_assistant($CateID = '',$plugin='')
 {
     global $xoopsDB;
     if (empty($CateID)) {
         return;
     }
     $mem = [];
-    $sql = 'select `AssistantType`, `AssistantID` from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}'";
+    $sql = 'select `AssistantType`, `AssistantID` from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `plugin`='{$plugin}'";
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
     // die(var_export($all));

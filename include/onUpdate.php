@@ -118,6 +118,11 @@ function xoops_module_update_tad_web($module, $old_version)
         if (Update::chk_fc_tag()) {
             Update::go_fc_tag();
         }
+
+        //修改小幫手資料表
+        if (Update::chk_chk25()) {
+            Update::go_update25();
+        }
     }
 
     Update::chk_sql_update();

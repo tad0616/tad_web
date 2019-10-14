@@ -119,7 +119,7 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
                 $WebCate->delete_tad_web_cate($CateID);
                 break;
             case 'set_assistant':
-                set_assistant($CateID, $_POST['MemID'][$CateID]);
+                set_assistant($CateID, $_POST['MemID'][$CateID], $ColName);
                 break;
             case 'enable':
                 $WebCate->enable_tad_web_cate($CateID, 1);

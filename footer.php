@@ -112,7 +112,7 @@ function tad_web_my_menu($WebID)
             $back_home = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $add_power = ['discuss'];
             //小幫手
-            $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='MemID' and a.`AssistantID`='{$_SESSION['LoginMemID']}'";
+            $sql = 'select `CateID`,`plugin` from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `AssistantType`='MemID' and `AssistantID`='{$_SESSION['LoginMemID']}'";
             $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[] = $plugin_dir;
@@ -127,7 +127,7 @@ function tad_web_my_menu($WebID)
             $defaltWebID = $_SESSION['LoginWebID'];
             $back_home = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $add_power = ['discuss']; //小幫手
-            $sql = 'select a.`CateID`,b.ColName from `' . $xoopsDB->prefix('tad_web_cate_assistant') . '` as a join `' . $xoopsDB->prefix('tad_web_cate') . "` as b on a.`CateID`=b.`CateID` where a.`AssistantType`='ParentID' and a.`AssistantID`='{$_SESSION['LoginParentID']}'";
+            $sql = 'select `CateID`,plugin from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `AssistantType`='ParentID' and `AssistantID`='{$_SESSION['LoginParentID']}'";
             $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
                 $add_power[] = $plugin_dir;

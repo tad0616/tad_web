@@ -2,7 +2,7 @@
 namespace XoopsModules\Tad_web;
 
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web;
+use XoopsModules\Tad_web\Power;
 
 /*
 $WebCate = new WebCate($WebID, "news","tad_web_news");
@@ -48,7 +48,7 @@ class WebCate
     public $power;
     public function __construct($WebID = '0', $ColName = '', $table = '')
     {
-        $this->Power = new Tad_web\Power($WebID);
+        $this->Power = new Power($WebID);
         if (!empty($WebID)) {
             $this->set_WebID($WebID);
         }
@@ -112,15 +112,15 @@ class WebCate
         $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
         $show_label_txt = empty($this->label) ? $default_option_text : $this->label;
         $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} control-label\">
-          {$show_label_txt}
-          </label>" : '';
+            {$show_label_txt}
+            </label>" : '';
         $menu_col_md = 12 - $this->label_col_md;
         $menu = "
         <div class=\"row\" style=\"margin-bottom: 10px;\">
             $label
             <div id='cate_menu' class=\"col-sm-{$menu_col_md}\">
-              <p class='form-control-static text-info'>{$cate['CateName']}</p>
-              <input type='hidden' name='CateID' value='{$CateID}'>
+                <p class='form-control-static text-info'>{$cate['CateName']}</p>
+                <input type='hidden' name='CateID' value='{$CateID}'>
             </div>
         </div>
         ";
@@ -309,8 +309,8 @@ class WebCate
     public function update_tad_web_cate($CateID = '', $newCateName = '', $CateEnable = null)
     {
         global $xoopsDB, $isAdmin, $xoopsUser;
-        $update=[];
-        if($newCateName!=''){
+        $update = [];
+        if ($newCateName != '') {
             $myts = \MyTextSanitizer::getInstance();
             $CateName = $myts->addSlashes($newCateName);
             $update[] = "`CateName` = '{$CateName}'";
@@ -321,9 +321,9 @@ class WebCate
             $update[] = "`CateEnable` = '{$CateEnable}'";
         }
 
-        $set_update=implode(', ',$update);
+        $set_update = implode(', ', $update);
 
-        if($set_update){
+        if ($set_update) {
             $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
             $set_update where `CateID`='{$CateID}'";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -351,7 +351,7 @@ class WebCate
         $counter = $counter ? $this->tad_web_cate_data_counter() : '';
         $arr = [];
 
-        $andCateEnable=$onlyEnable?"and `CateEnable`='1'":'';
+        $andCateEnable = $onlyEnable ? "and `CateEnable`='1'" : '';
 
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='aboutus' $andCateEnable order by CateSort";
         // die($sql);
@@ -360,7 +360,7 @@ class WebCate
             $CateID = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID] = $data;
-            $arr[$CateID]['assistant'] = get_assistant($CateID);
+            $arr[$CateID]['assistant'] = get_assistant($CateID,'aboutus');
             $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
         }
 
@@ -375,7 +375,7 @@ class WebCate
                 $CateID = $data['CateID'];
                 $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
                 $arr[$CateID] = $data;
-                $arr[$CateID]['assistant'] = get_assistant($CateID);
+                $arr[$CateID]['assistant'] = get_assistant($CateID,$this->ColName);
                 $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
             }
         }
