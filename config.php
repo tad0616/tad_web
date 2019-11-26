@@ -16,7 +16,7 @@ if ('enable_my_web' === $_REQUEST['op']) {
     } elseif (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
     } else {
-        redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
     }
 }
 require_once XOOPS_ROOT_PATH . '/header.php';
@@ -315,7 +315,7 @@ function unable_my_web($WebID)
 {
     global $xoopsDB, $isMyWeb;
     if (empty($WebID) or !$isMyWeb) {
-        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
     }
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebEnable` = '0' where WebID ='{$WebID}'";
@@ -330,7 +330,7 @@ function enable_my_web($WebID)
     $MyWebs = MyWebID('0');
     $isMyWeb = ($isAdmin) ? true : in_array($WebID, $MyWebs);
     if (empty($WebID) or !$isMyWeb) {
-        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
     }
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebEnable` = '1' where WebID ='{$WebID}'";
@@ -343,7 +343,7 @@ function default_color($WebID = '')
 {
     global $xoopsDB, $isMyWeb;
     if (empty($WebID) or !$isMyWeb) {
-        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
     }
     $del_item = [
         'bg_color',
@@ -505,7 +505,7 @@ switch ($op) {
     //刪除資料
     case 'delete_tad_web_chk':
         if (empty($delWebID) or !$isMyWeb) {
-            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
         common_template($WebID, $web_all_config);
         delete_tad_web_chk($delWebID);
@@ -513,7 +513,7 @@ switch ($op) {
     //刪除資料
     case 'delete_tad_web':
         if (empty($WebID) or !$isMyWeb) {
-            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
         delete_tad_web($WebID);
         header('location: index.php');

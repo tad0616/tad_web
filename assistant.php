@@ -8,7 +8,7 @@ require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 if (!$isMyWeb) {
-    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
 }
 if (!empty($WebID)) {
     $xoopsOption['template_main'] = 'tad_web_assistant.tpl';
@@ -73,7 +73,7 @@ function del_assistant($CateID = '', $plugin = '')
     global $xoopsDB, $isMyWeb;
 
     if (!$isMyWeb) {
-        redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
     }
 
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_cate_assistant') . " where CateID='$CateID' and plugin='{$plugin}'";

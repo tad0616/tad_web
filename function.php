@@ -1630,8 +1630,8 @@ function set_assistant($CateID = '', $MemID = '', $plugin='')
     $myts = \MyTextSanitizer::getInstance();
     $plugin = $myts->addSlashes($plugin);
 
-    $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `AssistantType`='MemID' and `plugin`='$plugin'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    // $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `AssistantType`='MemID' and `plugin`='$plugin'";
+    // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`, `plugin`) values('{$CateID}', 'MemID', '{$MemID}', '{$plugin}')";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -1761,12 +1761,12 @@ function chk_self_web($WebID, $other = null)
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
     } elseif (!$isMyWeb) {
         if (null !== $other and !$other) {
-            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         } elseif (empty($MyWebs) and null === $other) {
-            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         } else {
             return true;
         }
-        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
     }
 }

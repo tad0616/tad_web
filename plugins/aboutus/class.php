@@ -386,7 +386,7 @@ class tad_web_aboutus
         }
     }
 
-    
+
     //更新班級
     public function change_class($CateID = '', $enable = 0)
     {
@@ -418,7 +418,7 @@ class tad_web_aboutus
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs) or empty($DefCateID)) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
         get_quota($this->WebID);
         // $Web = get_tad_web($this->WebID);
@@ -552,9 +552,9 @@ class tad_web_aboutus
         }
 
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         } elseif (!empty($_SESSION['LoginMemID']) and $MemID != $_SESSION['LoginMemID']) {
-            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$_SESSION['LoginMemID']}&op=show_stu", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$_SESSION['LoginMemID']}&op=show_stu", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $mem = get_tad_web_mems($MemID);
@@ -648,7 +648,7 @@ class tad_web_aboutus
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         // $ys = get_seme();
@@ -857,7 +857,7 @@ class tad_web_aboutus
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $myts = \MyTextSanitizer::getInstance();
@@ -1313,7 +1313,7 @@ class tad_web_aboutus
         $parent = get_tad_web_parent($ParentID, $code);
         // die(var_export($parent));
         if (empty($parent['ParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
         $mem = get_tad_web_mems($parent['MemID']);
         $today = date('Y-m-d H:i:s');
@@ -1331,7 +1331,7 @@ class tad_web_aboutus
         global $xoopsTpl;
         $parent = get_tad_web_parent($ParentID, $code);
         if (empty($parent['ParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
         $mem = get_tad_web_mems($parent['MemID']);
         $xoopsTpl->assign('parent', $parent);
@@ -1376,7 +1376,7 @@ class tad_web_aboutus
         global $xoopsTpl;
         $parent = get_tad_web_parent($ParentID, $code);
         if (empty($parent['ParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
         $xoopsTpl->assign('parent', $parent);
         $xoopsTpl->assign('result', $result);
@@ -1425,9 +1425,9 @@ class tad_web_aboutus
         }
 
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         } elseif (!empty($_SESSION['LoginParentID']) and $ParentID != $_SESSION['LoginParentID']) {
-            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&ParentID={$_SESSION['LoginParentID']}&op=show_parent", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&ParentID={$_SESSION['LoginParentID']}&op=show_parent", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $mem = get_tad_web_mems($_SESSION['LoginParentMemID']);
@@ -1487,7 +1487,7 @@ class tad_web_aboutus
         }
 
         if (empty($_SESSION['LoginParentID']) or $ParentID != $_SESSION['LoginParentID']) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $myts = \MyTextSanitizer::getInstance();

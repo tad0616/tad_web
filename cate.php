@@ -9,7 +9,7 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 if (!$isMyWeb) {
-    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER);
+    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
 }
 if (!empty($WebID)) {
     $xoopsOption['template_main'] = 'tad_web_cate.tpl';
