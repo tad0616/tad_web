@@ -7,12 +7,13 @@ use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\Power;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
+
 if (!empty($_REQUEST['WebID']) and $isMyWeb) {
     $xoopsOption['template_main'] = 'tad_web_block.tpl';
 } elseif (!$isMyWeb and $MyWebs) {
     redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
 } else {
-    redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER);
+    redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
 }
 
 //權限設定

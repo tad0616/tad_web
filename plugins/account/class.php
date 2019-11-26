@@ -32,7 +32,7 @@ class tad_web_account
         }
 
         // if (!$isAdmin and !$isMyWeb and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
-        //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         // }
 
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
@@ -172,7 +172,7 @@ class tad_web_account
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb, $xoopsUser, $isAdmin, $isMyWeb;
 
         // if (!$isAdmin and !$isMyWeb and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
-        //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER);
+        //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
         // }
         if (empty($AccountID)) {
             return;
