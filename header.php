@@ -1,7 +1,10 @@
 <?php
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //務必要在function.php之前，因為function.php會用到$WebID。
-$WebID = isset($_REQUEST['WebID']) ? (int) $_REQUEST['WebID'] : '';
+
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$WebID = system_CleanVars($_REQUEST, 'WebID', '', 'int');
+
 require_once __DIR__ . '/function.php';
 
 define('_EZCLASS', 'https://class.tn.edu.tw');

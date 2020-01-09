@@ -11,7 +11,10 @@ function tad_web_menu($options)
     global $xoopsUser, $xoopsDB, $MyWebs, $xoopsConfig;
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
     $MyWebID = MyWebID(1);
-    $DefWebID = isset($_REQUEST['WebID']) ? (int)$_REQUEST['WebID'] : '';
+
+    require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+    $DefWebID = system_CleanVars($_REQUEST, 'WebID', '', 'int');
+
     $block['DefWebID'] = $DefWebID;
 
     if ($xoopsUser) {

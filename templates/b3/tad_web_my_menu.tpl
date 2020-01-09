@@ -155,7 +155,7 @@
 
       <{if $defaltWebID}>
         <{if $web_num > 1}>
-          <select class="span12 form-control" onChange="location.href=this.value">
+          <select class="form-control" onChange="location.href=this.value">
             <{foreach from=$webs item=web}>
               <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
             <{/foreach}>

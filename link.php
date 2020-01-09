@@ -12,6 +12,7 @@ require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $LinkID = system_CleanVars($_REQUEST, 'LinkID', 0, 'int');
 $CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 common_template($WebID, $web_all_config);
 
@@ -21,23 +22,24 @@ switch ($op) {
         $LinkID = $tad_web_link->insert();
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $tad_web_link->update($LinkID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_link->edit_form($LinkID);
         break;
+
     //刪除資料
     case 'delete':
         $tad_web_link->delete($LinkID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($LinkID)) {
