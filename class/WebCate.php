@@ -215,7 +215,10 @@ class WebCate
           {$show_label_txt}
           </label>" : '';
         $row = ('form' === $mode) ? 'form-group' : 'row';
-        $op = isset($_REQUEST['op']) ? $_REQUEST['op'] : '';
+
+        require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+        $op = system_CleanVars($_REQUEST, 'op', '', 'string');
+
         $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op={$op}&CateID=' + $('#CateID').val();" : '';
         $newCate_js = ('form' === $mode) ? "if(\$('#CateID').val()==''){\$('#newCate').show(); }else{ \$('#newCate').hide();}" : '';
         $hide_newCate_js = empty($defCateID) ? '' : "\$('#newCate').hide();";
@@ -360,7 +363,7 @@ class WebCate
             $CateID = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID] = $data;
-            $arr[$CateID]['assistant'] = get_assistant($CateID,'aboutus');
+            $arr[$CateID]['assistant'] = get_assistant($CateID, 'aboutus');
             $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
         }
 
@@ -375,7 +378,7 @@ class WebCate
                 $CateID = $data['CateID'];
                 $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
                 $arr[$CateID] = $data;
-                $arr[$CateID]['assistant'] = get_assistant($CateID,$this->ColName);
+                $arr[$CateID]['assistant'] = get_assistant($CateID, $this->ColName);
                 $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
             }
         }
