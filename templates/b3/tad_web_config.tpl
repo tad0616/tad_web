@@ -311,7 +311,7 @@
                           </label>
                         </a>
 
-                        <label class="del_img_box" style="font-size:12px;" id="del_img<{$head.files_sn}>">
+                        <label class="del_img_box" style="font-size: 75%;" id="del_img<{$head.files_sn}>">
                           <input type="checkbox" value="<{$head.files_sn}>" name="del_file[<{$head.files_sn}>]"> <{$smarty.const._TAD_DEL}>
                         </label>
                       </div>
@@ -371,7 +371,7 @@
                           </label>
                         </a>
 
-                        <label class="del_img_box" style="font-size:12px;" id="del_img<{$logo.files_sn}>">
+                        <label class="del_img_box" style="font-size: 75%;" id="del_img<{$logo.files_sn}>">
                           <input type="checkbox" value="<{$logo.files_sn}>" name="del_file[<{$logo.files_sn}>]"> <{$smarty.const._TAD_DEL}>
                         </label>
                       </div>
@@ -479,7 +479,7 @@
                     <label style="width: 80px; height: 80px; background: <{$bg_color}>; border: 1px solid gray; background-size: contain;" id="none" class="bg_thumb">
                     </label>
 
-                    <label class="del_img_box" style="font-size:12px;" id="del_img<{$bg.files_sn}>">
+                    <label class="del_img_box" style="font-size: 75%;" id="del_img<{$bg.files_sn}>">
                       <{$smarty.const._MD_TCW_CONFIG_NONE_BG}>
                     </label>
                   </div>
@@ -489,7 +489,7 @@
                         <label style="width: 80px; height: 80px; background: #000000 url('<{$bg.tb_path}>') center center no-repeat; border: <{if $bg.file_name == $web_bg}>2px solid red<{else}>1px solid gray<{/if}>; background-size: contain;" id="<{$bg.file_name}>" class="bg_thumb">
                         </label>
 
-                        <label class="del_img_box" style="font-size:12px;" id="del_img<{$bg.files_sn}>">
+                        <label class="del_img_box" style="font-size: 75%;" id="del_img<{$bg.files_sn}>">
                           <input type="checkbox" value="<{$bg.files_sn}>" name="del_file[<{$bg.files_sn}>]"> <{$smarty.const._TAD_DEL}>
                         </label>
                       </div>

@@ -85,7 +85,7 @@
               <label for="<{$setup.name}>" style="width:60px; height:60px; background:#000000 url(<{$setup.default}>);background-repeat:no-repeat;background-position:left center;border:1px solid gray;background-size: cover;" >
                 <input type="radio" name="<{$setup.name}>" id="<{$setup.name}><{$file.files_sn}>" value="<{$setup.default}>"  <{if $setup.value==$setup.default}>checked<{/if}>>
               </label>
-                <label class="checkbox" style="font-size:11px;">
+                <label class="checkbox" style="font-size: 68.75%;">
                   <{$smarty.const._MA_TADTHEMES_DEFAULT}>
                 </label>
 
@@ -96,7 +96,7 @@
                 <label for="<{$setup.name}><{$file.files_sn}>" style="width:60px; height:60px; background:#000000 url(<{$file.tb_path}>);background-position:left center;border:1px solid gray;" >
                   <input type="radio" name="<{$setup.name}>" id="<{$setup.name}><{$file.files_sn}>" value="<{$file.path}>" onChange="$('.del_<{$setup.name}>').show(); $('#del_<{$setup.name}><{$file.files_sn}>').hide();" <{if $setup.value==$file.path}>checked<{/if}>>
                 </label>
-                <label class="checkbox del_<{$setup.name}>" style="font-size:11px;" id="del_<{$setup.name}><{$file.files_sn}>">
+                <label class="checkbox del_<{$setup.name}>" style="font-size: 68.75%;" id="del_<{$setup.name}><{$file.files_sn}>">
                   <input type="checkbox" value="<{$file.files_sn}>" name="del_file[<{$file.files_sn}>]"> <{$smarty.const._TAD_DEL}>
                 </label>
               </div>

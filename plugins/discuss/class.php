@@ -2,8 +2,8 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\WebCate;
 use XoopsModules\Tad_web\Tags;
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_discuss
 {
@@ -14,9 +14,9 @@ class tad_web_discuss
 
     public function __construct($WebID)
     {
-        $this->WebID         = $WebID;
+        $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'discuss', 'tad_web_discuss');
-        $this->tags          = new Tags($WebID);
+        $this->tags = new Tags($WebID);
         $this->aboutus_setup = get_plugin_setup_values($WebID, 'aboutus');
         $this->discuss_setup = get_plugin_setup_values($WebID, 'discuss');
     }
@@ -58,11 +58,11 @@ class tad_web_discuss
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
-            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
-            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
-            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
-            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
+            $county = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity = !empty($city) ? "and c.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_discuss') . ' as a
@@ -89,9 +89,9 @@ class tad_web_discuss
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
         $PageBar = Utility::getPageBar($sql, $to_limit, 10);
-        $bar     = $PageBar['bar'];
-        $sql     = $PageBar['sql'];
-        $total   = $PageBar['total'];
+        $bar = $PageBar['bar'];
+        $sql = $PageBar['sql'];
+        $total = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -109,24 +109,24 @@ class tad_web_discuss
                 $$k = $v;
             }
 
-            $main_data[$i]            = $all;
-            $main_data[$i]['id']      = $DiscussID;
+            $main_data[$i] = $all;
+            $main_data[$i]['id'] = $DiscussID;
             $main_data[$i]['id_name'] = 'DiscussID';
-            $main_data[$i]['title']   = $DiscussTitle;
+            $main_data[$i]['title'] = $DiscussTitle;
 
             $this->WebCate->set_WebID($WebID);
 
-            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
+            $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb'] = $isMyWeb;
 
-            $renum       = $this->get_re_num($DiscussID);
+            $renum = $this->get_re_num($DiscussID);
             $show_re_num = empty($renum) ? '' : " ({$renum}) ";
-            $LastTime    = substr($LastTime, 0, 10);
+            $LastTime = substr($LastTime, 0, 10);
 
             $main_data[$i]['show_re_num'] = $show_re_num;
-            $main_data[$i]['LastTime']    = $LastTime;
+            $main_data[$i]['LastTime'] = $LastTime;
             if (!$xoopsUser and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
                 if ($MemID) {
                     $main_data[$i]['MemName'] = ('1' != $this->aboutus_setup['mem_fullname']) ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemName;
@@ -147,7 +147,7 @@ class tad_web_discuss
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
-            $data['total']     = $total;
+            $data['total'] = $total;
             return $data;
         } else {
             $xoopsTpl->assign('discuss_data', $main_data);
@@ -169,9 +169,9 @@ class tad_web_discuss
         $DiscussID = (int) $DiscussID;
         $this->add_counter($DiscussID);
 
-        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='{$DiscussID}' ";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='{$DiscussID}' ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $all    = $xoopsDB->fetchArray($result);
+        $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $DiscussID , $ReDiscussID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
         foreach ($all as $k => $v) {
@@ -193,7 +193,7 @@ class tad_web_discuss
         } elseif ($MemID) {
             $TadUpFiles->set_col('MemID', $MemID, '1');
             $pic = $TadUpFiles->get_pic_file('thumb');
-            $M   = get_tad_web_mems($MemID);
+            $M = get_tad_web_mems($MemID);
             if (empty($pic)) {
                 $pic = ('1' == $M['MemSex']) ? XOOPS_URL . '/modules/tad_web/images/boy.gif' : XOOPS_URL . '/modules/tad_web/images/girl.gif';
             }
@@ -214,7 +214,7 @@ class tad_web_discuss
         $DiscussContent = $this->addLink(nl2br($DiscussContent));
         preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
         foreach ($smile_pic[1] as $pic_name) {
-            $new_pic_name   = strtolower($pic_name);
+            $new_pic_name = strtolower($pic_name);
             $DiscussContent = str_replace("[$pic_name]", '<img src="' . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/$new_pic_name\" alt=\"{$pic_name}\" hspace=2 align='absmiddle'>", $DiscussContent);
         }
 
@@ -271,7 +271,7 @@ class tad_web_discuss
                         continue;
                     }
 
-                    $key              = substr($file, 1, -4);
+                    $key = substr($file, 1, -4);
                     $smile_pics[$key] = $file;
                 }
                 closedir($dh);
@@ -409,7 +409,7 @@ class tad_web_discuss
                         continue;
                     }
 
-                    $key              = substr($file, 1, -4);
+                    $key = substr($file, 1, -4);
                     $smile_pics[$key] = $file;
                 }
                 closedir($dh);
@@ -433,35 +433,35 @@ class tad_web_discuss
         }
 
         $myts = \MyTextSanitizer::getInstance();
-        $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
+        $DiscussTitle = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName    = $myts->addSlashes($_POST['newCateName']);
-        $tag_name       = $myts->addSlashes($_POST['tag_name']);
-        $CateID         = (int) $_POST['CateID'];
-        $WebID          = (int) $_POST['WebID'];
-        $ReDiscussID    = (int) $_POST['ReDiscussID'];
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
+        $ReDiscussID = (int) $_POST['ReDiscussID'];
 
         if ($isMyWeb) {
-            $uid      = $xoopsUser->uid();
-            $MemID    = 0;
+            $uid = $xoopsUser->uid();
+            $MemID = 0;
             $ParentID = 0;
-            $MemName  = $xoopsUser->name();
+            $MemName = $xoopsUser->name();
         } elseif ($_SESSION['LoginMemID']) {
-            $uid      = 0;
+            $uid = 0;
             $ParentID = 0;
-            $MemID    = $_SESSION['LoginMemID'];
-            $MemName  = $_SESSION['LoginMemName'];
-            $WebID    = $_SESSION['LoginWebID'];
+            $MemID = $_SESSION['LoginMemID'];
+            $MemName = $_SESSION['LoginMemName'];
+            $WebID = $_SESSION['LoginWebID'];
         } elseif ($_SESSION['LoginParentID']) {
-            $uid      = 0;
-            $MemID    = 0;
+            $uid = 0;
+            $MemID = 0;
             $ParentID = $_SESSION['LoginParentID'];
-            $MemName  = $_SESSION['LoginParentName'];
-            $WebID    = $_SESSION['LoginWebID'];
+            $MemName = $_SESSION['LoginParentName'];
+            $WebID = $_SESSION['LoginWebID'];
         }
 
         $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
-        $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_discuss') . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
+        $sql = 'insert into ' . $xoopsDB->prefix('tad_web_discuss') . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
         values('{$CateID}'  ,'{$ReDiscussID}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$DiscussTitle}' , '{$DiscussContent}' , now() , '{$WebID}' , now() , 0)";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -497,32 +497,32 @@ class tad_web_discuss
         }
 
         if ($isMyWeb) {
-            $uid     = $xoopsUser->uid();
-            $MemID   = $ParentID   = 0;
+            $uid = $xoopsUser->uid();
+            $MemID = $ParentID = 0;
             $MemName = $xoopsUser->name();
-            $anduid  = ($isAdmin) ? '' : "and `WebID`='{$this->WebID}'";
+            $anduid = ($isAdmin) ? '' : "and `WebID`='{$this->WebID}'";
         } elseif ($_SESSION['LoginMemID']) {
-            $uid     = $ParentID     = 0;
-            $MemID   = $_SESSION['LoginMemID'];
+            $uid = $ParentID = 0;
+            $MemID = $_SESSION['LoginMemID'];
             $MemName = $_SESSION['LoginMemName'];
-            $WebID   = $_SESSION['LoginWebID'];
-            $anduid  = "and `MemID`='{$MemID}'";
+            $WebID = $_SESSION['LoginWebID'];
+            $anduid = "and `MemID`='{$MemID}'";
         } elseif ($_SESSION['LoginParentID']) {
-            $uid      = $MemID      = 0;
+            $uid = $MemID = 0;
             $ParentID = $_SESSION['LoginParentID'];
-            $MemName  = $_SESSION['LoginParentName'];
-            $WebID    = $_SESSION['LoginWebID'];
-            $anduid   = "and `ParentID`='{$ParentID}'";
+            $MemName = $_SESSION['LoginParentName'];
+            $WebID = $_SESSION['LoginWebID'];
+            $anduid = "and `ParentID`='{$ParentID}'";
         }
 
         $myts = \MyTextSanitizer::getInstance();
-        $DiscussTitle   = $myts->addSlashes($_POST['DiscussTitle']);
+        $DiscussTitle = $myts->addSlashes($_POST['DiscussTitle']);
         $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName    = $myts->addSlashes($_POST['newCateName']);
-        $tag_name       = $myts->addSlashes($_POST['tag_name']);
-        $CateID         = (int) $_POST['CateID'];
-        $WebID          = (int) $_POST['WebID'];
-        $ReDiscussID    = (int) $_POST['ReDiscussID'];
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
+        $ReDiscussID = (int) $_POST['ReDiscussID'];
 
         $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
@@ -581,7 +581,7 @@ class tad_web_discuss
     {
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
-        $sql       = 'select DiscussID,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID='0'";
+        $sql = 'select DiscussID,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID='0'";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($DiscussID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($DiscussID);
@@ -597,7 +597,7 @@ class tad_web_discuss
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}'";
+        $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
@@ -619,9 +619,9 @@ class tad_web_discuss
             return;
         }
 
-        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='$DiscussID'";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='$DiscussID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $data   = $xoopsDB->fetchArray($result);
+        $data = $xoopsDB->fetchArray($result);
         return $data;
     }
 
@@ -651,7 +651,7 @@ class tad_web_discuss
 
         $desc = ('1' == $this->discuss_setup['new2old']) ? 'desc' : '';
 
-        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where ReDiscussID='$DiscussID' order by DiscussDate $desc";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where ReDiscussID='$DiscussID' order by DiscussDate $desc";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $re_data = '';
@@ -672,7 +672,7 @@ class tad_web_discuss
             } elseif ($MemID) {
                 $TadUpFiles->set_col('MemID', $MemID, '1');
                 $pic = $TadUpFiles->get_pic_file('thumb');
-                $M   = get_tad_web_mems($MemID);
+                $M = get_tad_web_mems($MemID);
                 if (empty($pic)) {
                     $pic = ('1' == $M['MemSex']) ? XOOPS_URL . '/modules/tad_web/images/boy.gif' : XOOPS_URL . '/modules/tad_web/images/girl.gif';
                 }
@@ -698,7 +698,7 @@ class tad_web_discuss
             $DiscussContent = $this->addLink(nl2br($DiscussContent));
             preg_match_all('/\[([a-zA-Z_0-9.]+)\]/', $DiscussContent, $smile_pic);
             foreach ($smile_pic[1] as $pic_name) {
-                $new_pic_name   = strtolower($pic_name);
+                $new_pic_name = strtolower($pic_name);
                 $DiscussContent = str_replace("[$pic_name]", '<img src="' . XOOPS_URL . "/modules/tad_web/plugins/discuss/smiles/$new_pic_name\" alt=\"{$pic_name}\" hspace=2 align='absmiddle'>", $DiscussContent);
             }
 
@@ -722,7 +722,7 @@ class tad_web_discuss
                     <img src='$pic' alt='{$MemName}" . _MD_TCW_DISCUSS_REPLY . "' style='max-width: 100%;' class='img-rounded img-polaroid rounded'>
                     <div style='line-height:1.5em;'>
                       <div>{$MemName}</div>
-                      <div style='font-size:10px; background: #1d649b; color: #fff; border-radius: 3px;'>$DiscussDate</div>
+                      <div style='font-size: 62.5%; background: #1d649b; color: #fff; border-radius: 3px;'>$DiscussDate</div>
                     </div>
                 </div>
                 <div class='col-md-10'>
@@ -765,19 +765,19 @@ class tad_web_discuss
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
         $andCateID = empty($CateID) ? '' : "and `CateID`='$CateID'";
-        $andStart  = empty($start_date) ? '' : "and DiscussDate >= '{$start_date}'";
-        $andEnd    = empty($end_date) ? '' : "and DiscussDate <= '{$end_date}'";
+        $andStart = empty($start_date) ? '' : "and DiscussDate >= '{$start_date}'";
+        $andEnd = empty($end_date) ? '' : "and DiscussDate <= '{$end_date}'";
 
-        $sql    = 'select DiscussID,DiscussTitle,DiscussDate,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID=0 {$andStart} {$andEnd} {$andCateID} order by DiscussDate";
+        $sql = 'select DiscussID,DiscussTitle,DiscussDate,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID=0 {$andStart} {$andEnd} {$andCateID} order by DiscussDate";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $i         = 0;
+        $i = 0;
         $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
-            $main_data[$i]['ID']     = $ID;
+            $main_data[$i]['ID'] = $ID;
             $main_data[$i]['CateID'] = $CateID;
-            $main_data[$i]['title']  = $title;
-            $main_data[$i]['date']   = $date;
+            $main_data[$i]['title'] = $title;
+            $main_data[$i]['date'] = $date;
 
             $i++;
         }

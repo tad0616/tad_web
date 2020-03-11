@@ -156,7 +156,7 @@ define('_MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED', '登入失敗！請重新登入！
 define('_MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT', '該生並沒有家長帳號，請直接註冊新帳號。');
 define('_MD_TCW_ABOUTUS_SEND_PARENT_PASSWD', '已將您的密碼寄至 %s');
 define('_MD_TCW_ABOUTUS_YOUR_PASSWD', '密碼通知');
-define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', '「%s」的「%s」您好：<p>您於 %s 查詢了您的家長帳號密碼，您的密碼如下：</p><p style="font-size: 24px; color:red;">%s</p><p align="right"><a href="%s">%s</a> 敬上</p>');
+define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', '「%s」的「%s」您好：<p>您於 %s 查詢了您的家長帳號密碼，您的密碼如下：</p><p style="font-size: 150%; color:red;">%s</p><p align="right"><a href="%s">%s</a> 敬上</p>');
 
 define('_MD_TCW_ABOUTUS_PARENT_ENABLE', '家長啟動成功通知信');
 define('_MD_TCW_ABOUTUS_PARENT_ENABLE_CONTENT', '%s老師您好：<p>%s的%s已於 %s 成功註冊家長帳號，在此通知您一聲。</p>');

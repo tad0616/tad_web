@@ -351,7 +351,7 @@ body.has-active-menu {
 .c-menu__close {
   color: #fff;
   background-color: #3184a1;
-  font-size: 14px;
+  font-size: 87.5%;
   border: none;
   box-shadow: none;
   border-radius: none;
@@ -408,7 +408,7 @@ body.has-active-menu {
   padding: 12px 24px;
   color: #67b5d1;
   background: none;
-  font-size: 14px;
+  font-size: 87.5%;
   border: solid 2px #67b5d1;
   box-shadow: none;
   border-radius: none;
@@ -459,11 +459,11 @@ body.has-active-menu {
 
 .carbon-text {
   color: #818181;
-  font-size: 12px;
+  font-size: 75%;
 }
 
 .carbon-poweredby {
-  font-size: 10px;
+  font-size: 62.5%;
   font-style: italic;
 }
 
@@ -473,7 +473,7 @@ body.has-active-menu {
   top: 0;
   left: 12px;
   height: 24px;
-  font-size: 11px;
+  font-size: 68.75%;
   line-height: 24px;
 }
 

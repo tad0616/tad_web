@@ -116,7 +116,7 @@
         <div class="col-md-3 col-lg-2  text-center">
             <img src="<{$pic}>" alt="<{$MemName}>" style="max-width: 100%;" class="rounded img-polaroid">
             <div style="line-height:1.5em;">
-              <div><{$MemName}></div><div style="font-size:10px; background: #1d649b; color: #fff; border-radius: 3px;"><{$DiscussDate}></div>
+              <div><{$MemName}></div><div style="font-size: 62.5%; background: #1d649b; color: #fff; border-radius: 3px;"><{$DiscussDate}></div>
             </div>
 
         </div>

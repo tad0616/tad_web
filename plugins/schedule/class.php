@@ -50,11 +50,11 @@ class tad_web_schedule
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
             require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-            $county        = system_CleanVars($_REQUEST, 'county', '', 'string');
-            $city          = system_CleanVars($_REQUEST, 'city', '', 'string');
-            $SchoolName    = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
-            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
-            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
+            $county = system_CleanVars($_REQUEST, 'county', '', 'string');
+            $city = system_CleanVars($_REQUEST, 'city', '', 'string');
+            $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $andCounty = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity = !empty($city) ? "and c.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_schedule') . ' as a
@@ -84,19 +84,19 @@ class tad_web_schedule
                 $$k = $v;
             }
 
-            $main_data[$i]            = $all;
-            $main_data[$i]['id']      = $ScheduleID;
+            $main_data[$i] = $all;
+            $main_data[$i]['id'] = $ScheduleID;
             $main_data[$i]['id_name'] = 'ScheduleID';
-            $main_data[$i]['title']   = $ScheduleName;
+            $main_data[$i]['title'] = $ScheduleName;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
 
             $this->WebCate->set_WebID($WebID);
 
-            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
+            $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
-            $main_data[$i]['isMyWeb']  = $isMyWeb;
+            $main_data[$i]['isMyWeb'] = $isMyWeb;
             $main_data[$i]['schedule'] = $this->get_one_schedule($ScheduleID);
             $i++;
             $total++;
@@ -107,9 +107,9 @@ class tad_web_schedule
 
         if ('return' === $mode) {
             $data['schedule_amount'] = $i;
-            $data['main_data']       = $main_data;
-            $data['total']           = $total;
-            $data['isCanEdit']       = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
+            $data['main_data'] = $main_data;
+            $data['total'] = $total;
+            $data['isCanEdit'] = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
             return $data;
         } else {
             $xoopsTpl->assign('schedule_amount', $i);
@@ -131,9 +131,9 @@ class tad_web_schedule
         $ScheduleID = (int) $ScheduleID;
         $this->add_counter($ScheduleID);
 
-        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='{$ScheduleID}'";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='{$ScheduleID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $all    = $xoopsDB->fetchArray($result);
+        $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount ,$ScheduleTime
         foreach ($all as $k => $v) {
@@ -149,9 +149,9 @@ class tad_web_schedule
             $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $assistant   = is_assistant($CateID, 'ScheduleID', $ScheduleID);
+        $assistant = is_assistant($CateID, 'ScheduleID', $ScheduleID);
         $isAssistant = !empty($assistant) ? true : false;
-        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
         $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID));
 
@@ -213,7 +213,7 @@ class tad_web_schedule
 
         //設定「uid」欄位預設值
         $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
-        $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
+        $uid = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
         $xoopsTpl->assign('uid', $uid);
 
         //設定「WebID」欄位預設值
@@ -230,7 +230,7 @@ class tad_web_schedule
 
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['schedule']) ? $_SESSION['isAssistant']['schedule'] : '';
-        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
+        $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
 
         $ys = get_seme();
         $xoopsTpl->assign('ys', $ys);
@@ -248,7 +248,7 @@ class tad_web_schedule
 
         $xoopsTpl->assign('next_op', $op);
 
-        $sql        = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $SubjectArr = [];
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
@@ -257,8 +257,8 @@ class tad_web_schedule
             }
             $key = "{$SDWeek}-{$SDSort}";
 
-            $SubjectArr[$key]   = $Subject;
-            $colorArr[$key]     = $color;
+            $SubjectArr[$key] = $Subject;
+            $colorArr[$key] = $color;
             $bg_colortArr[$key] = $bg_color;
         }
 
@@ -266,10 +266,10 @@ class tad_web_schedule
         preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
         foreach ($opt[0] as $tag) {
-            $new_tag   = str_replace('{', '', $tag);
-            $new_tag   = str_replace('}', '', $new_tag);
-            $val       = empty($SubjectArr[$new_tag]) ? _MD_TCW_SCHEDULE_BLANK : $SubjectArr[$new_tag];
-            $dropped   = empty($SubjectArr[$new_tag]) ? '' : 'dropped';
+            $new_tag = str_replace('{', '', $tag);
+            $new_tag = str_replace('}', '', $new_tag);
+            $val = empty($SubjectArr[$new_tag]) ? _MD_TCW_SCHEDULE_BLANK : $SubjectArr[$new_tag];
+            $dropped = empty($SubjectArr[$new_tag]) ? '' : 'dropped';
             $new_input = '<div id="' . $new_tag . '" class="droppable ' . $dropped . '" style="padding: 8px; margin: 0px; color: ' . $colorArr[$new_tag] . '; background-color: ' . $bg_colortArr[$new_tag] . ';"><div>' . $val . '</div></div>';
 
             $schedule_template = str_replace($tag, $new_input, $schedule_template);
@@ -290,15 +290,15 @@ class tad_web_schedule
         }
 
         $myts = \MyTextSanitizer::getInstance();
-        $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
+        $ScheduleName = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $newCateName     = $myts->addSlashes($_POST['newCateName']);
-        $CateID          = (int) $_POST['CateID'];
-        $WebID           = (int) $_POST['WebID'];
-        $ScheduleTime    = date('Y-m-d H:i:s');
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
+        $ScheduleTime = date('Y-m-d H:i:s');
 
         $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
-        $sql    = 'insert into ' . $xoopsDB->prefix('tad_web_schedule') . "
+        $sql = 'insert into ' . $xoopsDB->prefix('tad_web_schedule') . "
         (`CateID`,`ScheduleName` , `ScheduleDisplay` , `uid` , `WebID` , `ScheduleCount` , `ScheduleTime`)
         values('{$CateID}' ,'{$ScheduleName}' , '{$ScheduleDisplay}'  , '{$uid}' , '{$WebID}' , '0' , '{$ScheduleTime}')";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -317,12 +317,12 @@ class tad_web_schedule
         global $xoopsDB;
 
         $myts = \MyTextSanitizer::getInstance();
-        $ScheduleName    = $myts->addSlashes($_POST['ScheduleName']);
+        $ScheduleName = $myts->addSlashes($_POST['ScheduleName']);
         $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $newCateName     = $myts->addSlashes($_POST['newCateName']);
-        $CateID          = (int) $_POST['CateID'];
-        $WebID           = (int) $_POST['WebID'];
-        $ScheduleTime    = date('Y-m-d H:i:s');
+        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
+        $ScheduleTime = date('Y-m-d H:i:s');
 
         $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
@@ -353,7 +353,7 @@ class tad_web_schedule
     public function delete($ScheduleID = '')
     {
         global $xoopsDB;
-        $sql          = 'select CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
+        $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
         if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
@@ -374,7 +374,7 @@ class tad_web_schedule
     {
         global $xoopsDB, $TadUpFiles;
         $allCateID = [];
-        $sql       = 'select ScheduleID,CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
+        $sql = 'select ScheduleID,CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($ScheduleID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($ScheduleID);
@@ -390,7 +390,7 @@ class tad_web_schedule
     public function get_total()
     {
         global $xoopsDB;
-        $sql         = 'select count(*) from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
+        $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_schedule') . " where WebID='{$this->WebID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
@@ -412,9 +412,9 @@ class tad_web_schedule
             return;
         }
 
-        $sql    = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $data   = $xoopsDB->fetchArray($result);
+        $data = $xoopsDB->fetchArray($result);
         return $data;
     }
 
@@ -423,13 +423,13 @@ class tad_web_schedule
     {
         global $xoopsDB, $xoopsModuleConfig;
         if (!isset($xoopsModuleConfig)) {
-            $moduleHandler        = xoops_getHandler('module');
-            $xoopsModule       = $moduleHandler->getByDirname('tad_web');
-            $configHandler    = xoops_getHandler('config');
+            $moduleHandler = xoops_getHandler('module');
+            $xoopsModule = $moduleHandler->getByDirname('tad_web');
+            $configHandler = xoops_getHandler('config');
             $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
         }
 
-        $sql        = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $SubjectArr = [];
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
@@ -439,7 +439,7 @@ class tad_web_schedule
             }
             $key = "{$SDWeek}-{$SDSort}";
 
-            $SubjectArr[$key] = "<div style='padding:8px; margin:0px; color: {$color}; background-color: {$bg_color};'><div>{$Subject}</div><div style='font-size:12px;'>{$Teacher}</div></div>";
+            $SubjectArr[$key] = "<div style='padding:8px; margin:0px; color: {$color}; background-color: {$bg_color};'><div>{$Subject}</div><div style='font-size: 75%;'>{$Teacher}</div></div>";
         }
 
         $schedule_template = $xoopsModuleConfig['schedule_template'];
@@ -465,14 +465,14 @@ class tad_web_schedule
         if (file_exists($my_subject_file)) {
             $schedule_subjects_arr = json_decode(file_get_contents($my_subject_file), true);
         } else {
-            $schedule_subjects     = explode(';', $xoopsModuleConfig['schedule_subjects']);
+            $schedule_subjects = explode(';', $xoopsModuleConfig['schedule_subjects']);
             $schedule_subjects_arr = [];
 
             $i = 0;
             foreach ($schedule_subjects as $subject) {
-                $schedule_subjects_arr[$i]['Subject']  = $subject;
-                $schedule_subjects_arr[$i]['Teacher']  = '';
-                $schedule_subjects_arr[$i]['color']    = '#000000';
+                $schedule_subjects_arr[$i]['Subject'] = $subject;
+                $schedule_subjects_arr[$i]['Teacher'] = '';
+                $schedule_subjects_arr[$i]['color'] = '#000000';
                 $schedule_subjects_arr[$i]['bg_color'] = '#FFFFFF';
                 $i++;
             }
@@ -491,7 +491,7 @@ class tad_web_schedule
 
         $xoopsTpl->assign('ScheduleID', $ScheduleID);
 
-        $schedule_subjects_arr     = $this->get_subjects();
+        $schedule_subjects_arr = $this->get_subjects();
         $schedule_subjects_max_key = max(array_keys($schedule_subjects_arr));
         $schedule_subjects_max_key++;
 
@@ -508,9 +508,9 @@ class tad_web_schedule
         global $xoopsDB;
         $my_subject_file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/my_subject.json";
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
-            $schedule_subjects_arr[$k]['Subject']  = $_POST['Subject'][$k];
-            $schedule_subjects_arr[$k]['Teacher']  = $_POST['Teacher'][$k];
-            $schedule_subjects_arr[$k]['color']    = $_POST['color'][$k];
+            $schedule_subjects_arr[$k]['Subject'] = $_POST['Subject'][$k];
+            $schedule_subjects_arr[$k]['Teacher'] = $_POST['Teacher'][$k];
+            $schedule_subjects_arr[$k]['color'] = $_POST['color'][$k];
             $schedule_subjects_arr[$k]['bg_color'] = $_POST['bg_color'][$k];
         }
         $schedule_subjects = json_encode($schedule_subjects_arr);
@@ -519,10 +519,10 @@ class tad_web_schedule
         $myts = \MyTextSanitizer::getInstance();
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
             $old_Subject = $myts->addSlashes($old_Subject);
-            $Subject     = $myts->addSlashes($_POST['Subject'][$k]);
-            $Teacher     = $myts->addSlashes($_POST['Teacher'][$k]);
-            $color       = $myts->addSlashes($_POST['color'][$k]);
-            $bg_color    = $myts->addSlashes($_POST['bg_color'][$k]);
+            $Subject = $myts->addSlashes($_POST['Subject'][$k]);
+            $Teacher = $myts->addSlashes($_POST['Teacher'][$k]);
+            $color = $myts->addSlashes($_POST['color'][$k]);
+            $bg_color = $myts->addSlashes($_POST['bg_color'][$k]);
 
             $sql2 = 'update ' . $xoopsDB->prefix('tad_web_schedule_data') . " set `Subject`='{$Subject}', `Teacher`='{$Teacher}', `color`='{$color}', `bg_color`='{$bg_color}' where ScheduleID='{$ScheduleID}' and `Subject`='{$old_Subject}'";
             $xoopsDB->queryF($sql2) or Utility::web_error($sql2);

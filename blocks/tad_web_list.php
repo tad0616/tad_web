@@ -10,7 +10,9 @@ function tad_web_list($options)
 {
     global $xoopsDB;
 
-    $DefWebID = isset($_REQUEST['WebID']) ? (int) $_REQUEST['WebID'] : '';
+    require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+    $DefWebID = system_CleanVars($_REQUEST, 'WebID', '', 'int');
+
     $block['DefWebID'] = $DefWebID;
 
     $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
