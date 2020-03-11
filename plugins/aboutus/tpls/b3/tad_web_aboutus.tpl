@@ -34,7 +34,7 @@
 
       <{if $all_mems}>
         <style>
-          .draggable {padding: 5px; margin: 0 10px 10px 0; font-size: 12px; border:0px dotted gray;position:absolute;}
+          .draggable {padding: 5px; margin: 0 10px 10px 0; font-size: 75%; border:0px dotted gray;position:absolute;}
           #snaptarget {width:640px;height: 540px; border:1px solid black;background:#CC6633 url('images/classroom2.png') center center no-repeat;position:relative;}
         </style>
 
@@ -102,7 +102,7 @@
   <{if $all_mems}>
     <div class="row">
       <div class="col-sm-12">
-        <div id="randomnumber" style="font-size:16px;"></div>
+        <div id="randomnumber" style="font-size:100%;"></div>
         <div id="MemRandList"></div>
       </div>
     </div>

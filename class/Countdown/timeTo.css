@@ -12,7 +12,7 @@ figure, figcaption {
 
 .timeTo {
 	font-family: Tahoma, Verdana, Aial, sans-serif;
-	font-size: 28px;
+	font-size: 175%;
 	line-height: 108%;
 	font-weight: bold;
 	height: 32px;
@@ -74,7 +74,7 @@ figure, figcaption {
 }
 .timeTo figcaption {
 	text-align: center;
-	/*font-size: 12px;*/
+	/*font-size: 75%;*/
 	line-height: 80%;
 	font-weight: normal;
 	/*color: #888;*/

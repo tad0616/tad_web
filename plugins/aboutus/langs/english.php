@@ -157,7 +157,7 @@ define('_MD_TCW_ABOUTUS_SEND_PARENT_PASSWD', 'Your password has been sent to %s'
 define('_MD_TCW_ABOUTUS_YOUR_PASSWD', 'Your Password');
 define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', 'Hi %s\'s %s:<p>You sign up for a parent account in %s, please click the link below to start it.</p><p>%s</p><p align="right">from <a href="%s">%s</a></p>');
 //define('_MD_TCW_ABOUTUS_YOUR_PASSWD', 'Password notification');
-//define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', 'Hi %s\'s %s :<p>You query your parent account password on %s, your password is as follows:</p><p style="font-size: 24px; color:red;">%s</p><p align="right">From <a href="%s">%s</a></p>');
+//define('_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL', 'Hi %s\'s %s :<p>You query your parent account password on %s, your password is as follows:</p><p style="font-size: 150%; color:red;">%s</p><p align="right">From <a href="%s">%s</a></p>');
 
 define('_MD_TCW_ABOUTUS_PARENT_ENABLE', 'Parents account the successful launch notification');
 define('_MD_TCW_ABOUTUS_PARENT_ENABLE_CONTENT', 'Hi %s:<p>%s\'s %s registered a parents account on %s.</p>');

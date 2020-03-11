@@ -3,12 +3,6 @@ use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/header.php';
 
-// if (!$isMyWeb and $MyWebs) {
-//     redirect_header($_SERVER['PHP_SELF'] . "?WebID={$MyWebs[0]}", 3, _MD_TCW_AUTO_TO_HOME);
-// } elseif (empty($_REQUEST['WebID'])) {
-//     redirect_header("index.php?WebID={$_GET['WebID']}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
-// }
-
 /*-----------執行動作判斷區----------*/
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');

@@ -15,7 +15,7 @@ function tad_web_image()
     if (empty($_GET['WebID'])) {
         $where_webid = '';
     } else {
-        $WebID = (int)$_GET['WebID'];
+        $WebID = (int) $_GET['WebID'];
         $and_webid = "and a.WebID='{$WebID}'  ";
     }
 
@@ -43,16 +43,16 @@ function tad_web_image()
     $photos = $tad_web_action_image->get_file();
 
     $ResponsiveSlides = new ResponsiveSlides(120, false);
-        $i = 1;
-        foreach ($photos as $pic) {
-            if ($pic['description'] == $pic['original_filename']) {
-                $pic['description'] = '';
-            }
-            $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
-            $i++;
+    $i = 1;
+    foreach ($photos as $pic) {
+        if ($pic['description'] == $pic['original_filename']) {
+            $pic['description'] = '';
         }
+        $ResponsiveSlides->add_content($i, $pic['description'], '', $pic['path'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
+        $i++;
+    }
 
-        $slide_images = $ResponsiveSlides->render();
+    $slide_images = $ResponsiveSlides->render();
 
     $block['slide_images'] = $slide_images;
 

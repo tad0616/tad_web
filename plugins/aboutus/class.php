@@ -213,7 +213,7 @@ class tad_web_aboutus
 
             $StuUrl = ('mem_adm' === $mode) ? "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu" : '#';
 
-            $students = "<div id='{$MemNum}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size:11px;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
+            $students = "<div id='{$MemNum}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size: 68.75%;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
 
             //$students = "<div id='{$StuID}' class='draggable'>{$MemName}</a></p></div>";
 
@@ -295,7 +295,7 @@ class tad_web_aboutus
         $xoopsTpl->assign('next_year', sprintf(_MD_TCW_SEME_CATE, $next_year));
 
         //所有曾經的班級
-        $cate = $this->WebCate->get_tad_web_cate_arr(null,false);
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, false);
         // die(var_export($cate));
         foreach ($cate as $key => $value) {
             // _MD_TCW_STUDENT_COPY
@@ -386,14 +386,12 @@ class tad_web_aboutus
         }
     }
 
-
     //更新班級
     public function change_class($CateID = '', $enable = 0)
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
         $this->WebCate->update_tad_web_cate($CateID, '', $enable);
     }
-
 
     //刪除班級
     public function del_class($CateID = '')
@@ -418,7 +416,7 @@ class tad_web_aboutus
         if (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$xoopsUser or empty($this->WebID) or empty($MyWebs) or empty($DefCateID)) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
         get_quota($this->WebID);
         // $Web = get_tad_web($this->WebID);
@@ -467,7 +465,7 @@ class tad_web_aboutus
             $StuID = $MemID;
             $StuUrl = "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu";
 
-            $students = "<div id='{$StuID}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size:11px;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
+            $students = "<div id='{$StuID}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size: 68.75%;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
 
             //$students = "<div id='{$StuID}' class='draggable'>{$MemName}</a></p></div>";
 
@@ -552,9 +550,9 @@ class tad_web_aboutus
         }
 
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         } elseif (!empty($_SESSION['LoginMemID']) and $MemID != $_SESSION['LoginMemID']) {
-            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$_SESSION['LoginMemID']}&op=show_stu", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$_SESSION['LoginMemID']}&op=show_stu", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $mem = get_tad_web_mems($MemID);
@@ -648,7 +646,7 @@ class tad_web_aboutus
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         // $ys = get_seme();
@@ -743,7 +741,7 @@ class tad_web_aboutus
         $color2 = ('1' == $MemSex) ? '#000066' : '#660000';
 
         // $pic = !empty($MemID) ? "
-        //   <div id='{$MemID}' style='padding: 5px;font-size: 12px; border:0px dotted gray;width: 100%;height:140px;background:transparent url($pic) top center no-repeat;margin:0px auto;{$cover}'>
+        //   <div id='{$MemID}' style='padding: 5px;font-size: 75%; border:0px dotted gray;width: 100%;height:140px;background:transparent url($pic) top center no-repeat;margin:0px auto;{$cover}'>
         //   </div>" : "";
 
         if (!empty($MemID)) {
@@ -857,7 +855,7 @@ class tad_web_aboutus
         } elseif (!$isMyWeb and $MyWebs) {
             redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
         } elseif (!$isMyWeb) {
-            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $myts = \MyTextSanitizer::getInstance();
@@ -1313,7 +1311,7 @@ class tad_web_aboutus
         $parent = get_tad_web_parent($ParentID, $code);
         // die(var_export($parent));
         if (empty($parent['ParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
         $mem = get_tad_web_mems($parent['MemID']);
         $today = date('Y-m-d H:i:s');
@@ -1331,7 +1329,7 @@ class tad_web_aboutus
         global $xoopsTpl;
         $parent = get_tad_web_parent($ParentID, $code);
         if (empty($parent['ParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
         $mem = get_tad_web_mems($parent['MemID']);
         $xoopsTpl->assign('parent', $parent);
@@ -1376,7 +1374,7 @@ class tad_web_aboutus
         global $xoopsTpl;
         $parent = get_tad_web_parent($ParentID, $code);
         if (empty($parent['ParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
         $xoopsTpl->assign('parent', $parent);
         $xoopsTpl->assign('result', $result);
@@ -1425,9 +1423,9 @@ class tad_web_aboutus
         }
 
         if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginParentID'])) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         } elseif (!empty($_SESSION['LoginParentID']) and $ParentID != $_SESSION['LoginParentID']) {
-            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&ParentID={$_SESSION['LoginParentID']}&op=show_parent", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&ParentID={$_SESSION['LoginParentID']}&op=show_parent", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $mem = get_tad_web_mems($_SESSION['LoginParentMemID']);
@@ -1487,7 +1485,7 @@ class tad_web_aboutus
         }
 
         if (empty($_SESSION['LoginParentID']) or $ParentID != $_SESSION['LoginParentID']) {
-            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
         $myts = \MyTextSanitizer::getInstance();
