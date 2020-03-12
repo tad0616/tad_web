@@ -6,33 +6,33 @@ require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 require_once "langs/{$xoopsConfig['language']}.php";
 
-$FooTable   = new FooTable();
+$FooTable = new FooTable();
 $FooTable->render();
 
-$moduleHandler        = xoops_getHandler('module');
-$xoopsModule       = $moduleHandler->getByDirname('tad_web');
-$configHandler    = xoops_getHandler('config');
+$moduleHandler = xoops_getHandler('module');
+$xoopsModule = $moduleHandler->getByDirname('tad_web');
+$configHandler = xoops_getHandler('config');
 $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
 $CateID = (int) $_GET['CateID'];
-$today  = date('Y-m-d');
-$now    = date('Y-m-d H:i:s');
+$today = date('Y-m-d');
+$now = date('Y-m-d H:i:s');
 //我的班級ID（陣列）
 $MyWebs = MyWebID();
 
 //找出各班最新聯絡簿
-$sql    = 'select `WebID`,max(`HomeworkID`),max(`toCal`) from ' . $xoopsDB->prefix('tad_web_homework') . " where HomeworkPostDate <= '$now' group by `WebID`";
+$sql = 'select `WebID`,max(`HomeworkID`),max(`toCal`) from ' . $xoopsDB->prefix('tad_web_homework') . " where HomeworkPostDate <= '$now' group by `WebID`";
 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
-    $homework[$WebID]      = $HomeworkID;
+    $homework[$WebID] = $HomeworkID;
     $homework_date[$WebID] = substr($toCal, 0, 10);
 }
 
 //找出各班功課表
-$sql    = 'SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM ' . $xoopsDB->prefix('tad_web_schedule') . " WHERE `ScheduleDisplay` = '1'";
+$sql = 'SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM ' . $xoopsDB->prefix('tad_web_schedule') . " WHERE `ScheduleDisplay` = '1'";
 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
-    $schedule[$WebID]       = $ScheduleID;
+    $schedule[$WebID] = $ScheduleID;
     $schedule_title[$WebID] = $ScheduleName;
 }
 
@@ -41,12 +41,12 @@ if (empty($list_web_order)) {
     $list_web_order = 'WebSort';
 }
 
-$sql    = 'select * from ' . $xoopsDB->prefix('tad_web') . " where `WebEnable`='1' and CateID='{$CateID}' order by {$list_web_order}";
+$sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where `WebEnable`='1' and CateID='{$CateID}' order by {$list_web_order}";
 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
 $web_tr = '';
 while (false !== ($web = $xoopsDB->fetchArray($result))) {
-    $WebID   = $web['WebID'];
+    $WebID = $web['WebID'];
     $isMyWeb = in_array($WebID, $MyWebs);
 
     $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
@@ -62,18 +62,18 @@ while (false !== ($web = $xoopsDB->fetchArray($result))) {
     $web_name = !empty($other_web_url) ? "<a href=\"{$other_web_url}\" target=\"_blank\">{$web['WebName']}</a> $tool" : '<a href="' . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\">{$web['WebName']}</a>";
 
     $web_counter = !empty($other_web_url) ? "<a href=\"{$other_web_url}\" target=\"_blank\"><span class='label label-info'>{$web['WebCounter']}</span></a>" : '<a href="'
-                                                                                                                                                              . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\"><span class='label label-info'>{$web['WebCounter']}</span></a>";
+        . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\"><span class='label label-info'>{$web['WebCounter']}</span></a>";
 
     if (empty($web_plugin_enable_arr) or false !== strpos($web_plugin_enable_arr, 'homework')) {
-        $no_homework   = $isMyWeb ? '<a href="' . XOOPS_URL . "/modules/tad_web/homework.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</a>' : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</span>';
+        $no_homework = $isMyWeb ? '<a href="' . XOOPS_URL . "/modules/tad_web/homework.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</a>' : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</span>';
         $have_homework = (isset($homework[$WebID]) and !empty($homework[$WebID])) ? '<a href="'
-                                                                                    . XOOPS_URL . "/modules/tad_web/homework.php?WebID={$WebID}&HomeworkID={$homework[$WebID]}\" target=\"_blank\"><i class='fa fa-pencil-square-o' style='color: #AA6A31;'> {$homework_date[$WebID]} " . _MD_TCW_ABOUTUS_HOMEWORK . '</i></a>' : $no_homework;
+        . XOOPS_URL . "/modules/tad_web/homework.php?WebID={$WebID}&HomeworkID={$homework[$WebID]}\" target=\"_blank\"><i class='fa fa-pencil-square-o' style='color: #AA6A31;'> {$homework_date[$WebID]} " . _MD_TCW_ABOUTUS_HOMEWORK . '</i></a>' : $no_homework;
     } else {
         $have_homework = '';
     }
 
     if (empty($web_plugin_enable_arr) or false !== strpos($web_plugin_enable_arr, 'schedule')) {
-        $no_schedule   = $isMyWeb ? '<a href="' . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_SCHEDULE . '</a>' : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_SCHEDULE . '</span>';
+        $no_schedule = $isMyWeb ? '<a href="' . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_SCHEDULE . '</a>' : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_SCHEDULE . '</span>';
         $have_schedule = (isset($schedule[$WebID]) and !empty($schedule[$WebID])) ? '<a href="' . XOOPS_URL . "/modules/tad_web/schedule.php?WebID={$WebID}&ScheduleID={$schedule[$WebID]}\" target=\"_blank\" style='color: #6F8232;'><i class='fa fa-table'> " . _MD_TCW_ABOUTUS_SCHEDULE . '</i></a>' : $no_schedule;
     } else {
         $have_schedule = '';
@@ -103,8 +103,16 @@ $th4 = in_array('homework', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide
 $content = $FooTableJS . '
 <html lang="zh-TW">
 <meta charset="utf-8">
+<head>
 <title>Web List</title>
-<h2 class="sr-only">Web List</h2>
+<style>
+body{
+  font-size: 1em;
+}
+</style>
+</head>
+<body>
+<h2 style="display:none;">Web List</h2>
 <table class="footable">
   <thead>
     <tr>
@@ -118,6 +126,7 @@ $content = $FooTableJS . '
   ' . $web_tr . '
   </tbody>
 </table>
+</body>
 </html>';
 die($content);
 
