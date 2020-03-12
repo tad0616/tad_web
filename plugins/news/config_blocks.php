@@ -1,4 +1,7 @@
 <?php
+if (!defined(_EZCLASS)) {
+    define('_EZCLASS', 'https://class.tn.edu.tw');
+}
 $blocksArr['list_news']['name'] = _MD_TCW_NEWS_BLOCK_LIST;
 $blocksArr['list_news']['plugin'] = 'news';
 $blocksArr['list_news']['tpl'] = 'list_news.tpl';
