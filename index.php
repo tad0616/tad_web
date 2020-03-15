@@ -25,10 +25,12 @@ function ClassHome($WebID = '')
         if (empty($dirname)) {
             continue;
         }
-        require_once "plugins/{$dirname}/class.php";
-        $plugin_name = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name($WebID);
-        $plugin_data_total += $$plugin_name->get_total();
+        if (file_exists("plugins/{$dirname}/class.php")) {
+            require_once "plugins/{$dirname}/class.php";
+            $plugin_name = "tad_web_{$dirname}";
+            $$plugin_name = new $plugin_name($WebID);
+            $plugin_data_total += $$plugin_name->get_total();
+        }
     }
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
