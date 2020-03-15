@@ -1,12 +1,17 @@
-Tad Web 1.8.1 (2020-01-09 release)
+Tad Web 1.8.2 (2020-03-15 released)
+====================================================
+1. Correction for accessibility 2.0 AA standard
+2. Remove invalid plug-ins
+
+Tad Web 1.8.1 (2020-01-09 released)
 ====================================================
 1.Reflected XSS bug fixes
 
-Tad Web 1.8 (released from 2019-10-14)
+Tad Web 1.8 (2019-10-14 released)
 =========================================================
 1. Fix the problem that the little helper can't work properly
 
-Tad Web 1.7.9 (released from 2019-05-02)
+Tad Web 1.7.9 (2019-05-02 released)
 =========================================================
 1. Fixed custom block editing problem
 2. Fixed the problem that the student roster could not be imported.
@@ -15,7 +20,7 @@ Tad Web 1.7.9 (released from 2019-05-02)
 5. Fix the problem of incorrect use of space
 6. Fixed the problem that the classification setting could not be used normally.
 
-Tad Web 1.7.8 (released from 2019-05-10)
+Tad Web 1.7.8 (2019-05-10 released)
 =========================================================
 1. Support XOOPS 2.5.10
 2. No longer supports PHP 5.3

@@ -156,11 +156,8 @@
             <label class="col-sm-2 control-label">
               <{$smarty.const._MD_TCW_THEME_TOOLS_FONT_SIZE}>
             </label>
-            <div class="col-sm-ˋ">
-              <div class="input-group">
+            <div class="col-sm-4">
                 <input type="text" name="menu_font_size" value="<{$menu_font_size}>" class="form-control">
-                <span class="input-group-addon">px</span>
-              </div>
             </div>
           </div>
 

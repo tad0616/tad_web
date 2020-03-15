@@ -23,6 +23,9 @@ function xoops_module_update_tad_web($module, $old_version)
     //重新產生區塊設定
     get_dir_blocks('force');
 
+    // 移除menu選單
+    Update::drop_menu_plugin();
+
     if (!_IS_EZCLASS) {
         //修改討論區計數欄位名稱
         if (!Update::chk_chk1()) {
