@@ -28,6 +28,54 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 class Update
 {
+
+    public static function drop_menu_plugin()
+    {
+        global $xoopsDB;
+        $sql = 'DROP TABLE IF EXISTS  `' . $xoopsDB->prefix('tad_web_menu');
+        $xoopsDB->queryF($sql);
+
+        $sql = 'select ConfigValue, WebID from ' . $xoopsDB->prefix('tad_web_config') . '
+        where ConfigName="web_plugin_enable_arr" and ConfigValue like "%,menu%"';
+        $result = $xoopsDB->queryF($sql) or die($sql);
+        while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
+            $ConfigValue = str_replace(',menu', '', $ConfigValue);
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_config') . " set `ConfigValue`='$ConfigValue'
+            where `WebID`='{$WebID}' and `ConfigName`='web_plugin_enable_arr' ";
+            $xoopsDB->queryF($sql) or die($sql);
+        }
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_plugins') . " where `PluginDirname`='menu'";
+        $xoopsDB->queryF($sql) or die($sql);
+
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_plugins_setup') . " where `plugin`='menu'";
+        $xoopsDB->queryF($sql) or die($sql);
+
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_power') . " where `col_name`='MenuID'";
+        $xoopsDB->queryF($sql) or die($sql);
+
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_cate') . " where `ColName`='menu'";
+        $xoopsDB->queryF($sql) or die($sql);
+
+        $sql = 'select ConfigValue, WebID from ' . $xoopsDB->prefix('tad_web_config') . '
+        where `ConfigName` = "menu_font_size"';
+        $result = $xoopsDB->queryF($sql) or die($sql);
+        while (list($ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
+            if (is_numeric($ConfigValue)) {
+                if ($ConfigValue < 12) {
+                    $ConfigValue = 12;
+                } elseif ($ConfigValue > 30) {
+                    $ConfigValue = 30;
+                }
+
+                $p = 100 + ($ConfigValue - 16);
+
+                $sql = 'update ' . $xoopsDB->prefix('tad_web_config') . " set `ConfigValue`='{$p}%'
+                where `WebID`='{$WebID}' and `ConfigName`='menu_font_size' ";
+                $xoopsDB->queryF($sql) or die($sql);
+            }
+        }
+    }
+
     public static function chk_sql_install()
     {
         global $xoopsDB;
@@ -412,7 +460,7 @@ class Update
         }
 
         //找出目前所有的樣板檔
-        $sql    = 'SELECT bid,name,visible,show_func,template FROM ' . $xoopsDB->prefix('newblocks') . " WHERE `dirname` = 'tad_web' ORDER BY `func_num`";
+        $sql = 'SELECT bid,name,visible,show_func,template FROM ' . $xoopsDB->prefix('newblocks') . " WHERE `dirname` = 'tad_web' ORDER BY `func_num`";
         $result = $xoopsDB->query($sql);
         while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
             //假如現有的區塊和樣板對不上就刪掉
@@ -1326,11 +1374,12 @@ class Update
         left join ' . $xoopsDB->prefix('tad_web_cate') . " as b on a.CateID=b.CateID
         where a.`plugin`='' ";
         $result = $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
-        while(list($CateID, $plugin)=$xoopsDB->fetchRow($result)){
+        while (list($CateID, $plugin) = $xoopsDB->fetchRow($result)) {
             $sql = 'update ' . $xoopsDB->prefix('tad_web_cate_assistant') . " set `plugin`='$plugin'
             where `CateID`='{$CateID}' and `plugin`='' ";
             $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
         }
         return true;
     }
+
 }
