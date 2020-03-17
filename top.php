@@ -24,32 +24,34 @@ function list_top()
             continue;
         }
         $pluginConfig = [];
-        require_once "plugins/{$dirname}/config.php";
-        if ('' == $pluginConfig['top_table']) {
-            continue;
+        if (file_exists("plugins/{$dirname}/config.php")) {
+            require_once "plugins/{$dirname}/config.php";
+            if ('' == $pluginConfig['top_table']) {
+                continue;
+            }
+
+            $sql = 'SELECT a.WebID, count(*) AS cc , b.WebName ,b.WebTitle FROM ' . $xoopsDB->prefix($pluginConfig['top_table']) . ' AS a  LEFT JOIN ' . $xoopsDB->prefix('tad_web') . " AS b ON a.WebID=b.WebID WHERE b.`WebEnable`='1' GROUP BY a.WebID ORDER BY cc DESC LIMIT 0,10";
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $top = [];
+            $j = 1;
+            while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
+                $top[$j]['count'] = $count;
+                $top[$j]['WebName'] = $WebName;
+                $top[$j]['WebTitle'] = $WebTitle;
+                $top[$j]['WebID'] = $WebID;
+
+                $king_rank[$WebID] += $count * $pluginConfig['top_score'];
+                $WebNames[$WebID] = $WebName;
+                $WebTitles[$WebID] = $WebTitle;
+                $j++;
+            }
+
+            $all_top[$i]['pluginName'] = $pluginConfig['name'];
+            $all_top[$i]['dirname'] = $dirname;
+            $all_top[$i]['top'] = $top;
+
+            $i++;
         }
-
-        $sql = 'SELECT a.WebID, count(*) AS cc , b.WebName ,b.WebTitle FROM ' . $xoopsDB->prefix($pluginConfig['top_table']) . ' AS a  LEFT JOIN ' . $xoopsDB->prefix('tad_web') . " AS b ON a.WebID=b.WebID WHERE b.`WebEnable`='1' GROUP BY a.WebID ORDER BY cc DESC LIMIT 0,10";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $top = [];
-        $j = 1;
-        while (list($WebID, $count, $WebName, $WebTitle) = $xoopsDB->fetchRow($result)) {
-            $top[$j]['count'] = $count;
-            $top[$j]['WebName'] = $WebName;
-            $top[$j]['WebTitle'] = $WebTitle;
-            $top[$j]['WebID'] = $WebID;
-
-            $king_rank[$WebID] += $count * $pluginConfig['top_score'];
-            $WebNames[$WebID] = $WebName;
-            $WebTitles[$WebID] = $WebTitle;
-            $j++;
-        }
-
-        $all_top[$i]['pluginName'] = $pluginConfig['name'];
-        $all_top[$i]['dirname'] = $dirname;
-        $all_top[$i]['top'] = $top;
-
-        $i++;
     }
 
     //標籤部份

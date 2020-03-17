@@ -32,6 +32,10 @@ class Update
     public static function drop_menu_plugin()
     {
         global $xoopsDB;
+
+        unlink(XOOPS_ROOT_PATH . '/modules/tad_web/menu.php');
+        Utility::delete_directory(XOOPS_ROOT_PATH . '/modules/tad_web/plugins/menu');
+
         $sql = 'DROP TABLE IF EXISTS  `' . $xoopsDB->prefix('tad_web_menu');
         $xoopsDB->queryF($sql);
 

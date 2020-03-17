@@ -63,11 +63,13 @@ function list_all_class()
         if (empty($dirname)) {
             continue;
         }
-        require_once "plugins/{$dirname}/class.php";
-        $limit = get_web_config("{$dirname}_limit", 0);
-        $plugin_name = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name(0);
-        $data_count[$dirname] = $$plugin_name->list_all('', $limit);
+        if (file_exists("plugins/{$dirname}/class.php")) {
+            require_once "plugins/{$dirname}/class.php";
+            $limit = get_web_config("{$dirname}_limit", 0);
+            $plugin_name = "tad_web_{$dirname}";
+            $$plugin_name = new $plugin_name(0);
+            $data_count[$dirname] = $$plugin_name->list_all('', $limit);
+        }
     }
     $xoopsTpl->assign('data_count', $data_count);
     $xoopsTpl->assign('data_count_sum', array_sum($data_count));

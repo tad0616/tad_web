@@ -27,16 +27,18 @@ function search_tag($WebID = '', $tag = '')
             continue;
         }
         $pluginConfig = [];
-        require_once "plugins/{$dirname}/config.php";
-        if (true !== $pluginConfig['tag']) {
-            continue;
+        if (file_exists("plugins/{$dirname}/config.php")) {
+            require_once "plugins/{$dirname}/config.php";
+            if (true !== $pluginConfig['tag']) {
+                continue;
+            }
+            require_once "plugins/{$dirname}/class.php";
+            $plugin_name = "tad_web_{$dirname}";
+            $$plugin_name = new $plugin_name($WebID);
+            $data_count[$dirname] = $$plugin_name->list_all('', 50, 'assign', $tag);
+            $plugin_data_total += $$plugin_name->get_total();
+            $show_arr[] = $dirname;
         }
-        require_once "plugins/{$dirname}/class.php";
-        $plugin_name = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name($WebID);
-        $data_count[$dirname] = $$plugin_name->list_all('', 50, 'assign', $tag);
-        $plugin_data_total += $$plugin_name->get_total();
-        $show_arr[] = $dirname;
     }
     $xoopsTpl->assign('data_count', $data_count);
     $xoopsTpl->assign('tag', $tag);
