@@ -3,9 +3,9 @@
   <div class="row">
     <div class="col-md-4">
       <{if $class_pic_thumb}>
-        <div class="card card-body bg-light m-1" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
+        <div class="my-border" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
       <{else}>
-        <div class="card card-body bg-light m-1" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
+        <div class="my-border" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
       <{/if}>
     </div>
     <div class="col-md-8">
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="card card-body bg-light m-1">
+      <div class="my-border">
         <div>
           <{$teacher_name}><{$smarty.const._TAD_FOR}><{$WebOwner}>
         </div>
@@ -55,7 +55,7 @@
                   var numRand = Math.floor(Math.random()*adjustedHigh) + parseFloat(numLow);
 
                   if ((IsNumeric(numLow)) && (IsNumeric(numHigh)) && (parseFloat(numLow) <= parseFloat(numHigh)) && (numLow != '') && (numHigh != '')) {
-                      $('#randomnumber').html('<div class="card card-body bg-light m-1"><{$smarty.const._MD_TCW_GOT_YOU}>' + numRand +'<{$smarty.const._MD_TCW_NUMBER}></div>');
+                      $('#randomnumber').html('<div class="my-border"><{$smarty.const._MD_TCW_GOT_YOU}>' + numRand +'<{$smarty.const._MD_TCW_NUMBER}></div>');
                       $('#'+numRand).clone().appendTo('#MemRandList').css('top','0px').css('left','0px').css('position','relative').css('float','left');
                   } else {
                       $('#randomnumber').html('<{$smarty.const._MD_TCW_AGAIN}>');
@@ -137,7 +137,7 @@
         <{foreach from=$all_mems item=stud}>
           <tr>
             <td>
-              <div class="card card-body bg-light m-1" style="width: 60px; height: 60px; background: transparent url('<{$stud.pic}>') top center no-repeat; <{$stud.style}>; <{$stud.cover}> padding: 0px; float: left; margin-right:4px;"></div>
+              <div class="my-border" style="width: 60px; height: 60px; background: transparent url('<{$stud.pic}>') top center no-repeat; <{$stud.style}>; <{$stud.cover}> padding: 0px; float: left; margin-right:4px;"></div>
 
               <{if 'MemNum'|in_array:$mem_column}>
                 <div><{$smarty.const._MD_TCW_MEM_NUM}>: <{$stud.MemNum}></div>
@@ -179,7 +179,7 @@
     <{elseif $mem_list_mode=="mem_detail"}>
 
       <{foreach from=$all_mems item=stud}>
-        <div class="card card-body bg-light m-1">
+        <div class="my-border">
         <div class="row">
           <div class="col-md-2">
             <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"">
@@ -305,9 +305,9 @@
       <div class="row">
         <div class="col-md-4">
           <{if $class_pic_thumb}>
-            <div class="card card-body bg-light m-1" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size: contain;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
+            <div class="my-border" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size: contain;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
           <{else}>
-            <div class="card card-body bg-light m-1" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
+            <div class="my-border" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
           <{/if}>
         </div>
         <div class="col-md-8">
@@ -634,7 +634,7 @@
   <{if $stud_works.main_data}>
     <h2><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_WORKS}></h2>
     <{foreach from=$stud_works.main_data item=work}>
-      <div class="card card-body bg-light m-1">
+      <div class="my-border">
         <div class="row">
           <div class="col-md-8">
             <span style="font-size: 2em;">
@@ -680,7 +680,7 @@
   <{/if}>
 <{elseif $op=="import_excel_form"}>
   <h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$edit_student}></h3>
-  <div class="card card-body bg-light m-1">
+  <div class="my-border">
     <form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data">
         <div class="row">
           <label class="col-md-3"><{$import_excel}></label>

@@ -5,7 +5,7 @@
     <ul class="list-group">
       <{foreach from=$bc.main_data key=i item=news}>
         <li class="list-group-item">
-        <span class="badge"><{$news.NewsCounter}></span>
+        <span class="badge badge-info"><{$news.NewsCounter}></span>
         <{$news.Date}>
         <{if isset($news.cate.CateID)}>
           <span class="badge badge-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
@@ -38,7 +38,7 @@
             <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
           <{/if}>
         </h3>
-        <div class="card card-body bg-light m-1" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
+        <div class="my-border" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
           <{if isset($news.cate.CateID)}>
             <span class="badge badge-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
           <{/if}>
@@ -48,7 +48,7 @@
           <{/if}>
         </div>
       <{else}>
-        <div class="card card-body bg-light m-1" style="height: 100px; overflow: auto; line-height: 1.8; ">
+        <div class="my-border" style="height: 100px; overflow: auto; line-height: 1.8; ">
           <h3>
             <{$news.Date}>
             <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
@@ -79,7 +79,7 @@
           <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
         <{/if}>
       </h3>
-      <div class="card card-body bg-light m-1" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
+      <div class="my-border" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
         <{if isset($bc.main_data.0.cate.CateID)}>
           <span class="badge badge-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$bc.main_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$bc.main_data.0.cate.CateName}></a></span>
         <{/if}>
@@ -89,7 +89,7 @@
         <{/if}>
       </div>
     <{else}>
-      <div class="card card-body bg-light m-1" style="height: 100px; overflow: auto; line-height: 1.8; ">
+      <div class="my-border" style="height: 100px; overflow: auto; line-height: 1.8; ">
         <h3>
           <{$bc.main_data.0.Date}>
           <a href="news.php?WebID=<{$WebID}>&NewsID=<{$bc.main_data.0.NewsID}>"><{$bc.main_data.0.NewsTitle}></a>
@@ -107,7 +107,7 @@
       <{foreach from=$bc.main_data key=i item=news}>
         <{if $i > 0}>
           <li class="list-group-item">
-          <span class="badge"><{$news.NewsCounter}></span>
+          <span class="badge badge-info"><{$news.NewsCounter}></span>
           <{$news.Date}>
           <{if isset($news.cate.CateID)}>
             <span class="badge badge-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>

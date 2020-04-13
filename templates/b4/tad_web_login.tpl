@@ -71,7 +71,7 @@
     </script>
 
 
-    <div class="card card-body bg-light m-1">
+    <div class="my-border">
 
       <select id="login_method" class="form-control" style="margin-bottom: 10px;">
         <{if $openid=='1'}>

@@ -98,7 +98,7 @@ class Tags
             $checked = (in_array($tag, $tag_arr) and !empty($tag_name)) ? 'checked' : '';
             $tags_select .= "
             <label class='checkbox-inline'>
-                <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>{$tag} <span class='badge'>{$count}</span>
+                <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>{$tag} <span class='badge badge-info'>{$count}</span>
             </label>";
         }
 
@@ -117,8 +117,7 @@ class Tags
         if ($tags_select) {
             $menu .= '
             <div class="form-group">
-                <label class="col-sm-' . $this->label_col_md . '">
-                </label>
+                <label class="col-sm-' . $this->label_col_md . '"></label>
                 <div class="col-sm-' . $this->menu_col_md . '">
                     ' . $tags_select . '
                 </div>

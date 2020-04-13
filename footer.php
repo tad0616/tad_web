@@ -187,7 +187,7 @@ function tad_web_my_menu($WebID)
                 }
                 $space_quota = get_web_config('space_quota', $defaltWebID);
                 $space_quota = empty($space_quota) ? 500 : $space_quota;
-                $quota = empty($space_quota) ? $xoopsModuleConfig['user_space_quota'] : $space_quota;
+                $quota = (empty($space_quota) or $space_quota == "default") ? $xoopsModuleConfig['user_space_quota'] : $space_quota;
 
                 $size = size2mb($defalt_used_size);
                 $percentage = round($size / $quota, 2) * 100;

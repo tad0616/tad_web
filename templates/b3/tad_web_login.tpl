@@ -71,7 +71,7 @@
     </script>
 
 
-    <div class="well">
+    <div class="my-border">
 
       <select id="login_method" class="form-control" style="margin-bottom: 10px;">
         <{if $openid=='1'}>

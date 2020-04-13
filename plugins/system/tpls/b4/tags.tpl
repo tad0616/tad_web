@@ -19,7 +19,7 @@
     <ul class="list-group">
     <{foreach from=$bc.tags_arr key=tag item=count}>
       <li class="list-group-item">
-        <span class="badge"><{$count}></span>
+        <span class="badge badge-info"><{$count}></span>
         <a href="<{$xoops_url}>/modules/tad_web/tag.php?WebID=<{$WebID}>&tag=<{$tag}>"><{$tag}></a>
       </li>
     <{/foreach}>

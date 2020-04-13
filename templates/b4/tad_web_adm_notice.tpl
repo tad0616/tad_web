@@ -93,7 +93,7 @@
     </label>
     <div class="col-md-9">
 
-      <div class="card card-body bg-light m-1">
+      <div class="my-border">
         <{$NoticeContent}>
       </div>
     </div>
@@ -106,7 +106,7 @@
     </label>
     <div class="col-md-9">
 
-      <div class="card card-body bg-light m-1">
+      <div class="my-border">
         <{$NoticeWeb}>
       </div>
     </div>

@@ -6,7 +6,7 @@
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
   <h2><{$smarty.const._MD_TCW_CALENDAR_ADD}></h2>
-  <div class="card card-body bg-light m-1">
+  <div class="my-border">
     <form action="calendar.php" method="post" id="myForm" enctype="multipart/form-data" role="form">
 
       <!--活動日期-->

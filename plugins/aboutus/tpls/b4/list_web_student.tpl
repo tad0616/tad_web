@@ -2,13 +2,13 @@
 <div class="row">
   <{if $bc.class_pic_thumb}>
     <div class="col-md-4">
-      <div class="card card-body bg-light m-1" style="background-image:url('<{$bc.class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:150px;"></div>
+      <div class="my-border" style="background-image:url('<{$bc.class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:150px;"></div>
     </div>
   <{/if}>
   <div class="col-md-<{if $bc.class_pic_thumb}>8<{else}>12<{/if}>">
 
     <h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$bc.CateID}>"><{$bc.cate.CateName}></a></h3>
-    <div class="card card-body bg-light m-1">
+    <div class="my-border">
       <div>
         <{$bc.teacher_name}><{$smarty.const._TAD_FOR}><{$bc.WebOwner}>
       </div>

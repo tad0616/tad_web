@@ -90,7 +90,7 @@
     </label>
     <div class="col-sm-9">
 
-      <div class="well">
+      <div class="my-border">
         <{$NoticeContent}>
       </div>
     </div>
@@ -103,7 +103,7 @@
     </label>
     <div class="col-sm-9">
 
-      <div class="well">
+      <div class="my-border">
         <{$NoticeWeb}>
       </div>
     </div>
