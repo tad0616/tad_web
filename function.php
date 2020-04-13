@@ -864,6 +864,10 @@ function mklogoPic($WebID = '')
 //製作logo圖
 function mkTitlePic($WebID = '', $filename = '', $title = '', $color = '#ABBF6B', $border_color = '#FFFFFF', $size = '30', $font = 'font.ttf')
 {
+    if (empty($title)) {
+        return;
+    }
+
     if (function_exists('mb_strlen')) {
         $n = mb_strlen($title, _CHARSET);
     } else {
@@ -1342,7 +1346,7 @@ function get_quota($WebID = '')
     // $size               = get_web_config("used_size", $WebID);
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : (int) $xoopsModuleConfig['user_space_quota'];
 
-    $space_quota = get_web_config('space_quota', $WebID,'db');
+    $space_quota = get_web_config('space_quota', $WebID, 'db');
     // var_dump($space_quota));
     $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int) $space_quota;
 
@@ -1620,7 +1624,7 @@ function get_sys_openid()
 }
 
 //設定小幫手
-function set_assistant($CateID = '', $MemID = '', $plugin='')
+function set_assistant($CateID = '', $MemID = '', $plugin = '')
 {
     global $xoopsDB;
     if (empty($CateID) or empty($MemID)) {
@@ -1638,7 +1642,7 @@ function set_assistant($CateID = '', $MemID = '', $plugin='')
 }
 
 //取得小幫手
-function get_assistant($CateID = '',$plugin='')
+function get_assistant($CateID = '', $plugin = '')
 {
     global $xoopsDB;
     if (empty($CateID)) {
@@ -1761,12 +1765,12 @@ function chk_self_web($WebID, $other = null)
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
     } elseif (!$isMyWeb) {
         if (null !== $other and !$other) {
-            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         } elseif (empty($MyWebs) and null === $other) {
-            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         } else {
             return true;
         }
-        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
     }
 }
