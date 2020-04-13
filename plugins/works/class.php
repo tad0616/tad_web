@@ -327,6 +327,9 @@ class tad_web_works
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
+        $attachments = $TadUpFiles->upform(true, 'attachments');
+        $xoopsTpl->assign('attachments', $attachments);
+
         $tags_form = $this->tags->tags_menu('WorksID', $WorksID);
         $xoopsTpl->assign('tags_form', $tags_form);
     }

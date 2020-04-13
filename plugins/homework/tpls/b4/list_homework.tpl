@@ -9,7 +9,7 @@
           <{if $homework.toCal > $bc.today }>
             <li class="list-group-item">
 
-              <span class="badge"><{$homework.HomeworkCounter}></span>
+              <span class="badge badge-info"><{$homework.HomeworkCounter}></span>
               <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
               <{if $homework.isCanEdit}>
@@ -76,7 +76,7 @@
         <{foreach from=$bc.main_data key=i item=homework}>
           <{if $homework.toCal < $bc.today}>
             <li class="list-group-item">
-              <span class="badge"><{$homework.HomeworkCounter}></span>
+              <span class="badge badge-info"><{$homework.HomeworkCounter}></span>
               <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
               <{if $homework.isCanEdit}>
@@ -95,7 +95,7 @@
       <ul class="list-group">
         <{foreach from=$bc.yet_data key=i item=homework}>
           <li class="list-group-item">
-            <span class="badge"><{$homework.HomeworkCounter}></span>
+            <span class="badge badge-info"><{$homework.HomeworkCounter}></span>
 
             <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 

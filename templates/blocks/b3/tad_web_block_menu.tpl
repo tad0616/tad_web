@@ -22,7 +22,7 @@
       <h3><{$smarty.const._MB_TCW_LOGIN}></h3>
     <{/if}>
 
-    <div class="well">
+    <div class="my-border">
       <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form" id="xoops_login">
         <div class="form-group">
           <label class="col-sm-4 control-label" for="uname">

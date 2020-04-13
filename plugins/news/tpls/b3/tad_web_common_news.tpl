@@ -29,7 +29,7 @@
               <{/if}>
             </div>
           <{else}>
-            <div class="well" style="height: 100px; overflow: auto; line-height: 1.8; ">
+            <div class="my-border" style="height: 100px; overflow: auto; line-height: 1.8; ">
               <h3>
                 <{$news.Date}>
                 <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>

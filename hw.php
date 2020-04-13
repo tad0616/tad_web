@@ -31,7 +31,7 @@ while (list($HomeworkID, $HomeworkContent) = $xoopsDB->fetchRow($result)) {
     //有無老師的叮嚀
     $teacher_say = mb_strpos($tr_content_title, 'teacher_say.png') ? true : false;
 
-    $tr_content_body = str_replace('<pre>', '<div class="well">', $tr_content_body);
+    $tr_content_body = str_replace('<pre>', '<div class="my-border">', $tr_content_body);
     $tr_content_body = str_replace('</pre>', '</div>', $tr_content_body);
 
     $content = explode('</td><td>', $tr_content_body);

@@ -9,7 +9,7 @@
           <{foreach from=$homework_data key=i item=homework}>
             <{if $homework.toCal > $today}>
               <li class="list-group-item">
-                <span class="badge"><{$homework.HomeworkCounter}></span>
+                <span class="badge badge-info"><{$homework.HomeworkCounter}></span>
 
                 <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
@@ -77,7 +77,7 @@
           <{foreach from=$homework_data key=i item=homework}>
             <{if $homework.toCal < $today}>
               <li class="list-group-item">
-                <span class="badge"><{$homework.HomeworkCounter}></span>
+                <span class="badge badge-info"><{$homework.HomeworkCounter}></span>
 
                 <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
@@ -129,7 +129,7 @@
             <{/if}>
           </td>
           <td style="text-align:center;">
-            <span class="badge"><{$homework.HomeworkCounter}></span>
+            <span class="badge badge-info"><{$homework.HomeworkCounter}></span>
           </td>
           <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
             <td style="text-align:center;" class="common_team_content">
@@ -163,7 +163,7 @@
       <ul class="list-group">
         <{foreach from=$yet_data key=i item=homework}>
           <li class="list-group-item">
-            <span class="badge"><{$homework.HomeworkCounter}></span>
+            <span class="badge badge-info"><{$homework.HomeworkCounter}></span>
 
             <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 

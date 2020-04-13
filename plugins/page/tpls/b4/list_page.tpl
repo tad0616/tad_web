@@ -35,7 +35,7 @@
                     <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>"></i>
                   <{/if}>
                   <{if $content.show_count=='1'}>
-                    <span class="badge"><{$page.PageCount}></span>
+                    <span class="badge badge-info"><{$page.PageCount}></span>
                   <{/if}>
                   <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
                   <{if $page.isCanEdit}>

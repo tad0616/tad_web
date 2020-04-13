@@ -25,7 +25,7 @@
 
 
   <h2><{$smarty.const._MD_TCW_VIDEO_ADD}></h2>
-  <div class="card card-body bg-light m-1">
+  <div class="my-border">
     <form action="video.php" method="post" id="myForm" enctype="multipart/form-data" role="form">
       <!--分類-->
       <{$cate_menu_form}>

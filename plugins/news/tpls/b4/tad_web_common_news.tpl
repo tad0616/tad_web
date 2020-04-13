@@ -29,7 +29,7 @@
               <{/if}>
             </div>
           <{else}>
-            <div class="card card-body bg-light m-1" style="height: 100px; overflow: auto; line-height: 1.8; ">
+            <div class="my-border" style="height: 100px; overflow: auto; line-height: 1.8; ">
               <h3>
                 <{$news.Date}>
                 <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>

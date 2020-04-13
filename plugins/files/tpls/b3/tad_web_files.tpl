@@ -24,7 +24,7 @@
     });
   </script>
   <h2><{$smarty.const._MD_TCW_FILES_ADD}></h2>
-  <div class="well">
+  <div class="my-border">
     <form action="files.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
       <!--分類-->

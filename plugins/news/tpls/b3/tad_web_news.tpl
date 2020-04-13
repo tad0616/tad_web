@@ -4,7 +4,7 @@
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
   <h2><{$smarty.const._MD_TCW_NEWS_ADD}></h2>
 
-  <div class="well">
+  <div class="my-border">
     <form action="news.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
 
       <!--分類-->
@@ -111,7 +111,7 @@
   <{/if}>
 
   <{if $NewsContent==''}>
-    <div class="well" style="font-size:2em;">
+    <div class="my-border" style="font-size:2em;">
      <{$NewsUrlTxt}>
     </div>
   <{else}>

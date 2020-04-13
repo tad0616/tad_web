@@ -20,7 +20,7 @@
     </script>
 
     <h2><{$smarty.const._MD_TCW_DISCUSS_ADD}></h2>
-    <div class="card card-body bg-light m-1">
+    <div class="my-border">
       <form action="discuss.php" method="post" id="myForm" enctype="multipart/form-data" role="form">
 
       <!--分類-->

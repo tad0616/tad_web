@@ -142,7 +142,7 @@ class WebCate
             foreach ($data as $k => $v) {
                 $$k = $v;
             }
-            $selected = ($defCateID == $CateID) ? 'selected' : '';
+            $selected = ($defCateID == $CateID or $defCateID == '') ? 'selected' : '';
             $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
         }
 
@@ -159,22 +159,27 @@ class WebCate
                 $option .= "<option value='{$CateID}' $selected>{$CateName}</option>";
             }
         }
+
         $button_value = empty($this->button_value) ? _MD_TCW_CATE_TOOLS : $this->button_value;
         $tools = $show_tools ? "<div class=\"col-sm-2\"><a href='cate.php?WebID={$this->WebID}&ColName={$this->ColName}&table={$this->table}' class='btn btn-warning' >$button_value</a></div>" : '';
         $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
         $validate = $required ? 'validate[required]' : '';
+
         $def_opt = $default_opt ? "<option value=''>$default_option_text</option>" : '';
+
         $menu = "<select name='{$this->menu_name}' id='{$this->menu_id}' class='{$validate} form-control' >
         {$def_opt}
         {$option}
         </select>";
+
         if ('menu' === $mode) {
             return $menu;
         }
+
         if ($option and $show_select) {
             $cate_menu = "
             <div id='cate_menu' class=\"col-sm-{$this->menu_col_md}\">
-              $menu
+                $menu
             </div>
             ";
         } elseif ($show_select) {
@@ -195,15 +200,15 @@ class WebCate
                 $hide = "style='display:none;'";
                 $botton = "
                 <div class=\"col-sm-2\" id=\"newCate\">
-                  <button type='button' class='btn btn-info' id=\"add_cate\">{$new_cate}</button>
+                    <button type='button' class='btn btn-info' id=\"add_cate\">{$new_cate}</button>
                 </div>
                 <div class=\"col-sm-2\" id=\"showMenu\" style='display:none;'>
-                  <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_TO_MENU . '</button>
+                    <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_TO_MENU . '</button>
                 </div>';
             }
             $new_input = "
             <div class=\"col-sm-5\" id=\"newCateName\" $hide>
-              <input type='text' name='newCateName' placeholder='{$new_cate} {$demo_txt}' class='validate[required] form-control' value='{$this->default_value}'>
+                <input type='text' name='newCateName' placeholder='{$new_cate} {$demo_txt}' class='validate[required] form-control' value='{$this->default_value}'>
             </div>
             $botton";
         } else {
@@ -214,7 +219,7 @@ class WebCate
         $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} control-label\">
           {$show_label_txt}
           </label>" : '';
-        $row = ('form' === $mode) ? 'form-group' : 'row';
+        $row = ('form' === $mode) ? 'form-group row' : 'row';
 
         require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
         $op = system_CleanVars($_REQUEST, 'op', '', 'string');

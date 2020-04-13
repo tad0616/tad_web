@@ -1,7 +1,7 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $mode=="need_login"}>
 
-  <div class="card card-body bg-light m-1">
+  <div class="my-border">
     <{$smarty.const._MD_TCW_NEED_LOGIN}>
   </div>
 <{elseif $bc.main_data}>
