@@ -2,16 +2,19 @@
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-$sql = 'SELECT a.HomeworkID, a.WebID, b.WebOwnerUid FROM ' . $xoopsDB->prefix('tad_web_homework') . ' as a
-left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
-where a.uid=0';
+$sql = 'SELECT ConfigName,ConfigValue,WebID FROM  ' . $xoopsDB->prefix('tad_web_config') . " where ConfigName='login_config'";
 $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
 $main = '';
-$today_homework = $bring = $teacher_say = false;
-while (list($HomeworkID, $WebID, $WebOwnerUid) = $xoopsDB->fetchRow($result)) {
-    $sql = 'update ' . $xoopsDB->prefix('tad_web_homework') . " set uid='$WebOwnerUid' where HomeworkID='$HomeworkID'";
-    // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    $main .= "<div>{$HomeworkID}=>{$WebID}=><b>$WebOwnerUid</b></div>$sql";
+while (list($ConfigName, $ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
+    if (strpos($ConfigValue, 'hcc') !== false) {
+        if (strpos($ConfigValue, 'hcc_oidc') === false) {
+            $ConfigValue = str_replace('hcc', 'hcc_oidc', $ConfigValue);
+        } else {
+            $ConfigValue = str_replace('hcc;', '', $ConfigValue);
+        }
+        $sql = "update " . $xoopsDB->prefix('tad_web_config') . " set ConfigValue='$ConfigValue' where ConfigName='login_config' and WebID='$WebID'";
+        // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        echo $sql . '<br>';
+    }
 }
 echo Utility::html5($main);
