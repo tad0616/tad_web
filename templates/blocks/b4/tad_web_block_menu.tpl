@@ -101,7 +101,7 @@
 <{elseif $block.op=="mem"}>
   <div class="row">
     <div class="col-md-12">
-      <div class="card card-body bg-light m-1 card card-body bg-light m-1-small">
+      <div class="my-border">
 
         <{$LoginMemName}>
         <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>
