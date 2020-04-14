@@ -108,17 +108,17 @@ class Power
 
         $menu = '
         <!--權限設定-->
-        <div class="form-group" style="background: #FCECDB;">
-            <label class="col-sm-' . $this->label_col_md . ' control-label">
-              ' . $label . '
+        <div class="form-group row" style="background: #FCECDB;">
+            <label class="col-sm-' . $this->label_col_md . ' control-label col-form-label text-sm-right">
+                ' . $label . '
             </label>
             <div class="col-sm-' . $this->menu_col_md . '">
-              <select name="' . $power_name . '" class="form-control">
-                <option value="">' . _MD_TCW_POWER_FOR_ALL . '</option>
-                <option value="users" ' . $select_users . '>' . _MD_TCW_POWER_FOR_USERS . '</option>
-                <option value="web_users" ' . $select_web_users . '>' . _MD_TCW_POWER_FOR_WEB_USERS . '</option>
-                <option value="web_admin" ' . $select_web_admin . '>' . _MD_TCW_POWER_FOR_WEB_ADMIN . '</option>
-              </select>
+                <select name="' . $power_name . '" class="form-control">
+                    <option value="">' . _MD_TCW_POWER_FOR_ALL . '</option>
+                    <option value="users" ' . $select_users . '>' . _MD_TCW_POWER_FOR_USERS . '</option>
+                    <option value="web_users" ' . $select_web_users . '>' . _MD_TCW_POWER_FOR_WEB_USERS . '</option>
+                    <option value="web_admin" ' . $select_web_admin . '>' . _MD_TCW_POWER_FOR_WEB_ADMIN . '</option>
+                </select>
             </div>
         </div>
         ';

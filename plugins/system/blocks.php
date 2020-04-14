@@ -87,6 +87,7 @@ function wiki($WebID, $config = [])
 function pm25($WebID, $config = [])
 {
     $block['main_data'] = true;
+    $block['config'] = $config;
 
     return $block;
 }
@@ -95,6 +96,7 @@ function pm25($WebID, $config = [])
 function psi($WebID, $config = [])
 {
     $block['main_data'] = true;
+    $block['config'] = $config;
 
     return $block;
 }
