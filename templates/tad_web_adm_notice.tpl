@@ -1,2 +1,4 @@
-<{assign var=this_file value=$smarty.template|basename|replace:'db:':''}>
-<{includeq file="$xoops_rootpath/modules/$xoops_dirname/templates/b4.tpl"}>
+<div class="container-fluid">
+    <h2><{$smarty.const._MA_TCW_WEB_NOTICE}></h2>
+    <{includeq file="$xoops_rootpath/modules/tad_web/templates/op_`$now_op`.tpl"}>
+</div>

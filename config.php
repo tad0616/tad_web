@@ -111,7 +111,6 @@ function tad_web_config($WebID, $configs)
 
     //功能設定
     $plugins = get_plugins($WebID, 'edit');
-    // die(var_export($plugins));
     $xoopsTpl->assign('plugins', $plugins);
 
     //背景圖設定

@@ -53,7 +53,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
         }
     }
 
-    $form = $editor = '';
+    $block_config_form = $editor = '';
     //新增
     if ('add' === $mode) {
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/block");
@@ -81,9 +81,9 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
         } else {
             $func = isset($block['BlockName']) ? $block['BlockName'] : '';
             require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
-            $form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
+            $block_config_form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
             if ('1' == $_GET['test']) {
-                die(var_export($form));
+                die(var_export($block_config_form));
             }
         }
     }
@@ -91,7 +91,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
     // if ($WebID == '10') {
     //     die(var_export($config));
     // }
-    $xoopsTpl->assign('form', $form);
+    $xoopsTpl->assign('block_config_form', $block_config_form);
     $xoopsTpl->assign('editor', $editor);
     if ('1' == $_GET['test']) {
         die(var_export($block));
@@ -122,12 +122,12 @@ function array2form($form_arr = [], $config = [])
     }
     $form_code = '';
     foreach ($form_arr as $config_name => $form) {
-        $form_code .= '<div class="form-group">';
+        $form_code .= '<div class="form-group row">';
         $form_code .= '
-          <label class="col-sm-3 control-label">
+        <label class="col-sm-3 col-form-label text-sm-right control-label">
             ' . $form['label'] . '
-          </label>
-          <div class="col-sm-9">';
+        </label>
+        <div class="col-sm-9">';
         switch ($form['type']) {
             case 'select':
                 $form_code .= '<select name="config[' . $config_name . ']" class="form-control">';
@@ -162,13 +162,14 @@ function array2form($form_arr = [], $config = [])
                 break;
         }
         $form_code .= '
-          </div>
+            </div>
         </div>';
     }
 
     return $form_code;
 }
 
+// 儲存區塊設定
 function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTitle = '', $BlockPosition = '', $config = '', $BlockShare = '', $shareBlockID = '', $BlockEnable = '', $ShareFrom = '')
 {
     global $xoopsDB, $power;
@@ -279,6 +280,7 @@ function mk_block_pic($WebID = '', $block_pic = [], $use_block_pic = '')
     }
 }
 
+// 取得區塊設定需要的一些共同設定值
 function block_setup($WebID = '')
 {
     global $xoopsDB, $xoopsTpl;
@@ -436,18 +438,20 @@ function demo_block($BlockID, $WebID)
     }
 
     $xoopsTpl->assign('theme_display_mode', 'blank');
-    // if ($_GET['test'] == '1') {
-    //     die(var_export($blocks_arr));
-    // }
+    if ($_GET['test'] == '1') {
+        die(var_export($blocks_arr));
+    }
     $xoopsTpl->assign('block', $blocks_arr);
 }
 
+// 檢查是否有新區塊
 function chk_newblock($WebID)
 {
     global $xoopsDB;
 
     //取得應有的所有區塊
     $all_blocks = get_all_blocks();
+
     $block_plugin = get_all_blocks('plugin');
     $block_config = get_all_blocks('config');
     //找出目前已安裝的區塊
@@ -518,12 +522,9 @@ function chk_newblock($WebID)
                     });
                     $new_block_config = urldecode(json_encode($new_config));
                 }
-
-                // echo "新設定：" . $new_block_config . "<br>";
-
                 $new_block_config = str_replace('{{WebID}}', $WebID, $new_block_config);
+
                 $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockConfig`='{$new_block_config}' where `BlockID`='{$BlockID}'";
-                // echo "<div>$sql</div>";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
         }
@@ -554,35 +555,37 @@ switch ($op) {
         save_block_config($WebID, $BlockID, $BlockName, $BlockTitle, $BlockPosition, $config, $BlockShare, $shareBlockID, $BlockEnable, $ShareFrom);
         header("location: block.php?WebID={$WebID}");
         exit;
-        break;
+
     case 'config':
         config_block($WebID, $BlockID, $plugin);
         break;
+
     case 'add_block':
         config_block($WebID, $BlockID, $plugin, 'add');
         break;
+
     case 'mk_block_pic':
         mk_block_pic($WebID, $block_pic, $use_block_pic);
         header("location: block.php?WebID={$WebID}");
         exit;
-        break;
+
     case 'delete_block':
         delete_block($BlockID, $WebID);
         header("location: block.php?WebID={$WebID}");
         exit;
-        break;
+
     case 'copy':
         $newBlockID = copy_block($BlockID, $plugin, $WebID);
         header("location: block.php?WebID={$WebID}&op=config&plugin={$plugin}&BlockID={$newBlockID}");
         exit;
-        break;
+
     case 'demo':
         demo_block($BlockID, $WebID);
         break;
+
     //預設動作
     default:
         chk_newblock($WebID);
-        //die(var_export(get_all_blocks('limit')));
         block_setup($WebID);
         $xoopsTpl->assign('block1', get_position_blocks($WebID, 'block1', $plugin));
         $xoopsTpl->assign('block2', get_position_blocks($WebID, 'block2', $plugin));

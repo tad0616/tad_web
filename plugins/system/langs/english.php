@@ -37,6 +37,7 @@ define('_MD_TCW_SEARCH_WIKI', 'Search');
 define('_MD_TCW_SEARCH_WIKI_KEYWORD', 'Key Word');
 define('_MD_TCW_NEWS_BLOCK_LOGIN_METHOD', 'Choose Login mode');
 define('_MD_TCW_SYSTEM_BLOCK_PM25', 'Pm2.5 Forecast');
+define('_MD_TCW_SYSTEM_BLOCK_PM25_SITE', 'Pm2.5 Station');
 define('_MD_TCW_SYSTEM_BLOCK_PSI', 'PSI Forecast');
 define('_MD_TCW_SYSTEM_BLOCK_TALKIO', 'tlk.io chat');
 define('_MD_TCW_SYSTEM_BLOCK_TLKIO_NAME', 'Channel name');

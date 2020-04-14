@@ -127,9 +127,7 @@ function get_all_blocks($value = 'title')
     $block_option = [];
     //來自plugin的區塊
     $allBlockConfig = get_dir_blocks();
-    // if ($isAdmin) {
-    //     die(var_export($allBlockConfig));
-    // }
+
     foreach ($allBlockConfig as $plugin => $blockConfig) {
         foreach ($blockConfig as $func => $block) {
             if ('plugin' === $value) {
@@ -146,9 +144,7 @@ function get_all_blocks($value = 'title')
             }
         }
     }
-    // if ($isAdmin) {
-    //     die(var_export($block_option));
-    // }
+
     return $block_option;
 }
 

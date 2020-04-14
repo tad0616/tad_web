@@ -138,6 +138,7 @@ function xoops_module_update_tad_web($module, $old_version)
 
     Update::chk_plugin_update();
     Update::fiexd_block();
+    Update::del_dir_plugins_json();
 
     return true;
 }

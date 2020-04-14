@@ -29,6 +29,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class Update
 {
 
+    public static function del_dir_plugins_json()
+    {
+        if (file_exists(XOOPS_ROOT_PATH . '/uploads/tad_web/dir_plugins.json')) {
+            unlink(XOOPS_ROOT_PATH . '/uploads/tad_web/dir_plugins.json');
+        }
+    }
+
     public static function drop_menu_plugin()
     {
         global $xoopsDB;

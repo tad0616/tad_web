@@ -201,6 +201,9 @@ class tad_web_works
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+        $xoopsTpl->assign('pics', $pics);
+        $attachments = $TadUpFiles->show_files('attachments', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
+        $xoopsTpl->assign('attachments', $attachments);
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
@@ -224,7 +227,6 @@ class tad_web_works
         $xoopsTpl->assign('WorksDate', $WorksDate);
         $xoopsTpl->assign('WorkDesc', nl2br($WorkDesc));
         $xoopsTpl->assign('uid_name', $uid_name);
-        $xoopsTpl->assign('pics', $pics);
         $xoopsTpl->assign('WorksInfo', sprintf(_MD_TCW_INFO, $uid_name, $WorksDate, $WorksCount));
 
         $xoopsTpl->assign('xoops_pagetitle', $WorkName);
@@ -242,9 +244,12 @@ class tad_web_works
 
         $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
+        $TadUpFiles->set_col('WorksID', $WorksID); //若 $show_list_del_file ==true 時一定要有
+        $attachments = $TadUpFiles->upform(true, 'attachments', null, false);
+        $xoopsTpl->assign('attachments', $attachments);
+
         $xoopsTpl->assign('show_mem_upload_form', $show_mem_upload_form);
         if ($show_mem_upload_form) {
-            $TadUpFiles->set_col('WorksID', $WorksID); //若 $show_list_del_file ==true 時一定要有
             $upform = $TadUpFiles->upform(false, 'upfile', null, false);
             $xoopsTpl->assign('upform', $upform);
             $mem_upload_content = $this->get_mem_upload_content($WorksID, $_SESSION['LoginMemID']);
@@ -368,7 +373,8 @@ class tad_web_works
         save_assistant_post($CateID, 'WorksID', $WorksID);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
-        $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
+        $TadUpFiles->upload_file('upfile', 1280, null, null, null, true);
+        $TadUpFiles->upload_file('attachments', 1920, null, null, null, true);
 
         check_quota($this->WebID);
         //儲存標籤
@@ -409,7 +415,8 @@ class tad_web_works
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
-        $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
+        $TadUpFiles->upload_file('upfile', 1280, null, null, null, true);
+        $TadUpFiles->upload_file('attachments', 1920, null, null, null, true);
 
         check_quota($this->WebID);
         //儲存標籤
