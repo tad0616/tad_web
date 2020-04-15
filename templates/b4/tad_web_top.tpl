@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tad_web/module.css">
-
 <h2><{$smarty.const._MD_TCW_LEADERBOARD_RANK}></h2>
 <{assign var="i" value=1}>
 <ul class="list-group">

@@ -77,5 +77,6 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tad_web/css/module.css');
 require_once __DIR__ . '/footer.php';
 require_once XOOPS_ROOT_PATH . '/footer.php';
