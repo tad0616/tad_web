@@ -36,10 +36,6 @@
             });
         </script>
 
-        <{if $isMyWeb}>
-            <{$sweet_delete_homework_func_code}>
-        <{/if}>
-
         <div id="snaptarget">
             <{$students1}>
         </div>

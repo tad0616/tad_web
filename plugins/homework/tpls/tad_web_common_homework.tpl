@@ -1,8 +1,4 @@
 <{if $homework_data}>
-    <{if $isMyWeb}>
-        <{$sweet_delete_homework_func_code}>
-    <{/if}>
-
     <{if $web_display_mode=='index' and $homework_data}>
         <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
             <a href="<{$xoops_url}>/modules/tad_web/<{$dirname}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$homework.PluginTitle}>"></a>

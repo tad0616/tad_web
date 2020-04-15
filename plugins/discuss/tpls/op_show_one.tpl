@@ -1,7 +1,3 @@
-<{if $isMyWeb}>
-    <{$sweet_delete_discuss_func_code}>
-<{/if}>
-
 <h2><{$DiscussTitle}></h2>
 
 <ol class="breadcrumb">

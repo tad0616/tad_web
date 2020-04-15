@@ -1,8 +1,3 @@
-
-<{if $isMyWeb}>
-    <{$sweet_delete_calendar_func_code}>
-<{/if}>
-
 <h2><{$CalendarDate}><{$CalendarName}></h2>
 
 <ol class="breadcrumb">

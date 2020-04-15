@@ -8,10 +8,6 @@
     <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h2>
 <{/if}>
 
-<{if $isMyWeb}>
-    <{$sweet_delete_schedule_func_code}>
-<{/if}>
-
 <{if $schedule_data}>
     <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
     <{if $WebID==""}>

@@ -1,7 +1,3 @@
-<{if $isCanEdit}>
-    <{$sweet_delete_homework_func_code}>
-<{/if}>
-
 <h2><{$HomeworkTitle}></h2>
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="homework.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_HOMEWORK}></a></li>

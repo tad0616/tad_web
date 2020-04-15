@@ -16,9 +16,6 @@
         <{$smarty.const._MD_TCW_NEED_LOGIN}>
         </div>
     <{else}>
-        <{if $isMyWeb}>
-            <{$sweet_delete_discuss_func_code}>
-        <{/if}>
         <table class="footable table common_table">
             <thead>
                 <tr>
