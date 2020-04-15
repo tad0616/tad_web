@@ -10,16 +10,15 @@
 </div>
 
 <script type="text/javascript">
-  $(function () {
-    $('#countdown_<{$bc.randStr}>').timeTo({
-        timeTo: new Date(new Date('<{$bc.config.countdown_date}>')),
-        displayDays: 3,
-        theme: "black",
-        displayCaptions: true,
-        fontSize: 22,
-        captionSize: 12,
-        lang:"zh"
+    $(function () {
+        $('#countdown_<{$bc.randStr}>').timeTo({
+            timeTo: new Date(new Date('<{$bc.config.countdown_date}>')),
+            displayDays: 3,
+            theme: "black",
+            displayCaptions: true,
+            fontSize: 22,
+            captionSize: 12,
+            lang:"zh"
+        });
     });
-
-  });
 </script>
