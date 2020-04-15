@@ -23,7 +23,7 @@
 <div class="input-group">
   <label for="search_moedict" class="sr-only"><{$smarty.const._MD_TCW_SEARCH_MOEDICT_KEYWORD}></label>
   <input type="text" id="search_moedict" class="form-control" placeholder="<{$smarty.const._MD_TCW_SEARCH_MOEDICT_KEYWORD}>">
-  <span class="input-group-btn">
+  <div class="input-group-append input-group-btn">
     <a href="#" class="btn btn-primary" id="get_moedict"><{$smarty.const._MD_TCW_SEARCH_MOEDICT}></a>
-  </span>
+  </div>
 </div>

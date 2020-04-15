@@ -28,7 +28,7 @@
   float: left;
   width: 0%;
   height: 100%;
-  font-size: 75%;
+  font-size: 80%;
   line-height: 20px;
   color: #ffffff;
   text-align: center;
@@ -107,14 +107,14 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  font-size: 75%;
+  font-size: 80%;
   line-height: 20px;
   text-align: center;
 }
 .progress .progressbar-front-text {
   display: block;
   width: 100%;
-  font-size: 75%;
+  font-size: 80%;
   line-height: 20px;
   text-align: center;
 }

@@ -1,1 +1,0 @@
-<{includeq file="$xoops_rootpath/modules/tad_web/plugins/$plugin/tpls/b4/tad_web_`$plugin`.tpl"}>

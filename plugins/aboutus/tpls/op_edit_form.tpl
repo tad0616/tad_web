@@ -16,7 +16,7 @@
                     </label>
                     <div class="col-md-9">
                         <div class="input-group">
-                            <div class="input-group-btn ">
+                            <div class="input-group-append input-group-btn ">
                                 <select name="year" class="form-control" style="width:140px;">
                                     <option value="" <{if $op!="new_class"}>selected<{/if}>></option>
                                     <option value="<{$last_year}>"><{$last_year}></option>

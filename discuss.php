@@ -23,29 +23,30 @@ switch ($op) {
         $DiscussID = $tad_web_discuss->insert();
         header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&DiscussID=$DiscussID");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $DiscussID = $tad_web_discuss->update($DiscussID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&DiscussID=$DiscussID");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_discuss->edit_form($DiscussID);
         break;
+
     //刪除資料
     case 'delete':
         $tad_web_discuss->delete($DiscussID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&DiscussID=$DefDiscussID");
         exit;
-        break;
+
     //下載檔案
     case 'tufdl':
         $files_sn = isset($_GET['files_sn']) ? (int) $_GET['files_sn'] : '';
         $TadUpFiles->add_file_counter($files_sn);
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($DiscussID)) {

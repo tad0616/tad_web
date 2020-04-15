@@ -439,7 +439,7 @@ class tad_web_schedule
             }
             $key = "{$SDWeek}-{$SDSort}";
 
-            $SubjectArr[$key] = "<div style='padding:8px; margin:0px; color: {$color}; background-color: {$bg_color};'><div>{$Subject}</div><div style='font-size: 75%;'>{$Teacher}</div></div>";
+            $SubjectArr[$key] = "<div style='padding:8px; margin:0px; color: {$color}; background-color: {$bg_color};'><div>{$Subject}</div><div style='font-size: 80%;'>{$Teacher}</div></div>";
         }
 
         $schedule_template = $xoopsModuleConfig['schedule_template'];

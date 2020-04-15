@@ -45,7 +45,7 @@
                         </a>
 
                         <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
-                            <div style="text-align:center; font-size: 75%; margin-top:6px;">
+                            <div style="text-align:center; font-size: 80%; margin-top:6px;">
                                 <{$video.WebTitle}>
                             </div>
                         <{/if}>

@@ -27,7 +27,7 @@
                 <{/if}>
             </div>
             <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
-                <div class="text-center" style="font-size: 75%;">
+                <div class="text-center" style="font-size: 80%;">
                     <{$act.WebTitle}>
                 </div>
             <{/if}>
