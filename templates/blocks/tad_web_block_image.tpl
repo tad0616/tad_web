@@ -1,2 +1,2 @@
-<{assign var=this_file value=$smarty.template|basename|replace:'db:':''}>
-<{includeq file="$xoops_rootpath/modules/tad_web/templates/blocks/b4.tpl"}>
+<h3><a href="<{$xoops_url}>/modules/tad_web/action.php?WebID=<{$block.WebID}>&ActionID=<{$block.ActionID}>"><{$block.ActionName}></a></h3>
+<{$block.slide_images}>

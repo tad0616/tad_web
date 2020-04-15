@@ -2,7 +2,7 @@
     <h2><{$tag}> <small>(<a href="tag.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_TAGS_LIST}></a>)</small></h2>
 
     <{foreach from=$show_arr item=dirname}>
-        <{if "$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/b4/tad_web_common_`$dirname`.tpl"|file_exists}>
+        <{if "$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`.tpl"|file_exists}>
             <{includeq file="$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`.tpl"}>
         <{/if}>
     <{/foreach}>

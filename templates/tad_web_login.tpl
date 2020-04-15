@@ -180,12 +180,10 @@
                     </div>
 
                     <{if $mem_parents=='1'}>
-                        <div class="row">
-                            <div class="col-md-12 text-center" style="font-size:  100%;">
-                                <a href="aboutus.php?WebID=<{$WebID}>&op=forget_parent_passwd"><{$smarty.const._MD_TCW_FORGET_PARENTS_PASSWD}></a>
-                                |
-                                <a href="aboutus.php?WebID=<{$WebID}>&op=parents_account"><{$smarty.const._MD_TCW_REGIST_BY_PARENTS}></a>
-                            </div>
+                        <div class="text-center">
+                            <a href="aboutus.php?WebID=<{$WebID}>&op=forget_parent_passwd"><{$smarty.const._MD_TCW_FORGET_PARENTS_PASSWD}></a>
+                            |
+                            <a href="aboutus.php?WebID=<{$WebID}>&op=parents_account"><{$smarty.const._MD_TCW_REGIST_BY_PARENTS}></a>
                         </div>
                     <{/if}>
                 </form>

@@ -1,2 +1,2 @@
-  <h3><{$Notice.NoticeTitle}></h3>
-  <{$Notice.NoticeContent}>
+<h3><{$Notice.NoticeTitle}></h3>
+<{$Notice.NoticeContent}>
