@@ -42,7 +42,7 @@ switch ($op) {
         break;
     //下載檔案
     case 'tufdl':
-        $files_sn = isset($_GET['files_sn']) ? (int)$_GET['files_sn'] : '';
+        $files_sn = isset($_GET['files_sn']) ? (int) $_GET['files_sn'] : '';
         $TadUpFiles->add_file_counter($files_sn);
         exit;
         break;
@@ -59,5 +59,6 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tad_web/plugins/discuss/bubble.css');
 require_once __DIR__ . '/footer.php';
 require_once XOOPS_ROOT_PATH . '/footer.php';

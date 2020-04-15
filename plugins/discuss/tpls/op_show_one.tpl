@@ -1,5 +1,3 @@
-<link href="bubble.css" rel="stylesheet" type="text/css">
-
 <{if $isMyWeb}>
     <{$sweet_delete_discuss_func_code}>
 <{/if}>

@@ -1,0 +1,57 @@
+<{assign var="bc" value=$block.BlockContent}>
+<{if $isMyWeb}>
+    <{$sweet_delete_schedule_func_code}>
+<{/if}>
+
+<{if $bc.main_data}>
+
+    <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
+
+    <{if $WebID==""}>
+
+        <{if $web_display_mode=='index' or $web_display_mode=='home'}>
+            <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+        <{/if}>
+        <{assign var="i" value=0}>
+        <{assign var="total" value=1}>
+        <{foreach item=act from=$bc.main_data}>
+            <{if $act.ScheduleDisplay=='1'}>
+                <{if $i==0}>
+                <div class="row">
+                <{/if}>
+                    <div class="col-md-3">
+                        <a href="schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>" class="btn btn-link btn-block"><i class="fa fa-table"></i> <{$act.ScheduleName}>
+                        </a>
+                    </div>
+                <{assign var="i" value=$i+1}>
+                <{if $i == 4 || $total==$bc.schedule_amount}>
+                    </div>
+                    <{assign var="i" value=0}>
+                <{/if}>
+                <{assign var="total" value=$total+1}>
+            <{/if}>
+        <{/foreach}>
+    <{else}>
+        <{foreach item=act from=$bc.main_data}>
+            <{if $act.ScheduleDisplay=='1'}>
+                <div style="margin: 8px auto;">
+                    <h2>
+                        <a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}>
+                        </a>
+                        <a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}>
+                        </a>
+                        <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i></a>
+                        <small>
+                        <{if $act.isCanEdit}>
+                            <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                            <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+                        <{/if}>
+                        </small>
+                    </h2>
+                    <{$act.schedule}>
+                </div>
+            <{/if}>
+        <{/foreach}>
+    <{/if}>
+    <div style="clear: both;"></div>
+<{/if}>

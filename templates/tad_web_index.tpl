@@ -1,6 +1,5 @@
 <{$toolbar}>
 
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tad_web/module.css">
 <{if $op=="notice"}>
     <h3><{$Notice.NoticeTitle}></h3>
     <{$Notice.NoticeContent}>
