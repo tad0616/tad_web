@@ -1,8 +1,4 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $isMyWeb}>
-    <{$sweet_delete_schedule_func_code}>
-<{/if}>
-
 <{if $bc.main_data}>
 
     <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">

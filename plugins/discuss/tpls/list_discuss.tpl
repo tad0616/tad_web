@@ -4,9 +4,6 @@
         <{$smarty.const._MD_TCW_NEED_LOGIN}>
     </div>
 <{elseif $bc.main_data}>
-    <{if $isMyWeb}>
-        <{$sweet_delete_discuss_func_code}>
-    <{/if}>
     <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
 
     <table class="footable table common_table">

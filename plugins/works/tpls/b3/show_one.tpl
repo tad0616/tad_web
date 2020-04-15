@@ -1,8 +1,3 @@
-
-<{if $isMyWeb}>
-    <{$sweet_delete_works_func_code}>
-<{/if}>
-
 <h2>
 <{$WorkName}>
 </h2>

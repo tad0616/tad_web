@@ -11,10 +11,6 @@
 <{/if}>
 
 <{if $works_data}>
-    <{if $isMyWeb}>
-        <{$sweet_delete_works_func_code}>
-    <{/if}>
-
     <table class="footable table common_table">
         <thead>
             <tr>

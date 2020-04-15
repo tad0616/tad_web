@@ -3,9 +3,6 @@
 <{/if}>
 
 <{if $account_data}>
-    <{if $isMyWeb}>
-        <{$sweet_delete_account_func_code}>
-    <{/if}>
     <table class="footable table common_table">
         <thead>
             <tr>
