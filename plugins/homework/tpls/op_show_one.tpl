@@ -6,7 +6,9 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="homework.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_HOMEWORK}></a></li>
     <{if isset($cate.CateID)}>
-        <li class="breadcrumb-item"><a href="homework.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>
+        <li class="breadcrumb-item">
+            <a href="homework.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
+        </li>
     <{/if}>
     <li class="breadcrumb-item"><{$HomeworkInfo}></li>
 </ol>
@@ -19,7 +21,7 @@
             <{if $today_homework}>
                 <div class="col-md-<{$ColWidth}>">
                     <div style="border-bottom: 1px solid #cfcfcf;">
-                        <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid" style="margin:6px auto;">
+                        <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid img-responsive" style="margin:6px auto;">
                     </div>
                     <{$today_homework}>
                 </div>
@@ -27,7 +29,7 @@
             <{if $bring}>
                 <div class="col-md-<{$ColWidth}>">
                     <div style="border-bottom: 1px solid #cfcfcf;">
-                        <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid" style="margin:6px auto;">
+                        <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid img-responsive" style="margin:6px auto;">
                     </div>
                     <{$bring}>
                 </div>
@@ -35,7 +37,7 @@
             <{if $teacher_say}>
                 <div class="col-md-<{$ColWidth}>">
                     <div style="border-bottom: 1px solid #cfcfcf;">
-                        <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid" style="margin:6px auto;">
+                        <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid img-responsive" style="margin:6px auto;">
                     </div>
                     <{$teacher_say}>
                 </div>
