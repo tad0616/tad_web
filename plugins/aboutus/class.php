@@ -741,7 +741,7 @@ class tad_web_aboutus
         $color2 = ('1' == $MemSex) ? '#000066' : '#660000';
 
         // $pic = !empty($MemID) ? "
-        //   <div id='{$MemID}' style='padding: 5px;font-size: 75%; border:0px dotted gray;width: 100%;height:140px;background:transparent url($pic) top center no-repeat;margin:0px auto;{$cover}'>
+        //   <div id='{$MemID}' style='padding: 5px;font-size: 80%; border:0px dotted gray;width: 100%;height:140px;background:transparent url($pic) top center no-repeat;margin:0px auto;{$cover}'>
         //   </div>" : "";
 
         if (!empty($MemID)) {

@@ -57,7 +57,7 @@
                         <{/if}>
                         <div style="margin: 6px 0px;"><a href="link.php?WebID=<{$link.WebID}>&LinkID=<{$link.LinkID}>" target="_blank"><{$link.LinkShortUrl}></a></div>
                         <{if $link.LinkDesc}>
-                            <div style="font-size: 75%;color:#666699; line-height:1.5;"><{$link.LinkDesc}></div>
+                            <div style="font-size: 80%;color:#666699; line-height:1.5;"><{$link.LinkDesc}></div>
                         <{/if}>
                     </td>
                     <td style="text-align:center;">

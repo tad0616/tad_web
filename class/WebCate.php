@@ -111,7 +111,7 @@ class WebCate
         $cate = $this->get_tad_web_cate($CateID);
         $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
         $show_label_txt = empty($this->label) ? $default_option_text : $this->label;
-        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} control-label\">
+        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} col-form-label text-sm-right control-label\">
             {$show_label_txt}
             </label>" : '';
         $menu_col_md = 12 - $this->label_col_md;
@@ -216,7 +216,7 @@ class WebCate
         }
         $label_title = ($show_select) ? $default_option_text : _MD_TCW_NEW_CATE;
         $show_label_txt = empty($this->label) ? $label_title : $this->label;
-        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} control-label\">
+        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} col-form-label text-sm-right control-label\">
           {$show_label_txt}
           </label>" : '';
         $row = ('form' === $mode) ? 'form-group row' : 'row';

@@ -46,7 +46,7 @@ function tad_web_config($WebID, $configs)
 
     //網站設定
     $WebCate = new WebCate(0, 'web_cate', 'tad_web');
-    $WebCate->set_col_md(3, 9);
+    $WebCate->set_col_md(4, 8);
     //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
     $cate_menu = $WebCate->cate_menu($Web['CateID'], 'page', false, false, true, false, true, true, false);
 

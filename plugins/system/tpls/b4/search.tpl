@@ -5,9 +5,9 @@
   <input type="hidden" name="WebID" value="<{$WebID}>">
   <div class="input-group">
     <input type="text" name="search_keyword" class="form-control" placeholder="Search for...">
-    <span class="input-group-btn">
+    <div class="input-group-append input-group-btn">
       <input type="hidden" name="op" value="search">
       <button class="btn btn-primary" type="submit"><{$smarty.const._MD_TCW_SEARCH}></button>
-    </span>
+    </div>
   </div>
 </form>

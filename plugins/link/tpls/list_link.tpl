@@ -36,7 +36,7 @@
                     <{/if}>
 
                     <{if $link.hide_desc!='1' and $link.LinkDesc}>
-                        <div style="margin: 6px 0px; font-size: 75%;color:#666699; line-height:1.5;"><{$link.LinkDesc}></div>
+                        <div style="margin: 6px 0px; font-size: 80%;color:#666699; line-height:1.5;"><{$link.LinkDesc}></div>
                     <{/if}>
                 </td>
                 <td style="text-align:center;">
