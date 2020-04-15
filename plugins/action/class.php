@@ -178,20 +178,11 @@ class tad_web_action
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
-        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
-        // $TadUpFiles->set_dir('subdir', $subdir);
+
         $TadUpFiles->set_col('ActionID', $ActionID);
+        $TadUpFiles->set_var('other_css', 'margin-right:6px;');
+        $TadUpFiles->set_var('background_size', 'cover');
         $pics = $TadUpFiles->show_files('upfile', null, null, null, null, null, null, null, $this->setup['auto_play_images']); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-
-        // $TadUpFiles->set_col("ActionID", $ActionID, 1);
-        // $bg_pic = $TadUpFiles->get_file_for_smarty();
-        //die(var_export($bg_pic));
-        // $new_name = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg";
-        // if (!file_exists($new_name)) {
-        //     $this->mk_blur_pic($bg_pic[0]['path'], $new_name);
-        // }
-
-        // $xoopsTpl->assign('bg_pic', XOOPS_URL . "/uploads/tad_web/{$this->WebID}/blur_pic_{$ActionID}.jpg");
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
