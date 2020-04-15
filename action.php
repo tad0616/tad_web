@@ -25,23 +25,24 @@ switch ($op) {
         $ActionID = $tad_web_action->insert();
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&ActionID=$ActionID");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $ActionID = $tad_web_action->update($ActionID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&ActionID=$ActionID");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_action->edit_form($ActionID);
         break;
+
     //刪除資料
     case 'delete':
         $tad_web_action->delete($ActionID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($ActionID)) {

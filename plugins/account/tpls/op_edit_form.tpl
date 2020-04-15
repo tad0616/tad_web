@@ -2,7 +2,7 @@
 
 <h2><{$smarty.const._MD_TCW_ACCOUNT_ADD}></h2>
 <div class="my-border">
-    <form action="account.php" method="post" id="myForm" enctype="multipart/form-data" role="form">
+    <form action="account.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
 
         <!--分類-->
         <{$cate_menu_form}>
