@@ -186,3 +186,5 @@ define('_MD_TCW_ABOUTUS_S8_DESC', 'Uncheck the features you do not want');
 define('_MD_TCW_ABOUTUS_ALL_DONT', 'All do not');
 
 define('_MD_TCW_STUDENT_NOTE', 'If you add or modify the class, the top of the file subtitle can not see the name of the new class (if the system default logo), 90% of your browser cache is doing, please press <kbd> Ctrl </ kbd> + <kbd> F5 </ kbd> try.');
+
+define('_MD_TCW_ABOUTUS_ALL', 'All');

@@ -22,3 +22,7 @@ define('_MD_TCW_DISCUSS_PARENTS', "'s parents");
 
 define('_MD_TCW_DISSCUSS_S1_TEXT', 'Show messages from newest to old?');
 define('_MD_TCW_DISSCUSS_S1_DESC', 'Select "No", will start from the earliest message display.');
+
+define('_MD_TCW_DISCUSS_LOGIN_FIRST', 'Please login first.');
+define('_MD_TCW_DISCUSS_EXPORT_SETTINGS', 'Export Settings');
+define('_MD_TCW_DISCUSS_SELECT_EXPORT_CLASSES', 'Select Export Classes');
