@@ -25,3 +25,4 @@ define('_MB_TCW_ID', '帳號');
 define('_MB_TCW_PASSWD', '密碼');
 define('_MB_TCW_SETUP', '設定');
 define('_MB_TCW_ENABLE', '啟動');
+define('_MB_TCW_USED_SPACE', '已使用空間：');

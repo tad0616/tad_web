@@ -29,7 +29,5 @@
 <{elseif $op=="mem_slot"}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/op_`$op`.tpl"}>
 <{else}>
-
-       <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/b4/tad_web_common_aboutus.tpl"}>
-
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus.tpl"}>
 <{/if}>

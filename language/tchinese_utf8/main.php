@@ -258,3 +258,5 @@ define('_MD_TCW_BLOCK_DEMO', '區塊預覽');
 define('_MD_TCW_UPDATE_MY_NAME', '管理者姓名');
 
 define('_MD_TCW_CATE_NOTE', '若有出現 <i class="fa fa-link"></i> 圖案，且為<span style="color: #a0062c;">紫紅色</span>的分類，會和班級連動，未來若隱藏該班級時，此分類下的內容亦會被隱藏。');
+
+define('_MD_TCW_USED_SPACE', '已使用空間：');

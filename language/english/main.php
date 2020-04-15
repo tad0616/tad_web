@@ -261,3 +261,5 @@ define('_MD_TCW_BLOCK_DEMO', 'Block Demo');
 define('_MD_TCW_UPDATE_MY_NAME', 'Admin Name');
 
 define('_MD_TCW_CATE_NOTE', 'If there is a <i class="fa fa-link"></i> icon, and it is a <span style="color: #a0062c;">purplish</span> category, Will be linked to the class, if the class is hidden in the future, the content under this category will also be hidden.');
+
+define('_MD_TCW_USED_SPACE', 'Used space:');
