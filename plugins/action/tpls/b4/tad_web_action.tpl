@@ -29,14 +29,14 @@
 
       <!--活動日期-->
       <div class="form-group row">
-        <label class="col-md-2 col-form-label text-sm-right">
+        <label class="col-md-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MD_TCW_ACTIONDATE}>
         </label>
         <div class="col-md-4">
           <input type="text" name="ActionDate" class="form-control" value="<{$ActionDate}>" id="ActionDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
         </div>
         <!--活動地點-->
-        <label class="col-md-2 col-form-label text-sm-right">
+        <label class="col-md-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MD_TCW_ACTIONPLACE}>
         </label>
         <div class="col-md-4">
@@ -49,7 +49,7 @@
 
       <!--上傳圖檔-->
       <div class="form-group row">
-        <label class="col-md-2 col-form-label text-sm-right">
+        <label class="col-md-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
         </label>
         <div class="col-md-10">
