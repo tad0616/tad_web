@@ -5,6 +5,8 @@ use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tad_web/css/module.css');
+
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
 $xoopsTpl->assign('Web', $Web);

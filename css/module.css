@@ -1,25 +1,37 @@
-table.common_table{
-	background-color: #FFFFFF;
+table.common_table {
+    background-color: #FFFFFF;
 }
 
-.common_counter{
-  width: 60px;
+.common_counter {
+    width: 60px;
 }
 
-.common_team{
-  width: 150px;
+.common_team {
+    width: 150px;
 }
 
-.common_team_content{
-  font-size: 80%;
+.common_team_content {
+    font-size: 80%;
 }
-
 
 .my-border {
-  padding: 12px 20px;
-  border: 1px solid rgb(226, 226, 226);
-  border-radius: 8px;
-  background: rgb(250, 250, 250);
-  box-shadow: 0px 0px 6px 1px rgba(37, 37, 37, 0.2);
-  margin:10px auto;
+    padding: 12px 20px;
+    border: 1px solid rgb(226, 226, 226);
+    border-radius: 8px;
+    background: rgb(250, 250, 250);
+    box-shadow: 0px 0px 6px 1px rgba(37, 37, 37, 0.2);
+    margin: 10px auto;
+}
+
+.block_config_tool {
+    display: none;
+    text-align: right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.tad_web_block {
+    margin: 4px 0px 20px 0px;
+    position: relative;
 }

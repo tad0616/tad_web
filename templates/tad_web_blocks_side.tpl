@@ -17,3 +17,13 @@
         <{/if}>
     </div>
 <{/foreach}>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.tad_web_block').hover(function(){
+            $('.block_config_tool',this).css('display','block');
+        },function(){
+            $('.block_config_tool',this).css("display","none");
+        });
+    });
+</script>

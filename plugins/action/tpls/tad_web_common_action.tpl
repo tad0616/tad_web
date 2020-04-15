@@ -11,6 +11,7 @@
 <{/if}>
 
 <{if $action_data}>
+    <div style="clear: both;"></div>
     <{foreach item=act from=$action_data}>
         <div style="width: 156px; height: 260px; float:left; margin: 5px 2px; overflow: hidden;">
             <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
