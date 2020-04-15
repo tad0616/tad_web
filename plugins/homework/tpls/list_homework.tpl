@@ -27,9 +27,9 @@
                 <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
                 <{if $homework.isCanEdit}>
-                <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                    <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
 
-                <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                    <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>
             </h3>
 
@@ -41,7 +41,7 @@
                         <{if $homework.today_homework}>
                             <div class="col-md-<{$homework.ColWidth}>">
                                 <div style="border-bottom: 1px solid #cfcfcf;">
-                                    <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid" style="margin:6px auto;">
+                                    <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid img-responsive" style="margin:6px auto;">
                                 </div>
                                 <{$homework.today_homework}>
                             </div>
@@ -50,7 +50,7 @@
                         <{if $homework.bring}>
                             <div class="col-md-<{$homework.ColWidth}>">
                                 <div style="border-bottom: 1px solid #cfcfcf;">
-                                    <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid" style="margin:6px auto;">
+                                    <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid img-responsive" style="margin:6px auto;">
                                 </div>
                                 <{$homework.bring}>
                             </div>
@@ -59,7 +59,7 @@
                         <{if $homework.teacher_say}>
                             <div class="col-md-<{$homework.ColWidth}>">
                                 <div style="border-bottom: 1px solid #cfcfcf;">
-                                    <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid" style="margin:6px auto;">
+                                    <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid img-responsive" style="margin:6px auto;">
                                 </div>
                                 <{$homework.teacher_say}>
                             </div>
@@ -89,7 +89,6 @@
             <{/if}>
         <{/foreach}>
     </ul>
-
 <{/if}>
 
 <{if $bc.yet_data and $isMyWeb}>
