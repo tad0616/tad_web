@@ -22,3 +22,7 @@ define('_MD_TCW_DISCUSS_PARENTS', '同學的家長');
 
 define('_MD_TCW_DISSCUSS_S1_TEXT', '留言排序是否從新到舊？');
 define('_MD_TCW_DISSCUSS_S1_DESC', '選否，會從最早的留言依序呈現到最新留言');
+
+define('_MD_TCW_DISCUSS_LOGIN_FIRST', '請先登入');
+define('_MD_TCW_DISCUSS_EXPORT_SETTINGS', '匯出設定');
+define('_MD_TCW_DISCUSS_SELECT_EXPORT_CLASSES', '選擇匯出班級');

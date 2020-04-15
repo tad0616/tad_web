@@ -2,7 +2,7 @@
     <{assign var="i" value=0}>
     <{assign var="total" value=1}>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php">全國</a></li>
+        <li class="breadcrumb-item"><a href="index.php"><{$smarty.const._MD_TCW_ABOUTUS_ALL}></a></li>
         <li class="breadcrumb-item"><a href="index.php?county=<{$def_county}>"><{$def_county}></a></li>
         <li class="breadcrumb-item"><a href="index.php?county=<{$def_county}>&city=<{$def_city}>"><{$def_city}></a></li>
         <li class="breadcrumb-item active"><{$def_SchoolName}> (<{$total_web}>)</li>
@@ -28,7 +28,7 @@
     <{assign var="i" value=0}>
     <{assign var="total" value=1}>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php">全國</a></li>
+        <li class="breadcrumb-item"><a href="index.php"><{$smarty.const._MD_TCW_ABOUTUS_ALL}></a></li>
         <li class="breadcrumb-item"><a href="index.php?county=<{$def_county}>"><{$def_county}></a></li>
         <li class="breadcrumb-item active"><{$def_city}> (<{$total_web}>)</li>
     </ol>
@@ -53,7 +53,7 @@
     <{assign var="total" value=1}>
 
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php">全國</a></li>
+        <li class="breadcrumb-item"><a href="index.php"><{$smarty.const._MD_TCW_ABOUTUS_ALL}></a></li>
         <li class="breadcrumb-item active"><{$def_county}> (<{$total_web}>)</li>
     </ol>
     <{foreach from=$data item=webs}>
@@ -77,7 +77,7 @@
     <{assign var="total" value=1}>
 
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active">全國 (<{$total_web}>)</li>
+        <li class="breadcrumb-item active"><{$smarty.const._MD_TCW_ABOUTUS_ALL}> (<{$total_web}>)</li>
     </ol>
     <{foreach from=$data item=webs}>
         <{if $i==0}>
