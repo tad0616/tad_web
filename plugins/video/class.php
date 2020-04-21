@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
 
@@ -15,6 +16,7 @@ class tad_web_video
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'video', 'tad_web_video');
+        $this->Power = new Power($WebID);
         $this->tags = new Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'video');
     }
@@ -23,6 +25,11 @@ class tad_web_video
     public function list_all($CateID = '', $limit = '', $mode = 'assign', $tag = '', $display = 'list')
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'video');
+        if (!$power) {
+            redirect_header("video.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
 
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
@@ -98,12 +105,17 @@ class tad_web_video
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'video');
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $VideoID , $VideoName , $VideoDesc , $VideoDate , $VideoPlace , $uid , $WebID, $VideoCount , $Youtube, $VideoSort
             foreach ($all as $k => $v) {
                 $$k = $v;
+            }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'video');
+            if (!$power) {
+                continue;
             }
 
             $main_data[$i] = $all;
@@ -157,7 +169,6 @@ class tad_web_video
         }
 
         $VideoID = (int) $VideoID;
-        $this->add_counter($VideoID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='{$VideoID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -167,6 +178,12 @@ class tad_web_video
         foreach ($all as $k => $v) {
             $$k = $v;
         }
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'video');
+        if (!$power) {
+            redirect_header("video.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($VideoID);
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);

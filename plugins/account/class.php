@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
 // use XoopsModules\Tad_web\Power;
@@ -17,7 +18,7 @@ class tad_web_account
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'account', 'tad_web_account');
-        // $this->Power    = new Power($WebID);
+        $this->Power = new Power($WebID);
         // $this->tags     = new Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'account');
     }
@@ -31,9 +32,10 @@ class tad_web_account
             return;
         }
 
-        // if (!$isAdmin and !$isMyWeb and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
-        //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
-        // }
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'account');
+        if (!$power) {
+            redirect_header("account.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
 
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
         if (empty($CateID)) {
@@ -100,18 +102,18 @@ class tad_web_account
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'account');
         $AccountTotal = 0;
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $AccountID , $AccountTitle , $AccountDesc , $AccountDate , $AccountIncome , $AccountOutgoings , $uid , $WebID , $AccountCount
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
-            //檢查權限
-            // $power = $this->Power->check_power("read", "AccountID", $AccountID);
-            // if (!$power) {
-            //     continue;
-            // }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'account');
+            if (!$power) {
+                continue;
+            }
 
             $main_data[$i] = $all;
             $main_data[$i]['id'] = $AccountID;
@@ -171,30 +173,26 @@ class tad_web_account
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb, $xoopsUser, $isAdmin, $isMyWeb;
 
-        // if (!$isAdmin and !$isMyWeb and !$_SESSION['LoginMemID'] and !$_SESSION['LoginParentID']) {
-        //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
-        // }
         if (empty($AccountID)) {
             return;
         }
 
-        //檢查權限
-        // $power = $this->Power->check_power("read", "AccountID", $AccountID);
-        // if (!$power) {
-        //     redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
-        // }
-
         $AccountID = (int) $AccountID;
-        $this->add_counter($AccountID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='{$AccountID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $AccountID , $AccountTitle , $AccountDesc , $AccountDate , $AccountIncome ,$AccountOutgoings , $uid , $WebID , $AccountCount
+        //以下會產生這些變數： $AccountID ,$CateID, $AccountTitle , $AccountDesc , $AccountDate , $AccountIncome ,$AccountOutgoings , $uid , $WebID , $AccountCount
         foreach ($all as $k => $v) {
             $$k = $v;
         }
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'account');
+        if (!$power) {
+            redirect_header("account.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($AccountID);
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -203,16 +201,6 @@ class tad_web_account
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('AccountID', $AccountID);
         $pics = $TadUpFiles->show_files('upfile'); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
-
-        // $TadUpFiles->set_col("AccountID", $AccountID, 1);
-        // $bg_pic = $TadUpFiles->get_file_for_smarty();
-        //die(var_export($bg_pic));
-        // $new_name = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/blur_pic_{$AccountID}.jpg";
-        // if (!file_exists($new_name)) {
-        //     $this->mk_blur_pic($bg_pic[0]['path'], $new_name);
-        // }
-
-        // $xoopsTpl->assign('bg_pic', XOOPS_URL . "/uploads/tad_web/{$this->WebID}/blur_pic_{$AccountID}.jpg");
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
@@ -339,9 +327,6 @@ class tad_web_account
         $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
-        // $power_form = $this->Power->power_menu('read', "AccountID", $AccountID);
-        // $xoopsTpl->assign('power_form', $power_form);
-
         // $tags_form = $this->tags->tags_menu("AccountID", $AccountID);
         $xoopsTpl->assign('tags_form', $tags_form);
     }
@@ -390,9 +375,6 @@ class tad_web_account
         $TadUpFiles->set_col('AccountID', $AccountID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
         check_quota($this->WebID);
-
-        //儲存權限
-        // $this->Power->save_power("AccountID", $AccountID, 'read');
         //儲存標籤
         // $this->tags->save_tags("AccountID", $AccountID, $_POST['tag_name'], $_POST['tags']);
         return $AccountID;
@@ -428,12 +410,12 @@ class tad_web_account
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_account') . " set
-         `CateID` = '{$CateID}' ,
-         `AccountTitle` = '{$AccountTitle}' ,
-         `AccountDesc` = '{$AccountDesc}' ,
-         `AccountDate` = '{$AccountDate}' ,
-         `AccountIncome` = '{$AccountIncome}',
-         `AccountOutgoings` = '{$AccountOutgoings}'
+        `CateID` = '{$CateID}' ,
+        `AccountTitle` = '{$AccountTitle}' ,
+        `AccountDesc` = '{$AccountDesc}' ,
+        `AccountDate` = '{$AccountDate}' ,
+        `AccountIncome` = '{$AccountIncome}',
+        `AccountOutgoings` = '{$AccountOutgoings}'
         where AccountID='$AccountID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -442,10 +424,6 @@ class tad_web_account
         $TadUpFiles->set_col('AccountID', $AccountID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
         check_quota($this->WebID);
-
-        //儲存權限
-        // $read = $myts->addSlashes($_POST['read']);
-        // $this->Power->save_power("AccountID", $AccountID, 'read', $read);
         //儲存標籤
         //$this->tags->save_tags("AccountID", $AccountID, $_POST['tag_name'], $_POST['tags']);
         return $AccountID;

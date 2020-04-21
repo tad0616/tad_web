@@ -23,9 +23,7 @@ switch ($op) {
         $newBlockID = '';
         if ('share' === $plugin and 'uninstall' !== $PositionName) {
             //讀出共享區塊內容
-            $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `BlockID`='{$BlockID}'";
-            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            $block = $xoopsDB->fetchArray($result);
+            $block = get_block($BlockID);
 
             //複製一份給目前網站
             $BlockSort = max_blocks_sort($WebID, $PositionName);

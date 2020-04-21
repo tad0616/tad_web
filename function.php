@@ -65,6 +65,16 @@ function get_blocks($WebID)
     return $Blocks;
 }
 
+//取得區塊
+function get_block($BlockID)
+{
+    global $xoopsDB;
+    $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `BlockID`='{$BlockID}'";
+    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $block = $xoopsDB->fetchArray($result);
+    return $block;
+}
+
 //取得所有區塊設定
 function get_dir_blocks($mode = '')
 {

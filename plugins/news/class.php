@@ -28,6 +28,11 @@ class tad_web_news
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'news');
+        if (!$power) {
+            redirect_header("news.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
@@ -107,7 +112,7 @@ class tad_web_news
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'news');
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal  , $NewsUrl , $WebID  , $NewsCounter , $NewsEnable
@@ -117,6 +122,11 @@ class tad_web_news
 
             //檢查權限
             $power = $this->Power->check_power('read', 'NewsID', $NewsID);
+            if (!$power) {
+                continue;
+            }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'news');
             if (!$power) {
                 continue;
             }
@@ -180,7 +190,6 @@ class tad_web_news
         }
 
         $NewsID = (int) $NewsID;
-        $this->add_counter($NewsID);
 
         $andEnable = $isMyWeb ? '' : "and `NewsEnable`='1'";
 
@@ -200,10 +209,14 @@ class tad_web_news
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'news');
+        if (!$power) {
+            redirect_header("news.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($NewsID);
+
         $prev_next = $this->get_prev_next($NewsID);
-        // if (isset($_GET['test'])) {
-        //     die(var_export($prev_next));
-        // }
+
         $xoopsTpl->assign('prev_next', $prev_next);
 
         if (empty($uid)) {

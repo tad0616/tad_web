@@ -1102,13 +1102,13 @@ class Update
     {
         global $xoopsDB;
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_power') . "` (
-      `WebID` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
-      `col_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
-      `col_sn` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '對應編號',
-      `power_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
-      `power_val` VARCHAR(255) NOT NULL COMMENT '權限設定',
-      PRIMARY KEY  (`WebID`,`col_name`,`power_name`)
-    ) ENGINE=MyISAM";
+        `WebID` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
+        `col_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
+        `col_sn` MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '對應編號',
+        `power_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '權限名稱',
+        `power_val` VARCHAR(255) NOT NULL COMMENT '權限設定',
+        PRIMARY KEY  (`WebID`,`col_name`,`power_name`)
+        ) ENGINE=MyISAM";
         $xoopsDB->queryF($sql);
 
         //修改欄位大小
@@ -1218,13 +1218,13 @@ class Update
         return true;
     }
 
-    //修正區塊索引
+    //權限表加入plugin欄位
     public static function chk_chk20()
     {
         global $xoopsDB;
-        $sql = 'show keys from ' . $xoopsDB->prefix('tad_web_power') . " where Column_name='WebID'";
+        $sql = 'SELECT count(`plugin`) FROM ' . $xoopsDB->prefix('tad_web_power');
         $result = $xoopsDB->query($sql);
-        if (!empty($result)) {
+        if (empty($result)) {
             return true;
         }
 
@@ -1234,10 +1234,13 @@ class Update
     public static function go_update20()
     {
         global $xoopsDB;
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tad_web_power') . " ADD `plugin` varchar(100) default ''";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 
-        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tad_web_power') . '` ADD PRIMARY KEY `power_primary` (`col_name`, `col_sn`, `power_name`), DROP INDEX `PRIMARY`;';
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
-
+        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tad_web_power') . "`
+        ADD PRIMARY KEY `power_primary` (`col_name`, `col_sn`, `power_name`, `plugin`),
+        DROP INDEX `PRIMARY`";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
         return true;
     }
 

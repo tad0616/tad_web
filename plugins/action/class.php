@@ -26,6 +26,11 @@ class tad_web_action
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isMyWeb, $plugin_menu_var;
 
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'action');
+        if (!$power) {
+            redirect_header("action.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
@@ -97,7 +102,7 @@ class tad_web_action
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'action');
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
@@ -106,6 +111,11 @@ class tad_web_action
             }
             //檢查權限
             $power = $this->Power->check_power('read', 'ActionID', $ActionID);
+            if (!$power) {
+                continue;
+            }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'action');
             if (!$power) {
                 continue;
             }
@@ -164,16 +174,21 @@ class tad_web_action
         }
 
         $ActionID = (int) $ActionID;
-        $this->add_counter($ActionID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='{$ActionID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $ActionID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
+        //以下會產生這些變數： $ActionID ,$CateID , $ActionName , $ActionDesc , $ActionDate , $ActionPlace , $uid , $WebID , $ActionCount
         foreach ($all as $k => $v) {
             $$k = $v;
         }
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'action');
+        if (!$power) {
+            redirect_header("action.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($ActionID);
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);

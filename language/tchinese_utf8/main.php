@@ -95,7 +95,7 @@ define('_MD_TCW_CATE_MODIFY', '修改分類名稱為：');
 define('_MD_TCW_CATE_MOVE', '搬移分類底下資料至：');
 define('_MD_TCW_DEL_CATE_ALL_ALERT', '我確定要刪除整個指定分類以及底下所有資料。');
 define('_MD_TCW_OTHER_CLASS_SETUP', '請連到我另一個班網網址：');
-define('_MD_TCW_CATE_POWER', '設定分類權限(開發中)');
+define('_MD_TCW_CATE_POWER', '設定分類權限');
 
 define('_MD_TCW_CATE_PLUGIN_ENABLE', '是否啟用');
 define('_MD_TCW_CATE_PLUGIN_TITLE', '功能名稱');
@@ -221,7 +221,7 @@ define('_MD_TCW_ADMINPAGE', '後台管理');
 define('_MD_TCW_USE_FB_COMMENT_TEXT', '是否使用 FaceBook 留言框？');
 define('_MD_TCW_USE_FB_COMMENT_DESC', '若是選「是」即可在單一資料的頁面下呈現FaceBook留言框互動工具');
 
-define('_MD_TCW_POWER_FOR', '可閱讀對象');
+define('_MD_TCW_POWER_FOR', '觀看權限設定');
 define('_MD_TCW_POWER_FOR_ALL', '全部開放');
 define('_MD_TCW_POWER_FOR_USERS', '僅登入者（含其他子網站）');
 define('_MD_TCW_POWER_FOR_WEB_USERS', '僅本網站成員');

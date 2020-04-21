@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
 
@@ -15,12 +16,18 @@ class tad_web_files
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'files', 'tad_web_files');
         $this->tags = new Tags($WebID);
+        $this->Power = new Power($WebID);
     }
 
     //檔案下載
     public function list_all($CateID = '', $limit = '', $mode = 'assign', $tag = '')
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $plugin_menu_var, $isMyWeb;
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'files');
+        if (!$power) {
+            redirect_header("files.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
 
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
@@ -102,12 +109,17 @@ class tad_web_files
         $Webs = getAllWebInfo();
 
         $this->WebCate->set_WebID($this->WebID);
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'files');
         // die(var_export($cate));
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $fsn , $uid , $CateID , $file_date  , $WebID
             foreach ($all as $k => $v) {
                 $$k = $v;
+            }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'files');
+            if (!$power) {
+                continue;
             }
 
             //偵測是否有已刪儲檔案，但tad_web_files未刪的檔案

@@ -268,21 +268,21 @@ class WebCate
             $CateName = $myts->addSlashes($newCateName);
             $CateSort = $this->tad_web_cate_max_sort();
             $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate') . "` (
-              `WebID`,
-              `CateName`,
-              `ColName`,
-              `ColSN`,
-              `CateSort`,
-              `CateEnable`,
-              `CateCounter`
+            `WebID`,
+            `CateName`,
+            `ColName`,
+            `ColSN`,
+            `CateSort`,
+            `CateEnable`,
+            `CateCounter`
             ) values(
-              '{$this->WebID}',
-              '{$CateName}',
-              '{$this->ColName}',
-              '{$this->ColSN}',
-              '{$CateSort}',
-              '1',
-              0
+            '{$this->WebID}',
+            '{$CateName}',
+            '{$this->ColName}',
+            '{$this->ColSN}',
+            '{$CateSort}',
+            '1',
+            0
             )";
             $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             //取得最後新增資料的流水編號
@@ -352,7 +352,7 @@ class WebCate
     }
 
     //取得tad_web_cate所有資料陣列
-    public function get_tad_web_cate_arr($counter = true, $onlyEnable = true)
+    public function get_tad_web_cate_arr($counter = true, $onlyEnable = true, $plugin = '')
     {
         global $xoopsDB;
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
@@ -369,7 +369,7 @@ class WebCate
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID] = $data;
             $arr[$CateID]['assistant'] = get_assistant($CateID, 'aboutus');
-            $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
+            $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID, $plugin);
         }
 
         // 避免「關於我們」的下拉選單重複
@@ -387,6 +387,7 @@ class WebCate
                 $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
             }
         }
+        // Utility::dd($arr);
         return $arr;
     }
     //搬移tad_web_cate某筆資料資料

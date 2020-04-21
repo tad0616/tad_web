@@ -75,16 +75,16 @@
             <div id="sort">
                 <{foreach from=$cate_opt_arr key=i item=cate}>
                     <div class="form-group row" id="CateID_<{$cate.CateID}>">
-                        <label class="col-md-3 col-form-label text-sm-right control-label">
+                        <label class="col-md-4 col-form-label control-label">
                             <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
-                            <span class="fa-stack fa-1x text-warning pull-left">
+                            <span class="fa-stack fa-1x text-default pull-left">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-inverse fa-stack-1x"><{$cate.CateSort}></i>
                             </span>
                             <{if $cate.CateEnable=='1'}>
-                                <span class="badge badge-info"><{$smarty.const._MD_TCW_CATE_ENABLED}></span>
+                                <span class="text-success"><i class="fa fa-check-circle" aria-hidden="true" data-toggle="tooltip" title="<{$smarty.const._MD_TCW_CATE_ENABLED}>"></i></span>
                             <{else}>
-                                <span class="badge badge-danger"><{$smarty.const._MD_TCW_CATE_UNABLED}></span>
+                                <span class="text-danger"><i class="fa fa-times-circle" aria-hidden="true" data-toggle="tooltip" title="<{$smarty.const._MD_TCW_CATE_UNABLED}>"></i></span>
                             <{/if}>
 
                             <{if $cate.assistant.MemName}>
@@ -95,8 +95,19 @@
                                 <i class="fa fa-link"></i>
                             <{/if}>
 
+                            <{if $cate.power=='users'}>
+                                <span class="badge badge-info"><{$smarty.const._MD_TCW_POWER_FOR_USERS}></span>
+                            <{elseif $cate.power=='web_users'}>
+                                <span class="badge badge-warning"><{$smarty.const._MD_TCW_POWER_FOR_WEB_USERS}></span>
+                            <{elseif $cate.power=='web_admin'}>
+                                <span class="badge badge-danger"><{$smarty.const._MD_TCW_POWER_FOR_WEB_ADMIN}></span>
+                            <{else}>
+                                <span class="badge badge-success"><{$smarty.const._MD_TCW_POWER_FOR_ALL}></span>
+                            <{/if}>
 
-                            <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>" <{if $cate.ColName=="aboutus"}>style="color: #a0062c;"<{/if}>><{$cate.CateName}></a>
+                            <div>
+                                <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>" <{if $cate.ColName=="aboutus"}>style="color: #a0062c;"<{/if}>><{$cate.CateName}></a>
+                            </div>
                         </label>
 
                         <div class="col-md-4">
@@ -114,11 +125,23 @@
                                 <{if $plugin.assistant=='1'}>
                                     <option value="set_assistant"><{$smarty.const._MD_TCW_CATE_SET_ASSISTANT}></option>
                                 <{/if}>
-                                <option value="power"><{$smarty.const._MD_TCW_CATE_POWER}><{if $cate.power}>[<{$cate.power}>]<{/if}></option>
+                                <option value="power">
+                                <{$smarty.const._MD_TCW_CATE_POWER}>
+                                [<{if $cate.power=='users'}>
+                                    <{$smarty.const._MD_TCW_POWER_FOR_USERS}>
+                                <{elseif $cate.power=='web_users'}>
+                                    <{$smarty.const._MD_TCW_POWER_FOR_WEB_USERS}>
+                                <{elseif $cate.power=='web_admin'}>
+                                    <{$smarty.const._MD_TCW_POWER_FOR_WEB_ADMIN}>
+                                <{else}>
+                                    <{$smarty.const._MD_TCW_POWER_FOR_ALL}>
+                                <{/if}>]
+                                </option>
                             </select>
                         </div>
 
-                        <div class="col-md-5">
+
+                        <div class="col-md-4">
                             <input type="text" name="newName[<{$cate.CateID}>]" value="<{$cate.CateName}>" id="new_name_col<{$cate.CateID}>" class="validate[required] form-control new_name_col" style="display: none;">
                             <select name="move2[<{$cate.CateID}>]" id="move2<{$cate.CateID}>" class="form-control move2" style="display: none;">
                                 <{foreach from=$cate_arr item=other}>
@@ -183,3 +206,10 @@
         <{/if}>
     </div>
 <{/if}>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

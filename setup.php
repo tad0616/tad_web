@@ -5,10 +5,9 @@ use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-if (!empty($_REQUEST['WebID']) and $isMyWeb) {
+if (!empty($WebID) and $isMyWeb) {
     $GLOBALS['xoopsOption']['template_main'] = 'tad_web_plugin_setup.tpl';
 } else {
-    $WebID = (int) $_GET['WebID'];
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
 }
 

@@ -1,3 +1,6 @@
+
+<script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_core.js"></script>
+<script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_spry_linkedselect.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#keyman').change(function(event) {
@@ -5,17 +8,17 @@
                 $('#adm_repository').html(theResponse);
             });
         });
-
-        function getOptions(destination,val_col)
-        {
-            var values = [];
-            var sel = document.getElementById(destination);
-            for (var i=0, n=sel.options.length;i<n;i++) {
-                if (sel.options[i].value) values.push(sel.options[i].value);
-            }
-            document.getElementById(val_col).value=values.join(',');
-        }
     });
+
+    function getOptions(destination,val_col)
+    {
+        var values = [];
+        var sel = document.getElementById(destination);
+        for (var i=0, n=sel.options.length;i<n;i++) {
+            if (sel.options[i].value) values.push(sel.options[i].value);
+        }
+        document.getElementById(val_col).value=values.join(',');
+    }
 </script>
 
 <{$smarty.const._MD_TCW_DEFAULT_ADMIN}><{$Web.WebOwnerUid}> <{$Web.WebOwner}>

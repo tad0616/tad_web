@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
 
@@ -17,6 +18,7 @@ class tad_web_discuss
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'discuss', 'tad_web_discuss');
         $this->tags = new Tags($WebID);
+        $this->Power = new Power($WebID);
         $this->aboutus_setup = get_plugin_setup_values($WebID, 'aboutus');
         $this->discuss_setup = get_plugin_setup_values($WebID, 'discuss');
     }
@@ -26,9 +28,10 @@ class tad_web_discuss
     {
         global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
 
-        // if (!$xoopsUser and empty($_SESSION['LoginMemID'])) {
-        //     $xoopsTpl->assign('mode', 'need_login');
-        // } else {
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'discuss');
+        if (!$power) {
+            redirect_header("discuss.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
 
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
@@ -101,12 +104,17 @@ class tad_web_discuss
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'discuss');
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //`DiscussID`, `ReDiscussID`, `CateID`, `WebID`, `MemID`, `MemName`, `DiscussTitle`, `DiscussContent`, `DiscussDate`, `LastTime`, `DiscussCounter`
             foreach ($all as $k => $v) {
                 $$k = $v;
+            }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'discuss');
+            if (!$power) {
+                continue;
             }
 
             $main_data[$i] = $all;
@@ -167,20 +175,22 @@ class tad_web_discuss
         }
 
         $DiscussID = (int) $DiscussID;
-        $this->add_counter($DiscussID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='{$DiscussID}' ";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
-        //以下會產生這些變數： $DiscussID , $ReDiscussID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
+        //以下會產生這些變數： $DiscussID , $ReDiscussID, $CateID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
         foreach ($all as $k => $v) {
             $$k = $v;
         }
 
-        // if (empty($uid)) {
-        //     redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
-        // }
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'discuss');
+        if (!$power) {
+            redirect_header("discuss.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($DiscussID);
+
 
         if (!empty($uid)) {
             $TadUpFiles->set_col('WebOwner', $WebID, '1');

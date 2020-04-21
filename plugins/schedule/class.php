@@ -3,6 +3,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
 class tad_web_schedule
@@ -15,12 +16,18 @@ class tad_web_schedule
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
         $this->WebCate = new WebCate($WebID, 'schedule', 'tad_web_schedule');
+        $this->Power = new Power($WebID);
     }
 
     //課表
     public function list_all($CateID = '', $limit = null, $mode = 'assign')
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'schedule');
+        if (!$power) {
+            redirect_header("schedule.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
 
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
@@ -76,12 +83,17 @@ class tad_web_schedule
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'schedule');
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $ScheduleID , $ScheduleName , $ScheduleDisplay , $uid , $WebID , $ScheduleCount , $ScheduleTime
             foreach ($all as $k => $v) {
                 $$k = $v;
+            }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'schedule');
+            if (!$power) {
+                continue;
             }
 
             $main_data[$i] = $all;
@@ -129,7 +141,6 @@ class tad_web_schedule
         }
 
         $ScheduleID = (int) $ScheduleID;
-        $this->add_counter($ScheduleID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='{$ScheduleID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -139,6 +150,13 @@ class tad_web_schedule
         foreach ($all as $k => $v) {
             $$k = $v;
         }
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'schedule');
+        if (!$power) {
+            redirect_header("schedule.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($ScheduleID);
+
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);

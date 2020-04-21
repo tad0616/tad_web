@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\JqueryPrintPreview;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
 
@@ -18,6 +19,7 @@ class tad_web_page
         $this->WebID = $WebID;
         //die('$WebID=' . $WebID);
         $this->WebCate = new WebCate($WebID, 'page', 'tad_web_page');
+        $this->Power = new Power($WebID);
         $this->tags = new Tags($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'page');
     }
@@ -27,10 +29,15 @@ class tad_web_page
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
 
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'page');
+        if (!$power) {
+            redirect_header("page.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         //取得tad_web_cate所有資料陣列
-        $cate_arr = $this->WebCate->get_tad_web_cate_arr();
+        $cate_arr = $this->WebCate->get_tad_web_cate_arr(null, null, 'page');
 
         $xoopsTpl->assign('cate_arr', $cate_arr);
         $andCateID = '';
@@ -104,6 +111,11 @@ class tad_web_page
                 $$k = $v;
             }
 
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'page');
+            if (!$power) {
+                continue;
+            }
+
             if (!empty($CateID) and !empty($cate_arr)) {
                 if ('1' != $cate_arr[$CateID]['CateEnable']) {
                     continue;
@@ -165,7 +177,6 @@ class tad_web_page
         }
 
         $PageID = (int) $PageID;
-        $this->add_counter($PageID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='{$PageID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -179,6 +190,12 @@ class tad_web_page
         foreach ($all as $k => $v) {
             $$k = $v;
         }
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'page');
+        if (!$power) {
+            redirect_header("page.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($PageID);
 
         if (empty($PageContent) and empty($PageTitle)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);

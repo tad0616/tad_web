@@ -10,27 +10,27 @@ use XoopsModules\Tad_web\Power;
 $this->Power    = new  Power($WebID);
 
 //權限設定
-$power_form = $this->Power->power_menu('read', "NewsID", $NewsID);
+$power_form = $this->Power->power_menu('read', "NewsID", $NewsID,'news');
 $xoopsTpl->assign('power_form', $power_form);
 <{$power_form}>
 
 //檢查權限（列出全部）
-$power = $this->Power->check_power("read", "NewsID", $NewsID);
+$power = $this->Power->check_power("read", "NewsID", $NewsID,'');
 if (!$power) {
 continue;
 }
 
 //檢查權限（單一）
-$power = $this->Power->check_power("read", "NewsID", $NewsID);
+$power = $this->Power->check_power("read", "NewsID", $NewsID,'');
 if (!$power) {
 redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
 }
 
 //儲存權限
-$this->Power->save_power("NewsID", $NewsID, 'read');
+$this->Power->save_power("NewsID", $NewsID, 'read', $plugin);
 
 //刪除權限
-$this->Power->delete_power("NewsID", $NewsID, 'read');
+$this->Power->delete_power("NewsID", $NewsID, 'read', $plugin);
 
 //*****搜尋部份*****
 
@@ -38,7 +38,7 @@ use XoopsModules\Tad_web\Power;
 //起始函數
 $power = new Power($WebID);
 
-$power_result = $power->check_power("read", $id_col, $myrow[$id_col]);
+$power_result = $power->check_power("read", $id_col, $myrow[$id_col],'');
 if (!$power_result) {
 continue;
 }
@@ -93,14 +93,14 @@ class Power
     }
 
     //權限選單
-    public function power_menu($power_name = 'read', $col_name = '', $col_sn = '')
+    public function power_menu($power_name = 'read', $col_name = '', $col_sn = '', $plugin = '')
     {
         global $xoopsDB;
         if ('read' === $power_name) {
             $label = _MD_TCW_POWER_FOR;
         }
 
-        $power_val = empty($col_sn) ? '' : $this->get_power($power_name, $col_name, $col_sn);
+        $power_val = empty($col_sn) ? '' : $this->get_power($power_name, $col_name, $col_sn, $plugin);
 
         $select_users = 'users' === $power_val ? 'selected' : '';
         $select_web_users = 'web_users' === $power_val ? 'selected' : '';
@@ -127,35 +127,39 @@ class Power
     }
 
     //新增資料到tad_web_power中
-    public function save_power($col_name = '', $col_sn = '', $power_name = '', $power_val = '')
+    public function save_power($col_name = '', $col_sn = '', $power_name = '', $power_val = '', $plugin = '')
     {
         global $xoopsDB, $xoopsUser;
 
         $myts = \MyTextSanitizer::getInstance();
         $power_name = $myts->addSlashes($power_name);
         $power_val = empty($power_val) ? $myts->addSlashes($_REQUEST[$power_name]) : $myts->addSlashes($power_val);
+        $plugin = $myts->addSlashes($plugin);
 
         $sql = 'replace into `' . $xoopsDB->prefix('tad_web_power') . "` (
-          `WebID`,
-          `col_name`,
-          `col_sn`,
-          `power_name`,
-          `power_val`
+        `WebID`,
+        `col_name`,
+        `col_sn`,
+        `power_name`,
+        `power_val`,
+        `plugin`
         ) values(
-          '{$this->WebID}',
-          '{$col_name}',
-          '{$col_sn}',
-          '{$power_name}',
-          '{$power_val}'
+        '{$this->WebID}',
+        '{$col_name}',
+        '{$col_sn}',
+        '{$power_name}',
+        '{$power_val}',
+        '{$plugin}'
         )";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //取得tad_web_power資料陣列
-    public function get_power($power_name = '', $col_name = '', $col_sn = '')
+    public function get_power($power_name = '', $col_name = '', $col_sn = '', $plugin = '')
     {
         global $xoopsDB;
-        $sql = 'select power_val from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
+        $and_plugin = $plugin ? "and `plugin`='{$plugin}'" : '';
+        $sql = 'select power_val from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}' $and_plugin";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($power_val) = $xoopsDB->fetchRow($result);
 
@@ -163,19 +167,20 @@ class Power
     }
 
     //刪除tad_web_power某筆資料資料
-    public function delete_power($col_name = '', $col_sn = '', $power_name = '')
+    public function delete_power($col_name = '', $col_sn = '', $power_name = '', $plugin = '')
     {
         global $xoopsDB;
 
-        $sql = 'delete from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}'";
+        $and_plugin = $plugin ? "and `plugin`='{$plugin}'" : '';
+        $sql = 'delete from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}' $and_plugin";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //檢查權限
-    public function check_power($power_name = '', $col_name = '', $col_sn = '')
+    public function check_power($power_name = '', $col_name = '', $col_sn = '', $plugin = '')
     {
         global $isMyWeb, $LoginWebID, $xoopsUser;
-        $power = $this->get_power($power_name, $col_name, $col_sn);
+        $power = $this->get_power($power_name, $col_name, $col_sn, $plugin);
 
         if ('users' === $power and !$xoopsUser and empty($LoginWebID)) {
             // die("沒有登入");

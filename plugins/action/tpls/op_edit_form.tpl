@@ -5,14 +5,27 @@
     <form action="action.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
 
         <!--分類-->
-        <{$cate_menu_form}>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <{$cate_menu_form}>
+            </div>
+        </div>
 
         <!--活動名稱-->
-        <input type="text" name="ActionName" value="<{$ActionName}>" id="ActionName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONNAME}>">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <input type="text" name="ActionName" value="<{$ActionName}>" id="ActionName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONNAME}>">
+            </div>
+        </div>
 
 
         <!--活動說明-->
-        <textarea name="ActionDesc"  rows=4 id="ActionDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONDESC}>"><{$ActionDesc}></textarea>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <textarea name="ActionDesc"  rows=4 id="ActionDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONDESC}>"><{$ActionDesc}></textarea>
+            </div>
+        </div>
+
 
         <!--活動日期-->
         <div class="form-group row">
@@ -31,9 +44,17 @@
             </div>
         </div>
 
-        <{$power_form}>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <{$power_form}>
+            </div>
+        </div>
 
-        <{$tags_form}>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <{$tags_form}>
+            </div>
+        </div>
 
         <!--上傳圖檔-->
         <div class="form-group row">
@@ -45,13 +66,15 @@
             </div>
         </div>
 
-        <div class="text-center">
-            <!--活動編號-->
-            <input type="hidden" name="ActionID" value="<{$ActionID}>">
-            <!--所屬團隊-->
-            <input type="hidden" name="WebID" value="<{$WebID}>">
-            <input type="hidden" name="op" value="<{$next_op}>">
-            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        <div class="form-group row">
+            <div class="col-md-12 text-center">
+                <!--活動編號-->
+                <input type="hidden" name="ActionID" value="<{$ActionID}>">
+                <!--所屬團隊-->
+                <input type="hidden" name="WebID" value="<{$WebID}>">
+                <input type="hidden" name="op" value="<{$next_op}>">
+                <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            </div>
         </div>
     </form>
 </div>

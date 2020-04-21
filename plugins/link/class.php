@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
 
@@ -15,12 +16,18 @@ class tad_web_link
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'link', 'tad_web_link');
         $this->tags = new Tags($WebID);
+        $this->Power = new Power($WebID);
     }
 
     //好站連結
     public function list_all($CateID = '', $limit = '', $mode = 'assign', $tag = '', $hide_link = 0, $hide_desc = 0)
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'link');
+        if (!$power) {
+            redirect_header("link.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
 
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
@@ -96,12 +103,17 @@ class tad_web_link
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'link');
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $LinkID , $LinkTitle , $LinkDesc , $LinkUrl , $LinkCounter , $LinkSort , $WebID , $uid
             foreach ($all as $k => $v) {
                 $$k = $v;
+            }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'link');
+            if (!$power) {
+                continue;
             }
 
             $main_data[$i] = $all;
@@ -149,11 +161,16 @@ class tad_web_link
         }
 
         $LinkID = (int) $LinkID;
-        $this->add_counter($LinkID);
 
-        $sql = 'select LinkUrl from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='{$LinkID}'";
+        $sql = 'select CateID,LinkUrl from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='{$LinkID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        list($LinkUrl) = $xoopsDB->fetchRow($result);
+        list($CateID, $LinkUrl) = $xoopsDB->fetchRow($result);
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'link');
+        if (!$power) {
+            redirect_header("link.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($LinkID);
 
         header("location: {$LinkUrl}");
         exit;
