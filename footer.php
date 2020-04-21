@@ -269,15 +269,6 @@ function tad_web_login($WebID, $config = [])
     if ($xoopsUser or !empty($_SESSION['LoginMemID']) or !empty($_SESSION['LoginParentID'])) {
         return;
     }
-    // $http = 'http://';
-    // if (!empty($_SERVER['HTTPS'])) {
-    //     $http = ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
-    // }
-
-    // $domain     = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
-    // $login_from = $http . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI'];
-    // setcookie("login_from", $login_from, '/', $domain, false);
-    // $_SESSION['login_from'] = $login_from;
 
     $login_config = get_web_config('login_config', $WebID);
     $login_config = empty($login_config) ? [] : explode(';', $login_config);
@@ -302,8 +293,6 @@ function tad_web_login($WebID, $config = [])
                 // die(var_export($login_config));
                 continue;
             }
-            // $method_const = '_' . mb_strtoupper($method);
-            // $loginTitle = sprintf(_MD_TCW_OPENID_LOGIN, constant($method_const));
 
             if ('facebook' === $method) {
                 $tlogin[$i]['link'] = facebook_login('return');
@@ -312,8 +301,6 @@ function tad_web_login($WebID, $config = [])
             } else {
                 $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
             }
-            // $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
-            // $tlogin[$i]['text'] = $loginTitle;
 
             $tlogin[$i]['img'] = in_array($method, $oidc_array) ? XOOPS_URL . "/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png" : XOOPS_URL . "/modules/tad_login/images/{$method}.png";
 
@@ -326,10 +313,6 @@ function tad_web_login($WebID, $config = [])
             }
             $i++;
         }
-
-        // if ($_GET['test'] == '1') {
-        //     die(var_export($auth_method));
-        // }
 
         $openid = '1';
         $xoopsTpl->assign('tlogin', $tlogin);
@@ -346,9 +329,9 @@ function tad_web_login($WebID, $config = [])
         $WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $about_setup['class_title']));
         $WebCate->set_col_md(3, 12);
         $WebCate->set_custom_change_js("$.post('" . XOOPS_URL . "/modules/tad_web/plugins/aboutus/get_mems.php', { op: 'get_parents', WebID: '{$WebID}', CateID: $('#loginCateID').val()}, function(data){
-                      $('#select_mems').html(data);
-                      $('#select_mems').show();
-                  });");
+            $('#select_mems').html(data);
+            $('#select_mems').show();
+        });");
         $WebCate->set_var('menu_id', 'loginCateID');
         $cate_menu = $WebCate->cate_menu('', 'page', false, false, false);
         $xoopsTpl->assign('login_cate_menu', $cate_menu);
@@ -380,9 +363,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     // die($andForceMenu);
     //取得區塊位置
     $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}'  $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
-    // if ($isAdmin) {
-    //     die($sql);
-    // }
+
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
@@ -415,9 +396,6 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
             }
         } else {
             if (file_exists("{$dir}{$plugin}/blocks.php")) {
-                // if ($isAdmin) {
-                //     echo "{$dir}{$plugin}/blocks.php<br>";
-                // }
                 require_once "{$dir}{$plugin}/blocks.php";
             }
 
@@ -427,14 +405,7 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
         }
         $block[$BlockPosition][$BlockSort] = $blocks_arr;
     }
-    // if ($_GET['test'] == '1') {
-    //     die(var_export($block));
-    // }
-    // die(var_export($block['side']));
 
-    // if ($isAdmin) {
-    //     exit;
-    // }
     $xoopsTpl->assign('center_block1', $block['block1']);
     $xoopsTpl->assign('center_block2', $block['block2']);
     $xoopsTpl->assign('center_block3', $block['block3']);

@@ -16,18 +16,18 @@ function chang_title(){
 
         <div class="form-group row">
             <!--加到行事曆-->
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_CAL_DATE}>
             </label>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <input type="text" name="toCal" value="<{$toCal}>" id="toCal" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}', onpicked:function(){chang_title();} })" class="form-control" placeholder="<{$smarty.const._HOMEWORK_TOCAL_DESC}>">
             </div>
 
             <!--發布時間-->
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_POST_DATE}>
             </label>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <select name="HomeworkPostDate" id="HomeworkPostDate" class="form-control">
                     <option value="<{$HomeworkPostDate}>"><{$smarty.const._MD_TCW_HOMEWORK_POST_NOW}></option>
                     <option value="8" <{if $HomeworkPostDate==8}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_8}></option>
@@ -39,10 +39,10 @@ function chang_title(){
 
         <!--標題-->
         <div class="form-group row">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_TITLE}>
             </label>
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <input name="HomeworkTitle" id="HomeworkTitle" class="validate[required] form-control" type="text" value="<{$HomeworkTitle}>" placeholder="<{$smarty.const._MD_TCW_HOMEWORKTITLE}>">
             </div>
         </div>
@@ -94,10 +94,10 @@ function chang_title(){
 
         <!--相關附件-->
         <div class="form-group row">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_FILES}>
             </label>
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <{$upform}>
             </div>
         </div>

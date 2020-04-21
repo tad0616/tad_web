@@ -1,9 +1,9 @@
 <{if $op=="edit_form"}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/schedule/page/tpls/op_`$op`.tpl"}>
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/op_`$op`.tpl"}>
 <{elseif $op=="show_one"}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/schedule/page/tpls/op_`$op`.tpl"}>
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/op_`$op`.tpl"}>
 <{elseif $op=="setup_subject"}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/schedule/page/tpls/op_`$op`.tpl"}>
+    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/op_`$op`.tpl"}>
 <{elseif $schedule_data}>
     <{if $WebID}>
         <{$cate_menu}>

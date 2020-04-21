@@ -1,100 +1,95 @@
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+<script>
+    $(function() {
+        $( "#catalog li" ).draggable({
+            appendTo: "body",
+            helper: "clone"
+        });
 
-  <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-  <script>
-  $(function() {
-    //$( ".draggable" ).draggable({ revert: "valid" });
+        $( ".droppable" ).droppable({
+            hoverClass: "hover",
+            drop: function( event, ui ) {
 
-    $( "#catalog li" ).draggable({
-      appendTo: "body",
-      helper: "clone"
+            if(ui.draggable.text()=='<{$smarty.const._MD_TCW_SCHEDULE_BLANK}>'){
+                $.post("<{$xoops_url}>/modules/tad_web/plugins/schedule/save_schedule.php", {op:'delete', WebID: "<{$WebID}>", ScheduleID: "<{$ScheduleID}>", tag: $( this ).attr('id')});
+                $( this )
+                .removeClass( "dropped" )
+                .css( "color", ui.draggable.css("color"))
+                .css( "background-color", ui.draggable.css("background-color"))
+                .find( "div" )
+                .html('<{$smarty.const._MD_TCW_SCHEDULE_BLANK}>').appendTo( this );;
+            }else{
+                $.post("<{$xoops_url}>/modules/tad_web/plugins/schedule/save_schedule.php", {op:'save', WebID: "<{$WebID}>", ScheduleID: "<{$ScheduleID}>", tag: $( this ).attr('id'), Subject: ui.draggable.text()});
+                $( this )
+                .addClass( "dropped" )
+                .css( "color", ui.draggable.css("color"))
+                .css( "background-color", ui.draggable.css("background-color"))
+                .find( "div" )
+                .html( ui.draggable.text() ).appendTo( this );
+            }
+            }
+        });
     });
+</script>
 
-    $( ".droppable" ).droppable({
-      hoverClass: "hover",
-      drop: function( event, ui ) {
+<h2><{$smarty.const._MD_TCW_SCHEDULE_ADD}></h2>
+<div class="my-border">
+    <form schedule="schedule.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
+        <!--分類-->
+        <{$cate_menu_form}>
 
-        if(ui.draggable.text()=='<{$smarty.const._MD_TCW_SCHEDULE_BLANK}>'){
-          $.post("<{$xoops_url}>/modules/tad_web/plugins/schedule/save_schedule.php", {op:'delete', WebID: "<{$WebID}>", ScheduleID: "<{$ScheduleID}>", tag: $( this ).attr('id')});
-          $( this )
-          .removeClass( "dropped" )
-          .css( "color", ui.draggable.css("color"))
-          .css( "background-color", ui.draggable.css("background-color"))
-          .find( "div" )
-          .html('<{$smarty.const._MD_TCW_SCHEDULE_BLANK}>').appendTo( this );;
-        }else{
-          $.post("<{$xoops_url}>/modules/tad_web/plugins/schedule/save_schedule.php", {op:'save', WebID: "<{$WebID}>", ScheduleID: "<{$ScheduleID}>", tag: $( this ).attr('id'), Subject: ui.draggable.text()});
-          $( this )
-            .addClass( "dropped" )
-            .css( "color", ui.draggable.css("color"))
-            .css( "background-color", ui.draggable.css("background-color"))
-            .find( "div" )
-            .html( ui.draggable.text() ).appendTo( this );
-        }
-      }
-    });
-  });
-  </script>
-
-  <h2><{$smarty.const._MD_TCW_SCHEDULE_ADD}></h2>
-  <div class="my-border">
-    <form schedule="schedule.php" method="post" id="myForm" enctype="multipart/form-data" role="form">
-
-      <!--分類-->
-      <{$cate_menu_form}>
-
-      <!--課表名稱-->
-      <div class="form-group row">
-        <label class="col-md-2 col-form-label text-sm-right control-label"><{$smarty.const._MD_TCW_SCHEDULENAME}></label>
-        <div class="col-md-10">
-          <input type="text" name="ScheduleName" value="<{$ScheduleName}>" id="ScheduleName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_SCHEDULENAME}>">
-        </div>
-      </div>
-
-      <{if $ScheduleID}>
+        <!--課表名稱-->
         <div class="form-group row">
-          <div class="col-md-12">
-            <div class="alert alert-warning">
-              <ul id="catalog">
-                <{foreach from=$schedule_subjects item=subject}>
-                <li style="cursor: move; text-align: center; color: <{$subject.color}>; background-color: <{$subject.bg_color}>;"><{$subject.Subject}></li>
-                <{/foreach}>
-                <li style="cursor: move; color: #CDCDCD; background-color: #FFFFFF;"><{$smarty.const._MD_TCW_SCHEDULE_BLANK}></li>
-              </ul>
-              <div style="clear: both;" class="text-right"><a href="schedule.php?WebID=<{$WebID}>&op=setup_subject&ScheduleID=<{$ScheduleID}>" class="btn btn-sm btn-xs btn-info"><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></a></div>
+            <label class="col-md-2 col-form-label text-sm-right control-label"><{$smarty.const._MD_TCW_SCHEDULENAME}></label>
+            <div class="col-md-10">
+                <input type="text" name="ScheduleName" value="<{$ScheduleName}>" id="ScheduleName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_SCHEDULENAME}>">
             </div>
-          </div>
         </div>
 
+        <{if $ScheduleID}>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="alert alert-warning">
+                        <ul id="catalog">
+                            <{foreach from=$schedule_subjects item=subject}>
+                                <li style="cursor: move; text-align: center; color: <{$subject.color}>; background-color: <{$subject.bg_color}>;"><{$subject.Subject}></li>
+                            <{/foreach}>
+                            <li style="cursor: move; color: #CDCDCD; background-color: #FFFFFF;"><{$smarty.const._MD_TCW_SCHEDULE_BLANK}></li>
+                        </ul>
+                        <div style="clear: both;" class="text-right">
+                            <a href="schedule.php?WebID=<{$WebID}>&op=setup_subject&ScheduleID=<{$ScheduleID}>" class="btn btn-sm btn-xs btn-info"><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <{$schedule_template}>
+                </div>
+            </div>
+        <{/if}>
+
+        <!--顯示設定-->
         <div class="form-group row">
-          <div class="col-md-12">
-            <{$schedule_template}>
-          </div>
+            <div class="col-md-12">
+                <div class="form-check form-check-inline checkbox-inline">
+                    <label class="form-check-label" for="ScheduleDisplay">
+                        <input class="form-check-input" type="checkbox" name="ScheduleDisplay" value="1" id="ScheduleDisplay" <{if $ScheduleDisplay=='1'}>checked<{/if}>>
+                        <{$smarty.const._MD_TCW_SCHEDULE_SET_DEFAULT}>
+                    </label>
+                </div>
+                <span class="text-danger"><{$smarty.const._MD_TCW_SCHEDULE_SET_DEFAULT_DESC}></span>
+            </div>
         </div>
-      <{/if}>
 
-
-      <!--顯示設定-->
-      <div class="form-group row">
-        <label class="sr-only"></label>
-        <div class="col-md-12">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input"  type="checkbox" name="ScheduleDisplay" value="1" id="ScheduleDisplay" <{if $ScheduleDisplay=='1'}>checked<{/if}>>
-            <label class="form-check-label" for="ScheduleDisplay">
-              <{$smarty.const._MD_TCW_SCHEDULE_SET_DEFAULT}><span class="text-danger"><{$smarty.const._MD_TCW_SCHEDULE_SET_DEFAULT_DESC}></span></label>
-          </div>
+        <div class="text-center">
+            <!--活動編號-->
+            <input type="hidden" name="ScheduleID" value="<{$ScheduleID}>">
+            <!--所屬團隊-->
+            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="op" value="<{$next_op}>">
+            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
-      </div>
-
-      <div class="form-group row">
-        <div class="col-md-12 text-center">
-
-          <!--活動編號-->
-          <input type="hidden" name="ScheduleID" value="<{$ScheduleID}>">
-          <!--所屬團隊-->
-          <input type="hidden" name="WebID" value="<{$WebID}>">
-          <input type="hidden" name="op" value="<{$next_op}>">
-          <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
-        </div>
-      </div>
     </form>
-  </div>
+</div>

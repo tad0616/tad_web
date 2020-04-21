@@ -22,8 +22,10 @@
                     <tr id="tr_<{$plugin.dirname}>">
                         <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>>
                             <div class="form-check form-check-inline checkbox-inline">
-                                <input class="form-check-input" id="plugin_enable_<{$plugin.dirname}>" type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked<{elseif $plugin.db.PluginEnable=='0'}><{else}>checked<{/if}>>
-                                <label class="form-check-label" for="plugin_enable_<{$plugin.dirname}>"><{$plugin.dirname}></label>
+                                <label class="form-check-label" for="plugin_enable_<{$plugin.dirname}>">
+                                    <input class="form-check-input" id="plugin_enable_<{$plugin.dirname}>" type="checkbox" name="plugin_enable[<{$plugin.dirname}>]" value="1" <{if $plugin.db.PluginEnable=='1'}>checked<{elseif $plugin.db.PluginEnable=='0'}><{else}>checked<{/if}>>
+                                    <{$plugin.dirname}>
+                                </label>
                             </div>
                         </td>
                         <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>>

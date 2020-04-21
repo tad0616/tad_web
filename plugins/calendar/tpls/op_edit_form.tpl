@@ -27,8 +27,10 @@
         <div class="form-group row">
             <div class="col-md-10">
                 <div class="form-check form-check-inline checkbox-inline">
-                    <input class="form-check-input" type="checkbox" name="CalendarType" id="CalendarType" value="all">
-                    <label class="form-check-label" for="CalendarType"><{$smarty.const._MD_TCW_CALENDAR_TYPE_GLOBAL}></label>
+                    <label class="form-check-label" for="CalendarType">
+                        <input class="form-check-input" type="checkbox" name="CalendarType" id="CalendarType" value="all">
+                        <{$smarty.const._MD_TCW_CALENDAR_TYPE_GLOBAL}>
+                    </label>
                 </div>
             </div>
 

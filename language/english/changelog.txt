@@ -1,3 +1,11 @@
+Tad Web 1.8.3 (2020-04-21 released)
+====================================================
+1. Integrate and optimize BootStrap3 and BootStrap4 templates.
+2. Modify two air quality blocks
+3. Change the block setting button to auto appear.
+4. Share the work and add the file function (it can be used as a sample or a topic for the assignment, study sheet, etc.)
+5. Complete the classification permission setting function.
+
 Tad Web 1.8.2 (2020-03-15 released)
 ====================================================
 1. Correction for accessibility 2.0 AA standard

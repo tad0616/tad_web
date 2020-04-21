@@ -7,10 +7,18 @@
         <{$cate_menu_form}>
 
         <!--頁面名稱-->
-        <input type="text" name="PageTitle" value="<{$PageTitle}>" id="PageTitle" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_PAGETITLE}>">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <input type="text" name="PageTitle" value="<{$PageTitle}>" id="PageTitle" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_PAGETITLE}>">
+            </div>
+        </div>
 
         <!--頁面說明-->
-        <{$PageContent_editor}>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <{$PageContent_editor}>
+            </div>
+        </div>
 
         <{$tags_form}>
 

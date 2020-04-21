@@ -98,14 +98,15 @@ class Tags
             $checked = (in_array($tag, $tag_arr) and !empty($tag_name)) ? 'checked' : '';
             $tags_select .= "
             <label class='checkbox-inline'>
-                <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>{$tag} <span class='badge badge-info'>{$count}</span>
+                <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>
+                {$tag} <span class='badge badge-info'>{$count}</span>
             </label>";
         }
 
         $menu = '
         <!--標籤設定-->
-        <div class="form-group">
-            <label class="col-sm-' . $this->label_col_md . ' control-label">
+        <div class="form-group row">
+            <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right control-label">
               ' . _MD_TCW_TAGS . '
             </label>
             <div class="col-sm-' . $this->menu_col_md . '">
@@ -116,10 +117,12 @@ class Tags
 
         if ($tags_select) {
             $menu .= '
-            <div class="form-group">
-                <label class="col-sm-' . $this->label_col_md . '"></label>
+            <div class="form-group row">
+                <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right control-label"></label>
                 <div class="col-sm-' . $this->menu_col_md . '">
-                    ' . $tags_select . '
+                    <div class="alert alert-info">
+                        ' . $tags_select . '
+                    </div>
                 </div>
             </div>
             ';

@@ -21,10 +21,18 @@
         <{$cate_menu_form}>
 
         <!--作品名稱-->
-        <input type="text" name="WorkName" value="<{$WorkName}>" id="WorkName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_NAME}>">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <input type="text" name="WorkName" value="<{$WorkName}>" id="WorkName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_NAME}>">
+            </div>
+        </div>
 
         <!--作品說明-->
-        <textarea name="WorkDesc"  rows=4 id="WorkDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_DESC}>"><{$WorkDesc}></textarea>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <textarea name="WorkDesc"  rows=4 id="WorkDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_DESC}>"><{$WorkDesc}></textarea>
+            </div>
+        </div>
 
 
         <!--相關附檔-->
@@ -56,12 +64,16 @@
             </label>
             <div class="col-md-4">
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_1" value="1" <{if $WorksEnable != "0"}>checked<{/if}>>
-                    <label class="form-check-label" for="WorksEnable_1"><{$smarty.const._YES}></label>
+                    <label class="form-check-label" for="WorksEnable_1">
+                        <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_1" value="1" <{if $WorksEnable != "0"}>checked<{/if}>>
+                        <{$smarty.const._YES}>
+                    </label>
                 </div>
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_0" value="0" <{if $WorksEnable == "0"}>checked<{/if}>>
-                    <label class="form-check-label" for="WorksEnable_0"><{$smarty.const._NO}></label>
+                    <label class="form-check-label" for="WorksEnable_0">
+                        <input class="form-check-input" type="radio" name="WorksEnable" id="WorksEnable_0" value="0" <{if $WorksEnable == "0"}>checked<{/if}>>
+                        <{$smarty.const._NO}>
+                    </label>
                 </div>
             </div>
         </div>

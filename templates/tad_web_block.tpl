@@ -37,12 +37,16 @@
             </label>
             <div class="col-md-9">
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" id="show_title1" type="radio" name="config[show_title]" value="1" <{if $block.config.show_title!='0'}>checked<{/if}>>
-                    <label class="form-check-label" for="show_title1"><{$smarty.const._YES}></label>
+                    <label class="form-check-label" for="show_title1">
+                        <input class="form-check-input" id="show_title1" type="radio" name="config[show_title]" value="1" <{if $block.config.show_title!='0'}>checked<{/if}>>
+                        <{$smarty.const._YES}>
+                    </label>
                 </div>
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" id="show_title0" type="radio" name="config[show_title]" value="0" <{if $block.config.show_title=='0'}>checked<{/if}>>
-                    <label class="form-check-label" for="show_title0"><{$smarty.const._NO}></label>
+                    <label class="form-check-label" for="show_title0">
+                        <input class="form-check-input" id="show_title0" type="radio" name="config[show_title]" value="0" <{if $block.config.show_title=='0'}>checked<{/if}>>
+                        <{$smarty.const._NO}>
+                    </label>
                 </div>
             </div>
         </div>
@@ -53,12 +57,16 @@
             </label>
             <div class="col-md-9">
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" id="BlockEnable1" type="radio" name="BlockEnable" value="1" <{if $block.BlockEnable!='0'}>checked<{/if}>>
-                    <label class="form-check-label" for="BlockEnable1"><{$smarty.const._YES}></label>
+                    <label class="form-check-label" for="BlockEnable1">
+                        <input class="form-check-input" id="BlockEnable1" type="radio" name="BlockEnable" value="1" <{if $block.BlockEnable!='0'}>checked<{/if}>>
+                        <{$smarty.const._YES}>
+                    </label>
                 </div>
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" id="BlockEnable0" type="radio" name="BlockEnable" value="0" <{if $block.BlockEnable=='0'}>checked<{/if}>>
-                    <label class="form-check-label" for="BlockEnable0"><{$smarty.const._NO}></label>
+                    <label class="form-check-label" for="BlockEnable0">
+                        <input class="form-check-input" id="BlockEnable0" type="radio" name="BlockEnable" value="0" <{if $block.BlockEnable=='0'}>checked<{/if}>>
+                        <{$smarty.const._NO}>
+                    </label>
                 </div>
             </div>
         </div>
@@ -138,12 +146,16 @@
                     </label>
                     <div class="col-md-9">
                         <div class="form-check form-check-inline radio-inline">
-                            <input class="form-check-input" id="BlockShare_1" type="radio" name="BlockShare" value="1" <{if $shareBlockID > 0}>checked<{/if}>>
-                            <label class="form-check-label" for="BlockShare_1"><{$smarty.const._YES}></label>
+                            <label class="form-check-label" for="BlockShare_1">
+                                <input class="form-check-input" id="BlockShare_1" type="radio" name="BlockShare" value="1" <{if $shareBlockID > 0}>checked<{/if}>>
+                                <{$smarty.const._YES}>
+                            </label>
                         </div>
                         <div class="form-check form-check-inline radio-inline">
-                            <input class="form-check-input" id="BlockShare_0" type="radio" name="BlockShare" value="0" <{if $shareBlockID == 0 or $block.BlockID==""}>checked<{/if}>>
-                            <label class="form-check-label" for="BlockShare_0"><{$smarty.const._NO}></label>
+                            <label class="form-check-label" for="BlockShare_0">
+                                <input class="form-check-input" id="BlockShare_0" type="radio" name="BlockShare" value="0" <{if $shareBlockID == 0 or $block.BlockID==""}>checked<{/if}>>
+                                <{$smarty.const._NO}>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -446,16 +458,18 @@
             </label>
             <div class="col-md-3">
                 <select name="block_pic[block_pic_font]" class="form-control">
-                <option value="font.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_PIC_FONT1}></option>
-                <option value="DroidSansFallback.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>>DroidSansFallback<{$smarty.const._MD_TCW_BLOCK_PIC_FONT2}></option>
+                    <option value="font.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_PIC_FONT1}></option>
+                    <option value="DroidSansFallback.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>>DroidSansFallback<{$smarty.const._MD_TCW_BLOCK_PIC_FONT2}></option>
                 </select>
             </div>
         </div>
 
         <div class="alert alert-success">
             <div class="form-check form-check-inline checkbox-inline">
-                <input class="form-check-input" id="use_block_pic" type="checkbox" name="use_block_pic" value="1" <{if $use_block_pic=="1"}>checked<{/if}>>
-                <label class="form-check-label" for="use_block_pic"><{$smarty.const._MD_TCW_BLOCK_TITLE_USE_PIC}></label>
+                <label class="form-check-label" for="use_block_pic">
+                    <input class="form-check-input" id="use_block_pic" type="checkbox" name="use_block_pic" value="1" <{if $use_block_pic=="1"}>checked<{/if}>>
+                    <{$smarty.const._MD_TCW_BLOCK_TITLE_USE_PIC}>
+                </label>
             </div>
         </div>
 
