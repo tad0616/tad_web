@@ -64,12 +64,16 @@
         </label>
         <div class="col-md-4">
             <div class="form-check form-check-inline radio-inline">
-                <input class="form-check-input" id="use_simple_menu_1" type="radio" name="use_simple_menu" value="1" <{if $use_simple_menu=='1'}>checked<{/if}>>
-                <label class="form-check-label" for="use_simple_menu_1"><{$smarty.const._YES}></label>
+                <label class="form-check-label" for="use_simple_menu_1">
+                    <input class="form-check-input" id="use_simple_menu_1" type="radio" name="use_simple_menu" value="1" <{if $use_simple_menu=='1'}>checked<{/if}>>
+                    <{$smarty.const._YES}>
+                </label>
             </div>
             <div class="form-check form-check-inline radio-inline">
-                <input class="form-check-input" id="use_simple_menu_0" type="radio" name="use_simple_menu" value="0" <{if $use_simple_menu!='1'}>checked<{/if}>>
-                <label class="form-check-label" for="use_simple_menu_0"><{$smarty.const._NO}></label>
+                <label class="form-check-label" for="use_simple_menu_0">
+                    <input class="form-check-input" id="use_simple_menu_0" type="radio" name="use_simple_menu" value="0" <{if $use_simple_menu!='1'}>checked<{/if}>>
+                    <{$smarty.const._NO}>
+                </label>
             </div>
         </div>
     </div>

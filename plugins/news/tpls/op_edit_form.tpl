@@ -8,10 +8,20 @@
         <{$cate_menu_form}>
 
         <!--標題-->
-        <input name="NewsTitle" id="NewsTitle" class="validate[required] form-control" type="text" value="<{$NewsTitle}>" placeholder="<{$smarty.const._MD_TCW_NEWSTITLE}>">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <input name="NewsTitle" id="NewsTitle" class="validate[required] form-control" type="text" value="<{$NewsTitle}>" placeholder="<{$smarty.const._MD_TCW_NEWSTITLE}>">
+            </div>
+        </div>
+
 
         <!--內容-->
-        <{$NewsContent_editor}>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <{$NewsContent_editor}>
+            </div>
+        </div>
+
 
         <!--相關連結-->
         <div class="form-group row">
@@ -60,12 +70,16 @@
             </label>
             <div class="col-md-4">
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_1" value="1" <{if $NewsEnable !='0'}>checked<{/if}>>
-                    <label class="form-check-label" for="NewsEnable_1"><{$smarty.const._YES}></label>
+                    <label class="form-check-label" for="NewsEnable_1">
+                        <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_1" value="1" <{if $NewsEnable !='0'}>checked<{/if}>>
+                        <{$smarty.const._YES}>
+                    </label>
                 </div>
                 <div class="form-check form-check-inline radio-inline">
-                    <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_0" value="0" <{if $NewsEnable =='0'}>checked<{/if}>>
-                    <label class="form-check-label" for="NewsEnable_0"><{$smarty.const._NO}></label>
+                    <label class="form-check-label" for="NewsEnable_0">
+                        <input class="form-check-input" type="radio" name="NewsEnable" id="NewsEnable_0" value="0" <{if $NewsEnable =='0'}>checked<{/if}>>
+                        <{$smarty.const._NO}>
+                    </label>
                 </div>
             </div>
         </div>

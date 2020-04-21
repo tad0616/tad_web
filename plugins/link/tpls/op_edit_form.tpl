@@ -38,7 +38,7 @@
                 <input type="text" name="LinkUrl" value="<{$LinkUrl}>" id="LinkUrl" class="form-control validate[required]" placeholder="<{$smarty.const._MD_TCW_LINKURL}>">
             </div>
             <div class="col-md-2">
-                <button type="button" class="btn" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
+                <button type="button" class="btn btn-success" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
             </div>
         </div>
 

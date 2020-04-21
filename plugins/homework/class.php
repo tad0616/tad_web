@@ -375,6 +375,7 @@ class tad_web_homework
         $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->WebCate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
         $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
+        $this->WebCate->set_col_md(3, 6);
         $cate_menu = isset($_SESSION['isAssistant']['homework']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);
 

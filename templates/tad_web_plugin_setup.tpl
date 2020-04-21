@@ -39,15 +39,19 @@
                         <{elseif $setup.type=="radio"}>
                             <{foreach from=$setup.options key=title item=value}>
                                 <div class="form-check form-check-inline radio-inline">
-                                    <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$value}>" <{if $setup.value==$value}>checked<{/if}>>
-                                    <label class="form-check-label" for="<{$setup.name}>"><{$title}></label>
+                                    <label class="form-check-label" for="<{$setup.name}>">
+                                        <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$value}>" <{if $setup.value==$value}>checked<{/if}>>
+                                        <{$title}>
+                                    </label>
                                 </div>
                             <{/foreach}>
                         <{elseif $setup.type=="checkbox"}>
                             <{foreach from=$setup.options key=title item=value}>
                                 <div class="form-check form-check-inline checkbox-inline">
-                                    <input class="form-check-input" type="checkbox" name="<{$setup.name}>[]" id="<{$setup.name}>_<{$value}>" value="<{$value}>" <{if $value|in_array:$setup.value}>checked<{/if}>>
-                                    <label class="form-check-label" for="<{$setup.name}>_<{$value}>"><{$title}></label>
+                                    <label class="form-check-label" for="<{$setup.name}>_<{$value}>">
+                                        <input class="form-check-input" type="checkbox" name="<{$setup.name}>[]" id="<{$setup.name}>_<{$value}>" value="<{$value}>" <{if $value|in_array:$setup.value}>checked<{/if}>>
+                                        <{$title}>
+                                    </label>
                                 </div>
                             <{/foreach}>
                         <{elseif $setup.type=="color"}>
@@ -58,12 +62,16 @@
                             <textarea name="<{$setup.name}>" class="form-control" rows=4 style="font-size:0.8em;"><{$setup.value}></textarea>
                         <{elseif $setup.type=="yesno"}>
                             <div class="form-check form-check-inline radio-inline">
-                                <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>1" value="1" <{if $setup.value=='1'}>checked<{/if}> >
-                                <label class="form-check-label" for="<{$setup.name}>1"><{$smarty.const._YES}></label>
+                                <label class="form-check-label" for="<{$setup.name}>1">
+                                    <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>1" value="1" <{if $setup.value=='1'}>checked<{/if}> >
+                                    <{$smarty.const._YES}>
+                                </label>
                             </div>
                             <div class="form-check form-check-inline radio-inline">
-                                <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>0" value="0" <{if $setup.value!='1'}>checked<{/if}> >
-                                <label class="form-check-label" for="<{$setup.name}>0"><{$smarty.const._NO}></label>
+                                <label class="form-check-label" for="<{$setup.name}>0">
+                                    <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>0" value="0" <{if $setup.value!='1'}>checked<{/if}> >
+                                    <{$smarty.const._NO}>
+                                </label>
                             </div>
                         <{elseif $setup.type=="file"}>
                             <{$setup.form}>
