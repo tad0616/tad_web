@@ -256,7 +256,6 @@ function tad_web_my_menu($WebID)
         $xoopsTpl->assign('say_hi', sprintf(_MD_TCW_HI, $user_name));
         $xoopsTpl->assign('back_home', $back_home);
         $xoopsTpl->assign('defaltWebID', $defaltWebID);
-        // die(var_export($menu_var));
         $xoopsTpl->assign('menu_plugins', $menu_var);
         $xoopsTpl->assign('add_power', $add_power);
     }

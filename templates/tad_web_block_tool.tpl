@@ -7,9 +7,13 @@
         <{if $block_plugin!='custom'}>
             <{if $menu_var.$block_plugin.add=='1'}>
                 <a href="<{$block_plugin}>.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info btn-sm btn-xs" title="<{$smarty.const._MD_TCW_ADD}>"><i class="fa fa-plus"></i></a>
+            <{else}>
+                無新增
             <{/if}>
             <{if $menu_var.$block_plugin.menu=='1'}>
                 <a href="<{$block_plugin}>.php?WebID=<{$WebID}>" class="btn btn-success btn-sm btn-xs" title="<{$smarty.const._MD_TCW_MORE}>"><i class="fa fa-eye"></i></a>
+            <{else}>
+                無選單
             <{/if}>
         <{/if}>
     </div>

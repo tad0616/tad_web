@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/header.php';
 
-$WebID = (int) $_REQUEST['WebID'];
 $start = empty($_REQUEST['start']) ? date('Y-m-01') : date('Y-m-d', strtotime($_REQUEST['start']));
 $end = empty($_REQUEST['end']) ? date('Y-m-t') : date('Y-m-d', strtotime($_REQUEST['end']));
 

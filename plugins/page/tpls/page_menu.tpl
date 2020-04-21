@@ -5,7 +5,7 @@
         <{foreach from=$bc.page_list item=page}>
             <div class="card panel">
                 <div class="card-header text-white bg-primary panel-heading" role="tab" id="heading<{$page.CateID}>">
-                    <h4 class="card-title panel-title">
+                    <h4>
                         <span class="badge badge-info pull-right"><{$page.CateAmount}></span>
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse<{$page.CateID}>" aria-expanded="true" aria-controls="collapse<{$page.CateID}>" style="color: #000000;">
                             <{$page.CateName}>

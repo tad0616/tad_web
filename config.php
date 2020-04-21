@@ -11,13 +11,12 @@ require_once __DIR__ . '/header.php';
 if ('enable_my_web' === $_REQUEST['op']) {
     $xoopsOption['template_main'] = 'tad_web_config.tpl';
 } else {
-    if (!empty($_REQUEST['WebID']) and $isMyWeb) {
+    if (!empty($WebID) and $isMyWeb) {
         $xoopsOption['template_main'] = 'tad_web_config.tpl';
     } elseif (!$isMyWeb and $MyWebs) {
         $WebID = (int) $MyWebs[0];
         redirect_header($_SERVER['PHP_SELF'] . "?WebID={$WebID}", 3, _MD_TCW_AUTO_TO_HOME);
     } else {
-        $WebID = (int) $_GET['WebID'];
         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
     }
 }

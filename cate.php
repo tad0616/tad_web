@@ -9,7 +9,7 @@ include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 if (!$isMyWeb) {
-    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
 }
 if (!empty($WebID)) {
     $xoopsOption['template_main'] = 'tad_web_cate.tpl';
@@ -17,6 +17,8 @@ if (!empty($WebID)) {
     header('location: index.php');
     exit;
 }
+//權限設定
+$power = new Power($WebID);
 include_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
@@ -30,12 +32,12 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
 
     $WebCate = new WebCate($WebID, $ColName, $table);
     $WebCate->set_WebID($WebID);
-    $cate = $WebCate->get_tad_web_cate_arr();
+    $cate = $WebCate->get_tad_web_cate_arr(null, null, $ColName);
 
     $cate_menu_form = $WebCate->cate_menu($CateID, 'form', true, false, true, false, false);
     $xoopsTpl->assign('cate_menu_form', $cate_menu_form);
 
-    // die(var_export($cate));
+    // Utility::dd($cate);
     /*
     array (
     13 =>
@@ -81,7 +83,6 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
     $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('plugin', $plugin_menu_var[$ColName]);
     $xoopsTpl->assign('students', $students);
-    // die(var_export($menu_var[$ColName]));
 
     $FormValidator = new FormValidator('#myForm', true);
     $FormValidator->render();
@@ -128,7 +129,7 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
                 $WebCate->enable_tad_web_cate($CateID, 0);
                 break;
             case 'power':
-                $power->save_power('CateID', $CateID, 'read', $_POST['power'][$CateID]);
+                $power->save_power('CateID', $CateID, 'read', $_POST['power'][$CateID], $ColName);
                 break;
         }
     }
@@ -147,7 +148,7 @@ switch ($op) {
         save_cate($WebID, $ColName, $act, $table);
         header("location:{$_SERVER['PHP_SELF']}?WebID={$WebID}&ColName={$ColName}");
         exit;
-        break;
+
     default:
         list_all_cate($WebID, $ColName, $table);
         break;

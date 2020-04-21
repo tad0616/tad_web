@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
 
@@ -15,6 +16,7 @@ class tad_web_works
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'works', 'tad_web_works');
+        $this->Power = new Power($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'works');
         $this->tags = new Tags($WebID);
     }
@@ -23,6 +25,12 @@ class tad_web_works
     public function list_all($CateID = '', $limit = null, $mode = 'assign', $tag = '', $kind = '', $order = '', $pic = false)
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $TadUpFiles, $plugin_menu_var;
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'works');
+        if (!$power) {
+            redirect_header("works.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
@@ -108,13 +116,19 @@ class tad_web_works
 
         $Webs = getAllWebInfo();
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'works');
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $WorksID , $WorkName , $WorksDesc , $WorksDate , $WorksPlace , $uid , $WebID , $WorksCount
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
+
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'works');
+            if (!$power) {
+                continue;
+            }
+
             $main_data[$i] = $all;
             $main_data[$i]['id'] = $WorksID;
             $main_data[$i]['id_name'] = 'WorksID';
@@ -173,7 +187,6 @@ class tad_web_works
         }
 
         $WorksID = (int) $WorksID;
-        $this->add_counter($WorksID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='{$WorksID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -184,6 +197,12 @@ class tad_web_works
             $$k = $v;
             $xoopsTpl->assign($k, $v);
         }
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'works');
+        if (!$power) {
+            redirect_header("works.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($WorksID);
 
         $deadline = strtotime($WorksDate);
         $time = time();

@@ -33,7 +33,7 @@ CREATE TABLE `tad_web_cate_assistant` (
   `AssistantType` varchar(100) NOT NULL default '' COMMENT '用戶種類',
   `AssistantID` mediumint(8) unsigned NOT NULL default 0 COMMENT '用戶ID',
   `plugin` varchar(100) NOT NULL default '' COMMENT '',
-  PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`)
+  PRIMARY KEY (`CateID`,`AssistantType`,`AssistantID`, `plugin`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tad_web_assistant_post` (
@@ -123,16 +123,15 @@ CREATE TABLE `tad_web_plugins_setup` (
 )  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-
 CREATE TABLE `tad_web_power` (
   `WebID` smallint(5) unsigned NOT NULL default 0 COMMENT '所屬網站',
   `col_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
   `col_sn` mediumint(8) unsigned NOT NULL default 0 COMMENT '對應編號',
   `power_name` varchar(100) NOT NULL default '' COMMENT '權限名稱',
   `power_val` varchar(255) NOT NULL COMMENT '權限設定',
-  PRIMARY KEY (`col_name`,`col_sn`,`power_name`)
+  `plugin` varchar(100) COMMENT '針對外掛',
+  PRIMARY KEY (`col_name`,`col_sn`,`power_name`, `plugin`)
 )  ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 
 CREATE TABLE `tad_web_tags` (

@@ -24,8 +24,6 @@
         </form>
     <{else}>
         <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
-        <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_core.js"></script>
-        <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/tmt_spry_linkedselect.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 $("#tad_web_config_tabs").tabs({

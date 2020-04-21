@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\FullCalendar;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
 class tad_web_homework
@@ -17,6 +18,7 @@ class tad_web_homework
     {
         $this->WebID = $WebID;
         $this->WebCate = new WebCate($WebID, 'homework', 'tad_web_homework');
+        $this->Power = new Power($WebID);
         $this->setup = get_plugin_setup_values($WebID, 'homework');
         $this->calendar_setup = get_plugin_setup_values($WebID, 'calendar');
     }
@@ -25,6 +27,11 @@ class tad_web_homework
     public function list_all($CateID = '', $limit = null, $mode = 'assign')
     {
         global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'homework');
+        if (!$power) {
+            redirect_header("homework.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
 
         $myts = \MyTextSanitizer::getInstance();
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
@@ -95,7 +102,7 @@ class tad_web_homework
         $WebNames = getAllWebInfo('WebName');
         $cweek = [0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT];
 
-        $cate = $this->WebCate->get_tad_web_cate_arr();
+        $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'homework');
         $yet = '';
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
@@ -103,13 +110,16 @@ class tad_web_homework
                 $$k = $v;
             }
 
+            $power = $this->Power->check_power("read", "CateID", $CateID, 'homework');
+            if (!$power) {
+                continue;
+            }
+
             $main_data[$i] = $all;
             $main_data[$i]['id'] = $HomeworkID;
             $main_data[$i]['id_name'] = 'HomeworkID';
             $main_data[$i]['title'] = $HomeworkTitle;
-            // $assistant = get_assistant($CateID, 'homework');
-            // die(var_dump($assistant));
-            // $isAssistant                = is_assistant($CateID, 'HomeworkID', $HomeworkID);
+
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
 
             //找出聯絡簿內容
@@ -204,8 +214,7 @@ class tad_web_homework
             return;
         }
         $myts = \MyTextSanitizer::getInstance();
-        $HomeworkID = (int)$HomeworkID;
-        $this->add_counter($HomeworkID);
+        $HomeworkID = (int) $HomeworkID;
 
         $now = date('Y-m-d H:i:s');
         $andTime = $isMyWeb ? '' : "and HomeworkPostDate <= '{$now}'";
@@ -217,6 +226,12 @@ class tad_web_homework
         foreach ($all as $k => $v) {
             $$k = $v;
         }
+
+        $power = $this->Power->check_power("read", "CateID", $CateID, 'homework');
+        if (!$power) {
+            redirect_header("homework.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
+        }
+        $this->add_counter($HomeworkID);
 
         //找出聯絡簿內容
         $sql = 'select `HomeworkCol`, `Content` from ' . $xoopsDB->prefix('tad_web_homework_content') . " where HomeworkID='{$HomeworkID}'";
@@ -432,8 +447,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
@@ -518,8 +533,8 @@ class tad_web_homework
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
-        $CateID = (int)$_POST['CateID'];
-        $WebID = (int)$_POST['WebID'];
+        $CateID = (int) $_POST['CateID'];
+        $WebID = (int) $_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);

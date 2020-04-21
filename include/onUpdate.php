@@ -126,6 +126,7 @@ function xoops_module_update_tad_web($module, $old_version)
         if (Update::chk_chk25()) {
             Update::go_update25();
         }
+
     }
 
     Update::chk_sql_update();
