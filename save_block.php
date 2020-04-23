@@ -33,7 +33,7 @@ switch ($op) {
             $BlockContent = $myts->addSlashes($block['BlockContent']);
             $BlockConfig = $myts->addSlashes($block['BlockConfig']);
             $BlockName = $myts->addSlashes($block['BlockName']);
-            $sql = 'insert into `' . $xoopsDB->prefix('tad_web_blocks') . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$BlockName}', '0', '{$BlockTitle}', '{$BlockContent}', '1', '{$BlockConfig}', '{$PositionName}', '$BlockSort', '{$WebID}', 'custom','{$block['BlockID']}')";
+            $sql = 'insert into `' . $xoopsDB->prefix('tad_web_blocks') . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$BlockName}', 0, '{$BlockTitle}', '{$BlockContent}', '1', '{$BlockConfig}', '{$PositionName}', '$BlockSort', '{$WebID}', 'custom','{$block['BlockID']}')";
 
             $text_color = get_web_config('block_pic_text_color', $WebID);
             $border_color = get_web_config('block_pic_border_color', $WebID);

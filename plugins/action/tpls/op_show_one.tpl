@@ -21,7 +21,19 @@
     <{/if}>
 </div>
 
-<{$pics}>
+<{if $gphoto_link!=''}>
+    <ul>
+        <{foreach from=$pics item=pic}>
+            <li style="width:120px;height:180px;float:left;list-style:none;margin-right:6px;">
+            <a href="<{$pic.image_url}>?type=.jpg" class="thumbnail fancybox_ActionID" rel="fActionID" style="display:inline-block; width: 120px; height: 120px; overflow: hidden; background-color: #cfcfcf; background-size: cover;border-radius: 5px; background-image: url('<{$pic.image_url}>'); background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;">&nbsp;</a>
+            <a href="<{$pic.image_link}>" target="_blank"><{$smarty.const._MD_TCW_ACTION_VIEW_ORIGINAL_IMAGE}></a>
+            </li>
+        <{/foreach}>
+    </ul>
+    <div style="clear:both;"></div>
+<{else}>
+    <{$pics}>
+<{/if}>
 
 <{if $ActionDesc}>
     <div class="my-border"><{$ActionDesc}></div>

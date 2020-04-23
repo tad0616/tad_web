@@ -156,7 +156,7 @@ function array2form($form_arr = [], $config = [])
                 <input type="text" name="config[' . $config_name . ']" class="form-control" onClick="WdatePicker({dateFmt:\'MM/dd/yyyy HH:mm:ss\', startDate:\'%y-%M-%d\'})" value="' . $config[$config_name] . '">';
                 break;
             default:
-                $form_code .= '<input type="text" name="config[' . $config_name . ']" class="form-control" value="' . $config[$config_name] . '">';
+                $form_code .= '<input type="text" name="config[' . $config_name . ']" class="form-control" value="' . $config[$config_name] . '" placeholder="' . $form['placeholder'] . '">';
                 break;
         }
         $form_code .= '
@@ -203,7 +203,7 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
     //新增
     if (empty($BlockID)) {
         $BlockSort = max_blocks_sort($WebID, $BlockPosition);
-        $sql = 'insert into `' . $xoopsDB->prefix('tad_web_blocks') . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('custom_{$WebID}', '0', '{$BlockTitle}', '{$BlockContent}', '{$BlockEnable}', '{$new_block_config}', '{$BlockPosition}', '{$BlockSort}', '{$WebID}', 'custom','')";
+        $sql = 'insert into `' . $xoopsDB->prefix('tad_web_blocks') . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('custom_{$WebID}', '0', '{$BlockTitle}', '{$BlockContent}', '{$BlockEnable}', '{$new_block_config}', '{$BlockPosition}', '{$BlockSort}', '{$WebID}', 'custom',0)";
 
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         //取得最後新增資料的流水編號
@@ -481,7 +481,7 @@ function chk_newblock($WebID)
             $config = str_replace('{{WebID}}', $WebID, $config);
             $sql = 'insert into `'
             . $xoopsDB->prefix('tad_web_blocks')
-                . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
+                . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$BlockName}', 0, '{$BlockTitle}', '', '1', '{$config}', 'uninstall', 0, '{$WebID}', '{$block_plugin[$BlockName]}',0)";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         } else {
             //檢查區塊設定值是否需要更新

@@ -331,7 +331,7 @@ class Update
                     $config = str_replace('{{WebID}}', $WebID, $config);
                     $sql = 'insert into `'
                     . $xoopsDB->prefix('tad_web_blocks')
-                        . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', '', '{$WebID}', '{$block_plugin[$BlockName]}')";
+                        . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$BlockName}', '0', '{$BlockTitle}', '', '1', '{$config}', 'uninstall', 0, '{$WebID}', '{$block_plugin[$BlockName]}',0)";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql);
                 } else {
                     //檢查區塊設定值是否需要更新
@@ -950,7 +950,7 @@ class Update
                 $config = str_replace('{{WebID}}', $WebID, $config);
                 $sql = 'insert into `'
                 . $xoopsDB->prefix('tad_web_blocks')
-                    . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`) values('{$func}', '0', '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}')";
+                    . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$func}', 0, '{$name}', '', '{$BlockEnable}', '{$config}', 'side', '{$sort}', '{$WebID}', '{$block_plugin[$func]}',0)";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql);
                 $sort++;
             }

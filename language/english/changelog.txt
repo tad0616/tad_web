@@ -1,3 +1,9 @@
+Tad Web 1.8.4 (released 2020-04-23)
+====================================================
+1. "Activity Silhouette" supports direct reading of Google shared photo album
+2. "Event Silhouette Show" section with optional photo album setting
+2. New "Event Silhouette Photo" section
+
 Tad Web 1.8.3 (2020-04-21 released)
 ====================================================
 1. Integrate and optimize BootStrap3 and BootStrap4 templates.

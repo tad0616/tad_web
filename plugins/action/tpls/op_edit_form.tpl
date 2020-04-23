@@ -1,4 +1,28 @@
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        <{if $ActionID}>
+            <{if $gphoto_link==""}>
+                $("#gphoto_link").hide();
+                $("#upload_photo").show();
+            <{else}>
+                $("#gphoto_link").show();
+                $("#upload_photo").hide();
+            <{/if}>
+        <{else}>
+            $("input[name='upload_method']").change(function(event) {
+                var up_method = $("input[name='upload_method']:checked").val();
+                if(up_method=="gphoto_link"){
+                    $("#gphoto_link").show();
+                    $("#upload_photo").hide();
+                }else{
+                    $("#gphoto_link").hide();
+                    $("#upload_photo").show();
+                }
+            });
+        <{/if}>
+    });
+</script>
 
 <h2><{$smarty.const._MD_TCW_ACTION_ADD}></h2>
 <div class="my-border">
@@ -44,6 +68,63 @@
             </div>
         </div>
 
+        <{if $ActionID==""}>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label text-sm-right control-label">
+                    <{$smarty.const._MD_TCW_ACTION_UPLOAD_METHOD}>
+                </label>
+                <div class="col-md-4">
+                    <div class="form-check form-check-inline radio-inline">
+                        <label class="form-check-label" for="radio_upload_photo">
+                            <input class="form-check-input" type="radio" name="upload_method" id="radio_upload_photo" value="upload_photo" class="validate[required]" <{if $upload_method!='gphoto_link'}>checked<{/if}>>
+                            <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline radio-inline">
+                        <label class="form-check-label" for="radio_gphoto_link">
+                            <input class="form-check-input" type="radio" name="upload_method" id="radio_gphoto_link" value="gphoto_link" class="validate[required]" <{if $upload_method=='gphoto_link'}>checked<{/if}>>
+                            <{$smarty.const._MD_TCW_ACTION_GPHOTO}>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        <{else}>
+            <{if $gphoto_link==""}>
+                <input type="hidden" name="upload_method" value="upload_photo">
+            <{else}>
+                <input type="hidden" name="upload_method" value="gphoto_link">
+            <{/if}>
+        <{/if}>
+
+        <!--上傳圖檔-->
+        <div id="upload_photo">
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label text-sm-right control-label">
+                    <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
+                </label>
+                <div class="col-md-8">
+                    <{$upform}>
+                </div>
+            </div>
+            <{$list_del_file}>
+        </div>
+
+        <div id="gphoto_link" style="display: none;">
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label text-sm-right control-label">
+                    <{$smarty.const._MD_TCW_ACTION_GPHOTO_URL}>
+                </label>
+                <div class="col-md-10">
+                    <input type="text" name="gphoto_link" class="form-control validate[required , custom[url]]" value="<{$file_link}>" placeholder="<{$smarty.const._MD_TCW_ACTION_GPHOTO_URL_DEMO}>">
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <{$smarty.const._MD_TCW_ACTION_GPHOTO_URL_HEPL}>
+            </div>
+        </div>
+
+
         <div class="form-group row">
             <div class="col-md-12">
                 <{$power_form}>
@@ -53,16 +134,6 @@
         <div class="form-group row">
             <div class="col-md-12">
                 <{$tags_form}>
-            </div>
-        </div>
-
-        <!--上傳圖檔-->
-        <div class="form-group row">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
-                <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
-            </label>
-            <div class="col-md-10">
-                <{$upform}>
             </div>
         </div>
 
