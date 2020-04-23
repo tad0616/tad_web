@@ -48,7 +48,7 @@
     <{if $marquee_arr}>
         <div class="marquee">
             <{foreach from=$marquee_arr item=marquee}>
-                <i class="fa fa-chevron-circle-right"></i> <a href="index.php?WebID=<{$WebID}>&op=notice&NoticeID=<{$marquee.NoticeID}>" class="sho_notice" data-fancybox-type="iframe"><{$marquee.NoticeShortDate}> <{$marquee.NoticeTitle}></a>
+                <i class="fa fa-chevron-circle-right"></i> <a href="index.php?WebID=<{$WebID}>&op=notice&NoticeID=<{$marquee.NoticeID}>" class="show_notice" data-fancybox-type="iframe"><{$marquee.NoticeShortDate}> <{$marquee.NoticeTitle}></a>
             <{/foreach}>
         </div>
     <{/if}>

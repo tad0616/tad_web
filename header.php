@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //務必要在function.php之前，因為function.php會用到$WebID。
 
@@ -68,6 +69,7 @@ if (!empty($WebID)) {
             $simple_menu[$i]['submenu'] = $menu_var;
             $i++;
             $menu_var = $simple_menu;
+            // Utility::dd($plugin_menu_var);
         } else {
             $menu_var[$i]['id'] = $i;
             $menu_var[$i]['title'] = _MD_TCW_CLASS_HOME;

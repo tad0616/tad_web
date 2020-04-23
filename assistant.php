@@ -8,7 +8,7 @@ require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 
 if (!$isMyWeb) {
-    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+    redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
 }
 if (!empty($WebID)) {
     $xoopsOption['template_main'] = 'tad_web_assistant.tpl';
@@ -45,11 +45,8 @@ function list_all_assistant($WebID = '', $plugin = '')
         $i++;
     }
 
-    // die(var_export($plugin_menu_var));
-
     $xoopsTpl->assign('all_assistant', $all_assistant);
     $xoopsTpl->assign('plugin', $plugin);
-    $xoopsTpl->assign('plugin_menu_var', $plugin_menu_var);
     $default_class = get_web_config('default_class', $WebID);
 
     $sql = 'select a.MemID, a.MemNum ,b.MemName from ' . $xoopsDB->prefix('tad_web_link_mems') . ' as a left join ' . $xoopsDB->prefix('tad_web_mems') . " as b on a.MemID=b.MemID where a.`CateID` = '{$default_class}'  order by a.MemNum";
@@ -73,7 +70,7 @@ function del_assistant($CateID = '', $plugin = '')
     global $xoopsDB, $isMyWeb;
 
     if (!$isMyWeb) {
-        redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_NOT_OWNER .'<br>' . __FILE__ . ' : ' . __LINE__);
+        redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
     }
 
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_cate_assistant') . " where CateID='$CateID' and plugin='{$plugin}'";

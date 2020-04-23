@@ -110,15 +110,15 @@ function aboutus_onUpdate3_go()
 {
     global $xoopsDB;
     $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_mem_parents') . "` (
-      `ParentID` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ParentID',
-      `MemID` MEDIUMINT(8) UNSIGNED NOT NULL COMMENT 'MemID',
-      `Reationship` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '關係',
-      `ParentEmail` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Email',
-      `ParentPasswd` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密碼',
-      `ParentEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '啟用狀態',
-      `code` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '啟用碼',
-      PRIMARY KEY (`ParentID`),
-      UNIQUE KEY `MemID_ParentEmail` (`MemID`,`ParentEmail`)
+    `ParentID` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ParentID',
+    `MemID` MEDIUMINT(8) UNSIGNED NOT NULL COMMENT 'MemID',
+    `Reationship` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '關係',
+    `ParentEmail` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Email',
+    `ParentPasswd` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密碼',
+    `ParentEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '啟用狀態',
+    `code` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '啟用碼',
+    PRIMARY KEY (`ParentID`),
+    UNIQUE KEY `MemID_ParentEmail` (`MemID`,`ParentEmail`)
     ) ENGINE=MyISAM";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 }
