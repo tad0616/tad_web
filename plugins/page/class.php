@@ -364,8 +364,10 @@ class tad_web_page
         $PageCSS = $myts->addSlashes($_POST['PageCSS']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name = $myts->addSlashes($_POST['tag_name']);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_page') . "
         (`CateID`,`PageTitle` , `PageContent` , `PageDate` , `PageSort` , `uid` , `WebID` , `PageCount` , `PageCSS`)
         values('{$CateID}' ,'{$PageTitle}' , '{$PageContent}' , '{$PageDate}' , '{$PageSort}' , '{$uid}' , '{$WebID}' , '0' , '{$PageCSS}')";
@@ -398,8 +400,9 @@ class tad_web_page
         $PageCSS = $myts->addSlashes($_POST['PageCSS']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $tag_name = $myts->addSlashes($_POST['tag_name']);
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'PageID', $PageID)) {
             $anduid = onlyMine();

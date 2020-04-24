@@ -39,15 +39,12 @@ if (!function_exists('get_web_config')) {
         if (null !== $defWebID) {
             if ('file' !== $from) {
                 $sql = 'select `ConfigValue` from ' . $xoopsDB->prefix('tad_web_config') . " where `ConfigName`='$ConfigName' and WebID='$defWebID'";
-                // die($sql);
                 $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 list($ConfigValue) = $xoopsDB->fetchRow($result);
-                // var_dump($ConfigValue);
-                // die(var_dump($ConfigValue));
                 return $ConfigValue;
             }
+
             $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/web_config.php";
-            // unlink($file);
             if (file_exists($file)) {
                 require $file;
             } else {
@@ -61,7 +58,7 @@ if (!function_exists('get_web_config')) {
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/");
                 file_put_contents($file, $content);
             }
-            // die(var_export($web_config));
+
             if (isset($web_config[$ConfigName])) {
                 return $web_config[$ConfigName];
             }

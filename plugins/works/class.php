@@ -379,8 +379,9 @@ class tad_web_works
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $WorksEnable = (int) $_POST['WorksEnable'];
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_works') . "
         (`CateID`,`WorkName` , `WorkDesc` , `WorksDate` ,  `uid` , `WebID` , `WorksCount` , `WorksKind` , `WorksEnable`)
@@ -416,20 +417,21 @@ class tad_web_works
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $WorksEnable = (int) $_POST['WorksEnable'];
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'WorksID', $WorksID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_works') . " set
-         `CateID` = '{$CateID}' ,
-         `WorkName` = '{$WorkName}' ,
-         `WorkDesc` = '{$WorkDesc}' ,
-         `WorksDate` = '{$WorksDate}' ,
-         `WorksKind` = '{$WorksKind}' ,
-         `WorksEnable` = '{$WorksEnable}'
+        `CateID` = '{$CateID}' ,
+        `WorkName` = '{$WorkName}' ,
+        `WorkDesc` = '{$WorkDesc}' ,
+        `WorksDate` = '{$WorksDate}' ,
+        `WorksKind` = '{$WorksKind}' ,
+        `WorksEnable` = '{$WorksEnable}'
         where WorksID='$WorksID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 

@@ -412,8 +412,10 @@ class tad_web_news
         if (empty($toCal)) {
             $toCal = '0000-00-00 00:00:00';
         }
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_news') . "
         (`CateID`,`NewsTitle` , `NewsContent` , `NewsDate` , `toCal` , `NewsUrl` , `WebID` , `NewsCounter` , `uid` , `NewsEnable`)
         values('{$CateID}','{$NewsTitle}' , '{$NewsContent}' , '{$NewsDate}' , '{$toCal}' , '{$NewsUrl}' , '{$WebID}'  , '0' , '{$uid}', '{$NewsEnable}' )";
@@ -455,8 +457,9 @@ class tad_web_news
         if (empty($toCal)) {
             $toCal = '0000-00-00 00:00:00';
         }
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'NewsID', $NewsID)) {
             $anduid = onlyMine();

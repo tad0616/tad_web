@@ -360,7 +360,10 @@ class tad_web_account
             $AccountOutgoings = $AccountMoney;
         }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
+
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_account') . "
         (`CateID`,`AccountTitle` , `AccountDesc` , `AccountDate` , `AccountIncome` , `AccountOutgoings` , `uid` , `WebID` , `AccountCount`)
         values('{$CateID}' ,'{$AccountTitle}' , '{$AccountDesc}' , '{$AccountDate}' , '{$AccountIncome}' , '{$AccountOutgoings}' , '{$uid}' , '{$WebID}' , '{$AccountCount}')";
@@ -403,7 +406,9 @@ class tad_web_account
             $AccountOutgoings = $AccountMoney;
         }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'AccountID', $AccountID)) {
             $anduid = onlyMine();

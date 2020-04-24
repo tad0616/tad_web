@@ -9,25 +9,15 @@ $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
 $WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
 $default_class = system_CleanVars($_REQUEST, 'default_class', 0, 'int');
-$url = system_CleanVars($_REQUEST, 'url', '', 'string');
 
 switch ($op) {
-    case 'get_pic':
-        get_pic($url);
-        break;
+
     case 'get_cate_options':
         get_cate_options($WebID, $plugin);
         break;
     case 'get_default_class_mems':
         get_default_class_mems($WebID, $default_class);
         break;
-}
-function get_pic($url)
-{
-    global $xoopsDB;
-    $pic = file_get_contents($url);
-    header("Content-type: text/html");
-    die($pic);
 }
 
 function get_cate_options($WebID = '', $plugin = '')

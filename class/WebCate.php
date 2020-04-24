@@ -251,40 +251,42 @@ class WebCate
         });
         </script>
         <div class=\"{$row}\" style=\"margin-bottom: 10px;\">
-          $label
-          $cate_menu
-          $new_input
-          $tools
+            $label
+            $cate_menu
+            $new_input
+            $tools
         </div>
         ";
         return $menu;
     }
+
     //新增資料到tad_web_cate中
     public function save_tad_web_cate($CateID = '', $newCateName = '')
     {
         global $xoopsDB, $xoopsUser;
-        if (!empty($newCateName) and empty($CateID)) {
+        // if (!empty($newCateName) and empty($CateID)) {
+        if (!empty($newCateName)) {
             $myts = \MyTextSanitizer::getInstance();
             $CateName = $myts->addSlashes($newCateName);
             $CateSort = $this->tad_web_cate_max_sort();
             $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate') . "` (
-            `WebID`,
-            `CateName`,
-            `ColName`,
-            `ColSN`,
-            `CateSort`,
-            `CateEnable`,
-            `CateCounter`
+                `WebID`,
+                `CateName`,
+                `ColName`,
+                `ColSN`,
+                `CateSort`,
+                `CateEnable`,
+                `CateCounter`
             ) values(
-            '{$this->WebID}',
-            '{$CateName}',
-            '{$this->ColName}',
-            '{$this->ColSN}',
-            '{$CateSort}',
-            '1',
-            0
+                '{$this->WebID}',
+                '{$CateName}',
+                '{$this->ColName}',
+                '{$this->ColSN}',
+                '{$CateSort}',
+                '1',
+                0
             )";
-            $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             //取得最後新增資料的流水編號
             $CateID = $xoopsDB->getInsertId();
         }

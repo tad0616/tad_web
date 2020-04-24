@@ -476,8 +476,9 @@ class tad_web_homework
             // $HomeworkPostDate = $toCal . " 00:00:00";
             $HomeworkPostDate = $HomeworkDate;
         }
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_homework') . "
         (`CateID`,`HomeworkTitle` , `HomeworkContent` , `HomeworkDate` , `toCal` , `WebID` , `HomeworkCounter` , `uid` , `HomeworkPostDate`)
@@ -562,8 +563,9 @@ class tad_web_homework
             // $HomeworkPostDate = $toCal . " 00:00:00";
             $HomeworkPostDate = $HomeworkDate;
         }
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'HomeworkID', $HomeworkID)) {
             $anduid = onlyMine();

@@ -277,8 +277,9 @@ class tad_web_files
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $file_method = $myts->addSlashes($_POST['file_method']);
         $tag_name = $myts->addSlashes($_POST['tag_name']);
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_files') . "
           (`uid` , `CateID` , `file_date`  , `WebID` , `file_link` , `file_description`)
@@ -316,8 +317,10 @@ class tad_web_files
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         $file_method = $myts->addSlashes($_POST['file_method']);
         $tag_name = $myts->addSlashes($_POST['tag_name']);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         if (!is_assistant($CateID, 'fsn', $fsn)) {
             $anduid = onlyMine();
         }

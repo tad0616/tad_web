@@ -398,8 +398,9 @@ class tad_web_action
         $gphoto_link = $myts->addSlashes($_POST['gphoto_link']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_action') . "
         (`CateID`,`ActionName` , `ActionDesc` , `ActionDate` , `ActionPlace` , `uid` , `WebID` , `ActionCount`, `gphoto_link`)
         values('{$CateID}' ,'{$ActionName}' , '{$ActionDesc}' , '{$ActionDate}' , '{$ActionPlace}' , '{$uid}' , '{$WebID}' , '{$ActionCount}', '{$gphoto_link}')";
@@ -409,17 +410,20 @@ class tad_web_action
         $ActionID = $xoopsDB->getInsertId();
         save_assistant_post($CateID, 'ActionID', $ActionID);
 
-        require 'vendor/autoload.php';
-        $crawler = new Crawler();
-        $album = $crawler->getAlbum($gphoto_link);
-        foreach ($album['images'] as $photo) {
-            $this->insert_gphotos($ActionID, $photo);
-        }
+        if ($gphoto_link != '') {
+            require 'vendor/autoload.php';
+            $crawler = new Crawler();
+            $album = $crawler->getAlbum($gphoto_link);
+            foreach ($album['images'] as $photo) {
+                $this->insert_gphotos($ActionID, $photo);
+            }
+        } else {
 
-        // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
-        // $TadUpFiles->set_dir('subdir', $subdir);
-        $TadUpFiles->set_col('ActionID', $ActionID);
-        $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
+            // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
+            // $TadUpFiles->set_dir('subdir', $subdir);
+            $TadUpFiles->set_col('ActionID', $ActionID);
+            $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
+        }
         check_quota($this->WebID);
 
         //儲存權限
@@ -472,8 +476,9 @@ class tad_web_action
         $read = $myts->addSlashes($_POST['read']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'ActionID', $ActionID)) {
             $anduid = onlyMine();
