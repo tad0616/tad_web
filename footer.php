@@ -106,7 +106,7 @@ function tad_web_my_menu($WebID)
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser, $MyWebID, $xoopsModuleConfig, $WebTitle, $isAdmin;
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
-    $defaltWebID = $WebID;
+
     //未登入
     if (!$xoopsUser and empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID'])) {
     } else {
@@ -152,15 +152,13 @@ function tad_web_my_menu($WebID)
             $uid = $xoopsUser->uid();
 
             $AllMyWebID = implode("','", $MyWebID);
-
+            $defaltWebID = $WebID;
             if ($MyWebID) {
                 $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyWebID}') order by WebSort";
-                //die($sql);
                 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 //$web_num = $xoopsDB->getRowsNum($result);
                 $i = $defalt_used_size = 0;
 
-                $defaltWebID = 0;
                 while (false !== ($all = $xoopsDB->fetchArray($result))) {
                     foreach ($all as $k => $v) {
                         $$k = $v;

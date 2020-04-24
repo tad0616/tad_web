@@ -32,12 +32,12 @@ define('_MA_TCW_ORDER_BY_TEAMTITLE', '依班級名稱排序');
 //save_sort.php save.php
 define('_MA_TCW_UPDATE_FAIL', '更新失敗！');
 define('_MA_TCW_SAVE_SORT_OK', '排序完成！ ');
-define('_MA_TCW_NEED_TAD_WEB_THEME', "<ul><li style='line-height:2;'>本模組需要搭配 <a href='http://120.115.2.90/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme 佈景</a>。</li><li style='line-height:2;'>該佈景只需要解壓縮放到 themes 目錄底下即可，無須至偏好設定選用。</li><li style='line-height:2;'>亦可<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱直接安裝</a></li></ul>");
+define('_MA_TCW_NEED_TAD_WEB_THEME', "<ul><li style='line-height:2;'>本模組需要搭配 <a href='https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme 佈景</a>。</li><li style='line-height:2;'>該佈景只需要解壓縮放到 themes 目錄底下即可，無須至偏好設定選用。</li><li style='line-height:2;'>亦可<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱直接安裝</a></li></ul>");
 
 define('_MA_TCW_NEED_IMAGECREATETURECOLOR', 'PHP不支援 imagecreatetruecolor() 函數');
-define('_MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT', "請參考以下連結以安裝之：<a href='http://120.115.2.90/modules/tad_book3/page.php?tbdsn=216' target='_blank'>http://120.115.2.90/modules/tad_book3/page.php?tbdsn=216</a>");
+define('_MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT', "請參考以下連結以安裝之：<a href='https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbdsn=216' target='_blank'>https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbdsn=216</a>");
 define('_MA_TCW_NEED_THEME', '缺少 for_tad_web_theme 佈景');
-define('_MA_TCW_NEED_THEME_CONTENT', "<a href='http://120.115.2.90/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme</a> 佈景只需要解壓縮放到 themes 目錄底下即可，無須至偏好設定選用。亦可<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱直接安裝</a>");
+define('_MA_TCW_NEED_THEME_CONTENT', "<a href='https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme</a> 佈景只需要解壓縮放到 themes 目錄底下即可，無須至偏好設定選用。亦可<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱直接安裝</a>");
 define('_MA_TCW_NEED_TADTOOLS', 'TadTools版本需要 2.7.4 以上');
 define('_MA_TCW_NEED_TADTOOLS_CONTENT', "請<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱</a>更新 TadTools 至最新版。");
 

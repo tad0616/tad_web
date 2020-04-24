@@ -12,7 +12,15 @@ function search($WebID, $config = [])
 
 function qrcode($WebID, $config = [])
 {
-    $block['main_data'] = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+    $http = 'http://';
+    if (!empty($_SERVER['HTTPS'])) {
+        $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
+    }
+
+    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+        $http = $_SERVER['HTTP_X_FORWARDED_PROTO'] . '://';
+    }
+    $block['main_data'] = urlencode($http . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
 
     return $block;
 }
@@ -45,7 +53,6 @@ function web_list($WebID, $config = [])
 //按讚工具
 function rrssb($WebID, $config = [])
 {
-    // $block['main_data'] = urlencode("http://" . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
     $block['main_data'] = Utility::push_url();
 
     return $block;

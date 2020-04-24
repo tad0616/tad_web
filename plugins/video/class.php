@@ -319,8 +319,10 @@ class tad_web_video
 
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $VideoSort = $this->max_sort($WebID, $CateID);
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_video') . "
@@ -340,7 +342,7 @@ class tad_web_video
     //抓取 Youtube ID
     public function tad_web_getYTid($ytURL = '')
     {
-        if ('http://youtu.be/' === substr($ytURL, 0, 16)) {
+        if ('https://youtu.be/' === substr($ytURL, 0, 16)) {
             return substr($ytURL, 16);
         } elseif ('https://youtu.be/' === substr($ytURL, 0, 17)) {
             return substr($ytURL, 17);
@@ -367,8 +369,9 @@ class tad_web_video
         $VideoPlace = $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
         $VideoSort = (int) $_POST['VideoSort'];
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'VideoID', $VideoID)) {
             $anduid = onlyMine();

@@ -157,7 +157,6 @@ class tad_web_schedule
         }
         $this->add_counter($ScheduleID);
 
-
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
@@ -314,8 +313,10 @@ class tad_web_schedule
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ScheduleTime = date('Y-m-d H:i:s');
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_schedule') . "
         (`CateID`,`ScheduleName` , `ScheduleDisplay` , `uid` , `WebID` , `ScheduleCount` , `ScheduleTime`)
         values('{$CateID}' ,'{$ScheduleName}' , '{$ScheduleDisplay}'  , '{$uid}' , '{$WebID}' , '0' , '{$ScheduleTime}')";
@@ -341,8 +342,9 @@ class tad_web_schedule
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ScheduleTime = date('Y-m-d H:i:s');
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
             $anduid = onlyMine();

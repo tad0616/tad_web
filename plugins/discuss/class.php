@@ -191,7 +191,6 @@ class tad_web_discuss
         }
         $this->add_counter($DiscussID);
 
-
         if (!empty($uid)) {
             $TadUpFiles->set_col('WebOwner', $WebID, '1');
             $pic = $TadUpFiles->get_pic_file('thumb');
@@ -469,8 +468,10 @@ class tad_web_discuss
             $MemName = $_SESSION['LoginParentName'];
             $WebID = $_SESSION['LoginWebID'];
         }
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_discuss') . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
         values('{$CateID}'  ,'{$ReDiscussID}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$DiscussTitle}' , '{$DiscussContent}' , now() , '{$WebID}' , now() , 0)";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -533,8 +534,9 @@ class tad_web_discuss
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ReDiscussID = (int) $_POST['ReDiscussID'];
-
-        $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        if ($newCateName != '') {
+            $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
+        }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set
          `CateID` = '{$CateID}' ,

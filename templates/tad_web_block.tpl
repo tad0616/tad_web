@@ -132,7 +132,7 @@
                         <{$smarty.const._MD_TCW_BLOCK_IFRAME_DESC}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="BlockContent[iframe]"  class="form-control" placeholder="http://" value="<{$iframeContent}>">
+                        <input type="text" name="BlockContent[iframe]"  class="form-control" placeholder="https://" value="<{$iframeContent}>">
                     </div>
                 </div>
             </div>
