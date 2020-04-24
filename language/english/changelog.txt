@@ -1,4 +1,9 @@
-Tad Web 1.8.4 (released 2020-04-23)
+Tad Web 1.8.5 (2020-04-24 released)
+====================================================
+1. Fix the problem that categories cannot be added when creating categories at the same time
+2. Fix the problem that the scenery occasionally runs away.
+
+Tad Web 1.8.4 (2020-04-23 released)
 ====================================================
 1. "Activity Silhouette" supports direct reading of Google shared photo album
 2. "Event Silhouette Show" section with optional photo album setting

@@ -20,7 +20,7 @@ function qrcode($WebID, $config = [])
     if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
         $http = $_SERVER['HTTP_X_FORWARDED_PROTO'] . '://';
     }
-    $block['main_data'] = urlencode($http . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+    $block['main_data'] = urlencode($http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
     return $block;
 }
@@ -127,14 +127,6 @@ function countdown($WebID, $config = [])
 
     return $block;
 }
-
-//相簿崁入
-// function flickrit($WebID, $config = array())
-// {
-//     $block['main_data'] = true;
-//     $block['config']    = $config;
-//     return $block;
-// }
 
 //標籤
 function tags($WebID, $config = [])
