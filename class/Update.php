@@ -99,7 +99,7 @@ class Update
             if (!empty($pluginConfig['sql'])) {
                 foreach ($pluginConfig['sql'] as $sql_name) {
                     $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix($sql_name);
-                    $result = $xoopsDB->query($sql);
+                    $result = $xoopsDB->queryF($sql);
                     if (empty($result)) {
                         $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
                     }
@@ -124,7 +124,7 @@ class Update
             $web_amount = 0;
         } else {
             $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE `WebEnable`='1' ORDER BY WebSort";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $web_amount = $xoopsDB->getRowsNum($result);
         }
@@ -184,7 +184,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`tag`) FROM ' . $xoopsDB->prefix('tad_web_files_center');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -214,7 +214,7 @@ class Update
             if (!empty($pluginConfig['sql'])) {
                 foreach ($pluginConfig['sql'] as $sql_name) {
                     $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix($sql_name);
-                    $result = $xoopsDB->query($sql);
+                    $result = $xoopsDB->queryF($sql);
                     if (empty($result)) {
                         $xoopsDB->queryFromFile(XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/mysql.sql");
                     }
@@ -472,7 +472,7 @@ class Update
 
         //找出目前所有的樣板檔
         $sql = 'SELECT bid,name,visible,show_func,template FROM ' . $xoopsDB->prefix('newblocks') . " WHERE `dirname` = 'tad_web' ORDER BY `func_num`";
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
             //假如現有的區塊和樣板對不上就刪掉
             if ($template != $tpl_file_arr[$show_func]) {
@@ -494,7 +494,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`DiscussCounter`) FROM ' . $xoopsDB->prefix('tad_web_discuss');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -516,7 +516,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`uid`) FROM ' . $xoopsDB->prefix('tad_web_discuss');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -538,7 +538,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`MemID`) FROM ' . $xoopsDB->prefix('tad_web_discuss');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -560,7 +560,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`MemName`) FROM ' . $xoopsDB->prefix('tad_web_discuss');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -582,7 +582,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`original_filename`) FROM ' . $xoopsDB->prefix('tad_web_files_center');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -733,7 +733,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SHOW Fields FROM ' . $xoopsDB->prefix('tad_web_cate') . " where `Field`='CateName' and `Type` = 'varchar(255)'";
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -755,7 +755,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_works');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -785,7 +785,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_homework');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -830,7 +830,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_plugins');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -857,7 +857,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_roles');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -884,7 +884,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_blocks');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1008,7 +1008,7 @@ class Update
     // {
     //     global $xoopsDB;
     //     $sql    = "select count(`BlockShare`) from " . $xoopsDB->prefix("tad_web_blocks");
-    //     $result = $xoopsDB->query($sql);
+    //     $result = $xoopsDB->queryF($sql);
     //     if (empty($result)) {
     //         return true;
     //     }
@@ -1029,7 +1029,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_plugins_setup');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1041,12 +1041,12 @@ class Update
     {
         global $xoopsDB;
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_plugins_setup') . "` (
-      `WebID` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
-      `plugin` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '所屬外掛',
-      `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '設定名稱',
-      `type` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '欄位類型',
-      `value` TEXT NOT NULL COMMENT '設定值',
-      PRIMARY KEY  (`WebID`,`plugin`,`name`)
+        `WebID` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
+        `plugin` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '所屬外掛',
+        `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '設定名稱',
+        `type` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '欄位類型',
+        `value` TEXT NOT NULL COMMENT '設定值',
+        PRIMARY KEY  (`WebID`,`plugin`,`name`)
     ) ENGINE=MyISAM";
         $xoopsDB->queryF($sql);
     }
@@ -1056,7 +1056,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`used_size`) FROM ' . $xoopsDB->prefix('tad_web');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1090,7 +1090,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_power');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1126,7 +1126,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_tags');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1154,7 +1154,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'show keys from ' . $xoopsDB->prefix('tad_web_blocks') . " where Key_name='BlockName_BlockCopy_WebID_plugin'";
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1179,7 +1179,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`BlockShare`) FROM ' . $xoopsDB->prefix('tad_web_blocks');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (!empty($result)) {
             return true;
         }
@@ -1201,7 +1201,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`ShareFrom`) FROM ' . $xoopsDB->prefix('tad_web_blocks');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1223,7 +1223,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`plugin`) FROM ' . $xoopsDB->prefix('tad_web_power');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1249,7 +1249,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_notice');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1279,7 +1279,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_mail_log');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1308,7 +1308,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_cate_assistant');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1335,7 +1335,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_assistant_post');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
@@ -1365,7 +1365,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'SELECT count(`plugin`) FROM ' . $xoopsDB->prefix('tad_web_cate_assistant');
-        $result = $xoopsDB->query($sql);
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return true;
         }
