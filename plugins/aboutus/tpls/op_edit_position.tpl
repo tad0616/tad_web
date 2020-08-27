@@ -30,7 +30,8 @@
                     var MemID = $(this).attr("id");
 
                     $.post("aboutus.php", {op: "save_seat", MemID: MemID , top: top, left: left } , function(data) {
-                    $("#save_info").html("<{$smarty.const._MD_TCW_MEM_SAVE_OK}>");
+                        console.log(data);
+                        $("#save_info").html("<{$smarty.const._MD_TCW_MEM_SAVE_OK}> ("+data+":"+top+","+left+")");
                     });
                 }});
             });
