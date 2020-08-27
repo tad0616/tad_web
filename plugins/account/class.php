@@ -309,7 +309,6 @@ class tad_web_account
         $DefCateID = isset($_SESSION['isAssistant']['account']) ? $_SESSION['isAssistant']['account'] : $this->get_last_account_book();
         $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->WebCate->set_label(_MD_TCW_ACCOUNT_BOOK);
-        $this->WebCate->set_default_value($WebTitle);
         $this->WebCate->set_default_option_text(_MD_TCW_ACCOUNT_SELECT_BOOK);
         $cate_menu = isset($_SESSION['isAssistant']['account']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
         $xoopsTpl->assign('cate_menu_form', $cate_menu);

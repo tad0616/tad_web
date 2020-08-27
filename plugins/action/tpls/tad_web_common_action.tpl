@@ -12,28 +12,28 @@
 
 <{if $action_data}>
     <div style="clear: both;"></div>
-    <{foreach item=act from=$action_data}>
-        <div style="width: 156px; height: 260px; float:left; margin: 5px 2px; overflow: hidden;">
-            <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
-                <div style="width: 150px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
-                    <div style="width: 140px; height: 140px; background: #F1F7FF url('<{$act.ActionPic}>') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;background-size:cover;">
+        <{foreach item=act from=$action_data}>
+            <div style="width: 156px; height: 260px; float:left; margin: 5px 2px; overflow: hidden;">
+                <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
+                    <div style="width: 150px; height: 160px; background-color: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> ; border:1px dotted green; margin: 0px auto;">
+                        <div style="width: 140px; height: 140px; background: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> url('<{$act.ActionPic}>') center center no-repeat; border:8px solid <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}>; margin: 0px auto;background-size:cover;">
+                        </div>
                     </div>
+                </a>
+                <div class="text-center" style="margin: 8px auto;">
+                    <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
+                    <{if $act.isCanEdit}>
+                        <a href="javascript:delete_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                        <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+                    <{/if}>
                 </div>
-            </a>
-            <div class="text-center" style="margin: 8px auto;">
-                <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
-                <{if $act.isCanEdit}>
-                    <a href="javascript:delete_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                    <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+                <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
+                    <div class="text-center" style="font-size: 80%;">
+                        <{$act.WebTitle}>
+                    </div>
                 <{/if}>
             </div>
-            <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>
-                <div class="text-center" style="font-size: 80%;">
-                    <{$act.WebTitle}>
-                </div>
-            <{/if}>
-        </div>
-    <{/foreach}>
+        <{/foreach}>
     <div style="clear: both;"></div>
 
     <{if $action_data}>

@@ -1,3 +1,7 @@
+Tad Web 1.8.6 (Released on 2020-07-25)
+=============================================================
+1.Fix the problem of not being able to capture Google Shared Photo Album correctly.
+
 Tad Web 1.8.5 (2020-04-24 released)
 ====================================================
 1. Fix the problem that categories cannot be added when creating categories at the same time

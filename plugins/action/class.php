@@ -69,21 +69,21 @@ class tad_web_action
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_action') . ' as a
-            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
-            left join ' . $xoopsDB->prefix('apply') . ' as c on b.WebOwnerUid=c.uid
+            join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            join ' . $xoopsDB->prefix('apply') . ' as c on b.WebOwnerUid=c.uid
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') $andCounty $andCity $andSchoolName
             order by a.ActionID desc";
         } elseif (!empty($tag)) {
             $sql = 'select distinct a.* from ' . $xoopsDB->prefix('tad_web_action') . ' as a
-            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             join ' . $xoopsDB->prefix('tad_web_tags') . " as c on c.col_name='ActionID' and c.col_sn=a.ActionID
             left join " . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.ActionID desc";
         } else {
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_action') . ' as a
-            left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
+            join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
             where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID
             order by a.ActionID desc";
@@ -367,7 +367,7 @@ class tad_web_action
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('ActionID', $ActionID); //若 $show_list_del_file ==true 時一定要有
-        $upform = $TadUpFiles->upform(true, 'upfile');
+        $upform = $TadUpFiles->upform(true, 'upfile', '', true, "image/*");
         $xoopsTpl->assign('upform', $upform);
 
         $power_form = $this->Power->power_menu('read', 'ActionID', $ActionID);

@@ -213,7 +213,7 @@ class tad_web_aboutus
 
             $StuUrl = ('mem_adm' === $mode) ? "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu" : '#';
 
-            $students = "<div id='{$MemNum}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size: 68.75%;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
+            $students = "<div id='{$MemNum}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size: 0.7rem;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
 
             //$students = "<div id='{$StuID}' class='draggable'>{$MemName}</a></p></div>";
 
@@ -465,7 +465,7 @@ class tad_web_aboutus
             $StuID = $MemID;
             $StuUrl = "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu";
 
-            $students = "<div id='{$StuID}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size: 68.75%;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
+            $students = "<div id='{$StuID}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size: 0.7rem;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
 
             //$students = "<div id='{$StuID}' class='draggable'>{$MemName}</a></p></div>";
 
@@ -741,7 +741,7 @@ class tad_web_aboutus
         $color2 = ('1' == $MemSex) ? '#000066' : '#660000';
 
         // $pic = !empty($MemID) ? "
-        //   <div id='{$MemID}' style='padding: 5px;font-size: 80%; border:0px dotted gray;width: 100%;height:140px;background:transparent url($pic) top center no-repeat;margin:0px auto;{$cover}'>
+        //   <div id='{$MemID}' style='padding: 5px;font-size: 0.8rem; border:0px dotted gray;width: 100%;height:140px;background:transparent url($pic) top center no-repeat;margin:0px auto;{$cover}'>
         //   </div>" : "";
 
         if (!empty($MemID)) {
@@ -987,11 +987,14 @@ class tad_web_aboutus
 
         $myts = \MyTextSanitizer::getInstance();
 
-        require_once XOOPS_ROOT_PATH . '/modules/tadtools/PHPExcel/IOFactory.php';
-        $reader = PHPExcel_IOFactory::createReader('Excel2007');
+        require XOOPS_ROOT_PATH . '/modules/tadtools/vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+        $reader = \PHPExcel_IOFactory::createReader('Excel2007');
         $PHPExcel = $reader->load($file); // 檔案名稱
+
         $sheet = $PHPExcel->getSheet(0); // 讀取第一個工作表(編號從 0 開始)
         $highestRow = $sheet->getHighestRow(); // 取得總列數
+        $colString = $sheet->getHighestDataColumn();
+        $highestColumn = \PHPExcel_Cell::columnIndexFromString($colString);
 
         $main = '';
 
@@ -1033,7 +1036,7 @@ class tad_web_aboutus
 
                 $all .= "
                 <td>
-                  <input type='text' name='c[{$row}][$column]' value='{$val}' class='form-control span12'>
+                    <input type='text' name='c[{$row}][$column]' value='{$val}' class='form-control span12'>
                 </td>
                 ";
             }
@@ -1079,7 +1082,7 @@ class tad_web_aboutus
         }
 
         check_quota($this->WebID);
-        redirect_header($_SERVER['PHP_SELF'] . "?WebID={$this->WebID}", 3, _MD_TCW_IMPORT_OK);
+        redirect_header($_SERVER['PHP_SELF'] . "?WebID={$this->WebID}&CateID={$CateID}", 3, _MD_TCW_IMPORT_OK);
     }
 
     //重製位置
@@ -1110,8 +1113,8 @@ class tad_web_aboutus
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles;
 
-        $top = $myts->addSlashes($_POST['top']);
-        $left = $myts->addSlashes($_POST['left']);
+        $top = (int) $_POST['top'];
+        $left = (int) $_POST['left'];
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_link_mems') . " set
        `top` = '{$top}' ,

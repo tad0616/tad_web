@@ -74,15 +74,15 @@
                     <{$smarty.const._MD_TCW_ACTION_UPLOAD_METHOD}>
                 </label>
                 <div class="col-md-4">
-                    <div class="form-check form-check-inline radio-inline">
+                    <div class="form-check-inline">
                         <label class="form-check-label" for="radio_upload_photo">
-                            <input class="form-check-input" type="radio" name="upload_method" id="radio_upload_photo" value="upload_photo" class="validate[required]" <{if $upload_method!='gphoto_link'}>checked<{/if}>>
+                            <input class="form-check-input validate[required]" type="radio" name="upload_method" id="radio_upload_photo" value="upload_photo" <{if $upload_method!='gphoto_link'}>checked<{/if}>>
                             <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
                         </label>
                     </div>
-                    <div class="form-check form-check-inline radio-inline">
+                    <div class="form-check-inline">
                         <label class="form-check-label" for="radio_gphoto_link">
-                            <input class="form-check-input" type="radio" name="upload_method" id="radio_gphoto_link" value="gphoto_link" class="validate[required]" <{if $upload_method=='gphoto_link'}>checked<{/if}>>
+                            <input class="form-check-input validate[required]" type="radio" name="upload_method" id="radio_gphoto_link" value="gphoto_link" <{if $upload_method=='gphoto_link'}>checked<{/if}>>
                             <{$smarty.const._MD_TCW_ACTION_GPHOTO}>
                         </label>
                     </div>

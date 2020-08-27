@@ -86,9 +86,9 @@ switch ($op) {
         break;
     //儲存座位
     case 'save_seat':
-        $tad_web_aboutus->save_seat($MemID);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
+        $MemID = $tad_web_aboutus->save_seat($MemID);
+        // header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        die($MemID);
 
     //登入
     case 'reset_position':

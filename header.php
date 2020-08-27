@@ -1,6 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+include_once 'preloads/autoloader.php';
 //務必要在function.php之前，因為function.php會用到$WebID。
 
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
