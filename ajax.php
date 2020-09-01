@@ -1,14 +1,14 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 require_once __DIR__ . '/function.php';
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$default_class = system_CleanVars($_REQUEST, 'default_class', 0, 'int');
+$op = Request::getString('op');
+$plugin = Request::getString('plugin');
+$WebID = Request::getInt('WebID');
+$default_class = Request::getInt('default_class');
 
 switch ($op) {
 

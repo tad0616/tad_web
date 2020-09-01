@@ -1,11 +1,12 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+
+$WebID = Request::getInt('WebID');
 
 if (!$isMyWeb) {
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
@@ -78,10 +79,10 @@ function del_assistant($CateID = '', $plugin = '')
 }
 
 /*-----------執行動作判斷區----------*/
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
-$CateID = system_CleanVars($_REQUEST, 'CateID', '', 'string');
-$MemID = system_CleanVars($_REQUEST, 'MemID', '', 'string');
+$op = Request::getString('op');
+$plugin = Request::getString('plugin');
+$CateID = Request::getInt('CateID');
+$MemID = Request::getInt('MemID');
 
 common_template($WebID, $web_all_config);
 

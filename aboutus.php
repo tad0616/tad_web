@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $plugin = 'aboutus';
@@ -8,20 +9,19 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$MemID = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
-$year = system_CleanVars($_REQUEST, 'year', '', 'string');
-$newCateName = system_CleanVars($_REQUEST, 'newCateName', '', 'string');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-$chk_code = system_CleanVars($_REQUEST, 'chk_code', '', 'string');
-$ParentID = system_CleanVars($_REQUEST, 'ParentID', 0, 'int');
-$Reationship = system_CleanVars($_REQUEST, 'Reationship', '', 'string');
-$result = system_CleanVars($_REQUEST, 'result', 0, 'int');
-$MemUname = system_CleanVars($_REQUEST, 'MemUname', '', 'string');
-$MemPasswd = system_CleanVars($_REQUEST, 'MemPasswd', '', 'string');
-$ParentPasswd = system_CleanVars($_REQUEST, 'ParentPasswd', '', 'string');
-$hide_class = system_CleanVars($_REQUEST, 'hide_class', 0, 'int');
+$op = Request::getString('op');
+$MemID = Request::getInt('MemID');
+$year = Request::getString('year');
+$newCateName = Request::getString('newCateName');
+$CateID = Request::getInt('CateID');
+$chk_code = Request::getString('chk_code');
+$ParentID = Request::getInt('ParentID');
+$Reationship = Request::getString('Reationship');
+$result = Request::getInt('result');
+$MemUname = Request::getString('MemUname');
+$MemPasswd = Request::getString('MemPasswd');
+$ParentPasswd = Request::getString('ParentPasswd');
+$hide_class = Request::getInt('hide_class');
 
 common_template($WebID, $web_all_config);
 

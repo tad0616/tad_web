@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tad_web\Tags;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -57,10 +58,9 @@ function list_tags($WebID)
 }
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$tag = system_CleanVars($_REQUEST, 'tag', '', 'string');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$tag = Request::getString('tag');
 
 common_template($WebID, $web_all_config);
 

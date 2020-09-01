@@ -1,19 +1,18 @@
 <?php
 
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 require_once __DIR__ . '/function.php';
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 
-// die(var_export($_REQUEST) . '<hr>');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$PositionName = system_CleanVars($_REQUEST, 'PositionName', '', 'string');
-$BlockID = system_CleanVars($_REQUEST, 'BlockID', 0, 'int');
-$BlockEnable = system_CleanVars($_REQUEST, 'BlockEnable', '', 'string');
-$order_arr = system_CleanVars($_REQUEST, 'order_arr', '', 'array');
-$plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$op = Request::getString('op');
+$PositionName = Request::getString('PositionName');
+$BlockID = Request::getInt('BlockID');
+$BlockEnable = Request::getString('BlockEnable');
+$order_arr = Request::getArray('order_arr');
+$plugin = Request::getString('plugin');
+$WebID = Request::getInt('WebID');
 
 // $status = $op . '-' . $plugin . '-' . $PositionName . '-' . $BlockID . '<hr>';
 

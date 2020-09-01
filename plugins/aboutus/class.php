@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
@@ -27,11 +28,10 @@ class tad_web_aboutus
         }
         //全國版
         if (_IS_EZCLASS) {
-            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 
-            $def_county = system_CleanVars($_REQUEST, 'county', '', 'string');
-            $def_city = system_CleanVars($_REQUEST, 'city', '', 'string');
-            $def_SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+            $def_county = Request::getString('county');
+            $def_city = Request::getString('city');
+            $def_SchoolName = Request::getString('SchoolName');
 
             $and_county = empty($def_county) ? '' : "and b.county='{$def_county}'";
             $and_city = empty($def_city) ? '' : "and b.city='{$def_city}'";

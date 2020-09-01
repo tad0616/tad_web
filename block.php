@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\MColorPicker;
@@ -529,21 +530,20 @@ function chk_newblock($WebID)
     }
 }
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$BlockID = system_CleanVars($_REQUEST, 'BlockID', 0, 'int');
-$shareBlockID = system_CleanVars($_REQUEST, 'shareBlockID', 0, 'int');
-$config = system_CleanVars($_REQUEST, 'config', '', 'array');
-$BlockTitle = system_CleanVars($_REQUEST, 'BlockTitle', '', 'string');
-$BlockName = system_CleanVars($_REQUEST, 'BlockName', '', 'string');
-$BlockPosition = system_CleanVars($_REQUEST, 'BlockPosition', '', 'string');
-$BlockShare = system_CleanVars($_REQUEST, 'BlockShare', 0, 'int');
-$block_pic = system_CleanVars($_REQUEST, 'block_pic', '', 'array');
-$use_block_pic = system_CleanVars($_REQUEST, 'use_block_pic', '', 'string');
-$BlockEnable = system_CleanVars($_REQUEST, 'BlockEnable', '', 'int');
-$plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
-$ShareFrom = system_CleanVars($_REQUEST, 'ShareFrom', '', 'int');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$BlockID = Request::getInt('BlockID');
+$shareBlockID = Request::getInt('shareBlockID');
+$config = Request::getArray('config');
+$BlockTitle = Request::getString('BlockTitle');
+$BlockName = Request::getString('BlockName');
+$BlockPosition = Request::getString('BlockPosition');
+$BlockShare = Request::getInt('BlockShare');
+$block_pic = Request::getArray('block_pic');
+$use_block_pic = Request::getString('use_block_pic');
+$BlockEnable = Request::getInt('BlockEnable');
+$plugin = Request::getString('plugin');
+$ShareFrom = Request::getInt('ShareFrom');
 
 common_template($WebID, $web_all_config);
 

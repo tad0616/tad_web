@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $plugin = 'link';
@@ -8,11 +9,11 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$LinkID = system_CleanVars($_REQUEST, 'LinkID', 0, 'int');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+
+$op = Request::getString('op');
+$LinkID = Request::getInt('LinkID');
+$CateID = Request::getInt('CateID');
+$WebID = Request::getInt('WebID');
 
 common_template($WebID, $web_all_config);
 

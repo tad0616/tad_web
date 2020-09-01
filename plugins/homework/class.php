@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\FullCalendar;
@@ -63,10 +64,10 @@ class tad_web_homework
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
-            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-            $county = system_CleanVars($_REQUEST, 'county', '', 'string');
-            $city = system_CleanVars($_REQUEST, 'city', '', 'string');
-            $SchoolName = system_CleanVars($_REQUEST, 'SchoolName', '', 'string');
+
+            $county = Request::getString('county');
+            $city = Request::getString('city');
+            $SchoolName = Request::getString('SchoolName');
             $andCounty = !empty($county) ? "and c.county='{$county}'" : '';
             $andCity = !empty($city) ? "and c.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';

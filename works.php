@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $plugin = 'works';
@@ -8,15 +9,14 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WorksID = system_CleanVars($_REQUEST, 'WorksID', 0, 'int');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-$fb_action_ids = system_CleanVars($_REQUEST, 'fb_action_ids', 0, 'int');
-$comment_id = system_CleanVars($_REQUEST, 'comment_id', 0, 'int');
-$fb_comment_id = system_CleanVars($_REQUEST, 'fb_comment_id', '', 'string');
-$WorkScore = system_CleanVars($_REQUEST, 'WorkScore', '', 'array');
-$WorkJudgment = system_CleanVars($_REQUEST, 'WorkJudgment', '', 'array');
+$op = Request::getString('op');
+$WorksID = Request::getInt('WorksID');
+$CateID = Request::getInt('CateID');
+$fb_action_ids = Request::getInt('fb_action_ids');
+$comment_id = Request::getInt('comment_id');
+$fb_comment_id = Request::getString('fb_comment_id');
+$WorkScore = Request::getArray('WorkScore');
+$WorkJudgment = Request::getArray('WorkJudgment');
 
 common_template($WebID, $web_all_config);
 
@@ -61,7 +61,7 @@ switch ($op) {
         break;
     //下載檔案
     case 'tufdl':
-        $files_sn = isset($_GET['files_sn']) ? (int)$_GET['files_sn'] : '';
+        $files_sn = isset($_GET['files_sn']) ? (int) $_GET['files_sn'] : '';
         $TadUpFiles->add_file_counter($files_sn);
         exit;
         break;

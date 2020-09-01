@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
@@ -261,11 +262,10 @@ function list_tad_web_notice()
 }
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-$NoticeID = system_CleanVars($_REQUEST, 'NoticeID', 0, 'int');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$CateID = Request::getInt('CateID');
+$NoticeID = Request::getInt('NoticeID');
 
 $xoopsTpl->assign('op', $op);
 

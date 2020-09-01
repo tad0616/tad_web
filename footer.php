@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\FooTable;
 use XoopsModules\Tadtools\Utility;
@@ -146,8 +147,7 @@ function tad_web_my_menu($WebID)
             $add_power = [];
             $MyWebID = MyWebID('1');
 
-            require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-            $DefWebID = system_CleanVars($_REQUEST, 'DefWebID', '', 'int');
+            $DefWebID = Request::getInt('DefWebID');
 
             $uid = $xoopsUser->uid();
 

@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $plugin = 'discuss';
@@ -8,12 +9,11 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$DiscussID = system_CleanVars($_REQUEST, 'DiscussID', 0, 'int');
-$WebID = system_CleanVars($_REQUEST, 'WebID', $LoginWebID, 'int');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-$DefDiscussID = system_CleanVars($_REQUEST, 'DefDiscussID', 0, 'int');
+$op = Request::getString('op');
+$DiscussID = Request::getInt('DiscussID');
+$WebID = Request::getInt('WebID', $LoginWebID);
+$CateID = Request::getInt('CateID');
+$DefDiscussID = Request::getInt('DefDiscussID');
 
 common_template($WebID, $web_all_config);
 

@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
@@ -128,10 +129,9 @@ function plugin_block_setup($WebID, $plugin)
     $FancyBox->render(false);
 }
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$plugin = system_CleanVars($_REQUEST, 'plugin', '', 'string');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$plugin = Request::getString('plugin');
 
 common_template($WebID, $web_all_config);
 

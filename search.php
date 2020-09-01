@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'tad_web_search.tpl';
@@ -29,10 +30,9 @@ function search_web($WebID = '', $search_keyword = '')
 }
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$search_keyword = system_CleanVars($_REQUEST, 'search_keyword', '', 'string');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$search_keyword = Request::getString('search_keyword');
 
 common_template($WebID, $web_all_config);
 

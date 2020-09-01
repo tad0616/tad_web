@@ -1,6 +1,7 @@
 <?php
 namespace XoopsModules\Tad_web;
 
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\Power;
 
@@ -221,8 +222,7 @@ class WebCate
           </label>" : '';
         $row = ('form' === $mode) ? 'form-group row' : 'row';
 
-        require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-        $op = system_CleanVars($_REQUEST, 'op', '', 'string');
+        $op = Request::getString('op');
 
         $change_page_js = $change_page ? "location.href='{$_SERVER['PHP_SELF']}?WebID={$this->WebID}&op={$op}&CateID=' + $('#CateID').val();" : '';
         $newCate_js = ('form' === $mode) ? "if(\$('#CateID').val()==''){\$('#newCate').show(); }else{ \$('#newCate').hide();}" : '';
