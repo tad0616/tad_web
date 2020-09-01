@@ -1,12 +1,12 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 /*-----------引入檔案區--------------*/
 include_once 'header.php';
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
+$WebID = Request::getInt('WebID');
 
 if (!$isMyWeb) {
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
@@ -136,10 +136,10 @@ function save_cate($WebID = '', $ColName = '', $act_arr = [], $table = '')
 }
 
 /*-----------執行動作判斷區----------*/
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$ColName = system_CleanVars($_REQUEST, 'ColName', '', 'string');
-$act = system_CleanVars($_REQUEST, 'act', '', 'array');
-$table = system_CleanVars($_REQUEST, 'table', '', 'string');
+$op = Request::getString('op');
+$ColName = Request::getString('ColName');
+$act = Request::getArray('act');
+$table = Request::getString('table');
 
 common_template($WebID, $web_all_config);
 

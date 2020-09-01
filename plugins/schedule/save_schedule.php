@@ -1,13 +1,13 @@
 <?php
+use Xmf\Request;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$ScheduleID = system_CleanVars($_REQUEST, 'ScheduleID', 0, 'int');
-$tag = system_CleanVars($_REQUEST, 'tag', '', 'string');
-$Subject = system_CleanVars($_REQUEST, 'Subject', '', 'string');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$ScheduleID = Request::getInt('ScheduleID');
+$tag = Request::getString('tag');
+$Subject = Request::getString('Subject');
 
 list($SDWeek, $SDSort) = explode('-', $tag);
 

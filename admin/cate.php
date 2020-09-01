@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
@@ -261,10 +262,9 @@ function update_tad_web_cate_sort()
     return _TAD_SORTED . ' (' . date('Y-m-d H:i:s') . ')';
 }
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$CateID = Request::getInt('CateID');
 
 $xoopsTpl->assign('op', $op);
 

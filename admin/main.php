@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\WebCate;
@@ -461,11 +462,10 @@ function order_by_teamtitle()
 }
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$CateID = system_CleanVars($_REQUEST, 'CateID', 0, 'int');
-$g2p = system_CleanVars($_REQUEST, 'g2p', 0, 'int');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$CateID = Request::getInt('CateID');
+$g2p = Request::getInt('g2p');
 
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('g2p', $g2p);

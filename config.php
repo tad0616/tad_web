@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
@@ -373,33 +374,32 @@ function default_color($WebID = '')
 }
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$WebID = system_CleanVars($_REQUEST, 'WebID', 0, 'int');
-$MemID = system_CleanVars($_REQUEST, 'MemID', 0, 'int');
-$color_setup = system_CleanVars($_REQUEST, 'color_setup', '', 'array');
-$filename = system_CleanVars($_REQUEST, 'filename', '', 'string');
-$ConfigValue = system_CleanVars($_REQUEST, 'ConfigValue', '', 'array');
-$head_top = system_CleanVars($_REQUEST, 'head_top', '', 'string');
-$head_left = system_CleanVars($_REQUEST, 'head_left', '', 'string');
-$logo_top = system_CleanVars($_REQUEST, 'logo_top', '', 'string');
-$logo_left = system_CleanVars($_REQUEST, 'logo_left', '', 'string');
-$col_name = system_CleanVars($_REQUEST, 'col_name', '', 'string');
-$col_val = system_CleanVars($_REQUEST, 'col_val', '', 'string');
-$display_blocks = system_CleanVars($_REQUEST, 'display_blocks', '', 'string');
-$other_web_url = system_CleanVars($_REQUEST, 'other_web_url', '', 'string');
-$web_admins = system_CleanVars($_REQUEST, 'web_admins', '', 'string');
-$menu_font_size = system_CleanVars($_REQUEST, 'menu_font_size', '100%', 'string');
-$theme_side = system_CleanVars($_REQUEST, 'theme_side', 'right', 'string');
-$dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
-$delWebID = system_CleanVars($_REQUEST, 'delWebID', 0, 'int');
-$defalut_theme = system_CleanVars($_REQUEST, 'defalut_theme', '', 'string');
-$bg_repeat = system_CleanVars($_REQUEST, 'bg_repeat', '', 'string');
-$bg_attachment = system_CleanVars($_REQUEST, 'bg_attachment', '', 'string');
-$bg_postiton = system_CleanVars($_REQUEST, 'bg_postiton', '', 'string');
-$bg_size = system_CleanVars($_REQUEST, 'bg_size', '', 'string');
-$use_simple_menu = system_CleanVars($_REQUEST, 'use_simple_menu', 0, 'int');
-$login_method = system_CleanVars($_REQUEST, 'login_method', '', 'array');
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$MemID = Request::getInt('MemID');
+$color_setup = Request::getArray('color_setup');
+$filename = Request::getString('filename');
+$ConfigValue = Request::getArray('ConfigValue');
+$head_top = Request::getString('head_top');
+$head_left = Request::getString('head_left');
+$logo_top = Request::getString('logo_top');
+$logo_left = Request::getString('logo_left');
+$col_name = Request::getString('col_name');
+$col_val = Request::getString('col_val');
+$display_blocks = Request::getString('display_blocks');
+$other_web_url = Request::getString('other_web_url');
+$web_admins = Request::getString('web_admins');
+$menu_font_size = Request::getString('menu_font_size', '100%');
+$theme_side = Request::getString('theme_side', 'right');
+$dirname = Request::getString('dirname');
+$delWebID = Request::getInt('delWebID');
+$defalut_theme = Request::getString('defalut_theme');
+$bg_repeat = Request::getString('bg_repeat');
+$bg_attachment = Request::getString('bg_attachment');
+$bg_postiton = Request::getString('bg_postiton');
+$bg_size = Request::getString('bg_size');
+$use_simple_menu = Request::getInt('use_simple_menu');
+$login_method = Request::getArray('login_method');
 
 switch ($op) {
     //儲存設定值

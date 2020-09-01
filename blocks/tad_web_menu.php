@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 if (!class_exists('XoopsModules\Tadtools\Utility')) {
@@ -12,8 +13,7 @@ function tad_web_menu($options)
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
     $MyWebID = MyWebID(1);
 
-    require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-    $DefWebID = system_CleanVars($_REQUEST, 'WebID', '', 'int');
+    $DefWebID = Request::getInt('WebID');
 
     $block['DefWebID'] = $DefWebID;
 

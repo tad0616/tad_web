@@ -2,6 +2,7 @@
 
 namespace XoopsModules\Tad_web;
 
+// use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 /*
@@ -11,7 +12,7 @@ $this->tags    = new Tags($WebID);
 
 //外掛頁面
 
-$tag  = system_CleanVars($_REQUEST, 'tag', '', 'string');
+$tag = Request::getString('tag');
 
 $tad_web_news->list_all($CateID, null, null, $tag);
 
