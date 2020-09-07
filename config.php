@@ -1,11 +1,11 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\EasyResponsiveTabs;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\WebCate;
-
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 
@@ -118,33 +118,35 @@ function tad_web_config($WebID, $configs)
     $bg_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg";
     Utility::mk_dir($bg_user_path);
     Utility::mk_dir("{$bg_user_path}/thumbs");
-    import_img($bg_path, 'bg', $WebID);
+    // import_img($bg_path, 'bg', $WebID);
     $TadUpFilesBg = TadUpFilesBg($WebID);
+    fixed_img($bg_user_path, 'bg', $WebID, $TadUpFilesBg);
     $xoopsTpl->assign('upform_bg', $TadUpFilesBg->upform(false, 'bg', null, false));
     $TadUpFilesBg->set_col('bg', $WebID);
-    $xoopsTpl->assign('all_bg', $TadUpFilesBg->get_file_for_smarty());
+    $xoopsTpl->assign('all_bg', $TadUpFilesBg->get_file_for_smarty(null, null, null, true));
+    $xoopsTpl->assign('all_default_bg', get_default_img($bg_path));
 
     //標題設定
     $head_path = XOOPS_ROOT_PATH . '/modules/tad_web/images/head';
     $head_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head";
     Utility::mk_dir($head_user_path);
     Utility::mk_dir("{$head_user_path}/thumbs");
-    import_img($head_path, 'head', $WebID);
+    // import_img($head_path, 'head', $WebID);
     $TadUpFilesHead = TadUpFilesHead($WebID);
+    fixed_img($head_user_path, 'head', $WebID, $TadUpFilesHead);
     $xoopsTpl->assign('upform_head', $TadUpFilesHead->upform(false, 'head', null, false));
     $TadUpFilesHead->set_col('head', $WebID);
-    $xoopsTpl->assign('all_head', $TadUpFilesHead->get_file_for_smarty());
+    $xoopsTpl->assign('all_head', $TadUpFilesHead->get_file_for_smarty(null, null, null, true));
+    $xoopsTpl->assign('all_default_head', get_default_img($head_path));
 
     //logo設定
-    $logo_path = XOOPS_ROOT_PATH . '/modules/tad_web/images/logo';
     $logo_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo";
     Utility::mk_dir($logo_user_path);
     Utility::mk_dir("{$logo_user_path}/thumbs");
-    import_img($logo_path, 'logo', $WebID);
     $TadUpFilesLogo = TadUpFilesLogo($WebID);
     $xoopsTpl->assign('upform_logo', $TadUpFilesLogo->upform(false, 'logo', null, false));
     $TadUpFilesLogo->set_col('logo', $WebID);
-    $xoopsTpl->assign('all_logo', $TadUpFilesLogo->get_file_for_smarty());
+    $xoopsTpl->assign('all_logo', $TadUpFilesLogo->get_file_for_smarty(null, null, null, true));
 
     $MColorPicker = new MColorPicker('.color');
     $MColorPicker->render();
@@ -180,6 +182,9 @@ function tad_web_config($WebID, $configs)
     $xoopsTpl->assign('web_admins', $web_admins);
     $xoopsTpl->assign('logo_desc', sprintf(_MD_TCW_GOOD_LOGO_SITE, $WebID));
     $xoopsTpl->assign('bg_desc', sprintf(_MD_TCW_GOOD_BG_SITE, $WebID));
+
+    $EasyResponsiveTabs = new EasyResponsiveTabs('#ConfigTab');
+    $EasyResponsiveTabs->rander();
 }
 
 //更新網頁資訊

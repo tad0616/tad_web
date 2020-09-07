@@ -1,3 +1,9 @@
+Tad Web 1.8.7 (Released on 2020-09-01)
+=============================================================
+1.Fix the problem of not being able to capture Google Shared Photo Album correctly.
+2.Fix the problem of not being able to import student data.
+3.Fix the problem of not being able to seat
+
 Tad Web 1.8.6 (Released on 2020-07-25)
 =============================================================
 1.Fix the problem of not being able to capture Google Shared Photo Album correctly.

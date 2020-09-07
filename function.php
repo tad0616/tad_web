@@ -285,13 +285,13 @@ function get_web_all_config($WebID = '')
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo");
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}")) {
-            copy(XOOPS_ROOT_PATH . "/modules/tad_web/images/bg/{$tad_web_config['web_bg']}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}");
-        }
+        // if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}")) {
+        //     copy(XOOPS_ROOT_PATH . "/modules/tad_web/images/bg/{$tad_web_config['web_bg']}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}");
+        // }
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$tad_web_config['web_head']}")) {
-            copy(XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$tad_web_config['web_head']}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$tad_web_config['web_head']}");
-        }
+        // if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$tad_web_config['web_head']}")) {
+        //     copy(XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$tad_web_config['web_head']}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$tad_web_config['web_head']}");
+        // }
 
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}")) {
             if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png")) {
@@ -993,6 +993,164 @@ function import_img($path = '', $col_name = 'logo', $col_sn = '', $desc = '', $s
     }
 }
 
+//移除預設圖片
+function fixed_img($uploads_path = '', $col_name = 'logo', $col_sn = '', $TadUpFiles)
+{
+    global $xoopsDB;
+
+    if (false !== mb_strpos($uploads_path, 'http')) {
+        $uploads_path = str_replace(XOOPS_URL, XOOPS_ROOT_PATH, $uploads_path);
+    }
+
+    if (empty($uploads_path)) {
+        return;
+    }
+
+    if (!is_dir($uploads_path)) {
+        return;
+    }
+
+    $TadUpFiles->set_col($col_name, $col_sn);
+
+    $db_files = [];
+
+    $sql = 'update ' . $xoopsDB->prefix('tad_web_files_center') . " set `sub_dir`= '/{$col_sn}/{$col_name}' WHERE `col_name` = '{$col_name}' and col_sn='{$col_sn}'";
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+    $sql = 'select files_sn,file_name,original_filename from ' . $xoopsDB->prefix('tad_web_files_center') . " where col_name='{$col_name}' and col_sn='{$col_sn}'";
+
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $db_files_amount = 0;
+    while (list($files_sn, $file_name, $original_filename) = $xoopsDB->fetchRow($result)) {
+        $db_files[$files_sn] = $original_filename;
+        $db_files_amount++;
+    }
+
+    if (empty($db_files_amount)) {
+        return;
+    }
+
+    if (is_dir($uploads_path)) {
+        if ($dh = opendir($uploads_path)) {
+            while (false !== ($file = readdir($dh))) {
+                if ('.' === $file or '..' === $file or 'Thumbs.db' === $file or 'thumbs.db' === $file) {
+                    continue;
+                }
+                $pic = "$uploads_path/$file";
+                $thumb_pic = "$uploads_path/thumbs/$file";
+                $type = filetype($pic);
+
+                if ('dir' !== $type) {
+                    if (in_array($file, $db_files)) {
+                        $files_sn = array_search($file, $db_files);
+                        $TadUpFiles->del_files($files_sn);
+                        unlink($pic);
+                    } elseif (is_link($pic)) {
+                        unlink($pic);
+                    } elseif (!file_exists($thumb_pic)) {
+                        $mime_content_type = mime_content_type($pic);
+                        // die("thumbnail($pic, $thumb_pic)");
+                        thumbnail($pic, $thumb_pic, $mime_content_type);
+                    }
+                }
+            }
+            closedir($dh);
+        }
+    }
+
+    if (is_link($uploads_path . '/thumbs')) {
+        delete_tad_web_directory($uploads_path . '/thumbs');
+        Utility::mk_dir($uploads_path . '/thumbs');
+    }
+
+}
+
+function thumbnail($filename = '', $thumb_name = '', $type = 'image/jpeg', $width = '240', $angle = 0)
+{
+    set_time_limit(0);
+    ini_set('memory_limit', '300M');
+    // Get new sizes
+    list($old_width, $old_height) = getimagesize($filename);
+
+    if (0 != $angle) {
+        $h = $old_height;
+        $w = $old_width;
+
+        $old_width = $h;
+        $old_height = $w;
+    }
+
+    // die("$old_width, $old_height");
+
+    if ($old_width > $width) {
+        $percent = ($old_width > $old_height) ? round($width / $old_width, 2) : round($width / $old_height, 2);
+
+        $newwidth = ($old_width > $old_height) ? $width : $old_width * $percent;
+        $newheight = ($old_width > $old_height) ? $old_height * $percent : $width;
+
+        // Load
+        $thumb = imagecreatetruecolor($newwidth, $newheight);
+        ob_start();
+        if ('image/jpeg' === $type or 'image/jpg' === $type or 'image/pjpg' === $type or 'image/pjpeg' === $type) {
+            $source = imagecreatefromjpeg($filename);
+
+            $type = 'image/jpeg';
+        } elseif ('image/png' === $type) {
+            $source = imagecreatefrompng($filename);
+            $type = 'image/png';
+        } elseif ('image/gif' === $type) {
+            $source = imagecreatefromgif($filename);
+            $type = 'image/gif';
+        }
+        if (0 != $angle) {
+            $source = imagerotate($source, $angle, 0);
+        }
+        // Resize
+        imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $old_width, $old_height);
+
+        // header("Content-type: $type");
+        if ('image/jpeg' === $type) {
+            imagejpeg($thumb, $thumb_name);
+        } elseif ('image/png' === $type) {
+            imagepng($thumb, $thumb_name);
+        } elseif ('image/gif' === $type) {
+            imagegif($thumb, $thumb_name);
+        }
+        ob_end_clean();
+        return;
+    }
+}
+
+// 取得背景或標題圖的預設圖片
+function get_default_img($dir)
+{
+
+    if (substr($dir, -1) !== '/') {
+        $dir .= '/';
+    }
+    $files = [];
+    if (is_dir($dir)) {
+        if ($dh = opendir($dir)) {
+            while (false !== ($file = readdir($dh))) {
+                $type = filetype($dir . $file);
+
+                if ('dir' != $type and '.' != substr($file, 0, 1) and strpos($file, '.db') === false) {
+                    $data['file_name'] = $file;
+                    $data['tb_path'] = str_replace(XOOPS_ROOT_PATH, XOOPS_URL, "{$dir}thumbs/{$file}");
+                    $files[$file] = $data;
+                }
+            }
+            closedir($dh);
+        }
+    }
+
+    ksort($files, SORT_NATURAL);
+    // if (strpos($dir, 'head') !== false and $_GET['test'] == 1) {
+    //     Utility::dd($files);
+    // }
+    return $files;
+}
+
 //匯入圖檔
 function import_file($file_name = '', $col_name = '', $col_sn = '', $main_width = '', $thumb_width = '90', $desc = '', $safe_name = false)
 {
@@ -1127,7 +1285,8 @@ function output_head_file($WebID)
     imagealphablending($im, true);
     imagesavealpha($im, true);
 
-    $bg_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}";
+    $bg_filename = strpos($web_head, "head_{$WebID}_") !== false ? XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}" : XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$web_head}";
+
     if (file_exists($bg_filename)) {
         list($bg_width, $bg_height) = getimagesize($bg_filename);
 
