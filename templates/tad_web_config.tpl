@@ -45,43 +45,48 @@
             });
         </script>
 
-        <div id="tad_web_config_tabs">
-            <ul>
-                <li><a href='#tad_web_config_tab-1'><{$smarty.const._MD_TCW_TOOLS}></a></li>
-                <li><a href='#tad_web_config_tab-2'><{$smarty.const._MD_TCW_PLUGIN_TOOLS}></a></li>
-                <li><a href='#tad_web_config_tab-3'><{$smarty.const._MD_TCW_HEAD_TOOLS}></a></li>
-                <li><a href='#tad_web_config_tab-4'><{$smarty.const._MD_TCW_LOGO_TOOLS}></a></li>
-                <li><a href='#tad_web_config_tab-5'><{$smarty.const._MD_TCW_BG_TOOLS}></a></li>
-                <li><a href='#tad_web_config_tab-6'><{$smarty.const._MD_TCW_COLOR_TOOLS}></a></li>
-                <li><a href='#tad_web_config_tab-7'><{$smarty.const._MD_TCW_ADMIN_SETUP}></a></li>
+
+
+
+        <div id="ConfigTab">
+            <ul class="resp-tabs-list vert">
+                <li><{$smarty.const._MD_TCW_TOOLS}></li>
+                <li><{$smarty.const._MD_TCW_PLUGIN_TOOLS}></li>
+                <li><{$smarty.const._MD_TCW_HEAD_TOOLS}></li>
+                <li><{$smarty.const._MD_TCW_LOGO_TOOLS}></li>
+                <li><{$smarty.const._MD_TCW_BG_TOOLS}></li>
+                <li><{$smarty.const._MD_TCW_COLOR_TOOLS}></li>
+                <li><{$smarty.const._MD_TCW_ADMIN_SETUP}></li>
             </ul>
+            <div class="resp-tabs-container vert">
 
-            <div id='tad_web_config_tab-1'>
-                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_1.tpl"}>
-            </div>
+                <div>
+                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_1.tpl"}>
+                </div>
 
-            <div id='tad_web_config_tab-2'>
-                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_2.tpl"}>
-            </div>
+                <div>
+                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_2.tpl"}>
+                </div>
 
-            <div id='tad_web_config_tab-3'>
-                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_3.tpl"}>
-            </div>
+                <div>
+                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_3.tpl"}>
+                </div>
 
-            <div id='tad_web_config_tab-4'>
-                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_4.tpl"}>
-            </div>
+                <div>
+                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_4.tpl"}>
+                </div>
 
-            <div id='tad_web_config_tab-5'>
-                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_5.tpl"}>
-            </div>
+                <div>
+                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_5.tpl"}>
+                </div>
 
-            <div id='tad_web_config_tab-6'>
-                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_6.tpl"}>
-            </div>
+                <div>
+                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_6.tpl"}>
+                </div>
 
-            <div id="tad_web_config_tab-7">
-                <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_7.tpl"}>
+                <div>
+                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_7.tpl"}>
+                </div>
             </div>
         </div>
     <{/if}>

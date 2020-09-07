@@ -56,7 +56,7 @@ function plugin_setup($WebID, $plugin)
             import_img($setup['default'], "{$plugin}_{$setup['name']}", $WebID, '');
             $TadUpFiles_plugin_setup->set_col("{$plugin}_{$setup['name']}", $WebID);
             $pluginSetup[$k]['form'] = $TadUpFiles_plugin_setup->upform(false, "{$plugin}_{$setup['name']}", null, false);
-            $pluginSetup[$k]['list'] = $TadUpFiles_plugin_setup->get_file_for_smarty();
+            $pluginSetup[$k]['list'] = $TadUpFiles_plugin_setup->get_file_for_smarty(null, null, null, true);
         } elseif ('checkbox' === $setup['type']) {
             if (is_array($pluginSetup[$k]['value'])) {
                 $pluginSetup[$k]['value'] = $value;

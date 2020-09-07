@@ -25,15 +25,17 @@ if (is_dir($dir)) {
                     $color = 'red';
                     $bad++;
                     Utility::delete_directory($dir . $file);
+                    echo "<div style='color: $color;'>$file (" . filetype($dir . $file) . ") {$del}</div>";
                 } elseif (!in_array($clean_dir, $web)) {
                     $del = $dir . $file . '不存在的網站';
                     $color = 'blue';
                     $no++;
                     Utility::delete_directory($dir . $file);
+                    echo "<div style='color: $color;'>$file (" . filetype($dir . $file) . ") {$del}</div>";
                 } else {
-                    continue;
+                    echo "<div style='color: #000;'>$file (" . filetype($dir . $file) . ") OK</div>";
                 }
-                echo "<div style='color: $color;'>$file (" . filetype($dir . $file) . ") {$del}</div>";
+
             }
         }
         closedir($dh);

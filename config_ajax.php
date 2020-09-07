@@ -28,8 +28,7 @@ switch ($op) {
         output_head_file($WebID);
         output_head_file_480($WebID);
         die($filename);
-        exit;
-        break;
+
     case 'save_head_bg':
         save_web_config('head_top', $head_top, $WebID);
         save_web_config('head_left', $head_left, $WebID);
@@ -37,6 +36,7 @@ switch ($op) {
         output_head_file_480($WebID);
         exit;
         break;
+
     //logo設定
     case 'save_logo':
         save_web_config('logo_top', $logo_top, $WebID);
@@ -44,29 +44,29 @@ switch ($op) {
         output_head_file($WebID);
         output_head_file_480($WebID);
         exit;
-        break;
+
     case 'save_logo_pic':
         save_web_config('web_logo', $filename, $WebID);
         output_head_file($WebID);
         output_head_file_480($WebID);
         exit;
-        break;
+
     //標題設定
     case 'save_bg':
         save_web_config('web_bg', $filename, $WebID);
         // output_head_file($WebID);
         exit;
-        break;
+
     //儲存設定值
     case 'save_color':
         save_web_config($col_name, $col_val, $WebID);
         exit;
-        break;
+
     //篩選使用者
     case 'keyman':
         die(keyman($WebID, $keyman));
         exit;
-        break;
+
 }
 
 function keyman($WebID, $keyman)
