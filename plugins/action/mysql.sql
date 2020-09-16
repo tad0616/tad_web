@@ -19,5 +19,5 @@ CREATE TABLE `tad_web_action_gphotos` (
   `image_width` smallint(6) unsigned NOT NULL default '0' COMMENT '相片寬度',
   `image_height` smallint(6) unsigned NOT NULL default '0' COMMENT '相片高度',
   `image_url` varchar(1000) NOT NULL default '' COMMENT '相片網址',
-PRIMARY KEY  (`image_id`)
+PRIMARY KEY `image_id_ActionID` (`image_id`, `ActionID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
