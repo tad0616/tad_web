@@ -33,6 +33,7 @@ function chang_title(){
                     <option value="8" <{if $HomeworkPostDate==8}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_8}></option>
                     <option value="12" <{if $HomeworkPostDate==12}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_12}></option>
                     <option value="16" <{if $HomeworkPostDate==16}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_16}></option>
+                    <option value="18" <{if $HomeworkPostDate==18}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_18}></option>
                 </select>
             </div>
         </div>
