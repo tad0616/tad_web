@@ -1381,7 +1381,7 @@ function output_head_file_480($WebID)
     imagealphablending($im, true);
     imagesavealpha($im, true);
 
-    $bg_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}";
+    $bg_filename = strpos($web_head, "head_{$WebID}_") !== false ? XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}" : XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$web_head}";
     if (file_exists($bg_filename)) {
         list($bg_width, $bg_height) = getimagesize($bg_filename);
 

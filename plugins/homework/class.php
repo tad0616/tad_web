@@ -354,6 +354,8 @@ class tad_web_homework
                 $HomeworkPostDate = 12;
             } elseif (false !== mb_strrpos($DBV['HomeworkPostDate'], '16:00:00')) {
                 $HomeworkPostDate = 16;
+            } elseif (false !== mb_strrpos($DBV['HomeworkPostDate'], '6:00:00')) {
+                $HomeworkPostDate = 18;
             } else {
                 $HomeworkPostDate = $DBV['HomeworkPostDate'];
             }
@@ -473,8 +475,10 @@ class tad_web_homework
             $HomeworkPostDate = $toCal . ' 12:00:00';
         } elseif (16 == $HomeworkPostDate) {
             $HomeworkPostDate = $toCal . ' 16:00:00';
+        } elseif (18 == $HomeworkPostDate) {
+            $toCal = date('Y-m-d', strtotime("$toCal -1 day"));
+            $HomeworkPostDate = $toCal . ' 18:00:00';
         } else {
-            // $HomeworkPostDate = $toCal . " 00:00:00";
             $HomeworkPostDate = $HomeworkDate;
         }
         if ($newCateName != '') {
@@ -560,6 +564,9 @@ class tad_web_homework
             $HomeworkPostDate = $toCal . ' 12:00:00';
         } elseif (16 == $HomeworkPostDate) {
             $HomeworkPostDate = $toCal . ' 16:00:00';
+        } elseif (18 == $HomeworkPostDate) {
+            $toCal = date('Y-m-d', strtotime("$toCal -1 day"));
+            $HomeworkPostDate = $toCal . ' 18:00:00';
         } else {
             // $HomeworkPostDate = $toCal . " 00:00:00";
             $HomeworkPostDate = $HomeworkDate;

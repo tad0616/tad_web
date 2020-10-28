@@ -19,8 +19,8 @@ function files_search($WebID, $queryarray, $limit = 10)
     }
     $queryarray = $arr;
 
-    // die(var_export($queryarray));
-    $sql = "SELECT b.`{$id_col2}`,b.`{$title_col}`,a.`{$date_col}`, a.`WebID` FROM " . $xoopsDB->prefix($plugin_tbl1) . ' as a left join ' . $xoopsDB->prefix($plugin_tbl2) . " as b on b.col_name='{$id_col1}' and a.`{$id_col1}`=b.`col_sn` WHERE 1";
+    $and_web = $WebID ? " and a.`WebID`='{$WebID}'" : '';
+    $sql = "SELECT b.`{$id_col2}`,b.`{$title_col}`,a.`{$date_col}`, a.`WebID` FROM " . $xoopsDB->prefix($plugin_tbl1) . ' as a left join ' . $xoopsDB->prefix($plugin_tbl2) . " as b on b.col_name='{$id_col1}' and a.`{$id_col1}`=b.`col_sn` WHERE 1" . $and_web;
 
     if (is_array($queryarray) && $count = count($queryarray)) {
         $sql .= " AND ((b.`{$title_col}` LIKE '%{$queryarray[0]}%'  OR b.`{$content_col}` LIKE '%{$queryarray[0]}%' )";

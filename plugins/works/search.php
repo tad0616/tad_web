@@ -17,8 +17,8 @@ function works_search($WebID, $queryarray, $limit = 10)
     }
     $queryarray = $arr;
 
-    // die(var_export($queryarray));
-    $sql = "SELECT `{$id_col}`,`{$title_col}`,`{$date_col}`, `WebID` FROM " . $xoopsDB->prefix($plugin_tbl) . ' WHERE 1';
+    $and_web = $WebID ? " and `WebID`='{$WebID}'" : '';
+    $sql = "SELECT `{$id_col}`,`{$title_col}`,`{$date_col}`, `WebID` FROM " . $xoopsDB->prefix($plugin_tbl) . ' WHERE 1' . $and_web;
 
     if (is_array($queryarray) && $count = count($queryarray)) {
         $sql .= " AND ((`{$title_col}` LIKE '%{$queryarray[0]}%'  OR `{$content_col}` LIKE '%{$queryarray[0]}%' )";
