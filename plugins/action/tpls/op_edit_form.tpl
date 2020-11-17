@@ -1,6 +1,15 @@
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        $('#gphoto_link_url').change(function(){
+            var p=/^https:\/\/photos.app.goo.gl/gi;
+            var url=$('#gphoto_link_url').val();
+            if(p.test(url)){
+                alert('<{$smarty.const._MD_TCW_ACTION_GPHOTO_URL_ALERT}>');
+                $('#gphoto_link_url').val('');
+            }
+        });
+
         <{if $ActionID}>
             <{if $gphoto_link==""}>
                 $("#gphoto_link").hide();
@@ -115,7 +124,7 @@
                     <{$smarty.const._MD_TCW_ACTION_GPHOTO_URL}>
                 </label>
                 <div class="col-md-10">
-                    <input type="text" name="gphoto_link" class="form-control validate[required , custom[url]]" value="<{$file_link}>" placeholder="<{$smarty.const._MD_TCW_ACTION_GPHOTO_URL_DEMO}>">
+                    <input type="text" name="gphoto_link" id="gphoto_link_url" class="form-control validate[required , custom[url]]" value="<{$gphoto_link}>" placeholder="<{$smarty.const._MD_TCW_ACTION_GPHOTO_URL_DEMO}>">
                 </div>
             </div>
 

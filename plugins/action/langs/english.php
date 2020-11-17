@@ -31,3 +31,5 @@ define('_MD_TCW_ACTION_BLOCK_PHOTOS_PLACEHOLDER', 'Set to 0 is all');
 define('_MD_TCW_ACTION_BLOCK_ORDER', 'Photo sorting method');
 define('_MD_TCW_ACTION_BLOCK_ORDER_RAND', 'random sort');
 define('_MD_TCW_ACTION_BLOCK_ORDER_DEFAULT', 'by existing sort');
+
+define('_MD_TCW_ACTION_GPHOTO_URL_ALERT', 'Please do not use "https://photos.app.goo.gl" to share the website. \nPlease use the URL listed on your browser, which should start with "https://photos.google.com/share".');

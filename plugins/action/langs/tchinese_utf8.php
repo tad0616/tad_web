@@ -30,3 +30,4 @@ define('_MD_TCW_ACTION_BLOCK_PHOTOS_PLACEHOLDER', '設為 0 就是全部');
 define('_MD_TCW_ACTION_BLOCK_ORDER', '相片排序方式');
 define('_MD_TCW_ACTION_BLOCK_ORDER_RAND', '隨機排序');
 define('_MD_TCW_ACTION_BLOCK_ORDER_DEFAULT', '依據既有排序');
+define('_MD_TCW_ACTION_GPHOTO_URL_ALERT', '請勿使用「https://photos.app.goo.gl」分享網址。\n請使用瀏覽器列上的網址，網址開頭應為「https://photos.google.com/share」');
