@@ -302,7 +302,7 @@
             <div class="text-danger text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_UNINSTALL_BLOCK}></div>
             <ul id="sort_uninstall" class="connectedSortable">
                 <{foreach from=$uninstall item=block}>
-                    <li id="<{$block.BlockID}>" title="<{$block.plugin}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
+                    <li id="<{$block.BlockID}>" data-toggle="tooltip" title="<{$block.PluginTitle}> (<{$block.plugin}>)" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
                         <{$block.icon}>
                         <{if $block.BlockTitle}>
                             <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
@@ -480,3 +480,10 @@
         </div>
     </form>
 <{/if}>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
