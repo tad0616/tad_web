@@ -361,9 +361,15 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     } else {
         $andForceMenu = "and `BlockEnable`='1'";
     }
-    // die($andForceMenu);
+
+    // 只列出有啟用的區塊
+    // $web_plugin_enable_arr='aboutus,news,page,link,files,video,calendar,discuss,works,homework';
+    $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
+    $andPlugin = "and `plugin` in ('custom','system','share','" . str_replace(',', "','", $web_plugin_enable_arr) . "')";
+
+    // $andPlugin = '';
     //取得區塊位置
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}'  $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
+    $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' $andPlugin $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
 
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 

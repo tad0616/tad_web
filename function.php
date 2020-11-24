@@ -166,15 +166,18 @@ function get_position_blocks($WebID, $BlockPosition, $plugin = '')
         if (empty($plugin)) {
             $share_blocks_id = get_share_blocks($WebID);
             $all_share_blocks = is_array($share_blocks_id) ? implode("','", $share_blocks_id) : '';
-            $andShareBlocks = empty($all_share_blocks) ? '' : "and BlockID not in('{$all_share_blocks}')";
-            $andBlockPosition = "(`WebID`='{$WebID}' and (`BlockPosition`='uninstall' or `BlockPosition`='') and plugin!='share' ) or (plugin='share' and WebID!='{$WebID}' {$andShareBlocks})";
+            $andShareBlocks = empty($all_share_blocks) ? '' : "and a.`BlockID` not in('{$all_share_blocks}')";
+            $andBlockPosition = "(a.`WebID`='{$WebID}' and (a.`BlockPosition`='uninstall' or a.`BlockPosition`='') and a.`plugin`!='share' ) or (a.`plugin`='share' and a.`WebID`!='{$WebID}' {$andShareBlocks})";
         } else {
-            $andBlockPosition = "(`WebID`='{$WebID}' and (`BlockPosition`='uninstall' or `BlockPosition`='') and plugin='{$plugin}' )";
+            $andBlockPosition = "(a.`WebID`='{$WebID}' and (a.`BlockPosition`='uninstall' or a.`BlockPosition`='') and a.`plugin`='{$plugin}' )";
         }
     } else {
-        $andBlockPosition = empty($plugin) ? "`WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' and `plugin`!='share'" : "`WebID`='{$WebID}' and `BlockPosition`='{$BlockPosition}' and `plugin`='{$plugin}'";
+        $andBlockPosition = empty($plugin) ? "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}' and a.`plugin`!='share'" : "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}' and a.`plugin`='{$plugin}'";
     }
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where  $andBlockPosition order by `BlockSort`";
+
+    $sql = 'select a.*, b.`PluginTitle` from ' . $xoopsDB->prefix('tad_web_blocks') . " as a
+    left join " . $xoopsDB->prefix('tad_web_plugins') . " as b on a.`plugin` = b.`PluginDirname` and a.`WebID` = b.`WebID`
+    where  $andBlockPosition order by a.`BlockSort`";
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $Blocks = [];
     $i = 0;
