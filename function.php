@@ -717,7 +717,7 @@ function get_tad_web($WebID = '', $enable = false)
     if (empty($WebID)) {
         return;
     }
-    if (isset($_SESSION['tad_web'][$WebID])) {
+    if (isset($_SESSION['tad_web'][$WebID]['WebID'])) {
         if ($enable and (empty($_SESSION['tad_web'][$WebID]))) {
             redirect_header('index.php', 3, _MD_TCW_WEB_NOT_EXIST);
         }

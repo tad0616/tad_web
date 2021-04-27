@@ -476,58 +476,62 @@ switch ($op) {
     case 'create_by_user':
         create_by_user();
         break;
+
     case 'batch_add_class_by_user':
         batch_add_class_by_user();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     case 'save_webs_title':
         save_webs_title($_POST['webTitle'], $_POST['old_webTitle']);
         header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
         exit;
-        break;
+
     //新增資料
     case 'insert_tad_web':
         $WebID = insert_tad_web($CateID, $_POST['WebName'], $_POST['WebSort'], '1', '', $_POST['WebOwnerUid'], $_POST['WebTitle'], '', $_POST['year']);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //更新資料
     case 'update_tad_web':
         update_tad_web($WebID);
         header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
         exit;
-        break;
+
     //輸入表格
     case 'add_tad_web_form':
         tad_web_form($WebID);
         break;
+
     //輸入表格
     case 'tad_web_form':
         tad_web_form($WebID);
         break;
+
     //刪除資料
     case 'delete_tad_web_chk':
         delete_tad_web_chk($WebID, $g2p);
         break;
+
     //刪除資料
     case 'delete_tad_web':
         delete_tad_web($WebID);
         header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
         exit;
-        break;
+
     //刪除資料
     case 'save_webs_able':
         save_webs_able($WebID, $_GET['able']);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //以班級名稱排序
     case 'order_by_teamtitle':
         order_by_teamtitle();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //預設動作
     default:
         list_all_web($CateID);
