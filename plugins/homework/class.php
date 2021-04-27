@@ -169,7 +169,7 @@ class tad_web_homework
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $yet_data[$i] = $all;
                 $yet_data[$i]['display_at'] = sprintf(_MD_TCW_HOMEWORK_POST_AT, $all['HomeworkPostDate']);
-                $w = date('w', strtotime($toCal));
+                $w = date('w', strtotime($all['toCal']));
                 $yet_data[$i]['Week'] = $cweek[$w];
                 $i++;
                 $total++;

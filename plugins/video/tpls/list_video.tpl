@@ -21,6 +21,7 @@
                 </div>
             </div>
         <{/foreach}>
+        <div style="clear: both;"></div>
     <{else}>
         <table class="footable table common_table">
             <thead>
