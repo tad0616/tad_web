@@ -351,12 +351,12 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     $myts = \MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 
-    $dir_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
-    if (!file_exists($dir_blocks_file)) {
+    $web_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+    if (!file_exists($web_blocks_file)) {
         $block_tpl = get_all_blocks('tpl');
         $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/';
 
-        $andBlockPosition = 'home' === $web_display_mode ? '' : "and `BlockPosition`='side'";
+        // $andBlockPosition = 'home' === $web_display_mode ? '' : "and `BlockPosition`='side'";
         // die(var_export($Web));
         if (isset($Web['WebEnable']) and '1' != $Web['WebEnable']) {
             $andForceMenu = "and (`BlockEnable`='1' or `BlockName`='my_menu')";
@@ -415,9 +415,9 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
             $block[$BlockPosition][$BlockSort] = $blocks_arr;
         }
 
-        file_put_contents($dir_blocks_file, json_encode($block, 256));
+        file_put_contents($web_blocks_file, json_encode($block, 256));
     } else {
-        $block = json_decode(file_get_contents($dir_blocks_file), true);
+        $block = json_decode(file_get_contents($web_blocks_file), true);
     }
 
     $xoopsTpl->assign('center_block1', $block['block1']);

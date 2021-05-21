@@ -126,7 +126,7 @@ switch ($op) {
             $onlineHandler = xoops_getHandler('online');
             $onlineHandler->destroy($xoopsUser->getVar('uid'));
         }
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+        header("location: " . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}");
         exit;
 
     //更新照片
