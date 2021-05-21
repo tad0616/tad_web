@@ -14,8 +14,6 @@ $order_arr = Request::getArray('order_arr');
 $plugin = Request::getString('plugin');
 $WebID = Request::getInt('WebID');
 
-// $status = $op . '-' . $plugin . '-' . $PositionName . '-' . $BlockID . '<hr>';
-
 switch ($op) {
     case 'save_position':
         // 安裝共享區塊
@@ -97,6 +95,9 @@ switch ($op) {
         echo _MD_TCW_SAVED . ' (' . date('Y-m-d H:i:s') . ')';
         break;
 }
+
+$dir_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+unlink($dir_blocks_file);
 
 //以共享區塊編號取得在某網站的副本編號
 function get_share_to_custom_blockid($BlockID, $WebID)

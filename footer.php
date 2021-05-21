@@ -351,66 +351,73 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
     $myts = \MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 
-    $block_tpl = get_all_blocks('tpl');
-    $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/';
+    $dir_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+    if (!file_exists($dir_blocks_file)) {
+        $block_tpl = get_all_blocks('tpl');
+        $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/';
 
-    $andBlockPosition = 'home' === $web_display_mode ? '' : "and `BlockPosition`='side'";
-    // die(var_export($Web));
-    if (isset($Web['WebEnable']) and '1' != $Web['WebEnable']) {
-        $andForceMenu = "and (`BlockEnable`='1' or `BlockName`='my_menu')";
-    } else {
-        $andForceMenu = "and `BlockEnable`='1'";
-    }
-
-    // 只列出有啟用的區塊
-    // $web_plugin_enable_arr='aboutus,news,page,link,files,video,calendar,discuss,works,homework';
-    $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
-    $andPlugin = "and `plugin` in ('custom','system','share','" . str_replace(',', "','", $web_plugin_enable_arr) . "')";
-
-    // $andPlugin = '';
-    //取得區塊位置
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' $andPlugin $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
-
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-    while (false !== ($all = $xoopsDB->fetchArray($result))) {
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-
-        //檢查權限
-        $have_power = $power->check_power('read', 'BlockID', $BlockID);
-        if (!$have_power) {
-            continue;
-        }
-
-        if ('1' != $Web['WebEnable'] and 'my_menu' === $BlockName) {
-            $all['BlockPosition'] = $BlockPosition = 'side';
-        }
-        $blocks_arr = $all;
-        $config = json_decode($BlockConfig, true);
-        $blocks_arr['config'] = $config;
-
-        if ('xoops' === $plugin) {
-            $blocks_arr['tpl'] = '';
-        } elseif ('custom' === $plugin or 'share' === $plugin) {
-            if ('iframe' === $config['content_type']) {
-                $blocks_arr['BlockContent'] = "<iframe title=\"{$BlockTitle}\" src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
-            } elseif ('js' === $config['content_type']) {
-                $blocks_arr['BlockContent'] = $BlockContent;
-            } else {
-                $blocks_arr['BlockContent'] = $myts->displayTarea($BlockContent, 1);
-            }
+        $andBlockPosition = 'home' === $web_display_mode ? '' : "and `BlockPosition`='side'";
+        // die(var_export($Web));
+        if (isset($Web['WebEnable']) and '1' != $Web['WebEnable']) {
+            $andForceMenu = "and (`BlockEnable`='1' or `BlockName`='my_menu')";
         } else {
-            if (file_exists("{$dir}{$plugin}/blocks.php")) {
-                require_once "{$dir}{$plugin}/blocks.php";
+            $andForceMenu = "and `BlockEnable`='1'";
+        }
+
+        // 只列出有啟用的區塊
+        // $web_plugin_enable_arr='aboutus,news,page,link,files,video,calendar,discuss,works,homework';
+        $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
+        $andPlugin = "and `plugin` in ('custom','system','share','" . str_replace(',', "','", $web_plugin_enable_arr) . "')";
+
+        // $andPlugin = '';
+        //取得區塊位置
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' $andPlugin $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
+
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
+            foreach ($all as $k => $v) {
+                $$k = $v;
             }
 
-            $blocks_arr['tpl'] = $block_tpl[$BlockName];
-            $blocks_arr['BlockContent'] = call_user_func($BlockName, $WebID, $config);
+            //檢查權限
+            $have_power = $power->check_power('read', 'BlockID', $BlockID);
+            if (!$have_power) {
+                continue;
+            }
+
+            if ('1' != $Web['WebEnable'] and 'my_menu' === $BlockName) {
+                $all['BlockPosition'] = $BlockPosition = 'side';
+            }
+            $blocks_arr = $all;
+            $config = json_decode($BlockConfig, true);
             $blocks_arr['config'] = $config;
+
+            if ('xoops' === $plugin) {
+                $blocks_arr['tpl'] = '';
+            } elseif ('custom' === $plugin or 'share' === $plugin) {
+                if ('iframe' === $config['content_type']) {
+                    $blocks_arr['BlockContent'] = "<iframe title=\"{$BlockTitle}\" src=\"{$BlockContent}\" style=\"width: 100%; height: 300px; overflow: auto; border:none;\"></iframe>";
+                } elseif ('js' === $config['content_type']) {
+                    $blocks_arr['BlockContent'] = $BlockContent;
+                } else {
+                    $blocks_arr['BlockContent'] = $myts->displayTarea($BlockContent, 1, 1, 1, 1, 0);
+                }
+            } else {
+                if (file_exists("{$dir}{$plugin}/blocks.php")) {
+                    require_once "{$dir}{$plugin}/blocks.php";
+                }
+
+                $blocks_arr['tpl'] = $block_tpl[$BlockName];
+                $blocks_arr['BlockContent'] = call_user_func($BlockName, $WebID, $config);
+                $blocks_arr['config'] = $config;
+            }
+            $block[$BlockPosition][$BlockSort] = $blocks_arr;
         }
-        $block[$BlockPosition][$BlockSort] = $blocks_arr;
+
+        file_put_contents($dir_blocks_file, json_encode($block, 256));
+    } else {
+        $block = json_decode(file_get_contents($dir_blocks_file), true);
     }
 
     $xoopsTpl->assign('center_block1', $block['block1']);

@@ -12,7 +12,7 @@
             <{/if}>
         <{/if}>
 
-        <{if $isMyWeb and $WebID and isset($block.BlockContent.main_data) and $block.BlockContent.main_data!=""}>
+        <{if $isMyWeb and $WebID and ((isset($block.BlockContent.main_data) and $block.BlockContent.main_data) or $block.plugin=="custom")}>
             <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_tool.tpl"}>
         <{/if}>
     </div>
