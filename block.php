@@ -250,6 +250,9 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
     //儲存權限
     $power->save_power('BlockID', $BlockID, 'read');
     mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
+
+    $dir_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+    unlink($dir_blocks_file);
 }
 
 //自動取得tad_web_blocks的最新排序

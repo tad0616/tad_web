@@ -1,10 +1,18 @@
+Tad Web 1.8.9 (released on 2021-05-05)
+================================================
+1. Block is linked with function, function is closed, block is closed with it
+2. Block setting plus the function name prompt
+3. Fix the problem that backend editing website data cannot be brought out
+4. Fix the problem that the custom block cannot bring out the setting tool.
+5. Fix the problem of incorrect line feed in custom block.
+
+
 Tad Web 1.8.8 (Released on 2020-10-28)
 ================================================
 1. Modify the default drawing mechanism to save a lot of space.
 2.Fix the problem that other class networks can't join the same photo album when sharing Google photo album.
 3. Modify the search box to change the search scope to the content of the class network.
 4.Fix the incorrect title map in mobile version.
-
 
 Tad Web 1.8.7 (Released on 2020-09-01)
 =============================================================

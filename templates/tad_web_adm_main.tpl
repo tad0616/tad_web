@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid mb-5">
     <{if $op=="tad_web_form"}>
         <form action="main.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal">
             <div class="form-group row">
@@ -50,14 +50,19 @@
                 <label class="col-sm-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MA_TCW_TEAMENABLE}>
                 </label>
-                <div class="col-sm-10">
-                    <label class="radio-inline">
-                        <input type="radio" name="WebEnable" id="WebEnable" value="1" <{$WebEnable1}>><{$smarty.const._TAD_ENABLE}>
-                    </label>
-
-                    <label class="radio-inline">
-                        <input type="radio" name="WebEnable" id="WebEnable" value="0" <{$WebEnable0}>><{$smarty.const._TAD_UNABLE}>
-                    </label>
+                <div class="col-sm-10" style="padding-top: 8px;">
+                    <div class="form-check-inline radio-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="WebEnable" value="1" <{if $WebEnable=='1'}>checked<{/if}>>
+                            <{$smarty.const._TAD_ENABLE}>
+                        </label>
+                    </div>
+                    <div class="form-check-inline radio-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="WebEnable" value="0" <{if $WebEnable=='0'}>checked<{/if}>>
+                            <{$smarty.const._TAD_UNABLE}>
+                        </label>
+                    </div>
                 </div>
             </div>
 
