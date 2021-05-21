@@ -96,8 +96,8 @@ switch ($op) {
         break;
 }
 
-$dir_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
-unlink($dir_blocks_file);
+$web_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+unlink($web_blocks_file);
 
 //以共享區塊編號取得在某網站的副本編號
 function get_share_to_custom_blockid($BlockID, $WebID)

@@ -251,8 +251,8 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
     $power->save_power('BlockID', $BlockID, 'read');
     mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
 
-    $dir_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
-    unlink($dir_blocks_file);
+    $web_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+    unlink($web_blocks_file);
 }
 
 //自動取得tad_web_blocks的最新排序
@@ -280,6 +280,9 @@ function mk_block_pic($WebID = '', $block_pic = [], $use_block_pic = '')
     while (list($BlockID, $BlockName, $BlockTitle) = $xoopsDB->fetchRow($result)) {
         mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $block_pic['block_pic_text_color'], $block_pic['block_pic_border_color'], $block_pic['block_pic_text_size'], $block_pic['block_pic_font']);
     }
+
+    $web_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+    unlink($web_blocks_file);
 }
 
 // 取得區塊設定需要的一些共同設定值
