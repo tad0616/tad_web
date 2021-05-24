@@ -204,11 +204,12 @@ switch ($op) {
     case 'view_file':
         view_file($WebID);
         break;
+
     case 'save_disk_setup':
         save_disk_setup();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //預設動作
     default:
         list_all_web($CateID);

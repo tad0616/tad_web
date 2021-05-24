@@ -17,6 +17,7 @@ function xoops_module_update_tad_web($module, $old_version)
     $is_ezclass = XOOPS_URL == _EZCLASS ? true : false;
     define('_IS_EZCLASS', $is_ezclass);
 
+    Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web");
     Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web');
     //重新產生外掛設定
     get_dir_plugins('force');

@@ -146,6 +146,7 @@ common_template($WebID, $web_all_config);
 switch ($op) {
     case 'save_cate':
         save_cate($WebID, $ColName, $act, $table);
+        clear_block_cache($WebID);
         header("location:{$_SERVER['PHP_SELF']}?WebID={$WebID}&ColName={$ColName}");
         exit;
 

@@ -58,7 +58,9 @@
                                 <span class="badge badge-info"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
                             <{/if}>
                             <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>" style="font-size: 120%; margin-bottom: 10px;"><{$video.VideoName}></a>
-                            <{if $video.isMyWeb or $video.isAssistant}>
+                            <{*if $video.isMyWeb or $video.isAssistant*}>
+                            <{*if $video.isCanEdit*}>
+                            <{if ($WebID && $isMyWeb) || $isAdmin || ($video.cate.CateID && $video.cate.CateID == $smarty.session.isAssistant.video)}>
                                 <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                                 <a href="video.php?WebID=<{$video.WebID}>&op=edit_form&VideoID=<{$video.VideoID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                             <{/if}>

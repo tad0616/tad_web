@@ -20,7 +20,8 @@
 
                     <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-                    <{if $homework.isCanEdit}>
+                    <{*if $homework.isCanEdit*}>
+                    <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
                         <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                         <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                     <{/if}>
@@ -34,7 +35,8 @@
                 <h3>
                     <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-                    <{if $homework.isCanEdit}>
+                    <{*if $homework.isCanEdit*}>
+                    <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
                         <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
 
                         <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
@@ -86,7 +88,8 @@
 
                         <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-                        <{if $homework.isCanEdit}>
+                        <{*if $homework.isCanEdit*}>
+                        <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
                         <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                         <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                         <{/if}>
@@ -113,7 +116,8 @@
                 <tr>
                     <td>
                         <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.WebName}> <{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
-                        <{if $homework.isCanEdit}>
+                        <{*if $homework.isCanEdit*}>
+                        <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
                             <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                             <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                         <{/if}>
@@ -156,7 +160,8 @@
 
                 <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
-                <{if $homework.isCanEdit}>
+                <{*if $homework.isCanEdit*}>
+                <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
                     <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                     <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
                 <{/if}>

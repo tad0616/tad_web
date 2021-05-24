@@ -274,27 +274,31 @@ switch ($op) {
     //新增資料
     case 'save_tad_web_cate':
         $CateID = save_tad_web_cate();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //更新資料
     case 'update_tad_web_cate':
         update_tad_web_cate($CateID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //更新資料
     case 'update_tad_web_cate_arr':
         update_tad_web_cate_arr($CateID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //刪除資料
     case 'delete_tad_web_cate':
         delete_tad_web_cate($CateID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //預設動作
     default:
         tad_web_cate_form($CateID);

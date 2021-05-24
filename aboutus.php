@@ -29,43 +29,51 @@ switch ($op) {
     //新增學生資料
     case 'insert':
         $MemID = $tad_web_aboutus->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}&MemID={$MemID}&op=show_stu");
         exit;
 
     //更新學生資料
     case 'update':
         $tad_web_aboutus->update($MemID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}&MemID={$MemID}&op=show_stu");
         exit;
 
     //刪除學生資料
     case 'delete':
         $tad_web_aboutus->delete($MemID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
 
     case 'insert_class':
         $CateID = $tad_web_aboutus->insert_class($year, $newCateName);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
 
     case 'update_class':
         $tad_web_aboutus->update_class($CateID, $year, $newCateName, $hide_class);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}");
         exit;
 
     case 'class_enable':
         $tad_web_aboutus->change_class($CateID, 1);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form");
         exit;
 
     case 'class_unable':
         $tad_web_aboutus->change_class($CateID, 0);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form");
         exit;
 
     case 'del_class':
         $tad_web_aboutus->del_class($CateID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form");
         exit;
 
@@ -93,6 +101,7 @@ switch ($op) {
     //登入
     case 'reset_position':
         $tad_web_aboutus->reset_position($CateID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CateID={$CateID}&op=edit_position");
         exit;
 
@@ -134,6 +143,7 @@ switch ($op) {
         $TadUpFiles->set_col('WebOwner', $WebID, 1);
         $TadUpFiles->del_files();
         $TadUpFiles->upload_file('upfile', 480, 120, null, null, true);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 

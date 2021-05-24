@@ -23,12 +23,14 @@ switch ($op) {
     //新增資料
     case 'insert':
         $AccountID = $tad_web_account->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&AccountID=$AccountID");
         exit;
         break;
     //更新資料
     case 'update':
         $AccountID = $tad_web_account->update($AccountID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&AccountID=$AccountID");
         exit;
         break;
@@ -39,6 +41,7 @@ switch ($op) {
     //刪除資料
     case 'delete':
         $tad_web_account->delete($AccountID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

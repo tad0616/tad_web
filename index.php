@@ -9,13 +9,12 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 //首頁
 function ClassHome($WebID = '')
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs;
+    global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs, $web_all_config;
 
     $web = get_tad_web($WebID);
 
     define('_DISPLAY_MODE', 'home');
-
-    $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
+    $web_plugin_enable_arr = $web_all_config['web_plugin_enable_arr'];
     if (empty($web_plugin_enable_arr)) {
         $show_arr = get_dir_plugins();
     } else {
@@ -92,10 +91,17 @@ $NoticeID = Request::getInt('NoticeID');
 common_template($WebID, $web_all_config);
 
 switch ($op) {
+    //重新產生畫面
+    case 'clear_block_cache':
+        clear_block_cache($WebID);
+        header("location: index.php?WebID={$WebID}");
+        exit;
+
     //新增資料
     case 'notice':
         view_notice($NoticeID);
         break;
+
     //預設動作
     default:
         if (!empty($WebID)) {

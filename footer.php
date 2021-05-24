@@ -12,7 +12,6 @@ $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
 $xoopsTpl->assign('Web', $Web);
 $xoopsTpl->assign('_IS_EZCLASS', _IS_EZCLASS);
-// $xoopsTpl->assign('login_from', $_COOKIE['login_from']);
 
 if (isset($LoginWebID)) {
     $xoopsTpl->assign('LoginMemID', $LoginMemID);
@@ -32,6 +31,7 @@ if (isset($LoginParentID)) {
     $xoopsTpl->assign('LoginCateID', $LoginCateID);
 }
 
+// 當前 當前
 if (!empty($plugin)) {
     $xoopsTpl->assign('plugin', $plugin);
     $xoopsTpl->assign('now_plugin', $plugin_menu_var[$plugin]);
@@ -64,7 +64,7 @@ $FooTable = new FooTable();
 $FooTable->render();
 
 //區塊
-get_tad_web_blocks($WebID, _DISPLAY_MODE);
+get_tad_web_blocks($WebID);
 
 //登入區塊及選單
 if (!empty($_SESSION['LoginMemID']) or !empty($_SESSION['LoginParentID']) or $xoopsUser) {
@@ -194,10 +194,7 @@ function tad_web_my_menu($WebID)
 
                 $size = size2mb($defalt_used_size);
                 $percentage = round($size / $quota, 2) * 100;
-                // $size        = get_web_config("used_size", $defaltWebID);
-                // if ($isAdmin) {
-                //     die("defalt_used_size={$defalt_used_size}, size={$size}, quota={$quota}, percentage={$percentage},");
-                // }
+
                 if ($percentage <= 70) {
                     $progress_color = 'success';
                 } elseif ($percentage <= 90) {
@@ -275,9 +272,9 @@ function tad_web_login($WebID, $config = [])
     $login_config = empty($login_config) ? [] : explode(';', $login_config);
     // die(var_export($login_config));
     $about_setup = get_plugin_setup_values($WebID, 'aboutus');
-    if ('1' == $_GET['test']) {
-        die(var_export($about_setup));
-    }
+    // if ('1' == $_GET['test']) {
+    //     die(var_export($about_setup));
+    // }
 
     $auth_method = get_sys_openid();
     if ($auth_method) {
@@ -343,35 +340,26 @@ function tad_web_login($WebID, $config = [])
 }
 
 //取得多人網頁的內部區塊(在footer.php執行)
-function get_tad_web_blocks($WebID = null, $web_display_mode = '')
+function get_tad_web_blocks($WebID = null)
 {
-    global $xoopsTpl, $xoopsDB, $Web, $isAdmin;
+    global $xoopsTpl, $xoopsDB, $Web, $isAdmin, $web_all_config;
 
     $power = new Power($WebID);
     $myts = \MyTextSanitizer::getInstance();
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 
-    $web_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
+    $web_blocks_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_blocks.json";
     if (!file_exists($web_blocks_file)) {
         $block_tpl = get_all_blocks('tpl');
         $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/';
 
-        // $andBlockPosition = 'home' === $web_display_mode ? '' : "and `BlockPosition`='side'";
-        // die(var_export($Web));
-        if (isset($Web['WebEnable']) and '1' != $Web['WebEnable']) {
-            $andForceMenu = "and (`BlockEnable`='1' or `BlockName`='my_menu')";
-        } else {
-            $andForceMenu = "and `BlockEnable`='1'";
-        }
-
         // 只列出有啟用的區塊
-        // $web_plugin_enable_arr='aboutus,news,page,link,files,video,calendar,discuss,works,homework';
-        $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
-        $andPlugin = "and `plugin` in ('custom','system','share','" . str_replace(',', "','", $web_plugin_enable_arr) . "')";
+        $web_plugin_enable_arr = $web_all_config['web_plugin_enable_arr'];
 
-        // $andPlugin = '';
+        $andPlugin = $web_plugin_enable_arr ? "and `plugin` in ('custom','system','share','" . str_replace(',', "','", $web_plugin_enable_arr) . "')" : '';
+
         //取得區塊位置
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' $andPlugin $andForceMenu $andBlockPosition order by `BlockPosition`,`BlockSort`";
+        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' and `BlockEnable`='1' $andPlugin  order by `BlockPosition`,`BlockSort`";
 
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -380,13 +368,10 @@ function get_tad_web_blocks($WebID = null, $web_display_mode = '')
                 $$k = $v;
             }
 
-            //檢查權限
-            $have_power = $power->check_power('read', 'BlockID', $BlockID);
-            if (!$have_power) {
-                continue;
-            }
+            //檢查權限（改到樣板去檢查）
+            $all['who_can_read'] = $power->who_can_read('read', 'BlockID', $BlockID);
 
-            if ('1' != $Web['WebEnable'] and 'my_menu' === $BlockName) {
+            if ('1' != $Web['WebEnable']) {
                 $all['BlockPosition'] = $BlockPosition = 'side';
             }
             $blocks_arr = $all;

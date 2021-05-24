@@ -51,9 +51,9 @@ class tad_web_calendar
         }
         $fullcalendar_code = $FullCalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
 
-        if (isset($_GET['debug']) and 1 == $_GET['debug']) {
-            die(var_export($fullcalendar_code));
-        }
+        // if (isset($_GET['debug']) and 1 == $_GET['debug']) {
+        //     die(var_export($fullcalendar_code));
+        // }
 
         if ('return' === $mode) {
             $data['fullcalendar_code'] = $fullcalendar_code;

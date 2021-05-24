@@ -19,12 +19,14 @@ switch ($op) {
     //新增資料
     case 'insert':
         $ScheduleID = $tad_web_schedule->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form&ScheduleID=$ScheduleID");
         exit;
 
     //更新資料
     case 'update':
         $ScheduleID = $tad_web_schedule->update($ScheduleID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&ScheduleID=$ScheduleID");
         exit;
 
@@ -36,6 +38,7 @@ switch ($op) {
     //刪除資料
     case 'delete':
         $tad_web_schedule->delete($ScheduleID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 

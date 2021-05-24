@@ -21,12 +21,14 @@ switch ($op) {
     //新增資料
     case 'insert':
         $LinkID = $tad_web_link->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 
     //更新資料
     case 'update':
         $tad_web_link->update($LinkID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 
@@ -38,6 +40,7 @@ switch ($op) {
     //刪除資料
     case 'delete':
         $tad_web_link->delete($LinkID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 

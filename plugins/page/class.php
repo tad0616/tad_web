@@ -141,9 +141,9 @@ class tad_web_page
             $cate_size[$CateID] = $this->get_total($CateID);
             $i++;
         }
-        if (1 == $debug) {
-            die(var_dump($cate_size));
-        }
+        // if (1 == $debug) {
+        //     die(var_dump($cate_size));
+        // }
 
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_page_func', "page.php?op=delete&WebID={$this->WebID}&PageID=", 'PageID');

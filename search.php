@@ -10,9 +10,10 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 //搜尋
 function search_web($WebID = '', $search_keyword = '')
 {
-    global $xoopsTpl, $plugin_menu_var;
+    global $xoopsTpl, $plugin_menu_var, $web_all_config;
 
-    $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
+    $web_plugin_enable_arr = $web_all_config['web_plugin_enable_arr'];
+
     $web_plugin_arr = explode(',', $web_plugin_enable_arr);
     $keyword_arr = explode(' ', $search_keyword);
 

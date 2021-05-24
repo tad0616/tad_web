@@ -194,4 +194,23 @@ class Power
 
         return true;
     }
+
+    //檢查權限
+    public function who_can_read($col_name = '', $col_sn = '', $plugin = '')
+    {
+        global $isMyWeb, $LoginWebID, $xoopsUser;
+        $power = $this->get_power('read', $col_name, $col_sn, $plugin);
+        return $power;
+
+        // if ('users' === $power and !$xoopsUser and empty($LoginWebID)) {
+        //     // die("沒有登入");
+        //     return false;
+        // } elseif ('web_users' === $power and $LoginWebID != $this->WebID and !$isMyWeb) {
+        //     // die("非本站使用者" . $LoginWebID . "!=" . $this->WebID);
+        //     return false;
+        // } elseif ('web_admin' === $power and !$isMyWeb) {
+        //     return false;
+        // }
+    }
+
 }

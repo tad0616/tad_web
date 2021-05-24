@@ -24,47 +24,53 @@ switch ($op) {
     //新增資料
     case 'insert':
         $WorksID = $tad_web_works->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&WorksID=$WorksID");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $WorksID = $tad_web_works->update($WorksID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&WorksID=$WorksID");
         exit;
-        break;
+
     //交作業
     case 'mem_upload':
         $WorksID = $tad_web_works->mem_upload($WorksID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&WorksID=$WorksID");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_works->edit_form($WorksID);
         break;
+
     //評分
     case 'score_form':
         $tad_web_works->score_form($WorksID);
         break;
+
     //儲存評分
     case 'save_score':
         $tad_web_works->save_score($WorksID, $WorkScore, $WorkJudgment);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&WorksID=$WorksID");
         exit;
-        break;
+
     //刪除資料
     case 'delete':
         $tad_web_works->delete($WorksID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //下載檔案
     case 'tufdl':
         $files_sn = isset($_GET['files_sn']) ? (int) $_GET['files_sn'] : '';
         $TadUpFiles->add_file_counter($files_sn);
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($WorksID)) {

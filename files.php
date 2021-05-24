@@ -20,12 +20,14 @@ switch ($op) {
     //新增資料
     case 'insert':
         $fsn = $tad_web_files->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
     //更新資料
     case 'update':
         $fsn = $tad_web_files->update($fsn);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;
@@ -36,6 +38,7 @@ switch ($op) {
     //刪除資料
     case 'delete':
         $tad_web_files->delete($fsn, $files_sn);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
         break;

@@ -21,12 +21,14 @@ switch ($op) {
     //新增資料
     case 'insert':
         $DiscussID = $tad_web_discuss->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&DiscussID=$DiscussID");
         exit;
 
     //更新資料
     case 'update':
         $DiscussID = $tad_web_discuss->update($DiscussID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&DiscussID=$DiscussID");
         exit;
 
@@ -38,6 +40,7 @@ switch ($op) {
     //刪除資料
     case 'delete':
         $tad_web_discuss->delete($DiscussID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&DiscussID=$DefDiscussID");
         exit;
 

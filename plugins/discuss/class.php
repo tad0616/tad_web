@@ -701,8 +701,8 @@ class tad_web_discuss
             }
 
             $fun = $isMineDiscuss ? "<div style='float:right;'>
-            <a href=\"javascript:delete_discuss_func($DiscussID);\" class='btn btn-xs btn-danger'>" . _TAD_DEL . "</a>
-            <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID' class='btn btn-xs btn-warning'>" . _TAD_EDIT . '</a>
+            <a href=\"javascript:delete_discuss_func($DiscussID);\" class='btn btn-sm btn-xs btn-danger'>" . _TAD_DEL . "</a>
+            <a href='{$_SERVER['PHP_SELF']}?WebID=$WebID&op=edit_form&DiscussID=$DiscussID' class='btn btn-sm btn-warning'>" . _TAD_EDIT . '</a>
             </div>' : '';
 
             $TadUpFiles->set_col('DiscussID', $DiscussID);
