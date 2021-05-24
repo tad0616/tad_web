@@ -541,7 +541,7 @@ class tad_web_news
     public function add_counter($NewsID = '')
     {
         global $xoopsDB;
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_news') . " set `NewsCounter`=`NewsCounter`+1 where `NewsID`='{$NewsID}' and `NewsEnable`='1'";
+        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_news') . " set `NewsCounter`=`NewsCounter`+1 where `NewsID`='{$NewsID}' and `NewsEnable`='1'";
         // echo $sql . time() . "<br>";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }

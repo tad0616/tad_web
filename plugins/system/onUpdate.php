@@ -94,6 +94,7 @@ function system_onUpdate2_go()
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
         unlink($file);
+        clear_tad_web_config($WebID);
     }
 
     $sql = 'DELETE FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE `BlockName`='login' OR `BlockName`='my_menu'";

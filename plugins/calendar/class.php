@@ -278,7 +278,7 @@ class tad_web_calendar
     public function add_counter($CalendarID = '')
     {
         global $xoopsDB;
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_calendar') . " set `CalendarCount`=`CalendarCount`+1 where `CalendarID`='{$CalendarID}'";
+        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_calendar') . " set `CalendarCount`=`CalendarCount`+1 where `CalendarID`='{$CalendarID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 

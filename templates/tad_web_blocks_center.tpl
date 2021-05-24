@@ -1,5 +1,5 @@
 <{if $web_display_mode=="home"}>
-    <{if $plugin_data_total==0 and !$center_block1 and !$center_block2 and !$center_block3 and !$center_block4 and !$center_block5 and !$center_block6}>
+    <{if !$center_block1 and !$center_block2 and !$center_block3 and !$center_block4 and !$center_block5 and !$center_block6}>
         <div class="text-center">
             <img src="<{$xoops_url}>/modules/tad_web/images/empty.png" alt="coming soon" >
         </div>

@@ -15,6 +15,7 @@ while (list($ConfigName, $ConfigValue, $WebID) = $xoopsDB->fetchRow($result)) {
         $sql = "update " . $xoopsDB->prefix('tad_web_config') . " set ConfigValue='$ConfigValue' where ConfigName='login_config' and WebID='$WebID'";
         // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         echo $sql . '<br>';
+        clear_tad_web_config($WebID);
     }
 }
 echo Utility::html5($main);

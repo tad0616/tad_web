@@ -23,9 +23,6 @@ if (!empty($WebID)) {
 
     if ($Web) {
         $web_all_config = get_web_all_config($WebID);
-        // if ($_GET['test'] == 1) {
-        //     Utility::dd($web_all_config);
-        // }
         update_last_accessed($WebID);
     } else {
         header('location:index.php');
@@ -64,16 +61,10 @@ if (!empty($WebID)) {
             require_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
             $plugin_menu_var = $menu_var;
 
-            // $menu_var[100]['id']     = $i;
-            // $menu_var[100]['title']  = _MD_TCW_TAG;
-            // $menu_var[100]['url']    = "tag.php?WebID={$WebID}";
-            // $menu_var[100]['target'] = "_self";
-            // $menu_var[100]['icon']   = "fa-tags";
-
             $simple_menu[$i]['submenu'] = $menu_var;
             $i++;
             $menu_var = $simple_menu;
-            // Utility::dd($plugin_menu_var);
+
         } else {
             $menu_var[$i]['id'] = $i;
             $menu_var[$i]['title'] = _MD_TCW_CLASS_HOME;
@@ -88,12 +79,6 @@ if (!empty($WebID)) {
             }
             require_once XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
             $plugin_menu_var = $menu_var;
-
-            // $menu_var[100]['id']     = $i;
-            // $menu_var[100]['title']  = _MD_TCW_TAG;
-            // $menu_var[100]['url']    = "tag.php?WebID={$WebID}";
-            // $menu_var[100]['target'] = "_self";
-            // $menu_var[100]['icon']   = "fa-tags";
         }
     } elseif ($Web and '1' != $Web['WebEnable'] and $isMyWeb) {
         $WebName = '[' . _MD_TCW_UNABLE . '] ' . $Web['WebName'];
@@ -201,7 +186,6 @@ $menu_var[$i]['submenu'] = $sub_menu_var;
 $i++;
 
 if ($isAdmin) {
-    // $interface_menu[_MD_TADNEWS_TO_ADMIN] = "admin/main.php";
     $menu_var[$i]['id'] = $i;
     $menu_var[$i]['title'] = _MD_TCW_ADMIN;
     $menu_var[$i]['url'] = 'admin/index.php';
@@ -228,5 +212,3 @@ if ($isAdmin) {
     $menu_var[$i]['submenu'] = $sub_menu_var;
     $i++;
 }
-
-// die(var_export($_SESSION));

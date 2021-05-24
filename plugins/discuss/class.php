@@ -620,7 +620,7 @@ class tad_web_discuss
     public function add_counter($DiscussID = '')
     {
         global $xoopsDB;
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
+        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_discuss') . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 

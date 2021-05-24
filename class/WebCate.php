@@ -370,7 +370,7 @@ class WebCate
             $CateID = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID] = $data;
-            $arr[$CateID]['assistant'] = get_assistant($CateID, 'aboutus');
+            // $arr[$CateID]['assistant'] = get_assistant($this->WebID, $CateID, 'aboutus');
             $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID, $plugin);
         }
 
@@ -385,7 +385,7 @@ class WebCate
                 $CateID = $data['CateID'];
                 $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
                 $arr[$CateID] = $data;
-                $arr[$CateID]['assistant'] = get_assistant($CateID, $this->ColName);
+                // $arr[$CateID]['assistant'] = get_assistant($this->WebID, $CateID, $this->ColName);
                 $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
             }
         }

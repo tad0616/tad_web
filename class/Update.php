@@ -83,6 +83,7 @@ class Update
                 $sql = 'update ' . $xoopsDB->prefix('tad_web_config') . " set `ConfigValue`='{$p}%'
                 where `WebID`='{$WebID}' and `ConfigName`='menu_font_size' ";
                 $xoopsDB->queryF($sql) or die($sql);
+                clear_tad_web_config($WebID);
             }
         }
     }
@@ -440,6 +441,7 @@ class Update
         foreach ($Webs as $WebID => $WebTitle) {
             mk_menu_var_file($WebID);
         }
+        clear_tad_web_config($WebID);
     }
 
     //執行各外掛更新
@@ -897,21 +899,21 @@ class Update
         global $xoopsDB;
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
         $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tad_web_blocks') . "` (
-      `BlockID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '區塊流水號',
-      `BlockName` VARCHAR(100) NOT NULL COMMENT '區塊名稱',
-      `BlockCopy` TINYINT(3) NOT NULL COMMENT '區塊份數',
-      `BlockTitle` VARCHAR(255) NOT NULL COMMENT '區塊標題',
-      `BlockContent` TEXT NOT NULL COMMENT '區塊內容',
-      `BlockEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '狀態',
-      `BlockConfig` text NULL COMMENT '區塊設定值',
-      `BlockPosition` VARCHAR(255) NOT NULL COMMENT '區塊位置',
-      `BlockSort` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-      `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
-      `plugin` VARCHAR(100) NOT NULL COMMENT '所屬外掛',
-      `ShareFrom` INT(10) UNSIGNED NOT NULL COMMENT '分享自',
-      PRIMARY KEY (`BlockID`),
-      UNIQUE KEY `BlockName_BlockCopy_WebID_plugin` (`BlockName`,`BlockCopy`,`WebID`,`plugin`)
-    ) ENGINE=MyISAM;";
+        `BlockID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '區塊流水號',
+        `BlockName` VARCHAR(100) NOT NULL COMMENT '區塊名稱',
+        `BlockCopy` TINYINT(3) NOT NULL COMMENT '區塊份數',
+        `BlockTitle` VARCHAR(255) NOT NULL COMMENT '區塊標題',
+        `BlockContent` TEXT NOT NULL COMMENT '區塊內容',
+        `BlockEnable` ENUM('1','0') NOT NULL DEFAULT '1' COMMENT '狀態',
+        `BlockConfig` text NULL COMMENT '區塊設定值',
+        `BlockPosition` VARCHAR(255) NOT NULL COMMENT '區塊位置',
+        `BlockSort` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
+        `WebID` SMALLINT(6) UNSIGNED NOT NULL DEFAULT 0 COMMENT '所屬網站',
+        `plugin` VARCHAR(100) NOT NULL COMMENT '所屬外掛',
+        `ShareFrom` INT(10) UNSIGNED NOT NULL COMMENT '分享自',
+        PRIMARY KEY (`BlockID`),
+        UNIQUE KEY `BlockName_BlockCopy_WebID_plugin` (`BlockName`,`BlockCopy`,`WebID`,`plugin`)
+        ) ENGINE=MyISAM;";
         $xoopsDB->queryF($sql);
 
         //取得系統所有區塊
