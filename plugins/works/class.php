@@ -543,7 +543,7 @@ class tad_web_works
     public function add_counter($WorksID = '')
     {
         global $xoopsDB;
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_works') . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
+        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_works') . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 

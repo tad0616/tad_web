@@ -46,10 +46,35 @@ if ($xoopsUser) {
 xoops_loadLanguage('main', 'tad_web');
 $BlockPositionTitle = ['block1' => _MD_TCW_TOP_CENTER_BLOCK, 'block2' => _MD_TCW_TOP_LEFT_BLOCK, 'block3' => _MD_TCW_TOP_LEFT_BLOCK, 'block4' => _MD_TCW_BOTTOM_CENTER_BLOCK, 'block5' => _MD_TCW_BOTTOM_LEFT_BLOCK, 'block6' => _MD_TCW_BOTTOM_RIGHT_BLOCK, 'side' => _MD_TCW_SIDE_BLOCK, 'uninstall' => _MD_TCW_UNINSTALL_BLOCK];
 
-/********************* 自訂函數 ********************
- * @param $WebID
- * @return array
- */
+/********************* 自訂函數 *********************/
+
+// 清除多人網頁的內部區塊的值
+function clear_block_cache($WebID)
+{
+    $web_blocks_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_blocks.json";
+    unlink($web_blocks_file);
+}
+
+// 清除額外設定的儲存值
+function clear_plugin_setup($WebID, $plugin)
+{
+    $plugin_setup_values_file = XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/setup_values.json";
+    unlink($plugin_setup_values_file);
+}
+
+// 清除所有網站設定值
+function clear_tad_web_config($WebID)
+{
+    $tad_web_config_file = XOOPS_VAR_PATH . "/tad_web/$WebID/tad_web_config.json";
+    unlink($tad_web_config_file);
+}
+
+// 清除小幫手設定值
+// function clear_plugin_assistant_cache($WebID)
+// {
+//     $plugin_assistant_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/plugin_assistant_cache.json";
+//     unlink($plugin_assistant_cache_file);
+// }
 
 //取得已安裝的區塊
 function get_blocks($WebID)
@@ -269,12 +294,6 @@ function get_web_roles($defWebID = '', $defRole = '')
     return $users;
 }
 
-function clear_block_cache($WebID)
-{
-    $web_blocks_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_blocks.json";
-    unlink($web_blocks_file);
-}
-
 //取得所有網站設定值
 function get_web_all_config($WebID = '')
 {
@@ -283,35 +302,42 @@ function get_web_all_config($WebID = '')
     if (empty($WebID)) {
         return;
     }
-    if (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php') or file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php')) {
-        if (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php')) {
-            require XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php';
-        } elseif (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php')) {
-            require XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php';
-        }
-        Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web");
-        Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/{$WebID}");
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg");
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head");
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo");
 
-        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}")) {
-            if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png")) {
-                mklogoPic($WebID);
-            }
-            copy(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}");
-        }
+    $tad_web_config_file = XOOPS_VAR_PATH . "/tad_web/$WebID/tad_web_config.json";
+
+    if (file_exists($tad_web_config_file)) {
+        $tad_web_config = json_decode(file_get_contents($tad_web_config_file), true);
     } else {
-        Utility::web_error("Need to install 'for_tad_web_theme' or 'for_tad_web_theme_2'theme.");
-    }
-    //die(var_export($tad_web_config));
-    $sql = 'select `ConfigName`,`ConfigValue` from ' . $xoopsDB->prefix('tad_web_config') . " where `WebID`='$WebID'";
+        if (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php') or file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php')) {
+            if (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php')) {
+                require XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php';
+            } elseif (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php')) {
+                require XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php';
+            }
+            Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web");
+            Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/{$WebID}");
+            Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
+            Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg");
+            Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head");
+            Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo");
 
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}")) {
+                if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png")) {
+                    mklogoPic($WebID);
+                }
+                copy(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}");
+            }
+        } else {
+            Utility::web_error("Need to install 'for_tad_web_theme' or 'for_tad_web_theme_2'theme.");
+        }
 
-    while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
-        $tad_web_config[$ConfigName] = $ConfigValue;
+        $sql = 'select `ConfigName`,`ConfigValue` from ' . $xoopsDB->prefix('tad_web_config') . " where `WebID`='$WebID'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
+            $tad_web_config[$ConfigName] = $ConfigValue;
+        }
+
+        file_put_contents($tad_web_config_file, json_encode($tad_web_config, 256));
     }
 
     return $tad_web_config;
@@ -338,6 +364,7 @@ function save_web_config($ConfigName, $ConfigValue, $WebID)
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
+    clear_tad_web_config($WebID);
 }
 
 //取得資料庫中的外掛資料
@@ -1372,9 +1399,7 @@ function output_head_file_480($WebID)
 
     $width = 400;
     $height = 200;
-    //die('test2=' . $WebID);
     $all_config = get_web_all_config($WebID);
-    //die("<h2>$WebID</h2>" . var_export($all_config));
     foreach ($all_config as $k => $v) {
         $$k = $v;
     }
@@ -1570,33 +1595,37 @@ function get_dir_size($dir_name)
 function get_plugin_setup_values($WebID = '', $plugin = '')
 {
     global $xoopsDB, $xoopsConfig;
-    $myts = \MyTextSanitizer::getInstance();
-    $setup_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
-    if (file_exists($setup_file)) {
-        require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
-        require $setup_file;
+
+    Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/$WebID/");
+    Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/");
+    $plugin_setup_values_file = XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/setup_values.json";
+
+    if (file_exists($plugin_setup_values_file)) {
+        $values = json_decode(file_get_contents($plugin_setup_values_file), true);
+    } else {
+        $myts = \MyTextSanitizer::getInstance();
+        $setup_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
+        if (file_exists($setup_file)) {
+            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
+            require $setup_file;
+        }
+
+        $sql = 'select `name`, `type`, `value` from ' . $xoopsDB->prefix('tad_web_plugins_setup') . " where `WebID`='{$WebID}' and plugin='{$plugin}'";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $setup_db_values = [];
+        //`theme_id`, `name`, `type`, `value`
+        while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
+            $setup_db_values[$name] = $value;
+        }
+
+        foreach ($plugin_setup as $k => $setup) {
+            $name = $setup['name'];
+            $value = isset($setup_db_values[$name]) ? $myts->htmlSpecialChars($setup_db_values[$name]) : $setup['default'];
+            $values[$name] = $value;
+        }
+
+        file_put_contents($plugin_setup_values_file, json_encode($values, 256));
     }
-
-    $sql = 'select `name`, `type`, `value` from ' . $xoopsDB->prefix('tad_web_plugins_setup') . " where `WebID`='{$WebID}' and plugin='{$plugin}'";
-    // die($sql);
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    $setup_db_values = [];
-    //`theme_id`, `name`, `type`, `value`
-    while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
-        $setup_db_values[$name] = $value;
-    }
-
-    // die(var_export($plugin_setup));
-
-    foreach ($plugin_setup as $k => $setup) {
-        $name = $setup['name'];
-        $value = isset($setup_db_values[$name]) ? $myts->htmlSpecialChars($setup_db_values[$name]) : $setup['default'];
-        $values[$name] = $value;
-    }
-
-    // if (isset($_GET['test'])) {
-    //     die(var_export($values));
-    // }
 
     return $values;
 }
@@ -1687,6 +1716,9 @@ function delete_tad_web($WebID = '')
     if (!delete_tad_web_directory(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}")) {
         Utility::web_error('無法刪除資料夾' . XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
     }
+    if (!delete_tad_web_directory(XOOPS_VAR_PATH . "/tad_web/{$WebID}")) {
+        Utility::web_error('無法刪除資料夾' . XOOPS_VAR_PATH . "/tad_web/{$WebID}");
+    }
 }
 
 //更新最後被拜訪日期
@@ -1694,7 +1726,7 @@ function update_last_accessed($WebID = '')
 {
     global $xoopsDB;
     $last_accessed = date('Y-m-d H:i:s');
-    $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `last_accessed`='{$last_accessed}' where `WebID`='{$WebID}'";
+    $sql = 'update low_priority `' . $xoopsDB->prefix('tad_web') . "` set `last_accessed`='{$last_accessed}' where `WebID`='{$WebID}'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 }
 
@@ -1801,7 +1833,7 @@ function get_sys_openid()
 }
 
 //設定小幫手
-function set_assistant($CateID = '', $MemID = '', $plugin = '')
+function set_assistant($WebID, $CateID = '', $MemID = '', $plugin = '')
 {
     global $xoopsDB;
     if (empty($CateID) or empty($MemID)) {
@@ -1811,34 +1843,47 @@ function set_assistant($CateID = '', $MemID = '', $plugin = '')
     $myts = \MyTextSanitizer::getInstance();
     $plugin = $myts->addSlashes($plugin);
 
-    // $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `AssistantType`='MemID' and `plugin`='$plugin'";
-    // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
     $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`, `plugin`) values('{$CateID}', 'MemID', '{$MemID}', '{$plugin}')";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    clear_plugin_assistant_cache($WebID);
+    // get_assistant($WebID);
 }
 
 //取得小幫手
-function get_assistant($CateID = '', $plugin = '')
-{
-    global $xoopsDB;
-    if (empty($CateID)) {
-        return;
-    }
-    $mem = [];
-    $sql = 'select `AssistantType`, `AssistantID` from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `CateID`='{$CateID}' and `plugin`='{$plugin}'";
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    $all = $xoopsDB->fetchArray($result);
-    // die(var_export($all));
-    if ('MemID' === $all['AssistantType']) {
-        $mem = get_tad_web_mems($all['AssistantID']);
-    } elseif ('ParentID' === $all['AssistantType']) {
-        $mem = get_tad_web_parent($all['AssistantID']);
-    }
-    $mem['AssistantType'] = $all['AssistantType'];
+// function get_assistant($WebID, $showCateID = '', $showPlugin = '')
+// {
+//     global $xoopsDB;
+//     if (empty($WebID)) {
+//         return;
+//     }
 
-    return $mem;
-}
+//     $plugin_assistant_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/plugin_assistant_cache.json";
+
+//     if (file_exists($plugin_assistant_cache_file)) {
+//         $mem = json_decode(file_get_contents($plugin_assistant_cache_file), true);
+//     } else {
+//         $sql = "select b.`CateID`,b.`AssistantType`,b.`AssistantID`, b.`plugin` from `" . $xoopsDB->prefix('tad_web_cate') . "` as a
+//         left join `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as b on a.`CateID` = b.`CateID`
+//         where a.`WebID`='{$WebID}'";
+//         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+//         while (list($CateID, $AssistantType, $AssistantID, $plugin) = $xoopsDB->fetchRow($result)) {
+
+//             if ('MemID' === $AssistantType) {
+//                 $user = get_tad_web_mems($AssistantID);
+//             } elseif ('ParentID' === $AssistantType) {
+//                 $user = get_tad_web_parent($AssistantID);
+//             }
+//             $user['AssistantType'] = $AssistantType;
+//             $mem[$plugin][$CateID] = $user;
+//         }
+
+//         file_put_contents($plugin_assistant_cache_file, json_encode($mem, 256));
+//     }
+
+//     if ($showCateID) {
+//         return $mem[$showPlugin][$showCateID];
+//     }
+// }
 
 //儲存小幫手的編輯紀錄
 function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')

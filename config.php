@@ -213,17 +213,6 @@ function update_tad_web()
     output_head_file_480($WebID);
 }
 
-//移除網站設定
-function delete_web_config($ConfigName = '')
-{
-    global $xoopsDB, $xoopsUser, $WebID, $MyWebs;
-
-    $sql = 'delete from ' . $xoopsDB->prefix('tad_web_config') . " where `ConfigName`='{$ConfigName}' and `WebID`='{$MyWebs}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
-    unlink($file);
-}
-
 //儲存外掛
 function save_plugins($WebID)
 {
@@ -373,6 +362,7 @@ function default_color($WebID = '')
     }
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
+    clear_tad_web_config($WebID);
 }
 
 /*-----------執行動作判斷區----------*/

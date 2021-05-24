@@ -481,7 +481,7 @@ class tad_web_page
     public function add_counter($PageID = '')
     {
         global $xoopsDB;
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_page') . " set `PageCount`=`PageCount`+1 where `PageID`='{$PageID}'";
+        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_page') . " set `PageCount`=`PageCount`+1 where `PageID`='{$PageID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 

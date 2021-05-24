@@ -20,7 +20,7 @@ function ClassHome($WebID = '')
     } else {
         $show_arr = explode(',', $web_plugin_enable_arr);
     }
-    $plugin_data_total = 0;
+
     foreach ($show_arr as $dirname) {
         if (empty($dirname)) {
             continue;
@@ -29,15 +29,13 @@ function ClassHome($WebID = '')
             require_once "plugins/{$dirname}/class.php";
             $plugin_name = "tad_web_{$dirname}";
             $$plugin_name = new $plugin_name($WebID);
-            $plugin_data_total += $$plugin_name->get_total();
         }
     }
-    $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
+    $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web') . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
     $xoopsDB->queryF($sql);
     $_SESSION['tad_web'][$WebID]['WebCounter']++;
 
     $xoopsTpl->assign('MyWebs', $MyWebs);
-    $xoopsTpl->assign('plugin_data_total', $plugin_data_total);
 }
 
 //取得所有班級

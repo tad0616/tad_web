@@ -8,23 +8,26 @@ if (!function_exists('MyWebID')) {
         global $xoopsUser, $xoopsDB;
         $MyWebs = [];
         if ($xoopsUser) {
-            $uid = $xoopsUser->uid();
-            $andWebEnable = 'all' === $WebEnable ? '' : "and `WebEnable`='{$WebEnable}'";
-            $sql = 'select WebID from ' . $xoopsDB->prefix('tad_web') . " where WebOwnerUid='$uid' {$andWebEnable}";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            if (!isset($_SESSION['MyWebs'])) {
+                $uid = $xoopsUser->uid();
+                $andWebEnable = 'all' === $WebEnable ? '' : "and `WebEnable`='{$WebEnable}'";
+                $sql = 'select WebID from ' . $xoopsDB->prefix('tad_web') . " where WebOwnerUid='$uid' {$andWebEnable}";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-            while (list($WebID) = $xoopsDB->fetchRow($result)) {
-                $MyWebs[$WebID] = (int) $WebID;
-            }
+                while (list($WebID) = $xoopsDB->fetchRow($result)) {
+                    $MyWebs[$WebID] = (int) $WebID;
+                }
 
-            $andWebEnable = 'all' === $WebEnable ? '' : "and b.`WebEnable`='{$WebEnable}'";
-            $sql = 'select a.WebID from ' . $xoopsDB->prefix('tad_web_roles') . ' as a left join ' . $xoopsDB->prefix('tad_web') . " as b on a.WebID=b.WebID where a.uid='$uid' {$andWebEnable}";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            while (list($WebID) = $xoopsDB->fetchRow($result)) {
-                $MyWebs[$WebID] = (int) $WebID;
+                $andWebEnable = 'all' === $WebEnable ? '' : "and b.`WebEnable`='{$WebEnable}'";
+                $sql = 'select a.WebID from ' . $xoopsDB->prefix('tad_web_roles') . ' as a left join ' . $xoopsDB->prefix('tad_web') . " as b on a.WebID=b.WebID where a.uid='$uid' {$andWebEnable}";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                while (list($WebID) = $xoopsDB->fetchRow($result)) {
+                    $MyWebs[$WebID] = (int) $WebID;
+                }
+                $_SESSION['MyWebs'] = $MyWebs;
             }
+            return $_SESSION['MyWebs'];
         }
-
         return $MyWebs;
     }
 }

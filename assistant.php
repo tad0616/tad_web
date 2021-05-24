@@ -93,7 +93,7 @@ switch ($op) {
         exit;
 
     case 'save_assistant':
-        set_assistant($CateID, $MemID, $plugin);
+        set_assistant($WebID, $CateID, $MemID, $plugin);
         header("location:{$_SERVER['PHP_SELF']}?WebID={$WebID}&plugin={$plugin}");
         exit;
 
