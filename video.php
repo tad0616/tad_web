@@ -22,25 +22,29 @@ switch ($op) {
     //新增資料
     case 'insert':
         $VideoID = $tad_web_video->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&VideoID=$VideoID");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $VideoID = $tad_web_video->update($VideoID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&VideoID=$VideoID");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_video->edit_form($VideoID);
         break;
+
     //刪除資料
     case 'delete':
         $tad_web_video->delete($VideoID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($VideoID)) {

@@ -240,9 +240,6 @@ function save_plugins($WebID)
 
         $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$plugin['db']['PluginSort']}', '{$PluginEnable}', '{$WebID}')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-        // $sql = "update " . $xoopsDB->prefix("tad_web_blocks") . " set BlockEnable='$PluginEnable' where `WebID`='{$WebID}' and `plugin`='{$dirname}'";
-        // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     mk_menu_var_file($WebID);
@@ -423,6 +420,7 @@ switch ($op) {
         save_web_config('use_simple_menu', $use_simple_menu, $WebID);
         //儲存OpenID
         save_web_config('login_config', implode(';', $login_method), $WebID);
+        clear_block_cache($WebID);
         header("location: config.php?WebID={$WebID}");
         exit;
 
@@ -431,11 +429,13 @@ switch ($op) {
         foreach ($color_setup as $col_name => $col_val) {
             save_web_config($col_name, $col_val, $WebID);
         }
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 
     case 'save_plugins':
         save_plugins($WebID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 
@@ -479,6 +479,7 @@ switch ($op) {
 
     case 'save_adm':
         save_adm($web_admins, $WebID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 
@@ -494,6 +495,7 @@ switch ($op) {
 
     case 'enabe_plugin':
         enabe_plugin($dirname, $WebID);
+        clear_block_cache($WebID);
         header("location: {$dirname}.php?WebID={$WebID}&op=edit_form");
         exit;
 

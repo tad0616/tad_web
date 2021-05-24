@@ -22,15 +22,17 @@ switch ($op) {
     //新增資料
     case 'insert':
         $CalendarID = $tad_web_calendar->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CalendarID=$CalendarID");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $CalendarID = $tad_web_calendar->update($CalendarID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&CalendarID=$CalendarID");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_calendar->edit_form($CalendarID);
@@ -38,9 +40,10 @@ switch ($op) {
     //刪除資料
     case 'delete':
         $tad_web_calendar->delete($CalendarID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($CalendarID)) {

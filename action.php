@@ -23,12 +23,14 @@ switch ($op) {
     //新增資料
     case 'insert':
         $ActionID = $tad_web_action->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&ActionID=$ActionID");
         exit;
 
     //更新資料
     case 'update':
         $ActionID = $tad_web_action->update($ActionID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&ActionID=$ActionID");
         exit;
 
@@ -40,6 +42,7 @@ switch ($op) {
     //刪除資料
     case 'delete':
         $tad_web_action->delete($ActionID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 

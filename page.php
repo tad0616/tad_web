@@ -23,31 +23,35 @@ switch ($op) {
     //新增資料
     case 'insert':
         $PageID = $tad_web_page->insert();
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&PageID=$PageID");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $PageID = $tad_web_page->update($PageID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&PageID=$PageID");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_page->edit_form($PageID);
         break;
+
     //刪除資料
     case 'delete':
         $tad_web_page->delete($PageID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //下載檔案
     case 'tufdl':
         $files_sn = isset($_GET['files_sn']) ? (int) $_GET['files_sn'] : '';
         $TadUpFiles->add_file_counter($files_sn);
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($PageID)) {

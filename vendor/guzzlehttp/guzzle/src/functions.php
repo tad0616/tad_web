@@ -67,8 +67,8 @@ function headers_from_lines($lines)
     foreach ($lines as $line) {
         $parts = explode(':', $line, 2);
         $headers[trim($parts[0])][] = isset($parts[1])
-            ? trim($parts[1])
-            : null;
+        ? trim($parts[1])
+        : null;
     }
 
     return $headers;
@@ -113,8 +113,8 @@ function choose_handler()
 
     if (ini_get('allow_url_fopen')) {
         $handler = $handler
-            ? Proxy::wrapStreaming($handler, new StreamHandler())
-            : new StreamHandler();
+        ? Proxy::wrapStreaming($handler, new StreamHandler())
+        : new StreamHandler();
     } elseif (!$handler) {
         throw new \RuntimeException('GuzzleHttp requires cURL, the '
             . 'allow_url_fopen ini setting, or a custom HTTP handler.');

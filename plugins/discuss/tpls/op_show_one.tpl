@@ -39,7 +39,7 @@
         <div class="col-md-9 col-lg-10">
             <{$DiscussContent}>
             <div style="float: right;">
-                <{if $isMineDiscuss}>
+                <{if ($WebID && $isMyWeb) || $isAdmin || ($smarty.session.LoginMemID && $MemID == $smarty.session.LoginMemID) || ($smarty.session.LoginParentID && $ParentID == $smarty.session.LoginParentID)}>
                     <a href="javascript:delete_discuss_func(<{$DiscussID}>);" class="btn btn-sm btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                     <a href="discuss.php?WebID=<{$WebID}>&op=edit_form&DiscussID=<{$DiscussID}>" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
                 <{/if}>

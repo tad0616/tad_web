@@ -269,6 +269,12 @@ function get_web_roles($defWebID = '', $defRole = '')
     return $users;
 }
 
+function clear_block_cache($WebID)
+{
+    $web_blocks_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_blocks.json";
+    unlink($web_blocks_file);
+}
+
 //取得所有網站設定值
 function get_web_all_config($WebID = '')
 {
@@ -283,18 +289,12 @@ function get_web_all_config($WebID = '')
         } elseif (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php')) {
             require XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php';
         }
+        Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web");
+        Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/{$WebID}");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo");
-
-        // if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}")) {
-        //     copy(XOOPS_ROOT_PATH . "/modules/tad_web/images/bg/{$tad_web_config['web_bg']}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg/{$tad_web_config['web_bg']}");
-        // }
-
-        // if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$tad_web_config['web_head']}")) {
-        //     copy(XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$tad_web_config['web_head']}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$tad_web_config['web_head']}");
-        // }
 
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}")) {
             if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png")) {

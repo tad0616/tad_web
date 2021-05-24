@@ -61,6 +61,13 @@
                 <{$back_home}>
             </a>
         </div>
+        <div style="margin:10px 0px;">
+            <a href="<{$xoops_url}>/modules/tad_web/index.php?op=clear_block_cache&WebID=<{$defaltWebID}>">
+                <i class="fa fa-recycle" aria-hidden="true"></i>
+                重新產生畫面
+            </a>
+        </div>
+
 
         <{if $user_kind=="mem"}>
             <div class="btn-group">

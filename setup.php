@@ -139,14 +139,14 @@ switch ($op) {
     //新增資料
     case 'save_plugin_setup':
         save_plugin_setup($WebID, $plugin);
+        clear_block_cache($WebID);
         header("location: {$plugin}.php?WebID={$WebID}");
         exit;
-        break;
+
     //預設動作
     default:
         plugin_setup($WebID, $plugin);
         plugin_block_setup($WebID, $plugin);
-
         break;
 }
 

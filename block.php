@@ -81,9 +81,9 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
             $func = isset($block['BlockName']) ? $block['BlockName'] : '';
             require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$block_plugin}/config_blocks.php";
             $block_config_form = array2form($blockConfig[$block_plugin][$func]['colset'], $config);
-            if ('1' == $_GET['test']) {
-                die(var_export($block_config_form));
-            }
+            // if ('1' == $_GET['test']) {
+            //     die(var_export($block_config_form));
+            // }
         }
     }
     $block['config'] = $config;
@@ -92,9 +92,9 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
     // }
     $xoopsTpl->assign('block_config_form', $block_config_form);
     $xoopsTpl->assign('editor', $editor);
-    if ('1' == $_GET['test']) {
-        die(var_export($block));
-    }
+    // if ('1' == $_GET['test']) {
+    //     die(var_export($block));
+    // }
     $xoopsTpl->assign('block', $block);
     $xoopsTpl->assign('iframeContent', $iframeContent);
     // $xoopsTpl->assign('block_config', $config);
@@ -110,11 +110,11 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
 //區塊設定表單
 function array2form($form_arr = [], $config = [])
 {
-    if ('1' == $_GET['test']) {
-        var_export($form_arr);
-        var_export($config);
-        exit();
-    }
+    // if ('1' == $_GET['test']) {
+    //     var_export($form_arr);
+    //     var_export($config);
+    //     exit();
+    // }
 
     if (empty($form_arr)) {
         return;
@@ -250,9 +250,6 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
     //儲存權限
     $power->save_power('BlockID', $BlockID, 'read');
     mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
-
-    $web_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
-    unlink($web_blocks_file);
 }
 
 //自動取得tad_web_blocks的最新排序
@@ -280,9 +277,6 @@ function mk_block_pic($WebID = '', $block_pic = [], $use_block_pic = '')
     while (list($BlockID, $BlockName, $BlockTitle) = $xoopsDB->fetchRow($result)) {
         mkTitlePic($WebID, "block_{$BlockID}", $BlockTitle, $block_pic['block_pic_text_color'], $block_pic['block_pic_border_color'], $block_pic['block_pic_text_size'], $block_pic['block_pic_font']);
     }
-
-    $web_blocks_file = XOOPS_ROOT_PATH . "/uploads/tad_web/$WebID/web_blocks.json";
-    unlink($web_blocks_file);
 }
 
 // 取得區塊設定需要的一些共同設定值
@@ -443,9 +437,9 @@ function demo_block($BlockID, $WebID)
     }
 
     $xoopsTpl->assign('theme_display_mode', 'blank');
-    if ($_GET['test'] == '1') {
-        die(var_export($blocks_arr));
-    }
+    // if ($_GET['test'] == 1) {
+    //     die(var_export($blocks_arr));
+    // }
     $xoopsTpl->assign('block', $blocks_arr);
 }
 
@@ -557,6 +551,8 @@ switch ($op) {
     //新增資料
     case 'save_block_config':
         save_block_config($WebID, $BlockID, $BlockName, $BlockTitle, $BlockPosition, $config, $BlockShare, $shareBlockID, $BlockEnable, $ShareFrom);
+
+        clear_block_cache($WebID);
         header("location: block.php?WebID={$WebID}");
         exit;
 
@@ -570,16 +566,20 @@ switch ($op) {
 
     case 'mk_block_pic':
         mk_block_pic($WebID, $block_pic, $use_block_pic);
+
+        clear_block_cache($WebID);
         header("location: block.php?WebID={$WebID}");
         exit;
 
     case 'delete_block':
         delete_block($BlockID, $WebID);
+        clear_block_cache($WebID);
         header("location: block.php?WebID={$WebID}");
         exit;
 
     case 'copy':
         $newBlockID = copy_block($BlockID, $plugin, $WebID);
+        clear_block_cache($WebID);
         header("location: block.php?WebID={$WebID}&op=config&plugin={$plugin}&BlockID={$newBlockID}");
         exit;
 

@@ -23,6 +23,9 @@ if (!empty($WebID)) {
 
     if ($Web) {
         $web_all_config = get_web_all_config($WebID);
+        // if ($_GET['test'] == 1) {
+        //     Utility::dd($web_all_config);
+        // }
         update_last_accessed($WebID);
     } else {
         header('location:index.php');

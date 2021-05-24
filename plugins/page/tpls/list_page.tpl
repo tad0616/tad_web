@@ -35,7 +35,8 @@
                                 <span class="badge badge-info"><{$page.PageCount}></span>
                             <{/if}>
                             <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
-                            <{if $page.isCanEdit}>
+                            <{*if $page.isCanEdit*}>
+                            <{if ($WebID && $isMyWeb) || $isAdmin || ($page.cate.CateID && $page.cate.CateID == $smarty.session.isAssistant.page)}>
                                 <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
                                 <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
                             <{/if}>
