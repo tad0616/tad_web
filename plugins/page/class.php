@@ -127,7 +127,7 @@ class tad_web_page
             $main_data[$i]['id'] = $PageID;
             $main_data[$i]['id_name'] = 'PageID';
             $main_data[$i]['title'] = $PageTitle;
-            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
+            // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'page', $CateID, 'PageID', $PageID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID);
             if (_IS_EZCLASS) {
                 $main_data[$i]['PageCount'] = redis_do($this->WebID, 'get', 'page', "PageCount:$PageID");
@@ -200,7 +200,12 @@ class tad_web_page
         if (!$power) {
             redirect_header("page.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $PageCount = $data['PageCount'] = $this->add_counter($PageID);
+
+        if (_IS_EZCLASS) {
+            $PageCount = $data['PageCount'] = $this->add_counter($PageID);
+        } else {
+            $this->add_counter($PageID);
+        }
 
         if (empty($PageContent) and empty($PageTitle)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -210,6 +215,8 @@ class tad_web_page
         $xoopsTpl->assign('prev_next', $prev_next);
         // die(var_export($prev_next));
         $TadUpFiles->set_col('PageID', $PageID);
+        $TadUpFiles->set_var('other_css', 'margin:6px;');
+        $TadUpFiles->set_var('background_size', 'cover');
         $files = $TadUpFiles->show_files('upfile', true, '', true, false, null, null, false, '');
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
@@ -217,7 +224,7 @@ class tad_web_page
             $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $assistant = is_assistant($CateID, 'PageID', $PageID);
+        $assistant = is_assistant($this->WebID, 'page', $CateID, 'PageID', $PageID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
@@ -380,7 +387,7 @@ class tad_web_page
 
         //取得最後新增資料的流水編號
         $PageID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'PageID', $PageID);
+        save_assistant_post('page', $CateID, 'PageID', $PageID);
 
         $TadUpFiles->set_col('PageID', $PageID);
         $TadUpFiles->upload_file('upfile', 800, null, null, null, true);
@@ -409,16 +416,16 @@ class tad_web_page
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'PageID', $PageID)) {
+        if (!is_assistant($this->WebID, 'page', $CateID, 'PageID', $PageID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_page') . " set
-         `CateID` = '{$CateID}' ,
-         `PageTitle` = '{$PageTitle}' ,
-         `PageContent` = '{$PageContent}' ,
-         `PageDate` = '{$PageDate}',
-         `PageCSS` = '{$PageCSS}'
+        `CateID` = '{$CateID}' ,
+        `PageTitle` = '{$PageTitle}' ,
+        `PageContent` = '{$PageContent}' ,
+        `PageDate` = '{$PageDate}',
+        `PageCSS` = '{$PageCSS}'
         where PageID='$PageID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -439,7 +446,7 @@ class tad_web_page
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
-        if (!is_assistant($CateID, 'PageID', $PageID)) {
+        if (!is_assistant($this->WebID, 'page', $CateID, 'PageID', $PageID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='$PageID' $anduid";

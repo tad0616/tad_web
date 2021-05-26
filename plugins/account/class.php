@@ -121,7 +121,7 @@ class tad_web_account
             $main_data[$i]['id'] = $AccountID;
             $main_data[$i]['id_name'] = 'AccountID';
             $main_data[$i]['title'] = $AccountTitle;
-            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'AccountID', $AccountID);
+            // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
             if (_IS_EZCLASS) {
                 $main_data[$i]['AccountCount'] = redis_do($this->WebID, 'get', 'account', "AccountCount:$AccountID");
@@ -197,7 +197,12 @@ class tad_web_account
         if (!$power) {
             redirect_header("account.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $AccountCount = $data['AccountCount'] = $this->add_counter($AccountID);
+
+        if (_IS_EZCLASS) {
+            $AccountCount = $data['AccountCount'] = $this->add_counter($AccountID);
+        } else {
+            $this->add_counter($AccountID);
+        }
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -212,7 +217,7 @@ class tad_web_account
             $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $assistant = is_assistant($CateID, 'AccountID', $AccountID);
+        $assistant = is_assistant($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
@@ -375,7 +380,7 @@ class tad_web_account
 
         //取得最後新增資料的流水編號
         $AccountID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'AccountID', $AccountID);
+        save_assistant_post('account', $CateID, 'AccountID', $AccountID);
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
@@ -414,7 +419,7 @@ class tad_web_account
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'AccountID', $AccountID)) {
+        if (!is_assistant($this->WebID, 'account', $CateID, 'AccountID', $AccountID)) {
             $anduid = onlyMine();
         }
 
@@ -445,7 +450,7 @@ class tad_web_account
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='$AccountID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'AccountID', $AccountID)) {
+        if (!is_assistant($this->WebID, 'account', $CateID, 'AccountID', $AccountID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='$AccountID' $anduid";

@@ -193,7 +193,12 @@ class tad_web_discuss
         if (!$power) {
             redirect_header("discuss.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $DiscussCounter = $data['DiscussCounter'] = $this->add_counter($DiscussID);
+
+        if (_IS_EZCLASS) {
+            $DiscussCounter = $data['DiscussCounter'] = $this->add_counter($DiscussID);
+        } else {
+            $this->add_counter($DiscussID);
+        }
 
         if (!empty($uid)) {
             $TadUpFiles->set_col('WebOwner', $WebID, '1');
@@ -222,6 +227,8 @@ class tad_web_discuss
         $xoopsTpl->assign('pic', $pic);
 
         $TadUpFiles->set_col('DiscussID', $DiscussID);
+        $TadUpFiles->set_var('other_css', 'margin:6px;');
+        $TadUpFiles->set_var('background_size', 'cover');
         $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
         //$xoopsTpl->assign('DiscussFiles', $DiscussFiles);
         $DiscussContent = $this->addLink(nl2br($DiscussContent));
@@ -725,6 +732,8 @@ class tad_web_discuss
             </div>' : '';
 
             $TadUpFiles->set_col('DiscussID', $DiscussID);
+            $TadUpFiles->set_var('other_css', 'margin:6px;');
+            $TadUpFiles->set_var('background_size', 'cover');
             $DiscussFiles = $TadUpFiles->show_files('upfile', true, null, true);
 
             $DiscussContent = $this->addLink(nl2br($DiscussContent));

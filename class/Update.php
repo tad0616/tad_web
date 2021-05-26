@@ -1398,4 +1398,60 @@ class Update
         return true;
     }
 
+    //整理小幫手，清除AssistantID為空的資料
+    public static function chk_chk26()
+    {
+        global $xoopsDB;
+        $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_assistant_post') . ' where AssistantID = 0';
+        $result = $xoopsDB->queryF($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        if (!empty($count)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function go_update26()
+    {
+        global $xoopsDB;
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_assistant_post') . ' where AssistantID = 0';
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+        return true;
+    }
+
+    //整理小幫手修正plugin欄位
+    public static function chk_chk27()
+    {
+        global $xoopsDB;
+        $sql = 'SELECT count(*) FROM ' . $xoopsDB->prefix('tad_web_assistant_post') . ' where `plugin` = `ColName`';
+        $result = $xoopsDB->queryF($sql);
+        list($count) = $xoopsDB->fetchRow($result);
+        if (!empty($count)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function go_update27()
+    {
+        global $xoopsDB;
+        $cols['AccountID'] = 'account';
+        $cols['ActionID'] = 'action';
+        $cols['fsn'] = 'files';
+        $cols['HomeworkID'] = 'homework';
+        $cols['NewsID'] = 'news';
+        $cols['PageID'] = 'page';
+        $cols['ScheduleID'] = 'schedule';
+        $cols['VideoID'] = 'video';
+        $cols['WorksID'] = 'works';
+        foreach ($cols as $ColName => $plugin) {
+            $sql = "update " . $xoopsDB->prefix('tad_web_assistant_post') . " set `plugin`='$plugin' where `ColName` = '$ColName'";
+            $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+        }
+
+        return true;
+    }
+
 }

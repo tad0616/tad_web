@@ -62,6 +62,13 @@ function clear_plugin_setup($WebID, $plugin)
     unlink($plugin_setup_values_file);
 }
 
+// 清除小幫手設定的儲存值
+function clear_assistant_cache($WebID, $plugin)
+{
+    $assistant_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/assistants.json";
+    unlink($assistant_cache_file);
+}
+
 // 清除所有網站設定值
 function clear_tad_web_config($WebID)
 {
@@ -1889,48 +1896,10 @@ function set_assistant($WebID, $CateID = '', $MemID = '', $plugin = '')
 
     $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`, `plugin`) values('{$CateID}', 'MemID', '{$MemID}', '{$plugin}')";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    clear_plugin_assistant_cache($WebID);
-    // get_assistant($WebID);
 }
 
-//取得小幫手
-// function get_assistant($WebID, $showCateID = '', $showPlugin = '')
-// {
-//     global $xoopsDB;
-//     if (empty($WebID)) {
-//         return;
-//     }
-
-//     $plugin_assistant_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/plugin_assistant_cache.json";
-
-//     if (file_exists($plugin_assistant_cache_file)) {
-//         $mem = json_decode(file_get_contents($plugin_assistant_cache_file), true);
-//     } else {
-//         $sql = "select b.`CateID`,b.`AssistantType`,b.`AssistantID`, b.`plugin` from `" . $xoopsDB->prefix('tad_web_cate') . "` as a
-//         left join `" . $xoopsDB->prefix('tad_web_cate_assistant') . "` as b on a.`CateID` = b.`CateID`
-//         where a.`WebID`='{$WebID}'";
-//         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-//         while (list($CateID, $AssistantType, $AssistantID, $plugin) = $xoopsDB->fetchRow($result)) {
-
-//             if ('MemID' === $AssistantType) {
-//                 $user = get_tad_web_mems($AssistantID);
-//             } elseif ('ParentID' === $AssistantType) {
-//                 $user = get_tad_web_parent($AssistantID);
-//             }
-//             $user['AssistantType'] = $AssistantType;
-//             $mem[$plugin][$CateID] = $user;
-//         }
-
-//         file_put_contents($plugin_assistant_cache_file, json_encode($mem, 256));
-//     }
-
-//     if ($showCateID) {
-//         return $mem[$showPlugin][$showCateID];
-//     }
-// }
-
 //儲存小幫手的編輯紀錄
-function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
+function save_assistant_post($plugin = '', $CateID = '', $ColName = '', $ColSN = '')
 {
     global $xoopsDB, $xoopsUser;
 
@@ -1938,12 +1907,13 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
         return;
     }
 
-    $sql = 'delete from `' . $xoopsDB->prefix('tad_web_assistant_post') . "` where `plugin`='{$ColName}' and `ColName`='{$ColName}' and `ColSN`='{$ColSN}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
     $AssistantID = (int) $_SESSION['AssistantID'][$CateID];
 
-    $sql = 'insert into `' . $xoopsDB->prefix('tad_web_assistant_post') . "` (
+    if (empty($AssistantID)) {
+        return;
+    }
+
+    $sql = 'replace into `' . $xoopsDB->prefix('tad_web_assistant_post') . "` (
             `plugin`,
             `ColName`,
             `ColSN`,
@@ -1951,7 +1921,7 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
             `AssistantType`,
             `AssistantID`
         ) values(
-            '{$ColName}',
+            '{$plugin}',
             '{$ColName}',
             '{$ColSN}',
             '{$CateID}',
@@ -1959,31 +1929,43 @@ function save_assistant_post($CateID = '', $ColName = '', $ColSN = '')
             '{$AssistantID}'
         )";
     $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    clear_assistant_cache($WebID, $plugin);
 }
 
 //檢查某個內容是否是小幫手發的
-function is_assistant($CateID = '', $ColName = '', $ColSN = '')
+function is_assistant($WebID, $plugin = '', $DefCateID = '', $DefColName = '', $DefColSN = '')
 {
     global $xoopsDB;
-    $mem = '';
-    $sql = 'select `AssistantType`,`AssistantID` from `' . $xoopsDB->prefix('tad_web_assistant_post') . "` where `ColName`='{$ColName}' and `ColSN`='{$ColSN}' and `CateID`='{$CateID}'";
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    $all = $xoopsDB->fetchArray($result);
-    if ('MemID' === $all['AssistantType']) {
-        $mem = get_tad_web_mems($all['AssistantID']);
-    } elseif ('ParentID' === $all['AssistantType']) {
-        $mem = get_tad_web_parent($all['AssistantID']);
+    $assistant_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/assistants.json";
+
+    if (file_exists($assistant_cache_file)) {
+        $mems = json_decode(file_get_contents($assistant_cache_file), true);
+    } else {
+        $sql = "select b.ColName, b.ColSN, b.CateID, b.AssistantType, b.AssistantID from `" . $xoopsDB->prefix('tad_web_cate') . "` as a
+        join  `" . $xoopsDB->prefix('tad_web_assistant_post') . "` as b on a.CateID =b.CateID
+        where a.`WebID`='{$WebID}' and b.`plugin`='$plugin'";
+
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (list($ColName, $ColSN, $CateID, $AssistantType, $AssistantID) = $xoopsDB->fetchRow($result)) {
+            if ('MemID' === $AssistantType) {
+                $mem = get_tad_web_mems($AssistantID);
+            } elseif ('ParentID' === $AssistantType) {
+                $mem = get_tad_web_parent($AssistantID);
+            }
+            $mems[$CateID][$ColName][$ColSN] = $mem;
+        }
+        file_put_contents($assistant_cache_file, json_encode($mems, 256));
     }
 
-    return $mem;
+    return $mems[$DefCateID][$DefColName][$DefColSN];
 }
 
 //是否有管理權（或由自己發布的），判斷是否要秀出管理工具
-function isCanEdit($WebID = null, $plugin_dir = '', $CateID = '', $ColName = '', $ColSN = '')
+function isCanEdit($WebID = null, $plugin = '', $CateID = '', $ColName = '', $ColSN = '')
 {
     global $isMyWeb, $isAdmin;
 
-    // $_SESSION['isAssistant'][$plugin_dir] = $CateID;
+    // $_SESSION['isAssistant'][$plugin] = $CateID;
     // $_SESSION['AssistantType'][$CateID]   = 'MemID';
     // $_SESSION['AssistantID'][$CateID]     = $_SESSION['LoginMemID'];
 
@@ -1992,7 +1974,7 @@ function isCanEdit($WebID = null, $plugin_dir = '', $CateID = '', $ColName = '',
     } elseif ($isAdmin) {
         return true;
     } elseif ($ColName and $ColSN) {
-        $mem = is_assistant($CateID, $ColName, $ColSN);
+        $mem = is_assistant($WebID, $plugin, $CateID, $ColName, $ColSN);
         // die(var_export($mem));
         // array(
         //     'MemID' => '1',
@@ -2008,13 +1990,13 @@ function isCanEdit($WebID = null, $plugin_dir = '', $CateID = '', $ColName = '',
         //     'MemNum' => '1',
         //     'CateID' => '1',
         // )
-        if (!empty($mem['MemID']) and $_SESSION['isAssistant'][$plugin_dir] == $CateID) {
+        if (!empty($mem['MemID']) and $_SESSION['isAssistant'][$plugin] == $CateID) {
             return true;
         }
 
         return false;
-    } elseif ($CateID and $plugin_dir) {
-        if ($CateID == $_SESSION['isAssistant'][$plugin_dir]) {
+    } elseif ($CateID and $plugin) {
+        if ($CateID == $_SESSION['isAssistant'][$plugin]) {
             return true;
         }
 

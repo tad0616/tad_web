@@ -129,6 +129,15 @@ function xoops_module_update_tad_web($module, $old_version)
             Update::go_update25();
         }
 
+        //整理小幫手資料表
+        if (Update::chk_chk26()) {
+            Update::go_update26();
+        }
+
+        //整理小幫手修正plugin欄位
+        if (Update::chk_chk27()) {
+            Update::go_update27();
+        }
     }
 
     Update::chk_sql_update();

@@ -134,7 +134,7 @@ class tad_web_files
             $main_data[$i]['id'] = $fsn;
             $main_data[$i]['id_name'] = 'fsn';
             $main_data[$i]['title'] = $file_description;
-            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'fsn', $fsn);
+            // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'files', $CateID, 'fsn', $fsn);
 
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'files', $CateID, 'fsn', $fsn);
 
@@ -289,7 +289,7 @@ class tad_web_files
 
         //取得最後新增資料的流水編號
         $fsn = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'fsn', $fsn);
+        save_assistant_post('files', $CateID, 'fsn', $fsn);
 
         if ('upload_file' === $file_method) {
             $TadUpFiles->set_col('fsn', $fsn);
@@ -321,7 +321,7 @@ class tad_web_files
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'fsn', $fsn)) {
+        if (!is_assistant($this->WebID, 'files', $CateID, 'fsn', $fsn)) {
             $anduid = onlyMine();
         }
 
@@ -354,7 +354,7 @@ class tad_web_files
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_files') . " where fsn='$fsn'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'fsn', $fsn)) {
+        if (!is_assistant($this->WebID, 'files', $CateID, 'fsn', $fsn)) {
             $anduid = onlyMine();
         }
         if (empty($fsn) and !empty($files_sn)) {
