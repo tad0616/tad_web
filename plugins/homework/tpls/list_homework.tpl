@@ -4,7 +4,7 @@
     <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
     <ul class="list-group">
         <{foreach from=$bc.main_data key=i item=homework}>
-            <{if $homework.HomeworkPostDateTS > $bc.nowTS}>
+            <{if $homework.HomeworkPostDateTS > $nowTS}>
                 <li class="list-group-item">
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
                         <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>" style="color: gray;"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
@@ -19,7 +19,7 @@
                     <{/if}>
                     <span style="color: #840707;"><{$homework.display_at}></span>
                 </li>
-            <{elseif $homework.toCal == $bc.today && $homework.HomeworkPostDateTS < $bc.nowTS}>
+            <{elseif $homework.toCal == $today && $homework.HomeworkPostDateTS < $nowTS}>
                 <li class="list-group-item">
                     <h3>
                         <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>

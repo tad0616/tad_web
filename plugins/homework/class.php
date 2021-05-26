@@ -179,8 +179,7 @@ class tad_web_homework
             $data['main_data'] = $main_data;
             // $data['yet_data'] = $yet_data;
             $data['total'] = $total;
-            $data['today'] = date('Y-m-d');
-            $data['nowTS'] = time();
+            $data['now'] = $now;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $AccountID);
 
             return $data;
@@ -190,8 +189,7 @@ class tad_web_homework
         $xoopsTpl->assign('homework_data', $main_data);
         // $xoopsTpl->assign('yet_data', $yet_data);
         $xoopsTpl->assign('bar', $bar);
-        $xoopsTpl->assign('today', date('Y-m-d'));
-        $xoopsTpl->assign('nowTS', time());
+        $xoopsTpl->assign('now', $now);
         $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
         $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID));
 
@@ -223,7 +221,12 @@ class tad_web_homework
         if (!$power) {
             redirect_header("homework.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $HomeworkCounter = $data['HomeworkCounter'] = $this->add_counter($HomeworkID);
+
+        if (_IS_EZCLASS) {
+            $HomeworkCounter = $data['HomeworkCounter'] = $this->add_counter($HomeworkID);
+        } else {
+            $this->add_counter($HomeworkID);
+        }
 
         //找出聯絡簿內容
         $sql = 'select `HomeworkCol`, `Content` from ' . $xoopsDB->prefix('tad_web_homework_content') . " where HomeworkID='{$HomeworkID}'";
@@ -250,6 +253,8 @@ class tad_web_homework
         }
 
         $TadUpFiles->set_col('HomeworkID', $HomeworkID);
+        $TadUpFiles->set_var('other_css', 'margin:6px;');
+        $TadUpFiles->set_var('background_size', 'cover');
         $HomeworkFiles = $TadUpFiles->show_files('upfile', true, null, true);
         $xoopsTpl->assign('HomeworkFiles', $HomeworkFiles);
 
@@ -260,7 +265,7 @@ class tad_web_homework
         $xoopsTpl->assign('HomeworkCounter', $HomeworkCounter);
         $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
         $xoopsTpl->assign('HomeworkID', $HomeworkID);
-        $assistant = is_assistant($CateID, 'HomeworkID', $HomeworkID);
+        $assistant = is_assistant($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
@@ -483,7 +488,7 @@ class tad_web_homework
 
         //取得最後新增資料的流水編號
         $HomeworkID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'HomeworkID', $HomeworkID);
+        save_assistant_post('homework', $CateID, 'HomeworkID', $HomeworkID);
 
         if (!empty($today_homework_remove_html)) {
             $sql = 'insert into ' . $xoopsDB->prefix('tad_web_homework_content') . "
@@ -566,17 +571,17 @@ class tad_web_homework
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'HomeworkID', $HomeworkID)) {
+        if (!is_assistant($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_homework') . " set
-         `CateID` = '{$CateID}' ,
-         `HomeworkTitle` = '{$HomeworkTitle}' ,
-         `HomeworkContent` = '{$HomeworkContent}' ,
-         `HomeworkDate` = '{$HomeworkDate}' ,
-         `toCal` = '{$toCal}' ,
-         `HomeworkPostDate` = '{$HomeworkPostDate}'
+        `CateID` = '{$CateID}' ,
+        `HomeworkTitle` = '{$HomeworkTitle}' ,
+        `HomeworkContent` = '{$HomeworkContent}' ,
+        `HomeworkDate` = '{$HomeworkDate}' ,
+        `toCal` = '{$toCal}' ,
+        `HomeworkPostDate` = '{$HomeworkPostDate}'
         where HomeworkID='$HomeworkID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -640,7 +645,7 @@ class tad_web_homework
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_homework') . " where HomeworkID='$HomeworkID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'HomeworkID', $HomeworkID)) {
+        if (!is_assistant($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_homework_content') . " where HomeworkID='$HomeworkID'";

@@ -71,7 +71,12 @@ class tad_web_calendar
         }
 
         $CalendarID = (int) $CalendarID;
-        $CalendarCount = $data['CalendarCount'] = $this->add_counter($CalendarID);
+
+        if (_IS_EZCLASS) {
+            $CalendarCount = $data['CalendarCount'] = $this->add_counter($CalendarID);
+        } else {
+            $this->add_counter($CalendarID);
+        }
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_calendar') . " where CalendarID='{$CalendarID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);

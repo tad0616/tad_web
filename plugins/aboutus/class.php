@@ -1575,7 +1575,6 @@ class tad_web_aboutus
     {
         global $xoopsDB, $xoopsUser, $WebName, $TadUpFiles, $xoopsTpl, $isMyWeb, $isAdmin;
         // $Web = get_tad_web($this->WebID, true);
-        $xoopsTpl->assign('isAdmin', $isAdmin);
         $xoopsTpl->assign('CateID', $DefCateID);
         $xoopsTpl->assign('cate', $this->WebCate->get_tad_web_cate($DefCateID));
 

@@ -136,7 +136,7 @@ class tad_web_news
                 $main_data[$i]['NewsCounter'] = redis_do($this->WebID, 'get', 'news', "NewsCounter:$NewsID");
             }
 
-            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'NewsID', $NewsID);
+            // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
 
             $this->WebCate->set_WebID($WebID);
@@ -213,7 +213,12 @@ class tad_web_news
         if (!$power) {
             redirect_header("news.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $NewsCounter = $data['NewsCounter'] = $this->add_counter($NewsID);
+
+        if (_IS_EZCLASS) {
+            $NewsCounter = $data['NewsCounter'] = $this->add_counter($NewsID);
+        } else {
+            $this->add_counter($NewsID);
+        }
 
         $prev_next = $this->get_prev_next($NewsID);
 
@@ -231,13 +236,15 @@ class tad_web_news
         $NewsUrlTxt = empty($NewsUrl) ? '' : '<div>' . _MD_TCW_NEWSURL . _TAD_FOR . "<a href='$NewsUrl' target='_blank'>$NewsUrl</a></div>";
 
         $TadUpFiles->set_col('NewsID', $NewsID);
+        $TadUpFiles->set_var('other_css', 'margin:6px;');
+        $TadUpFiles->set_var('background_size', 'cover');
         $NewsFiles = $TadUpFiles->show_files('upfile', true, '', true, false, null, null, false, '');
 
         //取消換頁符號
         $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
         $NewsContent = preg_replace($pattern, '', $NewsContent);
 
-        $assistant = is_assistant($CateID, 'NewsID', $NewsID);
+        $assistant = is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
@@ -287,7 +294,7 @@ class tad_web_news
         //取得標籤
         $xoopsTpl->assign('tags', $this->tags->list_tags('NewsID', $NewsID, 'news'));
 
-        // $xoopsTpl->assign("isAssistant", is_assistant($CateID, 'NewsID', $NewsID));
+        // $xoopsTpl->assign("isAssistant", is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID));
     }
 
     //tad_web_news編輯表單
@@ -423,7 +430,7 @@ class tad_web_news
 
         //取得最後新增資料的流水編號
         $NewsID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'NewsID', $NewsID);
+        save_assistant_post('news', $CateID, 'NewsID', $NewsID);
 
         $TadUpFiles->set_col('NewsID', $NewsID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -461,18 +468,18 @@ class tad_web_news
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'NewsID', $NewsID)) {
+        if (!is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_news') . " set
-         `CateID` = '{$CateID}' ,
-         `NewsTitle` = '{$NewsTitle}' ,
-         `NewsContent` = '{$NewsContent}' ,
-         `NewsDate` = '{$NewsDate}' ,
-         `toCal` = '{$toCal}' ,
-         `NewsUrl` = '{$NewsUrl}',
-         `NewsEnable`='{$NewsEnable}'
+        `CateID` = '{$CateID}' ,
+        `NewsTitle` = '{$NewsTitle}' ,
+        `NewsContent` = '{$NewsContent}' ,
+        `NewsDate` = '{$NewsDate}' ,
+        `toCal` = '{$toCal}' ,
+        `NewsUrl` = '{$NewsUrl}',
+        `NewsEnable`='{$NewsEnable}'
         where NewsID='$NewsID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -494,7 +501,7 @@ class tad_web_news
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='$NewsID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'NewsID', $NewsID)) {
+        if (!is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='$NewsID' $anduid";

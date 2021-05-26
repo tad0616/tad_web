@@ -123,7 +123,7 @@ class tad_web_video
             $main_data[$i]['id'] = $VideoID;
             $main_data[$i]['id_name'] = 'VideoID';
             $main_data[$i]['title'] = $VideoName;
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'VideoID', $VideoID);
+            $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'video', $CateID, 'VideoID', $VideoID);
             if (_IS_EZCLASS) {
                 $main_data[$i]['VideoCount'] = redis_do($this->WebID, 'get', 'video', "VideoCount:$VideoID");
             }
@@ -187,7 +187,12 @@ class tad_web_video
         if (!$power) {
             redirect_header("video.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $VideoCount = $data['VideoCount'] = $this->add_counter($VideoID);
+
+        if (_IS_EZCLASS) {
+            $VideoCount = $data['VideoCount'] = $this->add_counter($VideoID);
+        } else {
+            $this->add_counter($VideoID);
+        }
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -223,7 +228,7 @@ class tad_web_video
         $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign('tags', $this->tags->list_tags('VideoID', $VideoID, 'video'));
-        $xoopsTpl->assign('isAssistant', is_assistant($CateID, 'VideoID', $VideoID));
+        $xoopsTpl->assign('isAssistant', is_assistant($this->WebID, 'video', $CateID, 'VideoID', $VideoID));
     }
 
     //tad_web_video編輯表單
@@ -336,7 +341,7 @@ class tad_web_video
 
         //取得最後新增資料的流水編號
         $VideoID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'VideoID', $VideoID);
+        save_assistant_post('video', $CateID, 'VideoID', $VideoID);
         check_quota($this->WebID);
         //儲存標籤
         $this->tags->save_tags('VideoID', $VideoID, $tag_name, $_POST['tags']);
@@ -377,16 +382,16 @@ class tad_web_video
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'VideoID', $VideoID)) {
+        if (!is_assistant($this->WebID, 'video', $CateID, 'VideoID', $VideoID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_video') . " set
-         `CateID` = '{$CateID}' ,
-         `VideoName` = '{$VideoName}' ,
-         `VideoDesc` = '{$VideoDesc}' ,
-         `VideoDate` = now() ,
-         `VideoPlace` = '{$VideoPlace}'
+        `CateID` = '{$CateID}' ,
+        `VideoName` = '{$VideoName}' ,
+        `VideoDesc` = '{$VideoDesc}' ,
+        `VideoDate` = now() ,
+        `VideoPlace` = '{$VideoPlace}'
         where VideoID='$VideoID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
@@ -402,7 +407,7 @@ class tad_web_video
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='$VideoID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'VideoID', $VideoID)) {
+        if (!is_assistant($this->WebID, 'video', $CateID, 'VideoID', $VideoID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='$VideoID' $anduid";

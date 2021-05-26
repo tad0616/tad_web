@@ -12,6 +12,9 @@ $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
 $xoopsTpl->assign('Web', $Web);
 $xoopsTpl->assign('_IS_EZCLASS', _IS_EZCLASS);
+$xoopsTpl->assign('isAdmin', $isAdmin);
+$xoopsTpl->assign('nowTS', time());
+$xoopsTpl->assign('today', date('Y-m-d'));
 
 if (isset($LoginWebID)) {
     $xoopsTpl->assign('LoginMemID', $LoginMemID);

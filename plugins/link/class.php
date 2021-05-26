@@ -125,7 +125,7 @@ class tad_web_link
                 $main_data[$i]['LinkCounter'] = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
             }
 
-            $main_data[$i]['isAssistant'] = is_assistant($CateID, 'LinkID', $LinkID);
+            $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'link', $CateID, 'LinkID', $LinkID);
 
             $this->WebCate->set_WebID($WebID);
 
@@ -174,7 +174,12 @@ class tad_web_link
         if (!$power) {
             redirect_header("link.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $LinkCounter = $data['LinkCounter'] = $this->add_counter($LinkID);
+
+        if (_IS_EZCLASS) {
+            $LinkCounter = $data['LinkCounter'] = $this->add_counter($LinkID);
+        } else {
+            $this->add_counter($LinkID);
+        }
 
         header("location: {$LinkUrl}");
         exit;
@@ -279,7 +284,7 @@ class tad_web_link
 
         //取得最後新增資料的流水編號
         $LinkID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'LinkID', $LinkID);
+        save_assistant_post('link', $CateID, 'LinkID', $LinkID);
         check_quota($this->WebID);
 
         //儲存標籤
@@ -303,16 +308,16 @@ class tad_web_link
 
         $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
 
-        if (!is_assistant($CateID, 'LinkID', $LinkID)) {
+        if (!is_assistant($this->WebID, 'link', $CateID, 'LinkID', $LinkID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_link') . " set
-       `CateID` = '{$CateID}' ,
-       `LinkTitle` = '{$LinkTitle}' ,
-       `LinkDesc` = '{$LinkDesc}' ,
-       `LinkUrl` = '{$LinkUrl}' ,
-       `WebID` = '{$WebID}'
+        `CateID` = '{$CateID}' ,
+        `LinkTitle` = '{$LinkTitle}' ,
+        `LinkDesc` = '{$LinkDesc}' ,
+        `LinkUrl` = '{$LinkUrl}' ,
+        `WebID` = '{$WebID}'
         where LinkID='$LinkID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
@@ -331,7 +336,7 @@ class tad_web_link
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
-        if (!is_assistant($CateID, 'LinkID', $LinkID)) {
+        if (!is_assistant($this->WebID, 'link', $CateID, 'LinkID', $LinkID)) {
             $anduid = onlyMine();
         }
 

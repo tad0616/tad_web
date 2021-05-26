@@ -134,7 +134,7 @@ class tad_web_works
             $main_data[$i]['id'] = $WorksID;
             $main_data[$i]['id_name'] = 'WorksID';
             $main_data[$i]['title'] = $WorkName;
-            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'WorksID', $WorksID);
+            // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
             if (_IS_EZCLASS) {
                 $main_data[$i]['WorksCount'] = redis_do($this->WebID, 'get', 'works', "WorksCount:$WorksID");
@@ -148,6 +148,8 @@ class tad_web_works
                 }
 
                 $TadUpFiles->set_col('WorksID', $WorksID);
+                $TadUpFiles->set_var('other_css', 'margin:6px;');
+                $TadUpFiles->set_var('background_size', 'cover');
                 $main_data[$i]['pics'] = $TadUpFiles->show_files('upfile', true, null, true, null, $pic);
             } else {
                 $main_data[$i]['pics'] = '';
@@ -207,7 +209,11 @@ class tad_web_works
         if (!$power) {
             redirect_header("works.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $WorksCount = $data['WorksCount'] = $this->add_counter($WorksID);
+        if (_IS_EZCLASS) {
+            $WorksCount = $data['WorksCount'] = $this->add_counter($WorksID);
+        } else {
+            $this->add_counter($WorksID);
+        }
 
         $deadline = strtotime($WorksDate);
         $time = time();
@@ -224,6 +230,8 @@ class tad_web_works
         }
 
         $TadUpFiles->set_col('WorksID', $WorksID);
+        $TadUpFiles->set_var('other_css', 'margin:6px;');
+        $TadUpFiles->set_var('background_size', 'cover');
         $pics = $TadUpFiles->show_files('upfile', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
         $xoopsTpl->assign('pics', $pics);
         $attachments = $TadUpFiles->show_files('attachments', true, null, true); //是否縮圖,顯示模式 filename、small,顯示描述,顯示下載次數
@@ -234,7 +242,7 @@ class tad_web_works
             $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $assistant = is_assistant($CateID, 'WorksID', $WorksID);
+        $assistant = is_assistant($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
@@ -395,7 +403,7 @@ class tad_web_works
 
         //取得最後新增資料的流水編號
         $WorksID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'WorksID', $WorksID);
+        save_assistant_post('works', $CateID, 'WorksID', $WorksID);
 
         $TadUpFiles->set_col('WorksID', $WorksID);
         $TadUpFiles->upload_file('upfile', 1280, null, null, null, true);
@@ -426,7 +434,7 @@ class tad_web_works
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'WorksID', $WorksID)) {
+        if (!is_assistant($this->WebID, 'works', $CateID, 'WorksID', $WorksID)) {
             $anduid = onlyMine();
         }
 
@@ -500,7 +508,7 @@ class tad_web_works
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='$WorksID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'WorksID', $WorksID)) {
+        if (!is_assistant($this->WebID, 'works', $CateID, 'WorksID', $WorksID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='$WorksID' $anduid";
@@ -589,6 +597,8 @@ class tad_web_works
             return;
         }
         $TadUpFiles->set_col('WorksID', $WorksID);
+        $TadUpFiles->set_var('other_css', 'margin:6px;');
+        $TadUpFiles->set_var('background_size', 'cover');
 
         $andMemID = empty($MemID) ? '' : "and MemID='$MemID'";
 

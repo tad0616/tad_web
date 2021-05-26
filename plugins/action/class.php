@@ -127,7 +127,7 @@ class tad_web_action
             $main_data[$i]['id'] = $ActionID;
             $main_data[$i]['id_name'] = 'ActionID';
             $main_data[$i]['title'] = $ActionName;
-            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
+            // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             $this->WebCate->set_WebID($WebID);
             if (_IS_EZCLASS) {
@@ -210,14 +210,19 @@ class tad_web_action
         if (!$power) {
             redirect_header("action.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $ActionCount = $data['ActionCount'] = $this->add_counter($ActionID);
+
+        if (_IS_EZCLASS) {
+            $ActionCount = $data['ActionCount'] = $this->add_counter($ActionID);
+        } else {
+            $this->add_counter($ActionID);
+        }
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $TadUpFiles->set_col('ActionID', $ActionID);
-        $TadUpFiles->set_var('other_css', 'margin-right:6px;');
+        $TadUpFiles->set_var('other_css', 'margin:6px;');
         $TadUpFiles->set_var('background_size', 'cover');
         if ($gphoto_link != '') {
             $fancybox = new FancyBox('.fancybox_ActionID', 640, 480);
@@ -233,7 +238,7 @@ class tad_web_action
             $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $assistant = is_assistant($CateID, 'ActionID', $ActionID);
+        $assistant = is_assistant($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
@@ -412,7 +417,7 @@ class tad_web_action
 
         //取得最後新增資料的流水編號
         $ActionID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'ActionID', $ActionID);
+        save_assistant_post('action', $CateID, 'ActionID', $ActionID);
 
         if ($gphoto_link != '') {
             require 'vendor/autoload.php';
@@ -484,17 +489,17 @@ class tad_web_action
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'ActionID', $ActionID)) {
+        if (!is_assistant($this->WebID, 'action', $CateID, 'ActionID', $ActionID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_action') . " set
-         `CateID` = '{$CateID}' ,
-         `ActionName` = '{$ActionName}' ,
-         `ActionDesc` = '{$ActionDesc}' ,
-         `ActionDate` = '{$ActionDate}' ,
-         `ActionPlace` = '{$ActionPlace}',
-         `gphoto_link` = '{$gphoto_link}'
+        `CateID` = '{$CateID}' ,
+        `ActionName` = '{$ActionName}' ,
+        `ActionDesc` = '{$ActionDesc}' ,
+        `ActionDate` = '{$ActionDate}' ,
+        `ActionPlace` = '{$ActionPlace}',
+        `gphoto_link` = '{$gphoto_link}'
         where ActionID='$ActionID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -518,7 +523,7 @@ class tad_web_action
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'ActionID', $ActionID)) {
+        if (!is_assistant($this->WebID, 'action', $CateID, 'ActionID', $ActionID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID' $anduid";

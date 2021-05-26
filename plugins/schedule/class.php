@@ -101,7 +101,7 @@ class tad_web_schedule
             $main_data[$i]['id'] = $ScheduleID;
             $main_data[$i]['id_name'] = 'ScheduleID';
             $main_data[$i]['title'] = $ScheduleName;
-            // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
+            // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
             if (_IS_EZCLASS) {
                 $main_data[$i]['ScheduleCount'] = redis_do($this->WebID, 'get', 'schedule', "ScheduleCount:$ScheduleID");
@@ -159,7 +159,12 @@ class tad_web_schedule
         if (!$power) {
             redirect_header("schedule.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $ScheduleCount = $data['ScheduleCount'] = $this->add_counter($ScheduleID);
+
+        if (_IS_EZCLASS) {
+            $ScheduleCount = $data['ScheduleCount'] = $this->add_counter($ScheduleID);
+        } else {
+            $this->add_counter($ScheduleID);
+        }
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -170,7 +175,7 @@ class tad_web_schedule
             $uid_name = \XoopsUser::getUnameFromId($uid, 0);
         }
 
-        $assistant = is_assistant($CateID, 'ScheduleID', $ScheduleID);
+        $assistant = is_assistant($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
         $isAssistant = !empty($assistant) ? true : false;
         $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
@@ -328,7 +333,7 @@ class tad_web_schedule
 
         //取得最後新增資料的流水編號
         $ScheduleID = $xoopsDB->getInsertId();
-        save_assistant_post($CateID, 'ScheduleID', $ScheduleID);
+        save_assistant_post('schedule', $CateID, 'ScheduleID', $ScheduleID);
 
         check_quota($this->WebID);
         return $ScheduleID;
@@ -350,21 +355,21 @@ class tad_web_schedule
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
+        if (!is_assistant($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID)) {
             $anduid = onlyMine();
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_schedule') . " set
-         `CateID` = '{$CateID}' ,
-         `ScheduleName` = '{$ScheduleName}' ,
-         `ScheduleDisplay` = '{$ScheduleDisplay}',
-         `ScheduleTime` = '{$ScheduleTime}'
+        `CateID` = '{$CateID}' ,
+        `ScheduleName` = '{$ScheduleName}' ,
+        `ScheduleDisplay` = '{$ScheduleDisplay}',
+        `ScheduleTime` = '{$ScheduleTime}'
         where ScheduleID='$ScheduleID' $anduid";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ('1' == $ScheduleDisplay) {
             $sql = 'update ' . $xoopsDB->prefix('tad_web_schedule') . " set
-             `ScheduleDisplay` = '0'
+            `ScheduleDisplay` = '0'
             where WebID='{$WebID}' and ScheduleID!='{$ScheduleID}' $anduid";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
@@ -380,7 +385,7 @@ class tad_web_schedule
         $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        if (!is_assistant($CateID, 'ScheduleID', $ScheduleID)) {
+        if (!is_assistant($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID)) {
             $anduid = onlyMine();
         }
         $sql = 'delete from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID' $anduid";

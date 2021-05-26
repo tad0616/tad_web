@@ -411,6 +411,7 @@ class WebCate
        `CateID` = '{$move2CateID}' where `CateID`='{$CateID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
+
     //刪除tad_web_cate某筆資料資料
     public function delete_tad_web_cate($CateID = '', $move2CateID = 0)
     {
