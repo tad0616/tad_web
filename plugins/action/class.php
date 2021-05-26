@@ -130,6 +130,9 @@ class tad_web_action
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ActionID', $ActionID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'action', $CateID, 'ActionID', $ActionID);
             $this->WebCate->set_WebID($WebID);
+            if (_IS_EZCLASS) {
+                $main_data[$i]['ActionCount'] = redis_do($this->WebID, 'get', 'action', "ActionCount:$ActionID");
+            }
 
             $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
@@ -207,7 +210,7 @@ class tad_web_action
         if (!$power) {
             redirect_header("action.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($ActionID);
+        $ActionCount = $data['ActionCount'] = $this->add_counter($ActionID);
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -563,8 +566,20 @@ class tad_web_action
     public function add_counter($ActionID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_action') . " set `ActionCount`=`ActionCount`+1 where `ActionID`='{$ActionID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $ActionCount = redis_do($this->WebID, 'get', 'action', "ActionCount:$ActionID");
+            if (empty($ActionCount)) {
+                $sql = 'select ActionCount from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($ActionCount) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'action', "ActionCount:$ActionID", $ActionCount);
+            }
+            return redis_do($this->WebID, 'incr', 'action', "ActionCount:$ActionID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_action') . " set `ActionCount`=`ActionCount`+1 where `ActionID`='{$ActionID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_action資料
@@ -578,6 +593,10 @@ class tad_web_action
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_action') . " where ActionID='$ActionID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['ActionCount'] = redis_do($this->WebID, 'get', 'action', "ActionCount:$ActionID");
+        }
         return $data;
     }
 

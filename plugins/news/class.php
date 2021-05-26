@@ -93,10 +93,6 @@ class tad_web_news
             order by a.NewsDate desc";
         }
 
-        // if ($_GET['test'] == 1) {
-        //     die($sql);
-        // }
-
         $to_limit = empty($limit) ? 10 : $limit;
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
@@ -136,6 +132,9 @@ class tad_web_news
             $main_data[$i]['id'] = $NewsID;
             $main_data[$i]['id_name'] = 'NewsID';
             $main_data[$i]['title'] = $NewsTitle;
+            if (_IS_EZCLASS) {
+                $main_data[$i]['NewsCounter'] = redis_do($this->WebID, 'get', 'news', "NewsCounter:$NewsID");
+            }
 
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'NewsID', $NewsID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
@@ -214,7 +213,7 @@ class tad_web_news
         if (!$power) {
             redirect_header("news.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($NewsID);
+        $NewsCounter = $data['NewsCounter'] = $this->add_counter($NewsID);
 
         $prev_next = $this->get_prev_next($NewsID);
 
@@ -541,9 +540,20 @@ class tad_web_news
     public function add_counter($NewsID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_news') . " set `NewsCounter`=`NewsCounter`+1 where `NewsID`='{$NewsID}' and `NewsEnable`='1'";
-        // echo $sql . time() . "<br>";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $NewsCounter = redis_do($this->WebID, 'get', 'news', "NewsCounter:$NewsID");
+            if (empty($NewsCounter)) {
+                $sql = 'select NewsCounter from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='$NewsID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($NewsCounter) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'news', "NewsCounter:$NewsID", $NewsCounter);
+            }
+            return redis_do($this->WebID, 'incr', 'news', "NewsCounter:$NewsID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_news') . " set `NewsCounter`=`NewsCounter`+1 where `NewsID`='{$NewsID}' and `NewsEnable`='1'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_news資料
@@ -557,6 +567,10 @@ class tad_web_news
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_news') . " where NewsID='$NewsID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['NewsCounter'] = redis_do($this->WebID, 'get', 'news', "NewsCounter:$NewsID");
+        }
         return $data;
     }
 

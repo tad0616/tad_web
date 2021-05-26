@@ -31,9 +31,14 @@ function ClassHome($WebID = '')
             $$plugin_name = new $plugin_name($WebID);
         }
     }
-    $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web') . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
-    $xoopsDB->queryF($sql);
+
     $_SESSION['tad_web'][$WebID]['WebCounter']++;
+    if (_IS_EZCLASS) {
+        redis_do($WebID, 'set', '', 'WebCounter', $_SESSION['tad_web'][$WebID]['WebCounter']);
+    } else {
+        $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebCounter` = `WebCounter` +1	where WebID ='{$WebID}'";
+        $xoopsDB->queryF($sql);
+    }
 
     $xoopsTpl->assign('MyWebs', $MyWebs);
 }

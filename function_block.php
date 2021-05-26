@@ -8,7 +8,7 @@ if (!function_exists('MyWebID')) {
         global $xoopsUser, $xoopsDB;
         $MyWebs = [];
         if ($xoopsUser) {
-            if (!isset($_SESSION['MyWebs'])) {
+            if (!isset($_SESSION['MyWebs'][$WebEnable])) {
                 $uid = $xoopsUser->uid();
                 $andWebEnable = 'all' === $WebEnable ? '' : "and `WebEnable`='{$WebEnable}'";
                 $sql = 'select WebID from ' . $xoopsDB->prefix('tad_web') . " where WebOwnerUid='$uid' {$andWebEnable}";
@@ -24,9 +24,9 @@ if (!function_exists('MyWebID')) {
                 while (list($WebID) = $xoopsDB->fetchRow($result)) {
                     $MyWebs[$WebID] = (int) $WebID;
                 }
-                $_SESSION['MyWebs'] = $MyWebs;
+                $_SESSION['MyWebs'][$WebEnable] = $MyWebs;
             }
-            return $_SESSION['MyWebs'];
+            return $_SESSION['MyWebs'][$WebEnable];
         }
         return $MyWebs;
     }

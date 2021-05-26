@@ -77,13 +77,13 @@ class tad_web_homework
             left join ' . $xoopsDB->prefix('apply') . ' as c on b.WebOwnerUid=c.uid
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where  b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and a.HomeworkPostDate <= '{$now}' $andCounty $andCity $andSchoolName
-            order by a.toCal desc";
+            order by a.toCal desc, a.HomeworkPostDate desc";
         } else {
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_homework') . ' as a
             left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
-            where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') and a.HomeworkPostDate <= '{$now}' $andWebID $andCateID
-            order by a.toCal desc";
+            where b.`WebEnable`='1' and (c.CateEnable='1' or a.CateID='0') $andWebID $andCateID
+            order by a.toCal desc, a.HomeworkPostDate desc";
         }
         $to_limit = empty($limit) ? 20 : $limit;
 
@@ -104,7 +104,7 @@ class tad_web_homework
         $cweek = [0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT];
 
         $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'homework');
-        $yet = '';
+
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $HomeworkID , $HomeworkTitle , $HomeworkContent , $HomeworkDate , $toCal , $WebID  , $HomeworkCounter, $uid, $HomeworkPostDate
             foreach ($all as $k => $v) {
@@ -120,6 +120,11 @@ class tad_web_homework
             $main_data[$i]['id'] = $HomeworkID;
             $main_data[$i]['id_name'] = 'HomeworkID';
             $main_data[$i]['title'] = $HomeworkTitle;
+            $main_data[$i]['HomeworkPostDateTS'] = strtotime($HomeworkPostDate);
+            $main_data[$i]['display_at'] = sprintf(_MD_TCW_HOMEWORK_POST_AT, $HomeworkPostDate);
+            if (_IS_EZCLASS) {
+                $main_data[$i]['HomeworkCounter'] = redis_do($this->WebID, 'get', 'homework', "HomeworkCounter:$HomeworkID");
+            }
 
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
 
@@ -160,22 +165,6 @@ class tad_web_homework
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_homework_func', "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
 
-        //找出尚未發布的聯絡簿
-        $yet_data = [];
-        if ($isMyWeb) {
-            $i = 0;
-            $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_homework') . ' as a left join ' . $xoopsDB->prefix('tad_web') . " as b on a.WebID=b.WebID where a.HomeworkPostDate > '{$now}' and b.`WebEnable`='1' $andWebID $andCateID order by HomeworkPostDate desc";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            while (false !== ($all = $xoopsDB->fetchArray($result))) {
-                $yet_data[$i] = $all;
-                $yet_data[$i]['display_at'] = sprintf(_MD_TCW_HOMEWORK_POST_AT, $all['HomeworkPostDate']);
-                $w = date('w', strtotime($all['toCal']));
-                $yet_data[$i]['Week'] = $cweek[$w];
-                $i++;
-                $total++;
-            }
-        }
-
         $FullCalendar = new FullCalendar();
         if ($this->WebID) {
             $FullCalendar->add_js_parameter('firstDay', $this->calendar_setup['week_first_day']);
@@ -184,13 +173,14 @@ class tad_web_homework
         if (false !== mb_strrpos($_SERVER['PHP_SELF'], 'homework.php')) {
             $FullCalendar->add_json_parameter('CalKind', 'homework');
         }
-        $fullcalendar_code = $FullCalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
+        $fullcalendar_code = $FullCalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php', 'return');
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
-            $data['yet_data'] = $yet_data;
+            // $data['yet_data'] = $yet_data;
             $data['total'] = $total;
             $data['today'] = date('Y-m-d');
+            $data['nowTS'] = time();
             $data['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $AccountID);
 
             return $data;
@@ -198,9 +188,10 @@ class tad_web_homework
         $xoopsTpl->assign('fullcalendar_code', $fullcalendar_code);
         $xoopsTpl->assign('CalKind', 'homework');
         $xoopsTpl->assign('homework_data', $main_data);
-        $xoopsTpl->assign('yet_data', $yet_data);
+        // $xoopsTpl->assign('yet_data', $yet_data);
         $xoopsTpl->assign('bar', $bar);
         $xoopsTpl->assign('today', date('Y-m-d'));
+        $xoopsTpl->assign('nowTS', time());
         $xoopsTpl->assign('homework', get_db_plugin($this->WebID, 'homework'));
         $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID));
 
@@ -232,7 +223,7 @@ class tad_web_homework
         if (!$power) {
             redirect_header("homework.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($HomeworkID);
+        $HomeworkCounter = $data['HomeworkCounter'] = $this->add_counter($HomeworkID);
 
         //找出聯絡簿內容
         $sql = 'select `HomeworkCol`, `Content` from ' . $xoopsDB->prefix('tad_web_homework_content') . " where HomeworkID='{$HomeworkID}'";
@@ -695,8 +686,20 @@ class tad_web_homework
     public function add_counter($HomeworkID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_homework') . " set `HomeworkCounter`=`HomeworkCounter`+1 where `HomeworkID`='{$HomeworkID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $HomeworkCounter = redis_do($this->WebID, 'get', 'homework', "HomeworkCounter:$HomeworkID");
+            if (empty($HomeworkCounter)) {
+                $sql = 'select HomeworkCounter from ' . $xoopsDB->prefix('tad_web_homework') . " where HomeworkID='$HomeworkID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($HomeworkCounter) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'homework', "HomeworkCounter:$HomeworkID", $HomeworkCounter);
+            }
+            return redis_do($this->WebID, 'incr', 'homework', "HomeworkCounter:$HomeworkID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_homework') . " set `HomeworkCounter`=`HomeworkCounter`+1 where `HomeworkID`='{$HomeworkID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_homework資料
@@ -711,6 +714,10 @@ class tad_web_homework
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_homework') . " where HomeworkID='$HomeworkID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['HomeworkCounter'] = redis_do($this->WebID, 'get', 'homework', "HomeworkCounter:$HomeworkID");
+        }
 
         //找出聯絡簿內容
         $sql = 'select `HomeworkCol`, `Content` from ' . $xoopsDB->prefix('tad_web_homework_content') . " where HomeworkID='{$data['HomeworkID']}'";

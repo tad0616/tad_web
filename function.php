@@ -69,12 +69,30 @@ function clear_tad_web_config($WebID)
     unlink($tad_web_config_file);
 }
 
-// 清除小幫手設定值
-// function clear_plugin_assistant_cache($WebID)
-// {
-//     $plugin_assistant_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/plugin_assistant_cache.json";
-//     unlink($plugin_assistant_cache_file);
-// }
+// 清除通知
+function clear_tad_web_notice()
+{
+    $tad_web_notice_file = XOOPS_VAR_PATH . "/tad_web/tad_web_notice.json";
+    unlink($tad_web_notice_file);
+}
+
+// 清除我的網站資料
+function clear_my_webs_data()
+{
+    global $xoopsUser;
+    if ($xoopsUser) {
+        $uid = $xoopsUser->uid();
+        $my_webs_data_file = XOOPS_VAR_PATH . "/tad_web/my_webs_data/$uid.json";
+        unlink($my_webs_data_file);
+    }
+}
+
+// 清除權限設定值
+function clear_power_cache($WebID)
+{
+    $power_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_power.json";
+    unlink($power_cache_file);
+}
 
 //取得已安裝的區塊
 function get_blocks($WebID)
@@ -315,6 +333,7 @@ function get_web_all_config($WebID = '')
                 require XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php';
             }
             Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web");
+            Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/my_webs_data");
             Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/{$WebID}");
             Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
             Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg");
@@ -358,8 +377,8 @@ function save_web_config($ConfigName, $ConfigValue, $WebID)
     $ConfigValue = $myts->addSlashes($ConfigValue);
 
     $sql = 'replace into ' . $xoopsDB->prefix('tad_web_config') . "
-      (`ConfigName`, `ConfigValue`, `WebID`)
-      values('{$ConfigName}' , '{$ConfigValue}', '{$WebID}')";
+    (`ConfigName`, `ConfigValue`, `WebID`)
+    values('{$ConfigName}' , '{$ConfigValue}', '{$WebID}')";
     // die($sql);
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
@@ -1524,10 +1543,15 @@ function check_quota($WebID = '')
     $size = size2mb($dir_size);
     save_web_config('used_size', $size, $WebID);
 
-    $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    if (_IS_EZCLASS) {
+        redis_do($WebID, 'set', '', 'used_size', $dir_size);
+    } else {
+        $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `used_size`='{$dir_size}' where `WebID`='{$WebID}'";
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    }
 
     $_SESSION['tad_web'][$WebID]['used_size'] = $dir_size;
+    clear_my_webs_data();
 }
 
 //檢查已使用空間
@@ -1536,7 +1560,6 @@ function get_quota($WebID = '')
     global $xoopsModuleConfig, $Web;
     $Web = get_tad_web($WebID);
     $defalt_used_size = round($Web['used_size'] / (1024 * 1024), 2);
-    // $size               = get_web_config("used_size", $WebID);
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : (int) $xoopsModuleConfig['user_space_quota'];
 
     $space_quota = get_web_config('space_quota', $WebID, 'db');
@@ -1725,9 +1748,30 @@ function delete_tad_web($WebID = '')
 function update_last_accessed($WebID = '')
 {
     global $xoopsDB;
+
     $last_accessed = date('Y-m-d H:i:s');
-    $sql = 'update low_priority `' . $xoopsDB->prefix('tad_web') . "` set `last_accessed`='{$last_accessed}' where `WebID`='{$WebID}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+    if (_IS_EZCLASS) {
+        redis_do($WebID, 'set', '', 'last_accessed', $last_accessed);
+    } else {
+        $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `last_accessed`='{$last_accessed}' where `WebID`='{$WebID}'";
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    }
+
+}
+
+function redis_do($WebID, $act = 'set', $plugin = '', $key = '', $value = '')
+{
+    $redis = new Redis();
+    $redis->connect('120.115.2.85', 6379);
+    $KEY = !empty($plugin) ? "$WebID:$plugin:$key" : "$WebID:$key";
+    if ($act == 'set') {
+        return $redis->set($KEY, $value);
+    } elseif ($act == 'incr') {
+        return $redis->incr($KEY);
+    } else {
+        return $redis->get($KEY);
+    }
 }
 
 /**  * 獲取文章內容(當前分頁)

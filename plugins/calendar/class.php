@@ -41,7 +41,6 @@ class tad_web_calendar
         } else {
             $calendar_data = $total + $total2 + $total3;
         }
-        // die('$calendar_data=' . $calendar_data);
 
         $FullCalendar = new FullCalendar();
 
@@ -49,11 +48,7 @@ class tad_web_calendar
             $FullCalendar->add_js_parameter('firstDay', $this->setup['week_first_day']);
             $FullCalendar->add_json_parameter('WebID', $this->WebID);
         }
-        $fullcalendar_code = $FullCalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php');
-
-        // if (isset($_GET['debug']) and 1 == $_GET['debug']) {
-        //     die(var_export($fullcalendar_code));
-        // }
+        $fullcalendar_code = $FullCalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php', 'return');
 
         if ('return' === $mode) {
             $data['fullcalendar_code'] = $fullcalendar_code;
@@ -76,7 +71,7 @@ class tad_web_calendar
         }
 
         $CalendarID = (int) $CalendarID;
-        $this->add_counter($CalendarID);
+        $CalendarCount = $data['CalendarCount'] = $this->add_counter($CalendarID);
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_calendar') . " where CalendarID='{$CalendarID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -278,8 +273,20 @@ class tad_web_calendar
     public function add_counter($CalendarID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_calendar') . " set `CalendarCount`=`CalendarCount`+1 where `CalendarID`='{$CalendarID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $CalendarCount = redis_do($this->WebID, 'get', 'calendar', "CalendarCount:$CalendarID");
+            if (empty($CalendarCount)) {
+                $sql = 'select CalendarCount from ' . $xoopsDB->prefix('tad_web_calendar') . " where CalendarID='$CalendarID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($CalendarCount) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'calendar', "CalendarCount:$CalendarID", $CalendarCount);
+            }
+            return redis_do($this->WebID, 'incr', 'calendar', "CalendarCount:$CalendarID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_calendar') . " set `CalendarCount`=`CalendarCount`+1 where `CalendarID`='{$CalendarID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_calendar資料
@@ -293,6 +300,10 @@ class tad_web_calendar
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_calendar') . " where CalendarID='$CalendarID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['CalendarCount'] = redis_do($this->WebID, 'get', 'calendar', "CalendarCount:$CalendarID");
+        }
         return $data;
     }
 }

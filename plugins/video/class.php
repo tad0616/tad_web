@@ -124,6 +124,9 @@ class tad_web_video
             $main_data[$i]['id_name'] = 'VideoID';
             $main_data[$i]['title'] = $VideoName;
             $main_data[$i]['isAssistant'] = is_assistant($CateID, 'VideoID', $VideoID);
+            if (_IS_EZCLASS) {
+                $main_data[$i]['VideoCount'] = redis_do($this->WebID, 'get', 'video', "VideoCount:$VideoID");
+            }
 
             $this->WebCate->set_WebID($WebID);
 
@@ -184,7 +187,7 @@ class tad_web_video
         if (!$power) {
             redirect_header("video.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($VideoID);
+        $VideoCount = $data['VideoCount'] = $this->add_counter($VideoID);
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -440,8 +443,20 @@ class tad_web_video
     public function add_counter($VideoID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_video') . " set `VideoCount`=`VideoCount`+1 where `VideoID`='{$VideoID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $VideoCount = redis_do($this->WebID, 'get', 'video', "VideoCount:$VideoID");
+            if (empty($VideoCount)) {
+                $sql = 'select VideoCount from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='$VideoID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($VideoCount) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'video', "VideoCount:$VideoID", $VideoCount);
+            }
+            return redis_do($this->WebID, 'incr', 'video', "VideoCount:$VideoID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_video') . " set `VideoCount`=`VideoCount`+1 where `VideoID`='{$VideoID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_video資料
@@ -455,6 +470,10 @@ class tad_web_video
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_video') . " where VideoID='$VideoID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['VideoCount'] = redis_do($this->WebID, 'get', 'video', "VideoCount:$VideoID");
+        }
         return $data;
     }
 
