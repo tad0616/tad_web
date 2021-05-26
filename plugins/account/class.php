@@ -123,6 +123,9 @@ class tad_web_account
             $main_data[$i]['title'] = $AccountTitle;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'AccountID', $AccountID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'account', $CateID, 'AccountID', $AccountID);
+            if (_IS_EZCLASS) {
+                $main_data[$i]['AccountCount'] = redis_do($this->WebID, 'get', 'account', "AccountCount:$AccountID");
+            }
 
             $this->WebCate->set_WebID($WebID);
 
@@ -194,7 +197,7 @@ class tad_web_account
         if (!$power) {
             redirect_header("account.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($AccountID);
+        $AccountCount = $data['AccountCount'] = $this->add_counter($AccountID);
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -490,8 +493,20 @@ class tad_web_account
     public function add_counter($AccountID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_account') . " set `AccountCount`=`AccountCount`+1 where `AccountID`='{$AccountID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $AccountCount = redis_do($this->WebID, 'get', 'account', "AccountCount:$AccountID");
+            if (empty($AccountCount)) {
+                $sql = 'select AccountCount from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='$AccountID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($AccountCount) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'account', "AccountCount:$AccountID", $AccountCount);
+            }
+            return redis_do($this->WebID, 'incr', 'account', "AccountCount:$AccountID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_account') . " set `AccountCount`=`AccountCount`+1 where `AccountID`='{$AccountID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_account資料
@@ -505,6 +520,10 @@ class tad_web_account
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_account') . " where AccountID='$AccountID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['AccountCount'] = redis_do($this->WebID, 'get', 'account', "AccountCount:$AccountID");
+        }
         return $data;
     }
 

@@ -275,27 +275,30 @@ switch ($op) {
     //新增資料
     case 'insert_tad_web_notice':
         $NoticeID = insert_tad_web_notice();
+        clear_tad_web_notice();
         header("location: {$_SERVER['PHP_SELF']}?NoticeID=$NoticeID");
         exit;
-        break;
+
     //更新資料
     case 'update_tad_web_notice':
         update_tad_web_notice($NoticeID);
+        clear_tad_web_notice();
         header("location: {$_SERVER['PHP_SELF']}?NoticeID=$NoticeID");
         exit;
-        break;
+
     case 'tad_web_notice_form':
         tad_web_notice_form($NoticeID);
         break;
+
     case 'delete_tad_web_notice':
         delete_tad_web_notice($NoticeID);
+        clear_tad_web_notice();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     default:
         if (empty($NoticeID)) {
             list_tad_web_notice();
-            //$main .= tad_web_notice_form($NoticeID);
         } else {
             show_one_tad_web_notice($NoticeID);
         }

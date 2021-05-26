@@ -103,6 +103,9 @@ class tad_web_schedule
             $main_data[$i]['title'] = $ScheduleName;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'ScheduleID', $ScheduleID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'schedule', $CateID, 'ScheduleID', $ScheduleID);
+            if (_IS_EZCLASS) {
+                $main_data[$i]['ScheduleCount'] = redis_do($this->WebID, 'get', 'schedule', "ScheduleCount:$ScheduleID");
+            }
 
             $this->WebCate->set_WebID($WebID);
 
@@ -156,7 +159,7 @@ class tad_web_schedule
         if (!$power) {
             redirect_header("schedule.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($ScheduleID);
+        $ScheduleCount = $data['ScheduleCount'] = $this->add_counter($ScheduleID);
 
         if (empty($uid)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -421,8 +424,20 @@ class tad_web_schedule
     public function add_counter($ScheduleID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_schedule') . " set `ScheduleCount`=`ScheduleCount`+1 where `ScheduleID`='{$ScheduleID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $ScheduleCount = redis_do($this->WebID, 'get', 'schedule', "ScheduleCount:$ScheduleID");
+            if (empty($ScheduleCount)) {
+                $sql = 'select ScheduleCount from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($ScheduleCount) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'schedule', "ScheduleCount:$ScheduleID", $ScheduleCount);
+            }
+            return redis_do($this->WebID, 'incr', 'schedule', "ScheduleCount:$ScheduleID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_schedule') . " set `ScheduleCount`=`ScheduleCount`+1 where `ScheduleID`='{$ScheduleID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_schedule資料
@@ -436,6 +451,10 @@ class tad_web_schedule
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_schedule') . " where ScheduleID='$ScheduleID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['ScheduleCount'] = redis_do($this->WebID, 'get', 'schedule', "ScheduleCount:$ScheduleID");
+        }
         return $data;
     }
 

@@ -5,7 +5,6 @@
         <ul class="list-group">
             <{foreach from=$bc.main_data key=i item=news}>
                 <li class="list-group-item">
-                    <span class="badge badge-info"><{$news.NewsCounter}></span>
                     <{$news.Date}>
                     <{if isset($news.cate.CateID)}>
                         <span class="badge badge-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
@@ -112,7 +111,6 @@
             <{foreach from=$bc.main_data key=i item=news}>
                 <{if $i > 0}>
                     <li class="list-group-item">
-                        <span class="badge badge-info"><{$news.NewsCounter}></span>
                         <{$news.Date}>
                         <{if isset($news.cate.CateID)}>
                             <span class="badge badge-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>

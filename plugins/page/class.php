@@ -129,6 +129,10 @@ class tad_web_page
             $main_data[$i]['title'] = $PageTitle;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'PageID', $PageID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'page', $CateID, 'PageID', $PageID);
+            if (_IS_EZCLASS) {
+                $main_data[$i]['PageCount'] = redis_do($this->WebID, 'get', 'page', "PageCount:$PageID");
+            }
+
             $main_data[$i]['show_count'] = $show_count;
             $this->WebCate->set_WebID($WebID);
 
@@ -196,7 +200,7 @@ class tad_web_page
         if (!$power) {
             redirect_header("page.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($PageID);
+        $PageCount = $data['PageCount'] = $this->add_counter($PageID);
 
         if (empty($PageContent) and empty($PageTitle)) {
             redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
@@ -481,8 +485,20 @@ class tad_web_page
     public function add_counter($PageID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_page') . " set `PageCount`=`PageCount`+1 where `PageID`='{$PageID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $PageCount = redis_do($this->WebID, 'get', 'page', "PageCount:$PageID");
+            if (empty($PageCount)) {
+                $sql = 'select PageCount from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='$PageID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($PageCount) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'page', "PageCount:$PageID", $PageCount);
+            }
+            return redis_do($this->WebID, 'incr', 'page', "PageCount:$PageID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_page') . " set `PageCount`=`PageCount`+1 where `PageID`='{$PageID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_page資料
@@ -496,6 +512,10 @@ class tad_web_page
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_page') . " where PageID='$PageID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['PageCount'] = redis_do($this->WebID, 'get', 'page', "PageCount:$PageID");
+        }
 
         return $data;
     }

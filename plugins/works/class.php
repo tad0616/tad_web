@@ -136,6 +136,10 @@ class tad_web_works
             $main_data[$i]['title'] = $WorkName;
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'WorksID', $WorksID);
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'works', $CateID, 'WorksID', $WorksID);
+            if (_IS_EZCLASS) {
+                $main_data[$i]['WorksCount'] = redis_do($this->WebID, 'get', 'works', "WorksCount:$WorksID");
+            }
+
             $this->WebCate->set_WebID($WebID);
 
             if (false !== $pic) {
@@ -203,7 +207,7 @@ class tad_web_works
         if (!$power) {
             redirect_header("works.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($WorksID);
+        $WorksCount = $data['WorksCount'] = $this->add_counter($WorksID);
 
         $deadline = strtotime($WorksDate);
         $time = time();
@@ -543,8 +547,20 @@ class tad_web_works
     public function add_counter($WorksID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_works') . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $WorksCount = redis_do($this->WebID, 'get', 'works', "WorksCount:$WorksID");
+            if (empty($WorksCount)) {
+                $sql = 'select WorksCount from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='$WorksID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($WorksCount) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'works', "WorksCount:$WorksID", $WorksCount);
+            }
+            return redis_do($this->WebID, 'incr', 'works', "WorksCount:$WorksID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_works') . " set `WorksCount`=`WorksCount`+1 where `WorksID`='{$WorksID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_works資料
@@ -558,6 +574,10 @@ class tad_web_works
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_works') . " where WorksID='$WorksID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['WorksCount'] = redis_do($this->WebID, 'get', 'works', "WorksCount:$WorksID");
+        }
         return $data;
     }
 

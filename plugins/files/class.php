@@ -134,7 +134,6 @@ class tad_web_files
             $main_data[$i]['id'] = $fsn;
             $main_data[$i]['id_name'] = 'fsn';
             $main_data[$i]['title'] = $file_description;
-
             // $main_data[$i]['isAssistant'] = is_assistant($CateID, 'fsn', $fsn);
 
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'files', $CateID, 'fsn', $fsn);

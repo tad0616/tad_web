@@ -122,6 +122,9 @@ class tad_web_discuss
             $main_data[$i]['id'] = $DiscussID;
             $main_data[$i]['id_name'] = 'DiscussID';
             $main_data[$i]['title'] = $DiscussTitle;
+            if (_IS_EZCLASS) {
+                $main_data[$i]['DiscussCounter'] = redis_do($this->WebID, 'get', 'discuss', "DiscussCounter:$DiscussID");
+            }
 
             $this->WebCate->set_WebID($WebID);
 
@@ -190,7 +193,7 @@ class tad_web_discuss
         if (!$power) {
             redirect_header("discuss.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($DiscussID);
+        $DiscussCounter = $data['DiscussCounter'] = $this->add_counter($DiscussID);
 
         if (!empty($uid)) {
             $TadUpFiles->set_col('WebOwner', $WebID, '1');
@@ -620,8 +623,20 @@ class tad_web_discuss
     public function add_counter($DiscussID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_discuss') . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $DiscussCounter = redis_do($this->WebID, 'get', 'discuss', "DiscussCounter:$DiscussID");
+            if (empty($DiscussCounter)) {
+                $sql = 'select DiscussCounter from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='$DiscussID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($DiscussCounter) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'discuss', "DiscussCounter:$DiscussID", $DiscussCounter);
+            }
+            return redis_do($this->WebID, 'incr', 'discuss', "DiscussCounter:$DiscussID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_discuss資料
@@ -635,6 +650,10 @@ class tad_web_discuss
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='$DiscussID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['DiscussCounter'] = redis_do($this->WebID, 'get', 'discuss', "DiscussCounter:$DiscussID");
+        }
         return $data;
     }
 

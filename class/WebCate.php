@@ -362,6 +362,7 @@ class WebCate
         $arr = [];
 
         $andCateEnable = $onlyEnable ? "and `CateEnable`='1'" : '';
+        $cates_power = $this->Power->get_power('read', 'CateID');
 
         $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "` where `WebID` = '{$this->WebID}' and `ColName`='aboutus' $andCateEnable order by CateSort";
         // die($sql);
@@ -370,8 +371,8 @@ class WebCate
             $CateID = $data['CateID'];
             $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
             $arr[$CateID] = $data;
-            // $arr[$CateID]['assistant'] = get_assistant($this->WebID, $CateID, 'aboutus');
-            $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID, $plugin);
+            // $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID, $plugin);
+            $arr[$CateID]['power'] = $cates_power[$CateID];
         }
 
         // 避免「關於我們」的下拉選單重複
@@ -386,7 +387,9 @@ class WebCate
                 $data['counter'] = isset($counter[$CateID]) ? $counter[$CateID] : 0;
                 $arr[$CateID] = $data;
                 // $arr[$CateID]['assistant'] = get_assistant($this->WebID, $CateID, $this->ColName);
-                $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
+                // $arr[$CateID]['power'] = $this->Power->get_power('read', 'CateID', $CateID);
+
+                $arr[$CateID]['power'] = $cates_power[$CateID];
             }
         }
         // Utility::dd($arr);

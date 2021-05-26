@@ -50,7 +50,7 @@ switch ($op) {
         $files_sn = isset($_GET['files_sn']) ? (int) $_GET['files_sn'] : '';
         $TadUpFiles->add_file_counter($files_sn);
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($HomeworkID)) {

@@ -121,6 +121,9 @@ class tad_web_link
             $main_data[$i]['id'] = $LinkID;
             $main_data[$i]['id_name'] = 'LinkID';
             $main_data[$i]['title'] = $LinkTitle;
+            if (_IS_EZCLASS) {
+                $main_data[$i]['LinkCounter'] = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
+            }
 
             $main_data[$i]['isAssistant'] = is_assistant($CateID, 'LinkID', $LinkID);
 
@@ -171,7 +174,7 @@ class tad_web_link
         if (!$power) {
             redirect_header("link.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
-        $this->add_counter($LinkID);
+        $LinkCounter = $data['LinkCounter'] = $this->add_counter($LinkID);
 
         header("location: {$LinkUrl}");
         exit;
@@ -383,8 +386,20 @@ class tad_web_link
     public function add_counter($LinkID = '')
     {
         global $xoopsDB;
-        $sql = 'update low_priority ' . $xoopsDB->prefix('tad_web_link') . " set `LinkCounter`=`LinkCounter`+1 where `LinkID`='{$LinkID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if (_IS_EZCLASS) {
+            $LinkCounter = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
+            if (empty($LinkCounter)) {
+                $sql = 'select LinkCounter from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID'";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($LinkCounter) = $xoopsDB->fetchRow($result);
+                redis_do($this->WebID, 'set', 'link', "LinkCounter:$LinkID", $LinkCounter);
+            }
+            return redis_do($this->WebID, 'incr', 'link', "LinkCounter:$LinkID");
+        } else {
+            $sql = 'update ' . $xoopsDB->prefix('tad_web_link') . " set `LinkCounter`=`LinkCounter`+1 where `LinkID`='{$LinkID}'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     //以流水號取得某筆tad_web_link資料
@@ -398,6 +413,10 @@ class tad_web_link
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_link') . " where LinkID='$LinkID'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
+
+        if (_IS_EZCLASS) {
+            $data['LinkCounter'] = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
+        }
         return $data;
     }
 }

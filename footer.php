@@ -78,6 +78,7 @@ if (!empty($_SESSION['LoginMemID']) or !empty($_SESSION['LoginParentID']) or $xo
 function get_marquee()
 {
     global $xoopsDB, $xoopsTpl;
+    $user_kind = '';
     if (!empty($_SESSION['LoginMemID'])) {
         $user_kind = 'mem';
     } elseif (!empty($_SESSION['LoginParentID'])) {
@@ -86,24 +87,41 @@ function get_marquee()
         $user_kind = 'master';
     }
 
-    $sql = 'select * from `' . $xoopsDB->prefix('tad_web_notice') . "` where `NoticeWho` like '%{$user_kind}%' or `NoticeWho`='' order by NoticeDate desc limit 0,5";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    $data_arr = [];
-    while (false !== ($data = $xoopsDB->fetchArray($result))) {
-        $NoticeID = $data['NoticeID'];
-        $data_arr[$NoticeID] = $data;
-        $data_arr[$NoticeID]['NoticeShortDate'] = mb_substr($data['NoticeDate'], 0, 10);
+    $tad_web_notice_file = XOOPS_VAR_PATH . "/tad_web/tad_web_notice.json";
+    if (file_exists($tad_web_notice_file)) {
+        $data_arr = get_json_file($tad_web_notice_file);
+    } else {
+        $sql = 'select * from `' . $xoopsDB->prefix('tad_web_notice') . "` order by NoticeDate desc limit 0,5";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $data_arr = [];
+        while (false !== ($data = $xoopsDB->fetchArray($result))) {
+            $NoticeID = $data['NoticeID'];
+            $data_arr[$NoticeID] = $data;
+            $data_arr[$NoticeID]['NoticeShortDate'] = mb_substr($data['NoticeDate'], 0, 10);
+        }
+        file_put_contents($tad_web_notice_file, json_encode($data_arr, 256));
     }
-    $xoopsTpl->assign('marquee_arr', $data_arr);
 
-    if ($data_arr) {
+    foreach ($data_arr as $NoticeID => $Notice) {
+        if (!empty($Notice['NoticeWho'])) {
+            if (strpos($Notice['NoticeWho'], $user_kind) !== false) {
+                $marquee_arr[$NoticeID] = $Notice;
+            }
+        } else {
+            $marquee_arr[$NoticeID] = $Notice;
+        }
+    }
+
+    $xoopsTpl->assign('marquee_arr', $marquee_arr);
+
+    if ($marquee_arr) {
         $FancyBox = new FancyBox('.show_notice', '480px', '480px');
         $FancyBox->render(false);
     }
 }
 
 //我的選單
-function tad_web_my_menu($WebID)
+function tad_web_my_menu($defaltWebID)
 {
     global $xoopsDB, $xoopsTpl, $xoopsUser, $MyWebID, $xoopsModuleConfig, $WebTitle, $isAdmin;
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
@@ -118,13 +136,15 @@ function tad_web_my_menu($WebID)
             $back_home = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $add_power = ['discuss'];
             //小幫手
-            $sql = 'select `CateID`,`plugin` from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `AssistantType`='MemID' and `AssistantID`='{$_SESSION['LoginMemID']}'";
-            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
-                $add_power[] = $plugin_dir;
-                $_SESSION['isAssistant'][$plugin_dir] = $CateID;
-                $_SESSION['AssistantType'][$CateID] = 'MemID';
-                $_SESSION['AssistantID'][$CateID] = $_SESSION['LoginMemID'];
+            if (!isset($_SESSION['isAssistant'])) {
+                $sql = 'select `CateID`,`plugin` from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `AssistantType`='MemID' and `AssistantID`='{$_SESSION['LoginMemID']}'";
+                $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
+                    $add_power[] = $plugin_dir;
+                    $_SESSION['isAssistant'][$plugin_dir] = $CateID;
+                    $_SESSION['AssistantType'][$CateID] = 'MemID';
+                    $_SESSION['AssistantID'][$CateID] = $_SESSION['LoginMemID'];
+                }
             }
             // die(var_export($add_power));
         } elseif (!empty($_SESSION['LoginParentID'])) {
@@ -133,13 +153,15 @@ function tad_web_my_menu($WebID)
             $defaltWebID = $_SESSION['LoginWebID'];
             $back_home = empty($WebTitle) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $WebTitle);
             $add_power = ['discuss']; //小幫手
-            $sql = 'select `CateID`,plugin from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `AssistantType`='ParentID' and `AssistantID`='{$_SESSION['LoginParentID']}'";
-            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
-                $add_power[] = $plugin_dir;
-                $_SESSION['isAssistant'][$plugin_dir] = $CateID;
-                $_SESSION['AssistantType'][$CateID] = 'ParentID';
-                $_SESSION['AssistantID'][$CateID] = $_SESSION['LoginParentID'];
+            if (!isset($_SESSION['isAssistant'])) {
+                $sql = 'select `CateID`,plugin from `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` where `AssistantType`='ParentID' and `AssistantID`='{$_SESSION['LoginParentID']}'";
+                $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                while (list($CateID, $plugin_dir) = $xoopsDB->fetchRow($result)) {
+                    $add_power[] = $plugin_dir;
+                    $_SESSION['isAssistant'][$plugin_dir] = $CateID;
+                    $_SESSION['AssistantType'][$CateID] = 'ParentID';
+                    $_SESSION['AssistantID'][$CateID] = $_SESSION['LoginParentID'];
+                }
             }
         } else {
             $user_kind = 'xoops';
@@ -147,40 +169,50 @@ function tad_web_my_menu($WebID)
             $add_power = [];
             $MyWebID = MyWebID('1');
 
-            $DefWebID = Request::getInt('DefWebID');
+            $showDefWebID = Request::getInt('DefWebID');
 
             $uid = $xoopsUser->uid();
-
+            $my_webs_data_file = XOOPS_VAR_PATH . "/tad_web/my_webs_data/$uid.json";
+            clear_my_webs_data();
             $AllMyWebID = implode("','", $MyWebID);
-            $defaltWebID = $WebID;
+
             if ($MyWebID) {
-                $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyWebID}') order by WebSort";
-                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-                //$web_num = $xoopsDB->getRowsNum($result);
-                $i = $defalt_used_size = 0;
+                if (file_exists($my_webs_data_file)) {
+                    $webs = get_json_file($my_webs_data_file);
+                } else {
+                    $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyWebID}') order by WebSort";
+                    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $i = $defalt_used_size = 0;
 
-                while (false !== ($all = $xoopsDB->fetchArray($result))) {
-                    foreach ($all as $k => $v) {
-                        $$k = $v;
+                    while (false !== ($all = $xoopsDB->fetchArray($result))) {
+                        foreach ($all as $k => $v) {
+                            $$k = $v;
+                        }
+
+                        $webs[$WebID]['title'] = $WebTitle;
+                        $webs[$WebID]['WebID'] = $WebID;
+                        $webs[$WebID]['name'] = $WebName;
+                        $webs[$WebID]['used_size'] = $used_size;
+                        $webs[$WebID]['url'] = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
+
+                        $i++;
                     }
-                    if (!empty($DefWebID) and $WebID == $DefWebID) {
-                        $defaltWebID = $WebID;
-                        $defaltWebTitle = $WebTitle;
-                        $defaltWebName = $WebName;
-                        $defalt_used_size = $used_size;
-                    } elseif (empty($defaltWebID)) {
-                        $defaltWebID = $WebID;
-                        $defaltWebTitle = $WebTitle;
-                        $defaltWebName = $WebName;
-                    }
-
-                    $webs[$i]['title'] = $WebTitle;
-                    $webs[$i]['WebID'] = $WebID;
-                    $webs[$i]['name'] = $WebName;
-                    $webs[$i]['url'] = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
-
-                    $i++;
+                    file_put_contents($my_webs_data_file, json_encode($webs, 256));
                 }
+
+                // foreach ($webs as $WebID => $web) {
+                if (!empty($showDefWebID)) {
+                    $defaltWebID = $showDefWebID;
+                }
+                $defaltWebTitle = $webs[$defaltWebID]['title'];
+                $defaltWebName = $webs[$defaltWebID]['name'];
+                $defalt_used_size = (int) $webs[$defaltWebID]['used_size'];
+                // }
+
+                // $defaltWebID = $webs[$defaltWebID]['WebID'];
+                // $defaltWebTitle = $webs[$defaltWebID]['title'];
+                // $defaltWebName = $webs[$defaltWebID]['name'];
+                // $defalt_used_size = (int) $webs[$defaltWebID]['used_size'];
 
                 $web_num = $i;
                 $back_home = empty($defaltWebName) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $defaltWebName);
@@ -193,6 +225,18 @@ function tad_web_my_menu($WebID)
                 $quota = (empty($space_quota) or $space_quota == "default") ? $xoopsModuleConfig['user_space_quota'] : $space_quota;
 
                 $size = size2mb($defalt_used_size);
+                if ($_GET['test'] == 1) {
+                    // Utility::dd($space_quota);
+                    die("
+                    showDefWebID=$showDefWebID<br>
+                    defaltWebID=$defaltWebID<br>
+                    defaltWebTitle=$defaltWebTitle<br>
+                    defaltWebName=$defaltWebName<br>
+                    defalt_used_size=$defalt_used_size<br>
+                    size=$size<br>
+                    quota=$quota<br>
+                    ");
+                }
                 $percentage = round($size / $quota, 2) * 100;
 
                 if ($percentage <= 70) {
@@ -206,6 +250,7 @@ function tad_web_my_menu($WebID)
 
             $xoopsTpl->assign('size', $size);
             $xoopsTpl->assign('quota', $quota);
+            $xoopsTpl->assign('defalt_used_size', $defalt_used_size);
             $xoopsTpl->assign('percentage', $percentage);
             $xoopsTpl->assign('progress_color', $progress_color);
             $xoopsTpl->assign('webs', $webs);
@@ -256,6 +301,7 @@ function tad_web_my_menu($WebID)
         $xoopsTpl->assign('defaltWebID', $defaltWebID);
         $xoopsTpl->assign('menu_plugins', $menu_var);
         $xoopsTpl->assign('add_power', $add_power);
+        $xoopsTpl->assign('defaltWebName', $defaltWebName);
     }
 }
 
@@ -270,12 +316,7 @@ function tad_web_login($WebID, $config = [])
 
     $login_config = get_web_config('login_config', $WebID);
     $login_config = empty($login_config) ? [] : explode(';', $login_config);
-    // die(var_export($login_config));
     $about_setup = get_plugin_setup_values($WebID, 'aboutus');
-    // if ('1' == $_GET['test']) {
-    //     die(var_export($about_setup));
-    // }
-
     $auth_method = get_sys_openid();
     if ($auth_method) {
 
@@ -358,6 +399,8 @@ function get_tad_web_blocks($WebID = null)
 
         $andPlugin = $web_plugin_enable_arr ? "and `plugin` in ('custom','system','share','" . str_replace(',', "','", $web_plugin_enable_arr) . "')" : '';
 
+        $block_read_power = $power->get_power('read', 'BlockID');
+
         //取得區塊位置
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' and `BlockEnable`='1' $andPlugin  order by `BlockPosition`,`BlockSort`";
 
@@ -369,7 +412,7 @@ function get_tad_web_blocks($WebID = null)
             }
 
             //檢查權限（改到樣板去檢查）
-            $all['who_can_read'] = $power->who_can_read('read', 'BlockID', $BlockID);
+            $all['who_can_read'] = $block_read_power[$BlockID];
 
             if ('1' != $Web['WebEnable']) {
                 $all['BlockPosition'] = $BlockPosition = 'side';
