@@ -9,7 +9,7 @@
                 <a href="<{$block_plugin}>.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info btn-sm btn-xs" title="<{$smarty.const._MD_TCW_ADD}>"><i class="fa fa-plus"></i></a>
             <{/if}>
             <{if $plugin_menu_var.$block_plugin.menu=='1'}>
-                <a href="<{$block_plugin}>.php?WebID=<{$WebID}>" class="btn btn-success btn-sm btn-xs" title="<{$smarty.const._MD_TCW_MORE}>"><i class="fa fa-eye"></i></a>
+                <a href="<{$block_plugin}>.php?WebID=<{$WebID}>" class="btn btn-success btn-sm btn-xs" title="<{$smarty.const._MD_TCW_MORE}>"><i class="fa fa-ellipsis-h"></i></a>
             <{else}>
             <{/if}>
         <{/if}>

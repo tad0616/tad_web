@@ -436,11 +436,7 @@ class tad_web_homework
     public function insert()
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
-        if (isset($_SESSION['isAssistant']['homework'])) {
-            $uid = $WebOwnerUid;
-        } else {
-            $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
-        }
+
 
         $myts = \MyTextSanitizer::getInstance();
         $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);
@@ -449,6 +445,7 @@ class tad_web_homework
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
+        $uid = (int) $_POST['uid'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
