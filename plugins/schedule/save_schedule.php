@@ -29,6 +29,6 @@ if ('delete' === $op) {
         $color = '#000000';
         $bg_color = '#FFFFFF';
     }
-    $sql = 'replace into ' . $xoopsDB->prefix('tad_web_schedule_data') . " (`ScheduleID`, `SDWeek`, `SDSort`, `Subject`, `Teacher`, `color`, `bg_color`) values('{$ScheduleID}', '{$SDWeek}', '{$SDSort}', '{$Subject}', '{$Teacher}', '{$color}', '{$bg_color}') ";
+    $sql = 'replace into ' . $xoopsDB->prefix('tad_web_schedule_data') . " (`ScheduleID`, `SDWeek`, `SDSort`, `Subject`, `Teacher`, `Link`, `color`, `bg_color`) values('{$ScheduleID}', '{$SDWeek}', '{$SDSort}', '{$Subject}', '{$Teacher}', '{$Link}', '{$color}', '{$bg_color}') ";
 }
 $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);

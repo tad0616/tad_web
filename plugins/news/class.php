@@ -185,8 +185,9 @@ class tad_web_news
     public function show_one($NewsID = '', $mode = 'assign')
     {
         global $xoopsDB, $WebID, $isAdmin, $xoopsTpl, $TadUpFiles, $isMyWeb;
+
         if (empty($NewsID)) {
-            return;
+            redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $NewsID = (int) $NewsID;
@@ -223,10 +224,6 @@ class tad_web_news
         $prev_next = $this->get_prev_next($NewsID);
 
         $xoopsTpl->assign('prev_next', $prev_next);
-
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
-        }
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {

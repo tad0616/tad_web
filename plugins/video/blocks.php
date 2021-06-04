@@ -14,10 +14,9 @@ function list_video($WebID, $config = [])
     }
     require_once __DIR__ . '/class.php';
 
-    $block = '';
+    $block = [];
     $tad_web_video = new tad_web_video($WebID);
     $block = $tad_web_video->list_all('', $config['limit'], 'return', '', $config['mode']);
-
     return $block;
 }
 

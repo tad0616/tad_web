@@ -168,6 +168,7 @@ class tad_web_video
     public function show_one($VideoID = '')
     {
         global $xoopsDB, $xoopsTpl, $isMyWeb;
+
         if (empty($VideoID)) {
             return;
         }
@@ -192,10 +193,6 @@ class tad_web_video
             $VideoCount = $data['VideoCount'] = $this->add_counter($VideoID);
         } else {
             $this->add_counter($VideoID);
-        }
-
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);

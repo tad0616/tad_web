@@ -189,8 +189,9 @@ class tad_web_works
     public function show_one($WorksID = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
+
         if (empty($WorksID)) {
-            return;
+            redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $WorksID = (int) $WorksID;
@@ -223,10 +224,6 @@ class tad_web_works
 
         if ('mem_after_end' === $WorksKind and $deadline >= $time and !$isMyWeb and ($_SESSION['LoginWebID'] != $WebID or empty($_SESSION['LoginWebID']))) {
             redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, sprintf(_MD_TCW_WORKS_DISPLAY_DATE, $WorksDate));
-        }
-
-        if (empty($WorksID)) {
-            redirect_header("{$_SERVER['PHP_SELF']}?WebID=$WebID", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $TadUpFiles->set_col('WorksID', $WorksID);

@@ -185,9 +185,11 @@ class tad_web_action
     public function show_one($ActionID = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb, $xoopsUser;
+
         if (empty($ActionID)) {
-            return;
+            redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
+
 
         //檢查權限
         $power = $this->Power->check_power('read', 'ActionID', $ActionID);
@@ -217,9 +219,6 @@ class tad_web_action
             $this->add_counter($ActionID);
         }
 
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
-        }
 
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->set_var('other_css', 'margin:6px;');

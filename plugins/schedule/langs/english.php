@@ -17,6 +17,8 @@ define('_MD_TCW_SCHEDULE_MAIN_TEACHER', 'Main class teacher');
 define('_MD_TCW_SCHEDULE_DEMO', 'Demo');
 define('_MD_TCW_SCHEDULE_SUBJECT_TITLE', 'Subject');
 define('_MD_TCW_SCHEDULE_TEACHER_NAME', 'Teacher or Class Room');
+define('_MD_TCW_SCHEDULE_LINK_DESC', 'Online Teaching Website');
+define('_MD_TCW_SCHEDULE_LINK', 'Link');
 define('_MD_TCW_SCHEDULE_COLOR', 'Font Color');
 define('_MD_TCW_SCHEDULE_BGCOLOR', 'Background Color');
 define('_MD_TCW_SCHEDULE_ADD_ITEM', 'Add a new item');

@@ -35,6 +35,7 @@
         <th colspan=2 style="text-align:center;"><{$smarty.const._MD_TCW_SCHEDULE_DEMO}></th>
         <th><{$smarty.const._MD_TCW_SCHEDULE_SUBJECT_TITLE}></th>
         <th><{$smarty.const._MD_TCW_SCHEDULE_TEACHER_NAME}></th>
+        <th><{$smarty.const._MD_TCW_SCHEDULE_LINK}></th>
         <th><{$smarty.const._MD_TCW_SCHEDULE_COLOR}></th>
         <th><{$smarty.const._MD_TCW_SCHEDULE_BGCOLOR}></th>
       </tr>
@@ -49,6 +50,7 @@
             </td>
             <td><input type="text" class="form-control" name="Subject[<{$i}>]" value="<{$subject.Subject}>" onChange="$('#Subject_demo_<{$i}>').html(this.value);"></td>
             <td><input type="text" class="form-control" name="Teacher[<{$i}>]" value="<{$subject.Teacher}>" placeholder="<{$smarty.const._MD_TCW_SCHEDULE_MAIN_TEACHER}>" onChange="$('#Teacher_demo_<{$i}>').html(this.value);"></td>
+            <td><input type="text" class="form-control" name="Link[<{$i}>]" value="<{$subject.Link}>" placeholder="<{$smarty.const._MD_TCW_SCHEDULE_LINK_DESC}>"></td>
             <td><input type="text" class="form-control color" name="color[<{$i}>]" value="<{$subject.color}>" data-text="true" data-hex="true" style="width:90px; display: inline-block;" onChange="change_color('#demo_<{$i}>','color',this.value);"></td>
             <td><input type="text" class="form-control color" name="bg_color[<{$i}>]" value="<{$subject.bg_color}>" data-text="true" data-hex="true" style="width:90px; display: inline-block;" onChange="change_color('#demo_<{$i}>','background-color',this.value);"></td>
           </tr>

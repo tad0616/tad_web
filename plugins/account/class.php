@@ -179,7 +179,7 @@ class tad_web_account
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb, $xoopsUser, $isAdmin, $isMyWeb;
 
         if (empty($AccountID)) {
-            return;
+            redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $AccountID = (int) $AccountID;
@@ -204,9 +204,6 @@ class tad_web_account
             $this->add_counter($AccountID);
         }
 
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
-        }
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
         // $TadUpFiles->set_dir('subdir', $subdir);
         $TadUpFiles->set_col('AccountID', $AccountID);

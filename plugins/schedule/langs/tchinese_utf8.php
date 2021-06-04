@@ -17,6 +17,8 @@ define('_MD_TCW_SCHEDULE_MAIN_TEACHER', '級任老師');
 define('_MD_TCW_SCHEDULE_DEMO', '範例');
 define('_MD_TCW_SCHEDULE_SUBJECT_TITLE', '科目名稱');
 define('_MD_TCW_SCHEDULE_TEACHER_NAME', '教師姓名或教室');
+define('_MD_TCW_SCHEDULE_LINK', '連結');
+define('_MD_TCW_SCHEDULE_LINK_DESC', '線上教學網址');
 define('_MD_TCW_SCHEDULE_COLOR', '文字顏色');
 define('_MD_TCW_SCHEDULE_BGCOLOR', '背景顏色');
 define('_MD_TCW_SCHEDULE_ADD_ITEM', '新增一個項目');

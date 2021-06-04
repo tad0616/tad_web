@@ -140,8 +140,9 @@ class tad_web_schedule
     public function show_one($ScheduleID = '')
     {
         global $xoopsDB, $xoopsTpl, $isMyWeb, $xoopsModuleConfig;
+
         if (empty($ScheduleID)) {
-            return;
+            redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $ScheduleID = (int) $ScheduleID;
@@ -164,10 +165,6 @@ class tad_web_schedule
             $ScheduleCount = $data['ScheduleCount'] = $this->add_counter($ScheduleID);
         } else {
             $this->add_counter($ScheduleID);
-        }
-
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
@@ -276,7 +273,7 @@ class tad_web_schedule
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where ScheduleID='{$ScheduleID}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $SubjectArr = [];
+        $SubjectArr = $LinkArr = [];
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -284,6 +281,7 @@ class tad_web_schedule
             $key = "{$SDWeek}-{$SDSort}";
 
             $SubjectArr[$key] = $Subject;
+            $LinkArr[$key] = $Link;
             $colorArr[$key] = $color;
             $bg_colortArr[$key] = $bg_color;
         }
@@ -295,6 +293,7 @@ class tad_web_schedule
             $new_tag = str_replace('{', '', $tag);
             $new_tag = str_replace('}', '', $new_tag);
             $val = empty($SubjectArr[$new_tag]) ? _MD_TCW_SCHEDULE_BLANK : $SubjectArr[$new_tag];
+            $val = empty($LinkArr[$new_tag]) ? $val : "<a href='{$LinkArr[$new_tag]}' target='_blank'><i class='fa fa-link'></i> $val</a>";
             $dropped = empty($SubjectArr[$new_tag]) ? '' : 'dropped';
             $new_input = '<div id="' . $new_tag . '" class="droppable ' . $dropped . '" style="padding: 8px; margin: 0px; color: ' . $colorArr[$new_tag] . '; background-color: ' . $bg_colortArr[$new_tag] . ';"><div>' . $val . '</div></div>';
 
@@ -483,6 +482,7 @@ class tad_web_schedule
                 $$k = $v;
             }
             $key = "{$SDWeek}-{$SDSort}";
+            $Subject = empty($Link) ? $Subject : "<a href='$Link' target='_blank'><i class='fa fa-link'></i> $Subject</a>";
 
             $SubjectArr[$key] = "<div style='padding:8px; margin:0px; color: {$color}; background-color: {$bg_color};'><div>{$Subject}</div><div style='font-size: 80%;'>{$Teacher}</div></div>";
         }
@@ -555,6 +555,7 @@ class tad_web_schedule
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
             $schedule_subjects_arr[$k]['Subject'] = $_POST['Subject'][$k];
             $schedule_subjects_arr[$k]['Teacher'] = $_POST['Teacher'][$k];
+            $schedule_subjects_arr[$k]['Link'] = $_POST['Link'][$k];
             $schedule_subjects_arr[$k]['color'] = $_POST['color'][$k];
             $schedule_subjects_arr[$k]['bg_color'] = $_POST['bg_color'][$k];
         }
@@ -566,10 +567,11 @@ class tad_web_schedule
             $old_Subject = $myts->addSlashes($old_Subject);
             $Subject = $myts->addSlashes($_POST['Subject'][$k]);
             $Teacher = $myts->addSlashes($_POST['Teacher'][$k]);
+            $Link = $myts->addSlashes($_POST['Link'][$k]);
             $color = $myts->addSlashes($_POST['color'][$k]);
             $bg_color = $myts->addSlashes($_POST['bg_color'][$k]);
 
-            $sql2 = 'update ' . $xoopsDB->prefix('tad_web_schedule_data') . " set `Subject`='{$Subject}', `Teacher`='{$Teacher}', `color`='{$color}', `bg_color`='{$bg_color}' where ScheduleID='{$ScheduleID}' and `Subject`='{$old_Subject}'";
+            $sql2 = 'update ' . $xoopsDB->prefix('tad_web_schedule_data') . " set `Subject`='{$Subject}', `Teacher`='{$Teacher}', `Link`='{$Link}', `color`='{$color}', `bg_color`='{$bg_color}' where ScheduleID='{$ScheduleID}' and `Subject`='{$old_Subject}'";
             $xoopsDB->queryF($sql2) or Utility::web_error($sql2);
         }
         //}

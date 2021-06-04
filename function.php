@@ -1626,6 +1626,7 @@ function get_plugin_setup_values($WebID = '', $plugin = '')
 {
     global $xoopsDB, $xoopsConfig;
 
+    Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web");
     Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/$WebID/");
     Utility::mk_dir(XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/");
     $plugin_setup_values_file = XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/setup_values.json";
