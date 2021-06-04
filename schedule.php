@@ -48,6 +48,7 @@ switch ($op) {
 
     case 'save_subject':
         $tad_web_schedule->save_subject($ScheduleID);
+        clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&op=edit_form&ScheduleID={$ScheduleID}");
         exit;
 

@@ -6,7 +6,7 @@ use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-if (!empty($WebID) and $isMyWeb) {
+if (!empty($WebID) and ($isMyWeb or $isAdmin)) {
     $GLOBALS['xoopsOption']['template_main'] = 'tad_web_plugin_setup.tpl';
 } else {
     redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
@@ -18,12 +18,14 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 //外掛設定功能
 function plugin_setup($WebID, $plugin)
 {
-    global $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser, $xoopsConfig;
+    global $xoopsTpl, $isMyWeb, $MyWebs, $xoopsUser, $xoopsConfig, $isAdmin;
 
-    if (!$isMyWeb and $MyWebs) {
-        redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=setup", 3, _MD_TCW_AUTO_TO_HOME);
-    } elseif (!$xoopsUser or empty($WebID) or empty($MyWebs)) {
-        redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
+    if (!$isAdmin) {
+        if (!$isMyWeb and $MyWebs) {
+            redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=setup", 3, _MD_TCW_AUTO_TO_HOME);
+        } elseif ((!$xoopsUser or empty($WebID) or empty($MyWebs))) {
+            redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
+        }
     }
 
     $myts = \MyTextSanitizer::getInstance();

@@ -200,9 +200,12 @@ class tad_web_homework
     public function show_one($HomeworkID = '')
     {
         global $xoopsDB, $WebID, $isAdmin, $xoopsTpl, $TadUpFiles, $isMyWeb;
+
         if (empty($HomeworkID)) {
-            return;
+            redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
+
+
         $myts = \MyTextSanitizer::getInstance();
         $HomeworkID = (int) $HomeworkID;
 
@@ -243,9 +246,6 @@ class tad_web_homework
         $xoopsTpl->assign('ColsNum', $ColsNum);
         $xoopsTpl->assign('ColWidth', $ColWidth);
 
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
-        }
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
@@ -421,6 +421,7 @@ class tad_web_homework
         $xoopsTpl->assign('next_op', $op);
 
         $TadUpFiles->set_col('HomeworkID', $HomeworkID);
+        $TadUpFiles->set_var("show_tip", false); //不顯示提示
         $upform = $TadUpFiles->upform();
         $xoopsTpl->assign('upform', $upform);
 
@@ -436,7 +437,6 @@ class tad_web_homework
     public function insert()
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
-
 
         $myts = \MyTextSanitizer::getInstance();
         $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);

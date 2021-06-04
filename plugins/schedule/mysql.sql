@@ -17,6 +17,7 @@ CREATE TABLE `tad_web_schedule_data` (
   `SDSort` tinyint(3) unsigned NOT NULL default 0 COMMENT '第幾節',
   `Subject` varchar(255) NOT NULL default '' COMMENT '科目',
   `Teacher` varchar(255) NOT NULL default '' COMMENT '教師',
+  `Link` varchar(1000) NOT NULL default '' COMMENT '連結',
   `color` varchar(255)  NOT NULL default '' COMMENT '文字顏色',
   `bg_color` varchar(255)  NOT NULL default '' COMMENT '背景顏色',
 PRIMARY KEY (`ScheduleID`,`SDWeek`,`SDSort`)

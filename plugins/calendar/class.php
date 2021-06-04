@@ -66,8 +66,9 @@ class tad_web_calendar
     public function show_one($CalendarID = '')
     {
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
+
         if (empty($CalendarID)) {
-            return;
+            redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $CalendarID = (int) $CalendarID;
@@ -85,10 +86,6 @@ class tad_web_calendar
         //以下會產生這些變數： $CalendarID , $CalendarName , $CalendarType , $CalendarDesc , $CalendarDate , $uid , $WebID , $CalendarCount
         foreach ($all as $k => $v) {
             $$k = $v;
-        }
-
-        if (empty($uid)) {
-            redirect_header('index.php', 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
