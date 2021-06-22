@@ -624,6 +624,7 @@ class tad_web_aboutus
             //已繳交的
             $stud_scores = $works->list_all('', null, 'return', null, 'list_mem_upload');
             foreach ($stud_scores['main_data'] as $key => $work) {
+
                 $mem_upload_content = $works->get_mem_upload_content($work['WorksID'], $MemID);
 
                 $mem_upload_date = '';
@@ -634,6 +635,7 @@ class tad_web_aboutus
                 $mem_upload_content['mem_upload_date'] = $mem_upload_date;
                 $stud_scores['main_data'][$key]['mem_upload_content'] = $mem_upload_content;
             }
+            // Utility::dd($stud_scores);
             $xoopsTpl->assign('stud_scores', $stud_scores);
         }
     }
@@ -1474,6 +1476,7 @@ class tad_web_aboutus
                 $mem_upload_content['mem_upload_date'] = $mem_upload_date;
                 $stud_scores['main_data'][$key]['mem_upload_content'] = $mem_upload_content;
             }
+            // Utility::dd($stud_scores);
             $xoopsTpl->assign('stud_scores', $stud_scores);
         }
     }

@@ -52,6 +52,8 @@ function tad_web_menu($options)
                 $i++;
             }
 
+            $defaltWebID = $_SESSION['tad_web_adm'] ? $_GET['WebID'] : $defaltWebID;
+
             $block['web_num'] = $i;
             $block['WebTitle'] = $defaltWebTitle;
             $block['back_home'] = empty($defaltWebName) ? _MB_TCW_HOME : sprintf(_MB_TCW_TO_MY_WEB, $defaltWebName);
@@ -72,7 +74,7 @@ function tad_web_menu($options)
             $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $tad_web_Module->getVar('mid'));
 
             $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config('space_quota', $defaltWebID);
-            // $block['quota'] = $quota;
+
             $block['size'] = size2mb($defalt_used_size);
             $percentage = round($block['size'] / $quota, 2) * 100;
             $block['percentage'] = $percentage;

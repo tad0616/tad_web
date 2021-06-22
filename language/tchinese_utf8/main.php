@@ -157,7 +157,7 @@ define('_MD_TCW_BOTTOM_CENTER_BLOCK', '下中區塊');
 define('_MD_TCW_BOTTOM_LEFT_BLOCK', '下中左區塊');
 define('_MD_TCW_BOTTOM_RIGHT_BLOCK', '下中右區塊');
 define('_MD_TCW_UNINSTALL_BLOCK', '未安裝區塊');
-define('_MD_TCW_NO_SPACE', '您已使用 %s MB的硬碟空間，已達上限 %s MB，無法再新增資料。');
+define('_MD_TCW_NO_SPACE', '您（%s）已使用 %s MB的硬碟空間，已達上限 %s MB，無法再新增資料。');
 define('_MD_TCW_TO_MENU', '回到選單');
 define('_MD_TCW_USE_BLOCK_SITE', '目前有 %s 個網站使用此區塊');
 define('_MD_TCW_SIDE_BG_COLOR', '側邊欄底色');

@@ -72,7 +72,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
         $block_plugin = isset($block['plugin']) ? $block['plugin'] : $plugin;
         $config = isset($block['plugin']) ? json_decode($block['BlockConfig'], true) : '';
 
-        if ('custom' === $block_plugin) {
+        if ('custom' === $block_plugin || 'share' === $block_plugin) {
             $CkEditor = new CkEditor("tad_web/{$WebID}/block", 'BlockContent[html]', $block['BlockContent']);
             $CkEditor->setHeight(250);
             $editor = $CkEditor->render();
@@ -92,9 +92,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
     // }
     $xoopsTpl->assign('block_config_form', $block_config_form);
     $xoopsTpl->assign('editor', $editor);
-    // if ('1' == $_GET['test']) {
-    //     die(var_export($block));
-    // }
+
     $xoopsTpl->assign('block', $block);
     $xoopsTpl->assign('iframeContent', $iframeContent);
     // $xoopsTpl->assign('block_config', $config);
@@ -227,6 +225,7 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
         }
     } else {
         //更新區塊
+
         $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockConfig`='{$new_block_config}' , `BlockTitle`='{$BlockTitle}' , `BlockPosition`='{$BlockPosition}' , `BlockEnable`='{$BlockEnable}' , `BlockContent`='{$BlockContent}'  where `BlockID`='{$BlockID}' and WebID='{$WebID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 

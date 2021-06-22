@@ -163,7 +163,7 @@ define('_MD_TCW_BOTTOM_CENTER_BLOCK', 'Bottom center blocks');
 define('_MD_TCW_BOTTOM_LEFT_BLOCK', 'Bottom left blocks');
 define('_MD_TCW_BOTTOM_RIGHT_BLOCK', 'Bottom right blocks');
 define('_MD_TCW_UNINSTALL_BLOCK', 'Uninstall blocks');
-define('_MD_TCW_NO_SPACE', 'You have used %s MB of hard disk space has reached the upper limit of  %s MB, can not add data.');
+define('_MD_TCW_NO_SPACE', 'You (%s) have used %s MB of hard disk space has reached the upper limit of  %s MB, can not add data.');
 define('_MD_TCW_TO_MENU', 'Menu');
 define('_MD_TCW_USE_BLOCK_SITE', 'Currently there are %s sites use this block');
 define('_MD_TCW_SIDE_BG_COLOR', 'Side background color');

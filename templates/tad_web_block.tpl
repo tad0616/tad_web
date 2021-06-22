@@ -96,7 +96,7 @@
             <hr>
         <{/if}>
 
-        <{if $block.plugin=="custom" or $op=="add_block"}>
+        <{if $block.plugin=="custom" or $block.plugin=="share" or$op=="add_block"}>
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-sm-right control-label ">
                     <{$smarty.const._MD_TCW_BLOCK_CONTENT}>
@@ -229,14 +229,16 @@
                     var new_block_id = ui.item.attr("id");
                     var chang_id=false;
 
-                    $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("title"), order_arr: order}, function(data) {
+                    console.log(ui.item);
+
+                    $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("data-original-title"), order_arr: order}, function(data) {
                         if(!isNaN(data)){
                             // location.reload();
                             var new_block_id =data;
                             var new_block_plugin='custom';
                             var chang_id=true;
                         }else{
-                            var new_block_plugin=ui.item.attr("title");
+                            var new_block_plugin=ui.item.attr("data-original-title");
                             var new_block_id = ui.item.attr("id");
                         }
 
@@ -264,7 +266,7 @@
                     var order = $(this).sortable('toArray', {attribute: 'id'});
                     var block_id = ui.item.attr("id");
 
-                    $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("title"), order_arr: order}, function(data) {
+                    $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("data-original-title"), order_arr: order}, function(data) {
                         $("#msg").html(data);
                     });
                 }
@@ -302,7 +304,7 @@
             <div class="text-danger text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_UNINSTALL_BLOCK}></div>
             <ul id="sort_uninstall" class="connectedSortable">
                 <{foreach from=$uninstall item=block}>
-                    <li id="<{$block.BlockID}>" data-toggle="tooltip" title="<{$block.PluginTitle}> (<{$block.plugin}>)" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
+                    <li id="<{$block.BlockID}>" data-toggle="tooltip" title="<{if $block.BlockShare=="1"}>share<{elseif $block.plugin=="custom"}>custom<{else}><{$block.plugin}><{/if}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
                         <{$block.icon}>
                         <{if $block.BlockTitle}>
                             <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>

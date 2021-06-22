@@ -600,6 +600,7 @@ class tad_web_works
         $andMemID = empty($MemID) ? '' : "and MemID='$MemID'";
 
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_works_content') . " where WebID='{$this->WebID}' and WorksID='$WorksID' {$andMemID}";
+
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         if (empty($MemID)) {
             $i = 0;
