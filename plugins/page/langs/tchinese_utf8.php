@@ -1,6 +1,6 @@
 <?php
 define('_MD_TCW_PAGE', '文章列表');
-define('_MD_TCW_PAGE_ADD', '新增文章');
+define('_MD_TCW_PAGE_ADD', '編輯文章');
 define('_MD_TCW_PAGE_SHORT', '文章');
 define('_MD_TCW_PAGEID', '文章編號');
 define('_MD_TCW_PAGETITLE', '文章標題');

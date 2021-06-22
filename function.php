@@ -26,6 +26,9 @@ if ($xoopsUser) {
     $xoopsModule = $moduleHandler->getByDirname('tad_web');
     $module_id = $xoopsModule->getVar('mid');
     $isAdmin = $xoopsUser->isAdmin($module_id);
+    if (!isset($_SESSION['tad_web_adm'])) {
+        $_SESSION['tad_web_adm'] = $xoopsUser->isAdmin($module_id);
+    }
     //我的班級ID（陣列）
     $MyWebs = MyWebID('all');
 
@@ -217,17 +220,22 @@ function get_position_blocks($WebID, $BlockPosition, $plugin = '')
             $share_blocks_id = get_share_blocks($WebID);
             $all_share_blocks = is_array($share_blocks_id) ? implode("','", $share_blocks_id) : '';
             $andShareBlocks = empty($all_share_blocks) ? '' : "and a.`BlockID` not in('{$all_share_blocks}')";
-            $andBlockPosition = "(a.`WebID`='{$WebID}' and (a.`BlockPosition`='uninstall' or a.`BlockPosition`='') and a.`plugin`!='share' ) or (a.`plugin`='share' and a.`WebID`!='{$WebID}' {$andShareBlocks})";
+            // $andBlockPosition = "(a.`WebID`='{$WebID}' and (a.`BlockPosition`='uninstall' or a.`BlockPosition`='') and a.`plugin`!='share' ) or (a.`plugin`='share' and a.`WebID`!='{$WebID}' {$andShareBlocks})";
+            $andBlockPosition = "(a.`WebID`='{$WebID}' and (a.`BlockPosition`='uninstall' or a.`BlockPosition`='')) or (a.`plugin`='share' and a.`WebID`!='{$WebID}' {$andShareBlocks})";
         } else {
             $andBlockPosition = "(a.`WebID`='{$WebID}' and (a.`BlockPosition`='uninstall' or a.`BlockPosition`='') and a.`plugin`='{$plugin}' )";
         }
     } else {
-        $andBlockPosition = empty($plugin) ? "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}' and a.`plugin`!='share'" : "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}' and a.`plugin`='{$plugin}'";
+        // $andBlockPosition = empty($plugin) ? "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}' and a.`plugin`!='share'" : "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}' and a.`plugin`='{$plugin}'";
+        $andBlockPosition = empty($plugin) ? "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}'" : "a.`WebID`='{$WebID}' and a.`BlockPosition`='{$BlockPosition}' and a.`plugin`='{$plugin}'";
     }
 
     $sql = 'select a.*, b.`PluginTitle` from ' . $xoopsDB->prefix('tad_web_blocks') . " as a
     left join " . $xoopsDB->prefix('tad_web_plugins') . " as b on a.`plugin` = b.`PluginDirname` and a.`WebID` = b.`WebID`
     where  $andBlockPosition order by a.`BlockSort`";
+    // if ($_GET['test'] == 1) {
+    //     die($sql);
+    // }
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $Blocks = [];
     $i = 0;
@@ -791,6 +799,15 @@ function get_tad_web($WebID = '', $enable = false)
     }
 
     return $data;
+}
+
+function get_web_uid($WebID)
+{
+    global $xoopsDB;
+    $sql = 'select WebOwnerUid from ' . $xoopsDB->prefix('tad_web') . " where WebID='$WebID'";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    list($WebOwnerUid) = $xoopsDB->fetchRow($result);
+    return $WebOwnerUid;
 }
 
 //取得網站資訊
@@ -1566,15 +1583,17 @@ function get_quota($WebID = '')
 {
     global $xoopsModuleConfig, $Web;
     $Web = get_tad_web($WebID);
-    $defalt_used_size = round($Web['used_size'] / (1024 * 1024), 2);
+
+    $defalt_used_size = round((int) $Web['used_size'] / 1048576, 2);
+
     $user_default_quota = empty($xoopsModuleConfig['user_space_quota']) ? 500 : (int) $xoopsModuleConfig['user_space_quota'];
 
     $space_quota = get_web_config('space_quota', $WebID, 'db');
-    // var_dump($space_quota));
+
     $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int) $space_quota;
 
     if ($defalt_used_size >= $user_space_quota) {
-        redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $defalt_used_size, $user_space_quota));
+        redirect_header("index.php?WebID={$WebID}", 3, sprintf(_MD_TCW_NO_SPACE, $WebID, $defalt_used_size, $user_space_quota));
         exit;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-use Xmf\Request;
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\FooTable;
 use XoopsModules\Tadtools\Utility;
@@ -172,12 +171,17 @@ function tad_web_my_menu($defaltWebID)
             $add_power = [];
             $MyWebID = MyWebID('1');
 
-            $showDefWebID = Request::getInt('DefWebID');
-
-            $uid = $xoopsUser->uid();
+            // $showDefWebID = Request::getInt('DefWebID');
+            $showDefWebID = $defaltWebID;
+            $uid = $_SESSION['tad_web_adm'] ? get_web_uid($showDefWebID) : $xoopsUser->uid();
+            // if ($_GET['test'] == 1) {
+            //     Utility::dd($uid);
+            // }
             $my_webs_data_file = XOOPS_VAR_PATH . "/tad_web/my_webs_data/$uid.json";
             clear_my_webs_data();
             $AllMyWebID = implode("','", $MyWebID);
+
+            $MyWebID = $_SESSION['tad_web_adm'] ? $_GET['WebID'] : $defaltWebID;
 
             if ($MyWebID) {
                 if (file_exists($my_webs_data_file)) {
@@ -207,6 +211,9 @@ function tad_web_my_menu($defaltWebID)
                 if (!empty($showDefWebID)) {
                     $defaltWebID = $showDefWebID;
                 }
+
+                $defaltWebID = $_SESSION['tad_web_adm'] ? $_GET['WebID'] : $defaltWebID;
+
                 $defaltWebTitle = $webs[$defaltWebID]['title'];
                 $defaltWebName = $webs[$defaltWebID]['name'];
                 $defalt_used_size = (int) $webs[$defaltWebID]['used_size'];
@@ -228,18 +235,18 @@ function tad_web_my_menu($defaltWebID)
                 $quota = (empty($space_quota) or $space_quota == "default") ? $xoopsModuleConfig['user_space_quota'] : $space_quota;
 
                 $size = size2mb($defalt_used_size);
-                if ($_GET['test'] == 1) {
-                    // Utility::dd($space_quota);
-                    die("
-                    showDefWebID=$showDefWebID<br>
-                    defaltWebID=$defaltWebID<br>
-                    defaltWebTitle=$defaltWebTitle<br>
-                    defaltWebName=$defaltWebName<br>
-                    defalt_used_size=$defalt_used_size<br>
-                    size=$size<br>
-                    quota=$quota<br>
-                    ");
-                }
+                // if ($_GET['test'] == 1) {
+                //     // Utility::dd($space_quota);
+                //     die("
+                //     showDefWebID=$showDefWebID<br>
+                //     defaltWebID=$defaltWebID<br>
+                //     defaltWebTitle=$defaltWebTitle<br>
+                //     defaltWebName=$defaltWebName<br>
+                //     defalt_used_size=$defalt_used_size<br>
+                //     size=$size<br>
+                //     quota=$quota<br>
+                //     ");
+                // }
                 $percentage = round($size / $quota, 2) * 100;
 
                 if ($percentage <= 70) {
@@ -393,6 +400,9 @@ function get_tad_web_blocks($WebID = null)
     $block['block1'] = $block['block2'] = $block['block3'] = $block['block4'] = $block['block5'] = $block['block6'] = $block['side'] = [];
 
     $web_blocks_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_blocks.json";
+    // if ($_GET['test'] == 1) {
+    //     unlink($web_blocks_file);
+    // }
     if (!file_exists($web_blocks_file)) {
         $block_tpl = get_all_blocks('tpl');
         $dir = XOOPS_ROOT_PATH . '/modules/tad_web/plugins/';
@@ -406,6 +416,9 @@ function get_tad_web_blocks($WebID = null)
 
         //取得區塊位置
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' and `BlockEnable`='1' $andPlugin  order by `BlockPosition`,`BlockSort`";
+        // if ($_GET['test'] == 1) {
+        //     die($sql);
+        // }
 
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -416,6 +429,9 @@ function get_tad_web_blocks($WebID = null)
 
             //檢查權限（改到樣板去檢查）
             $all['who_can_read'] = $block_read_power[$BlockID];
+            // if ($BlockName == 'share_212_8315') {
+            //     Utility::dd($block_read_power);
+            // }
 
             if ('1' != $Web['WebEnable']) {
                 $all['BlockPosition'] = $BlockPosition = 'side';
@@ -445,7 +461,9 @@ function get_tad_web_blocks($WebID = null)
             }
             $block[$BlockPosition][$BlockSort] = $blocks_arr;
         }
-
+        // if ($_GET['test'] == 1) {
+        //     Utility::dd($block);
+        // }
         file_put_contents($web_blocks_file, json_encode($block, 256));
     } else {
         $block = json_decode(file_get_contents($web_blocks_file), true);

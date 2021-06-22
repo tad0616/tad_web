@@ -200,7 +200,6 @@ class Power
         if ('users' === $power and !$xoopsUser and empty($LoginWebID)) {
             return false;
         } elseif ('web_users' === $power and $LoginWebID != $this->WebID and !$isMyWeb) {
-            // die("非本站使用者" . $LoginWebID . "!=" . $this->WebID);
             return false;
         } elseif ('web_admin' === $power and !$isMyWeb) {
             return false;

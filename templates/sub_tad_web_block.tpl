@@ -4,7 +4,7 @@
         <{if $block.plugin=="xoops"}>
             <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
             <{block id=$block.BlockName}>
-        <{elseif $block.plugin=="custom"}>
+        <{elseif $block.plugin=="custom" || $block.plugin=="share"}>
             <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_custom.tpl"}>
         <{else}>
             <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
