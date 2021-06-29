@@ -29,7 +29,7 @@ function chang_title(){
             </label>
             <div class="col-md-3">
                 <select name="HomeworkPostDate" id="HomeworkPostDate" class="form-control">
-                    <option value="<{$HomeworkPostDate}>"><{$smarty.const._MD_TCW_HOMEWORK_POST_NOW}></option>
+                    <option value="0"><{$smarty.const._MD_TCW_HOMEWORK_POST_NOW}></option>
                     <option value="8" <{if $HomeworkPostDate==8}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_8}></option>
                     <option value="12" <{if $HomeworkPostDate==12}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_12}></option>
                     <option value="16" <{if $HomeworkPostDate==16}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_16}></option>

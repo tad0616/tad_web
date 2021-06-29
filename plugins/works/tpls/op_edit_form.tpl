@@ -95,15 +95,16 @@
         <{$tags_form}>
 
         <!--上傳學生作品-->
-        <div class="form-group row" id="works_uploader" <{if $WorksKind!=""}>style="display:none;"<{/if}>>
-            <label class="col-md-2 col-form-label text-sm-right control-label">
-                <{$smarty.const._MD_TCW_WORKS_ADD}>
-            </label>
-            <div class="col-md-10">
-                <{$upform}>
+        <{if $WorksKind==""}>
+            <div class="form-group row" id="works_uploader">
+                <label class="col-md-2 col-form-label text-sm-right control-label">
+                    <{$smarty.const._MD_TCW_WORKS_ADD}>
+                </label>
+                <div class="col-md-10">
+                    <{$upform}>
+                </div>
             </div>
-        </div>
-
+        <{/if}>
         <div class="text-center">
             <!--作品編號-->
             <input type="hidden" name="WorksID" value="<{$WorksID}>">
