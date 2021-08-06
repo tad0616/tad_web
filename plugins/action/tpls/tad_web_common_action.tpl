@@ -5,9 +5,9 @@
         <h3><a href="<{$xoops_url}>/modules/tad_web/action.php"><{$action.PluginTitle}></a></h3>
     <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
-    <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$action.PluginTitle}></h2>
+    <h2><a href="<{$xoops_url}>/modules/tad_web/">&#xf015;</a> <{$action.PluginTitle}></h2>
 <{elseif $web_display_mode=='home_plugin'}>
-    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$action.PluginTitle}></h2>
+    <h2><a href="index.php?WebID=<{$WebID}>">&#xf015;</a> <{$action.PluginTitle}></h2>
 <{/if}>
 
 <{if $action_data}>
@@ -16,7 +16,7 @@
             <div style="width: 156px; height: 260px; float:left; margin: 5px 2px; overflow: hidden;">
                 <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
                     <div style="width: 150px; height: 160px; background-color: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> ; border:1px dotted green; margin: 0px auto;">
-                        <div style="width: 140px; height: 140px; background: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> url('<{$act.ActionPic}>') center center no-repeat; border:8px solid <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}>; margin: 0px auto;background-size:cover;">
+                        <div style="width: 140px; height: 140px; background: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> url('<{$act.ActionPic}>') center center no-repeat; border:8px solid <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}>; margin: 0px auto;background-size:cover;"><span class="sr-only"><{$act.ActionID}></span>
                         </div>
                     </div>
                 </a>

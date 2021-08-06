@@ -6,6 +6,7 @@ use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tad_web/css/module.css');
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops.css');
 
 $xoopsTpl->assign('op', $op);
 $xoopsTpl->assign('WebTitle', $WebTitle);
@@ -175,10 +176,12 @@ function tad_web_my_menu($defaltWebID)
             $showDefWebID = $defaltWebID;
             $uid = $_SESSION['tad_web_adm'] ? get_web_uid($showDefWebID) : $xoopsUser->uid();
             // if ($_GET['test'] == 1) {
-            //     Utility::dd($uid);
+            //     Utility::dd($_SESSION['tad_web_adm']);
             // }
             $my_webs_data_file = XOOPS_VAR_PATH . "/tad_web/my_webs_data/$uid.json";
-            clear_my_webs_data();
+            // if ($_GET['test'] == 1) {
+            //     die($my_webs_data_file);
+            // }
             $AllMyWebID = implode("','", $MyWebID);
 
             $MyWebID = $_SESSION['tad_web_adm'] ? $_GET['WebID'] : $defaltWebID;
@@ -224,7 +227,6 @@ function tad_web_my_menu($defaltWebID)
                 // $defaltWebName = $webs[$defaltWebID]['name'];
                 // $defalt_used_size = (int) $webs[$defaltWebID]['used_size'];
 
-                $web_num = $i;
                 $back_home = empty($defaltWebName) ? _MD_TCW_HOME : sprintf(_MD_TCW_TO_MY_WEB, $defaltWebName);
 
                 if (!defined('_SHOW_UNABLE')) {
@@ -257,14 +259,15 @@ function tad_web_my_menu($defaltWebID)
                     $progress_color = 'danger';
                 }
             }
-
+            // if ($_GET['test'] == 1) {
+            //     Utility::dd($webs);
+            // }
             $xoopsTpl->assign('size', $size);
             $xoopsTpl->assign('quota', $quota);
             $xoopsTpl->assign('defalt_used_size', $defalt_used_size);
             $xoopsTpl->assign('percentage', $percentage);
             $xoopsTpl->assign('progress_color', $progress_color);
             $xoopsTpl->assign('webs', $webs);
-            $xoopsTpl->assign('web_num', $web_num);
 
             if (isset($_SESSION['isAssistant'])) {
                 $xoopsTpl->assign('isAssistant', $_SESSION['isAssistant']);

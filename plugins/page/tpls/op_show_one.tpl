@@ -24,8 +24,8 @@
 <{$files}>
 
 <div class="row" id="page_tool">
-    <div class="col-md-6 text-left"><a href="page.php?WebID=<{$WebID}>&PageID=<{$prev_next.prev.PageID}>" class="btn btn-secondary btn-block"><i class="fa fa-chevron-left"></i> <{$prev_next.prev.PageTitle}></a></div>
-    <div class="col-md-6 text-right"><a href="page.php?WebID=<{$WebID}>&PageID=<{$prev_next.next.PageID}>" class="btn btn-secondary btn-block"><{$prev_next.next.PageTitle}> <i class="fa fa-chevron-right"></i></a></div>
+    <div class="col-md-6 text-left"><a href="page.php?WebID=<{$WebID}>&PageID=<{$prev_next.prev.PageID}>" class="btn btn-secondary btn-block">&#xf053; <{$prev_next.prev.PageTitle}></a></div>
+    <div class="col-md-6 text-right"><a href="page.php?WebID=<{$WebID}>&PageID=<{$prev_next.next.PageID}>" class="btn btn-secondary btn-block"><{$prev_next.next.PageTitle}> &#xf054;</a></div>
 </div>
 
 <{$fb_comments}>

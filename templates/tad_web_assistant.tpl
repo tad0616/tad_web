@@ -41,14 +41,14 @@
         <table class="table">
             <tr>
                 <td>
-                    <select name="MemID" class="form-control" id="MemID">
+                    <select name="MemID" class="form-control" id="MemID" title="Mem ID">
                         <{foreach from=$AllMems item=mem}>
                             <option value="<{$mem.MemID}>">(<{$mem.MemNum}>) <{$mem.MemName}></option>
                         <{/foreach}>
                     </select>
                 </td>
                 <td>
-                    <select name="plugin" class="form-control" id="plugin">
+                    <select name="plugin" class="form-control" id="plugin" title="plugin">
                         <option value=""><{$smarty.const._MD_TCW_CATE_PLUGIN_TITLE}></option>
                         <{foreach from=$plugin_menu_var key=plugin_name item=plugin_data}>
                             <{if $plugin_data.assistant=="1"}>
@@ -58,7 +58,7 @@
                     </select>
                 </td>
                 <td>
-                    <select name="CateID" class="form-control" id="CateID" style="display:none;">
+                    <select name="CateID" class="form-control" id="CateID" title="Cate ID" style="display:none;">
                     </select>
                 </td>
                 <td>

@@ -160,7 +160,7 @@
                         <{$smarty.const._MD_TCW_MEM_UNAME}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemUname" value="<{$MemUname}>" id="MemUname" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNAME}>">
+                        <input type="text" name="MemUname" value="<{$MemUname}>" title="<{$smarty.const._MD_TCW_MEM_UNAME}>" id="MemUname" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNAME}>">
                     </div>
                 </div>
 
@@ -170,7 +170,7 @@
                         <{$smarty.const._MD_TCW_MEM_PASSWD}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemPasswd" value="<{$MemPasswd}>" id="MemPasswd" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_PASSWD}>">
+                        <input type="text" name="MemPasswd" value="<{$MemPasswd}>" title="<{$smarty.const._MD_TCW_MEM_PASSWD}>" id="MemPasswd" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_PASSWD}>">
                     </div>
                 </div>
             </div>
