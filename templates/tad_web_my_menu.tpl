@@ -55,9 +55,12 @@
 
     <div style="margin-left:10px;">
         <h3><{$say_hi}></h3>
+        <{if $smarty.session.tad_web_adm}>
+        <div style="font-size: 0.7rem; color:rgb(180, 76, 76)">（因為您是管理員，所以底下為「<{$defaltWebName}>」的選單）</div>
+        <{/if}>
         <div style="margin:10px 0px;">
             <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$defaltWebID}>">
-                <i class="fa fa-home"></i>
+                &#xf015;
                 <{$back_home}>
             </a>
         </div>
@@ -161,8 +164,8 @@
             </script>
 
             <{if $defaltWebID}>
-                <{if $web_num > 1}>
-                    <select class="form-control" onChange="location.href=this.value">
+                <{if $webs}>
+                    <select class="form-control" title="Select Web" onChange="location.href=this.value">
                         <{foreach from=$webs item=web}>
                             <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
                         <{/foreach}>

@@ -60,7 +60,7 @@
                     <{$smarty.const._MB_TCW_MEM_UNAME}>
                 </label>
                 <div class="col-md-8 controls">
-                    <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_UNAME}>">
+                    <input class="form-control" type="text" name="MemUname" title="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_UNAME}>" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_UNAME}>">
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
                     <{$smarty.const._MB_TCW_MEM_PASSWD}>
                 </label>
                 <div class="col-md-8 controls">
-                    <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_PASSWD}>">
+                    <input class="form-control" type="password" name="MemPasswd" title="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_PASSWD}>" placeholder="<{$smarty.const._MB_TCW_PLEASE_INPUT}><{$smarty.const._MB_TCW_MEM_PASSWD}>">
                 </div>
             </div>
 
@@ -131,7 +131,7 @@
     <{if $block.defaltWebID}>
 
         <{if $block.web_num > 1}>
-            <select class="form-control" onChange="location.href=this.value">
+            <select class="form-control" onChange="location.href=this.value" title="Select Web">
                 <{foreach from=$block.webs item=web}>
                 <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
                 <{/foreach}>
@@ -140,7 +140,7 @@
 
         <div style="margin:10px 0px;">
             <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$block.defaltWebID}>">
-                <i class="fa fa-home"></i>
+                &#xf015;
                 <{$block.back_home}>
             </a>
         </div>

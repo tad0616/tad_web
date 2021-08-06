@@ -34,8 +34,8 @@
 <{$NewsFiles}>
 
 <div class="row" id="News_tool">
-    <div class="col-md-6 text-left"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.prev.NewsID}>" class="btn btn-secondary btn-block"><i class="fa fa-chevron-left"></i> <{$prev_next.prev.NewsTitle}></a></div>
-    <div class="col-md-6 text-right"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.next.NewsID}>" class="btn btn-secondary btn-block"><{$prev_next.next.NewsTitle}> <i class="fa fa-chevron-right"></i></a></div>
+    <div class="col-md-6 text-left"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.prev.NewsID}>" class="btn btn-secondary btn-block">&#xf053; <{$prev_next.prev.NewsTitle}></a></div>
+    <div class="col-md-6 text-right"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.next.NewsID}>" class="btn btn-secondary btn-block"><{$prev_next.next.NewsTitle}> &#xf054;</a></div>
 </div>
 
 <{$fb_comments}>

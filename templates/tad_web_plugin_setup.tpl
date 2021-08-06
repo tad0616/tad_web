@@ -31,7 +31,7 @@
                         <{if $setup.type=="text"}>
                             <input type="text" name="<{$setup.name}>" value="<{$setup.value}>" class="form-control">
                         <{elseif $setup.type=="select"}>
-                            <select name="<{$setup.name}>" id="<{$setup.name}>" class="form-control">
+                            <select name="<{$setup.name}>" id="<{$setup.name}>" class="form-control" title="Select">
                                 <{foreach from=$setup.options key=title item=value}>
                                 <option value="<{$value}>" <{if $setup.value==$value}>selected<{/if}>><{$title}> <{$value}></option>
                                 <{/foreach}>

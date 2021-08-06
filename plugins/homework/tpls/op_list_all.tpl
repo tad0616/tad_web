@@ -15,7 +15,7 @@
 <{if $homework_data}>
     <{includeq file="$xoops_rootpath/modules/tad_web/plugins/homework/tpls/tad_web_common_homework.tpl"}>
 <{else}>
-    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h2>
+    <h2><a href="index.php?WebID=<{$WebID}>">&#xf015;</a> <{$homework.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
 <{/if}>
 

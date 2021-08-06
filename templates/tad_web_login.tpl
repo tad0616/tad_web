@@ -71,7 +71,7 @@
             </script>
 
             <div class="my-border">
-                <select id="login_method" class="form-control" style="margin-bottom: 10px;">
+                <select id="login_method" class="form-control" style="margin-bottom: 10px;" title="search">
                     <{if $openid=='1'}>
                     <option value="openid_login"><{$smarty.const._MD_TCW_LOGIN_BY_OPENID}></option>
                     <{/if}>
@@ -119,7 +119,7 @@
                             <{$student_title}><{$smarty.const._MD_TCW_ID}>
                         </label>
                         <div class="col-md-8 controls">
-                            <input class="form-control" type="text" name="MemUname" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>">
+                            <input class="form-control" type="text" name="MemUname" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -127,7 +127,7 @@
                             <{$student_title}><{$smarty.const._MD_TCW_PASSWD}>
                         </label>
                         <div class="col-md-8 controls">
-                            <input class="form-control" type="password" name="MemPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_PASSWD}>">
+                            <input class="form-control" type="password" name="MemPasswd" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_PASSWD}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_PASSWD}>">
                         </div>
                     </div>
 
@@ -154,7 +154,7 @@
                         <label class="sr-only">
                         </label>
                         <div class="col-md-12 controls">
-                            <select name='MemID' id='select_mems' class='form-control' style="display:none;"></select>
+                            <select name='MemID' id='select_mems' title='select mems' class='form-control' style="display:none;"></select>
                         </div>
                     </div>
 
@@ -164,7 +164,7 @@
                                 <{$smarty.const._MD_TCW_PASSWD}>
                             </label>
                             <div class="col-md-9 controls">
-                                <input class="form-control" type="password" name="ParentPasswd" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_PASSWD}>">
+                                <input class="form-control" type="password" name="ParentPasswd" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_PASSWD}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$smarty.const._MD_TCW_PASSWD}>">
                             </div>
                         </div>
 

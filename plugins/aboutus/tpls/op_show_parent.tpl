@@ -42,7 +42,7 @@
                     <{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD}>
                 </label>
                 <div class="col-md-8">
-                    <input type="text" name="ParentPasswd"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC}>">
+                    <input type="text" name="ParentPasswd"  class="form-control" title="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC}>" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC}>">
                 </div>
             </div>
 

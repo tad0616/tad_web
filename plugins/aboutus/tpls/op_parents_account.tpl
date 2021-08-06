@@ -61,7 +61,7 @@
                 <{$smarty.const._MD_TCW_ABOUTUS_PARENT_PASSWD}>
             </label>
             <div class="col-md-9">
-                <input type="text" name="ParentPasswd" id="ParentPasswd" class="validate[required] form-control">
+                <input type="text" name="ParentPasswd" id="ParentPasswd" title="<{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD_DESC}>"  class="validate[required] form-control">
             </div>
         </div>
 

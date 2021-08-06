@@ -1,3 +1,11 @@
+Tad Web 1.9.0 (released on 2021-08-31)
+================================================
+1. Add block caching mechanism
+2. Fix the problem of not getting the default value when editing the website in the background.
+3. Fix the situation that the contact book cannot be read under certain circumstances.
+4. Add subject linking function to homework table, which can be linked to online courses.
+5. Comply with the new version of 2021/07 AA accessibility standard
+
 Tad Web 1.8.9 (released on 2021-05-05)
 ================================================
 1. Block is linked with function, function is closed, block is closed with it

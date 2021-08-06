@@ -12,7 +12,6 @@ function tad_web_menu($options)
     global $xoopsUser, $xoopsDB, $MyWebs, $xoopsConfig;
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
     $MyWebID = MyWebID(1);
-
     $DefWebID = Request::getInt('WebID');
 
     $block['DefWebID'] = $DefWebID;
@@ -23,7 +22,6 @@ function tad_web_menu($options)
         $AllMyWebID = implode("','", $MyWebID);
         if ($MyWebID) {
             $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyWebID}') order by WebSort";
-            //die($sql);
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             //$web_num = $xoopsDB->getRowsNum($result);
             $i = $defalt_used_size = 0;
@@ -51,8 +49,7 @@ function tad_web_menu($options)
 
                 $i++;
             }
-
-            $defaltWebID = $_SESSION['tad_web_adm'] ? $_GET['WebID'] : $defaltWebID;
+            $defaltWebID = ($_SESSION['tad_web_adm'] and !empty($_GET['WebID'])) ? $_GET['WebID'] : $defaltWebID;
 
             $block['web_num'] = $i;
             $block['WebTitle'] = $defaltWebTitle;
@@ -68,17 +65,22 @@ function tad_web_menu($options)
                 $block['plugins'] = $menu_var;
             }
 
+            // if ($_GET['test'] == '1') {
+            //     Utility::dd($block);
+            // }
             $moduleHandler = xoops_getHandler('module');
             $tad_web_Module = $moduleHandler->getByDirname('tad_web');
             $configHandler = xoops_getHandler('config');
-            $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $tad_web_Module->getVar('mid'));
+            $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $tad_web_Module->mid());
 
             $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : get_web_config('space_quota', $defaltWebID);
 
             $block['size'] = size2mb($defalt_used_size);
-            $percentage = round($block['size'] / $quota, 2) * 100;
+            $size = $quota > 0 ? (int) $block['size'] / (int) $quota : 0;
+            $percentage = round($size, 2) * 100;
             $block['percentage'] = $percentage;
             $block['quota'] = $quota;
+
             if ($percentage <= 70) {
                 $block['progress_color'] = 'success';
             } elseif ($percentage <= 90) {
@@ -87,6 +89,7 @@ function tad_web_menu($options)
                 $block['progress_color'] = 'danger';
             }
         }
+
         //已關閉網站
         $MyClosedWebID = MyWebID('0');
         $AllMyClosedWebID = implode("','", $MyClosedWebID);
@@ -109,6 +112,9 @@ function tad_web_menu($options)
             }
         }
 
+        // if ($_GET['test'] == '1') {
+        //     Utility::dd($block);
+        // }
         return $block;
     } elseif (!empty($_SESSION['LoginMemID'])) {
         $block['op'] = 'mem';
@@ -118,6 +124,9 @@ function tad_web_menu($options)
         $block['LoginWebID'] = $_SESSION['LoginWebID'];
         $block['say_hi'] = sprintf(_MD_TCW_HI, $_SESSION['LoginMemName']);
 
+        return $block;
+    } else {
+        $block['op'] = 'login';
         return $block;
     }
 
@@ -165,8 +174,6 @@ function tad_web_menu($options)
         //die(var_export($tlogin));
         $block['tlogin'] = $tlogin;
     }
-
-    $block['op'] = 'login';
 
     return $block;
 }
