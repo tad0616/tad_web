@@ -2,8 +2,9 @@
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
 
-define('TADTOOLS_PATH', XOOPS_ROOT_PATH . '/modules/tadtools');
-define('TADTOOLS_URL', XOOPS_URL . '/modules/tadtools');
+define('_EZCLASS', 'https://class.tn.edu.tw');
+$is_ezclass = (XOOPS_URL == _EZCLASS) ? true : false;
+define('_IS_EZCLASS', $is_ezclass);
 
 require_once XOOPS_ROOT_PATH . '/modules/tadtools/TadUpFiles.php';
 $TadUpFiles = new TadUpFiles('tad_web');
@@ -1789,15 +1790,17 @@ function update_last_accessed($WebID = '')
 
 function redis_do($WebID, $act = 'set', $plugin = '', $key = '', $value = '')
 {
-    $redis = new Redis();
-    $redis->connect('120.115.2.85', 6379);
-    $KEY = !empty($plugin) ? "$WebID:$plugin:$key" : "$WebID:$key";
-    if ($act == 'set') {
-        return $redis->set($KEY, $value);
-    } elseif ($act == 'incr') {
-        return $redis->incr($KEY);
-    } else {
-        return $redis->get($KEY);
+    if (class_exists('Redis')) {
+        $redis = new Redis();
+        $redis->connect('120.115.2.85', 6379);
+        $KEY = !empty($plugin) ? "$WebID:$plugin:$key" : "$WebID:$key";
+        if ($act == 'set') {
+            return $redis->set($KEY, $value);
+        } elseif ($act == 'incr') {
+            return $redis->incr($KEY);
+        } else {
+            return $redis->get($KEY);
+        }
     }
 }
 
