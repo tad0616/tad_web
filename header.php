@@ -9,10 +9,6 @@ $WebID = Request::getInt('WebID');
 
 require_once __DIR__ . '/function.php';
 
-define('_EZCLASS', 'https://class.tn.edu.tw');
-$is_ezclass = (XOOPS_URL == _EZCLASS) ? true : false;
-define('_IS_EZCLASS', $is_ezclass);
-
 //目前觀看的班級
 $WebName = $WebTitle = $WebOwner = $WebOwnerUid = '';
 $Web = $menu_var = $plugin_menu_var = $web_all_config = [];

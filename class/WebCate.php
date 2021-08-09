@@ -434,6 +434,7 @@ class WebCate
         where `CateID` = '{$CateID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
+
     //刪除tad_web_cate某筆資料資料
     public function delete_tad_web_cate_data($CateID = '')
     {
@@ -450,6 +451,7 @@ class WebCate
         where `CateID` = '{$CateID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
+
     //取得各分類下的檔案數
     public function tad_web_cate_data_counter()
     {
