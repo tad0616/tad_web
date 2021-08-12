@@ -92,7 +92,7 @@
                             <{/if}>
 
                             <{if $cate.ColName=="aboutus"}>
-                                <i class="fa fa-link"></i>
+                                <i class="fa fa-link"></i><span class="sr-only">class cate</span>
                             <{/if}>
 
                             <{if $cate.power=='users'}>

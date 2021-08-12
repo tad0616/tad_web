@@ -156,7 +156,7 @@
                     <{$smarty.const._MB_TCW_WEB_BLOCK_CONFIG}>
                 </a>
                 <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$block.defaltWebID}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MB_TCW_BLOCK_ADD}>">
-                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MB_TCW_BLOCK_ADD}></span>
                 </a>
             </div>
         </div>
@@ -176,7 +176,7 @@
                             <td>
                                 <{if $plugin.setup=='1'}>
                                     <a href="<{$xoops_url}>/modules/tad_web/setup.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>&op=plugin_setup" title="<{$smarty.const._MB_TCW_SETUP}><{$plugin.short}>">
-                                        <i class="fa fa-wrench"></i>
+                                        <i class="fa fa-wrench"></i><span class="sr-only"><{$smarty.const._MB_TCW_SETUP}><{$plugin.short}></span>
                                     </a>
                                 <{/if}>
                             </td>
@@ -184,7 +184,7 @@
                             <td>
                                 <{if $plugin.add=='1'}>
                                     <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
-                                        <i class="fa fa-plus"></i>
+                                        <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MB_TCW_ADD}><{$plugin.short}></span>
                                     </a>
                                 <{/if}>
                             </td>
@@ -192,7 +192,7 @@
                             <td>
                                 <{if $plugin.cate=='1'}>
                                     <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>&table=<{$plugin.cate_table}>"  title="<{$plugin.short}><{$smarty.const._MB_TCW_CATE_TOOLS}>">
-                                        <i class="fa fa-folder-open"></i>
+                                        <i class="fa fa-folder-open"></i><span class="sr-only"><{$smarty.const._MB_TCW_CATE_TOOLS}></span>
                                     </a>
                                 <{/if}>
                             </td>

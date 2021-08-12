@@ -268,6 +268,7 @@ function tad_web_my_menu($defaltWebID)
             $xoopsTpl->assign('percentage', $percentage);
             $xoopsTpl->assign('progress_color', $progress_color);
             $xoopsTpl->assign('webs', $webs);
+            $xoopsTpl->assign('adm_defaltWebName', sprintf(_MD_TCW_ADM_DEFALTWEBNAME, $defaltWebName));
 
             if (isset($_SESSION['isAssistant'])) {
                 $xoopsTpl->assign('isAssistant', $_SESSION['isAssistant']);

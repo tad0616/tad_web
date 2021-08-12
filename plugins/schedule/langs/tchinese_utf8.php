@@ -25,3 +25,4 @@ define('_MD_TCW_SCHEDULE_ADD_ITEM', '新增一個項目');
 define('_MD_TCW_SCHEDULE_PDF', '下載課表');
 define('_MD_TCW_SCHEDULE_BLOCK_LIST', '功課表');
 define('_MD_TCW_SCHEDULE_OTHER_LIST', '其他課表查詢');
+define('_MD_TCW_SCHEDULE_UNNAMED_CATEGORY', '未命名分類');

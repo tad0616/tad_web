@@ -14,8 +14,8 @@
 
                     <{*if $news.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($news.cate.CateID && $news.cate.CateID == $smarty.session.isAssistant.news)}>
-                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i></a>
+                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                     <{/if}>
                 </h3>
                 <div class="my-border list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
@@ -36,8 +36,8 @@
 
                     <{*if $news.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($news.cate.CateID && $news.cate.CateID == $smarty.session.isAssistant.news)}>
-                    <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                    <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                    <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                    <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                     <{/if}>
                 </h3>
                 </div>
@@ -85,8 +85,8 @@
 
                         <{*if $news.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($news.cate.CateID && $news.cate.CateID == $smarty.session.isAssistant.news)}>
-                            <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                            <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                            <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                            <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                         <{/if}>
                     </td>
                     <td style="text-align:center;">

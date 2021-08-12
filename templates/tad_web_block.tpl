@@ -244,7 +244,7 @@
 
                         if(position!="uninstall"){
                             $("#"+block_id).css('display','');
-                            $("#"+block_id).append('<span id="blktool_'+block_id+'"><a href="block.php?WebID=<{$WebID}>&op=config&plugin='+new_block_plugin+'&BlockID='+new_block_id+'" class="pull-right text-danger"><i class="fa fa-pencil"></i></a></span>');
+                            $("#"+block_id).append('<span id="blktool_'+block_id+'"><a href="block.php?WebID=<{$WebID}>&op=config&plugin='+new_block_plugin+'&BlockID='+new_block_id+'" class="pull-right text-danger"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a></span>');
                             $("#"+block_id+"_icon").attr('src','images/show1.gif');
 
                             if(chang_id){
