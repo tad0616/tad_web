@@ -24,7 +24,7 @@
             <{$cate_menu}>
         </div>
         <div class="col-md-5">
-            <select name='MemID' id='list_mems' class='form-control'>
+            <select name="MemID" id="list_mems" class="form-control" title="list mems">
                 <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
             </select>
         </div>
