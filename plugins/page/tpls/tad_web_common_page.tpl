@@ -48,8 +48,8 @@
 
                             <{*if $page.isCanEdit*}>
                             <{if ($WebID && $isMyWeb) || $isAdmin || ($page.cate.CateID && $page.cate.CateID == $smarty.session.isAssistant.page)}>
-                                <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                                <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+                                <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                                <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                             <{/if}>
                         </li>
                     <{/foreach}>
@@ -74,8 +74,8 @@
 
                         <{*if $page.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($page.cate.CateID && $page.cate.CateID == $smarty.session.isAssistant.page)}>
-                            <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                            <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i></a>
+                            <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                            <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                         <{/if}>
                     </li>
                 <{/foreach}>

@@ -48,114 +48,114 @@ define('_MI_TCW_WEB_SCHEDULE_TEMPLATE_DESC', 'Don\'t edit it! Please edit it fro
 define('_MI_TCW_WEB_SCHEDULE_TEMPLATE_DEF', '<table class="table table-bordered schedule_table">
     <tbody>
         <tr>
-            <td class="schedule_head" id="Tim"><strong>Time</strong></td>
-            <td class="schedule_head" id="Sct"><strong>Section</strong></td>
-            <td class="schedule_head" id="Mon"><strong>Mon</strong></td>
-            <td class="schedule_head" id="Tue"><strong>Tue</strong></td>
-            <td class="schedule_head" id="Wed"><strong>Wed</strong></td>
-            <td class="schedule_head" id="Thu"><strong>Thur</strong></td>
-            <td class="schedule_head" id="Fri"><strong>Fri</strong></td>
-            <td class="schedule_head" id="Sat"><strong>Sat</strong></td>
+            <td class="schedule_head"><strong>Time</strong></td>
+            <td class="schedule_head"><strong>Section</strong></td>
+            <td class="schedule_head"><strong>Mon</strong></td>
+            <td class="schedule_head"><strong>Tue</strong></td>
+            <td class="schedule_head"><strong>Wed</strong></td>
+            <td class="schedule_head"><strong>Thur</strong></td>
+            <td class="schedule_head"><strong>Fri</strong></td>
+            <td class="schedule_head"><strong>Sat</strong></td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">08:00~08:40</td>
-            <td headers="Sct" class="schedule_section">&nbsp;</td>
-            <td headers="Mon" class="schedule_cell">Teacher Time</td>
-            <td headers="Tue" class="schedule_cell">Teacher Time</td>
-            <td headers="Wed" class="schedule_cell">Teacher Time</td>
-            <td headers="Thu" class="schedule_cell">Teacher Time</td>
-            <td headers="Fri" class="schedule_cell">Teacher Time</td>
-            <td headers="Sat" class="schedule_cell">Teacher Time</td>
+            <td class="schedule_time">08:00~08:40</td>
+            <td class="schedule_section">&nbsp;</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
+            <td class="schedule_cell">Teacher Time</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">08:40~09:20</td>
-            <td headers="Sct" class="schedule_section">1</td>
-            <td headers="Mon" class="schedule_cell">{1-1}</td>
-            <td headers="Tue" class="schedule_cell">{2-1}</td>
-            <td headers="Wed" class="schedule_cell">{3-1}</td>
-            <td headers="Thu" class="schedule_cell">{4-1}</td>
-            <td headers="Fri" class="schedule_cell">{5-1}</td>
-            <td headers="Sat" class="schedule_cell">{6-1}</td>
+            <td class="schedule_time">08:40~09:20</td>
+            <td class="schedule_section">1</td>
+            <td class="schedule_cell">{1-1}</td>
+            <td class="schedule_cell">{2-1}</td>
+            <td class="schedule_cell">{3-1}</td>
+            <td class="schedule_cell">{4-1}</td>
+            <td class="schedule_cell">{5-1}</td>
+            <td class="schedule_cell">{6-1}</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">09:30~10:10</td>
-            <td headers="Sct" class="schedule_section">2</td>
-            <td headers="Mon" class="schedule_cell">{1-2}</td>
-            <td headers="Tue" class="schedule_cell">{2-2}</td>
-            <td headers="Wed" class="schedule_cell">{3-2}</td>
-            <td headers="Thu" class="schedule_cell">{4-2}</td>
-            <td headers="Fri" class="schedule_cell">{5-2}</td>
-            <td headers="Sat" class="schedule_cell">{6-2}</td>
+            <td class="schedule_time">09:30~10:10</td>
+            <td class="schedule_section">2</td>
+            <td class="schedule_cell">{1-2}</td>
+            <td class="schedule_cell">{2-2}</td>
+            <td class="schedule_cell">{3-2}</td>
+            <td class="schedule_cell">{4-2}</td>
+            <td class="schedule_cell">{5-2}</td>
+            <td class="schedule_cell">{6-2}</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">10:30~11:10</td>
-            <td headers="Sct" class="schedule_section">3</td>
-            <td headers="Mon" class="schedule_cell">{1-3}</td>
-            <td headers="Tue" class="schedule_cell">{2-3}</td>
-            <td headers="Wed" class="schedule_cell">{3-3}</td>
-            <td headers="Thu" class="schedule_cell">{4-3}</td>
-            <td headers="Fri" class="schedule_cell">{5-3}</td>
-            <td headers="Sat" class="schedule_cell">{6-3}</td>
+            <td class="schedule_time">10:30~11:10</td>
+            <td class="schedule_section">3</td>
+            <td class="schedule_cell">{1-3}</td>
+            <td class="schedule_cell">{2-3}</td>
+            <td class="schedule_cell">{3-3}</td>
+            <td class="schedule_cell">{4-3}</td>
+            <td class="schedule_cell">{5-3}</td>
+            <td class="schedule_cell">{6-3}</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">11:20~12:00</td>
-            <td headers="Sct" class="schedule_section">4</td>
-            <td headers="Mon" class="schedule_cell">{1-4}</td>
-            <td headers="Tue" class="schedule_cell">{2-4}</td>
-            <td headers="Wed" class="schedule_cell">{3-4}</td>
-            <td headers="Thu" class="schedule_cell">{4-4}</td>
-            <td headers="Fri" class="schedule_cell">{5-4}</td>
-            <td headers="Sat" class="schedule_cell">{6-4}</td>
+            <td class="schedule_time">11:20~12:00</td>
+            <td class="schedule_section">4</td>
+            <td class="schedule_cell">{1-4}</td>
+            <td class="schedule_cell">{2-4}</td>
+            <td class="schedule_cell">{3-4}</td>
+            <td class="schedule_cell">{4-4}</td>
+            <td class="schedule_cell">{5-4}</td>
+            <td class="schedule_cell">{6-4}</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">12:00~12:40</td>
-            <td headers="Sct" class="schedule_section">&nbsp;</td>
-            <td id="LunchTime" class="schedule_note" colspan="6" rowspan="1">Lunch Time</td>
+            <td class="schedule_time">12:00~12:40</td>
+            <td class="schedule_section">&nbsp;</td>
+            <td" class="schedule_note" colspan="6" rowspan="1">Lunch Time</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">12:40~13:30</td>
-            <td headers="Sct" class="schedule_section">&nbsp;</td>
-            <td id="RestTime" class="schedule_note" colspan="6" rowspan="1">Rest Time</td>
+            <td class="schedule_time">12:40~13:30</td>
+            <td class="schedule_section">&nbsp;</td>
+            <td class="schedule_note" colspan="6" rowspan="1">Rest Time</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">13:40~14:20</td>
-            <td headers="Sct" class="schedule_section">5</td>
-            <td headers="Mon" class="schedule_cell">{1-5}</td>
-            <td headers="Tue" class="schedule_cell">{2-5}</td>
-            <td headers="Wed" class="schedule_cell">{3-5}</td>
-            <td headers="Thu" class="schedule_cell">{4-5}</td>
-            <td headers="Fri" class="schedule_cell">{5-5}</td>
-            <td headers="Sat" class="schedule_cell">&nbsp;</td>
+            <td class="schedule_time">13:40~14:20</td>
+            <td class="schedule_section">5</td>
+            <td class="schedule_cell">{1-5}</td>
+            <td class="schedule_cell">{2-5}</td>
+            <td class="schedule_cell">{3-5}</td>
+            <td class="schedule_cell">{4-5}</td>
+            <td class="schedule_cell">{5-5}</td>
+            <td class="schedule_cell">&nbsp;</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">14:30~15:10</td>
-            <td headers="Sct" class="schedule_section">6</td>
-            <td headers="Mon" class="schedule_cell">{1-6}</td>
-            <td headers="Tue" class="schedule_cell">{2-6}</td>
-            <td headers="Wed" class="schedule_cell">{3-6}</td>
-            <td headers="Thu" class="schedule_cell">{4-6}</td>
-            <td headers="Fri" class="schedule_cell">{5-6}</td>
-            <td headers="Sat" class="schedule_cell">&nbsp;</td>
+            <td class="schedule_time">14:30~15:10</td>
+            <td class="schedule_section">6</td>
+            <td class="schedule_cell">{1-6}</td>
+            <td class="schedule_cell">{2-6}</td>
+            <td class="schedule_cell">{3-6}</td>
+            <td class="schedule_cell">{4-6}</td>
+            <td class="schedule_cell">{5-6}</td>
+            <td class="schedule_cell">&nbsp;</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">15:20~16:00</td>
-            <td headers="Sct" class="schedule_section">7</td>
-            <td headers="Mon" class="schedule_cell">{1-7}</td>
-            <td headers="Tue" class="schedule_cell">{2-7}</td>
-            <td headers="Wed" class="schedule_cell">{3-7}</td>
-            <td headers="Thu" class="schedule_cell">{4-7}</td>
-            <td headers="Fri" class="schedule_cell">{5-7}</td>
-            <td headers="Sat" class="schedule_cell">&nbsp;</td>
+            <td class="schedule_time">15:20~16:00</td>
+            <td class="schedule_section">7</td>
+            <td class="schedule_cell">{1-7}</td>
+            <td class="schedule_cell">{2-7}</td>
+            <td class="schedule_cell">{3-7}</td>
+            <td class="schedule_cell">{4-7}</td>
+            <td class="schedule_cell">{5-7}</td>
+            <td class="schedule_cell">&nbsp;</td>
         </tr>
         <tr>
-            <td headers="Tim" class="schedule_time">&nbsp;</td>
-            <td headers="Sct" class="schedule_section">8</td>
-            <td headers="Mon" class="schedule_cell">{1-8}</td>
-            <td headers="Tue" class="schedule_cell">{2-8}</td>
-            <td headers="Wed" class="schedule_cell">{3-8}</td>
-            <td headers="Thu" class="schedule_cell">{4-8}</td>
-            <td headers="Fri" class="schedule_cell">{5-8}</td>
-            <td headers="Sat" class="schedule_cell">&nbsp;</td>
+            <td class="schedule_time">&nbsp;</td>
+            <td class="schedule_section">8</td>
+            <td class="schedule_cell">{1-8}</td>
+            <td class="schedule_cell">{2-8}</td>
+            <td class="schedule_cell">{3-8}</td>
+            <td class="schedule_cell">{4-8}</td>
+            <td class="schedule_cell">{5-8}</td>
+            <td class="schedule_cell">&nbsp;</td>
         </tr>
     </tbody>
 </table>');

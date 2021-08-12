@@ -56,7 +56,7 @@
     <div style="margin-left:10px;">
         <h3><{$say_hi}></h3>
         <{if $smarty.session.tad_web_adm}>
-        <div style="font-size: 0.7rem; color:rgb(180, 76, 76)">（因為您是管理員，所以底下為「<{$defaltWebName}>」的選單）</div>
+        <div style="font-size: 0.7rem; color:rgb(180, 76, 76)"><{$adm_defaltWebName}></div>
         <{/if}>
         <div style="margin:10px 0px;">
             <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$defaltWebID}>">
@@ -67,7 +67,7 @@
         <div style="margin:10px 0px;">
             <a href="<{$xoops_url}>/modules/tad_web/index.php?op=clear_block_cache&WebID=<{$defaltWebID}>">
                 <i class="fa fa-recycle" aria-hidden="true"></i>
-                重新產生畫面
+                <{$smarty.const._MD_TCW_RE_GENERATE_SCREEN}>
             </a>
         </div>
 
@@ -182,7 +182,7 @@
                         <{$smarty.const._MD_TCW_WEB_BLOCK_CONFIG}>
                     </a>
                     <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MD_TCW_BLOCK_ADD}>">
-                        <i class="fa fa-plus"></i>
+                        <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MD_TCW_BLOCK_ADD}></span>
                     </a>
                 </div>
 
@@ -201,28 +201,28 @@
 
                                     <td>
                                         <a href="<{$xoops_url}>/modules/tad_web/setup.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>&op=plugin_setup" title="<{$smarty.const._MD_TCW_SETUP}><{$plugin.short}>">
-                                        <i class="fa fa-wrench"></i>
+                                        <i class="fa fa-wrench"></i><span class="sr-only"><{$smarty.const._MD_TCW_SETUP}><{$plugin.short}></span>
                                         </a>
                                     </td>
 
                                     <td>
                                         <{if $plugin.add=='1'}>
                                             <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MD_TCW_ADD}><{$plugin.short}>">
-                                                <i class="fa fa-plus"></i>
+                                                <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MD_TCW_ADD}><{$plugin.short}></span>
                                             </a>
                                         <{/if}>
                                     </td>
                                     <td>
                                         <{if $plugin.cate=='1'}>
                                             <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>&table=<{$plugin.cate_table}>"  title="<{$plugin.short}><{$smarty.const._MD_TCW_CATE_TOOLS}>">
-                                                <i class="fa fa-folder-open"></i>
+                                                <i class="fa fa-folder-open"></i><span class="sr-only"><{$plugin.short}><{$smarty.const._MD_TCW_CATE_TOOLS}></span>
                                             </a>
                                         <{/if}>
                                     </td>
                                     <td>
                                         <{if $plugin.assistant=='1'}>
                                             <a href="<{$xoops_url}>/modules/tad_web/assistant.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>"  title="<{$plugin.short}><{$smarty.const._MD_TCW_CATE_ASSISTANT}>">
-                                                <i class="fa fa-male"></i>
+                                                <i class="fa fa-male"></i><span class="sr-only"><{$plugin.short}><{$smarty.const._MD_TCW_CATE_ASSISTANT}></span>
                                             </a>
                                         <{/if}>
                                     </td>

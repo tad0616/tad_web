@@ -37,8 +37,8 @@
                         <{$discuss.show_re_num}>
                         <{*if $bc.isMineDiscuss*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($smarty.session.LoginMemID && $discuss.MemID == $smarty.session.LoginMemID) || ($smarty.session.LoginParentID && $discuss.ParentID == $smarty.session.LoginParentID)}>
-                            <a href="javascript:delete_discuss_func(<{$discuss.DiscussID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                            <a href="discuss.php?WebID=<{$discuss.WebID}>&op=edit_form&DiscussID=<{$discuss.DiscussID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                            <a href="javascript:delete_discuss_func(<{$discuss.DiscussID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                            <a href="discuss.php?WebID=<{$discuss.WebID}>&op=edit_form&DiscussID=<{$discuss.DiscussID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                         <{/if}>
                     </td>
                     <td style="text-align:center;">

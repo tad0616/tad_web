@@ -41,8 +41,8 @@
                     <{if $work.hide}><span class="badge badge-danger"><{$work.hide}></span><{/if}>
                     <{*if $work.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($work.cate.CateID && $work.cate.CateID == $smarty.session.isAssistant.work)}>
-                        <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                        <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                        <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                        <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                     <{/if}>
                 </td>
                 <td style="text-align:center;"><{$work.WorksCount}></td>

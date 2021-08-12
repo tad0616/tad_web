@@ -24,8 +24,8 @@
 
                         <{*if $homework.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
-                            <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                            <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                            <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                            <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                         <{/if}>
                         <span style="color: #840707;"><{$homework.display_at}></span>
                     </li>
@@ -36,9 +36,9 @@
 
                             <{*if $homework.isCanEdit*}>
                             <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
-                                <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
+                                <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
 
-                                <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                                <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                             <{/if}>
                         </h3>
 
@@ -84,8 +84,8 @@
 
                         <{*if $homework.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
-                        <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                        <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                        <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                        <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                         <{/if}>
                     </li>
                 <{/if}>
@@ -109,8 +109,8 @@
                         <a href="homework.php?WebID=<{$homework.WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.WebName}> <{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
                         <{*if $homework.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($homework.cate.CateID && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
-                            <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i></a>
-                            <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i></a>
+                            <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
+                            <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
                         <{/if}>
                     </td>
                     <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>

@@ -287,6 +287,9 @@ class tad_web_schedule
         }
 
         $schedule_template = $xoopsModuleConfig['schedule_template'];
+        // if ($_GET['test'] == '1') {
+        //     die($schedule_template);
+        // }
         preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
         foreach ($opt[0] as $tag) {
@@ -488,6 +491,9 @@ class tad_web_schedule
         }
 
         $schedule_template = $xoopsModuleConfig['schedule_template'];
+        // if ($_GET['test'] == '1') {
+        //     die($schedule_template);
+        // }
 
         preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
