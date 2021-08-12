@@ -6,7 +6,7 @@
         </div>
     <{/if}>
     <div class="col-md-<{if $bc.class_pic_thumb}>8<{else}>12<{/if}>">
-        <h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$bc.CateID}>"><{$bc.cate.CateName}></a></h3>
+        <{if $bc.cate.CateName}><h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$bc.CateID}>"><{$bc.cate.CateName}></a></h3><{/if}>
         <div class="my-border">
             <div>
                 <{$bc.teacher_name}><{$smarty.const._TAD_FOR}><{$bc.WebOwner}>
