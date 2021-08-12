@@ -149,8 +149,14 @@ class tad_web_files
             }
 
             $file_date = mb_substr($file_date, 0, 10);
-
-            $showurl = empty($file_link) ? "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn#{$original_filename}' class='iconize'>{$description}</a>" : "<a href='{$file_link}' class='iconize'>{$file_description}</a>";
+            $showurl = '';
+            if (!empty($file_link)) {
+                $file_description = empty($file_description) ? $file_link : $file_description;
+                $showurl = "<a href='{$file_link}' class='iconize'>{$file_description}</a>";
+            } elseif (!empty($files_sn)) {
+                $description = empty($description) ? $original_filename : $description;
+                $showurl = "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn#{$original_filename}' class='iconize'>{$description}</a>";
+            }
 
             $main_data[$i]['showurl'] = $showurl;
             $main_data[$i]['uid_name'] = $uid_name;
