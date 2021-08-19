@@ -9,7 +9,9 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="page.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_PAGE}></a></li>
     <{if isset($cate.CateID)}>
-        <li class="breadcrumb-item"><a href="page.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>
+        <li class="breadcrumb-item">
+            <{if $cate.CateName}><a href="page.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+        </li>
     <{/if}>
     <li class="breadcrumb-item"><{$PageInfo}></li>
     <{if $tags}>

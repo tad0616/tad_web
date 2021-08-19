@@ -3,7 +3,9 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="video.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_VIDEO}></a></li>
     <{if isset($cate.CateID)}>
-        <li class="breadcrumb-item"><a href="video.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>
+        <li class="breadcrumb-item">
+            <{if $cate.CateName}><a href="video.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+        </li>
     <{/if}>
     <li class="breadcrumb-item"><{$VideoInfo}></li>
     <{if $tags}>

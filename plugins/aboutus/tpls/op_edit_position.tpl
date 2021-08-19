@@ -1,5 +1,6 @@
 <h3>
-    <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$smarty.const._MD_TCW_STUDENT_POSITION}>
+    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{$smarty.const._MD_TCW_STUDENT_POSITION}>
 </h3>
 
 <form role="form">

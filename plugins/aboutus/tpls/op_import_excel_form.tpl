@@ -1,4 +1,6 @@
-<h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$edit_student}></h3>
+<h3>
+    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{$edit_student}></h3>
 <div class="my-border">
     <form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data">
         <div class="row">
