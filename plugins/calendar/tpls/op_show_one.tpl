@@ -4,7 +4,7 @@
     <li class="breadcrumb-item"><a href="calendar.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_CALENDAR}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <a href="calendar.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
+            <{if $cate.CateName}><a href="calendar.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$CalendarInfo}></li>

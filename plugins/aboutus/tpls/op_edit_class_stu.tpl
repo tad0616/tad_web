@@ -1,4 +1,7 @@
-<h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <{$edit_student}></h3>
+<h3>
+    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{$edit_student}>
+</h3>
 <{if $students}>
     <div class="text-right" style="margin: 30px 0px;">
         <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_stu" class="btn btn-primary"><{$add_stud}></a>

@@ -6,7 +6,7 @@
     </li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
+            <{if $cate.CateName}><a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$AccountInfo}></li>

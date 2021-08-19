@@ -118,7 +118,7 @@
                 <tr id="CateID_<{$cate.CateID}>" <{if $cate.CateEnable!=1}>style="background: #cfcfcf;"<{/if}>>
                     <td>
                         <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
-                        <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a>
+                        <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
                         <{if $cate.CateEnable!=1}>
                         <a href="javascript:del_class(<{$cate.CateID}>)" class="btn btn-sm btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                         <{/if}>

@@ -1,4 +1,6 @@
-<h2><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a></h2>
+<h2>
+    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+</h2>
 
 <div style="font-size: 2em; margin: 30px auto;">
     <{if 'MemNum'|in_array:$mem_column}>
