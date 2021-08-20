@@ -5,6 +5,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\JqueryPrintPreview;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
@@ -405,6 +406,7 @@ class tad_web_news
         $NewsTitle = $myts->addSlashes($_POST['NewsTitle']);
         $NewsUrl = $myts->addSlashes($_POST['NewsUrl']);
         $NewsContent = $myts->addSlashes($_POST['NewsContent']);
+        $NewsContent = Wcag::amend($NewsContent);
         $NewsDate = $myts->addSlashes($_POST['NewsDate']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
@@ -450,6 +452,7 @@ class tad_web_news
         $NewsTitle = $myts->addSlashes($_POST['NewsTitle']);
         $NewsUrl = $myts->addSlashes($_POST['NewsUrl']);
         $NewsContent = $myts->addSlashes($_POST['NewsContent']);
+        $NewsContent = Wcag::amend($NewsContent);
         $NewsDate = $myts->addSlashes($_POST['NewsDate']);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $newCateName = $myts->addSlashes($_POST['newCateName']);

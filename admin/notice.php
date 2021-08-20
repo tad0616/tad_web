@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Wcag;
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_notice.tpl';
 require_once __DIR__ . '/header.php';
@@ -87,6 +88,7 @@ function insert_tad_web_notice()
     $NoticeID = (int) $_POST['NoticeID'];
     $NoticeTitle = $myts->addSlashes($_POST['NoticeTitle']);
     $NoticeContent = $myts->addSlashes($_POST['NoticeContent']);
+    $NoticeContent = Wcag::amend($NoticeContent);
     $NoticeWeb = $myts->addSlashes($_POST['NoticeWeb']);
     $NoticeWho = implode(';', $_POST['NoticeWho']);
     $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));

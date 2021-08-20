@@ -2,6 +2,7 @@
 
 use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Wcag;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 require_once __DIR__ . '/function.php';
@@ -28,6 +29,7 @@ switch ($op) {
 
             $BlockTitle = $myts->addSlashes($block['BlockTitle']);
             $BlockContent = $myts->addSlashes($block['BlockContent']);
+            $BlockContent = Wcag::amend($BlockContent);
             $BlockConfig = $myts->addSlashes($block['BlockConfig']);
             $BlockName = $myts->addSlashes($block['BlockName']);
             $sql = 'insert into `' . $xoopsDB->prefix('tad_web_blocks') . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$BlockName}', 0, '{$BlockTitle}', '{$BlockContent}', '1', '{$BlockConfig}', '{$PositionName}', '$BlockSort', '{$WebID}', 'custom','{$block['BlockID']}')";
