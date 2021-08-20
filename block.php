@@ -5,6 +5,7 @@ use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -177,6 +178,7 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
 
     $content_type = $config['content_type'];
     $BlockContent = $myts->addSlashes($_POST['BlockContent'][$content_type]);
+    $BlockContent = Wcag::amend('BlockContent');
     $BlockName = $myts->addSlashes($BlockName);
 
     if (PHP_VERSION_ID >= 50400) {
@@ -364,6 +366,7 @@ function copy_block($BlockID, $plugin, $WebID)
     $myts = \MyTextSanitizer::getInstance();
     $block['BlockTitle'] = $myts->addSlashes($block['BlockTitle']);
     $block['BlockContent'] = $myts->addSlashes($block['BlockContent']);
+    $block['BlockContent'] = Wcag::amend($block['BlockContent']);
     $block['BlockConfig'] = $myts->addSlashes($block['BlockConfig']);
 
     $BlockCopy = max_blocks_copy($WebID, $block['BlockName']);

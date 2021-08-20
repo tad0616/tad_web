@@ -5,6 +5,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\JqueryPrintPreview;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
@@ -369,6 +370,7 @@ class tad_web_page
         $myts = \MyTextSanitizer::getInstance();
         $PageTitle = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
+        $PageContent = Wcag::amend($PageContent);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $PageSort = $this->max_sort($WebID, $CateID);
@@ -406,6 +408,7 @@ class tad_web_page
         $myts = \MyTextSanitizer::getInstance();
         $PageTitle = $myts->addSlashes($_POST['PageTitle']);
         $PageContent = $myts->addSlashes($_POST['PageContent']);
+        $PageContent = Wcag::amend($PageContent);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $PageDate = date('Y-m-d H:i:s');

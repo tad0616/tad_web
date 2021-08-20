@@ -8,7 +8,7 @@
             <div style="width: 156px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">
                 <a href='video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>'>
                     <div style="width: 150px; height: 160px; background-color: #F1F7FF ; border:1px dotted green; margin: 0px auto;">
-                        <div style="width: 140px; height: 140px; background: #F1F7FF url('https://i3.ytimg.com/vi/<{$video.VideoPlace}>/0.jpg') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;background-size:cover;"><span class="sr-only"><{$act.VideoID}></span>
+                        <div style="width: 140px; height: 140px; background: #F1F7FF url('https://i3.ytimg.com/vi/<{$video.VideoPlace}>/0.jpg') center center no-repeat; border:8px solid #F1F7FF; margin: 0px auto;background-size:cover;"><span class="sr-only">Video of <{$act.VideoID}></span>
                         </div>
                     </div>
                 </a>

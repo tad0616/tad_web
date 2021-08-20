@@ -148,15 +148,15 @@ class Tags
                     continue;
                 }
                 $sql = 'insert into `' . $xoopsDB->prefix('tad_web_tags') . "` (
-                  `WebID`,
-                  `col_name`,
-                  `col_sn`,
-                  `tag_name`
+                    `WebID`,
+                    `col_name`,
+                    `col_sn`,
+                    `tag_name`
                 ) values(
-                  '{$this->WebID}',
-                  '{$col_name}',
-                  '{$col_sn}',
-                  '{$tag}'
+                    '{$this->WebID}',
+                    '{$col_name}',
+                    '{$col_sn}',
+                    '{$tag}'
                 )";
                 $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }

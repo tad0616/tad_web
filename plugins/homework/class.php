@@ -5,6 +5,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\FullCalendar;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
@@ -205,7 +206,6 @@ class tad_web_homework
             redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-
         $myts = \MyTextSanitizer::getInstance();
         $HomeworkID = (int) $HomeworkID;
 
@@ -245,7 +245,6 @@ class tad_web_homework
         $ColWidth = 12 / $ColsNum;
         $xoopsTpl->assign('ColsNum', $ColsNum);
         $xoopsTpl->assign('ColWidth', $ColWidth);
-
 
         $uid_name = \XoopsUser::getUnameFromId($uid, 1);
         if (empty($uid_name)) {
@@ -441,6 +440,8 @@ class tad_web_homework
         $myts = \MyTextSanitizer::getInstance();
         $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
+        $HomeworkContent = Wcag::amend($HomeworkContent);
+        $NoticeContent = Wcag::amend($NoticeContent);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
         $CateID = (int) $_POST['CateID'];
@@ -449,12 +450,16 @@ class tad_web_homework
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
+        $today_homework = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
         $bring = $myts->addSlashes($_POST['bring']);
+        $bring = Wcag::amend($bring);
         $bring_remove_html = $this->remove_html($bring);
         $teacher_say = $myts->addSlashes($_POST['teacher_say']);
+        $teacher_say = Wcag::amend($teacher_say);
         $teacher_say_remove_html = $this->remove_html($teacher_say);
         $other = $myts->addSlashes($_POST['other']);
+        $other = Wcag::amend($other);
         $other_remove_html = $this->remove_html($other);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
 
@@ -531,6 +536,7 @@ class tad_web_homework
         $myts = \MyTextSanitizer::getInstance();
         $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);
         $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
+        $HomeworkContent = Wcag::amend($HomeworkContent);
         $toCal = $myts->addSlashes($_POST['toCal']);
         $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
         $CateID = (int) $_POST['CateID'];
@@ -538,12 +544,16 @@ class tad_web_homework
         $HomeworkDate = date('Y-m-d H:i:s');
 
         $today_homework = $myts->addSlashes($_POST['today_homework']);
+        $today_homework = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
         $bring = $myts->addSlashes($_POST['bring']);
+        $bring = Wcag::amend($bring);
         $bring_remove_html = $this->remove_html($bring);
         $teacher_say = $myts->addSlashes($_POST['teacher_say']);
+        $teacher_say = Wcag::amend($teacher_say);
         $teacher_say_remove_html = $this->remove_html($teacher_say);
         $other = $myts->addSlashes($_POST['other']);
+        $other = Wcag::amend($other);
         $other_remove_html = $this->remove_html($other);
         $newCateName = $myts->addSlashes($_POST['newCateName']);
         // die($bring);
