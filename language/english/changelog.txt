@@ -1,4 +1,11 @@
-Tad Web 1.9.0 (released on 2021-08-31)
+Tad Web 1.9.1 (Released on 2021-08-22)
+====================================
+1. Fixed for the new version 2021/07 AA accessibility standard
+2. Do not show empty category links if there is no category name.
+3. Add accessibility 2.1 AA auto-correction function.
+
+
+Tad Web 1.9.0 (released on 2021-07-31)
 ================================================
 1. Add block caching mechanism
 2. Fix the problem of not getting the default value when editing the website in the background.
