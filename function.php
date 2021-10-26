@@ -88,13 +88,14 @@ function clear_tad_web_notice()
 }
 
 // 清除我的網站資料
-function clear_my_webs_data()
+function clear_my_webs_data($WebID)
 {
     global $xoopsUser;
     if ($xoopsUser) {
         $uid = $xoopsUser->uid();
         $my_webs_data_file = XOOPS_VAR_PATH . "/tad_web/my_webs_data/$uid.json";
         unlink($my_webs_data_file);
+        unset($_SESSION['tad_web'][$WebID]);
     }
 }
 
@@ -773,23 +774,24 @@ function onlyMine($uid_col = 'uid')
 }
 
 //以流水號取得某筆tad_web資料
-function get_tad_web($WebID = '', $enable = false)
+function get_tad_web($WebID = '', $enable = false, $use_session = true)
 {
     global $xoopsDB, $isMyWeb, $isAdmin;
     if (empty($WebID)) {
         return;
     }
-    if (isset($_SESSION['tad_web'][$WebID]['WebID'])) {
+
+    if (isset($_SESSION['tad_web'][$WebID]['WebID']) and $use_session) {
         if ($enable and (empty($_SESSION['tad_web'][$WebID]))) {
             redirect_header('index.php', 3, _MD_TCW_WEB_NOT_EXIST);
         }
 
         return $_SESSION['tad_web'][$WebID];
     }
+
     $andEnable = ($enable and !$isMyWeb and !$isAdmin) ? "and WebEnable='1'" : '';
 
     $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID='$WebID' {$andEnable}";
-
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $data = $xoopsDB->fetchArray($result);
@@ -1560,7 +1562,7 @@ function delete_tad_web_directory($dirname)
 //寫入已使用空間
 function check_quota($WebID = '')
 {
-    global $xoopsModuleConfig, $xoopsDB;
+    global $xoopsDB;
     $data = '';
     $dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
 
@@ -1576,7 +1578,7 @@ function check_quota($WebID = '')
     }
 
     $_SESSION['tad_web'][$WebID]['used_size'] = $dir_size;
-    clear_my_webs_data();
+    clear_my_webs_data($WebID);
 }
 
 //檢查已使用空間
