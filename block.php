@@ -171,6 +171,7 @@ function array2form($form_arr = [], $config = [])
 function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTitle = '', $BlockPosition = '', $config = '', $BlockShare = '', $shareBlockID = '', $BlockEnable = '', $ShareFrom = '')
 {
     global $xoopsDB, $power;
+
     $myts = \MyTextSanitizer::getInstance();
     $BlockTitle = $myts->addSlashes($BlockTitle);
     $BlockPosition = $myts->addSlashes($BlockPosition);
@@ -178,7 +179,7 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
 
     $content_type = $config['content_type'];
     $BlockContent = $myts->addSlashes($_POST['BlockContent'][$content_type]);
-    $BlockContent = Wcag::amend('BlockContent');
+    $BlockContent = Wcag::amend($BlockContent);
     $BlockName = $myts->addSlashes($BlockName);
 
     if (PHP_VERSION_ID >= 50400) {
@@ -191,7 +192,6 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
         });
         $new_block_config = urldecode(json_encode($config));
     }
-
     $text_color = get_web_config('block_pic_text_color', $WebID);
     $border_color = get_web_config('block_pic_border_color', $WebID);
     $text_size = get_web_config('block_pic_text_size', $WebID);
@@ -229,6 +229,7 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
         //更新區塊
 
         $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockConfig`='{$new_block_config}' , `BlockTitle`='{$BlockTitle}' , `BlockPosition`='{$BlockPosition}' , `BlockEnable`='{$BlockEnable}' , `BlockContent`='{$BlockContent}'  where `BlockID`='{$BlockID}' and WebID='{$WebID}'";
+        // die($sql);
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //共享區塊若不再共享（直接刪除之）

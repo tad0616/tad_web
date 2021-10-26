@@ -252,7 +252,7 @@ function save_adm($web_admins, $WebID)
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
-    clear_my_webs_data();
+    clear_my_webs_data($WebID);
 }
 
 //重置logo圖位置
