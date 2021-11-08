@@ -145,7 +145,7 @@ $sub_menu_var = [];
 
 $sub_menu_var[$j]['id'] = $j;
 $sub_menu_var[$j]['title'] = _MD_TCW_HOME;
-$sub_menu_var[$j]['url'] = 'index.php';
+$sub_menu_var[$j]['url'] = $is_ezclass ? XOOPS_URL : 'index.php';
 $sub_menu_var[$j]['target'] = '_blank';
 $sub_menu_var[$j]['icon'] = 'fa-share-square-o';
 $j++;

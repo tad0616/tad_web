@@ -1356,36 +1356,46 @@ function output_head_file($WebID)
         $$k = $v;
     }
 
+    $bg_filename = strpos($web_head, "head_{$WebID}_") !== false ? XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}" : XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$web_head}";
+
+    list($bg_width, $bg_height) = getimagesize($bg_filename);
+
+    $type = mb_strtolower(mb_substr(mb_strrchr($bg_filename, '.'), 1));
+    if ('jpeg' === $type) {
+        $type = 'jpg';
+    }
+
+    switch ($type) {
+        case 'bmp':
+            $bg_im = imagecreatefromwbmp($bg_filename);
+            $mimetype = 'image/bmp';
+            break;
+        case 'gif':
+            $bg_im = imagecreatefromgif($bg_filename);
+            $mimetype = 'image/gif';
+            break;
+        case 'jpg':
+            $bg_im = imagecreatefromjpeg($bg_filename);
+            $mimetype = 'image/jpeg';
+            break;
+        case 'png':
+            $bg_im = imagecreatefrompng($bg_filename);
+            $mimetype = 'image/png';
+            break;
+        default:return 'Unsupported picture type!';
+    }
+
+    if ($width != $bg_width) {
+        thumbnail(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}", $mimetype, $width);
+    }
+
     $im = @imagecreatetruecolor($width, $height);
     imagecolortransparent($im, imagecolorallocatealpha($im, 0, 0, 0, 127));
     imagealphablending($im, true);
     imagesavealpha($im, true);
-
-    $bg_filename = strpos($web_head, "head_{$WebID}_") !== false ? XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}" : XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$web_head}";
-
     if (file_exists($bg_filename)) {
-        list($bg_width, $bg_height) = getimagesize($bg_filename);
-
         //縮放比例
-        $rate = round($bg_width / $width, 2);
-
-        $type = mb_strtolower(mb_substr(mb_strrchr($bg_filename, '.'), 1));
-        if ('jpeg' === $type) {
-            $type = 'jpg';
-        }
-
-        switch ($type) {
-            case 'bmp':$bg_im = imagecreatefromwbmp($bg_filename);
-                break;
-            case 'gif':$bg_im = imagecreatefromgif($bg_filename);
-                break;
-            case 'jpg':$bg_im = imagecreatefromjpeg($bg_filename);
-                break;
-            case 'png':$bg_im = imagecreatefrompng($bg_filename);
-                break;
-            default:return 'Unsupported picture type!';
-        }
-
+        $rate = round($bg_width / $width, 4);
         $head_top = abs($head_top);
         $bg_top = round($head_top * $rate, 0);
 
