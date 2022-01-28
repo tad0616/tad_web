@@ -22,7 +22,7 @@
 <h3><{$smarty.const._MD_TCW_FORGET_PARENTS_PASSWD}></h3>
 
 <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
-    <div class="form-group row">
+    <div class="form-group row mb-3">
         <label class="col-md-3 col-form-label text-sm-right control-label">
             <{$cate_label}>
         </label>
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <div class="form-group row" id="step3" style="display:none;">
+    <div class="form-group row mb-3" id="step3" style="display:none;">
         <label class="col-md-3 col-form-label text-sm-right control-label">
             <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
         </label>

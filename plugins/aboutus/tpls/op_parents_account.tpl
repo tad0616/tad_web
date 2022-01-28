@@ -16,7 +16,7 @@
 <h3><{$smarty.const._MD_TCW_REGIST_BY_PARENTS}></h3>
 
 <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
-    <div class="form-group row">
+    <div class="form-group row mb-3">
         <label class="col-md-3 col-form-label text-sm-right control-label">
             <{$cate_label}>
         </label>
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div id="step2" style="display:none;">
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label">
                 <span class="mem_name"><{$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT}></span><{$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT_BIRTHDAY}>
             </label>
@@ -38,7 +38,7 @@
                 <input type="text" name="MemBirthday" id="MemBirthday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ABOUTUS_VERIFY_BIRTHDAY}>2010-01-10">
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
             </label>
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL}>
             </label>
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_ABOUTUS_PARENT_PASSWD}>
             </label>

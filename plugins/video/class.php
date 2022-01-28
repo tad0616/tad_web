@@ -81,6 +81,7 @@ class tad_web_video
             where b.`WebEnable`='1'and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.VideoDate desc , a.VideoID desc";
         } else {
+            if(empty($this->WebID))return;
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_video') . ' as a
             left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID

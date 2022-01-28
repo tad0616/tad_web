@@ -220,7 +220,7 @@ class WebCate
         $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} col-form-label text-sm-right control-label\">
           {$show_label_txt}
           </label>" : '';
-        $row = ('form' === $mode) ? 'form-group row' : 'row';
+        $row = ('form' === $mode) ? 'form-group row mb-3' : 'row';
 
         $op = Request::getString('op');
 

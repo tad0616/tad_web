@@ -14,8 +14,8 @@
 
                     <{*if $news.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($news.cate.CateID && $news.cate.CateID == $smarty.session.isAssistant.news)}>
-                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                        <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </li>
             <{/foreach}>
@@ -35,8 +35,8 @@
 
                     <{*if $news.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($news.cate.CateID && $news.cate.CateID == $smarty.session.isAssistant.news)}>
-                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </h3>
                 <div class="my-border" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
@@ -57,8 +57,8 @@
 
                     <{*if $news.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($news.cate.CateID && $news.cate.CateID == $smarty.session.isAssistant.news)}>
-                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                        <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </h3>
                 </div>
@@ -78,8 +78,8 @@
 
                 <{*if $bc.main_data.0.isCanEdit*}>
                 <{if ($WebID && $isMyWeb) || $isAdmin || ($bc.main_data.0.cate.CateID && $bc.main_data.0.cate.CateID == $smarty.session.isAssistant.news)}>
-                    <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                    <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                    <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                    <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                 <{/if}>
             </h3>
             <div class="my-border" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
@@ -100,8 +100,8 @@
 
                     <{*if $bc.main_data.0.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($bc.main_data.0.cate.CateID && $bc.main_data.0.cate.CateID == $smarty.session.isAssistant.news)}>
-                        <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                        <a href="javascript:delete_news_func(<{$bc.main_data.0.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="news.php?WebID=<{$WebID}>&op=edit_form&NewsID=<{$bc.main_data.0.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </h3>
             </div>
@@ -120,8 +120,8 @@
 
                         <{*if $news.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($news.cate.CateID && $news.cate.CateID == $smarty.session.isAssistant.news)}>
-                            <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                            <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                            <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                            <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>
                     </li>
                 <{/if}>

@@ -38,14 +38,14 @@
     <form action="action.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
 
         <!--分類-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <{$cate_menu_form}>
             </div>
         </div>
 
         <!--活動名稱-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <input type="text" name="ActionName" value="<{$ActionName}>" id="ActionName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONNAME}>">
             </div>
@@ -53,7 +53,7 @@
 
 
         <!--活動說明-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <textarea name="ActionDesc"  rows=4 id="ActionDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONDESC}>"><{$ActionDesc}></textarea>
             </div>
@@ -61,7 +61,7 @@
 
 
         <!--活動日期-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_ACTIONDATE}>
             </label>
@@ -78,7 +78,7 @@
         </div>
 
         <{if $ActionID==""}>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_ACTION_UPLOAD_METHOD}>
                 </label>
@@ -107,7 +107,7 @@
 
         <!--上傳圖檔-->
         <div id="upload_photo">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
                 </label>
@@ -119,7 +119,7 @@
         </div>
 
         <div id="gphoto_link" style="display: none;">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_ACTION_GPHOTO_URL}>
                 </label>
@@ -134,19 +134,19 @@
         </div>
 
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <{$power_form}>
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <{$tags_form}>
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12 text-center">
                 <!--活動編號-->
                 <input type="hidden" name="ActionID" value="<{$ActionID}>">

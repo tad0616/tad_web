@@ -51,7 +51,7 @@
 <{$fb_comments}>
 
 <{if $isMyWeb or $isCanEdit}>
-    <div class="text-right" style="margin: 30px 0px;">
+    <div class="text-right text-end" style="margin: 30px 0px;">
         <a href="javascript:delete_account_func(<{$AccountID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_ACCOUNT_SHORT}></a>
         <a href="account.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACCOUNT_SHORT}></a>
         <a href="account.php?WebID=<{$WebID}>&op=edit_form&AccountID=<{$AccountID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_ACCOUNT_SHORT}></a>

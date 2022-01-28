@@ -10,7 +10,7 @@
                 <{/if}>
             </div>
             <div class="col-md-8">
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$edit_class_title}>
                     </label>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$class_pic}>
                     </label>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_ABOUTUS_DEFAULT_CLASS}>
                     </label>
@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_ABOUTUS_HIDE_CLASS}>
                     </label>
@@ -67,7 +67,7 @@
                 </div>
 
                 <{if $op=="new_class" and $old_cate}>
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-3 col-form-label text-sm-right control-label">
                             <{$setup_stud}>
                         </label>
@@ -143,6 +143,6 @@
     </table>
 <{/if}>
 
-<div class="text-right">
+<div class="text-right text-end">
     <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=new_class" class="btn btn-primary"><{$add_class}></a>
 </div>

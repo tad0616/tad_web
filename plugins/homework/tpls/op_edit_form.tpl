@@ -14,7 +14,7 @@ function chang_title(){
         <!--分類-->
         <{$cate_menu_form}>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <!--加到行事曆-->
             <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_CAL_DATE}>
@@ -39,7 +39,7 @@ function chang_title(){
         </div>
 
         <!--標題-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_TITLE}>
             </label>
@@ -53,7 +53,7 @@ function chang_title(){
             <{$HomeworkContent_editor}>
         <{else}>
             <!--今日作業-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-3 col-form-label text-sm-right control-label">
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid">
                 </label>
@@ -63,7 +63,7 @@ function chang_title(){
             </div>
 
             <!--攜帶物品-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-3 col-form-label text-sm-right control-label">
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid">
                 </label>
@@ -73,7 +73,7 @@ function chang_title(){
             </div>
 
             <!--叮嚀-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-3 col-form-label text-sm-right control-label">
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid">
                 </label>
@@ -83,7 +83,7 @@ function chang_title(){
             </div>
 
             <!--其他-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-3 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_HOMEWORK_OTHER}>
                 </label>
@@ -94,7 +94,7 @@ function chang_title(){
         <{/if}>
 
         <!--相關附件-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_FILES}>
             </label>

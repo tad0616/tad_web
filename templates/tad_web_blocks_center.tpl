@@ -1,6 +1,6 @@
 <{if $web_display_mode=="home"}>
     <{if !$center_block1 and !$center_block2 and !$center_block3 and !$center_block4 and !$center_block5 and !$center_block6}>
-        <h3 class="sr-only">coming soon</h3>
+        <h3 class="sr-only visually-hidden">coming soon</h3>
         <div class="text-center">
             <img src="<{$xoops_url}>/modules/tad_web/images/empty.png" alt="coming soon" >
         </div>

@@ -58,7 +58,7 @@
 
 
     <{if $isAdmin}>
-        <div class="text-right">
+        <div class="text-right text-end">
             <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
         </div>
     <{/if}>

@@ -21,7 +21,7 @@
             <input type="file" name="upfile[]"  maxlength="1" accept="gif|jpg|png|GIF|JPG|PNG">
         </div>
         <div class="col-md-6">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_ABOUTUS_PARENT_EMAIL}>
                 </label>
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_S}>
                 </label>
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_ABOUTUS_PARENT_MODIFY_PASSWD}>
                 </label>

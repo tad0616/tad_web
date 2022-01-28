@@ -25,8 +25,8 @@
 
                         <{*if $file.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || ($file.cate.CateID && $file.cate.CateID == $smarty.session.isAssistant.file)}>
-                            <a href="javascript:delete_files_func(<{$file.fsn}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                            <a href="files.php?WebID=<{$file.WebID}>&op=edit_form&fsn=<{$file.fsn}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                            <a href="javascript:delete_files_func(<{$file.fsn}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                            <a href="files.php?WebID=<{$file.WebID}>&op=edit_form&fsn=<{$file.fsn}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>
                     </div>
                 </td>

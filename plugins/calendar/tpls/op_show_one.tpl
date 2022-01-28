@@ -17,7 +17,7 @@
 <{$fb_comments}>
 
 <{if $isMyWeb}>
-    <div class="text-right" style="margin: 30px 0px;">
+    <div class="text-right text-end" style="margin: 30px 0px;">
         <a href="javascript:delete_calendar_func(<{$CalendarID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
         <a href="setup.php?WebID=<{$WebID}>&plugin=calendar" class="btn btn-success"><i class="fa fa-wrench"></i> <{$smarty.const._MD_TCW_SETUP}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
         <a href="calendar.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>

@@ -108,7 +108,7 @@ class Power
 
         $menu = '
         <!--權限設定-->
-        <div class="form-group row" style="background: #FCECDB;">
+        <div class="form-group row mb-3" style="background: #FCECDB;">
             <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right control-label">
                 ' . $label . '
             </label>

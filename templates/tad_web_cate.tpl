@@ -59,7 +59,7 @@
         <hr>
 
         <{if $isMyWeb and $WebID}>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-3 col-form-label text-sm-right control-label">
                     <{$plugin.title}><{$smarty.const._MD_TCW_NEW_CATE}>
                 </label>
@@ -74,10 +74,10 @@
             <div id="save_msg"></div>
             <div id="sort">
                 <{foreach from=$cate_opt_arr key=i item=cate}>
-                    <div class="form-group row" id="CateID_<{$cate.CateID}>">
+                    <div class="form-group row mb-3" id="CateID_<{$cate.CateID}>">
                         <label class="col-md-4 col-form-label control-label">
                             <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
-                            <span class="fa-stack fa-1x text-default pull-left">
+                            <span class="fa-stack fa-1x text-default pull-left float-left pull-start">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-inverse fa-stack-1x"><{$cate.CateSort}></i>
                             </span>
@@ -92,7 +92,7 @@
                             <{/if}>
 
                             <{if $cate.ColName=="aboutus"}>
-                                <i class="fa fa-link"></i><span class="sr-only">class cate</span>
+                                <i class="fa fa-link"></i><span class="sr-only visually-hidden">class cate</span>
                             <{/if}>
 
                             <{if $cate.power=='users'}>
@@ -188,7 +188,7 @@
         <h2><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_NONE}></h2>
         <{if $isMyWeb and $WebID}>
             <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-2 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_NEW_CATE}>
                     </label>

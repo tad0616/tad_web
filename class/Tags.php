@@ -106,7 +106,7 @@ class Tags
 
         $menu = '
         <!--標籤設定-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right control-label">
               ' . _MD_TCW_TAGS . '
             </label>
@@ -118,7 +118,7 @@ class Tags
 
         if ($tags_select) {
             $menu .= '
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right control-label"></label>
                 <div class="col-sm-' . $this->menu_col_md . '">
                     <div class="alert alert-info">

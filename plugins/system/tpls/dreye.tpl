@@ -20,7 +20,7 @@
     });
 </script>
 <div class="input-group">
-    <label for="search_dreyedict" class="sr-only"><{$smarty.const._MD_TCW_SEARCH_DREYEDICT_KEYWORD}></label>
+    <label for="search_dreyedict" class="sr-only visually-hidden"><{$smarty.const._MD_TCW_SEARCH_DREYEDICT_KEYWORD}></label>
     <input type="text" id="search_dreyedict" class="form-control" placeholder="<{$smarty.const._MD_TCW_SEARCH_DREYEDICT_KEYWORD}>">
     <div class="input-group-append input-group-btn">
         <a href="#" class="btn btn-primary" id="get_dreyedict"><{$smarty.const._MD_TCW_SEARCH_DREYEDICT}></a>

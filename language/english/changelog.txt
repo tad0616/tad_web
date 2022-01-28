@@ -1,3 +1,8 @@
+Tad Web 1.9.2 (Released on 2022-01-28)
+====================================
+1. Fix the problem that the title image uploaded by itself is not displayed in the right proportion
+2. Support BootStrap5
+
 Tad Web 1.9.1 (Released on 2021-08-22)
 ====================================
 1. Fixed for the new version 2021/07 AA accessibility standard

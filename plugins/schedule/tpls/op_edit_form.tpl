@@ -39,7 +39,7 @@
         <{$cate_menu_form}>
 
         <!--課表名稱-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label"><{$smarty.const._MD_TCW_SCHEDULENAME}></label>
             <div class="col-md-10">
                 <input type="text" name="ScheduleName" value="<{$ScheduleName}>" id="ScheduleName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_SCHEDULENAME}>">
@@ -47,7 +47,7 @@
         </div>
 
         <{if $ScheduleID}>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <div class="col-md-12">
                     <div class="alert alert-warning">
                         <ul id="catalog">
@@ -56,14 +56,14 @@
                             <{/foreach}>
                             <li style="cursor: move; color: #CDCDCD; background-color: #FFFFFF;"><{$smarty.const._MD_TCW_SCHEDULE_BLANK}></li>
                         </ul>
-                        <div style="clear: both;" class="text-right">
+                        <div style="clear: both;" class="text-right text-end">
                             <a href="schedule.php?WebID=<{$WebID}>&op=setup_subject&ScheduleID=<{$ScheduleID}>" class="btn btn-sm btn-xs btn-info"><{$smarty.const._MD_TCW_SCHEDULE_SETUP_SUBJECT}></a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <div class="col-md-12">
                     <{$schedule_template}>
                 </div>
@@ -71,7 +71,7 @@
         <{/if}>
 
         <!--顯示設定-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <div class="form-check form-check-inline checkbox-inline">
                     <label class="form-check-label" for="ScheduleDisplay">

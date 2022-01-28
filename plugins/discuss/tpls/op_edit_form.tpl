@@ -23,20 +23,20 @@
             <{$cate_menu_form}>
 
             <!--標題-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <div class="col-sm-12">
                     <input type="text" name="DiscussTitle" value="<{$DiscussTitle}>" id="DiscussTitle" class="form-control validate[required]" placeholder="<{$smarty.const._MD_TCW_DISCUSSTITLE}>">
                 </div>
             </div>
 
             <!--內容-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <div class="col-sm-12">
                     <textarea name="DiscussContent" class="form-control" rows=15 id="DiscussContent" placehold="<{$smarty.const._MD_TCW_DISCUSSCONTENT}>"><{$DiscussContent}></textarea>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <div class="col-sm-12">
                     <{foreach from=$smile_pics item=file}>
                         <img src="<{$xoops_url}>/modules/tad_web/plugins/discuss/smiles/<{$file}>" alt="<{$file}>" onClick="typeInTextarea('DiscussContent','[<{$file}>]');" style="margin:1px;">
@@ -47,7 +47,7 @@
             <{$tags_form}>
 
             <!--相關附件-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_DISCUSS_FILES}>
                 </label>

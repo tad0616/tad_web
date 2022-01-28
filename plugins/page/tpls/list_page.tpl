@@ -14,7 +14,7 @@
         });
     </script>
 <{/if}>
-<h2 class="sr-only">Over View</h2>
+<h2 class="sr-only visually-hidden">Over View</h2>
 <{if $bc.main_data}>
     <{foreach from=$bc.cate_arr item=cate}>
         <{assign var="cid" value=$cate.CateID}>
@@ -37,8 +37,8 @@
                             <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
                             <{*if $page.isCanEdit*}>
                             <{if ($WebID && $isMyWeb) || $isAdmin || ($page.cate.CateID && $page.cate.CateID == $smarty.session.isAssistant.page)}>
-                                <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                                <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                                <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                                <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                             <{/if}>
                         </li>
                     <{/foreach}>

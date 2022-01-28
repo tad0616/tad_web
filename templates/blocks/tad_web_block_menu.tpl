@@ -24,7 +24,7 @@
 
         <div class="my-border">
         <form action="<{$xoops_url}>/user.php" method="post" role="form" id="xoops_login" class="form-horizontal">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label" for="uname">
                     <{$smarty.const._MB_TCW_ID}>
                 </label>
@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label" for="pass">
                     <{$smarty.const._MB_TCW_PASSWD}>
                 </label>
@@ -42,10 +42,10 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                 </label>
-                <div class="col-md-8">
+                <div class="col-md-8 d-grid gap-2">
                     <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
                     <input type="hidden" name="rememberme" value="On">
                     <input type="hidden" name="op" value="login">
@@ -55,7 +55,7 @@
         </form>
 
         <form action="aboutus.php" method="post" enctype="multipart/form-data" role="form" id="tad_web_login" class="form-horizontal">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MB_TCW_MEM_UNAME}>
                 </label>
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MB_TCW_MEM_PASSWD}>
                 </label>
@@ -73,10 +73,10 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                 </label>
-                <div class="col-md-8">
+                <div class="col-md-8 d-grid gap-2">
                     <input type="hidden" name="WebID" value="<{$WebID}>">
                     <input type="hidden" name="op" value="mem_login">
                     <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MB_TCW_LOGIN}></button>
@@ -110,10 +110,10 @@
         <{$smarty.const._MD_TCW_HELLO}>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 d-grid gap-2">
                 <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-<{$mini}> btn-warning btn-block"><{$smarty.const._MD_TCW_EXIT}></a>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-grid gap-2">
                 <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-<{$mini}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
             </div>
         </div>
@@ -157,7 +157,7 @@
                     <{$smarty.const._MB_TCW_WEB_BLOCK_CONFIG}>
                 </a>
                 <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$block.defaltWebID}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MB_TCW_BLOCK_ADD}>">
-                    <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MB_TCW_BLOCK_ADD}></span>
+                    <i class="fa fa-plus"></i><span class="sr-only visually-hidden"><{$smarty.const._MB_TCW_BLOCK_ADD}></span>
                 </a>
             </div>
         </div>
@@ -177,7 +177,7 @@
                             <td>
                                 <{if $plugin.setup=='1'}>
                                     <a href="<{$xoops_url}>/modules/tad_web/setup.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>&op=plugin_setup" title="<{$smarty.const._MB_TCW_SETUP}><{$plugin.short}>">
-                                        <i class="fa fa-wrench"></i><span class="sr-only"><{$smarty.const._MB_TCW_SETUP}><{$plugin.short}></span>
+                                        <i class="fa fa-wrench"></i><span class="sr-only visually-hidden"><{$smarty.const._MB_TCW_SETUP}><{$plugin.short}></span>
                                     </a>
                                 <{/if}>
                             </td>
@@ -185,7 +185,7 @@
                             <td>
                                 <{if $plugin.add=='1'}>
                                     <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MB_TCW_ADD}><{$plugin.short}>">
-                                        <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MB_TCW_ADD}><{$plugin.short}></span>
+                                        <i class="fa fa-plus"></i><span class="sr-only visually-hidden"><{$smarty.const._MB_TCW_ADD}><{$plugin.short}></span>
                                     </a>
                                 <{/if}>
                             </td>
@@ -193,7 +193,7 @@
                             <td>
                                 <{if $plugin.cate=='1'}>
                                     <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>&table=<{$plugin.cate_table}>"  title="<{$plugin.short}><{$smarty.const._MB_TCW_CATE_TOOLS}>">
-                                        <i class="fa fa-folder-open"></i><span class="sr-only"><{$smarty.const._MB_TCW_CATE_TOOLS}></span>
+                                        <i class="fa fa-folder-open"></i><span class="sr-only visually-hidden"><{$smarty.const._MB_TCW_CATE_TOOLS}></span>
                                     </a>
                                 <{/if}>
                             </td>
@@ -220,11 +220,13 @@
 
     <{/if}>
 
-    <{if $block.closed_webs}>
-        <{foreach from=$block.closed_webs item=web}>
-            <a href="<{$web.url}>" class="btn btn-secondary btn-block"><{$smarty.const._MB_TCW_ENABLE}> <{$web.name}></a>
-        <{/foreach}>
-    <{/if}>
+    <div class="d-grid gap-2">
+        <{if $block.closed_webs}>
+            <{foreach from=$block.closed_webs item=web}>
+                <a href="<{$web.url}>" class="btn btn-secondary btn-block"><{$smarty.const._MB_TCW_ENABLE}> <{$web.name}></a>
+            <{/foreach}>
+        <{/if}>
 
-    <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+        <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+    </div>
 <{/if}>

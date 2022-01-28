@@ -20,7 +20,7 @@
                 <div style="font-size: 2em;"><{$work.MemName}> @ <{$work.UploadDate}></div>
             </div>
             <div class="col-md-6">
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$work.MemName}><{$smarty.const._MD_TCW_WORKS_WORKS_SCORE}>
                     </label>
