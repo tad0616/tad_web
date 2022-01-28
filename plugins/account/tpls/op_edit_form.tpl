@@ -8,7 +8,7 @@
         <{$cate_menu_form}>
 
         <!--帳目日期-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_ACCOUNT_DATE}>
             </label>
@@ -24,7 +24,7 @@
 
         <div class="row">
             <div class="col-md-5">
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <!--種類-->
                     <label class="col-md-5 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_ACCOUNT_MONEY}>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <!--金額-->
                     <label class="col-md-5 col-form-label text-sm-right control-label">
                     </label>
@@ -62,7 +62,7 @@
         </div>
 
         <!--上傳圖檔-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_ACCOUNT_UPLOAD}>
             </label>

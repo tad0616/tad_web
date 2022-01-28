@@ -4,7 +4,7 @@
             <h3><{$smarty.const._MD_TCW_WEB_TOOLS}></h3>
             <{$cate_menu}>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_WEB_NAME_SETUP}>
                 </label>
@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_UPDATE_MY_NAME}>
                 </label>
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_UPLOAD_MY_PHOTO}>
                 </label>
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_OTHER_CLASS_SETUP}>
                 </label>

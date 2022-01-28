@@ -59,7 +59,7 @@
     </table>
 
 
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <div class="col-md-12 text-center">
         <input type="hidden" name="ScheduleID" value="<{$ScheduleID}>">
         <input type="hidden" name="WebID" value="<{$WebID}>">

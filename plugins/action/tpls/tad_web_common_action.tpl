@@ -16,7 +16,7 @@
             <div style="width: 156px; height: 260px; float:left; margin: 5px 2px; overflow: hidden;">
                 <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
                     <div style="width: 150px; height: 160px; background-color: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> ; border:1px dotted green; margin: 0px auto;">
-                        <div style="width: 140px; height: 140px; background: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> url('<{$act.ActionPic}>') center center no-repeat; border:8px solid <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}>; margin: 0px auto;background-size:cover;"><span class="sr-only"><{$act.ActionID}></span>
+                        <div style="width: 140px; height: 140px; background: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> url('<{$act.ActionPic}>') center center no-repeat; border:8px solid <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}>; margin: 0px auto;background-size:cover;"><span class="sr-only visually-hidden"><{$act.ActionID}></span>
                         </div>
                     </div>
                 </a>
@@ -24,8 +24,8 @@
                     <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'><{$act.ActionName}></a>
                     <{*if $act.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($act.cate.CateID && $act.cate.CateID == $smarty.session.isAssistant.act)}>
-                        <a href="javascript:delete_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                        <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                        <a href="javascript:delete_action_func(<{$act.ActionID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$act.ActionID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </div>
                 <{if $web_display_mode=="index" or $web_display_mode=="index_plugin"}>

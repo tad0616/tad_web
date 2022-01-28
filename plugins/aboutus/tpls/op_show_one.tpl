@@ -264,7 +264,7 @@
 
 
 <{if $isMyWeb}>
-    <div class="text-right">
+    <div class="text-right text-end">
         <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=new_class" class="btn btn-primary"><{$add_class}></a>
         <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-warning"><{$class_setup}></a>
     </div>

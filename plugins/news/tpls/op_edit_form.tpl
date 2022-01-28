@@ -8,7 +8,7 @@
         <{$cate_menu_form}>
 
         <!--標題-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <input name="NewsTitle" id="NewsTitle" class="validate[required] form-control" type="text" value="<{$NewsTitle}>" placeholder="<{$smarty.const._MD_TCW_NEWSTITLE}>">
             </div>
@@ -16,7 +16,7 @@
 
 
         <!--內容-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <{$NewsContent_editor}>
             </div>
@@ -24,7 +24,7 @@
 
 
         <!--相關連結-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_NEWSURL}>
             </label>
@@ -34,7 +34,7 @@
         </div>
 
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <!--發布時間-->
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_DISCUSSDATE}>
@@ -57,7 +57,7 @@
         <{$tags_form}>
 
         <!--相關附件-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_NEWS_FILES}>
             </label>

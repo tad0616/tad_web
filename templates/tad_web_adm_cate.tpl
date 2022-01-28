@@ -5,7 +5,7 @@
 
         <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
             <!--分類名稱-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-1 col-form-label text-sm-right control-label">
                     <{$smarty.const._MA_TADWEB_CATENAME}>
                 </label>

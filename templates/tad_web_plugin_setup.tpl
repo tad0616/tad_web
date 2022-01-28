@@ -23,7 +23,7 @@
     <form action="setup.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <hr>
             <{foreach from=$plugin_setup item=setup}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$setup.text}>
                     </label>

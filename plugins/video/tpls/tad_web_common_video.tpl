@@ -61,8 +61,8 @@
                             <{*if $video.isMyWeb or $video.isAssistant*}>
                             <{*if $video.isCanEdit*}>
                             <{if ($WebID && $isMyWeb) || $isAdmin || ($video.cate.CateID && $video.cate.CateID == $smarty.session.isAssistant.video)}>
-                                <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only">delete</span></a>
-                                <a href="video.php?WebID=<{$video.WebID}>&op=edit_form&VideoID=<{$video.VideoID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a>
+                                <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                                <a href="video.php?WebID=<{$video.WebID}>&op=edit_form&VideoID=<{$video.VideoID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                             <{/if}>
                         </p>
                         <p style="line-height: 1.6;"><{$video.VideoDesc}></p>

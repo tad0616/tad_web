@@ -138,11 +138,13 @@
                     </span>
                 </div>
                 <div class="col-md-4">
-                    <{if $work.mem_upload_content.UploadDate!=""}>
-                        <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
-                    <{else}>
-                        <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_NOW}></a>
-                    <{/if}>
+                    <div class="d-grid gap-2">
+                        <{if $work.mem_upload_content.UploadDate!=""}>
+                            <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
+                        <{else}>
+                            <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_NOW}></a>
+                        <{/if}>
+                    </div>
                 </div>
             </div>
 

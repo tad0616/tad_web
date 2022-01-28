@@ -83,6 +83,10 @@ class tad_web_action
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.ActionID desc";
         } else {
+            if (empty($this->WebID)) {
+                return;
+            }
+
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_action') . ' as a
             join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
@@ -190,7 +194,6 @@ class tad_web_action
             redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-
         //檢查權限
         $power = $this->Power->check_power('read', 'ActionID', $ActionID);
         if (!$power) {
@@ -218,7 +221,6 @@ class tad_web_action
         } else {
             $this->add_counter($ActionID);
         }
-
 
         $TadUpFiles->set_col('ActionID', $ActionID);
         $TadUpFiles->set_var('other_css', 'margin:6px;');

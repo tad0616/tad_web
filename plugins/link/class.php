@@ -79,6 +79,10 @@ class tad_web_link
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.LinkID desc";
         } else {
+            if (empty($this->WebID)) {
+                return;
+            }
+
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_link') . ' as a
             left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID

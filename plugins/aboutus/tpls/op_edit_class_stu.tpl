@@ -3,7 +3,7 @@
     <{$edit_student}>
 </h3>
 <{if $students}>
-    <div class="text-right" style="margin: 30px 0px;">
+    <div class="text-right text-end" style="margin: 30px 0px;">
         <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_stu" class="btn btn-primary"><{$add_stud}></a>
     </div>
     <table class="table table-striped table-bordered table-hover table-sm">

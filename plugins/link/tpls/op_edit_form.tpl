@@ -30,7 +30,7 @@
         <{$cate_menu_form}>
 
         <!--網站連結-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_LINKURL}>
             </label>
@@ -43,7 +43,7 @@
         </div>
 
         <!--網站名稱-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_LINKTITLE}>
             </label>
@@ -53,7 +53,7 @@
         </div>
 
         <!--說明-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_LINKDESC}>
             </label>

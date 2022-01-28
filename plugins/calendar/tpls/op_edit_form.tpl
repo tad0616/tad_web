@@ -5,7 +5,7 @@
     <form action="calendar.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
 
         <!--活動日期-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_CALENDARDATE}>
             </label>
@@ -24,7 +24,7 @@
 
 
         <!--全校活動-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-10">
                 <div class="form-check form-check-inline checkbox-inline">
                     <label class="form-check-label" for="CalendarType">

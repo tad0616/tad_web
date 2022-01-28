@@ -80,6 +80,10 @@ class tad_web_homework
             where  b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and a.HomeworkPostDate <= '{$now}' $andCounty $andCity $andSchoolName
             order by a.toCal desc, a.HomeworkPostDate desc";
         } else {
+            if (empty($this->WebID)) {
+                return;
+            }
+
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_homework') . ' as a
             left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID

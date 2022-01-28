@@ -7,14 +7,14 @@
         <{$cate_menu_form}>
 
         <!--頁面名稱-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <input type="text" name="PageTitle" value="<{$PageTitle}>" id="PageTitle" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_PAGETITLE}>">
             </div>
         </div>
 
         <!--頁面說明-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <{$PageContent_editor}>
             </div>
@@ -23,7 +23,7 @@
         <{$tags_form}>
 
         <!--樣式設定-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_PAGECSS}>
             </label>
@@ -34,7 +34,7 @@
         </div>
 
         <!--上傳圖檔-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_PAGE_UPLOAD}>
             </label>

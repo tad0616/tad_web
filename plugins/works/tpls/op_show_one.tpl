@@ -21,7 +21,7 @@
 <{if $show_mem_upload_form}>
     <form action="works.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <!--上傳檔案-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_WORKS_ADD}>
             </label>
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_WORKS_DESCRIPTION}>
             </label>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_WORKS_UPLOADED_WORKS}>
             </label>
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_WORKS_AUTHOR}>
             </label>
@@ -71,7 +71,7 @@
 
 
 <{if $isMyWeb}>
-    <div class="text-right" style="margin: 30px 0px;">
+    <div class="text-right text-end" style="margin: 30px 0px;">
         <a href="javascript:delete_works_func(<{$WorksID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
         <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
         <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$WorksID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>

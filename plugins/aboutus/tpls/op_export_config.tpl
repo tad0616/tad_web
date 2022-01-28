@@ -1,6 +1,6 @@
 <h2><{$smarty.const._MD_TCW_DISCUSS_EXPORT_SETTINGS}></h2>
 <form action="aboutus.php" method="post" class="form-horizontal" role="form">
-    <div class="form-group row">
+    <div class="form-group row mb-3">
         <label class="col-sm-2 col-form-label text-sm-right control-label">
             <{$smarty.const._MD_TCW_DISCUSS_SELECT_EXPORT_CLASSES}>
         </label>
@@ -14,7 +14,7 @@
     </div>
 
     <{foreach from=$config_plugin_arr item=plugin}>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-sm-2 col-form-label text-sm-right control-label">
                 <{$plugin.title}>
             </label>

@@ -30,7 +30,7 @@
         <{$cate_menu_form}>
 
         <!--影片網址-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-10">
                 <input type="text" name="Youtube" value="<{$Youtube}>" id="Youtube" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_VIDEOYOUTUBE}>">
             </div>
@@ -41,7 +41,7 @@
 
 
         <!--影片名稱-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <input type="text" name="VideoName" value="<{$VideoName}>" id="VideoName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_VIDEONAME}>">
             </div>
@@ -49,7 +49,7 @@
 
 
         <!--影片說明-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <textarea name="VideoDesc" rows=4 id="VideoDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_VIDEODESC}>"><{$VideoDesc}></textarea>
             </div>

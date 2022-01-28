@@ -120,7 +120,7 @@ function array2form($form_arr = [], $config = [])
     }
     $form_code = '';
     foreach ($form_arr as $config_name => $form) {
-        $form_code .= '<div class="form-group row">';
+        $form_code .= '<div class="form-group row mb-3">';
         $form_code .= '
         <label class="col-sm-3 col-form-label text-sm-right control-label">
             ' . $form['label'] . '

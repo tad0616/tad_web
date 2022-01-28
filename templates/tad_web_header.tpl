@@ -43,7 +43,7 @@
                 }
             });
         </script>
-        <a href="index.php?WebID=<{$WebID}>"><img src="<{$xoops_url}>/uploads/tad_web/<{$WebID}>/header.png" alt="Web Title:<{$WebTitle}>" id="head_bg" class="img-rounded img-fluid img-resopnsive" style="margin-bottom: 10px;"><span class="sr-only"><{$WebTitle}></span></a>
+        <a href="index.php?WebID=<{$WebID}>"><img src="<{$xoops_url}>/uploads/tad_web/<{$WebID}>/header.png" alt="Web Title:<{$WebTitle}>" id="head_bg" class="img-rounded img-fluid img-resopnsive" style="margin-bottom: 10px;"><span class="sr-only visually-hidden"><{$WebTitle}></span></a>
     <{/if}>
 <{/if}>
 

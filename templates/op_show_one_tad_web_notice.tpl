@@ -6,7 +6,7 @@
 
 <!--通知內容-->
 <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-md-3 text-right text-end">
         <{$smarty.const._MA_TADWEB_NOTICECONTENT}>
     </label>
     <div class="col-md-9">
@@ -18,7 +18,7 @@
 
 <!--通知網站-->
 <!--div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-md-3 text-right text-end">
         <{$smarty.const._MA_TADWEB_NOTICEWEB}>
     </label>
     <div class="col-md-9">
@@ -30,7 +30,7 @@
 
 <!--通知對象-->
 <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-md-3 text-right text-end">
         <{$smarty.const._MA_TADWEB_NOTICEWHO}>
     </label>
     <div class="col-md-9">
@@ -40,7 +40,7 @@
 
 <!--通知日期-->
 <div class="row">
-    <label class="col-md-3 text-right">
+    <label class="col-md-3 text-right text-end">
         <{$smarty.const._MA_TADWEB_NOTICEDATE}>
     </label>
     <div class="col-md-9">
@@ -48,7 +48,7 @@
     </div>
 </div>
 
-<div class="text-right">
+<div class="text-right text-end">
     <{if $isAdmin}>
         <a href="javascript:delete_tad_web_notice_func(<{$NoticeID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
         <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form&NoticeID=<{$NoticeID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>

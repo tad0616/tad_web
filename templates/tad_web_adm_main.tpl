@@ -1,7 +1,7 @@
 <div class="container-fluid mb-5">
     <{if $op=="tad_web_form"}>
         <form action="main.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-sm-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MA_TCW_TEAMNAME}>
                 </label>
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <{if $cate_menu}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-sm-2 col-form-label text-sm-right control-label">
                         <{$smarty.const._MA_TADWEB_CATENAME}>
                     </label>
@@ -20,7 +20,7 @@
                 </div>
             <{/if}>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-sm-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MA_TCW_TEAMTITLE}>
                 </label>
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-sm-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MA_TCW_TEAMLEADER}>
                 </label>
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-sm-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MA_TCW_TEAMENABLE}>
                 </label>

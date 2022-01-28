@@ -32,7 +32,7 @@
         <{$cate_menu_form}>
 
         <{if $fsn==""}>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_FILES_METHOD}>
                 </label>
@@ -52,7 +52,7 @@
         <{/if}>
 
         <div id="link_file">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_FILES_LINK}>
                 </label>
@@ -60,7 +60,7 @@
                     <input type="text" name="file_link" class="form-control validate[required , custom[url]]" value="<{$file_link}>" placeholder="<{$smarty.const._MD_TCW_FILES_LINK_DESC}>">
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_FILES_DESC}>
                 </label>
@@ -73,7 +73,7 @@
         <{$tags_form}>
 
         <div id="upload_file" style="display: none;">
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_FILES_UPLOAD}>
                 </label>

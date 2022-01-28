@@ -22,7 +22,7 @@
 
     <h1 class="text-center"><{$block.BlockTitle}> <small><{$block.BlockName}></small></h2>
     <form action="block.php" method="post" enctype="multipart/form-data" role="form" class="form-horizontal myForm">
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_TITLE}>
             </label>
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_SHOW_TITLE}>
             </label>
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_ENABLE}>
             </label>
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-3 col-form-label text-sm-right control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_POSITION}>
             </label>
@@ -97,7 +97,7 @@
         <{/if}>
 
         <{if $block.plugin=="custom" or $block.plugin=="share" or$op=="add_block"}>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-3 col-form-label text-sm-right control-label ">
                     <{$smarty.const._MD_TCW_BLOCK_CONTENT}>
                     <{$block.config.content_type}>
@@ -116,7 +116,7 @@
             </div>
 
             <div id="js_editor" <{if $block.config.content_type!="js"}>style="display:none;"<{/if}>>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label ">
                         <{$smarty.const._MD_TCW_BLOCK_JS_DESC}>
                     </label>
@@ -127,7 +127,7 @@
             </div>
 
             <div id="iframe_editor" <{if $block.config.content_type!="iframe"}>style="display:none;"<{/if}>>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label ">
                         <{$smarty.const._MD_TCW_BLOCK_IFRAME_DESC}>
                     </label>
@@ -140,7 +140,7 @@
             <{if $block.ShareFrom > 0 or $_IS_EZCLASS=='1'}>
                 <input type="hidden" name="BlockShare" value="0">
             <{else}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label ">
                         <{$smarty.const._MD_TCW_BLOCK_SHARE}>
                     </label>
@@ -244,7 +244,7 @@
 
                         if(position!="uninstall"){
                             $("#"+block_id).css('display','');
-                            $("#"+block_id).append('<span id="blktool_'+block_id+'"><a href="block.php?WebID=<{$WebID}>&op=config&plugin='+new_block_plugin+'&BlockID='+new_block_id+'" class="pull-right text-danger"><i class="fa fa-pencil"></i><span class="sr-only">edit</span></a></span>');
+                            $("#"+block_id).append('<span id="blktool_'+block_id+'"><a href="block.php?WebID=<{$WebID}>&op=config&plugin='+new_block_plugin+'&BlockID='+new_block_id+'" class="pull-right float-right pull-end text-danger"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a></span>');
                             $("#"+block_id+"_icon").attr('src','images/show1.gif');
 
                             if(chang_id){
@@ -293,7 +293,7 @@
         <div class="col-md-6">
             <h2><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h2>
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-right text-end">
             <a href="block.php?WebID=<{$WebID}>&op=add_block" class="btn btn-primary"><{$smarty.const._MD_TCW_BLOCK_ADD}></a>
         </div>
     </div>
@@ -433,7 +433,7 @@
     <h2><{$smarty.const._MD_TCW_BLOCK_TITLE_PIC}></h2>
 
     <form action="block.php" method="post" enctype="multipart/form-data" role="form">
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_COLOR}>
             </label>
@@ -448,7 +448,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_SIZE}>
             </label>

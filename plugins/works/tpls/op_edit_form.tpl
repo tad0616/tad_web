@@ -21,14 +21,14 @@
         <{$cate_menu_form}>
 
         <!--作品名稱-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <input type="text" name="WorkName" value="<{$WorkName}>" id="WorkName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_NAME}>">
             </div>
         </div>
 
         <!--作品說明-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <div class="col-md-12">
                 <textarea name="WorkDesc"  rows=4 id="WorkDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_DESC}>"><{$WorkDesc}></textarea>
             </div>
@@ -36,7 +36,7 @@
 
 
         <!--相關附檔-->
-        <div class="form-group row" id="works_attachments">
+        <div class="form-group row mb-3" id="works_attachments">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_WORKS_UPLOAD}>
             </label>
@@ -46,7 +46,7 @@
         </div>
 
         <!--上傳方式-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label">
                 <{$smarty.const._MD_TCW_WORKS_KIND}>
             </label>
@@ -79,7 +79,7 @@
         </div>
 
         <!--作品日期-->
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right control-label" id="works_date_label">
                 <{if $WorksKind!=""}>
                     <{$smarty.const._MD_TCW_WORKS_END_DATE}>
@@ -96,7 +96,7 @@
 
         <!--上傳學生作品-->
         <{if $WorksKind==""}>
-            <div class="form-group row" id="works_uploader">
+            <div class="form-group row mb-3" id="works_uploader">
                 <label class="col-md-2 col-form-label text-sm-right control-label">
                     <{$smarty.const._MD_TCW_WORKS_ADD}>
                 </label>

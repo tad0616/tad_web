@@ -109,10 +109,12 @@
                 <{/foreach}>
             </table>
 
-            <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
-                <i class="fa fa-check-square-o"></i>
-                <{$smarty.const._MD_TCW_EXIT}>
-            </a>
+            <div class="d-grid gap-2">
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
+                    <i class="fa fa-check-square-o"></i>
+                    <{$smarty.const._MD_TCW_EXIT}>
+                </a>
+            </div>
         <{elseif $user_kind=="parent"}>
             <div class="btn-group">
                 <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$LoginCateID}>&ParentID=<{$LoginParentID}>&op=show_parent" class="btn btn-info">
@@ -150,10 +152,12 @@
                 <{/foreach}>
             </table>
 
-            <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=parent_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
-                <i class="fa fa-check-square-o"></i>
-                <{$smarty.const._MD_TCW_EXIT}>
-            </a>
+            <div class="d-grid gap-2">
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=parent_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
+                    <i class="fa fa-check-square-o"></i>
+                    <{$smarty.const._MD_TCW_EXIT}>
+                </a>
+            </div>
         <{else}>
 
             <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/bootstrap-progressbar/bootstrap-progressbar.js"></script>
@@ -182,7 +186,7 @@
                         <{$smarty.const._MD_TCW_WEB_BLOCK_CONFIG}>
                     </a>
                     <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MD_TCW_BLOCK_ADD}>">
-                        <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MD_TCW_BLOCK_ADD}></span>
+                        <i class="fa fa-plus"></i><span class="sr-only visually-hidden"><{$smarty.const._MD_TCW_BLOCK_ADD}></span>
                     </a>
                 </div>
 
@@ -201,28 +205,28 @@
 
                                     <td>
                                         <a href="<{$xoops_url}>/modules/tad_web/setup.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>&op=plugin_setup" title="<{$smarty.const._MD_TCW_SETUP}><{$plugin.short}>">
-                                        <i class="fa fa-wrench"></i><span class="sr-only"><{$smarty.const._MD_TCW_SETUP}><{$plugin.short}></span>
+                                        <i class="fa fa-wrench"></i><span class="sr-only visually-hidden"><{$smarty.const._MD_TCW_SETUP}><{$plugin.short}></span>
                                         </a>
                                     </td>
 
                                     <td>
                                         <{if $plugin.add=='1'}>
                                             <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>&op=edit_form" title="<{$smarty.const._MD_TCW_ADD}><{$plugin.short}>">
-                                                <i class="fa fa-plus"></i><span class="sr-only"><{$smarty.const._MD_TCW_ADD}><{$plugin.short}></span>
+                                                <i class="fa fa-plus"></i><span class="sr-only visually-hidden"><{$smarty.const._MD_TCW_ADD}><{$plugin.short}></span>
                                             </a>
                                         <{/if}>
                                     </td>
                                     <td>
                                         <{if $plugin.cate=='1'}>
                                             <a href="<{$xoops_url}>/modules/tad_web/cate.php?WebID=<{$plugin.WebID}>&ColName=<{$plugin.dirname}>&table=<{$plugin.cate_table}>"  title="<{$plugin.short}><{$smarty.const._MD_TCW_CATE_TOOLS}>">
-                                                <i class="fa fa-folder-open"></i><span class="sr-only"><{$plugin.short}><{$smarty.const._MD_TCW_CATE_TOOLS}></span>
+                                                <i class="fa fa-folder-open"></i><span class="sr-only visually-hidden"><{$plugin.short}><{$smarty.const._MD_TCW_CATE_TOOLS}></span>
                                             </a>
                                         <{/if}>
                                     </td>
                                     <td>
                                         <{if $plugin.assistant=='1'}>
                                             <a href="<{$xoops_url}>/modules/tad_web/assistant.php?WebID=<{$plugin.WebID}>&plugin=<{$plugin.dirname}>"  title="<{$plugin.short}><{$smarty.const._MD_TCW_CATE_ASSISTANT}>">
-                                                <i class="fa fa-male"></i><span class="sr-only"><{$plugin.short}><{$smarty.const._MD_TCW_CATE_ASSISTANT}></span>
+                                                <i class="fa fa-male"></i><span class="sr-only visually-hidden"><{$plugin.short}><{$smarty.const._MD_TCW_CATE_ASSISTANT}></span>
                                             </a>
                                         <{/if}>
                                     </td>
@@ -249,13 +253,15 @@
 
             <{/if}>
 
-            <{if $closed_webs}>
-                <{foreach from=$closed_webs item=web}>
-                    <a href="<{$web.url}>" class="btn btn-secondary btn-block"><{$smarty.const._MD_TCW_ENABLE}> <{$web.name}></a>
-                <{/foreach}>
-            <{/if}>
+            <div class="d-grid gap-2">
+                <{if $closed_webs}>
+                    <{foreach from=$closed_webs item=web}>
+                        <a href="<{$web.url}>" class="btn btn-secondary btn-block"><{$smarty.const._MD_TCW_ENABLE}> <{$web.name}></a>
+                    <{/foreach}>
+                <{/if}>
 
-            <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+            </div>
         <{/if}>
     </div>
 </nav>

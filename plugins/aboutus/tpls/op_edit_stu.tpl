@@ -8,7 +8,7 @@
     <div class="col-md-8">
         <form action="aboutus.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
             <!--學生相片-->
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right control-label">
                     <{$show_files}>
                 </label>
@@ -25,7 +25,7 @@
             <{else}>
                 <div class="alert alert-info">
                     <!--學生姓名-->
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-3 col-form-label text-sm-right control-label">
                             <{$smarty.const._MD_TCW_MEM_NAME}>
                         </label>
@@ -35,7 +35,7 @@
                     </div>
 
                     <!--性別-->
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-3 col-form-label text-sm-right control-label">
                             <{$smarty.const._MD_TCW_MEM_SEX}>
                         </label>
@@ -48,7 +48,7 @@
                     </div>
 
                     <!--是否還在班上-->
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-3 col-form-label text-sm-right control-label">
                             <{$smarty.const._MD_TCW_MEM_STATUS}>
                         </label>
@@ -64,7 +64,7 @@
 
             <!--座號-->
             <{if 'MemNum'|in_array:$mem_column}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_NUM}>
                     </label>
@@ -80,7 +80,7 @@
 
             <!--學號-->
             <{if 'MemUnicode'|in_array:$mem_column}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_UNICODE}>
                     </label>
@@ -96,7 +96,7 @@
 
             <!--生日-->
             <{if 'MemBirthday'|in_array:$mem_column}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_BIRTHDAY}>
                     </label>
@@ -108,7 +108,7 @@
 
             <!--學生暱稱-->
             <{if 'MemNickName'|in_array:$mem_column}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_NICKNAME}>
                     </label>
@@ -120,7 +120,7 @@
 
             <!--專長-->
             <{if 'MemExpertises'|in_array:$mem_column}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_EXPERTISES}>
                     </label>
@@ -132,7 +132,7 @@
 
             <!--職稱-->
             <{if 'MemClassOrgan'|in_array:$mem_column}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_CLASSORGAN}>
                     </label>
@@ -144,7 +144,7 @@
 
             <!--自我介紹-->
             <{if 'AboutMem'|in_array:$mem_column}>
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_ABOUTME}>
                     </label>
@@ -156,7 +156,7 @@
 
             <div class="alert alert-warning">
                 <!--帳號-->
-                <div class="form-group row" >
+                <div class="form-group row mb-3" >
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_UNAME}>
                     </label>
@@ -166,7 +166,7 @@
                 </div>
 
                 <!--密碼-->
-                <div class="form-group row">
+                <div class="form-group row mb-3">
                     <label class="col-md-3 col-form-label text-sm-right control-label">
                         <{$smarty.const._MD_TCW_MEM_PASSWD}>
                     </label>

@@ -83,7 +83,7 @@
                 </select>
 
                 <form action="<{$xoops_url}>/user.php" method="post" role="form" id="xoops_login" <{if $openid=='1'}>style="display: none;"<{/if}>>
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right control-label" for="uname">
                             <{$smarty.const._MD_TCW_ID}>
                         </label>
@@ -92,7 +92,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right control-label" for="pass">
                             <{$smarty.const._MD_TCW_PASSWD}>
                         </label>
@@ -101,10 +101,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right control-label">
                         </label>
-                        <div class="col-md-8">
+                        <div class="col-md-8 d-grid gap-2">
                             <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
                             <input type="hidden" name="rememberme" value="On">
                             <input type="hidden" name="op" value="login">
@@ -115,7 +115,7 @@
                 </form>
 
                 <form action="aboutus.php" method="post" enctype="multipart/form-data" role="form" id="student_login" style="display: none;">
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right control-label">
                             <{$student_title}><{$smarty.const._MD_TCW_ID}>
                         </label>
@@ -123,7 +123,7 @@
                             <input class="form-control" type="text" name="MemUname" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right control-label">
                             <{$student_title}><{$smarty.const._MD_TCW_PASSWD}>
                         </label>
@@ -132,10 +132,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right control-label">
                         </label>
-                        <div class="col-md-8">
+                        <div class="col-md-8 d-grid gap-2">
                             <input type="hidden" name="WebID" value="<{$WebID}>">
                             <input type="hidden" name="op" value="mem_login">
                             <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
@@ -144,15 +144,15 @@
                 </form>
 
                 <form action="aboutus.php" method="post" enctype="multipart/form-data" role="form" id="parent_login" style="display: none;">
-                    <div class="form-group row">
-                        <label class="sr-only">
+                    <div class="form-group row mb-3">
+                        <label class="sr-only visually-hidden">
                         </label>
                         <div class="col-md-12 controls">
                             <{$login_cate_menu}>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="sr-only">
+                    <div class="form-group row mb-3">
+                        <label class="sr-only visually-hidden">
                         </label>
                         <div class="col-md-12 controls">
                             <select name='MemID' id='select_mems' title='select mems' class='form-control' style="display:none;"></select>
@@ -160,7 +160,7 @@
                     </div>
 
                     <div id="parent_login_div" style="display:none;">
-                        <div class="form-group row">
+                        <div class="form-group row mb-3">
                             <label class="col-md-3 col-form-label text-sm-right control-label">
                                 <{$smarty.const._MD_TCW_PASSWD}>
                             </label>
@@ -169,10 +169,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="sr-only">
+                        <div class="form-group row mb-3">
+                            <label class="sr-only visually-hidden">
                             </label>
-                            <div class="col-md-12">
+                            <div class="col-md-12 d-grid gap-2">
                                 <input type="hidden" name="WebID" value="<{$WebID}>">
                                 <input type="hidden" name="op" value="parent_login">
                                 <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
