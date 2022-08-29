@@ -9,7 +9,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 //首頁
 function ClassHome($WebID = '')
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl, $MyWebs, $web_all_config;
+    global $xoopsDB, $xoopsTpl, $MyWebs, $web_all_config;
 
     $web = get_tad_web($WebID);
 
@@ -94,6 +94,13 @@ $NoticeID = Request::getInt('NoticeID');
 common_template($WebID, $web_all_config);
 
 switch ($op) {
+
+    //重新計算空間
+    case 'check_quota':
+        check_quota($WebID);
+        header("location: index.php?WebID={$WebID}");
+        exit;
+
     //重新產生畫面
     case 'clear_block_cache':
         clear_block_cache($WebID);

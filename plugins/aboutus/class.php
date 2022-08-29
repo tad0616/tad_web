@@ -37,7 +37,7 @@ class tad_web_aboutus
             $and_city = empty($def_city) ? '' : "and b.city='{$def_city}'";
             $and_SchoolName = empty($def_SchoolName) ? '' : "and b.SchoolName='{$def_SchoolName}'";
 
-            $sql = 'select a.*,b.* from ' . $xoopsDB->prefix('tad_web') . ' as a left join ' . $xoopsDB->prefix('apply') . " as b on a.WebOwnerUid=b.uid where a.`WebEnable`='1' {$and_county} {$and_city} {$and_SchoolName} order by b.zip, {$list_web_order}";
+            $sql = 'select a.*,b.* from ' . $xoopsDB->prefix('tad_web') . ' as a join ' . $xoopsDB->prefix('apply') . " as b on a.WebOwnerUid=b.uid where a.`WebEnable`='1' {$and_county} {$and_city} {$and_SchoolName} order by b.zip, {$list_web_order}";
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             $total_web = 0;
             $all_webs = [];
@@ -103,7 +103,6 @@ class tad_web_aboutus
                 $xoopsTpl->assign('get_mode', 'all');
             }
 
-            // die(var_export($data));
             $xoopsTpl->assign('count', count($all_webs));
             $xoopsTpl->assign('web_version', 'all');
             $xoopsTpl->assign('data', $data);

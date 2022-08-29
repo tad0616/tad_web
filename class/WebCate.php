@@ -447,9 +447,14 @@ class WebCate
         } else {
             $table = $this->table;
         }
-        $sql = 'delete from `' . $xoopsDB->prefix($table) . "`
-        where `CateID` = '{$CateID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'select WebID, ColName  from `' . $xoopsDB->prefix($table) . "` where `CateID` = '{$CateID}'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (list($WebID, $ColName) = $xoopsDB->fetchRow($result)) {
+            require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$ColName}/class.php";
+            $plugin_name = "tad_web_{$ColName}";
+            $$plugin_name = new $plugin_name($WebID);
+            $$plugin_name->delete_all();
+        }
     }
 
     //取得各分類下的檔案數

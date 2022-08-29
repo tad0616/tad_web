@@ -3,7 +3,7 @@ $modversion = [];
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TCW_NAME;
-$modversion['version'] = 1.92;
+$modversion['version'] = 1.93;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author'] = _MI_TCW_AUTHOR;
 $modversion['credits'] = _MI_TCW_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname'] = basename(__DIR__);
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2022-01-28';
+$modversion['release_date'] = '2022-08-29';
 $modversion['module_website_url'] = 'https://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
@@ -61,13 +61,6 @@ $modversion['onUninstall'] = 'include/onUninstall.php';
 
 //---使用者主選單設定---//
 $modversion['hasMain'] = 1;
-
-// $i                             = 0;
-// $modversion['sub'][$i]['name'] = _MI_TCW_ABOUTUS;
-// $modversion['sub'][$i]['url']  = "aboutus.php";
-// $i++;
-// $modversion['sub'][$i]['name'] = _MI_TCW_NEWS;
-// $modversion['sub'][$i]['url']  = "news.php";
 
 //---樣板設定---//
 $i = 1;

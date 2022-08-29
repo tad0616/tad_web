@@ -382,7 +382,7 @@ function get_web_all_config($WebID = '')
 //儲存網站設定
 function save_web_config($ConfigName, $ConfigValue, $WebID)
 {
-    global $xoopsDB, $xoopsUser, $isMyWeb;
+    global $xoopsDB;
     // if (!empty($WebID) and !$isMyWeb) { //這樣後台會有問題
     //     return;
     // }
@@ -396,7 +396,7 @@ function save_web_config($ConfigName, $ConfigValue, $WebID)
     $sql = 'replace into ' . $xoopsDB->prefix('tad_web_config') . "
     (`ConfigName`, `ConfigValue`, `WebID`)
     values('{$ConfigName}' , '{$ConfigValue}', '{$WebID}')";
-    // die($sql);
+
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
@@ -795,6 +795,11 @@ function get_tad_web($WebID = '', $enable = false, $use_session = true)
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $data = $xoopsDB->fetchArray($result);
+    if (_IS_EZCLASS) {
+        $used_size = redis_do($WebID, 'get', '', 'used_size');
+        $data['used_size'] = $used_size;
+    }
+
     $_SESSION['tad_web'][$WebID] = $data;
 
     if ($enable and (empty($data))) {
@@ -1804,13 +1809,19 @@ function redis_do($WebID, $act = 'set', $plugin = '', $key = '', $value = '')
 {
     if (class_exists('Redis')) {
         $redis = new Redis();
-        $redis->connect('120.115.2.85', 6379);
+        // $redis->connect('120.115.2.85', 6379);
+        $redis->connect('127.0.0.1', 6379);
         $KEY = !empty($plugin) ? "$WebID:$plugin:$key" : "$WebID:$key";
+        if ($_GET['test'] == 1) {
+            echo "$KEY<br>";
+        }
+
         if ($act == 'set') {
             return $redis->set($KEY, $value);
         } elseif ($act == 'incr') {
             return $redis->incr($KEY);
         } else {
+
             return $redis->get($KEY);
         }
     }
