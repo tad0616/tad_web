@@ -216,7 +216,7 @@
         <div class="progress progress-striped">
             <div class="progress-bar progress-bar-<{$block.progress_color}>" role="progressbar" data-transitiongoal="<{$block.percentage}>"></div>
         </div>
-        <span title="<{$block.defaltWebID}>"><{$smarty.const._MB_TCW_USED_SPACE}></span><{$block.size}>MB/<{$block.quota}>MB (<{$block.percentage}>%)
+        <span title="<{$block.defaltWebID}>"><{$smarty.const._MB_TCW_USED_SPACE}></span><{$block.size}>MB/<{$block.quota}>MB (<a href="index.php?op=check_quota&WebID=<{$block.defaltWebID}>"><{$block.percentage}>%</a>)
 
     <{/if}>
 

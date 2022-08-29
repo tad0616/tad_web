@@ -29,8 +29,8 @@ define('_MI_TCW_BDESC2', '最新討論');
 define('_MI_TCW_BNAME3', '活動剪影');
 define('_MI_TCW_BDESC3', '活動剪影');
 
-define('_MI_TCW_BNAME4', '選單');
-define('_MI_TCW_BDESC4', '選單');
+define('_MI_TCW_BNAME4', '子網站新聞');
+define('_MI_TCW_BDESC4', '子網站新聞');
 
 define('_MI_TCW_WEB_MODE_TITLE', '模組首頁標題');
 define('_MI_TCW_WEB_MODE_DESC', '此模組首頁欲呈現的標題');

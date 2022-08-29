@@ -1,3 +1,16 @@
+<form action="disk.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal">
+    <div class="input-group">
+        <div class="input-group-prepend input-group-addon">
+            <span class="input-group-text">WebID</span>
+        </div>
+        <input type="text" name="WebID" class="form-control" placeholder="WebID">
+        <div class="input-group-append input-group-btn">
+            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SEARCH}></button>
+        </div>
+        <input type="hidden" name="op" value="<{$next_op}>">
+    </div>
+</form>
+
 <{if $op=="view_file"}>
     <h2><{$dir}></h2>
     <{$ztree_code}>
@@ -64,6 +77,8 @@
 
                         <td>
                             <a href="disk.php?op=view_file&WebID=<{$class.WebID}>"><{$class.disk_space}></a>
+                            <a href="disk.php?op=check_quota&WebID=<{$class.WebID}>"><i class="fa fa-refresh" aria-hidden="true"></i>
+                            </a>
                         </td>
 
                         <td>
@@ -77,8 +92,8 @@
             </table>
 
             <div class="text-center">
-                <input type="hidden" name="op" value="save_disk_setup">
-                <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+                <input type="hidden" name="g2p" value="<{$smarty.get.g2p}>">
+                <button type="submit" class="btn btn-primary" name="op" value="save_disk_setup"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
         <{$bar}>

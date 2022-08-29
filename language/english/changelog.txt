@@ -1,3 +1,9 @@
+Tad Web 1.9.3 (Released on 2022-08-29)
+====================================
+1. Add search WebID function to backend space management
+2. Add recalculate space function in the menu (at the percentage)
+3. Fix the problem that files can't be deleted when deleting all data in categories
+
 Tad Web 1.9.2 (Released on 2022-01-28)
 ====================================
 1. Fix the problem that the title image uploaded by itself is not displayed in the right proportion

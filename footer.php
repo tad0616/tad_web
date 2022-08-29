@@ -182,6 +182,10 @@ function tad_web_my_menu($defaltWebID)
             // if ($_GET['test'] == 1) {
             //     die($my_webs_data_file);
             // }
+            if ($_SESSION['tad_web_adm']) {
+                $MyWebID[$_GET['WebID']] = $_GET['WebID'];
+            }
+
             $AllMyWebID = implode("','", $MyWebID);
 
             $MyWebID = $_SESSION['tad_web_adm'] ? $_GET['WebID'] : $defaltWebID;
@@ -191,6 +195,11 @@ function tad_web_my_menu($defaltWebID)
                     $webs = get_json_file($my_webs_data_file);
                 } else {
                     $sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where WebID in ('{$AllMyWebID}') order by WebSort";
+
+                    // if ($_GET['test'] == 1) {
+                    //     echo "$sql<br>";
+                    // }
+
                     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     $i = $defalt_used_size = 0;
 
@@ -202,7 +211,13 @@ function tad_web_my_menu($defaltWebID)
                         $webs[$WebID]['title'] = $WebTitle;
                         $webs[$WebID]['WebID'] = $WebID;
                         $webs[$WebID]['name'] = $WebName;
-                        $webs[$WebID]['used_size'] = $used_size;
+
+                        if (_IS_EZCLASS) {
+                            $webs[$WebID]['used_size'] = redis_do($WebID, 'get', '', 'used_size');
+                        } else {
+                            $webs[$WebID]['used_size'] = $used_size;
+                        }
+
                         $webs[$WebID]['url'] = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
 
                         $i++;
