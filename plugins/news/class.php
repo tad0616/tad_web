@@ -28,7 +28,7 @@ class tad_web_news
     //最新消息
     public function list_all($CateID = '', $limit = null, $mode = 'assign', $tag = '')
     {
-        global $xoopsDB, $xoopsTpl, $MyWebs, $isMyWeb, $plugin_menu_var;
+        global $xoopsDB, $xoopsTpl, $isMyWeb, $plugin_menu_var;
 
         $power = $this->Power->check_power("read", "CateID", $CateID, 'news');
         if (!$power) {
@@ -58,9 +58,10 @@ class tad_web_news
                 $andCateID = "and a.`CateID`='$CateID'";
                 $xoopsTpl->assign('NewsDefCateID', $CateID);
             }
+            $andEnable = $isMyWeb ? '' : "and a.`NewsEnable`='1'";
+        } else {
+            $andEnable = "and a.`NewsEnable`='1'";
         }
-
-        $andEnable = $isMyWeb ? '' : "and a.`NewsEnable`='1'";
 
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
