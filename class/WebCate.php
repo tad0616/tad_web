@@ -447,7 +447,7 @@ class WebCate
         } else {
             $table = $this->table;
         }
-        $sql = 'select WebID, ColName  from `' . $xoopsDB->prefix($table) . "` where `CateID` = '{$CateID}'";
+        $sql = 'select WebID, ColName  from `' . $xoopsDB->prefix('tad_web_cate') . "` where `CateID` = '{$CateID}'";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($WebID, $ColName) = $xoopsDB->fetchRow($result)) {
             require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$ColName}/class.php";
