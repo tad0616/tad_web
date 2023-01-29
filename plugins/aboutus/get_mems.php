@@ -9,7 +9,7 @@ $WebID = Request::getInt('WebID');
 $CateID = Request::getInt('CateID');
 $MemID = Request::getInt('MemID');
 $MemName = Request::getString('MemName');
-
+header('HTTP/1.1 200 OK');
 if ('get_reationship' === $op) {
     $sql = 'select Reationship from ' . $xoopsDB->prefix('tad_web_mem_parents') . " where  `MemID`='{$MemID}' and `ParentEnable`='1'";
     // die('<option>' . $sql . '</option>');

@@ -7,4 +7,5 @@ foreach ($_POST['LinkID'] as $LinkID) {
     $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
     $sort++;
 }
+header('HTTP/1.1 200 OK');
 echo _TAD_SORTED . '(' . date('Y-m-d H:i:s') . ')';
