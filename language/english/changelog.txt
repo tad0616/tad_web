@@ -1,3 +1,9 @@
+Tad Web 1.9.4 (Released on 2023-01-29)
+====================================
+1. Fix the situation that the website may not be deleted when it is deleted.
+2.Fix the problem that visitors will see the draft news in the block when the news is set as draft.
+
+
 Tad Web 1.9.3 (Released on 2022-08-29)
 ====================================
 1. Add search WebID function to backend space management

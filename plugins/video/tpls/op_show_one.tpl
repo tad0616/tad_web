@@ -13,7 +13,7 @@
     <{/if}>
 </ol>
 
-<div class="embed-responsive embed-responsive-4by3"><iframe title="show_one_video" class="embed-responsive-item" src="https://www.youtube.com/embed/<{$VideoPlace}>?feature=oembed" frameborder="0" allowfullscreen></iframe></div>
+<div class="embed-responsive embed-responsive-16by9 ratio ratio-4x3"><iframe title="show_one_video" class="embed-responsive-item" src="https://www.youtube.com/embed/<{$VideoPlace}>?feature=oembed" frameborder="0" allowfullscreen></iframe></div>
 
 <div style="line-height: 1.8; margin: 10px auto;">
     <{$VideoDesc}>
