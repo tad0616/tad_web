@@ -46,6 +46,13 @@ switch ($op) {
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
 
+    //重新擷取
+    case 're_get':
+        $tad_web_action->re_get($ActionID);
+        clear_block_cache($WebID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&ActionID={$ActionID}");
+        exit;
+
     //預設動作
     default:
         if (empty($ActionID)) {

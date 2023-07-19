@@ -2,6 +2,7 @@
 define('_MD_TCW_ACTION', 'Gallery');
 define('_MD_TCW_ACTION_ADD', 'Add Gallery');
 define('_MD_TCW_ACTION_SHORT', 'Gallery');
+define('_MD_TCW_ACTION_RE_GET', 'Retrieve');
 define('_MD_TCW_ACTIONID', 'Gallery ID');
 define('_MD_TCW_ACTIONNAME', 'Gallery Title');
 define('_MD_TCW_ACTIONDESC', 'Gallery Description');

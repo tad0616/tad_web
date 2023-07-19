@@ -422,6 +422,7 @@ class tad_web_action
 
         if ($gphoto_link != '') {
             require 'vendor/autoload.php';
+            require 'class/Crawler.php';
             $crawler = new Crawler();
             $album = $crawler->getAlbum($gphoto_link);
             foreach ($album['images'] as $photo) {
@@ -467,7 +468,7 @@ class tad_web_action
             '{$image_height}',
             '{$image_url}'
         )";
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__, true);
     }
 
     //更新tad_web_action某一筆資料
@@ -717,4 +718,35 @@ class tad_web_action
         }
         return $main_data;
     }
+
+    // 重新擷取
+    public function re_get($ActionID)
+    {
+        global $xoopsDB;
+
+        chk_self_web($this->WebID, $_SESSION['isAssistant']['action']);
+        get_quota($this->WebID);
+
+        if (empty($ActionID)) {
+            redirect_header($_SERVER['PHP_SELF'], 3, "Missing ActionID");
+        }
+
+        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_action_gphotos') . " where ActionID='$ActionID'";
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        $sql = "select gphoto_link from `" . $xoopsDB->prefix("tad_web_action") . "` where `ActionID` = '{$ActionID}' ";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        list($gphoto_link) = $xoopsDB->fetchRow($result);
+
+        if ($gphoto_link) {
+            require 'vendor/autoload.php';
+            require 'class/Crawler.php';
+            $crawler = new Crawler();
+            $album = $crawler->getAlbum($gphoto_link);
+            foreach ($album['images'] as $photo) {
+                $this->insert_gphotos($ActionID, $photo);
+            }
+        }
+    }
+
 }
