@@ -3,7 +3,7 @@ $modversion = [];
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TCW_NAME;
-$modversion['version'] = 1.94;
+$modversion['version'] = 1.95;
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author'] = _MI_TCW_AUTHOR;
 $modversion['credits'] = _MI_TCW_CREDITS;

@@ -1,3 +1,8 @@
+Tad Web 1.9.5 (released 2023-07-19)
+====================================
+1. Fixed the problem of not being able to retrieve Google Albums.
+
+
 Tad Web 1.9.4 (Released on 2023-01-29)
 ====================================
 1. Fix the situation that the website may not be deleted when it is deleted.

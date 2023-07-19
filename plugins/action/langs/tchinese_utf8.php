@@ -2,6 +2,7 @@
 define('_MD_TCW_ACTION', '活動剪影');
 define('_MD_TCW_ACTION_ADD', '上傳圖檔');
 define('_MD_TCW_ACTION_SHORT', '活動');
+define('_MD_TCW_ACTION_RE_GET', '重新擷取');
 define('_MD_TCW_ACTIONID', '活動編號');
 define('_MD_TCW_ACTIONNAME', '活動名稱');
 define('_MD_TCW_ACTIONDESC', '活動說明');

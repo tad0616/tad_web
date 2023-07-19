@@ -48,5 +48,6 @@
         <a href="javascript:delete_action_func(<{$ActionID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
         <a href="action.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
         <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$ActionID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+        <a href="action.php?WebID=<{$WebID}>&op=re_get&ActionID=<{$ActionID}>" class="btn btn-success"><i class="fa fa-refresh" aria-hidden="true"></i> <{$smarty.const._MD_TCW_ACTION_RE_GET}></a>
     </div>
 <{/if}>
