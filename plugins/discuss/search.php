@@ -11,9 +11,8 @@ function discuss_search($WebID, $queryarray, $limit = 10)
     $date_col = 'LastTime';
     $content_col = 'DiscussContent';
 
-    $myts = \MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
-        $arr[$k] = $myts->addSlashes($v);
+        $arr[$k] = $xoopsDB->escape($v);
     }
     $queryarray = $arr;
 

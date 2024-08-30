@@ -6,7 +6,7 @@
     <{if $WebID==""}>
 
         <{if $web_display_mode=='index' or $web_display_mode=='home'}>
-            <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+            <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
         <{/if}>
         <{assign var="i" value=0}>
         <{assign var="total" value=1}>

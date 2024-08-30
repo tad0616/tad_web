@@ -263,11 +263,10 @@ class WebCate
     //新增資料到tad_web_cate中
     public function save_tad_web_cate($CateID = '', $newCateName = '')
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
         // if (!empty($newCateName) and empty($CateID)) {
         if (!empty($newCateName)) {
-            $myts = \MyTextSanitizer::getInstance();
-            $CateName = $myts->addSlashes($newCateName);
+            $CateName = $xoopsDB->escape($newCateName);
             $CateSort = $this->tad_web_cate_max_sort();
             $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate') . "` (
                 `WebID`,
@@ -318,14 +317,14 @@ class WebCate
     //更新tad_web_cate某一筆資料
     public function update_tad_web_cate($CateID = '', $newCateName = '', $CateEnable = null)
     {
-        global $xoopsDB, $isAdmin, $xoopsUser;
+        global $xoopsDB;
         $update = [];
         if ($newCateName != '') {
-            $myts = \MyTextSanitizer::getInstance();
-            $CateName = $myts->addSlashes($newCateName);
+
+            $CateName = $xoopsDB->escape($newCateName);
             $update[] = "`CateName` = '{$CateName}'";
         }
-        $and_enable = '';
+
         if (!is_null($CateEnable)) {
             $CateEnable = (int) $CateEnable;
             $update[] = "`CateEnable` = '{$CateEnable}'";
@@ -408,7 +407,7 @@ class WebCate
             $table = $this->table;
         }
         $sql = 'update `' . $xoopsDB->prefix($table) . "` set
-       `CateID` = '{$move2CateID}' where `CateID`='{$CateID}'";
+        `CateID` = '{$move2CateID}' where `CateID`='{$CateID}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 

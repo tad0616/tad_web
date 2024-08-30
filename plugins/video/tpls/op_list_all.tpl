@@ -13,7 +13,7 @@
 <{/if}>
 
 <{if $video_data}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/video/tpls/tad_web_common_video.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/plugins/video/tpls/tad_web_common_video.tpl"}>
 <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>">&#xf015;</a> <{$video.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>

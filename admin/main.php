@@ -317,7 +317,7 @@ function tad_web_max_sort()
 //新增資料到tad_web中
 function insert_tad_web($CateID = '', $WebName = '', $WebSort = '', $WebEnable = '', $WebOwner = '', $WebOwnerUid = '', $WebTitle = '', $WebYear = '', $year = '')
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB;
 
     if (empty($WebOwner)) {
         $WebOwner = \XoopsUser::getUnameFromId($WebOwnerUid, 1);
@@ -326,13 +326,11 @@ function insert_tad_web($CateID = '', $WebName = '', $WebSort = '', $WebEnable =
         }
     }
 
-    $myts = \MyTextSanitizer::getInstance();
-    $WebName = $myts->addSlashes($WebName);
-    $WebTitle = $myts->addSlashes($WebTitle);
-    $WebOwner = $myts->addSlashes($WebOwner);
+    $WebName = $xoopsDB->escape($WebName);
+    $WebOwner = $xoopsDB->escape($WebOwner);
 
     $and_year = empty($year) ? '' : "{$year} ";
-    $WebTitle = $myts->addSlashes($and_year . $WebTitle);
+    $WebTitle = $xoopsDB->escape($and_year . $WebTitle);
 
     if (empty($WebYear)) {
         $WebYear = date('Y');
@@ -360,11 +358,10 @@ function insert_tad_web($CateID = '', $WebName = '', $WebSort = '', $WebEnable =
 //更新tad_web某一筆資料
 function update_tad_web($WebID = '')
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $WebName = $myts->addSlashes($_POST['WebName']);
-    $WebTitle = $myts->addSlashes($_POST['WebTitle']);
+    $WebName = $xoopsDB->escape($_POST['WebName']);
+    $WebTitle = $xoopsDB->escape($_POST['WebTitle']);
     $CateID = (int) $_POST['CateID'];
     $WebSort = (int) $_POST['WebSort'];
     $WebEnable = (int) $_POST['WebEnable'];
@@ -394,8 +391,6 @@ function update_tad_web($WebID = '')
 
 function save_webs_title($webTitles = [], $old_webTitle = [])
 {
-    global $xoopsDB, $TadUpFiles;
-
     foreach ($webTitles as $WebID => $WebTitle) {
         if ($old_webTitle[$WebID] != $WebTitle) {
             save_one_web_title($WebID, $WebTitle);
@@ -407,9 +402,9 @@ function save_webs_title($webTitles = [], $old_webTitle = [])
 
 function save_one_web_title($WebID = '', $WebTitle = '')
 {
-    global $xoopsDB, $TadUpFiles;
-    $myts = \MyTextSanitizer::getInstance();
-    $WebTitle = $myts->addSlashes($WebTitle);
+    global $xoopsDB;
+
+    $WebTitle = $xoopsDB->escape($WebTitle);
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebTitle` = '{$WebTitle}' where WebID='$WebID'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 

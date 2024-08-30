@@ -336,11 +336,10 @@ class tad_web_aboutus
     //新增班級
     public function insert_class($year = '', $newCateName = '')
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
+        global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
         $and_year = empty($year) ? '' : "{$year} ";
-        $newCateName = $myts->addSlashes($and_year . $newCateName);
+        $newCateName = $xoopsDB->escape($and_year . $newCateName);
         $CateID = $this->WebCate->save_tad_web_cate('', $newCateName);
         $TadUpFiles->set_col('ClassPic', $CateID, 1);
         $TadUpFiles->upload_file('upfile', 1280, 300, null, null, true);
@@ -356,8 +355,8 @@ class tad_web_aboutus
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $sql = 'insert into ' . $xoopsDB->prefix('tad_web_link_mems') . "
-              (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable` , `top` ,`left`)
-              values('{$all['MemID']}' , '{$this->WebID}' , '{$CateID}', '{$all['MemNum']}' , '{$all['MemSort']}' , '{$all['MemEnable']}' , '{$all['top']}' , '{$all['left']}' )";
+                (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable` , `top` ,`left`)
+                values('{$all['MemID']}' , '{$this->WebID}' , '{$CateID}', '{$all['MemNum']}' , '{$all['MemSort']}' , '{$all['MemEnable']}' , '{$all['top']}' , '{$all['left']}' )";
 
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
@@ -369,11 +368,10 @@ class tad_web_aboutus
     //更新班級
     public function update_class($CateID = '', $year = '', $newCateName = '', $hide_class = 0)
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
+        global $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
         $and_year = empty($year) ? '' : "{$year} ";
-        $newCateName = $myts->addSlashes($and_year . $newCateName);
+        $newCateName = $xoopsDB->escape($and_year . $newCateName);
         $TadUpFiles->set_col('ClassPic', $CateID, 1);
         $TadUpFiles->upload_file('upfile', 1280, 300, null, null, true);
         $CateEnable = $hide_class == 1 ? 0 : 1;
@@ -388,14 +386,13 @@ class tad_web_aboutus
     //更新班級
     public function change_class($CateID = '', $enable = 0)
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
         $this->WebCate->update_tad_web_cate($CateID, '', $enable);
     }
 
     //刪除班級
     public function del_class($CateID = '')
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles, $xoopsTpl;
+        global $TadUpFiles;
 
         //刪除學生連結
         $this->delete('', $CateID);
@@ -802,22 +799,21 @@ class tad_web_aboutus
     //新增資料到tad_web_mems中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $TadUpFiles, $isMyWeb, $MyWebs;
+        global $xoopsDB, $MyWebs, $TadUpFiles, $MyWebs;
 
         chk_self_web($this->WebID);
 
-        $myts = \MyTextSanitizer::getInstance();
-        $MemExpertises = $myts->addSlashes($_POST['MemExpertises']);
-        $AboutMem = $myts->addSlashes($_POST['AboutMem']);
-        $MemClassOrgan = $myts->addSlashes($_POST['MemClassOrgan']);
-        $MemName = $myts->addSlashes($_POST['MemName']);
-        $MemNickName = $myts->addSlashes($_POST['MemNickName']);
-        $MemSex = $myts->addSlashes($_POST['MemSex']);
-        $MemUnicode = $myts->addSlashes($_POST['MemUnicode']);
-        $MemBirthday = $myts->addSlashes($_POST['MemBirthday']);
-        $MemUname = $myts->addSlashes($_POST['MemUname']);
-        $MemPasswd = $myts->addSlashes($_POST['MemPasswd']);
-        $MemNum = $myts->addSlashes($_POST['MemNum']);
+        $MemExpertises = $xoopsDB->escape($_POST['MemExpertises']);
+        $AboutMem = $xoopsDB->escape($_POST['AboutMem']);
+        $MemClassOrgan = $xoopsDB->escape($_POST['MemClassOrgan']);
+        $MemName = $xoopsDB->escape($_POST['MemName']);
+        $MemNickName = $xoopsDB->escape($_POST['MemNickName']);
+        $MemSex = $xoopsDB->escape($_POST['MemSex']);
+        $MemUnicode = $xoopsDB->escape($_POST['MemUnicode']);
+        $MemBirthday = $xoopsDB->escape($_POST['MemBirthday']);
+        $MemUname = $xoopsDB->escape($_POST['MemUname']);
+        $MemPasswd = $xoopsDB->escape($_POST['MemPasswd']);
+        $MemNum = $xoopsDB->escape($_POST['MemNum']);
 
         $CateID = (int) $_POST['CateID'];
 
@@ -850,7 +846,7 @@ class tad_web_aboutus
     //更新tad_web_mems某一筆資料
     public function update($MemID = '')
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles, $isMyWeb, $MyWebs;
+        global $xoopsDB, $TadUpFiles, $isMyWeb, $MyWebs;
 
         if (!empty($_SESSION['LoginMemID']) and $MemID == $_SESSION['LoginMemID']) {
         } elseif (!$isMyWeb and $MyWebs) {
@@ -859,38 +855,37 @@ class tad_web_aboutus
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $MemExpertises = $myts->addSlashes($_POST['MemExpertises']);
-        $AboutMem = $myts->addSlashes($_POST['AboutMem']);
-        $MemClassOrgan = $myts->addSlashes($_POST['MemClassOrgan']);
-        $MemName = $myts->addSlashes($_POST['MemName']);
-        $MemNickName = $myts->addSlashes($_POST['MemNickName']);
-        $MemSex = $myts->addSlashes($_POST['MemSex']);
-        $MemUnicode = $myts->addSlashes($_POST['MemUnicode']);
-        $MemBirthday = $myts->addSlashes($_POST['MemBirthday']);
-        $MemUname = $myts->addSlashes($_POST['MemUname']);
-        $MemPasswd = $myts->addSlashes($_POST['MemPasswd']);
-        $MemNum = $myts->addSlashes($_POST['MemNum']);
+        $MemExpertises = $xoopsDB->escape($_POST['MemExpertises']);
+        $AboutMem = $xoopsDB->escape($_POST['AboutMem']);
+        $MemClassOrgan = $xoopsDB->escape($_POST['MemClassOrgan']);
+        $MemName = $xoopsDB->escape($_POST['MemName']);
+        $MemNickName = $xoopsDB->escape($_POST['MemNickName']);
+        $MemSex = $xoopsDB->escape($_POST['MemSex']);
+        $MemUnicode = $xoopsDB->escape($_POST['MemUnicode']);
+        $MemBirthday = $xoopsDB->escape($_POST['MemBirthday']);
+        $MemUname = $xoopsDB->escape($_POST['MemUname']);
+        $MemPasswd = $xoopsDB->escape($_POST['MemPasswd']);
+        $MemNum = $xoopsDB->escape($_POST['MemNum']);
         $MemSort = (int) $_POST['MemSort'];
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_mems') . " set
-           `MemName` = '{$MemName}' ,
-           `MemNickName` = '{$MemNickName}',
-           `MemSex` = '{$MemSex}',
-           `MemUnicode` = '{$MemUnicode}',
-           `MemBirthday` = '{$MemBirthday}',
-           `MemExpertises` = '{$MemExpertises}',
-           `MemUname` = '{$MemUname}',
-           `MemPasswd` = '{$MemPasswd}'
-          where MemID ='$MemID'";
+        `MemName` = '{$MemName}' ,
+        `MemNickName` = '{$MemNickName}',
+        `MemSex` = '{$MemSex}',
+        `MemUnicode` = '{$MemUnicode}',
+        `MemBirthday` = '{$MemBirthday}',
+        `MemExpertises` = '{$MemExpertises}',
+        `MemUname` = '{$MemUname}',
+        `MemPasswd` = '{$MemPasswd}'
+        where MemID ='$MemID'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_link_mems') . " set
-           `MemNum` = '{$MemNum}' ,
-           `MemSort` = '{$MemSort}',
-           `MemClassOrgan` = '{$MemClassOrgan}',
-           `AboutMem` = '{$AboutMem}'
-          where MemID ='$MemID'";
+        `MemNum` = '{$MemNum}' ,
+        `MemSort` = '{$MemSort}',
+        `MemClassOrgan` = '{$MemClassOrgan}',
+        `AboutMem` = '{$AboutMem}'
+        where MemID ='$MemID'";
 
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -978,13 +973,11 @@ class tad_web_aboutus
     //匯入 excel
     public function import_excel($file = '', $CateID = '')
     {
-        global $xoopsDB, $xoopsTpl;
+        global $xoopsTpl;
 
         if (empty($file) or empty($file)) {
             return;
         }
-
-        // $cate=get_tad_web_cate($CateID);
 
         $myts = \MyTextSanitizer::getInstance();
 
@@ -1059,13 +1052,13 @@ class tad_web_aboutus
 
         $i = 0;
         $j = 6;
-        $myts = \MyTextSanitizer::getInstance();
+
         foreach ($_POST['c'] as $row => $col) {
             $top = 80 + $i * 90;
             $left = 65 + ($j % 6) * 90;
 
-            $col[1] = $myts->addSlashes($col[1]);
-            $col[5] = $myts->addSlashes($col[5]);
+            $col[1] = $xoopsDB->escape($col[1]);
+            $col[5] = $xoopsDB->escape($col[5]);
             $sex = (_MD_TCW_BOY == trim($col[4])) ? 1 : 0;
             $sql = 'insert into ' . $xoopsDB->prefix('tad_web_mems') . " (`MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUname`, `MemPasswd`) values('{$col[1]}','{$col[5]}','{$sex}','{$col[2]}','{$col[3]}','{$col[1]}','{$col[3]}')";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -1093,7 +1086,7 @@ class tad_web_aboutus
 
         $i = 0;
         $j = 6;
-        $myts = \MyTextSanitizer::getInstance();
+
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_link_mems') . " where CateID='{$CateID}' order by MemNum";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
@@ -1148,15 +1141,13 @@ class tad_web_aboutus
     //登入
     public function mem_login($WebID = '', $MemUname = '', $MemPasswd = '')
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
         if (empty($MemUname) or empty($MemPasswd)) {
             return false;
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-
-        $MemUname = $myts->addSlashes($MemUname);
-        $MemPasswd = $myts->addSlashes($MemPasswd);
+        $MemUname = $xoopsDB->escape($MemUname);
+        $MemPasswd = $xoopsDB->escape($MemPasswd);
 
         $sql = 'select a.`MemID` , a.`MemName` , a.`MemNickName` , b.`WebID` , b.`CateID` from ' . $xoopsDB->prefix('tad_web_mems') . ' as a left join ' . $xoopsDB->prefix('tad_web_link_mems') . " as b on a.`MemID`=b.`MemID` where a.`MemUname`='$MemUname' and a.`MemPasswd`='$MemPasswd' and b.`MemEnable`='1' and b.WebID='{$WebID}' order by b.MemNum";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -1285,11 +1276,9 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}&op=parents_account", 3, _MD_TCW_ABOUTUS_WRONG_BIRTHDAY);
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-
-        $Reationship = $myts->addSlashes($_POST['Reationship']);
-        $ParentEmail = $myts->addSlashes($_POST['ParentEmail']);
-        $ParentPasswd = $myts->addSlashes($_POST['ParentPasswd']);
+        $Reationship = $xoopsDB->escape($_POST['Reationship']);
+        $ParentEmail = $xoopsDB->escape($_POST['ParentEmail']);
+        $ParentPasswd = $xoopsDB->escape($_POST['ParentPasswd']);
         $code = Utility::randStr(16);
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_web_mem_parents') . "
@@ -1389,13 +1378,12 @@ class tad_web_aboutus
     //家長登入檢查
     public function parent_login($WebID, $MemID, $ParentPasswd)
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
         if (empty($MemID) or empty($ParentPasswd)) {
             return false;
         }
-        $myts = \MyTextSanitizer::getInstance();
 
-        $ParentPasswd = $myts->addSlashes($ParentPasswd);
+        $ParentPasswd = $xoopsDB->escape($ParentPasswd);
 
         $sql = 'select a.`ParentID` , a.`MemID` , a.`Reationship`, a.`ParentEnable`, a.`code` , b.`WebID` , b.`CateID`,c.MemName from ' . $xoopsDB->prefix('tad_web_mem_parents') . ' as a left join ' . $xoopsDB->prefix('tad_web_link_mems') . ' as b on a.`MemID`=b.`MemID`  left join ' . $xoopsDB->prefix('tad_web_mems') . " as c on a.`MemID`=c.`MemID` where a.`MemID`='$MemID' and a.`ParentPasswd`='$ParentPasswd' and b.WebID='{$WebID}' order by b.MemNum";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -1493,14 +1481,12 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-
-        $Reationship = $myts->addSlashes($_POST['Reationship']);
-        $ParentEmail = $myts->addSlashes($_POST['ParentEmail']);
+        $Reationship = $xoopsDB->escape($_POST['Reationship']);
+        $ParentEmail = $xoopsDB->escape($_POST['ParentEmail']);
 
         $and_passwd = '';
         if (!empty($_POST['ParentPasswd'])) {
-            $ParentPasswd = $myts->addSlashes($_POST['ParentPasswd']);
+            $ParentPasswd = $xoopsDB->escape($_POST['ParentPasswd']);
             $and_passwd = ", `ParentPasswd` ='{$ParentPasswd}'";
         }
 

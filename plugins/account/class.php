@@ -351,12 +351,11 @@ class tad_web_account
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $AccountTitle = $myts->addSlashes($_POST['AccountTitle']);
-        $AccountDesc = $myts->addSlashes($_POST['AccountDesc']);
-        $AccountKind = $myts->addSlashes($_POST['AccountKind']);
-        $AccountDate = $myts->addSlashes($_POST['AccountDate']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $AccountTitle = $xoopsDB->escape($_POST['AccountTitle']);
+        $AccountDesc = $xoopsDB->escape($_POST['AccountDesc']);
+        $AccountKind = $xoopsDB->escape($_POST['AccountKind']);
+        $AccountDate = $xoopsDB->escape($_POST['AccountDate']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
         $AccountMoney = (int) $_POST['AccountMoney'];
         $AccountCount = (int) $_POST['AccountCount'];
         $CateID = (int) $_POST['CateID'];
@@ -398,12 +397,11 @@ class tad_web_account
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $AccountTitle = $myts->addSlashes($_POST['AccountTitle']);
-        $AccountDesc = $myts->addSlashes($_POST['AccountDesc']);
-        $AccountKind = $myts->addSlashes($_POST['AccountKind']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $AccountDate = $myts->addSlashes($_POST['AccountDate']);
+        $AccountTitle = $xoopsDB->escape($_POST['AccountTitle']);
+        $AccountDesc = $xoopsDB->escape($_POST['AccountDesc']);
+        $AccountKind = $xoopsDB->escape($_POST['AccountKind']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $AccountDate = $xoopsDB->escape($_POST['AccountDate']);
         $AccountMoney = (int) $_POST['AccountMoney'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];

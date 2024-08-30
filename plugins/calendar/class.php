@@ -176,15 +176,14 @@ class tad_web_calendar
     //新增資料到tad_web_calendar中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $WebOwnerUid;
+        global $xoopsDB, $xoopsUser;
         $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
 
-        $myts = \MyTextSanitizer::getInstance();
-        $CalendarName = $myts->addSlashes($_POST['CalendarName']);
-        $CalendarType = $myts->addSlashes($_POST['CalendarType']);
-        $CalendarDesc = $myts->addSlashes($_POST['CalendarDesc']);
-        $CalendarDate = $myts->addSlashes($_POST['CalendarDate']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $CalendarName = $xoopsDB->escape($_POST['CalendarName']);
+        $CalendarType = $xoopsDB->escape($_POST['CalendarType']);
+        $CalendarDesc = $xoopsDB->escape($_POST['CalendarDesc']);
+        $CalendarDate = $xoopsDB->escape($_POST['CalendarDate']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
         $CalendarCount = (int) $_POST['CalendarCount'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
@@ -209,12 +208,11 @@ class tad_web_calendar
     {
         global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $CalendarName = $myts->addSlashes($_POST['CalendarName']);
-        $CalendarType = $myts->addSlashes($_POST['CalendarType']);
-        $CalendarDesc = $myts->addSlashes($_POST['CalendarDesc']);
-        $CalendarDate = $myts->addSlashes($_POST['CalendarDate']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $CalendarName = $xoopsDB->escape($_POST['CalendarName']);
+        $CalendarType = $xoopsDB->escape($_POST['CalendarType']);
+        $CalendarDesc = $xoopsDB->escape($_POST['CalendarDesc']);
+        $CalendarDate = $xoopsDB->escape($_POST['CalendarDate']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
         $CateID = (int) $_POST['CateID'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);

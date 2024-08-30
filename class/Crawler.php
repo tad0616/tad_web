@@ -44,18 +44,22 @@ class Crawler
      * @param $url
      * @return array
      */
+
     public function getAlbum($url)
     {
-        $response = $this->client->get($url);
+        $response = $this->client->get($url, ['http_errors' => false]);
+        if ($response->getStatusCode() !== 200) {
+            return false;
+        }
         $html = $response->getBody()->getContents();
-        $re = '/<script nonce="[^"]+">AF_initDataCallback\(\{[^<]+, data:([^<]+)\}\);<\/script>/m';
+
+        $re = '/<script class="ds:1" nonce="[^"]+">AF_initDataCallback\(\{[^<]+, data:([^<]+)\}\);<\/script>/m';
         preg_match_all($re, $html, $matches, PREG_SET_ORDER, 0);
-        $json = $matches[1][1];
+
+        $json = $matches[0][1];
         $json = str_replace(", sideChannel: {}", '', $json);
         $data = json_decode($json, true);
         $images = array_map(function ($image) {
-            // . '=w4032-h2268-no'
-            //  . '=w' . $image[1][1] . '-h' . $image[1][2] . '-no'
             return [
                 'id' => $image[0],
                 // default url

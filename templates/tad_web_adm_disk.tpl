@@ -42,7 +42,7 @@
                     <th style="min-width:200px; max-width:400px;"><{$smarty.const._MA_TCW_DISK_TOTAL_SPACE}></th>
                 </tr>
                 <tbody>
-                <{foreach from=$space key=WebID item=space}>
+                <{foreach from=$space key=WebID item=web_space}>
                     <{assign var="class" value=$data.$WebID}>
                     <tr>
                         <td>

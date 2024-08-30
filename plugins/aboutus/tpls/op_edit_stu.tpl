@@ -188,7 +188,7 @@
     </div>
     <div class="col-md-4">
         <{if $LoginMemID}>
-            <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.tpl"}>
+            <{include file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.tpl"}>
         <{else}>
             <table class="table table-striped table-bordered table-hover table-sm">
                 <tr>

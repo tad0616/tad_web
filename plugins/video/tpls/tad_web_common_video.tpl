@@ -36,7 +36,7 @@
             </tr>
         </thead>
         <tbody id="sort">
-            <{foreach item=video from=$video_data name=v}>
+            <{foreach from=$video_data item=video name=v}>
                 <tr id="VideoID_<{$video.VideoID}>">
                     <td style="width: 200px;">
                         <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>">

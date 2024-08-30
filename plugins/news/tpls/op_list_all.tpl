@@ -13,7 +13,7 @@
 <{/if}>
 
 <{if $news_data}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/news/tpls/tad_web_common_news.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/plugins/news/tpls/tad_web_common_news.tpl"}>
 <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>">&#xf015;</a> <{$news.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>

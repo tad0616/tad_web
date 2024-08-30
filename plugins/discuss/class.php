@@ -456,11 +456,10 @@ class tad_web_discuss
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $DiscussTitle = $myts->addSlashes($_POST['DiscussTitle']);
-        $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $DiscussTitle = $xoopsDB->escape($_POST['DiscussTitle']);
+        $DiscussContent = $xoopsDB->escape($_POST['DiscussContent']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ReDiscussID = (int) $_POST['ReDiscussID'];
@@ -541,11 +540,10 @@ class tad_web_discuss
             $anduid = "and `ParentID`='{$ParentID}'";
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $DiscussTitle = $myts->addSlashes($_POST['DiscussTitle']);
-        $DiscussContent = $myts->addSlashes($_POST['DiscussContent']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $DiscussTitle = $xoopsDB->escape($_POST['DiscussTitle']);
+        $DiscussContent = $xoopsDB->escape($_POST['DiscussContent']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ReDiscussID = (int) $_POST['ReDiscussID'];
@@ -554,11 +552,11 @@ class tad_web_discuss
         }
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set
-         `CateID` = '{$CateID}' ,
-         `ReDiscussID` = '{$ReDiscussID}' ,
-         `DiscussTitle` = '{$DiscussTitle}' ,
-         `DiscussContent` = '{$DiscussContent}' ,
-         `LastTime` = now()
+        `CateID` = '{$CateID}' ,
+        `ReDiscussID` = '{$ReDiscussID}' ,
+        `DiscussTitle` = '{$DiscussTitle}' ,
+        `DiscussContent` = '{$DiscussContent}' ,
+        `LastTime` = now()
         where DiscussID='{$DiscussID}' {$anduid}";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -574,7 +572,7 @@ class tad_web_discuss
     //刪除tad_web_discuss某筆資料資料
     public function delete($DiscussID = '')
     {
-        global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
+        global $xoopsDB, $isAdmin, $isMyWeb, $TadUpFiles;
 
         if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $isAdmin) {
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);

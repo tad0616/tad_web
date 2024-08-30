@@ -1,5 +1,5 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+<{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
 <script type="text/javascript">
     $(document).ready(function(){
         $("#get_dreyedict").click(function(event) {

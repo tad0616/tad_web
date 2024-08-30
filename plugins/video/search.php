@@ -11,9 +11,8 @@ function video_search($WebID, $queryarray, $limit = 10)
     $date_col = 'VideoDate';
     $content_col = 'VideoDesc';
 
-    $myts = \MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
-        $arr[$k] = $myts->addSlashes($v);
+        $arr[$k] = $xoopsDB->escape($v);
     }
     $queryarray = $arr;
 

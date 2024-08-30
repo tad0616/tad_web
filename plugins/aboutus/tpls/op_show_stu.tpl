@@ -97,7 +97,7 @@
     </div>
     <div class="col-md-4">
         <{if $im_student}>
-            <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.tpl"}>
+            <{include file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.tpl"}>
         <{elseif $students}>
             <table class="table table-striped table-bordered table-hover table-sm">
                 <tr>

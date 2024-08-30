@@ -1,6 +1,6 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $bc.main_data}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
 
     <select size=5 title="Select Web" onChange="location.href=this.value" class="form-control">
         <{foreach from=$bc.webs item=web}>

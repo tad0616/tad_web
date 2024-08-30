@@ -191,8 +191,8 @@
                 <div class="col-md-3">
                 <select name="CateID" id="CateID" title="Select Cate" class="form-control" onchange="location.href='main.php?CateID='+this.value">
                     <option value="" <{if $CateID==""}>selected="selected"<{/if}>><{$smarty.const._MA_TCW_SELECT_CATE}></option>
-                    <{foreach from=$cate item=cate}>
-                    <option value="<{$cate.CateID}>" <{if $CateID==$cate.CateID}>selected="selected"<{/if}>><{$cate.CateName}></option>
+                    <{foreach from=$cate item=the_cate}>
+                    <option value="<{$the_cate.CateID}>" <{if $CateID==$the_cate.CateID}>selected="selected"<{/if}>><{$the_cate.CateName}></option>
                     <{/foreach}>
                 </select>
                 </div>

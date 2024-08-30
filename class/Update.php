@@ -229,8 +229,6 @@ class Update
     {
         global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
-
         //取得應有的所有區塊
         $all_blocks = get_all_blocks();
         $block_plugin = get_all_blocks('plugin');
@@ -238,7 +236,7 @@ class Update
         // die(var_export($block_config));
 
         //找出所有網站
-        $allWebID = '';
+        $allWebID = [];
         $sql = 'SELECT WebID FROM `' . $xoopsDB->prefix('tad_web') . '` GROUP BY `WebID`';
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         while (list($WebID) = $xoopsDB->fetchRow($result)) {
@@ -249,8 +247,8 @@ class Update
         $sql = 'SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE plugin='custom' ORDER BY BlockID";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
-            $BlockTitle = $myts->addSlashes($BlockTitle);
-            $BlockContent = $myts->addSlashes($BlockContent);
+            $BlockTitle = $xoopsDB->escape($BlockTitle);
+            $BlockContent = $xoopsDB->escape($BlockContent);
 
             $new_name = "custom_{$WebID}_{$BlockID}";
             if ($new_name != $BlockName) {
@@ -339,7 +337,7 @@ class Update
 
                     //找出某區塊安裝在該網站的 $BlockID 以及現有設定
                     foreach ($db_blocks_config[$WebID][$BlockName] as $BlockID => $BlockConfig) {
-                        $new_config = $db_config = '';
+                        $new_config = $db_config = [];
 
                         //已安裝區塊的設定值陣列
                         $db_config = json_decode($BlockConfig, true);
@@ -390,15 +388,13 @@ class Update
     {
         global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
-
         //修正自訂區塊名稱（並用序號排序）
         if (!_IS_EZCLASS) {
             $sql = 'SELECT BlockID,BlockName,BlockTitle,BlockContent,WebID FROM ' . $xoopsDB->prefix('tad_web_blocks') . " WHERE plugin='custom' ORDER BY BlockID";
             $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while (list($BlockID, $BlockName, $BlockTitle, $BlockContent, $WebID) = $xoopsDB->fetchRow($result)) {
-                $BlockTitle = $myts->addSlashes($BlockTitle);
-                $BlockContent = $myts->addSlashes($BlockContent);
+                $BlockTitle = $xoopsDB->escape($BlockTitle);
+                $BlockContent = $xoopsDB->escape($BlockContent);
 
                 $new_name = "custom_{$WebID}_{$BlockID}";
                 if ($new_name != $BlockName) {
@@ -596,13 +592,13 @@ class Update
     {
         global $xoopsDB;
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tad_web_files_center') . "
-      ADD `original_filename` VARCHAR(255) NOT NULL DEFAULT '',
-      ADD `hash_filename` VARCHAR(255) NOT NULL DEFAULT '',
-      ADD `sub_dir` VARCHAR(255) NOT NULL DEFAULT ''";
+        ADD `original_filename` VARCHAR(255) NOT NULL DEFAULT '',
+        ADD `hash_filename` VARCHAR(255) NOT NULL DEFAULT '',
+        ADD `sub_dir` VARCHAR(255) NOT NULL DEFAULT ''";
         $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 
         $sql = 'update ' . $xoopsDB->prefix('tad_web_files_center') . ' set
-    `original_filename`=`description`';
+        `original_filename`=`description`';
         $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
     }
 

@@ -13,9 +13,8 @@ function files_search($WebID, $queryarray, $limit = 10)
     $date_col = 'file_date';
     $content_col = 'description';
 
-    $myts = \MyTextSanitizer::getInstance();
     foreach ($queryarray as $k => $v) {
-        $arr[$k] = $myts->addSlashes($v);
+        $arr[$k] = $xoopsDB->escape($v);
     }
     $queryarray = $arr;
 

@@ -1,5 +1,5 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+<{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
 
 <form action="<{$xoops_url}>/modules/tad_web/search.php" method="get" role="form" id="tad_web_search">
     <input type="hidden" name="WebID" value="<{$WebID}>">

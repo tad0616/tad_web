@@ -61,31 +61,31 @@
             <div class="resp-tabs-container vert">
 
                 <div>
-                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_1.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_1.tpl"}>
                 </div>
 
                 <div>
-                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_2.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_2.tpl"}>
                 </div>
 
                 <div>
-                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_3.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_3.tpl"}>
                 </div>
 
                 <div>
-                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_4.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_4.tpl"}>
                 </div>
 
                 <div>
-                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_5.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_5.tpl"}>
                 </div>
 
                 <div>
-                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_6.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_6.tpl"}>
                 </div>
 
                 <div>
-                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_7.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_config_tab_7.tpl"}>
                 </div>
             </div>
         </div>

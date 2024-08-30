@@ -1,6 +1,6 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $bc.main_data}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
 
     <{if $bc.display=="thumb"}>
         <div style="clear: both;"></div>

@@ -30,6 +30,7 @@ class tad_web_action
         global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs, $isMyWeb, $plugin_menu_var;
 
         $power = $this->Power->check_power("read", "CateID", $CateID, 'action');
+        // Utility::test($power, 'power', 'dd');
         if (!$power) {
             redirect_header("action.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
@@ -100,7 +101,7 @@ class tad_web_action
         $bar = $PageBar['bar'];
         $sql = $PageBar['sql'];
         $total = $PageBar['total'];
-
+        Utility::test($sql, 'sql', 'die');
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = [];
@@ -118,10 +119,12 @@ class tad_web_action
             }
             //檢查權限
             $power = $this->Power->check_power('read', 'ActionID', $ActionID);
+            // Utility::test($power, 'power', 'dd');
             if (!$power) {
                 continue;
             }
 
+            // Utility::test($CateID, 'power', 'dd');
             $power = $this->Power->check_power("read", "CateID", $CateID, 'action');
             if (!$power) {
                 continue;
@@ -276,9 +279,7 @@ class tad_web_action
     //列出所有tad_gphotos_images資料
     public function tad_gphotos_list($ActionID = '', $url = "", $key = "")
     {
-        global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
-
-        $myts = \MyTextSanitizer::getInstance();
+        global $xoopsDB;
 
         $sql = "select * from `" . $xoopsDB->prefix("tad_web_action_gphotos") . "` where `ActionID`='$ActionID'";
 
@@ -397,15 +398,14 @@ class tad_web_action
             $uid = $xoopsUser->getVar('uid');
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $ActionName = $myts->addSlashes($_POST['ActionName']);
-        $ActionDesc = $myts->addSlashes($_POST['ActionDesc']);
-        $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
-        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $ActionName = $xoopsDB->escape($_POST['ActionName']);
+        $ActionDesc = $xoopsDB->escape($_POST['ActionDesc']);
+        $ActionPlace = $xoopsDB->escape($_POST['ActionPlace']);
+        $ActionDate = $xoopsDB->escape($_POST['ActionDate']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
         $ActionCount = (int) $_POST['ActionCount'];
-        $gphoto_link = $myts->addSlashes($_POST['gphoto_link']);
+        $gphoto_link = $xoopsDB->escape($_POST['gphoto_link']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         if ($newCateName != '') {
@@ -447,13 +447,12 @@ class tad_web_action
     //新增Google Photo相片
     public function insert_gphotos($ActionID, $photo = [])
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $image_id = $myts->addSlashes($photo['id']);
+        $image_id = $xoopsDB->escape($photo['id']);
         $image_width = (int) $photo['width'];
         $image_height = (int) $photo['height'];
-        $image_url = $myts->addSlashes($photo['url']);
+        $image_url = $xoopsDB->escape($photo['url']);
 
         $sql = "insert into `" . $xoopsDB->prefix("tad_web_action_gphotos") . "` (
             `ActionID`,
@@ -476,15 +475,14 @@ class tad_web_action
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $ActionName = $myts->addSlashes($_POST['ActionName']);
-        $ActionDesc = $myts->addSlashes($_POST['ActionDesc']);
-        $ActionPlace = $myts->addSlashes($_POST['ActionPlace']);
-        $ActionDate = $myts->addSlashes($_POST['ActionDate']);
-        $gphoto_link = $myts->addSlashes($_POST['gphoto_link']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $read = $myts->addSlashes($_POST['read']);
+        $ActionName = $xoopsDB->escape($_POST['ActionName']);
+        $ActionDesc = $xoopsDB->escape($_POST['ActionDesc']);
+        $ActionPlace = $xoopsDB->escape($_POST['ActionPlace']);
+        $ActionDate = $xoopsDB->escape($_POST['ActionDate']);
+        $gphoto_link = $xoopsDB->escape($_POST['gphoto_link']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $read = $xoopsDB->escape($_POST['read']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         if ($newCateName != '') {

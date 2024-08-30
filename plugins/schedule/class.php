@@ -321,10 +321,9 @@ class tad_web_schedule
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $ScheduleName = $myts->addSlashes($_POST['ScheduleName']);
-        $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $ScheduleName = $xoopsDB->escape($_POST['ScheduleName']);
+        $ScheduleDisplay = $xoopsDB->escape($_POST['ScheduleDisplay']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ScheduleTime = date('Y-m-d H:i:s');
@@ -350,10 +349,9 @@ class tad_web_schedule
     {
         global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $ScheduleName = $myts->addSlashes($_POST['ScheduleName']);
-        $ScheduleDisplay = $myts->addSlashes($_POST['ScheduleDisplay']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $ScheduleName = $xoopsDB->escape($_POST['ScheduleName']);
+        $ScheduleDisplay = $xoopsDB->escape($_POST['ScheduleDisplay']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ScheduleTime = date('Y-m-d H:i:s');
@@ -572,14 +570,13 @@ class tad_web_schedule
         $schedule_subjects = json_encode($schedule_subjects_arr);
         file_put_contents($my_subject_file, $schedule_subjects);
 
-        $myts = \MyTextSanitizer::getInstance();
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
-            $old_Subject = $myts->addSlashes($old_Subject);
-            $Subject = $myts->addSlashes($_POST['Subject'][$k]);
-            $Teacher = $myts->addSlashes($_POST['Teacher'][$k]);
-            $Link = $myts->addSlashes($_POST['Link'][$k]);
-            $color = $myts->addSlashes($_POST['color'][$k]);
-            $bg_color = $myts->addSlashes($_POST['bg_color'][$k]);
+            $old_Subject = $xoopsDB->escape($old_Subject);
+            $Subject = $xoopsDB->escape($_POST['Subject'][$k]);
+            $Teacher = $xoopsDB->escape($_POST['Teacher'][$k]);
+            $Link = $xoopsDB->escape($_POST['Link'][$k]);
+            $color = $xoopsDB->escape($_POST['color'][$k]);
+            $bg_color = $xoopsDB->escape($_POST['bg_color'][$k]);
 
             $sql2 = 'update ' . $xoopsDB->prefix('tad_web_schedule_data') . " set `Subject`='{$Subject}', `Teacher`='{$Teacher}', `Link`='{$Link}', `color`='{$color}', `bg_color`='{$bg_color}' where ScheduleID='{$ScheduleID}' and `Subject`='{$old_Subject}'";
             $xoopsDB->queryF($sql2) or Utility::web_error($sql2);

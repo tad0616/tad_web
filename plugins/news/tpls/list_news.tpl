@@ -1,7 +1,7 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $bc.main_data}>
     <{if $block.config.show_mode=="list"}>
-        <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+        <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
         <ul class="list-group">
             <{foreach from=$bc.main_data key=i item=news}>
                 <li class="list-group-item">

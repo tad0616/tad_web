@@ -154,7 +154,7 @@
         </th>
     </tr>
     <{foreach from=$web_install_blocks key=i item=block_arr}>
-        <{assign var=Position value=$block_arr.BlockPosition}>
+        <{assign var="Position" value=$block_arr.BlockPosition}>
         <tr>
             <td style="text-align: center;">
                 <a href="block.php?WebID=<{$WebID}>&op=demo&plugin=<{$plugin}>&BlockID=<{$block_arr.BlockID}>"data-fancybox-type="iframe" class="edit_block"><{$block_arr.BlockTitle}></a>
