@@ -34,8 +34,6 @@ function save_plugins()
 {
     global $xoopsDB;
     $plugins = get_plugins(0);
-    //die(var_export($plugins));
-    $myts = \MyTextSanitizer::getInstance();
 
     $i = 1;
 
@@ -45,7 +43,7 @@ function save_plugins()
     $display_plugins = [];
     foreach ($plugins as $plugin) {
         $dirname = $plugin['dirname'];
-        $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
+        $PluginTitle = $xoopsDB->escape($_POST['plugin_name'][$dirname]);
 
         $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$i}', '{$_POST['plugin_display'][$dirname]}', '0')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);

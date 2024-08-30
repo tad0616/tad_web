@@ -72,15 +72,13 @@ function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
 //新增資料到tad_web_cate中
 function save_tad_web_cate()
 {
-    global $xoopsDB, $xoopsUser, $isAdmin;
-
-    $myts = \MyTextSanitizer::getInstance();
+    global $xoopsDB;
 
     $CateID = (int) $_POST['CateID'];
     $WebID = (int) $_POST['WebID'];
-    $CateName = $myts->addSlashes($_POST['CateName']);
-    $ColName = $myts->addSlashes($_POST['ColName']);
-    $ColSN = $myts->addSlashes($_POST['ColSN']);
+    $CateName = $xoopsDB->escape($_POST['CateName']);
+    $ColName = $xoopsDB->escape($_POST['ColName']);
+    $ColSN = $xoopsDB->escape($_POST['ColSN']);
     $CateSort = (int) $_POST['CateSort'];
     $CateEnable = (int) $_POST['CateEnable'];
     $CateCounter = (int) $_POST['CateCounter'];
@@ -113,13 +111,12 @@ function save_tad_web_cate()
 //更新tad_web_cate某一筆資料
 function update_tad_web_cate($CateID = '')
 {
-    global $xoopsDB, $isAdmin, $xoopsUser;
+    global $xoopsDB;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $CateName = $myts->addSlashes($_POST['CateName']);
+    $CateName = $xoopsDB->escape($_POST['CateName']);
 
     $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
-       `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
+    `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return $CateID;
@@ -128,11 +125,10 @@ function update_tad_web_cate($CateID = '')
 //更新tad_web_cate資料
 function update_tad_web_cate_arr($CateID = '')
 {
-    global $xoopsDB, $isAdmin, $xoopsUser;
+    global $xoopsDB;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $web_cate_arr = $myts->addSlashes($_POST['web_cate_arr']);
-    $web_cate_blank_arr = $myts->addSlashes($_POST['web_cate_blank_arr']);
+    $web_cate_arr = $xoopsDB->escape($_POST['web_cate_arr']);
+    $web_cate_blank_arr = $xoopsDB->escape($_POST['web_cate_blank_arr']);
 
     $web_cate_array = explode(',', $web_cate_arr);
 

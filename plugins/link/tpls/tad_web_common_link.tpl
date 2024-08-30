@@ -40,7 +40,7 @@
             </tr>
         </thead>
         <tbody id="sort">
-            <{foreach item=link from=$link_data name=l}>
+            <{foreach from=$link_data item=link name=l}>
                 <tr id="LinkID_<{$link.LinkID}>">
                     <td>
                         <i class="fa fa-external-link"></i>

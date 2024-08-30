@@ -19,7 +19,7 @@
                 </th>
             </tr>
         </thead>
-        <{foreach item=account from=$account_data}>
+        <{foreach from=$account_data item=account}>
             <tr>
                 <td style="text-align:center;">
                     <{$account.AccountDate}>

@@ -172,15 +172,14 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
 {
     global $xoopsDB, $power;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $BlockTitle = $myts->addSlashes($BlockTitle);
-    $BlockPosition = $myts->addSlashes($BlockPosition);
-    $BlockEnable = $myts->addSlashes($BlockEnable);
+    $BlockTitle = $xoopsDB->escape($BlockTitle);
+    $BlockPosition = $xoopsDB->escape($BlockPosition);
+    $BlockEnable = $xoopsDB->escape($BlockEnable);
 
     $content_type = $config['content_type'];
-    $BlockContent = $myts->addSlashes($_POST['BlockContent'][$content_type]);
+    $BlockContent = $xoopsDB->escape($_POST['BlockContent'][$content_type]);
     $BlockContent = Wcag::amend($BlockContent);
-    $BlockName = $myts->addSlashes($BlockName);
+    $BlockName = $xoopsDB->escape($BlockName);
 
     if (PHP_VERSION_ID >= 50400) {
         $new_block_config = json_encode($config, JSON_UNESCAPED_UNICODE);
@@ -364,11 +363,11 @@ function copy_block($BlockID, $plugin, $WebID)
     $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `BlockID`='{$BlockID}'";
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $block = $xoopsDB->fetchArray($result);
-    $myts = \MyTextSanitizer::getInstance();
-    $block['BlockTitle'] = $myts->addSlashes($block['BlockTitle']);
-    $block['BlockContent'] = $myts->addSlashes($block['BlockContent']);
+
+    $block['BlockTitle'] = $xoopsDB->escape($block['BlockTitle']);
+    $block['BlockContent'] = $xoopsDB->escape($block['BlockContent']);
     $block['BlockContent'] = Wcag::amend($block['BlockContent']);
-    $block['BlockConfig'] = $myts->addSlashes($block['BlockConfig']);
+    $block['BlockConfig'] = $xoopsDB->escape($block['BlockConfig']);
 
     $BlockCopy = max_blocks_copy($WebID, $block['BlockName']);
     $BlockSort = max_blocks_sort($WebID, $block['BlockPosition']);

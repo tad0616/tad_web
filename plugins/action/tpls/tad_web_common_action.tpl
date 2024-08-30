@@ -12,7 +12,7 @@
 
 <{if $action_data}>
     <div style="clear: both;"></div>
-        <{foreach item=act from=$action_data}>
+        <{foreach from=$action_data item=act}>
             <div style="width: 156px; height: 260px; float:left; margin: 5px 2px; overflow: hidden;">
                 <a href='action.php?WebID=<{$act.WebID}>&ActionID=<{$act.ActionID}>'>
                     <div style="width: 150px; height: 160px; background-color: <{if $act.gphoto_link!=""}>#fff589<{else}>#F1F7FF<{/if}> ; border:1px dotted green; margin: 0px auto;">

@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/parent_toolbar.tpl"}>
+            <{include file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/parent_toolbar.tpl"}>
         </div>
     </div>
 </form>

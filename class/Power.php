@@ -129,12 +129,11 @@ class Power
     //新增資料到tad_web_power中
     public function save_power($col_name = '', $col_sn = '', $power_name = '', $power_val = '', $plugin = '')
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $power_name = $myts->addSlashes($power_name);
-        $power_val = empty($power_val) ? $myts->addSlashes($_REQUEST[$power_name]) : $myts->addSlashes($power_val);
-        $plugin = $myts->addSlashes($plugin);
+        $power_name = $xoopsDB->escape($power_name);
+        $power_val = empty($power_val) ? $xoopsDB->escape($_REQUEST[$power_name]) : $xoopsDB->escape($power_val);
+        $plugin = $xoopsDB->escape($plugin);
 
         $sql = 'replace into `' . $xoopsDB->prefix('tad_web_power') . "` (
         `WebID`,
@@ -195,13 +194,31 @@ class Power
     public function check_power($power_name = '', $col_name = '', $col_sn = '', $plugin = '')
     {
         global $isMyWeb, $LoginWebID, $xoopsUser;
-        $power = $this->get_power($power_name, $col_name, $col_sn, $plugin);
+        // if ($col_sn == 58505) {
+        //     Utility::test("$power_name, $col_name, $col_sn, $plugin", 'power', 'dd');
+        // }
 
+        $power = $this->get_power($power_name, $col_name, $col_sn, $plugin);
+        // if ($col_sn == 58505) {
+        //     Utility::test($power, 'power', 'dd');
+        // }
         if ('users' === $power and !$xoopsUser and empty($LoginWebID)) {
+            // if ($col_sn == 58505) {
+            //     Utility::test('users', 'power', 'die');
+            // }
+
             return false;
         } elseif ('web_users' === $power and $LoginWebID != $this->WebID and !$isMyWeb) {
+            // if ($col_sn == 58505) {
+            //     Utility::test('web_users', 'power', 'die');
+            // }
+
             return false;
         } elseif ('web_admin' === $power and !$isMyWeb) {
+            // if ($col_sn == 58505) {
+            //     Utility::test('web_admin', 'power', 'die');
+            // }
+
             return false;
         }
 

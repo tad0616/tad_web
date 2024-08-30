@@ -190,11 +190,10 @@ function tad_web_config($WebID, $configs)
 //更新網頁資訊
 function update_tad_web()
 {
-    global $xoopsDB, $xoopsUser, $WebID;
+    global $xoopsDB, $WebID;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $WebName = $myts->addSlashes($_POST['WebName']);
-    $WebOwner = $myts->addSlashes($_POST['WebOwner']);
+    $WebName = $xoopsDB->escape($_POST['WebName']);
+    $WebOwner = $xoopsDB->escape($_POST['WebOwner']);
     $CateID = (int) $_POST['CateID'];
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set CateID='{$CateID}', `WebName` = '{$WebName}', `WebOwner` = '{$WebOwner}' where WebID ='{$WebID}'";
@@ -218,13 +217,12 @@ function save_plugins($WebID)
 {
     global $xoopsDB;
     $plugins = get_plugins($WebID);
-    $myts = \MyTextSanitizer::getInstance();
 
     $sql = 'delete from ' . $xoopsDB->prefix('tad_web_plugins') . " where WebID='{$WebID}'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     foreach ($plugins as $plugin) {
         $dirname = $plugin['dirname'];
-        $PluginTitle = $myts->addSlashes($_POST['plugin_name'][$dirname]);
+        $PluginTitle = $xoopsDB->escape($_POST['plugin_name'][$dirname]);
         $PluginEnable = ('1' == $_POST['plugin_enable'][$dirname]) ? '1' : '0';
 
         $sql = 'replace into ' . $xoopsDB->prefix('tad_web_plugins') . " (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) values('{$dirname}', '{$PluginTitle}', '{$plugin['db']['PluginSort']}', '{$PluginEnable}', '{$WebID}')";
@@ -287,8 +285,7 @@ function enabe_plugin($dirname = '', $WebID = '')
 {
     global $xoopsDB;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $dirname = $myts->addSlashes($dirname);
+    $dirname = $xoopsDB->escape($dirname);
 
     $sql = 'update ' . $xoopsDB->prefix('tad_web_plugins') . " set
    `PluginEnable` = '1'

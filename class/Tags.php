@@ -135,15 +135,14 @@ class Tags
     //新增資料到tad_web_tags中
     public function save_tags($col_name = '', $col_sn = '', $tag_name = '', $tags = [])
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
         $sql = 'delete from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID`='{$this->WebID}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         if ($tags) {
             foreach ($tags as $tag) {
                 $tag = trim($tag);
-                $tag = $myts->addSlashes($tag);
+                $tag = $xoopsDB->escape($tag);
                 if (empty($tag)) {
                     continue;
                 }
@@ -165,7 +164,7 @@ class Tags
         $tags = explode(',', $tag_name);
         foreach ($tags as $tag) {
             $tag = trim($tag);
-            $tag = $myts->addSlashes($tag);
+            $tag = $xoopsDB->escape($tag);
             if (empty($tag)) {
                 continue;
             }

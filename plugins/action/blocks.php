@@ -31,7 +31,7 @@ function action_slide($WebID, $config = [])
 
     if ($config['action_id'] == 'latest') {
         $order = "order by ActionDate desc";
-    } elseif (is_integer($config['action_id'])) {
+    } elseif (is_numeric($config['action_id'])) {
         $order = "and ActionID='{$config['action_id']}'";
     } else {
         $order = "order by rand()";

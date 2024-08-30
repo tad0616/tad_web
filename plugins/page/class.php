@@ -371,17 +371,16 @@ class tad_web_page
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $PageTitle = $myts->addSlashes($_POST['PageTitle']);
-        $PageContent = $myts->addSlashes($_POST['PageContent']);
+        $PageTitle = $xoopsDB->escape($_POST['PageTitle']);
+        $PageContent = $xoopsDB->escape($_POST['PageContent']);
         $PageContent = Wcag::amend($PageContent);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $PageSort = $this->max_sort($WebID, $CateID);
         $PageDate = date('Y-m-d H:i:s');
-        $PageCSS = $myts->addSlashes($_POST['PageCSS']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $PageCSS = $xoopsDB->escape($_POST['PageCSS']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
@@ -409,16 +408,14 @@ class tad_web_page
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $PageTitle = $myts->addSlashes($_POST['PageTitle']);
-        $PageContent = $myts->addSlashes($_POST['PageContent']);
+        $PageTitle = $xoopsDB->escape($_POST['PageTitle']);
+        $PageContent = $xoopsDB->escape($_POST['PageContent']);
         $PageContent = Wcag::amend($PageContent);
         $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
         $PageDate = date('Y-m-d H:i:s');
-        $PageCSS = $myts->addSlashes($_POST['PageCSS']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $PageCSS = $xoopsDB->escape($_POST['PageCSS']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }

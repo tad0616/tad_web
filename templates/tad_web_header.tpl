@@ -48,7 +48,7 @@
 <{/if}>
 
 <{if $isMyWeb or $LoginMemID or $LoginParentID}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_my_menu.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_my_menu.tpl"}>
 <{else}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_login.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_login.tpl"}>
 <{/if}>

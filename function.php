@@ -57,6 +57,7 @@ function clear_block_cache($WebID)
 {
     $web_blocks_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_blocks.json";
     unlink($web_blocks_file);
+    clear_power_cache($WebID);
 }
 
 // 清除額外設定的儲存值
@@ -362,6 +363,8 @@ function get_web_all_config($WebID = '')
                     mklogoPic($WebID);
                 }
                 copy(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/auto_logo/auto_logo.png", XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}");
+
+                chmod(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$tad_web_config['web_logo']}", 0777);
             }
         } else {
             Utility::web_error("Need to install 'for_tad_web_theme' or 'for_tad_web_theme_2'theme.");
@@ -390,8 +393,8 @@ function save_web_config($ConfigName, $ConfigValue, $WebID)
     if (is_array($ConfigValue)) {
         $ConfigValue = implode(';', $ConfigValue);
     }
-    $myts = \MyTextSanitizer::getInstance();
-    $ConfigValue = $myts->addSlashes($ConfigValue);
+
+    $ConfigValue = $xoopsDB->escape($ConfigValue);
 
     $sql = 'replace into ' . $xoopsDB->prefix('tad_web_config') . "
     (`ConfigName`, `ConfigValue`, `WebID`)
@@ -568,7 +571,6 @@ function mk_menu_var_file($WebID = null)
     }
 
     $all_plugins = get_plugins($WebID, 'show');
-    $myts = \MyTextSanitizer::getInstance();
 
     $current = "<?php\n";
     $i = 1;
@@ -584,7 +586,7 @@ function mk_menu_var_file($WebID = null)
             $current .= "if(defined('_SHOW_UNABLE') and _SHOW_UNABLE=='1'){\n";
         }
 
-        $plugin['db']['PluginTitle'] = $myts->addSlashes($plugin['db']['PluginTitle']);
+        $plugin['db']['PluginTitle'] = $xoopsDB->escape($plugin['db']['PluginTitle']);
 
         $current .= "\$menu_var['{$dirname}']['id']     = $i;\n";
         $current .= "\$menu_var['{$dirname}']['title']  = '{$plugin['db']['PluginTitle']}';\n";
@@ -1937,8 +1939,7 @@ function set_assistant($WebID, $CateID = '', $MemID = '', $plugin = '')
         return;
     }
 
-    $myts = \MyTextSanitizer::getInstance();
-    $plugin = $myts->addSlashes($plugin);
+    $plugin = $xoopsDB->escape($plugin);
 
     $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate_assistant') . "` (`CateID`, `AssistantType`, `AssistantID`, `plugin`) values('{$CateID}', 'MemID', '{$MemID}', '{$plugin}')";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);

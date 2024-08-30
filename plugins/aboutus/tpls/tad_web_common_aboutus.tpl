@@ -12,7 +12,7 @@
 
 <{if $WebID=="" and $data}>
     <{if $_IS_EZCLASS and $web_version=="all"}>
-        <{includeq file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_all.tpl"}>
+        <{include file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_all.tpl"}>
     <{else}>
         <{if $tad_web_cate}>
 

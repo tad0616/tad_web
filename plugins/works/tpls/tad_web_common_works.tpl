@@ -30,7 +30,7 @@
                 <{/if}>
             </tr>
         </thead>
-        <{foreach item=work from=$works_data}>
+        <{foreach from=$works_data item=work}>
             <tr>
                 <td style="text-align:center;"><{$work.WorksDate}></td>
                 <td>

@@ -407,15 +407,14 @@ class tad_web_news
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $NewsTitle = $myts->addSlashes($_POST['NewsTitle']);
-        $NewsUrl = $myts->addSlashes($_POST['NewsUrl']);
-        $NewsContent = $myts->addSlashes($_POST['NewsContent']);
+        $NewsTitle = $xoopsDB->escape($_POST['NewsTitle']);
+        $NewsUrl = $xoopsDB->escape($_POST['NewsUrl']);
+        $NewsContent = $xoopsDB->escape($_POST['NewsContent']);
         $NewsContent = Wcag::amend($NewsContent);
-        $NewsDate = $myts->addSlashes($_POST['NewsDate']);
-        $toCal = $myts->addSlashes($_POST['toCal']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $NewsDate = $xoopsDB->escape($_POST['NewsDate']);
+        $toCal = $xoopsDB->escape($_POST['toCal']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $NewsEnable = (int) $_POST['NewsEnable'];
@@ -453,15 +452,14 @@ class tad_web_news
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $NewsTitle = $myts->addSlashes($_POST['NewsTitle']);
-        $NewsUrl = $myts->addSlashes($_POST['NewsUrl']);
-        $NewsContent = $myts->addSlashes($_POST['NewsContent']);
+        $NewsTitle = $xoopsDB->escape($_POST['NewsTitle']);
+        $NewsUrl = $xoopsDB->escape($_POST['NewsUrl']);
+        $NewsContent = $xoopsDB->escape($_POST['NewsContent']);
         $NewsContent = Wcag::amend($NewsContent);
-        $NewsDate = $myts->addSlashes($_POST['NewsDate']);
-        $toCal = $myts->addSlashes($_POST['toCal']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $NewsDate = $xoopsDB->escape($_POST['NewsDate']);
+        $toCal = $xoopsDB->escape($_POST['toCal']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $NewsEnable = (int) $_POST['NewsEnable'];

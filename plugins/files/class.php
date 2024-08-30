@@ -274,15 +274,13 @@ class tad_web_files
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-        $file_link = $myts->addSlashes($_POST['file_link']);
-        $file_description = $myts->addSlashes($_POST['file_description']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $file_method = $myts->addSlashes($_POST['file_method']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $file_link = $xoopsDB->escape($_POST['file_link']);
+        $file_description = $xoopsDB->escape($_POST['file_description']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $file_method = $xoopsDB->escape($_POST['file_method']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
@@ -314,15 +312,13 @@ class tad_web_files
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-        $file_link = $myts->addSlashes($_POST['file_link']);
-        $file_description = $myts->addSlashes($_POST['file_description']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $file_method = $myts->addSlashes($_POST['file_method']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $file_link = $xoopsDB->escape($_POST['file_link']);
+        $file_description = $xoopsDB->escape($_POST['file_description']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $file_method = $xoopsDB->escape($_POST['file_method']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }

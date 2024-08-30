@@ -1,7 +1,7 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $bc.main_data}>
     <div style="margin-bottom:15px;"></div>
-    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
     <!-- start feedwind code -->
     <script type="text/javascript">
         document.write('\x3Cscript type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'feed.mikle.com/js/rssmikle.js">\x3C/script>');

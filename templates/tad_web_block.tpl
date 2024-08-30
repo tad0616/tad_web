@@ -327,7 +327,7 @@
                     <ul id="sort_side" class="connectedSortable">
                         <{if $side}>
                             <{foreach from=$side item=block}>
-                                <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                                <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                             <{/foreach}>
                         <{/if}>
                     </ul>
@@ -341,7 +341,7 @@
                 <ul id="sort_block1" class="connectedSortable">
                     <{if $block1}>
                         <{foreach from=$block1 item=block}>
-                            <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                            <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                         <{/foreach}>
                     <{/if}>
                 </ul>
@@ -354,7 +354,7 @@
                         <ul id="sort_block2" class="connectedSortable">
                             <{if $block2}>
                                 <{foreach from=$block2 item=block}>
-                                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                                    <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
                             <{/if}>
                         </ul>
@@ -366,7 +366,7 @@
                         <ul id="sort_block3" class="connectedSortable">
                             <{if $block3}>
                                 <{foreach from=$block3 item=block}>
-                                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                                    <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
                             <{/if}>
                         </ul>
@@ -379,7 +379,7 @@
                 <ul id="sort_block4" class="connectedSortable">
                     <{if $block4}>
                         <{foreach from=$block4 item=block}>
-                            <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                            <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                         <{/foreach}>
                     <{/if}>
                 </ul>
@@ -392,7 +392,7 @@
                         <ul id="sort_block5" class="connectedSortable">
                             <{if $block5}>
                                 <{foreach from=$block5 item=block}>
-                                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                                    <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
                             <{/if}>
                         </ul>
@@ -404,7 +404,7 @@
                         <ul id="sort_block6" class="connectedSortable">
                             <{if $block6}>
                                 <{foreach from=$block6 item=block}>
-                                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                                    <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
                             <{/if}>
                         </ul>
@@ -420,7 +420,7 @@
                         <ul id="sort_side" class="connectedSortable">
                             <{if $side}>
                                 <{foreach from=$side item=block}>
-                                    <{includeq file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
+                                    <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
                             <{/if}>
                         </ul>

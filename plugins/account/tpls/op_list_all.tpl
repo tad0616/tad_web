@@ -13,7 +13,7 @@
 <{/if}>
 
 <{if $account_data}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/plugins/account/tpls/tad_web_common_account.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/plugins/account/tpls/tad_web_common_account.tpl"}>
 <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>">&#xf015;</a> <{$account.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>

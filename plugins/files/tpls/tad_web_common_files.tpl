@@ -21,7 +21,7 @@
                 <{/if}>
             </tr>
         </thead>
-        <{foreach item=file from=$file_data}>
+        <{foreach from=$file_data item=file}>
             <tr>
                 <td>
                     <div style="word-wrap:break-word;">

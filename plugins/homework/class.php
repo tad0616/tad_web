@@ -439,33 +439,31 @@ class tad_web_homework
     //新增資料到tad_web_homework中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
+        global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);
-        $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
+        $HomeworkTitle = $xoopsDB->escape($_POST['HomeworkTitle']);
+        $HomeworkContent = $xoopsDB->escape($_POST['HomeworkContent']);
         $HomeworkContent = Wcag::amend($HomeworkContent);
-        $NoticeContent = Wcag::amend($NoticeContent);
-        $toCal = $myts->addSlashes($_POST['toCal']);
-        $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
+        $toCal = $xoopsDB->escape($_POST['toCal']);
+        $HomeworkPostDate = $xoopsDB->escape($_POST['HomeworkPostDate']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $uid = (int) $_POST['uid'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
-        $today_homework = $myts->addSlashes($_POST['today_homework']);
+        $today_homework = $xoopsDB->escape($_POST['today_homework']);
         $today_homework = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
-        $bring = $myts->addSlashes($_POST['bring']);
+        $bring = $xoopsDB->escape($_POST['bring']);
         $bring = Wcag::amend($bring);
         $bring_remove_html = $this->remove_html($bring);
-        $teacher_say = $myts->addSlashes($_POST['teacher_say']);
+        $teacher_say = $xoopsDB->escape($_POST['teacher_say']);
         $teacher_say = Wcag::amend($teacher_say);
         $teacher_say_remove_html = $this->remove_html($teacher_say);
-        $other = $myts->addSlashes($_POST['other']);
+        $other = $xoopsDB->escape($_POST['other']);
         $other = Wcag::amend($other);
         $other_remove_html = $this->remove_html($other);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
 
         if (empty($toCal)) {
             $toCal = '0000-00-00';
@@ -537,29 +535,28 @@ class tad_web_homework
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $HomeworkTitle = $myts->addSlashes($_POST['HomeworkTitle']);
-        $HomeworkContent = $myts->addSlashes($_POST['HomeworkContent']);
+        $HomeworkTitle = $xoopsDB->escape($_POST['HomeworkTitle']);
+        $HomeworkContent = $xoopsDB->escape($_POST['HomeworkContent']);
         $HomeworkContent = Wcag::amend($HomeworkContent);
-        $toCal = $myts->addSlashes($_POST['toCal']);
-        $HomeworkPostDate = $myts->addSlashes($_POST['HomeworkPostDate']);
+        $toCal = $xoopsDB->escape($_POST['toCal']);
+        $HomeworkPostDate = $xoopsDB->escape($_POST['HomeworkPostDate']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
-        $today_homework = $myts->addSlashes($_POST['today_homework']);
+        $today_homework = $xoopsDB->escape($_POST['today_homework']);
         $today_homework = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
-        $bring = $myts->addSlashes($_POST['bring']);
+        $bring = $xoopsDB->escape($_POST['bring']);
         $bring = Wcag::amend($bring);
         $bring_remove_html = $this->remove_html($bring);
-        $teacher_say = $myts->addSlashes($_POST['teacher_say']);
+        $teacher_say = $xoopsDB->escape($_POST['teacher_say']);
         $teacher_say = Wcag::amend($teacher_say);
         $teacher_say_remove_html = $this->remove_html($teacher_say);
-        $other = $myts->addSlashes($_POST['other']);
+        $other = $xoopsDB->escape($_POST['other']);
         $other = Wcag::amend($other);
         $other_remove_html = $this->remove_html($other);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
         // die($bring);
         if (empty($toCal)) {
             $toCal = '0000-00-00';

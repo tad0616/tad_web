@@ -81,7 +81,10 @@ class tad_web_video
             where b.`WebEnable`='1'and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.VideoDate desc , a.VideoID desc";
         } else {
-            if(empty($this->WebID))return;
+            if (empty($this->WebID)) {
+                return;
+            }
+
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_video') . ' as a
             left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
@@ -315,12 +318,11 @@ class tad_web_video
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube = $myts->addSlashes($_POST['Youtube']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $VideoName = $xoopsDB->escape($_POST['VideoName']);
+        $VideoDesc = $xoopsDB->escape($_POST['VideoDesc']);
+        $Youtube = $xoopsDB->escape($_POST['Youtube']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
 
@@ -364,12 +366,11 @@ class tad_web_video
     {
         global $xoopsDB;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $VideoName = $myts->addSlashes($_POST['VideoName']);
-        $VideoDesc = $myts->addSlashes($_POST['VideoDesc']);
-        $Youtube = $myts->addSlashes($_POST['Youtube']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $VideoName = $xoopsDB->escape($_POST['VideoName']);
+        $VideoDesc = $xoopsDB->escape($_POST['VideoDesc']);
+        $Youtube = $xoopsDB->escape($_POST['Youtube']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
 

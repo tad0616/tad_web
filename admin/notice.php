@@ -72,7 +72,7 @@ function tad_web_notice_form($NoticeID = '')
 //新增資料到tad_web_notice中
 function insert_tad_web_notice()
 {
-    global $xoopsDB, $xoopsUser, $isAdmin;
+    global $xoopsDB, $isAdmin;
     if (!$isAdmin) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
@@ -83,13 +83,11 @@ function insert_tad_web_notice()
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $myts = \MyTextSanitizer::getInstance();
-
     $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = $myts->addSlashes($_POST['NoticeTitle']);
-    $NoticeContent = $myts->addSlashes($_POST['NoticeContent']);
+    $NoticeTitle = $xoopsDB->escape($_POST['NoticeTitle']);
+    $NoticeContent = $xoopsDB->escape($_POST['NoticeContent']);
     $NoticeContent = Wcag::amend($NoticeContent);
-    $NoticeWeb = $myts->addSlashes($_POST['NoticeWeb']);
+    $NoticeWeb = $xoopsDB->escape($_POST['NoticeWeb']);
     $NoticeWho = implode(';', $_POST['NoticeWho']);
     $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 
@@ -117,7 +115,7 @@ function insert_tad_web_notice()
 //更新tad_web_notice某一筆資料
 function update_tad_web_notice($NoticeID = '')
 {
-    global $xoopsDB, $isAdmin, $xoopsUser;
+    global $xoopsDB, $isAdmin;
     if (!$isAdmin) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
@@ -128,12 +126,10 @@ function update_tad_web_notice($NoticeID = '')
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $myts = \MyTextSanitizer::getInstance();
-
     $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = $myts->addSlashes($_POST['NoticeTitle']);
-    $NoticeContent = $myts->addSlashes($_POST['NoticeContent']);
-    $NoticeWeb = $myts->addSlashes($_POST['NoticeWeb']);
+    $NoticeTitle = $xoopsDB->escape($_POST['NoticeTitle']);
+    $NoticeContent = $xoopsDB->escape($_POST['NoticeContent']);
+    $NoticeWeb = $xoopsDB->escape($_POST['NoticeWeb']);
     $NoticeWho = implode(';', $_POST['NoticeWho']);
     $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 

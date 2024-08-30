@@ -1,7 +1,7 @@
 <{assign var="bc" value=$block.BlockContent}>
 
 <{if $bc.main_data}>
-    <{includeq file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
+    <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
     <div style="clear: both;"></div>
     <{foreach from=$bc.main_data item=act}>
         <div style="width: 156px; height: 240px; float:left; margin: 5px 2px; overflow: hidden;">

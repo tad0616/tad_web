@@ -94,7 +94,10 @@ class tad_web_works
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' $andWebID $andCateID
             order by a.WorksID desc";
         } else {
-            if(empty($this->WebID))return;
+            if (empty($this->WebID)) {
+                return;
+            }
+
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_works') . ' as a
             left join ' . $xoopsDB->prefix('tad_web') . ' as b on a.WebID=b.WebID
             left join ' . $xoopsDB->prefix('tad_web_cate') . " as c on a.CateID=c.CateID
@@ -380,13 +383,12 @@ class tad_web_works
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $WorkName = $myts->addSlashes($_POST['WorkName']);
-        $WorkDesc = $myts->addSlashes($_POST['WorkDesc']);
-        $WorksKind = $myts->addSlashes($_POST['WorksKind']);
-        $WorksDate = $myts->addSlashes($_POST['WorksDate']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $WorkName = $xoopsDB->escape($_POST['WorkName']);
+        $WorkDesc = $xoopsDB->escape($_POST['WorkDesc']);
+        $WorksKind = $xoopsDB->escape($_POST['WorksKind']);
+        $WorksDate = $xoopsDB->escape($_POST['WorksDate']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $WorksEnable = (int) $_POST['WorksEnable'];
@@ -418,13 +420,12 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $WorkName = $myts->addSlashes($_POST['WorkName']);
-        $WorkDesc = $myts->addSlashes($_POST['WorkDesc']);
-        $WorksKind = $myts->addSlashes($_POST['WorksKind']);
-        $WorksDate = $myts->addSlashes($_POST['WorksDate']);
-        $newCateName = $myts->addSlashes($_POST['newCateName']);
-        $tag_name = $myts->addSlashes($_POST['tag_name']);
+        $WorkName = $xoopsDB->escape($_POST['WorkName']);
+        $WorkDesc = $xoopsDB->escape($_POST['WorkDesc']);
+        $WorksKind = $xoopsDB->escape($_POST['WorksKind']);
+        $WorksDate = $xoopsDB->escape($_POST['WorksDate']);
+        $newCateName = $xoopsDB->escape($_POST['newCateName']);
+        $tag_name = $xoopsDB->escape($_POST['tag_name']);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $WorksEnable = (int) $_POST['WorksEnable'];
@@ -461,8 +462,7 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-        $myts = \MyTextSanitizer::getInstance();
-        $WorkDesc = $myts->addSlashes($_POST['WorkDesc']);
+        $WorkDesc = $xoopsDB->escape($_POST['WorkDesc']);
 
         //讀出原有分數及評語
         $sql = 'select WorkScore , WorkJudgment from ' . $xoopsDB->prefix('tad_web_works_content') . " where `WorksID`='{$WorksID}' and `MemID`='{$_SESSION['LoginMemID']}' and  `WebID`='{$this->WebID}'";
@@ -474,7 +474,7 @@ class tad_web_works
         foreach ($_POST['save_description'] as $files_sn => $desc) {
             $all_files_sn[$files_sn] = $files_sn;
 
-            $desc = str_replace("{$_SESSION['LoginMemName']}-", '', $myts->addSlashes($desc));
+            $desc = str_replace("{$_SESSION['LoginMemName']}-", '', $xoopsDB->escape($desc));
 
             $_POST['save_description'][$files_sn] = "{$_SESSION['LoginMemName']}-{$desc}";
         }
@@ -656,14 +656,13 @@ class tad_web_works
 
     public function save_score($WorksID = '', $WorkScoreArr = [], $WorkJudgmentArr = [])
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
-        $myts = \MyTextSanitizer::getInstance();
+        global $xoopsDB;
         foreach ($WorkScoreArr as $MemID => $WorkScore) {
-            $WorkScore = $myts->addSlashes($WorkScore);
-            $WorkJudgment = $myts->addSlashes($WorkJudgmentArr[$MemID]);
+            $WorkScore = $xoopsDB->escape($WorkScore);
+            $WorkJudgment = $xoopsDB->escape($WorkJudgmentArr[$MemID]);
             $sql = 'update ' . $xoopsDB->prefix('tad_web_works_content') . " set
-             `WorkScore` = '{$WorkScore}' ,
-             `WorkJudgment` = '{$WorkJudgment}'
+            `WorkScore` = '{$WorkScore}' ,
+            `WorkJudgment` = '{$WorkJudgment}'
             where WorksID='$WorksID' and `MemID` = '{$MemID}'";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }

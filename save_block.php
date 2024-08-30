@@ -25,13 +25,12 @@ switch ($op) {
 
             //複製一份給目前網站
             $BlockSort = max_blocks_sort($WebID, $PositionName);
-            $myts = \MyTextSanitizer::getInstance();
 
-            $BlockTitle = $myts->addSlashes($block['BlockTitle']);
-            $BlockContent = $myts->addSlashes($block['BlockContent']);
+            $BlockTitle = $xoopsDB->escape($block['BlockTitle']);
+            $BlockContent = $xoopsDB->escape($block['BlockContent']);
             $BlockContent = Wcag::amend($BlockContent);
-            $BlockConfig = $myts->addSlashes($block['BlockConfig']);
-            $BlockName = $myts->addSlashes($block['BlockName']);
+            $BlockConfig = $xoopsDB->escape($block['BlockConfig']);
+            $BlockName = $xoopsDB->escape($block['BlockName']);
             $sql = 'insert into `' . $xoopsDB->prefix('tad_web_blocks') . "` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) values('{$BlockName}', 0, '{$BlockTitle}', '{$BlockContent}', '1', '{$BlockConfig}', '{$PositionName}', '$BlockSort', '{$WebID}', 'custom','{$block['BlockID']}')";
 
             $text_color = get_web_config('block_pic_text_color', $WebID);

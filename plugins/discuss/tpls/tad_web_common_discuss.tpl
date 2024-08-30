@@ -39,7 +39,7 @@
                 </tr>
             </thead>
             <{if $discuss_data}>
-                <{foreach item=discuss from=$discuss_data}>
+                <{foreach from=$discuss_data item=discuss}>
                     <tr>
                         <td style="text-align:center;"><{$discuss.LastTime}></td>
                         <td>
