@@ -9,7 +9,7 @@
 
         <!--帳目日期-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_ACCOUNT_DATE}>
             </label>
             <div class="col-md-3">
@@ -26,7 +26,7 @@
             <div class="col-md-5">
                 <div class="form-group row mb-3">
                     <!--種類-->
-                    <label class="col-md-5 col-form-label text-sm-right control-label">
+                    <label class="col-md-5 col-form-label text-sm-right text-sm-end control-label">
                         <{$smarty.const._MD_TCW_ACCOUNT_MONEY}>
                     </label>
                     <div class="col-md-7">
@@ -47,7 +47,7 @@
 
                 <div class="form-group row mb-3">
                     <!--金額-->
-                    <label class="col-md-5 col-form-label text-sm-right control-label">
+                    <label class="col-md-5 col-form-label text-sm-right text-sm-end control-label">
                     </label>
                     <div class="col-md-7">
                         <input type="text" name="AccountMoney" class="validate[required] form-control" value="<{$AccountMoney}>" id="AccountMoney" >
@@ -63,7 +63,7 @@
 
         <!--上傳圖檔-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_ACCOUNT_UPLOAD}>
             </label>
             <div class="col-md-10">

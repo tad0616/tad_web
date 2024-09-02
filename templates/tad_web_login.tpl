@@ -84,7 +84,7 @@
 
                 <form action="<{$xoops_url}>/user.php" method="post" role="form" id="xoops_login" <{if $openid=='1'}>style="display: none;"<{/if}>>
                     <div class="form-group row mb-3">
-                        <label class="col-md-4 col-form-label text-sm-right control-label" for="uname">
+                        <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label" for="uname">
                             <{$smarty.const._MD_TCW_ID}>
                         </label>
                         <div class="col-md-8">
@@ -93,7 +93,7 @@
                     </div>
 
                     <div class="form-group row mb-3">
-                        <label class="col-md-4 col-form-label text-sm-right control-label" for="pass">
+                        <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label" for="pass">
                             <{$smarty.const._MD_TCW_PASSWD}>
                         </label>
                         <div class="col-md-8">
@@ -102,7 +102,7 @@
                     </div>
 
                     <div class="form-group row mb-3">
-                        <label class="col-md-4 col-form-label text-sm-right control-label">
+                        <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                         </label>
                         <div class="col-md-8 d-grid gap-2">
                             <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
@@ -116,7 +116,7 @@
 
                 <form action="aboutus.php" method="post" enctype="multipart/form-data" role="form" id="student_login" style="display: none;">
                     <div class="form-group row mb-3">
-                        <label class="col-md-4 col-form-label text-sm-right control-label">
+                        <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                             <{$student_title}><{$smarty.const._MD_TCW_ID}>
                         </label>
                         <div class="col-md-8 controls">
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <div class="form-group row mb-3">
-                        <label class="col-md-4 col-form-label text-sm-right control-label">
+                        <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                             <{$student_title}><{$smarty.const._MD_TCW_PASSWD}>
                         </label>
                         <div class="col-md-8 controls">
@@ -133,7 +133,7 @@
                     </div>
 
                     <div class="form-group row mb-3">
-                        <label class="col-md-4 col-form-label text-sm-right control-label">
+                        <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                         </label>
                         <div class="col-md-8 d-grid gap-2">
                             <input type="hidden" name="WebID" value="<{$WebID}>">
@@ -161,7 +161,7 @@
 
                     <div id="parent_login_div" style="display:none;">
                         <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-sm-right control-label">
+                            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                                 <{$smarty.const._MD_TCW_PASSWD}>
                             </label>
                             <div class="col-md-9 controls">

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <img src="https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=<{$bc.main_data}>&chld=H|0" alt="QR Code" class="img-fluid img-responsive">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=<{$bc.main_data}>" alt="QR Code"  class="img-fluid img-responsive">
         </div>
         <div class="col-md-2"></div>
     </div>

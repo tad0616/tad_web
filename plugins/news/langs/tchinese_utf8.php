@@ -27,7 +27,7 @@ define('_MD_TCW_NEWS_ENABLE', '立即發布？');
 define('_MD_TCW_NEWS_DRAFT', '草稿');
 
 define('_MD_TCW_NEWS_BLOCK_RSS', '新聞RSS跑馬燈');
-define('_MD_TCW_NEWS_BLOCK_RSS_HEIGHT', '跑馬燈高度');
+define('_MD_TCW_NEWS_BLOCK_RSS_BG_COLOR', '跑馬燈背景色');
 define('_MD_TCW_NEWS_BLOCK_RSS_LINK', '新聞RSS位址');
 define('_MD_TCW_NEWS_BLOCK_RSS_DISPLAY', '顯示模式');
 define('_MD_TCW_NEWS_BLOCK_RSS_DISPLAY_ALL', '標題+內容');

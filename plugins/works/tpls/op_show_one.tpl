@@ -22,7 +22,7 @@
     <form action="works.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <!--上傳檔案-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_WORKS_ADD}>
             </label>
             <div class="col-md-10">
@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_WORKS_DESCRIPTION}>
             </label>
             <div class="col-md-10">
@@ -40,7 +40,7 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_WORKS_UPLOADED_WORKS}>
             </label>
             <div class="col-md-10">
@@ -49,10 +49,10 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_WORKS_AUTHOR}>
             </label>
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$LoginMemName}>
             </label>
         </div>

@@ -2,7 +2,7 @@
     <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <!--通知標題-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MA_TADWEB_NOTICETITLE}>
             </label>
             <div class="col-md-6">
@@ -12,7 +12,7 @@
 
         <!--通知內容-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MA_TADWEB_NOTICECONTENT}>
             </label>
             <div class="col-md-6">
@@ -22,7 +22,7 @@
 
         <!--通知網站-->
         <!--div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MA_TADWEB_NOTICEWEB}>
             </label>
             <div class="col-md-6">
@@ -32,7 +32,7 @@
 
         <!--通知對象-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MA_TADWEB_NOTICEWHO}>
             </label>
             <div class="col-md-10">

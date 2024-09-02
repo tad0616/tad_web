@@ -15,6 +15,6 @@
 <{if $file_data}>
     <{include file="$xoops_rootpath/modules/tad_web/plugins/files/tpls/tad_web_common_files.tpl"}>
 <{else}>
-    <h2><a href="index.php?WebID=<{$WebID}>">&#xf015;</a> <{$files.PluginTitle}></h2>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
 <{/if}>

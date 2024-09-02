@@ -16,7 +16,7 @@ function chang_title(){
 
         <div class="form-group row mb-3">
             <!--加到行事曆-->
-            <label class="col-md-3 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_CAL_DATE}>
             </label>
             <div class="col-md-3">
@@ -24,7 +24,7 @@ function chang_title(){
             </div>
 
             <!--發布時間-->
-            <label class="col-md-3 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_POST_DATE}>
             </label>
             <div class="col-md-3">
@@ -40,7 +40,7 @@ function chang_title(){
 
         <!--標題-->
         <div class="form-group row mb-3">
-            <label class="col-md-3 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_TITLE}>
             </label>
             <div class="col-md-9">
@@ -54,7 +54,7 @@ function chang_title(){
         <{else}>
             <!--今日作業-->
             <div class="form-group row mb-3">
-                <label class="col-md-3 col-form-label text-sm-right control-label">
+                <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid">
                 </label>
                 <div class="col-md-9">
@@ -64,7 +64,7 @@ function chang_title(){
 
             <!--攜帶物品-->
             <div class="form-group row mb-3">
-                <label class="col-md-3 col-form-label text-sm-right control-label">
+                <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid">
                 </label>
                 <div class="col-md-9">
@@ -74,7 +74,7 @@ function chang_title(){
 
             <!--叮嚀-->
             <div class="form-group row mb-3">
-                <label class="col-md-3 col-form-label text-sm-right control-label">
+                <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid">
                 </label>
                 <div class="col-md-9">
@@ -84,7 +84,7 @@ function chang_title(){
 
             <!--其他-->
             <div class="form-group row mb-3">
-                <label class="col-md-3 col-form-label text-sm-right control-label">
+                <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_HOMEWORK_OTHER}>
                 </label>
                 <div class="col-md-9">
@@ -95,7 +95,7 @@ function chang_title(){
 
         <!--相關附件-->
         <div class="form-group row mb-3">
-            <label class="col-md-3 col-form-label text-sm-right control-label">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_HOMEWORK_FILES}>
             </label>
             <div class="col-md-9">

@@ -60,7 +60,7 @@
 
         <{if $isMyWeb and $WebID}>
             <div class="form-group row mb-3">
-                <label class="col-md-3 col-form-label text-sm-right control-label">
+                <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                     <{$plugin.title}><{$smarty.const._MD_TCW_NEW_CATE}>
                 </label>
                 <div class="col-md-4">
@@ -189,7 +189,7 @@
         <{if $isMyWeb and $WebID}>
             <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
                 <div class="form-group row mb-3">
-                    <label class="col-md-2 col-form-label text-sm-right control-label">
+                    <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                         <{$smarty.const._MD_TCW_NEW_CATE}>
                     </label>
                     <div class="col-md-6">

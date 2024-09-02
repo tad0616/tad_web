@@ -42,7 +42,7 @@ class WebCate
     public $button_value = '';
     public $label = '';
     public $label_col_md = '2';
-    public $menu_col_md = '3';
+    public $menu_col_md = '4';
     public $custom_change_js;
     public $menu_name = 'CateID';
     public $menu_id = 'CateID';
@@ -112,7 +112,7 @@ class WebCate
         $cate = $this->get_tad_web_cate($CateID);
         $default_option_text = empty($this->default_option_text) ? _MD_TCW_SELECT_CATE : $this->default_option_text;
         $show_label_txt = empty($this->label) ? $default_option_text : $this->label;
-        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} col-form-label text-sm-right control-label\">
+        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} col-form-label text-sm-right text-sm-end control-label\">
             {$show_label_txt}
             </label>" : '';
         $menu_col_md = 12 - $this->label_col_md;
@@ -200,10 +200,10 @@ class WebCate
             } else {
                 $hide = "style='display:none;'";
                 $botton = "
-                <div class=\"col-sm-2\" id=\"newCate\">
+                <div class=\"col-sm-3\" id=\"newCate\">
                     <button type='button' class='btn btn-info' id=\"add_cate\">{$new_cate}</button>
                 </div>
-                <div class=\"col-sm-2\" id=\"showMenu\" style='display:none;'>
+                <div class=\"col-sm-3\" id=\"showMenu\" style='display:none;'>
                     <button type='button' class='btn btn-success' id=\"show_menu\">" . _MD_TCW_TO_MENU . '</button>
                 </div>';
             }
@@ -217,7 +217,7 @@ class WebCate
         }
         $label_title = ($show_select) ? $default_option_text : _MD_TCW_NEW_CATE;
         $show_label_txt = empty($this->label) ? $label_title : $this->label;
-        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} col-form-label text-sm-right control-label\">
+        $label = $show_label ? "<label class=\"col-sm-{$this->label_col_md} col-form-label text-sm-right text-sm-end control-label\">
           {$show_label_txt}
           </label>" : '';
         $row = ('form' === $mode) ? 'form-group row mb-3' : 'row';

@@ -134,11 +134,12 @@ function get_block($BlockID)
 //取得所有區塊設定
 function get_dir_blocks($mode = '')
 {
-    global $xoopsConfig, $isAdmin;
+    global $xoopsConfig;
     $dir_blocks_file = XOOPS_ROOT_PATH . '/uploads/tad_web/dir_blocks.json';
     if (file_exists($dir_blocks_file) and '' == $mode) {
         $Config = get_json_file($dir_blocks_file);
     } else {
+        unlink($dir_blocks_file);
         $Config = [];
         $plugins = get_dir_plugins();
 
@@ -187,7 +188,6 @@ function get_json_file($file)
 //取得各外掛及系統所有區塊(onUpdate.php)
 function get_all_blocks($value = 'title')
 {
-    global $xoopsDB, $isAdmin;
 
     $myts = \MyTextSanitizer::getInstance();
     $block_option = [];

@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                         <{$work.MemName}><{$smarty.const._MD_TCW_WORKS_WORKS_SCORE}>
                     </label>
                     <div class="col-md-9">

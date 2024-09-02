@@ -40,7 +40,7 @@
 
         <!--課表名稱-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label"><{$smarty.const._MD_TCW_SCHEDULENAME}></label>
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label"><{$smarty.const._MD_TCW_SCHEDULENAME}></label>
             <div class="col-md-10">
                 <input type="text" name="ScheduleName" value="<{$ScheduleName}>" id="ScheduleName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_SCHEDULENAME}>">
             </div>

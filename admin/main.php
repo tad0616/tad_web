@@ -114,7 +114,7 @@ function create_by_user()
 
     //檢查有無班級網頁群組
     $groupid = chk_tad_web_group(_MA_TCW_GROUP_NAME);
-
+    $ok_uid = [];
     $sql = 'select uid from ' . $xoopsDB->prefix('groups_users_link') . " where `groupid`='$groupid' order by uid";
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     while (list($uid) = $xoopsDB->fetchRow($result)) {

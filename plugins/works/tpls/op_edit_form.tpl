@@ -37,7 +37,7 @@
 
         <!--相關附檔-->
         <div class="form-group row mb-3" id="works_attachments">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_WORKS_UPLOAD}>
             </label>
             <div class="col-md-10">
@@ -47,7 +47,7 @@
 
         <!--上傳方式-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_WORKS_KIND}>
             </label>
             <div class="col-md-4">
@@ -59,7 +59,7 @@
             </div>
 
             <!--是否啟用？-->
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_WORKS_ENABLE}>
             </label>
             <div class="col-md-4">
@@ -80,7 +80,7 @@
 
         <!--作品日期-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label" id="works_date_label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label" id="works_date_label">
                 <{if $WorksKind!=""}>
                     <{$smarty.const._MD_TCW_WORKS_END_DATE}>
                 <{else}>
@@ -97,7 +97,7 @@
         <!--上傳學生作品-->
         <{if $WorksKind==""}>
             <div class="form-group row mb-3" id="works_uploader">
-                <label class="col-md-2 col-form-label text-sm-right control-label">
+                <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_WORKS_ADD}>
                 </label>
                 <div class="col-md-10">

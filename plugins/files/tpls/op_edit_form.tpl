@@ -33,7 +33,7 @@
 
         <{if $fsn==""}>
             <div class="form-group row mb-3">
-                <label class="col-md-2 col-form-label text-sm-right control-label">
+                <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_FILES_METHOD}>
                 </label>
                 <div class="col-md-4">
@@ -53,7 +53,7 @@
 
         <div id="link_file">
             <div class="form-group row mb-3">
-                <label class="col-md-2 col-form-label text-sm-right control-label">
+                <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_FILES_LINK}>
                 </label>
                 <div class="col-md-10">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="form-group row mb-3">
-                <label class="col-md-2 col-form-label text-sm-right control-label">
+                <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_FILES_DESC}>
                 </label>
                 <div class="col-md-10">
@@ -74,7 +74,7 @@
 
         <div id="upload_file" style="display: none;">
             <div class="form-group row mb-3">
-                <label class="col-md-2 col-form-label text-sm-right control-label">
+                <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_FILES_UPLOAD}>
                 </label>
                 <div class="col-md-8">

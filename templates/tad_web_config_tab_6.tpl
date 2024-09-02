@@ -31,7 +31,7 @@
 <h3><{$smarty.const._MD_TCW_COLOR_TOOLS}></h3>
 <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_MAIN_NAV_TOP_COLOR}>
         </label>
         <div class="col-md-4">
@@ -43,7 +43,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_MAIN_NAV_COLOR}>
         </label>
         <div class="col-md-4">
@@ -57,7 +57,7 @@
     <hr>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_MAIN_NAV_HOVER_BG_COLOR}>
         </label>
         <div class="col-md-4">
@@ -69,7 +69,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_MAIN_NAV_HOVER_COLOR}>
         </label>
         <div class="col-md-4">
@@ -83,7 +83,7 @@
     <hr>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_MAIN_BG_COLOR}>
         </label>
         <div class="col-md-4">
@@ -97,7 +97,7 @@
     <hr>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_CONTAINER_BG_COLOR}>
         </label>
         <div class="col-md-4">
@@ -109,7 +109,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_CENTER_TEXT_COLOR}>
         </label>
         <div class="col-md-4">
@@ -121,7 +121,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_CENTER_LINK_COLOR}>
         </label>
         <div class="col-md-4">
@@ -133,7 +133,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_CENTER_HOVER_COLOR}>
         </label>
         <div class="col-md-4">
@@ -145,7 +145,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_CENTER_HEADER_COLOR}>
         </label>
         <div class="col-md-4">
@@ -157,7 +157,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_CENTER_BORDER_COLOR}>
         </label>
         <div class="col-md-4">
@@ -171,7 +171,7 @@
     <hr>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_SIDE_BG_COLOR}>
         </label>
         <div class="col-md-4">
@@ -184,7 +184,7 @@
 
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_SIDE_TEXT_COLOR}>
         </label>
         <div class="col-md-4">
@@ -196,7 +196,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_SIDE_LINK_COLOR}>
         </label>
         <div class="col-md-4">
@@ -208,7 +208,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_SIDE_HOVER_COLOR}>
         </label>
         <div class="col-md-4">
@@ -220,7 +220,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_SIDE_HEADER_COLOR}>
         </label>
         <div class="col-md-4">
@@ -232,7 +232,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label class="col-md-3 col-form-label text-sm-right control-label">
+        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_SIDE_BORDER_COLOR}>
         </label>
         <div class="col-md-4">

@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-8">
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                         <{$edit_class_title}>
                     </label>
                     <div class="col-md-9">
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                         <{$class_pic}>
                     </label>
                     <div class="col-md-9">
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                         <{$smarty.const._MD_TCW_ABOUTUS_DEFAULT_CLASS}>
                     </label>
                     <div class="col-md-9">
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                         <{$smarty.const._MD_TCW_ABOUTUS_HIDE_CLASS}>
                     </label>
                     <div class="col-md-9">
@@ -68,7 +68,7 @@
 
                 <{if $op=="new_class" and $old_cate}>
                     <div class="form-group row mb-3">
-                        <label class="col-md-3 col-form-label text-sm-right control-label">
+                        <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                             <{$setup_stud}>
                         </label>
                         <div class="col-md-9">

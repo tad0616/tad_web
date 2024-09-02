@@ -15,6 +15,6 @@
 <{if $video_data}>
     <{include file="$xoops_rootpath/modules/tad_web/plugins/video/tpls/tad_web_common_video.tpl"}>
 <{else}>
-    <h2><a href="index.php?WebID=<{$WebID}>">&#xf015;</a> <{$video.PluginTitle}></h2>
+    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h2>
     <div class="alert alert-info"><{$smarty.const._MD_TCW_EMPTY}></div>
 <{/if}>

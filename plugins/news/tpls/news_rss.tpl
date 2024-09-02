@@ -2,73 +2,110 @@
 <{if $bc.main_data}>
     <div style="margin-bottom:15px;"></div>
     <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
-    <!-- start feedwind code -->
-    <script type="text/javascript">
-        document.write('\x3Cscript type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'feed.mikle.com/js/rssmikle.js">\x3C/script>');
-    </script>
-    <script type="text/javascript">
-        (function() {
-        var params = {
-            <{if $bc.config.feed_url!=""}>
-            rssmikle_url: "<{$bc.config.feed_url}>",
+    <style>
+        #marquee-container {
+            width: 100%;
+            overflow: hidden;
+            <{if $bc.config.bg_color}>
+            background-color: <{$bc.config.bg_color}>;
             <{else}>
-            rssmikle_url: "<{$xoops_url}>/modules/tad_web/rss.php?WebID=<{$bc.WebID}>",
+            background-color: #f0f0f0;
             <{/if}>
-            rssmikle_frame_width: "300",
-            rssmikle_frame_height: "<{$bc.config.height}>",
-            frame_height_by_article: "0",
-            rssmikle_target: "_blank",
-            rssmikle_font: "Arial, Helvetica, sans-serif",
-            rssmikle_font_size: "12",
-            rssmikle_border: "off",
-            responsive: "on",
-            rssmikle_css_url: "",
-            text_align: "left",
-            text_align2: "left",
-            corner: "off",
-            scrollbar: "on",
-            autoscroll: "on",
-            scrolldirection: "up",
-            scrollstep: "5",
-            mcspeed: "20",
-            sort: "Off",
-            rssmikle_title: "on",
-            rssmikle_title_sentence: "",
-            rssmikle_title_link: "",
-            rssmikle_title_bgcolor: "#0066FF",
-            rssmikle_title_color: "#FFFFFF",
-            rssmikle_title_bgimage: "",
-            rssmikle_item_bgcolor: "#FFFFFF",
-            rssmikle_item_bgimage: "",
-            rssmikle_item_title_length: "90",
-            rssmikle_item_title_color: "#0066FF",
-            rssmikle_item_border_bottom: "on",
-            rssmikle_item_description: "<{$bc.config.display_rss}>",
-            item_link: "on",
-            rssmikle_item_description_length: "150",
-            rssmikle_item_description_color: "#666666",
-            rssmikle_item_date: "gl1",
-            rssmikle_timezone: "Etc/GMT-8",
-            datetime_format: "%b %e, %Y %l:%M %p",
-            item_description_style: "text+tn",
-            item_thumbnail: "full",
-            item_thumbnail_selection: "auto",
-            article_num: "15",
-            rssmikle_item_podcast: "off",
-            keyword_inc: "",
-            keyword_exc: ""
-        };
-        feedwind_show_widget_iframe(params);
-        })();
-    </script>
-    <div class="row">
-        <div class="col-md-7">
-            <a href="<{if $bc.config.feed_url!=""}><{$bc.config.feed_url}><{else}><{$xoops_url}>/modules/tad_web/rss.php?WebID=<{$bc.WebID}><{/if}>" target="_blank" style="font-size: 68.75%; "><img src="<{$xoops_url}>/modules/tad_web/plugins/news/images/rss.png" alt="rss" style="float:left; margin-right:3px;"><{$smarty.const._MD_TCW_NEWS_BLOCK_RSS_LINK}></a>
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        #marquee-content {
+            white-space: nowrap;
+            display: inline-block;
+        }
+        .marquee-item {
+            display: inline-block;
+            max-width: 32rem;
+            min-width: 10rem;
+            margin-right: 50px;
+            overflow: hidden;
+        }
+        .marquee-item a {
+            text-decoration: none;
+        }
+        .marquee-item a:hover {
+            text-decoration: underline;
+        }
+        .marquee-summary{
+            font-size:0.825rem;
+            height:2.5rem;
+            white-space: normal;
+            overflow: hidden;
+        }
+    </style>
+    <h3><a href="<{$bc.main_data.news_url}>" target="_blank"><{$bc.main_data.title}></a></h3>
+    <div id="marquee-container">
+        <div id="marquee-content">
+            <{foreach from=$bc.main_data.items key=i item=news}>
+                <span class="marquee-item">
+                    <a href="<{$news.url}>" target="_blank">
+                        <{$news.pubDate}><i class="fa fa-caret-right" aria-hidden="true"></i>
+                        <{$news.title}>
+                    </a>
+                    <{if $bc.config.display_rss!='title_only'}>
+                        <div class="marquee-summary"><{$news.summary}></div>
+                    <{/if}>
+                </span>
+            <{/foreach}>
         </div>
-        <div class="col-md-5 text-right text-end">
-            <a href="http://feed.mikle.com/" target="_blank" style="color:#CCCCCC;font-size: 62.5%;">RSS Feed Widget</a>
-        </div>
-        <!--Please display the above link in your web page according to Terms of Service.-->
     </div>
-    <!-- end feedwind code --><!--  end  feedwind code -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var marqueeContainer = document.getElementById('marquee-container');
+            var marqueeContent = document.getElementById('marquee-content');
+
+            if (marqueeContent) {
+                var contentWidth = marqueeContent.offsetWidth;
+                var containerWidth = marqueeContainer.offsetWidth;
+                var scrollSpeed = 1; // 調整這個值來改變滾動速度（值越小，速度越慢）
+                var scrollAmount = 0;
+                var isScrolling = false;
+                var animationId = null;
+
+                function scrollMarquee() {
+                    if (!isScrolling) return;
+
+                    scrollAmount += scrollSpeed;
+                    if (scrollAmount >= contentWidth) {
+                        scrollAmount = 0;
+                    }
+                    marqueeContent.style.transform = `translateX(-${scrollAmount}px)`;
+                    animationId = requestAnimationFrame(scrollMarquee);
+                }
+
+                function startScrolling() {
+                    if (!isScrolling) {
+                        console.log('非滾動中，開始滾動');
+
+                        isScrolling = true;
+                        scrollMarquee();
+                    }else{
+                        console.log('滾動中');
+                    }
+                }
+
+                function stopScrolling() {
+                    isScrolling = false;
+                    if (animationId) {
+                        cancelAnimationFrame(animationId);
+                        animationId = null;
+                    }
+                }
+
+                // 開始滾動
+                startScrolling();
+
+                // 滑鼠進入時停止滾動
+                marqueeContainer.addEventListener('mouseenter', stopScrolling);
+
+                // 滑鼠離開時繼續滾動
+                marqueeContainer.addEventListener('mouseleave', startScrolling);
+            }
+        });
+    </script>
 <{/if}>
