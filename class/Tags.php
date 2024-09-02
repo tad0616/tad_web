@@ -107,7 +107,7 @@ class Tags
         $menu = '
         <!--標籤設定-->
         <div class="form-group row mb-3">
-            <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right control-label">
+            <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right text-sm-end control-label">
               ' . _MD_TCW_TAGS . '
             </label>
             <div class="col-sm-' . $this->menu_col_md . '">
@@ -119,7 +119,7 @@ class Tags
         if ($tags_select) {
             $menu .= '
             <div class="form-group row mb-3">
-                <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right control-label"></label>
+                <label class="col-sm-' . $this->label_col_md . ' col-form-label text-sm-right text-sm-end control-label"></label>
                 <div class="col-sm-' . $this->menu_col_md . '">
                     <div class="alert alert-info">
                         ' . $tags_select . '
@@ -186,15 +186,14 @@ class Tags
     //取得tad_web_tags資料陣列
     public function list_tags($col_name = '', $col_sn = '', $plugin = '')
     {
-        global $xoopsDB;
         $tags_arr = $this->get_tags($col_name, $col_sn);
         $list_tags = '';
-        foreach ($tags_arr as $tag => $count) {
-            // $tags_link[] = "<a href='{$plugin}.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
-            $tags_link[] = "<a href='tag.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
+        if ($tags_arr) {
+            foreach ($tags_arr as $tag => $count) {
+                $tags_link[] = "<a href='tag.php?WebID={$this->WebID}&tag={$tag}'>{$tag}</a>";
+            }
+            $list_tags = implode(' , ', $tags_link);
         }
-        $list_tags = implode(' , ', $tags_link);
-
         return $list_tags;
     }
 

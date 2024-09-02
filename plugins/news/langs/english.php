@@ -27,7 +27,7 @@ define('_MD_TCW_NEWS_ENABLE', 'Post now?');
 define('_MD_TCW_NEWS_DRAFT', 'draft');
 
 define('_MD_TCW_NEWS_BLOCK_RSS', 'News RSS widget');
-define('_MD_TCW_NEWS_BLOCK_RSS_HEIGHT', 'Widget Height');
+define('_MD_TCW_NEWS_BLOCK_RSS_BG_COLOR', 'Background Colour');
 define('_MD_TCW_NEWS_BLOCK_RSS_LINK', 'News RSS Url');
 define('_MD_TCW_NEWS_BLOCK_RSS_DISPLAY', 'Display Content');
 define('_MD_TCW_NEWS_BLOCK_RSS_DISPLAY_ALL', 'Title and content');

@@ -2,7 +2,7 @@
     <{if $op=="tad_web_form"}>
         <form action="main.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal">
             <div class="form-group row mb-3">
-                <label class="col-sm-2 col-form-label text-sm-right control-label">
+                <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MA_TCW_TEAMNAME}>
                 </label>
                 <div class="col-sm-10">
@@ -11,7 +11,7 @@
             </div>
             <{if $cate_menu}>
                 <div class="form-group row mb-3">
-                    <label class="col-sm-2 col-form-label text-sm-right control-label">
+                    <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
                         <{$smarty.const._MA_TADWEB_CATENAME}>
                     </label>
                     <div class="col-sm-10">
@@ -21,7 +21,7 @@
             <{/if}>
 
             <div class="form-group row mb-3">
-                <label class="col-sm-2 col-form-label text-sm-right control-label">
+                <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MA_TCW_TEAMTITLE}>
                 </label>
                 <div class="col-sm-2">
@@ -38,7 +38,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-sm-2 col-form-label text-sm-right control-label">
+                <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MA_TCW_TEAMLEADER}>
                 </label>
                 <div class="col-sm-10">
@@ -47,7 +47,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-sm-2 col-form-label text-sm-right control-label">
+                <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MA_TCW_TEAMENABLE}>
                 </label>
                 <div class="col-sm-10" style="padding-top: 8px;">

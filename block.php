@@ -21,6 +21,7 @@ if (!empty($WebID) and $isMyWeb) {
 //權限設定
 $power = new Power($WebID);
 require_once XOOPS_ROOT_PATH . '/header.php';
+
 /*-----------function區--------------*/
 function config_block($WebID, $BlockID, $plugin, $mode = 'config')
 {
@@ -122,7 +123,7 @@ function array2form($form_arr = [], $config = [])
     foreach ($form_arr as $config_name => $form) {
         $form_code .= '<div class="form-group row mb-3">';
         $form_code .= '
-        <label class="col-sm-3 col-form-label text-sm-right control-label">
+        <label class="col-sm-3 col-form-label text-sm-right text-sm-end control-label">
             ' . $form['label'] . '
         </label>
         <div class="col-sm-9">';
@@ -168,7 +169,7 @@ function array2form($form_arr = [], $config = [])
 }
 
 // 儲存區塊設定
-function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTitle = '', $BlockPosition = '', $config = '', $BlockShare = '', $shareBlockID = '', $BlockEnable = '', $ShareFrom = '')
+function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTitle = '', $BlockPosition = '', $config = [], $BlockShare = '', $shareBlockID = '', $BlockEnable = '', $ShareFrom = '')
 {
     global $xoopsDB, $power;
 
@@ -228,7 +229,6 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
         //更新區塊
 
         $sql = 'update `' . $xoopsDB->prefix('tad_web_blocks') . "` set `BlockConfig`='{$new_block_config}' , `BlockTitle`='{$BlockTitle}' , `BlockPosition`='{$BlockPosition}' , `BlockEnable`='{$BlockEnable}' , `BlockContent`='{$BlockContent}'  where `BlockID`='{$BlockID}' and WebID='{$WebID}'";
-        // die($sql);
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //共享區塊若不再共享（直接刪除之）
@@ -455,6 +455,7 @@ function chk_newblock($WebID)
 
     $block_plugin = get_all_blocks('plugin');
     $block_config = get_all_blocks('config');
+
     //找出目前已安裝的區塊
     $sql = 'select BlockID,BlockName,BlockConfig from ' . $xoopsDB->prefix('tad_web_blocks') . " where WebID='{$WebID}' and  plugin!='custom' and plugin!='share'";
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);

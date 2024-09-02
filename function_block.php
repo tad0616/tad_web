@@ -37,7 +37,6 @@ if (!function_exists('get_web_config')) {
     function get_web_config($ConfigName = null, $defWebID = null, $from = 'file')
     {
         global $xoopsDB;
-        $andWebID = '';
         $ConfigValues = [];
         if (null !== $defWebID) {
             if ('file' !== $from) {

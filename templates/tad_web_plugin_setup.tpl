@@ -24,7 +24,7 @@
         <hr>
             <{foreach from=$plugin_setup item=setup}>
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
                         <{$setup.text}>
                     </label>
                     <div class="col-md-4">

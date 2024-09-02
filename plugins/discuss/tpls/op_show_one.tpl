@@ -64,7 +64,7 @@
 
         <!--相關附件-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_DISCUSS_FILES}>
             </label>
             <div class="col-md-8">

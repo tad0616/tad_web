@@ -24,7 +24,7 @@
 
         <!--樣式設定-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_PAGECSS}>
             </label>
             <div class="col-md-10">
@@ -35,7 +35,7 @@
 
         <!--上傳圖檔-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_PAGE_UPLOAD}>
             </label>
             <div class="col-md-10">

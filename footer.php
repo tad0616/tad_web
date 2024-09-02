@@ -435,9 +435,6 @@ function get_tad_web_blocks($WebID = null)
 
         //取得區塊位置
         $sql = 'select * from ' . $xoopsDB->prefix('tad_web_blocks') . " where `WebID`='{$WebID}' and `BlockEnable`='1' $andPlugin  order by `BlockPosition`,`BlockSort`";
-        // if ($_GET['test'] == 1) {
-        //     die($sql);
-        // }
 
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 

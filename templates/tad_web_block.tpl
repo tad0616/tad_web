@@ -23,7 +23,7 @@
     <h1 class="text-center"><{$block.BlockTitle}> <small><{$block.BlockName}></small></h2>
     <form action="block.php" method="post" enctype="multipart/form-data" role="form" class="form-horizontal myForm">
         <div class="form-group row mb-3">
-            <label class="col-md-3 col-form-label text-sm-right control-label ">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_TITLE}>
             </label>
             <div class="col-md-9">
@@ -32,7 +32,7 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label class="col-md-3 col-form-label text-sm-right control-label ">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_SHOW_TITLE}>
             </label>
             <div class="col-md-9">
@@ -52,7 +52,7 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label class="col-md-3 col-form-label text-sm-right control-label ">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_ENABLE}>
             </label>
             <div class="col-md-9">
@@ -72,7 +72,7 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label class="col-md-3 col-form-label text-sm-right control-label ">
+            <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_POSITION}>
             </label>
             <div class="col-md-9">
@@ -96,9 +96,9 @@
             <hr>
         <{/if}>
 
-        <{if $block.plugin=="custom" or $block.plugin=="share" or$op=="add_block"}>
+        <{if $block.plugin=="custom" or $block.plugin=="share" or $op=="add_block"}>
             <div class="form-group row mb-3">
-                <label class="col-md-3 col-form-label text-sm-right control-label ">
+                <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                     <{$smarty.const._MD_TCW_BLOCK_CONTENT}>
                     <{$block.config.content_type}>
                 </label>
@@ -117,7 +117,7 @@
 
             <div id="js_editor" <{if $block.config.content_type!="js"}>style="display:none;"<{/if}>>
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label ">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                         <{$smarty.const._MD_TCW_BLOCK_JS_DESC}>
                     </label>
                     <div class="col-md-9">
@@ -128,7 +128,7 @@
 
             <div id="iframe_editor" <{if $block.config.content_type!="iframe"}>style="display:none;"<{/if}>>
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label ">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                         <{$smarty.const._MD_TCW_BLOCK_IFRAME_DESC}>
                     </label>
                     <div class="col-md-9">
@@ -141,7 +141,7 @@
                 <input type="hidden" name="BlockShare" value="0">
             <{else}>
                 <div class="form-group row mb-3">
-                    <label class="col-md-3 col-form-label text-sm-right control-label ">
+                    <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label ">
                         <{$smarty.const._MD_TCW_BLOCK_SHARE}>
                     </label>
                     <div class="col-md-9">
@@ -177,7 +177,7 @@
         </div>
     </form>
 
-    <{if $use_share_web}>
+    <{if $use_share_web && $use_share_web|is_array}>
         <h3><{$shareBlockCount}></h3>
         <div class="alert alert-info">
             <ul>
@@ -298,8 +298,7 @@
         </div>
     </div>
 
-
-    <{if $uninstall}>
+    <{if $uninstall && $uninstall|is_array}>
         <div id="uninstall" class="alert alert-danger">
             <div class="text-danger text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_UNINSTALL_BLOCK}></div>
             <ul id="sort_uninstall" class="connectedSortable">
@@ -325,7 +324,7 @@
                 <div id="side" class="alert alert-success" style="min-height: 300px;">
                     <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
                     <ul id="sort_side" class="connectedSortable">
-                        <{if $side}>
+                        <{if $side && $side|is_array}>
                             <{foreach from=$side item=block}>
                                 <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                             <{/foreach}>
@@ -339,7 +338,7 @@
             <div id="block1" class="alert alert-info" style="min-height: 100px;">
                 <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_CENTER_BLOCK}></div>
                 <ul id="sort_block1" class="connectedSortable">
-                    <{if $block1}>
+                    <{if $block1 && $block1|is_array}>
                         <{foreach from=$block1 item=block}>
                             <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                         <{/foreach}>
@@ -352,7 +351,7 @@
                     <div id="block2" class="alert alert-info" style="min-height: 100px;">
                         <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_LEFT_BLOCK}></div>
                         <ul id="sort_block2" class="connectedSortable">
-                            <{if $block2}>
+                            <{if $block2 && $block2|is_array}>
                                 <{foreach from=$block2 item=block}>
                                     <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
@@ -364,7 +363,7 @@
                     <div id="block3" class="alert alert-info" style="min-height: 100px;">
                         <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_TOP_RIGHT_BLOCK}></div>
                         <ul id="sort_block3" class="connectedSortable">
-                            <{if $block3}>
+                            <{if $block3 && $block3|is_array}>
                                 <{foreach from=$block3 item=block}>
                                     <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
@@ -377,7 +376,7 @@
             <div id="block4" class="alert alert-info" style="min-height: 100px;">
                 <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_CENTER_BLOCK}></div>
                 <ul id="sort_block4" class="connectedSortable">
-                    <{if $block4}>
+                    <{if $block4 && $block4|is_array}>
                         <{foreach from=$block4 item=block}>
                             <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                         <{/foreach}>
@@ -390,7 +389,7 @@
                     <div id="block5" class="alert alert-info" style="min-height: 100px;">
                         <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_LEFT_BLOCK}></div>
                         <ul id="sort_block5" class="connectedSortable">
-                            <{if $block5}>
+                            <{if $block5 && $block5|is_array}>
                                 <{foreach from=$block5 item=block}>
                                     <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
@@ -402,7 +401,7 @@
                     <div id="block6" class="alert alert-info" style="min-height: 100px;">
                         <div class="text-info text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_BOTTOM_RIGHT_BLOCK}></div>
                         <ul id="sort_block6" class="connectedSortable">
-                            <{if $block6}>
+                            <{if $block6 && $block6|is_array}>
                                 <{foreach from=$block6 item=block}>
                                     <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
@@ -418,7 +417,7 @@
                 <div id="side" class="alert alert-success" style="min-height: 300px;">
                     <div class="text-success text-center" style="font-size: 2em; opacity: 0.4; filter: alpha(opacity=40); margin-top: -10px;"><{$smarty.const._MD_TCW_SIDE_BLOCK}></div>
                         <ul id="sort_side" class="connectedSortable">
-                            <{if $side}>
+                            <{if $side && $side|is_array}>
                                 <{foreach from=$side item=block}>
                                     <{include file="$xoops_rootpath/modules/tad_web/templates/sub_block_item.tpl"}>
                                 <{/foreach}>
@@ -434,13 +433,13 @@
 
     <form action="block.php" method="post" enctype="multipart/form-data" role="form">
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label ">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_COLOR}>
             </label>
             <div class="col-md-3">
                 <input type="text" name="block_pic[block_pic_text_color]" value="<{$block_pic_text_color}>" class="form-control color" value="<{$block_pic_text_color}>" id="block_pic_text_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
             </div>
-            <label class="col-md-2 col-form-label text-sm-right control-label ">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_BORDER_COLOR}>
             </label>
             <div class="col-md-3">
@@ -449,13 +448,13 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label ">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_SIZE}>
             </label>
             <div class="col-md-3">
                 <input type="text" name="block_pic[block_pic_text_size]" value="<{$block_pic_text_size}>" class="form-control">
             </div>
-            <label class="col-md-2 col-form-label text-sm-right control-label ">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_FONT}>
             </label>
             <div class="col-md-3">

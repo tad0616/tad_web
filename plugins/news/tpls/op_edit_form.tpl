@@ -25,7 +25,7 @@
 
         <!--相關連結-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_NEWSURL}>
             </label>
             <div class="col-md-10">
@@ -36,7 +36,7 @@
 
         <div class="form-group row mb-3">
             <!--發布時間-->
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_DISCUSSDATE}>
             </label>
             <div class="col-md-4">
@@ -44,7 +44,7 @@
             </div>
 
             <!--加到行事曆-->
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_TOCAL}>
             </label>
             <div class="col-md-4">
@@ -58,14 +58,14 @@
 
         <!--相關附件-->
         <div class="form-group row mb-3">
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_NEWS_FILES}>
             </label>
             <div class="col-md-4">
                 <{$upform}>
             </div>
 
-            <label class="col-md-2 col-form-label text-sm-right control-label">
+            <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_NEWS_ENABLE}>
             </label>
             <div class="col-md-4">

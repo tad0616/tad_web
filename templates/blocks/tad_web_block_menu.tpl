@@ -25,7 +25,7 @@
         <div class="my-border">
         <form action="<{$xoops_url}>/user.php" method="post" role="form" id="xoops_login" class="form-horizontal">
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label" for="uname">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label" for="uname">
                     <{$smarty.const._MB_TCW_ID}>
                 </label>
                 <div class="col-md-8">
@@ -34,7 +34,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label" for="pass">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label" for="pass">
                     <{$smarty.const._MB_TCW_PASSWD}>
                 </label>
                 <div class="col-md-8">
@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                 </label>
                 <div class="col-md-8 d-grid gap-2">
                     <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
@@ -56,7 +56,7 @@
 
         <form action="aboutus.php" method="post" enctype="multipart/form-data" role="form" id="tad_web_login" class="form-horizontal">
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MB_TCW_MEM_UNAME}>
                 </label>
                 <div class="col-md-8 controls">
@@ -65,7 +65,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MB_TCW_MEM_PASSWD}>
                 </label>
                 <div class="col-md-8 controls">
@@ -74,7 +74,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                 </label>
                 <div class="col-md-8 d-grid gap-2">
                     <input type="hidden" name="WebID" value="<{$WebID}>">
@@ -141,7 +141,7 @@
 
         <div style="margin:10px 0px;">
             <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$block.defaltWebID}>">
-                &#xf015;
+                <i class="fa fa-home"></i>
                 <{$block.back_home}>
             </a>
         </div>

@@ -60,7 +60,7 @@
         <{/if}>
         <div style="margin:10px 0px;">
             <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$defaltWebID}>">
-                &#xf015;
+                <i class="fa fa-home" aria-hidden="true"></i>
                 <{$back_home}>
             </a>
         </div>

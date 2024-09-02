@@ -368,7 +368,7 @@ class tad_web_aboutus
     //更新班級
     public function update_class($CateID = '', $year = '', $newCateName = '', $hide_class = 0)
     {
-        global $TadUpFiles;
+        global $TadUpFiles, $xoopsDB;
 
         $and_year = empty($year) ? '' : "{$year} ";
         $newCateName = $xoopsDB->escape($and_year . $newCateName);

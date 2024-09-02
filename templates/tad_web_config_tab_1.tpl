@@ -5,7 +5,7 @@
             <{$cate_menu}>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_WEB_NAME_SETUP}>
                 </label>
                 <div class="col-md-8">
@@ -14,7 +14,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_UPDATE_MY_NAME}>
                 </label>
                 <div class="col-md-8">
@@ -23,7 +23,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_UPLOAD_MY_PHOTO}>
                 </label>
                 <div class="col-md-8">
@@ -32,7 +32,7 @@
             </div>
 
             <div class="form-group row mb-3">
-                <label class="col-md-4 col-form-label text-sm-right control-label">
+                <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_OTHER_CLASS_SETUP}>
                 </label>
                 <div class="col-md-8">
@@ -49,7 +49,7 @@
 
     <h3><{$smarty.const._MD_TCW_THEME_TOOLS}></h3>
     <div class="row">
-        <label class="col-md-2 col-form-label text-sm-right control-label">
+        <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_THEME_TOOLS_DEFAULT_THEME}>
         </label>
         <div class="col-md-4">
@@ -59,7 +59,7 @@
             </select>
         </div>
 
-        <label class="col-md-2 col-form-label text-sm-right control-label">
+        <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_USER_SIMPLE_MENU}>
         </label>
         <div class="col-md-4">
@@ -79,7 +79,7 @@
     </div>
 
     <div class="row">
-        <label class="col-md-2 col-form-label text-sm-right control-label">
+        <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_THEME_TOOLS_THEME_SIDE}>
         </label>
         <div class="col-md-4">
@@ -97,7 +97,7 @@
             </div>
         </div>
 
-        <label class="col-md-2 col-form-label text-sm-right control-label">
+        <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
             <{$smarty.const._MD_TCW_THEME_TOOLS_FONT_SIZE}>
         </label>
         <div class="col-md-4">
