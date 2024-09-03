@@ -181,7 +181,7 @@ function batch_add_class_by_user()
         }
 
         $WebName = $WebTitle = sprintf(_MA_TCW_SOMEBODY_WEB, $uid_name);
-
+        $i = 0;
         if (no_web($uid)) {
             insert_tad_web(0, $WebName, $i, '1', $uid_name, $uid, $WebTitle);
             $i++;

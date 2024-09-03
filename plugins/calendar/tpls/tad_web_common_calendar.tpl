@@ -1,7 +1,7 @@
 <{if $web_display_mode=='index' and $calendar_data}>
     <h3><a href="<{$xoops_url}>/modules/tad_web/calendar.php"><{$calendar.PluginTitle}></a></h3>
 <{elseif $web_display_mode=='index_plugin'}>
-    <h2><a href="<{$xoops_url}>/modules/tad_web/">&#xf015;</a> <{$calendar.PluginTitle}></h2>
+    <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$calendar.PluginTitle}></h2>
 <{/if}>
 
 <{$fullcalendar_code}>

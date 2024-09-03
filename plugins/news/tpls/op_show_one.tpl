@@ -36,8 +36,12 @@
 <{$NewsFiles}>
 
 <div class="row" id="News_tool">
-    <div class="col-md-6 text-left text-start d-grid gap-2"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.prev.NewsID}>" class="btn btn-secondary btn-block">&#xf053; <{$prev_next.prev.NewsTitle}></a></div>
-    <div class="col-md-6 text-right text-end d-grid gap-2"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.next.NewsID}>" class="btn btn-secondary btn-block"><{$prev_next.next.NewsTitle}> &#xf054;</a></div>
+    <{if $prev_next.prev.NewsID}>
+    <div class="col-md-6 text-left text-start d-grid gap-2"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.prev.NewsID}>" class="btn btn-secondary btn-block"><i class="fa fa-chevron-left"></i> <{$prev_next.prev.NewsTitle}></a></div>
+    <{/if}>
+    <{if $prev_next.next.NewsID}>
+    <div class="col-md-6 text-right text-end d-grid gap-2"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.next.NewsID}>" class="btn btn-secondary btn-block"><{$prev_next.next.NewsTitle}> <i class="fa fa-chevron-right"></i></a></div>
+    <{/if}>
 </div>
 
 <{$fb_comments}>
