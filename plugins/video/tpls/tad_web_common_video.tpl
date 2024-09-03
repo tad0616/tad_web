@@ -5,7 +5,7 @@
         <h3><a href="<{$xoops_url}>/modules/tad_web/video.php"><{$video.PluginTitle}></a></h3>
     <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
-    <h2><a href="<{$xoops_url}>/modules/tad_web/">&#xf015;</a> <{$video.PluginTitle}></h2>
+    <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h2>
 <{elseif $web_display_mode=='home_plugin'}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$video.PluginTitle}></h2>
 <{/if}>

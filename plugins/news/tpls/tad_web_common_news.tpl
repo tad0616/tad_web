@@ -51,7 +51,7 @@
                 <h3><a href="<{$xoops_url}>/modules/tad_web/news.php"><{$news.PluginTitle}></a></h3>
             <{/if}>
         <{elseif $web_display_mode=='index_plugin'}>
-            <h2><a href="<{$xoops_url}>/modules/tad_web/">&#xf015;</a> <{$news.PluginTitle}></h2>
+            <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$news.PluginTitle}></h2>
         <{/if}>
 
         <table class="footable table common_table">
