@@ -2,7 +2,17 @@
     <!-- <{$block.BlockTitle}> -->
     <{if $block.plugin=="xoops"}>
         <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
-        <{xoBlock id=$block.BlockName}>
+
+        <{if $xoops_version < 20511}>
+            <{include file="$xoops_rootpath/modules/tad_web/templates/block.tpl"}>
+        <{else}>
+            <{if isset($block.options)}>
+                <{xoBlock id=$block.BlockName options=$block.options}>
+            <{else}>
+                <{xoBlock id=$block.BlockName}>
+            <{/if}>
+        <{/if}>
+
     <{elseif $block.plugin=="custom"}>
         <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_custom.tpl"}>
     <{elseif $block.plugin=="share"}>
