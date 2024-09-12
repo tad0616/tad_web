@@ -26,7 +26,7 @@
                 <td>
                     <div style="word-wrap:break-word;">
                         <{if isset($file.cate.CateID)}>
-                            <span class="badge badge-info"><a href="files.php?WebID=<{$file.WebID}>&CateID=<{$file.cate.CateID}>" style="color: #FFFFFF;"><{$file.cate.CateName}></a></span>
+                            <span class="badge badge-info bg-info"><a href="files.php?WebID=<{$file.WebID}>&CateID=<{$file.cate.CateID}>" style="color: #FFFFFF;"><{$file.cate.CateName}></a></span>
                         <{/if}>
                         <{$file.showurl}>
                         <{*if $file.isCanEdit*}>

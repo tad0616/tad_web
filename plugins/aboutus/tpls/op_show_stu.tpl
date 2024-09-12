@@ -4,7 +4,7 @@
 
 <div style="font-size: 2em; margin: 30px auto;">
     <{if 'MemNum'|in_array:$mem_column}>
-        <label class="badge badge-primary"><{$class_mem.MemNum}></label>
+        <label class="badge badge-primary bg-primary"><{$class_mem.MemNum}></label>
     <{/if}>
     <{$mem.MemName}>
     <{if 'MemUnicode'|in_array:$mem_column}>

@@ -20,7 +20,7 @@
                 </h3>
                 <div class="my-border list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
                     <{if isset($news.cate.CateID)}>
-                        <span class="badge badge-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+                        <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
                     <{/if}>
                     <{$news.NewsContent}>
                     <{if $news.more}>
@@ -78,7 +78,7 @@
                     <td style="text-align:center;"><{$news.Date}></td>
                     <td>
                         <{if isset($news.cate.CateID)}>
-                            <span class="badge badge-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+                            <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
                         <{/if}>
                         <a href="news.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
                         <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>

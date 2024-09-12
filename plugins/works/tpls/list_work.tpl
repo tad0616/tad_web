@@ -22,10 +22,10 @@
                 </td>
                 <td>
                     <{if isset($work.cate.CateID)}>
-                        <span class="badge badge-info"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
+                        <span class="badge badge-info bg-info"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
                     <{/if}>
                     <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
-                    <{if $work.hide}><span class="badge badge-danger"><{$work.hide}></span><{/if}>
+                    <{if $work.hide}><span class="badge badge-danger bg-danger"><{$work.hide}></span><{/if}>
 
                     <{*if $work.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || ($work.cate.CateID && $work.cate.CateID == $smarty.session.isAssistant.work)}>

@@ -10,9 +10,11 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_discuss
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $aboutus_setup;
     public $discuss_setup;
+    public $tags;
+    public $Power;
 
     public function __construct($WebID)
     {

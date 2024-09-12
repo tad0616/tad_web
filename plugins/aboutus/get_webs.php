@@ -61,8 +61,8 @@ while (false !== ($web = $xoopsDB->fetchArray($result))) {
 
     $web_name = !empty($other_web_url) ? "<a href=\"{$other_web_url}\" target=\"_blank\">{$web['WebName']}</a> $tool" : '<a href="' . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\">{$web['WebName']}</a>";
 
-    $web_counter = !empty($other_web_url) ? "<a href=\"{$other_web_url}\" target=\"_blank\"><span class='label label-info'>{$web['WebCounter']}</span></a>" : '<a href="'
-        . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\"><span class='label label-info'>{$web['WebCounter']}</span></a>";
+    $web_counter = !empty($other_web_url) ? "<a href=\"{$other_web_url}\" target=\"_blank\"><span class='badge badge-info bg-info'>{$web['WebCounter']}</span></a>" : '<a href="'
+        . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\"><span class='badge badge-info bg-info'>{$web['WebCounter']}</span></a>";
 
     if (empty($web_plugin_enable_arr) or false !== strpos($web_plugin_enable_arr, 'homework')) {
         $no_homework = $isMyWeb ? '<a href="' . XOOPS_URL . "/modules/tad_web/homework.php?WebID={$WebID}&op=edit_form\" class=\"btn btn-success\" style=\"color:white;\" target=\"_blank\">" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</a>' : "<span  style='color: #CFCFCF;'>" . _MD_TCW_ABOUTUS_NO_HOMEWORK . '</span>';

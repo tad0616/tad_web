@@ -4,8 +4,8 @@
     <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$calendar.PluginTitle}></h2>
 <{/if}>
 
-<{$fullcalendar_code}>
 <div id="calendar"></div>
+<{$fullcalendar_code}>
 
 <div style="text-align:right; margin: 0px 0px 10px;">
     <{if $web_display_mode=='index'}>

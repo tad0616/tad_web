@@ -337,11 +337,13 @@ function tad_web_my_menu($defaltWebID)
 //以流水號秀出某筆tad_web_mems資料內容
 function tad_web_login($WebID, $config = [])
 {
-    global $xoopsUser, $xoopsConfig, $xoopsTpl;
+    global $xoopsUser, $xoopsTpl, $xoopsConfig;
 
     if ($xoopsUser or !empty($_SESSION['LoginMemID']) or !empty($_SESSION['LoginParentID'])) {
         return;
     }
+    $_SESSION['login_from'] = XOOPS_URL . "/modules/tad_web/index.php?WebID=$WebID";
+    setcookie('login_from', XOOPS_URL . "/modules/tad_web/index.php?WebID=$WebID");
 
     $login_config = get_web_config('login_config', $WebID);
     $login_config = empty($login_config) ? [] : explode(';', $login_config);
@@ -349,9 +351,12 @@ function tad_web_login($WebID, $config = [])
     $auth_method = get_sys_openid();
     if ($auth_method) {
 
-        require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
+        require_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
+        require_once XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';
         xoops_loadLanguage('county', 'tad_login');
         xoops_loadLanguage('blocks', 'tad_login');
+
+        // require_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
         $i = 0;
 
@@ -362,8 +367,8 @@ function tad_web_login($WebID, $config = [])
                 continue;
             }
 
-            if ('facebook' === $method) {
-                $tlogin[$i]['link'] = facebook_login('return');
+            if ('line' === $method) {
+                $tlogin[$i]['link'] = line_login('return');
             } elseif ('google' === $method) {
                 $tlogin[$i]['link'] = google_login('return');
             } else {

@@ -172,13 +172,13 @@
                     <div class="col-md-3">
                         <{if 'MemNum'|in_array:$mem_column}>
                             <div style="margin: 2px;">
-                                <span class="badge badge-default"><{$smarty.const._MD_TCW_MEM_NUM}></span>
+                                <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_NUM}></span>
                                 <{$stud.MemNum}>
                             </div>
                         <{/if}>
 
                         <div style="margin: 2px;">
-                            <span class="badge badge-default"><{$smarty.const._MD_TCW_MEM_NAME}></span>
+                            <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_NAME}></span>
                             <{if $isMyWeb}>
                                 <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
                                 <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -188,13 +188,13 @@
                         </div>
 
                         <div style="margin: 2px;">
-                            <span class="badge badge-default"><{$smarty.const._MD_TCW_MEM_SEX}></span>
+                            <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_SEX}></span>
                         <{$stud.MemSexTitle}>
                         </div>
 
                         <{if 'MemNickName'|in_array:$mem_column and $stud.MemNickName}>
                             <div style="margin: 2px;">
-                                <span class="badge badge-default"><{$smarty.const._MD_TCW_MEM_NICKNAME}></span>
+                                <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_NICKNAME}></span>
                                 <{$stud.MemNickName}>
                             </div>
                         <{/if}>
@@ -202,21 +202,21 @@
                         <{if $isMyWeb}>
                             <{if 'MemUnicode'|in_array:$mem_column and $stud.MemUnicode}>
                                 <div style="margin: 2px;">
-                                    <span class="badge badge-danger"><{$smarty.const._MD_TCW_MEM_UNICODE}></span>
+                                    <span class="badge badge-danger bg-danger"><{$smarty.const._MD_TCW_MEM_UNICODE}></span>
                                 <{$stud.MemUnicode}>
                                 </div>
                             <{/if}>
 
                             <{if 'MemBirthday'|in_array:$mem_column and $stud.MemBirthday}>
                                 <div style="margin: 2px;">
-                                    <span class="badge badge-danger"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></span>
+                                    <span class="badge badge-danger bg-danger"><{$smarty.const._MD_TCW_MEM_BIRTHDAY}></span>
                                 <{$stud.MemBirthday}>
                                 </div>
                             <{/if}>
 
                             <{if 'MemExpertises'|in_array:$mem_column and $stud.MemExpertises}>
                                 <div style="margin: 2px;">
-                                    <span class="badge badge-default"><{$smarty.const._MD_TCW_MEM_EXPERTISES}></span>
+                                    <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_EXPERTISES}></span>
                                 <{$stud.MemExpertises}>
                                 </div>
                             <{/if}>
@@ -225,7 +225,7 @@
                     <div class="col-md-7">
                         <{if 'MemClassOrgan'|in_array:$mem_column and $stud.MemClassOrgan and $stud.MemClassOrgan}>
                             <div style="margin: 2px;">
-                                <span class="badge badge-default"><{$smarty.const._MD_TCW_MEM_CLASSORGAN}></span>
+                                <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_CLASSORGAN}></span>
                                 <{$stud.MemClassOrgan}>
                             </div>
                         <{/if}>
@@ -233,7 +233,7 @@
 
                         <{if 'AboutMem'|in_array:$mem_column and $stud.AboutMem and $stud.AboutMem}>
                             <div style="margin: 2px;">
-                                <!--span class="badge badge-default"><{$smarty.const._MD_TCW_MEM_ABOUTME}></span-->
+                                <!--span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_ABOUTME}></span-->
                                 <div class="alert alert-info" style="margin-top:4px;"><{$stud.AboutMem}></div>
                             </div>
                         <{/if}>

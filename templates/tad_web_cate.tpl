@@ -96,13 +96,13 @@
                             <{/if}>
 
                             <{if $cate.power=='users'}>
-                                <span class="badge badge-info"><{$smarty.const._MD_TCW_POWER_FOR_USERS}></span>
+                                <span class="badge badge-info bg-info"><{$smarty.const._MD_TCW_POWER_FOR_USERS}></span>
                             <{elseif $cate.power=='web_users'}>
-                                <span class="badge badge-warning"><{$smarty.const._MD_TCW_POWER_FOR_WEB_USERS}></span>
+                                <span class="badge badge-warning bg-warning"><{$smarty.const._MD_TCW_POWER_FOR_WEB_USERS}></span>
                             <{elseif $cate.power=='web_admin'}>
-                                <span class="badge badge-danger"><{$smarty.const._MD_TCW_POWER_FOR_WEB_ADMIN}></span>
+                                <span class="badge badge-danger bg-danger"><{$smarty.const._MD_TCW_POWER_FOR_WEB_ADMIN}></span>
                             <{else}>
-                                <span class="badge badge-success"><{$smarty.const._MD_TCW_POWER_FOR_ALL}></span>
+                                <span class="badge badge-success bg-success"><{$smarty.const._MD_TCW_POWER_FOR_ALL}></span>
                             <{/if}>
 
                             <div>

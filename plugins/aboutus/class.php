@@ -8,7 +8,7 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_aboutus
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $setup;
 
     public function __construct($WebID)

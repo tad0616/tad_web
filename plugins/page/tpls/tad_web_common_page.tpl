@@ -43,7 +43,7 @@
                             <{if $isMyWeb}>
                                 <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}> <{$page.PageSort}>"></i>
                             <{/if}>
-                            <span class="badge badge-info"><{$page.PageCount}></span>
+                            <span class="badge badge-info bg-info"><{$page.PageCount}></span>
                             <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
 
                             <{*if $page.isCanEdit*}>
@@ -69,7 +69,7 @@
                         <{if $isMyWeb}>
                             <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}> <{$page.PageSort}>"></i>
                         <{/if}>
-                        <span class="badge badge-info"><{$page.PageCount}></span>
+                        <span class="badge badge-info bg-info"><{$page.PageCount}></span>
                         <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
 
                         <{*if $page.isCanEdit*}>

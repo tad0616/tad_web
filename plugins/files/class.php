@@ -10,7 +10,9 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_files
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
+    public $tags;
+    public $Power;
 
     public function __construct($WebID)
     {

@@ -3,7 +3,6 @@ use XoopsModules\Tadtools\Utility;
 
 function list_news($WebID, $config = [])
 {
-    global $xoopsDB;
     if (empty($WebID)) {
         return;
     }

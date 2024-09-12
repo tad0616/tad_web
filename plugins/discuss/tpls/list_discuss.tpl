@@ -31,7 +31,7 @@
                     </td>
                     <td>
                         <{if isset($discuss.cate.CateID)}>
-                            <span class="badge badge-info"><a href="discuss.php?WebID=<{$discuss.WebID}>&CateID=<{$discuss.cate.CateID}>" style="color: #FFFFFF;"><{$discuss.cate.CateName}></a></span>
+                            <span class="badge badge-info bg-info"><a href="discuss.php?WebID=<{$discuss.WebID}>&CateID=<{$discuss.cate.CateID}>" style="color: #FFFFFF;"><{$discuss.cate.CateName}></a></span>
                         <{/if}>
                         <a href="discuss.php?WebID=<{$discuss.WebID}>&DiscussID=<{$discuss.DiscussID}>"><{$discuss.DiscussTitle}></a>
                         <{$discuss.show_re_num}>

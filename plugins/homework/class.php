@@ -2,7 +2,7 @@
 use Xmf\Request;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
-use XoopsModules\Tadtools\FullCalendar;
+use XoopsModules\Tadtools\FullCalendar6;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tadtools\Wcag;
@@ -12,9 +12,10 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_homework
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $setup;
     public $calendar_setup;
+    public $Power;
 
     public function __construct($WebID)
     {
@@ -170,15 +171,15 @@ class tad_web_homework
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_homework_func', "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
 
-        $FullCalendar = new FullCalendar();
+        $FullCalendar = new FullCalendar6();
         if ($this->WebID) {
             $FullCalendar->add_js_parameter('firstDay', $this->calendar_setup['week_first_day']);
-            $FullCalendar->add_json_parameter('WebID', $this->WebID);
+            // $FullCalendar->add_json_parameter('WebID', $this->WebID);
         }
         if (false !== mb_strrpos($_SERVER['PHP_SELF'], 'homework.php')) {
             $FullCalendar->add_json_parameter('CalKind', 'homework');
         }
-        $fullcalendar_code = $FullCalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php', 'return');
+        $fullcalendar_code = $FullCalendar->render('calendar', XOOPS_URL . '/modules/tad_web/get_event.php?WebID=' . $this->WebID, 'return');
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
@@ -289,7 +290,7 @@ class tad_web_homework
 
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_homework_func', "homework.php?op=delete&WebID={$this->WebID}&HomeworkID=", 'HomeworkID');
-        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
+
     }
 
     //tad_web_homework編輯表單

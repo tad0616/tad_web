@@ -12,8 +12,10 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_action
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $setup;
+    public $Power;
+    public $tags;
 
     public function __construct($WebID)
     {
@@ -271,7 +273,6 @@ class tad_web_action
 
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_action_func', "action.php?op=delete&WebID={$this->WebID}&ActionID=", 'ActionID');
-        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         $xoopsTpl->assign('tags', $this->tags->list_tags('ActionID', $ActionID, 'action'));
     }

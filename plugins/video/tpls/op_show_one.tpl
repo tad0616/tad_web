@@ -19,7 +19,7 @@
     <{$VideoDesc}>
 </div>
 
-<{$fb_comments}>
+
 
 <{if $isMyWeb or $isAssistant}>
     <div class="text-right text-end" style="margin: 30px 0px;">

@@ -1,9 +1,12 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'tad_web_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
+Utility::test($_SESSION, 'session', 'dd');
+Utility::test($_COOKIE, 'cookie', 'dd');
 /*-----------function區--------------*/
 
 //首頁

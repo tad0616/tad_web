@@ -9,7 +9,7 @@
         <{/if}>
     <li class="breadcrumb-item"><{$WorksInfo}></li>
     <{if $hide}>
-        <li class="breadcrumb-item"><span class="badge badge-danger"><{$hide}></span></li>
+        <li class="breadcrumb-item"><span class="badge badge-danger bg-danger"><{$hide}></span></li>
     <{/if}>
 </ol>
 

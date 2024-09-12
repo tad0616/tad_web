@@ -6,7 +6,7 @@
             <div class="card panel">
                 <div class="card-header panel-heading" role="tab" id="heading<{$page.CateID}>" style="background: rgb(114, 185, 218);">
                     <div style="font-size: 1.5rem;">
-                        <span class="badge badge-info pull-right float-right pull-end"><{$page.CateAmount}></span>
+                        <span class="badge badge-info bg-info pull-right float-right pull-end"><{$page.CateAmount}></span>
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse<{$page.CateID}>" aria-expanded="true" aria-controls="collapse<{$page.CateID}>" style="color: #ffffff;">
                             <{$page.CateName}>
                         </a>
@@ -17,7 +17,7 @@
                         <{foreach from=$page.content item=content}>
                             <li class="list-group-item">
                                 <{if $content.show_count=='1'}>
-                                    <span class="badge badge-info"><{$content.PageCount}></span>
+                                    <span class="badge badge-info bg-info"><{$content.PageCount}></span>
                                 <{/if}>
                                 <a href="page.php?WebID=<{$content.WebID}>&PageID=<{$content.PageID}>" style="color: #333333;"><{$content.PageTitle}></a>
                             </li>

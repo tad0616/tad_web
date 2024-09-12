@@ -44,7 +44,7 @@
     <{/if}>
 </div>
 
-<{$fb_comments}>
+
 
 <div id="adm_bar" class="text-right text-end" style="margin: 30px 0px;">
     <{if $isMyWeb or $isCanEdit}>

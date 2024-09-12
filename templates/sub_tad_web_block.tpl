@@ -17,7 +17,7 @@
         <{elseif $block.plugin=="custom" || $block.plugin=="share"}>
             <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_custom.tpl"}>
         <{else}>
-            <{if "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
+            <{if $block.tpl && "$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"|file_exists}>
                 <{include file="$xoops_rootpath/modules/tad_web/plugins/`$block.plugin`/tpls/`$block.tpl`"}>
             <{/if}>
         <{/if}>
