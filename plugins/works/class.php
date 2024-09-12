@@ -10,8 +10,10 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_works
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $setup;
+    public $tags;
+    public $Power;
 
     public function __construct($WebID)
     {
@@ -274,8 +276,6 @@ class tad_web_works
 
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_works_func', "works.php?op=delete&WebID={$this->WebID}&WorksID=", 'WorksID');
-
-        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         $TadUpFiles->set_col('WorksID', $WorksID); //若 $show_list_del_file ==true 時一定要有
         $attachments = $TadUpFiles->upform(true, 'attachments', null, false);

@@ -10,7 +10,6 @@ class Tad_WebCorePreload extends XoopsPreloadItem
 {
     public static function eventCoreHeaderStart($args)
     {
-        global $xoopsDB;
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
         $WebID = (int) $_REQUEST['WebID'];
 

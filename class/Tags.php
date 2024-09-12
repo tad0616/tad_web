@@ -100,7 +100,7 @@ class Tags
             $tags_select .= "
             <label class='checkbox-inline'>
                 <input type='checkbox' name='tags[]' value='{$tag}' {$checked}>
-                {$tag} <span class='badge badge-info'>{$count}</span>
+                {$tag} <span class='badge badge-info bg-info'>{$count}</span>
             </label>";
         }
 

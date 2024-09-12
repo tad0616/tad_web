@@ -27,7 +27,7 @@ $WebCate = new WebCate($WebID, "news","tad_web_news");
 $WebCate->set_WebID($WebID);
 $cate = $WebCate->get_tad_web_cate_arr();
 <{if isset($news.cate.CateID)}>
-<span class="label label-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+<span class="badge badge-info bg-info"><a href="news.php?WebID=<{$news.WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
 <{/if}>
  */
 class WebCate

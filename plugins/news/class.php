@@ -13,8 +13,10 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_news
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $setup;
+    public $tags;
+    public $Power;
 
     public function __construct($WebID)
     {
@@ -291,8 +293,6 @@ class tad_web_news
         $JqueryPrintPreview->render();
 
         $xoopsTpl->assign('module_css', '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print">');
-
-        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         //取得標籤
         $xoopsTpl->assign('tags', $this->tags->list_tags('NewsID', $NewsID, 'news'));

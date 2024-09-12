@@ -14,7 +14,7 @@
     <div class="alert" style="background-color: #F5F9DB;"><{$CalendarDesc}></div>
 <{/if}>
 
-<{$fb_comments}>
+
 
 <{if $isMyWeb}>
     <div class="text-right text-end" style="margin: 30px 0px;">

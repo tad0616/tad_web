@@ -1,6 +1,6 @@
 <?php
 use XoopsModules\Tadtools\FormValidator;
-use XoopsModules\Tadtools\FullCalendar;
+use XoopsModules\Tadtools\FullCalendar6;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\WebCate;
@@ -8,7 +8,7 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_calendar
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $setup;
 
     public function __construct($WebID)
@@ -42,13 +42,13 @@ class tad_web_calendar
             $calendar_data = $total + $total2 + $total3;
         }
 
-        $FullCalendar = new FullCalendar();
+        $FullCalendar = new FullCalendar6();
 
         if ($this->WebID) {
             $FullCalendar->add_js_parameter('firstDay', $this->setup['week_first_day']);
-            $FullCalendar->add_json_parameter('WebID', $this->WebID);
+            // $FullCalendar->add_json_parameter('WebID', $this->WebID);
         }
-        $fullcalendar_code = $FullCalendar->render('#calendar', XOOPS_URL . '/modules/tad_web/get_event.php', 'return');
+        $fullcalendar_code = $FullCalendar->render('calendar', XOOPS_URL . '/modules/tad_web/get_event.php?WebID=' . $this->WebID, 'return');
 
         if ('return' === $mode) {
             $data['fullcalendar_code'] = $fullcalendar_code;
@@ -107,7 +107,6 @@ class tad_web_calendar
 
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_calendar_func', "calendar.php?op=delete&WebID={$this->WebID}&CalendarID=", 'CalendarID');
-        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
     }
 
     //tad_web_calendar編輯表單

@@ -1,8 +1,15 @@
 <?php
+use Xmf\Request;
+use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
 
-$start = empty($_REQUEST['start']) ? date('Y-m-01') : date('Y-m-d', strtotime($_REQUEST['start']));
-$end = empty($_REQUEST['end']) ? date('Y-m-t') : date('Y-m-d', strtotime($_REQUEST['end']));
+$start = Request::getString('start', date("Y-m-01"));
+$d = date('t');
+$end = Request::getString('end', date("Y-m-01"), date("Y-m-$d"));
+$WebID = Request::getInt('WebID');
+
+// $start = empty($_REQUEST['start']) ? date('Y-m-01') : date('Y-m-d', strtotime($_REQUEST['start']));
+// $end = empty($_REQUEST['end']) ? date('Y-m-t') : date('Y-m-d', strtotime($_REQUEST['end']));
 
 if (!isset($xoopsModuleConfig)) {
     $moduleHandler = xoops_getHandler('module');
@@ -57,7 +64,12 @@ if ('homework' === $_REQUEST['CalKind']) {
 }
 //die(var_export($myEvents));
 header('HTTP/1.1 200 OK');
-echo json_encode($myEvents);
+// echo json_encode($myEvents, 256);
+if ($myEvents) {
+    Utility::dd($myEvents);
+} else {
+    die('[]');
+}
 
 //抓取聯絡簿
 function get_homework_event($start, $end, $WebID)

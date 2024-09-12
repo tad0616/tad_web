@@ -98,6 +98,9 @@
                     <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
                 </a>
             <{/foreach}>
+            <div class="alert alert-warning">
+                登入問題已修復，若仍有問題，請來信 tad@tn.edu.tw 並告知：1.班網網址，2.登入方式，3.登入帳密（非必須，但有可加快處理速度）
+            </div>
         </div>
         </div>
     <{/if}>

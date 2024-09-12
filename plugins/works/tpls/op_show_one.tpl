@@ -9,7 +9,7 @@
     <{/if}>
     <li class="breadcrumb-item"><{$WorksInfo}></li>
     <{if $tags}><li class="breadcrumb-item"><{$tags}></li><{/if}>
-    <{if $hide}><li class="breadcrumb-item"><span class="badge badge-danger"><{$hide}></span></li><{/if}>
+    <{if $hide}><li class="breadcrumb-item"><span class="badge badge-danger bg-danger"><{$hide}></span></li><{/if}>
 </ol>
 
 <{if $WorkDesc}>
@@ -80,5 +80,3 @@
         <{/if}>
     </div>
 <{/if}>
-
-<{$fb_comments}>

@@ -79,7 +79,7 @@ function tad_web_config($WebID, $configs)
     $TadLoginXoopsModule = $moduleHandler->getByDirname('tad_login');
     $login_method = $login_defval = [];
     if ($TadLoginXoopsModule) {
-        global $xoopsConfig;
+
         xoops_loadLanguage('county', 'tad_login');
         xoops_loadLanguage('blocks', 'tad_login');
         require XOOPS_ROOT_PATH . '/modules/tad_login/oidc.php';

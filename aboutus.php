@@ -111,9 +111,11 @@ switch ($op) {
     case 'edit_stu':
         $tad_web_aboutus->edit_stu($MemID, $CateID);
         break;
+
     case 'show_stu':
         $tad_web_aboutus->show_stu($MemID, $CateID);
         break;
+
     //登入
     case 'mem_login':
         $login = $tad_web_aboutus->mem_login($WebID, $MemUname, $MemPasswd);
@@ -123,6 +125,7 @@ switch ($op) {
         }
         redirect_header("aboutus.php?WebID={$WebID}", 3, _MD_TCW_ABOUTUS_PARENT_LOGIN_FAILED);
         break;
+
     //登出
     case 'mem_logout':
         $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = '';
@@ -195,6 +198,7 @@ switch ($op) {
     case 'show_parent':
         $tad_web_aboutus->show_parent($ParentID, $CateID);
         break;
+
     //儲存註冊家長帳號
     case 'save_parent':
         $tad_web_aboutus->save_parent($ParentID);

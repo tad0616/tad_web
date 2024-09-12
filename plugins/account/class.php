@@ -12,8 +12,9 @@ use XoopsModules\Tad_web\WebCate;
 class tad_web_account
 {
     public $WebID = 0;
-    public $web_cate;
+    public $WebCate;
     public $setup;
+    public $Power;
 
     public function __construct($WebID)
     {
@@ -247,7 +248,6 @@ class tad_web_account
 
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('delete_account_func', "account.php?op=delete&WebID={$this->WebID}&AccountID=", 'AccountID');
-        $xoopsTpl->assign('fb_comments', fb_comments($this->setup['use_fb_comments']));
 
         // $xoopsTpl->assign("tags", $this->tags->list_tags("AccountID", $AccountID, 'account'));
     }
