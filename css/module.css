@@ -61,3 +61,28 @@ table.common_table {
 .tuf-icon {
   padding-left: 0px;
 }
+
+.parent-container {
+  width: 100%; /* 父元素的寬度，根據需要進行調整 */
+  max-width: 800px; /* 例如，設置一個最大寬度 */
+  margin: 0 auto; /* 讓父元素居中 */
+}
+
+.custom-row > .col {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 600px) {
+  .parent-container .custom-row > .col {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (min-width: 800px) {
+  .parent-container .custom-row > .col {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+  }
+}
