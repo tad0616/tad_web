@@ -3,80 +3,82 @@
 use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/header.php';
-
-$from = isset($_GET['from']) ? (int) $_GET['from'] : 0;
-$dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
-$web = [];
+$all_web = [];
 $sql = 'select WebID from xx_tad_web';
 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID) = $xoopsDB->fetchRow($result)) {
-    $web[] = $WebID;
+    $all_web[$WebID] = $WebID;
 }
 
-if (!function_exists("array_key_last")) {
-    function array_key_last($array)
-    {
-        if (!is_array($array) || empty($array)) {
-            return null;
-        }
+$dir = XOOPS_ROOT_PATH . '/uploads/tad_web/';
+$dir2 = XOOPS_VAR_PATH . "/tad_web/";
+clean_dir($dir, 'tmp');
+clean_dir($dir2, 'my_webs_data');
 
-        return array_keys($array)[count($array) - 1];
-    }
-}
+function clean_dir($path, $ok_dir)
+{
+    global $all_web;
+    $directories = [];
+// 確認目錄是否存在
+    if (is_dir($path)) {
+        // 掃描目錄內容
+        $items = scandir($path);
 
-$bad = $no = 0;
-// Open a known directory, and proceed to read its contents
-if (is_dir($dir)) {
-    if ($dh = opendir($dir)) {
-        while (false !== ($file = readdir($dh))) {
-            $type = filetype($dir . $file);
-
-            if ('dir' === $type and '.' !== substr($file, 0, 1) and 0 !== $file) {
-                $clean_dir = $file;
-                if (XOOPS_ROOT_PATH . "/uploads/tad_web/{$clean_dir}" != $dir . $file) {
-                    $del = $dir . $file . '無效資料夾';
-                    $color = 'red';
-                    $bad++;
-                    Utility::delete_directory($dir . $file);
-                    echo "<div style='color: $color;'>$file (" . filetype($dir . $file) . ") {$del}</div>";
-                } elseif (!in_array($clean_dir, $web)) {
-                    $del = $dir . $file . '不存在的網站';
-                    $color = 'blue';
-                    $no++;
-                    Utility::delete_directory($dir . $file);
-                    echo "<div style='color: $color;'>$file (" . filetype($dir . $file) . ") {$del}</div>";
-                } else {
-                    echo "<div style='color: #000;'>$file (" . filetype($dir . $file) . ") OK</div>";
+        foreach ($items as $item) {
+            // 忽略當前目錄 (.) 和上層目錄 (..)
+            if ($item != '.' && $item != '..') {
+                // 確認該項目是目錄
+                if (is_dir($path . $item)) {
+                    $directories[] = $item;
                 }
-
             }
         }
-        closedir($dh);
+
+        // 列出所有目錄
+        $del = $count = 0;
+        echo '<h3>Directories in ' . $path . ':</h3>';
+        foreach ($directories as $directory) {
+            $count++;
+            if (!in_array($directory, $all_web) && $directory != $ok_dir) {
+                $ok = deleteDirectory($path . $directory) ? " (已刪)" : "";
+                echo "<span style='color:red'>{$directory}{$ok}</span>, ";
+                $del++;
+                // } else {
+                //     echo "<span>$directory</span>, ";
+            }
+        }
+        echo "<div>現有目錄共 $count 個，可刪除目錄共 $del 個</div>";
+    } else {
+        echo 'Directory does not exist.';
     }
 }
-echo "無效資料夾 $bad 個，不存在網站 $no 個";
 
-sort($web);
-if (is_array($web)) {
-    $lastKey = array_key_last($web);
-    $max = $web[$lastKey];
+function deleteDirectory($dir)
+{
+    // 確認目錄是否存在
+    if (!file_exists($dir)) {
+        return true; // 目錄不存在，視為成功
+    }
 
-    for ($i = $from; $i < $max; $i++) {
-        if (in_array($i, $web)) {
+    // 如果不是目錄，則直接刪除文件
+    if (!is_dir($dir)) {
+        return unlink($dir); // 刪除文件
+    }
 
-            $bg_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$i}/bg";
-            $TadUpFilesBg = TadUpFilesBg($i);
-            fixed_img($bg_user_path, 'bg', $i, $TadUpFilesBg);
+    // 使用 scandir 列出目錄下的所有文件和子目錄
+    $items = scandir($dir);
+    foreach ($items as $item) {
+        // 忽略當前目錄 (.) 和上層目錄 (..)
+        if ($item == '.' || $item == '..') {
+            continue;
+        }
 
-            $head_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$i}/head";
-            $TadUpFilesHead = TadUpFilesHead($i);
-            fixed_img($head_user_path, 'head', $i, $TadUpFilesHead);
-
-            echo "<div>{$i} OK</div>";
-        } else {
-            $sql = "delete from xx_tad_web_files_center where `col_sn` = '$i' AND (`col_name` = 'bg' or `col_name` = 'head')";
-            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            echo "<div style='color:red;'>{$i} 不存在，已刪除</div>";
+        // 遞迴刪除子目錄或文件
+        if (!deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+            return false; // 如果有一個刪除失敗，則返回 false
         }
     }
+
+    // 刪除當前目錄
+    return rmdir($dir);
 }

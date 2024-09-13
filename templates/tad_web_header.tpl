@@ -23,7 +23,7 @@
             });
         </script>
 
-        <div class="my-border" id="web_head" style="height: 200px; overflow: hidden; padding: 0px; position: relative; border: 2px dashed red;">
+        <div class="my-border" id="web_head" style="height: 240px; overflow: hidden; padding: 0px; position: relative; border: 2px dashed red;">
             <{if $web_head|strpos:"head_$WebID_" !== false}>
                 <img src="<{$xoops_url}>/uploads/tad_web/<{$WebID}>/head/<{$web_head}>" alt="head bg" id="head_bg" style="margin: 0px; width: 100%; position: absolute; z-index: 0; top: <{$head_top}>px; left: <{$head_left}>px;">
             <{else}>
@@ -43,7 +43,7 @@
                 }
             });
         </script>
-        <a href="index.php?WebID=<{$WebID}>"><img src="<{$xoops_url}>/uploads/tad_web/<{$WebID}>/header.png" alt="Web Title:<{$WebTitle}>" id="head_bg" class="img-rounded img-fluid img-resopnsive" style="margin-bottom: 10px;"><span class="sr-only visually-hidden"><{$WebTitle}></span></a>
+        <a href="index.php?WebID=<{$WebID}>"><img src="<{$xoops_url}>/uploads/tad_web/<{$WebID}>/header.png" alt="Web Title:<{$WebTitle}>" id="head_bg" class="img-rounded img-fluid img-resopnsive" style="margin-bottom: 10px;width:100%;"><span class="sr-only visually-hidden"><{$WebTitle}></span></a>
     <{/if}>
 <{/if}>
 

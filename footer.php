@@ -337,13 +337,12 @@ function tad_web_my_menu($defaltWebID)
 //以流水號秀出某筆tad_web_mems資料內容
 function tad_web_login($WebID, $config = [])
 {
-    global $xoopsUser, $xoopsTpl, $xoopsConfig;
+    global $xoopsUser, $xoopsTpl;
 
     if ($xoopsUser or !empty($_SESSION['LoginMemID']) or !empty($_SESSION['LoginParentID'])) {
         return;
     }
     $_SESSION['login_from'] = XOOPS_URL . "/modules/tad_web/index.php?WebID=$WebID";
-    setcookie('login_from', XOOPS_URL . "/modules/tad_web/index.php?WebID=$WebID");
 
     $login_config = get_web_config('login_config', $WebID);
     $login_config = empty($login_config) ? [] : explode(';', $login_config);

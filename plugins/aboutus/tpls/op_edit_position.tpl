@@ -46,7 +46,7 @@
         <{$students2}>
         <div id="save_info"></div>
     <{else}>
-        <div class="jumbotron">
+        <div class="jumbotron bg-light p-5 rounded-lg m-3">
             <h2><{$no_student}></h2>
 
             <{if $isMyWeb}>

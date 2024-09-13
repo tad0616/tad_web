@@ -82,7 +82,7 @@
                     <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MB_TCW_LOGIN}></button>
                 </div>
             </div>
-            <p><a href="<{$xoops_url}>/user.php?op=logout&xoops_redirect=<{$xoops_requesturi}>" class="btn btn-sm btn-danger">若無法看見「網站擁有者 OpenID 登入」請按此登出，再登入即可</a></p>
+            <p><a href="<{$xoops_url}>/user.php?op=logout&xoops_redirect=<{$xoops_requesturi|urlencode}>" class="btn btn-sm btn-danger">若無法看見「網站擁有者 OpenID 登入」請按此登出，再登入即可</a></p>
         </form>
 
         <div class="text-center">
@@ -98,9 +98,11 @@
                     <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
                 </a>
             <{/foreach}>
-            <div class="alert alert-warning">
-                登入問題已修復，若仍有問題，請來信 tad@tn.edu.tw 並告知：1.班網網址，2.登入方式，3.登入帳密（非必須，但有可加快處理速度）
-            </div>
+            <{if $_IS_EZCLASS}>
+                <div class="alert alert-warning">
+                    若登入有問題，請參考：<a href="https://class.tn.edu.tw/modules/tadnews/index.php?ncsn=1&nsn=22" target="_blank">無法登入管理網站之處理方法</a>
+                </div>
+            <{/if}>
         </div>
         </div>
     <{/if}>

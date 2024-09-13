@@ -250,7 +250,7 @@
         </div>
     <{/if}>
 <{else}>
-    <div class="jumbotron">
+    <div class="jumbotron bg-light p-5 rounded-lg m-3">
         <h2><{$no_student}></h2>
 
         <{if $isMyWeb}>

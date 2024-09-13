@@ -66,7 +66,7 @@
     <{$bar}>
 <{else}>
     <{if $isAdmin}>
-        <div class="jumbotron text-center">
+        <div class="jumbotron bg-light p-5 rounded-lg m-3 text-center">
             <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
         </div>
     <{/if}>

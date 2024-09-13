@@ -184,7 +184,7 @@
         </div>
     </form>
 <{else}>
-    <div class="jumbotron">
+    <div class="jumbotron bg-light p-5 rounded-lg m-3">
         <h2><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_NONE}></h2>
         <{if $isMyWeb and $WebID}>
             <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">

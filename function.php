@@ -1354,8 +1354,8 @@ function output_head_file($WebID)
         unlink($filename);
     }
 
-    $width = 1140;
-    $height = 200;
+    $width = 1280;
+    $height = 240;
     //die('test2=' . $WebID);
     $all_config = get_web_all_config($WebID);
     //die("<h2>$WebID</h2>" . var_export($all_config));
