@@ -10,7 +10,7 @@
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h2>
 <{/if}>
 
-<{if $discuss_data}>
+<{if $discuss_data|default:false}>
     <{if $mode=="need_login"}>
         <div class="my-border">
         <{$smarty.const._MD_TCW_NEED_LOGIN}>
@@ -38,7 +38,7 @@
                     <{/if}>
                 </tr>
             </thead>
-            <{if $discuss_data}>
+            <{if $discuss_data|default:false}>
                 <{foreach from=$discuss_data item=discuss}>
                     <tr>
                         <td style="text-align:center;"><{$discuss.LastTime}></td>
@@ -72,7 +72,7 @@
             <{/if}>
         </table>
 
-        <{if $discuss_data}>
+        <{if $discuss_data|default:false}>
             <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
                 <{$bar}>
             <{/if}>

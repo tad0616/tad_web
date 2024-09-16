@@ -6,11 +6,11 @@
     </li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName}><a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$AccountInfo}></li>
-    <{if $tags}>
+    <{if $tags|default:false}>
         <li class="breadcrumb-item"><{$tags}></li>
     <{/if}>
 </ol>
@@ -20,14 +20,14 @@
     <div class="col-md-4"><{$AccountDate}></div>
 </div>
 
-<{if $AccountIncome}>
+<{if $AccountIncome|default:false}>
     <div class="row" style="margin:10px 0px;">
         <div class="col-md-2"><{$smarty.const._MD_TCW_ACCOUNT_INCOME}></div>
         <div class="col-md-4"><{$AccountIncome}></div>
     </div>
 <{/if}>
 
-<{if $AccountOutgoings}>
+<{if $AccountOutgoings|default:false}>
     <div class="row" style="margin:10px 0px;">
         <div class="col-md-2"><{$smarty.const._MD_TCW_ACCOUNT_OUTGOINGS}></div>
         <div class="col-md-4"><{$AccountOutgoings}></div>
@@ -35,13 +35,13 @@
 <{/if}>
 
 <div class="row">
-<{if $AccountDesc}>
+<{if $AccountDesc|default:false}>
     <div class="col-md-6">
         <div class="alert alert-info" style="line-height: 1.8; font-size: 120%;"><{$AccountDesc}></div>
     </div>
 <{/if}>
 
-<{if $pics}>
+<{if $pics|default:false}>
     <div class="col-md-6">
         <{$pics}>
     </div>

@@ -1,6 +1,6 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
-<{if $bc.main_data}>
+<{if $bc.main_data|default:false}>
     <{if $bc.config.tags_mode=="cloud"}>
         <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/jQCloud/jqcloud-1.0.4.js"></script>
         <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_web/class/jQCloud/jqcloud.css">

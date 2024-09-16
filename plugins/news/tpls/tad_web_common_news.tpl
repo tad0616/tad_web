@@ -1,12 +1,12 @@
-<{if $news_data}>
-    <{if $WebID}>
+<{if $news_data|default:false}>
+    <{if $WebID|default:false}>
         <script type="text/javascript">
             $(document).ready(function(){
                 $('.list_new img').css('width','').css('height','').addClass('img-fluid');
             });
         </script>
         <{foreach from=$news_data key=i item=news}>
-            <{if $news.NewsContent}>
+            <{if $news.NewsContent|default:false}>
                 <h3>
                     <{$news.Date}>
                     <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
@@ -23,7 +23,7 @@
                         <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
                     <{/if}>
                     <{$news.NewsContent}>
-                    <{if $news.more}>
+                    <{if $news.more|default:false}>
                         <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$smarty.const._MD_TCW_READ_MORE}></a>
                     <{/if}>
                 </div>
@@ -102,7 +102,7 @@
         </table>
     <{/if}>
 
-    <{if $news_data}>
+    <{if $news_data|default:false}>
         <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
             <{$bar}>
         <{/if}>

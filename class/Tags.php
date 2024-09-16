@@ -24,7 +24,7 @@ $sql = "select distinct a.* from " . $xoopsDB->prefix("tad_web_news") . " as a l
 
 //show_one 取得標籤
 $xoopsTpl->assign("tags", $this->tags->list_tags("NewsID", $NewsID, 'news'));
-<{if $tags}><li><{$tags}></li><{/if}>
+<{if $tags|default:false}><li><{$tags}></li><{/if}>
 
 //edit_form 標籤設定
 $tags_form = $this->tags->tags_menu("NewsID", $NewsID);

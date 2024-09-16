@@ -12,8 +12,8 @@
 
 
 
-<{if $video_data}>
-    <{if $isMyWeb}>
+<{if $video_data|default:false}>
+    <{if $isMyWeb|default:false}>
         <script type="text/javascript">
             $(document).ready(function(){
                 $('#sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
@@ -72,7 +72,7 @@
         </tbody>
     </table>
 
-    <{if $video_data}>
+    <{if $video_data|default:false}>
         <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
             <{$bar}>
         <{/if}>

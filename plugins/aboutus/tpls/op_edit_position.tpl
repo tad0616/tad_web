@@ -1,5 +1,5 @@
 <h3>
-    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
     <{$smarty.const._MD_TCW_STUDENT_POSITION}>
 </h3>
 
@@ -12,7 +12,7 @@
     </div>
 </form>
 
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <{if $students1 || $students2}>
         <style>
             .draggable {padding: 5px; margin: 0 10px 10px 0; font-size: 80%; border:0px dotted gray;position:absolute;}
@@ -49,7 +49,7 @@
         <div class="jumbotron bg-light p-5 rounded-lg m-3">
             <h2><{$no_student}></h2>
 
-            <{if $isMyWeb}>
+            <{if $isMyWeb|default:false}>
                 <p>
                     <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&op=import_excel_form&CateID=<{$CateID}>"><{$import_excel}></a>
                     <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&op=edit_stu&CateID=<{$CateID}>"><{$add_stud}></a>

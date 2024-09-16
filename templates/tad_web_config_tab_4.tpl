@@ -23,7 +23,7 @@
 
     <{$upform_logo}>
 
-    <{if $all_logo}>
+    <{if $all_logo|default:false}>
         <{foreach from=$all_logo item=logo}>
         <div style="width:150px; height:76px; display:inline-block; margin:4px;">
             <a href="#top">

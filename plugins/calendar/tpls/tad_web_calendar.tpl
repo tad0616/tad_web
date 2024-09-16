@@ -3,7 +3,7 @@
 <{elseif $op=="show_one"}>
     <{include file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/op_`$op`.tpl"}>
 <{elseif $calendar_data}>
-    <{if $WebID}>
+    <{if $WebID|default:false}>
         <{$cate_menu}>
     <{/if}>
     <{include file="$xoops_rootpath/modules/tad_web/plugins/calendar/tpls/tad_web_common_calendar.tpl"}>

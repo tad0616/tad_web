@@ -101,7 +101,7 @@
             <{$smarty.const._MD_TCW_CONFIG_NONE_BG}>
         </label>
     </div>
-    <{if $all_bg}>
+    <{if $all_bg|default:false}>
         <{foreach from=$all_bg item=bg}>
         <div style="width:100px; height:96px; display:inline-block; margin:4px;">
             <label style="width: 80px; height: 80px; background: #000000 url('<{$bg.tb_path}>') center center no-repeat; border: <{if $bg.file_name == $web_bg}>2px solid red<{else}>1px solid gray<{/if}>; background-size: contain;" id="<{$bg.file_name}>" class="bg_thumb">
@@ -114,7 +114,7 @@
         <{/foreach}>
     <{/if}>
     <{foreach from=$all_default_bg item=bg}>
-        <{if $bg.file_name}>
+        <{if $bg.file_name|default:false}>
             <div style="width:100px; height:96px; display:inline-block; margin:4px;">
                 <label style="width: 80px; height: 80px; background: #000000 url('<{$bg.tb_path}>') center center no-repeat; border: <{if $bg.file_name == $web_bg}>2px solid red<{else}>1px solid gray<{/if}>; background-size: contain;" id="<{$bg.file_name}>" class="def_bg_thumb">
                 </label>

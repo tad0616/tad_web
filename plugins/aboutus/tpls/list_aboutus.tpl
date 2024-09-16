@@ -1,5 +1,5 @@
 <{if $WebID=="" and $data}>
-    <{if $tad_web_cate}>
+    <{if $tad_web_cate|default:false}>
         <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
 
         <script type="text/javascript">

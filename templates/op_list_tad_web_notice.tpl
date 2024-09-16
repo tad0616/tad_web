@@ -1,5 +1,5 @@
-<{if $all_content}>
-    <{if $isAdmin}>
+<{if $all_content|default:false}>
+    <{if $isAdmin|default:false}>
         <{$delete_tad_web_notice_func}>
     <{/if}>
 
@@ -20,7 +20,7 @@
                     <!--通知日期-->
                     <{$smarty.const._MA_TADWEB_NOTICEDATE}>
                 </th>
-                <{if $isAdmin}>
+                <{if $isAdmin|default:false}>
                     <th><{$smarty.const._TAD_FUNCTION}></th>
                 <{/if}>
             </tr>
@@ -44,7 +44,7 @@
                         <{$data.NoticeDate}>
                     </td>
 
-                    <{if $isAdmin}>
+                    <{if $isAdmin|default:false}>
                         <td>
                             <a href="javascript:delete_tad_web_notice_func(<{$data.NoticeID}>);" class="btn btn-sm btn-danger"><{$smarty.const._TAD_DEL}></a>
                             <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form&NoticeID=<{$data.NoticeID}>" class="btn btn-sm btn-warning"><{$smarty.const._TAD_EDIT}></a>
@@ -57,7 +57,7 @@
     </table>
 
 
-    <{if $isAdmin}>
+    <{if $isAdmin|default:false}>
         <div class="text-right text-end">
             <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
         </div>
@@ -65,7 +65,7 @@
 
     <{$bar}>
 <{else}>
-    <{if $isAdmin}>
+    <{if $isAdmin|default:false}>
         <div class="jumbotron bg-light p-5 rounded-lg m-3 text-center">
             <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form" class="btn btn-info"><{$smarty.const._TAD_ADD}></a>
         </div>

@@ -1,12 +1,12 @@
 <{assign var="bc" value=$block.BlockContent}>
 <div class="row">
-    <{if $bc.class_pic_thumb}>
+    <{if $bc.class_pic_thumb|default:false}>
         <div class="col-md-4">
             <div class="my-border" style="background-image:url('<{$bc.class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:150px;"></div>
         </div>
     <{/if}>
-    <div class="col-md-<{if $bc.class_pic_thumb}>8<{else}>12<{/if}>">
-        <{if $bc.cate.CateName}><h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$bc.CateID}>"><{$bc.cate.CateName}></a></h3><{/if}>
+    <div class="col-md-<{if $bc.class_pic_thumb|default:false}>8<{else}>12<{/if}>">
+        <{if $bc.cate.CateName|default:false}><h3><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$bc.CateID}>"><{$bc.cate.CateName}></a></h3><{/if}>
         <div class="my-border">
             <div>
                 <{$bc.teacher_name}><{$smarty.const._TAD_FOR}><{$bc.WebOwner}>

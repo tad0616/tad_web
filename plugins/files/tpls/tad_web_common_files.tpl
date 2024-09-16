@@ -10,7 +10,7 @@
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$files.PluginTitle}></h2>
 <{/if}>
 
-<{if $file_data}>
+<{if $file_data|default:false}>
     <table class="footable table common_table">
         <thead>
             <tr>
@@ -47,7 +47,7 @@
         <{/foreach}>
     </table>
 
-    <{if $file_data}>
+    <{if $file_data|default:false}>
         <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
             <{$bar}>
         <{/if}>

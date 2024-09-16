@@ -53,7 +53,7 @@
 
 <h2><a href="<{$plugin.url}>"><{$plugin.title}></a><{$smarty.const._MD_TCW_CATE_TOOLS}></h2>
 
-<{if $cate_arr}>
+<{if $cate_arr|default:false}>
     <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <{$cate_menu_form}>
         <hr>
@@ -69,7 +69,7 @@
             </div>
         <{/if}>
 
-        <{if $cate_opt_arr}>
+        <{if $cate_opt_arr|default:false}>
             <div class="alert alert-info"><{$smarty.const._MD_TCW_CATE_NOTE}></div>
             <div id="save_msg"></div>
             <div id="sort">
@@ -87,7 +87,7 @@
                                 <span class="text-danger"><i class="fa fa-times-circle" aria-hidden="true" data-toggle="tooltip" title="<{$smarty.const._MD_TCW_CATE_UNABLED}>"></i></span>
                             <{/if}>
 
-                            <{if $cate.assistant.MemName}>
+                            <{if $cate.assistant.MemName|default:false}>
                                 <i class="fa fa-male" alt="<{$cate.assistant.MemName}>" title="<{$cate.assistant.MemName}>"></i>
                             <{/if}>
 

@@ -4,16 +4,16 @@
     <li class="breadcrumb-item"><a href="discuss.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_DISCUSS}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName}><a href="discuss.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="discuss.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$DiscussInfo}></li>
-    <{if $tags}>
+    <{if $tags|default:false}>
         <li class="breadcrumb-item"><{$tags}></li>
     <{/if}>
 </ol>
 
-<{if $DiscussContent}>
+<{if $DiscussContent|default:false}>
 
     <script type="text/javascript">
         function typeInTextarea(Field, newText) {

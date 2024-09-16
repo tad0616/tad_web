@@ -10,16 +10,16 @@
     <li class="breadcrumb-item"><a href="news.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_NEWS}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName}><a href="news.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="news.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$NewsInfo}></li>
-    <{if $tags}>
+    <{if $tags|default:false}>
         <li class="breadcrumb-item"><{$tags}></li>
     <{/if}>
 </ol>
 
-<{if $NewsContent}>
+<{if $NewsContent|default:false}>
     <div id="list_new" style="background-color: #fefefe; line-height: 2; font-size:120%; ">
         <{$NewsContent}>
     </div>
@@ -36,10 +36,10 @@
 <{$NewsFiles}>
 
 <div class="row" id="News_tool">
-    <{if $prev_next.prev.NewsID}>
+    <{if $prev_next.prev.NewsID|default:false}>
     <div class="col-md-6 text-left text-start d-grid gap-2"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.prev.NewsID}>" class="btn btn-secondary btn-block"><i class="fa fa-chevron-left"></i> <{$prev_next.prev.NewsTitle}></a></div>
     <{/if}>
-    <{if $prev_next.next.NewsID}>
+    <{if $prev_next.next.NewsID|default:false}>
     <div class="col-md-6 text-right text-end d-grid gap-2"><a href="news.php?WebID=<{$WebID}>&NewsID=<{$prev_next.next.NewsID}>" class="btn btn-secondary btn-block"><{$prev_next.next.NewsTitle}> <i class="fa fa-chevron-right"></i></a></div>
     <{/if}>
 </div>

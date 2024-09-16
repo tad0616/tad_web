@@ -1,4 +1,4 @@
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <{if $op=="delete_tad_web_chk"}>
         <h2><{$smarty.const._MD_TCW_WILL_DEL}></h2>
         <form action="config.php" method="post" class="myForm">

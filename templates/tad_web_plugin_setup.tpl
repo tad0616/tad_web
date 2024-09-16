@@ -1,4 +1,4 @@
-<{if $plugin_setup}>
+<{if $plugin_setup|default:false}>
     <script>
         function enableBlock(BlockID){
             var img_id="#"+BlockID+"_icon";
@@ -80,7 +80,7 @@
 
                     <{if $setup.type=="file"}>
                         <div class="col-md-5">
-                            <{if $setup.list}>
+                            <{if $setup.list|default:false}>
                                 <div style="width:60px; height:86px; display:inline-block; margin:4px;">
                                     <label for="<{$setup.name}>0" style="width:60px; height:60px;border:1px dotted gray;" >
                                         <input type="radio" name="<{$setup.name}>" id="<{$setup.name}>0" value="" <{if $setup.value==""}>checked<{/if}>>

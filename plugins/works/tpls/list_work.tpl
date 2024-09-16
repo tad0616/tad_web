@@ -1,5 +1,5 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.main_data}>
+<{if $bc.main_data|default:false}>
     <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
     <table class="footable table common_table">
         <thead>
@@ -25,7 +25,7 @@
                         <span class="badge badge-info bg-info"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
                     <{/if}>
                     <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
-                    <{if $work.hide}><span class="badge badge-danger bg-danger"><{$work.hide}></span><{/if}>
+                    <{if $work.hide|default:false}><span class="badge badge-danger bg-danger"><{$work.hide}></span><{/if}>
 
                     <{*if $work.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || (isset($work.cate.CateID) && isset($smarty.session.isAssistant.work) && $work.cate.CateID == $smarty.session.isAssistant.work)}>

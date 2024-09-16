@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        <{if $fsn}>
+        <{if $fsn|default:false}>
             <{if $file_link==""}>
                 $("#link_file").hide();
                 $("#upload_file").show();

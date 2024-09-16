@@ -10,7 +10,7 @@
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$works.PluginTitle}></h2>
 <{/if}>
 
-<{if $works_data}>
+<{if $works_data|default:false}>
     <table class="footable table common_table">
         <thead>
             <tr>
@@ -38,7 +38,7 @@
                         <span class="badge badge-info bg-info"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
                     <{/if}>
                     <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
-                    <{if $work.hide}><span class="badge badge-danger bg-danger"><{$work.hide}></span><{/if}>
+                    <{if $work.hide|default:false}><span class="badge badge-danger bg-danger"><{$work.hide}></span><{/if}>
                     <{*if $work.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || (isset($work.cate.CateID) && isset($smarty.session.isAssistant.work) && $work.cate.CateID == $smarty.session.isAssistant.work)}>
                         <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
@@ -55,7 +55,7 @@
         <{/foreach}>
     </table>
 
-    <{if $works_data}>
+    <{if $works_data|default:false}>
         <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
             <{$bar}>
         <{/if}>

@@ -45,7 +45,7 @@
 
 <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right" style="background: #ffffff; color:#000000;">
     <button class="c-menu__close"><{$smarty.const._MD_TCW_WEB_CLOSE_MENU}> &rarr;</button>
-    <{if $marquee_arr}>
+    <{if $marquee_arr|default:false}>
         <div class="marquee">
             <{foreach from=$marquee_arr item=marquee}>
                 <i class="fa fa-chevron-circle-right"></i> <a href="index.php?WebID=<{$WebID}>&op=notice&NoticeID=<{$marquee.NoticeID}>" class="show_notice" data-fancybox-type="iframe"><{$marquee.NoticeShortDate}> <{$marquee.NoticeTitle}></a>
@@ -55,7 +55,7 @@
 
     <div style="margin-left:10px;">
         <h3><{$say_hi}></h3>
-        <{if $smarty.session.tad_web_adm}>
+        <{if $smarty.session.tad_web_adm|default:false}>
         <div style="font-size: 0.7rem; color:rgb(180, 76, 76)"><{$adm_defaltWebName}></div>
         <{/if}>
         <div style="margin:10px 0px;">
@@ -167,8 +167,8 @@
                 });
             </script>
 
-            <{if $defaltWebID}>
-                <{if $webs}>
+            <{if $defaltWebID|default:false}>
+                <{if $webs|default:false}>
                     <select class="form-control" title="Select Web" onChange="location.href=this.value">
                         <{foreach from=$webs item=web}>
                             <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
@@ -254,7 +254,7 @@
             <{/if}>
 
             <div class="d-grid gap-2">
-                <{if $closed_webs}>
+                <{if $closed_webs|default:false}>
                     <{foreach from=$closed_webs item=web}>
                         <a href="<{$web.url}>" class="btn btn-secondary btn-block"><{$smarty.const._MD_TCW_ENABLE}> <{$web.name}></a>
                     <{/foreach}>

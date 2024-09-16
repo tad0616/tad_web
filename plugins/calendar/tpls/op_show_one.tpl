@@ -4,19 +4,19 @@
     <li class="breadcrumb-item"><a href="calendar.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_CALENDAR}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName}><a href="calendar.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="calendar.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$CalendarInfo}></li>
 </ol>
 
-<{if $CalendarDesc}>
+<{if $CalendarDesc|default:false}>
     <div class="alert" style="background-color: #F5F9DB;"><{$CalendarDesc}></div>
 <{/if}>
 
 
 
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <div class="text-right text-end" style="margin: 30px 0px;">
         <a href="javascript:delete_calendar_func(<{$CalendarID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
         <a href="setup.php?WebID=<{$WebID}>&plugin=calendar" class="btn btn-success"><i class="fa fa-wrench"></i> <{$smarty.const._MD_TCW_SETUP}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>

@@ -197,7 +197,7 @@
                         </a>
                     <{/foreach}>
                     </div>
-                    <{if $_IS_EZCLASS}>
+                    <{if $_IS_EZCLASS|default:false}>
                         <div class="alert alert-warning">
                             若登入有問題，請參考：<a href="https://class.tn.edu.tw/modules/tadnews/index.php?ncsn=1&nsn=22" target="_blank">無法登入管理網站之處理方法</a>
                         </div>

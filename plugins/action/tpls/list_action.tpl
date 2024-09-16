@@ -1,6 +1,6 @@
 <{assign var="bc" value=$block.BlockContent}>
 
-<{if $bc.main_data}>
+<{if $bc.main_data|default:false}>
     <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
     <div style="clear: both;"></div>
     <{foreach from=$bc.main_data item=act}>

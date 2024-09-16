@@ -4,21 +4,21 @@
     <li class="breadcrumb-item"><a href="action.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_ACTION}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName}><a href="action.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="action.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$ActionInfo}></li>
-    <{if $tags}>
+    <{if $tags|default:false}>
         <li class="breadcrumb-item"><{$tags}></li>
     <{/if}>
 </ol>
 
 <div class="row" style="margin:10px 0px;">
-    <{if $ActionDate}>
+    <{if $ActionDate|default:false}>
         <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
     <{/if}>
 
-    <{if $ActionPlace}>
+    <{if $ActionPlace|default:false}>
         <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
     <{/if}>
 </div>
@@ -37,7 +37,7 @@
     <{$pics}>
 <{/if}>
 
-<{if $ActionDesc}>
+<{if $ActionDesc|default:false}>
     <div class="my-border"><{$ActionDesc}></div>
 <{/if}>
 

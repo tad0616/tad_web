@@ -8,7 +8,7 @@
     <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$schedule.PluginTitle}></h2>
 <{/if}>
 
-<{if $schedule_data}>
+<{if $schedule_data|default:false}>
     <link href="<{$xoops_url}>/modules/tad_web/plugins/schedule/schedule.css" rel="stylesheet">
     <{if $WebID==""}>
         <div class="row">
@@ -26,8 +26,8 @@
             <{if $act.ScheduleDisplay=='1'}>
                 <div style="margin: 8px auto;">
                     <h2>
-                        <{if $act.cate.CateName}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
-                        <{if $act.ScheduleName}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
+                        <{if $act.cate.CateName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
+                        <{if $act.ScheduleName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
                         <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
                         <small>
                             <{*if $act.isCanEdit*}>
@@ -42,8 +42,8 @@
             <{else}>
                 <h2><{$smarty.const._MD_TCW_SCHEDULE_OTHER_LIST}></h2>
                 <div>
-                    <{if $act.cate.CateName}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
-                    <{if $act.ScheduleName}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
+                    <{if $act.cate.CateName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
+                    <{if $act.ScheduleName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
                     <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
                     <small>
                         <{*if $act.isCanEdit*}>

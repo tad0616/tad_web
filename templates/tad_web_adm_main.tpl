@@ -9,7 +9,7 @@
                     <input type="text" name="WebName" placeholder="<{$smarty.const.WebName}>" value="<{$WebName}>" id="WebName" class="form-control validate[required]">
                 </div>
             </div>
-            <{if $cate_menu}>
+            <{if $cate_menu|default:false}>
                 <div class="form-group row mb-3">
                     <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
                         <{$smarty.const._MA_TADWEB_CATENAME}>
@@ -104,7 +104,7 @@
                 <div class="col-md-3">
                     <h3><{$smarty.const._MA_TCW_ALL_USER_NO}></h3>
                     <select name="repository" id="repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
-                        <{if $opt}>
+                        <{if $opt|default:false}>
                             <{foreach from=$opt key=uid item=name}>
                                 <option value="<{$uid}>"><{$name}></option>
                             <{/foreach}>
@@ -124,7 +124,7 @@
                 <div class="col-md-3">
                     <h3><{$smarty.const._MA_TCW_ALL_USER_YES}></h3>
                     <select id="destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
-                        <{if $opt2}>
+                        <{if $opt2|default:false}>
                         <{foreach from=$opt2 key=uid item=name}>
                             <option value="<{$uid}>"><{$name}></option>
                         <{/foreach}>
@@ -186,7 +186,7 @@
 
         <h2><{$smarty.const._MA_TCW_MAIN_TITLE}></h2>
 
-        <{if $cate}>
+        <{if $cate|default:false}>
             <div class="row">
                 <div class="col-md-3">
                 <select name="CateID" id="CateID" title="Select Cate" class="form-control" onchange="location.href='main.php?CateID='+this.value">
@@ -238,7 +238,7 @@
                     <{$class.WebOwner}> (<{$class.uname}>)
                     </td>
                     <td>
-                    <{if $class.admin_arr}>
+                    <{if $class.admin_arr|default:false}>
                         <{foreach from=$class.admin_arr item=admin}>
                         <{$admin.name}> (<{$admin.uname}>),
                         <{/foreach}>

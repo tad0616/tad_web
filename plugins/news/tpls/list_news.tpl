@@ -1,5 +1,5 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.main_data}>
+<{if $bc.main_data|default:false}>
     <{if $block.config.show_mode=="list"}>
         <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
         <ul class="list-group">
@@ -27,7 +27,7 @@
             });
         </script>
         <{foreach from=$bc.main_data key=i item=news}>
-            <{if $news.NewsContent}>
+            <{if $news.NewsContent|default:false}>
                 <h3>
                     <{$news.Date}>
                     <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
@@ -44,7 +44,7 @@
                         <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$WebID}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
                     <{/if}>
                     <{$news.NewsContent}>
-                    <{if $news.more}>
+                    <{if $news.more|default:false}>
                         <a href="news.php?WebID=<{$WebID}>&NewsID=<{$news.NewsID}>"><{$smarty.const._MD_TCW_READ_MORE}></a>
                     <{/if}>
                 </div>
@@ -108,7 +108,7 @@
         <{/if}>
 
         <ul class="list-group">
-            <{if $bc.main_data}>
+            <{if $bc.main_data|default:false}>
             <{foreach from=$bc.main_data key=i item=news}>
                 <{if $i > 0}>
                     <li class="list-group-item">

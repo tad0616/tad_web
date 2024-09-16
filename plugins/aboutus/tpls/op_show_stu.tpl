@@ -1,5 +1,5 @@
 <h2>
-    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
 </h2>
 
 <div style="font-size: 2em; margin: 30px auto;">
@@ -88,7 +88,7 @@
             </div>
         <{/if}>
 
-        <{if $isMyWeb}>
+        <{if $isMyWeb|default:false}>
             <div class="text-center" style="margin: 30px auto;">
                 <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$mem.MemID}>&op=edit_stu" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
             </div>
@@ -96,7 +96,7 @@
 
     </div>
     <div class="col-md-4">
-        <{if $im_student}>
+        <{if $im_student|default:false}>
             <{include file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.tpl"}>
         <{elseif $students}>
             <table class="table table-striped table-bordered table-hover table-sm">
@@ -127,7 +127,7 @@
     </div>
 </div>
 
-<{if $stud_works.main_data}>
+<{if $stud_works.main_data|default:false}>
     <h2><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_WORKS}></h2>
     <{foreach from=$stud_works.main_data item=work}>
         <div class="my-border">
@@ -152,14 +152,14 @@
                 <li class="breadcrumb-item"><{$smarty.const._MD_TCW_WORKS_END_DATE}>: <{$work.WorksDate}></li>
             </ol>
 
-            <{if $work.WorkDesc}>
+            <{if $work.WorkDesc|default:false}>
                 <{$work.WorkDesc}>
             <{/if}>
         </div>
     <{/foreach}>
 <{/if}>
 
-<{if $stud_scores.main_data}>
+<{if $stud_scores.main_data|default:false}>
     <h2><{$smarty.const._MD_TCW_ABOUTUS_UPLOADED_WORKS}></h2>
     <table class="table">
         <tr>
