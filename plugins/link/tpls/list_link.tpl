@@ -24,7 +24,7 @@
 
                     <{*if $link.isMyWeb or $link.isAssistant*}>
                     <{*if $link.isCanEdit*}>
-                    <{if ($WebID && $isMyWeb) || $isAdmin || ($link.cate.CateID && $link.cate.CateID == $smarty.session.isAssistant.link)}>
+                    <{if ($WebID && $isMyWeb) || $isAdmin || (isset($link.cate.CateID) && isset($smarty.session.isAssistant.link) && $link.cate.CateID == $smarty.session.isAssistant.link)}>
                         <a href="javascript:delete_link_func(<{$link.LinkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                         <a href="link.php?WebID=<{$link.WebID}>&op=edit_form&LinkID=<{$link.LinkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
