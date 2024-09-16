@@ -11,7 +11,7 @@ class Tad_WebCorePreload extends XoopsPreloadItem
     public static function eventCoreHeaderStart($args)
     {
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/function_block.php';
-        $WebID = (int) $_REQUEST['WebID'];
+        $WebID = isset($_REQUEST['WebID']) ? (int) $_REQUEST['WebID'] : 0;
 
         if (!empty($WebID) and false !== mb_strpos($_SERVER['PHP_SELF'], 'modules/tad_web') and false !== mb_strpos($_SERVER['REQUEST_URI'], '?WebID=')) {
             $defalut_theme = get_web_config('defalut_theme', $WebID, '');

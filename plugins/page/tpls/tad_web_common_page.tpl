@@ -47,7 +47,7 @@
                             <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
 
                             <{*if $page.isCanEdit*}>
-                            <{if ($WebID && $isMyWeb) || $isAdmin || ($page.cate.CateID && $page.cate.CateID == $smarty.session.isAssistant.page)}>
+                            <{if ($WebID && $isMyWeb) || $isAdmin || (isset($page.cate.CateID) && isset($smarty.session.isAssistant.page) && $page.cate.CateID == $smarty.session.isAssistant.page)}>
                                 <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                                 <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                             <{/if}>
@@ -73,7 +73,7 @@
                         <a href='page.php?WebID=<{$page.WebID}>&PageID=<{$page.PageID}>'><{$page.PageTitle}></a>
 
                         <{*if $page.isCanEdit*}>
-                        <{if ($WebID && $isMyWeb) || $isAdmin || ($page.cate.CateID && $page.cate.CateID == $smarty.session.isAssistant.page)}>
+                        <{if ($WebID && $isMyWeb) || $isAdmin || (isset($page.cate.CateID) && isset($smarty.session.isAssistant.page) && $page.cate.CateID == $smarty.session.isAssistant.page)}>
                             <a href="javascript:delete_page_func(<{$page.PageID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                             <a href="page.php?WebID=<{$WebID}>&op=edit_form&PageID=<{$page.PageID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>
