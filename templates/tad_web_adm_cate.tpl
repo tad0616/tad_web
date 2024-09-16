@@ -77,7 +77,7 @@
                             <div class="col-md-5">
                                 <select id="repository<{$i}>" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control" style="height: 200px;">
                                     <{foreach from=$cate.repository item=opt}>
-                                    <{if $opt.WebID}>
+                                    <{if $opt.WebID|default:false}>
                                         <option value="<{$opt.WebID}>"><{$opt.WebOwner}> (<{$opt.WebTitle}>)</option>
                                     <{/if}>
                                     <{/foreach}>
@@ -99,7 +99,7 @@
                             <div class="col-md-5">
                                 <select id="destination<{$i}>" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control" style="height: 200px;">
                                     <{foreach from=$cate.destination item=opt}>
-                                    <{if $opt.WebID}>
+                                    <{if $opt.WebID|default:false}>
                                         <option value="<{$opt.WebID}>"><{$opt.WebOwner}> (<{$opt.WebTitle}>)</option>
                                     <{/if}>
                                     <{/foreach}>

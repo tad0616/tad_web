@@ -1,4 +1,4 @@
-<{if $homework_data}>
+<{if $homework_data|default:false}>
     <{if $web_display_mode=='index' and $homework_data}>
         <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
             <a href="<{$xoops_url}>/modules/tad_web/<{$dirname}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$homework.PluginTitle}>"></a>
@@ -11,7 +11,7 @@
         <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$homework.PluginTitle}></h2>
     <{/if}>
 
-    <{if $WebID}>
+    <{if $WebID|default:false}>
         <ul class="list-group">
             <{foreach from=$homework_data key=i item=homework}>
                 <{if $homework.HomeworkPostDateTS > $nowTS}>
@@ -43,11 +43,11 @@
                         </h3>
 
                         <div style="min-height: 100px; overflow: hidden; line-height: 1.8; background: #FFFFFF ; border: 2px solid #99C454; border-radius: 5px; margin:10px auto;">
-                            <{if $homework.HomeworkContent}>
+                            <{if $homework.HomeworkContent|default:false}>
                                 <{$homework.HomeworkContent}>
                             <{else}>
                                 <div class="row">
-                                    <{if $homework.today_homework}>
+                                    <{if $homework.today_homework|default:false}>
                                         <div class="col-md-<{$homework.ColWidth}>">
                                             <div style="border-bottom: 1px solid #cfcfcf;">
                                                 <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid" style="margin:6px auto;">
@@ -55,7 +55,7 @@
                                             <{$homework.today_homework}>
                                         </div>
                                     <{/if}>
-                                    <{if $homework.bring}>
+                                    <{if $homework.bring|default:false}>
                                         <div class="col-md-<{$homework.ColWidth}>">
                                             <div style="border-bottom: 1px solid #cfcfcf;">
                                                 <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid" style="margin:6px auto;">
@@ -63,7 +63,7 @@
                                             <{$homework.bring}>
                                         </div>
                                     <{/if}>
-                                    <{if $homework.teacher_say}>
+                                    <{if $homework.teacher_say|default:false}>
                                     <div class="col-md-<{$homework.ColWidth}>">
                                         <div style="border-bottom: 1px solid #cfcfcf;">
                                             <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid" style="margin:6px auto;">
@@ -72,7 +72,7 @@
                                     </div>
                                     <{/if}>
                                 </div>
-                                <{if $homework.other}>
+                                <{if $homework.other|default:false}>
                                     <div class="alert alert-info"><{$homework.other}></div>
                                 <{/if}>
                             <{/if}>

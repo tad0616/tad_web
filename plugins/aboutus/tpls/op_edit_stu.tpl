@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <h3>
-    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
     <{$setup_stud}>
 </h3>
 
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <{if $LoginMemID}>
+            <{if $LoginMemID|default:false}>
                 <input type="hidden" name="MemName" value="<{$MemName}>">
                 <input type="hidden" name="MemSex" value="<{$MemSex}>">
                 <input type="hidden" name="MemEnable" value="<{$MemEnable}>">
@@ -69,7 +69,7 @@
                         <{$smarty.const._MD_TCW_MEM_NUM}>
                     </label>
                     <div class="col-md-9">
-                        <{if $LoginMemID}>
+                        <{if $LoginMemID|default:false}>
                             <input type="hidden" name="MemNum" value="<{$MemNum}>"><{$MemNum}>
                         <{else}>
                             <input type="text" name="MemNum" value="<{$MemNum}>" id="MemNum" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NUM}>">
@@ -85,7 +85,7 @@
                         <{$smarty.const._MD_TCW_MEM_UNICODE}>
                     </label>
                     <div class="col-md-9">
-                        <{if $LoginMemID}>
+                        <{if $LoginMemID|default:false}>
                             <input type="hidden" name="MemUnicode" value="<{$MemUnicode}>"><{$MemUnicode}>
                         <{else}>
                             <input type="text" name="MemUnicode" value="<{$MemUnicode}>" id="MemUnicode" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNICODE}>">
@@ -187,7 +187,7 @@
         </form>
     </div>
     <div class="col-md-4">
-        <{if $LoginMemID}>
+        <{if $LoginMemID|default:false}>
             <{include file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/mem_toolbar.tpl"}>
         <{else}>
             <table class="table table-striped table-bordered table-hover table-sm">

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-4">
-        <{if $class_pic_thumb}>
-            <div class="my-border" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
+        <{if $class_pic_thumb|default:false}>
+            <div class="my-border" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb|default:false}>220px<{else}>150px<{/if}>;"></div>
         <{else}>
             <div class="my-border" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
         <{/if}>
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <{if $all_mems}>
+        <{if $all_mems|default:false}>
             <style>
                 .draggable {padding: 5px; margin: 0 10px 10px 0; font-size: 80%; border:0px dotted gray;position:absolute;}
                 #snaptarget {width:640px;height: 540px; border:1px solid black;background:#CC6633 url('images/classroom2.png') center center no-repeat;position:relative;}
@@ -64,7 +64,7 @@
             </script>
 
 
-            <{if $isMyWeb}>
+            <{if $isMyWeb|default:false}>
                 <{if 'position'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
                     <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_position"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
                 <{/if}>
@@ -86,7 +86,7 @@
     </div>
 </div>
 
-<{if $all_mems}>
+<{if $all_mems|default:false}>
     <div id="randomnumber" style="font-size:100%;"></div>
     <div id="MemRandList"></div>
 
@@ -107,7 +107,7 @@
                 <{if 'AboutMem'|in_array:$mem_column}>
                     <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_ABOUTME}></th>
                 <{/if}>
-                <{if $isMyWeb}>
+                <{if $isMyWeb|default:false}>
                     <{if 'MemUnicode'|in_array:$mem_column}>
                     <th style="text-align: center;"><{$smarty.const._MD_TCW_MEM_UNICODE}></th>
                     <{/if}>
@@ -126,7 +126,7 @@
                             <div><{$smarty.const._MD_TCW_MEM_NUM}>: <{$stud.MemNum}></div>
                         <{/if}>
                         <div>
-                        <{if $isMyWeb}>
+                        <{if $isMyWeb|default:false}>
                             <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
                         <{else}>
                             <{$stud.MemName}>
@@ -147,7 +147,7 @@
                     <{if 'AboutMem'|in_array:$mem_column}>
                         <td><{$stud.AboutMem}></td>
                     <{/if}>
-                    <{if $isMyWeb}>
+                    <{if $isMyWeb|default:false}>
                         <{if 'MemUnicode'|in_array:$mem_column}>
                             <td style="text-align: center;"><{$stud.MemUnicode}></td>
                         <{/if}>
@@ -179,7 +179,7 @@
 
                         <div style="margin: 2px;">
                             <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_NAME}></span>
-                            <{if $isMyWeb}>
+                            <{if $isMyWeb|default:false}>
                                 <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
                                 <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
                             <{else}>
@@ -199,7 +199,7 @@
                             </div>
                         <{/if}>
 
-                        <{if $isMyWeb}>
+                        <{if $isMyWeb|default:false}>
                             <{if 'MemUnicode'|in_array:$mem_column and $stud.MemUnicode}>
                                 <div style="margin: 2px;">
                                     <span class="badge badge-danger bg-danger"><{$smarty.const._MD_TCW_MEM_UNICODE}></span>
@@ -253,7 +253,7 @@
     <div class="jumbotron bg-light p-5 rounded-lg m-3">
         <h2><{$no_student}></h2>
 
-        <{if $isMyWeb}>
+        <{if $isMyWeb|default:false}>
             <p>
                 <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&op=import_excel_form&CateID=<{$CateID}>"><{$import_excel}></a>
                 <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&op=edit_stu&CateID=<{$CateID}>"><{$add_stud}></a>
@@ -263,7 +263,7 @@
 <{/if}>
 
 
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <div class="text-right text-end">
         <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=new_class" class="btn btn-primary"><{$add_class}></a>
         <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-warning"><{$class_setup}></a>

@@ -1,4 +1,4 @@
-<{if $WebID}>
+<{if $WebID|default:false}>
     <div class="row">
         <div class="col-md-8">
             <{$cate_menu}>
@@ -15,7 +15,7 @@
     </div>
 <{/if}>
 
-<{if $discuss_data}>
+<{if $discuss_data|default:false}>
     <{include file="$xoops_rootpath/modules/tad_web/plugins/discuss/tpls/tad_web_common_discuss.tpl"}>
 <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h2>

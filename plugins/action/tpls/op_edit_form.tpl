@@ -10,7 +10,7 @@
             }
         });
 
-        <{if $ActionID}>
+        <{if $ActionID|default:false}>
             <{if $gphoto_link==""}>
                 $("#gphoto_link").hide();
                 $("#upload_photo").show();

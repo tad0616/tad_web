@@ -14,7 +14,7 @@
     <{if $_IS_EZCLASS and $web_version=="all"}>
         <{include file="$xoops_rootpath/modules/tad_web/plugins/aboutus/tpls/tad_web_common_aboutus_all.tpl"}>
     <{else}>
-        <{if $tad_web_cate}>
+        <{if $tad_web_cate|default:false}>
 
             <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jqueryCookie/jquery.cookie.js"></script>
 

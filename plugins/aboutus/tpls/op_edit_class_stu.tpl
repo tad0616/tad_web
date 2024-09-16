@@ -1,8 +1,8 @@
 <h3>
-    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
     <{$edit_student}>
 </h3>
-<{if $students}>
+<{if $students|default:false}>
     <div class="text-right text-end" style="margin: 30px 0px;">
         <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_stu" class="btn btn-primary"><{$add_stud}></a>
     </div>
@@ -36,7 +36,7 @@
     <div class="jumbotron bg-light p-5 rounded-lg m-3">
         <h2><{$no_student}></h2>
 
-        <{if $isMyWeb}>
+        <{if $isMyWeb|default:false}>
             <p>
                 <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&op=import_excel_form&CateID=<{$CateID}>"><{$import_excel}></a>
                 <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&op=edit_stu&CateID=<{$CateID}>"><{$add_stud}></a>

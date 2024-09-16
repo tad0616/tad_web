@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <{if $teacher_thumb_pic}>
+            <{if $teacher_thumb_pic|default:false}>
                 <img src="<{$teacher_thumb_pic}>" alt="photo" class="img-rounded img-polaroid img-fluid img-responsive img-thumbnail">
             <{/if}>
         </div>
@@ -105,9 +105,9 @@
         </div>
     </div>
 
-    <{if $login_method}>
+    <{if $login_method|default:false}>
         <{if $login_config==''}>
-            <{assign var="login_config" value=$login_defval}>
+            <{assign var="login_config" value=$login_defval|default:''}>
         <{/if}>
         <h3><{$smarty.const._MD_TCW_WEB_OPENID_SETUP}></h3>
         <{assign var="i" value=0}>

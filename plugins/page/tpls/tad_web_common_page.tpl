@@ -8,7 +8,7 @@
     <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$page.PluginTitle}></h2>
 <{/if}>
 
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <script type="text/javascript">
         $(document).ready(function(){
             <{foreach from=$cate_arr item=cate}>
@@ -24,7 +24,7 @@
     </script>
 <{/if}>
 
-<{if $page_data}>
+<{if $page_data|default:false}>
 
     <{foreach from=$cate_arr item=cate}>
         <{assign var="cid" value=$cate.CateID}>
@@ -40,7 +40,7 @@
                 <ul id="page_sort<{$cate.CateID}>" class="list-group">
                     <{foreach from=$cate_data.$cid item=page}>
                         <li id="li_<{$page.PageID}>" class="list-group-item">
-                            <{if $isMyWeb}>
+                            <{if $isMyWeb|default:false}>
                                 <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}> <{$page.PageSort}>"></i>
                             <{/if}>
                             <span class="badge badge-info bg-info"><{$page.PageCount}></span>
@@ -66,7 +66,7 @@
             <ul id="page_sort<{$cate.CateID}>" class="list-group">
                 <{foreach from=$cate_data.0 item=page}>
                     <li id="li_<{$page.PageID}>" class="list-group-item">
-                        <{if $isMyWeb}>
+                        <{if $isMyWeb|default:false}>
                             <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}> <{$page.PageSort}>"></i>
                         <{/if}>
                         <span class="badge badge-info bg-info"><{$page.PageCount}></span>

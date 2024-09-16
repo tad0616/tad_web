@@ -3,7 +3,7 @@
 defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class to allow <{if $homepage}>Your code here<{/if}> in templates
+ * Class to allow <{if $homepage|default:false}>Your code here<{/if}> in templates
  * @author trabis
  */
 class Tad_WebCorePreload extends XoopsPreloadItem

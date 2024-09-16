@@ -4,21 +4,21 @@
     <li class="breadcrumb-item"><a href="works.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_WORKS}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName}><a href="works.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="works.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
     <li class="breadcrumb-item"><{$WorksInfo}></li>
-    <{if $tags}><li class="breadcrumb-item"><{$tags}></li><{/if}>
-    <{if $hide}><li class="breadcrumb-item"><span class="badge badge-danger bg-danger"><{$hide}></span></li><{/if}>
+    <{if $tags|default:false}><li class="breadcrumb-item"><{$tags}></li><{/if}>
+    <{if $hide|default:false}><li class="breadcrumb-item"><span class="badge badge-danger bg-danger"><{$hide}></span></li><{/if}>
 </ol>
 
-<{if $WorkDesc}>
+<{if $WorkDesc|default:false}>
     <div class="my-border"><{$WorkDesc}></div>
 <{/if}>
 
 <{$pics}>
 
-<{if $show_mem_upload_form}>
+<{if $show_mem_upload_form|default:false}>
     <form action="works.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <!--上傳檔案-->
         <div class="form-group row mb-3">
@@ -70,7 +70,7 @@
 <{/if}>
 
 
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <div class="text-right text-end" style="margin: 30px 0px;">
         <a href="javascript:delete_works_func(<{$WorksID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
         <a href="works.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>

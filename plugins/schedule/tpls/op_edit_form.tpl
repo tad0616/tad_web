@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <{if $ScheduleID}>
+        <{if $ScheduleID|default:false}>
             <div class="form-group row mb-3">
                 <div class="col-md-12">
                     <div class="alert alert-warning">

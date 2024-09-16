@@ -1,5 +1,5 @@
-<{if $WebID}>
-    <{if $config}>
+<{if $WebID|default:false}>
+    <{if $config|default:false}>
         <script>
             $(function() {
                 $("#head_bg").draggable({

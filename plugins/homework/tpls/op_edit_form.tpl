@@ -48,7 +48,7 @@ function chang_title(){
             </div>
         </div>
 
-        <{if $HomeworkContent_editor}>
+        <{if $HomeworkContent_editor|default:false}>
             <!--內容-->
             <{$HomeworkContent_editor}>
         <{else}>

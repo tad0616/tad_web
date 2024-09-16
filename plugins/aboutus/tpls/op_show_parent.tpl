@@ -1,5 +1,5 @@
 <h2>
-    <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
 </h2>
 
 <div style="font-size: 2em; margin: 30px auto;">
@@ -61,7 +61,7 @@
     </div>
 </form>
 
-<{if $stud_scores.main_data}>
+<{if $stud_scores.main_data|default:false}>
     <h2><{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_UPLOADED_WORKS}></h2>
     <table class="table">
         <tr>

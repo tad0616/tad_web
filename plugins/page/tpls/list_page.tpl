@@ -1,5 +1,5 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <script type="text/javascript">
         $(document).ready(function(){
             <{foreach from=$bc.cate_arr item=cate}>
@@ -15,7 +15,7 @@
     </script>
 <{/if}>
 <h2 class="sr-only visually-hidden">Over View</h2>
-<{if $bc.main_data}>
+<{if $bc.main_data|default:false}>
     <{foreach from=$bc.cate_arr item=cate}>
         <{assign var="cid" value=$cate.CateID}>
         <{if $bc.cate_data.$cid}>
@@ -28,7 +28,7 @@
                 <ul id="page_sort<{$cate.CateID}>" class="list-group">
                     <{foreach from=$bc.cate_data.$cid item=page}>
                         <li id="li_<{$page.PageID}>" class="list-group-item">
-                            <{if $isMyWeb}>
+                            <{if $isMyWeb|default:false}>
                                 <i class="fa fa-arrows text-success" style="cursor: s-resize;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>"></i>
                             <{/if}>
                             <{if $content.show_count=='1'}>
@@ -47,7 +47,7 @@
         <{/if}>
     <{/foreach}>
 
-    <{if $PageDefCateID}>
+    <{if $PageDefCateID|default:false}>
         <div style="text-align:right; margin: 0px 0px 10px;">
             <{if $web_display_mode=='home' or $web_display_mode=='index' or $PageDefCateID}>
                 <a href="page.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-sm btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_PAGE_SHORT}></a>

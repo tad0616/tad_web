@@ -3,7 +3,7 @@
 <ol class="breadcrumb">
 <li class="breadcrumb-item"><a href="schedule.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_SCHEDULE}></a></li>
 <{if isset($cate.CateID)}>
-    <li class="breadcrumb-item"><a href="schedule.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{if $cate.CateName}><{$cate.CateName}><{else}><{$smarty.const._MD_TCW_SCHEDULE_UNNAMED_CATEGORY}><{/if}></a></li>
+    <li class="breadcrumb-item"><a href="schedule.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{if $cate.CateName|default:false}><{$cate.CateName}><{else}><{$smarty.const._MD_TCW_SCHEDULE_UNNAMED_CATEGORY}><{/if}></a></li>
 <{/if}>
 <li class="breadcrumb-item"><{$ScheduleInfo}></li>
 </ol>

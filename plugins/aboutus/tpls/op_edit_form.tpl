@@ -3,8 +3,8 @@
         <h3><{$class_setup}></h3>
         <div class="row">
             <div class="col-md-4">
-                <{if $class_pic_thumb}>
-                    <div class="my-border" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size: contain;background-position:center; height:<{if $isMyWeb}>220px<{else}>150px<{/if}>;"></div>
+                <{if $class_pic_thumb|default:false}>
+                    <div class="my-border" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size: contain;background-position:center; height:<{if $isMyWeb|default:false}>220px<{else}>150px<{/if}>;"></div>
                 <{else}>
                     <div class="my-border" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
                 <{/if}>
@@ -93,7 +93,7 @@
     </form>
 <{/if}>
 
-<{if $old_cate}>
+<{if $old_cate|default:false}>
     <script type="text/javascript">
         $(document).ready(function(){
             $('#sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
@@ -118,7 +118,7 @@
                 <tr id="CateID_<{$cate.CateID}>" <{if $cate.CateEnable!=1}>style="background: #cfcfcf;"<{/if}>>
                     <td>
                         <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
-                        <{if $cate.CateName}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+                        <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
                         <{if $cate.CateEnable!=1}>
                         <a href="javascript:del_class(<{$cate.CateID}>)" class="btn btn-sm btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
                         <{/if}>

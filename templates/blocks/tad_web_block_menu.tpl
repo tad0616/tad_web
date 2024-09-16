@@ -18,7 +18,7 @@
             });
         </script>
 
-        <{if $block.DefWebID}>
+        <{if $block.DefWebID|default:false}>
             <h3><{$smarty.const._MB_TCW_LOGIN}></h3>
         <{/if}>
 
@@ -98,7 +98,7 @@
                     <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>">
                 </a>
             <{/foreach}>
-            <{if $_IS_EZCLASS}>
+            <{if $_IS_EZCLASS|default:false}>
                 <div class="alert alert-warning">
                     若登入有問題，請參考：<a href="https://class.tn.edu.tw/modules/tadnews/index.php?ncsn=1&nsn=22" target="_blank">無法登入管理網站之處理方法</a>
                 </div>
@@ -131,10 +131,10 @@
             $('.progress .progress-bar').progressbar({display_text: 'fill'});
         });
     </script>
-    <{if $block.DefWebID}>
+    <{if $block.DefWebID|default:false}>
         <h3><{$block.WebTitle}><small><{$smarty.const._MB_TCW_MENU}></small></h3>
     <{/if}>
-    <{if $block.defaltWebID}>
+    <{if $block.defaltWebID|default:false}>
 
         <{if $block.web_num > 1}>
             <select class="form-control" onChange="location.href=this.value" title="Select Web">
@@ -226,7 +226,7 @@
     <{/if}>
 
     <div class="d-grid gap-2">
-        <{if $block.closed_webs}>
+        <{if $block.closed_webs|default:false}>
             <{foreach from=$block.closed_webs item=web}>
                 <a href="<{$web.url}>" class="btn btn-secondary btn-block"><{$smarty.const._MB_TCW_ENABLE}> <{$web.name}></a>
             <{/foreach}>

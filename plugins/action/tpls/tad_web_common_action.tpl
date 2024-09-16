@@ -10,7 +10,7 @@
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$action.PluginTitle}></h2>
 <{/if}>
 
-<{if $action_data}>
+<{if $action_data|default:false}>
     <div style="clear: both;"></div>
         <{foreach from=$action_data item=act}>
             <div style="width: 156px; height: 260px; float:left; margin: 5px 2px; overflow: hidden;">
@@ -37,7 +37,7 @@
         <{/foreach}>
     <div style="clear: both;"></div>
 
-    <{if $action_data}>
+    <{if $action_data|default:false}>
         <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
             <{$bar}>
         <{/if}>

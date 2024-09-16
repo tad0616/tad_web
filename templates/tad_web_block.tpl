@@ -90,7 +90,7 @@
 
         <{$power_form}>
 
-        <{if $block_config_form}>
+        <{if $block_config_form|default:false}>
             <hr>
             <{$block_config_form}>
             <hr>
@@ -305,7 +305,7 @@
                 <{foreach from=$uninstall item=block}>
                     <li id="<{$block.BlockID}>" data-toggle="tooltip" title="<{if $block.BlockShare=="1"}>share<{elseif $block.plugin=="custom"}>custom<{else}><{$block.plugin}><{/if}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
                         <{$block.icon}>
-                        <{if $block.BlockTitle}>
+                        <{if $block.BlockTitle|default:false}>
                             <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
                         <{else}>
                             <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>

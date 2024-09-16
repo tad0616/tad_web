@@ -1,4 +1,4 @@
-<{if $WebID}>
+<{if $WebID|default:false}>
     <div class="row">
         <div class="col-md-8">
             <{$cate_menu}>
@@ -12,7 +12,7 @@
     </div>
 <{/if}>
 
-<{if $account_data}>
+<{if $account_data|default:false}>
     <{include file="$xoops_rootpath/modules/tad_web/plugins/account/tpls/tad_web_common_account.tpl"}>
 <{else}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$account.PluginTitle}></h2>

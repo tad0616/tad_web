@@ -1,4 +1,4 @@
-<{if $isAdmin}>
+<{if $isAdmin|default:false}>
     <{$delete_tad_web_notice_func}>
 <{/if}>
 
@@ -49,7 +49,7 @@
 </div>
 
 <div class="text-right text-end">
-    <{if $isAdmin}>
+    <{if $isAdmin|default:false}>
         <a href="javascript:delete_tad_web_notice_func(<{$NoticeID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
         <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form&NoticeID=<{$NoticeID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
         <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form" class="btn btn-primary"><{$smarty.const._TAD_ADD}></a>

@@ -1,10 +1,10 @@
 <{if $web_display_mode=='home_plugin'}>
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a>
-        <{if $cate.CateName}><a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+        <{if $cate.CateName|default:false}><a href="account.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         <{$account.PluginTitle}></h2>
 <{/if}>
 
-<{if $account_data}>
+<{if $account_data|default:false}>
     <table class="footable table common_table">
         <thead>
             <tr>
@@ -26,7 +26,7 @@
                 </td>
                 <td>
                     <a href='account.php?WebID=<{$account.WebID}>&AccountID=<{$account.AccountID}>'><{$account.AccountTitle}></a>
-                    <{if $account.hide}><span class="badge badge-danger bg-danger"><{$account.hide}></span><{/if}>
+                    <{if $account.hide|default:false}><span class="badge badge-danger bg-danger"><{$account.hide}></span><{/if}>
                     <{*if $account.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || (isset($account.cate.CateID) && isset($smarty.session.isAssistant.account) && $account.cate.CateID == $smarty.session.isAssistant.account)}>
                         <a href="javascript:delete_account_func(<{$account.AccountID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
@@ -49,7 +49,7 @@
         </tr>
     </table>
 
-    <{if $account_data}>
+    <{if $account_data|default:false}>
         <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
             <{$bar}>
         <{/if}>

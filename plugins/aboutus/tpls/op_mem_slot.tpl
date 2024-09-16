@@ -1,5 +1,5 @@
 <h2><{$cate.CateName}><{$smarty.const._MD_TCW_ABOUTUS_SLOT}></h2>
-<{if $all_mems}>
+<{if $all_mems|default:false}>
     <style type="text/css" media="screen">
         #slot td{
             width: 60px;
@@ -83,7 +83,7 @@
                     <td id="td_<{$stud.slot_sort}>" title="<{$stud.slot_sort}>" <{if $stud.sort==1}>class="slot_active"<{/if}>>
                         <div style="width: 60px; height: 60px; margin:2px auto; background: transparent url('<{$stud.pic}>') top center no-repeat; <{$stud.cover}> padding: 0px;"></div>
                         <div>
-                            <{if $isMyWeb}>
+                            <{if $isMyWeb|default:false}>
                                 <{$stud.MemNum}>
                                 <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
                             <{else}>
@@ -102,6 +102,6 @@
     </table>
 <{/if}>
 
-<{if $isAdmin}>
+<{if $isAdmin|default:false}>
     <div id="log"></div>
 <{/if}>

@@ -28,7 +28,7 @@
 <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
     <{$upform_head}>
 
-    <{if $all_head}>
+    <{if $all_head|default:false}>
         <{foreach from=$all_head item=head}>
             <div style="width:100px; height:96px; display:inline-block; margin:4px;">
                 <a href="#top" title="<{$head.file_name}>" class="thumb_link">
@@ -42,7 +42,7 @@
         <{/foreach}>
     <{/if}>
     <{foreach from=$all_default_head item=head}>
-        <{if $head.file_name}>
+        <{if $head.file_name|default:false}>
             <div style="width:100px; height:96px; display:inline-block; margin:4px;">
                 <a href="#top" title="<{$head.file_name}>" class="thumb_link">
                     <label style="width: 100px; height: 70px; background: #000000 url('<{$head.tb_path}>') center center no-repeat; border: <{if $head.file_name == $web_head}>2px solid red<{else}>1px solid gray<{/if}>; background-size: contain;" id="<{$head.file_name}>" class="def_thumb">

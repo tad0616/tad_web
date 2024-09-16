@@ -1,4 +1,4 @@
-<{if $tag}>
+<{if $tag|default:false}>
     <h2><{$tag}> <small>(<a href="tag.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_TAGS_LIST}></a>)</small></h2>
 
     <{foreach from=$show_arr item=dirname}>

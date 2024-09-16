@@ -10,8 +10,8 @@
     <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$link.PluginTitle}></h2>
 <{/if}>
 
-<{if $link_data}>
-    <{if $isMyWeb}>
+<{if $link_data|default:false}>
+    <{if $isMyWeb|default:false}>
         <script type="text/javascript">
             $(document).ready(function(){
                 $('#sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
@@ -57,7 +57,7 @@
                             <a href="link.php?WebID=<{$link.WebID}>&op=edit_form&LinkID=<{$link.LinkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>
                         <div style="margin: 6px 0px;"><a href="link.php?WebID=<{$link.WebID}>&LinkID=<{$link.LinkID}>" target="_blank"><{$link.LinkShortUrl}></a></div>
-                        <{if $link.LinkDesc}>
+                        <{if $link.LinkDesc|default:false}>
                             <div style="font-size: 80%;color:#666699; line-height:1.5;"><{$link.LinkDesc}></div>
                         <{/if}>
                     </td>
@@ -74,7 +74,7 @@
         </tbody>
     </table>
 
-    <{if $link_data}>
+    <{if $link_data|default:false}>
         <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
             <{$bar}>
         <{/if}>

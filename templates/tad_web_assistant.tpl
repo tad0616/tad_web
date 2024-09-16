@@ -1,4 +1,4 @@
-<{if $isMyWeb}>
+<{if $isMyWeb|default:false}>
     <script type="text/javascript">
         $(document).ready(function() {
             var plugin="<{$plugin}>";
@@ -68,7 +68,7 @@
                     <button type="submit" id="submit" class="btn btn-primary" style="display:none;"><{$smarty.const._MD_TCW_CATE_SET_ASSISTANT}></button>
                 </td>
             </tr>
-            <{if $all_assistant}>
+            <{if $all_assistant|default:false}>
                 <{foreach from=$all_assistant item=assistant}>
                     <tr>
                         <td <{if $assistant.ColName==$plugin}>style="background-color:#F0F7AF;"<{/if}>>

@@ -4,11 +4,11 @@
     <li class="breadcrumb-item"><a href="works.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_WORKS}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName}><a href="works.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="works.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
         <{/if}>
     <li class="breadcrumb-item"><{$WorksInfo}></li>
-    <{if $hide}>
+    <{if $hide|default:false}>
         <li class="breadcrumb-item"><span class="badge badge-danger bg-danger"><{$hide}></span></li>
     <{/if}>
 </ol>
@@ -32,7 +32,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <{if $work.WorkDesc}><div class="alert alert-info"><{$work.WorkDesc}></div><{/if}>
+                <{if $work.WorkDesc|default:false}><div class="alert alert-info"><{$work.WorkDesc}></div><{/if}>
                 <{$work.list_del_file}>
             </div>
             <div class="col-md-6">

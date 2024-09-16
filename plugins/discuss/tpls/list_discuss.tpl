@@ -23,7 +23,7 @@
                 </th>
             </tr>
         </thead>
-        <{if $bc.main_data}>
+        <{if $bc.main_data|default:false}>
             <{foreach item=discuss from=$bc.main_data}>
                 <tr>
                     <td style="text-align:center;">

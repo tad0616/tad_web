@@ -1,12 +1,12 @@
 <{assign var="bc" value=$block.BlockContent}>
-<{if $bc.main_data}>
+<{if $bc.main_data|default:false}>
     <div style="margin-bottom:15px;"></div>
     <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
     <style>
         #marquee-container {
             width: 100%;
             overflow: hidden;
-            <{if $bc.config.bg_color}>
+            <{if $bc.config.bg_color|default:false}>
             background-color: <{$bc.config.bg_color}>;
             <{else}>
             background-color: #f0f0f0;
