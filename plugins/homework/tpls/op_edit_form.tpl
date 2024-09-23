@@ -2,7 +2,7 @@
 <script type="text/javascript">
 function chang_title(){
     var new_date = $('#toCal').val();
-    var new_title="<{$WebTitle}> " + new_date + " <{$smarty.const._MD_TCW_HOMEWORK_SHORT}>";
+    var new_title="<{$WebTitle|default:''}> " + new_date + " <{$smarty.const._MD_TCW_HOMEWORK_SHORT}>";
     $('#HomeworkTitle').val(new_title);
 };
 </script>
@@ -12,7 +12,7 @@ function chang_title(){
 <div class="my-border">
     <form action="homework.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <!--分類-->
-        <{$cate_menu_form}>
+        <{$cate_menu_form|default:''}>
 
         <div class="form-group row mb-3">
             <!--加到行事曆-->
@@ -20,7 +20,7 @@ function chang_title(){
                 <{$smarty.const._MD_TCW_HOMEWORK_CAL_DATE}>
             </label>
             <div class="col-md-3">
-                <input type="text" name="toCal" value="<{$toCal}>" id="toCal" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}', onpicked:function(){chang_title();} })" class="form-control" placeholder="<{$smarty.const._HOMEWORK_TOCAL_DESC}>">
+                <input type="text" name="toCal" value="<{$toCal|default:''}>" id="toCal" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d}', onpicked:function(){chang_title();} })" class="form-control" placeholder="<{$smarty.const._HOMEWORK_TOCAL_DESC}>">
             </div>
 
             <!--發布時間-->
@@ -44,13 +44,13 @@ function chang_title(){
                 <{$smarty.const._MD_TCW_HOMEWORK_TITLE}>
             </label>
             <div class="col-md-9">
-                <input name="HomeworkTitle" id="HomeworkTitle" class="validate[required] form-control" type="text" value="<{$HomeworkTitle}>" placeholder="<{$smarty.const._MD_TCW_HOMEWORKTITLE}>">
+                <input name="HomeworkTitle" id="HomeworkTitle" class="validate[required] form-control" type="text" value="<{$HomeworkTitle|default:''}>" placeholder="<{$smarty.const._MD_TCW_HOMEWORKTITLE}>">
             </div>
         </div>
 
         <{if $HomeworkContent_editor|default:false}>
             <!--內容-->
-            <{$HomeworkContent_editor}>
+            <{$HomeworkContent_editor|default:''}>
         <{else}>
             <!--今日作業-->
             <div class="form-group row mb-3">
@@ -58,7 +58,7 @@ function chang_title(){
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TODAY_WORK}>" src="<{$xoops_url}>/modules/tad_web/images/today_homework.png" class="img-fluid">
                 </label>
                 <div class="col-md-9">
-                    <{$HomeworkContent_editor1}>
+                    <{$HomeworkContent_editor1|default:''}>
                 </div>
             </div>
 
@@ -68,7 +68,7 @@ function chang_title(){
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_BRING}>" src="<{$xoops_url}>/modules/tad_web/images/bring.png" class="img-fluid">
                 </label>
                 <div class="col-md-9">
-                    <{$HomeworkContent_editor2}>
+                    <{$HomeworkContent_editor2|default:''}>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@ function chang_title(){
                     <img alt="<{$smarty.const._MD_TCW_HOMEWORK_TEACHER_SAY}>" src="<{$xoops_url}>/modules/tad_web/images/teacher_say.png" class="img-fluid">
                 </label>
                 <div class="col-md-9">
-                    <{$HomeworkContent_editor3}>
+                    <{$HomeworkContent_editor3|default:''}>
                 </div>
             </div>
 
@@ -88,7 +88,7 @@ function chang_title(){
                     <{$smarty.const._MD_TCW_HOMEWORK_OTHER}>
                 </label>
                 <div class="col-md-9">
-                    <{$HomeworkContent_editor4}>
+                    <{$HomeworkContent_editor4|default:''}>
                 </div>
             </div>
         <{/if}>
@@ -99,16 +99,16 @@ function chang_title(){
                 <{$smarty.const._MD_TCW_HOMEWORK_FILES}>
             </label>
             <div class="col-md-9">
-                <{$upform}>
+                <{$upform|default:''}>
             </div>
         </div>
 
         <div class="text-center">
             <!--編號-->
-            <input type="hidden" name="HomeworkID" value="<{$HomeworkID}>">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
-            <input type="hidden" name="uid" value="<{$uid}>">
-            <input type="hidden" name="op" value="<{$next_op}>">
+            <input type="hidden" name="HomeworkID" value="<{$HomeworkID|default:''}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+            <input type="hidden" name="uid" value="<{$uid|default:''}>">
+            <input type="hidden" name="op" value="<{$next_op|default:''}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>

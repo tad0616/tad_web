@@ -40,14 +40,14 @@
         <!--分類-->
         <div class="form-group row mb-3">
             <div class="col-md-12">
-                <{$cate_menu_form}>
+                <{$cate_menu_form|default:''}>
             </div>
         </div>
 
         <!--活動名稱-->
         <div class="form-group row mb-3">
             <div class="col-md-12">
-                <input type="text" name="ActionName" value="<{$ActionName}>" id="ActionName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONNAME}>">
+                <input type="text" name="ActionName" value="<{$ActionName|default:''}>" id="ActionName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONNAME}>">
             </div>
         </div>
 
@@ -55,7 +55,7 @@
         <!--活動說明-->
         <div class="form-group row mb-3">
             <div class="col-md-12">
-                <textarea name="ActionDesc"  rows=4 id="ActionDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONDESC}>"><{$ActionDesc}></textarea>
+                <textarea name="ActionDesc"  rows=4 id="ActionDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACTIONDESC}>"><{$ActionDesc|default:''}></textarea>
             </div>
         </div>
 
@@ -66,14 +66,14 @@
                 <{$smarty.const._MD_TCW_ACTIONDATE}>
             </label>
             <div class="col-md-4">
-                <input type="text" name="ActionDate" class="form-control" value="<{$ActionDate}>" id="ActionDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
+                <input type="text" name="ActionDate" class="form-control" value="<{$ActionDate|default:''}>" id="ActionDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
             </div>
             <!--活動地點-->
             <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TCW_ACTIONPLACE}>
             </label>
             <div class="col-md-4">
-                <input type="text" name="ActionPlace" class="form-control" value="<{$ActionPlace}>" id="ActionPlace" >
+                <input type="text" name="ActionPlace" class="form-control" value="<{$ActionPlace|default:''}>" id="ActionPlace" >
             </div>
         </div>
 
@@ -112,10 +112,10 @@
                     <{$smarty.const._MD_TCW_ACTION_UPLOAD}>
                 </label>
                 <div class="col-md-8">
-                    <{$upform}>
+                    <{$upform|default:''}>
                 </div>
             </div>
-            <{$list_del_file}>
+            <{$list_del_file|default:''}>
         </div>
 
         <div id="gphoto_link" style="display: none;">
@@ -124,7 +124,7 @@
                     <{$smarty.const._MD_TCW_ACTION_GPHOTO_URL}>
                 </label>
                 <div class="col-md-10">
-                    <input type="text" name="gphoto_link" id="gphoto_link_url" class="form-control validate[required , custom[url]]" value="<{$gphoto_link}>" placeholder="<{$smarty.const._MD_TCW_ACTION_GPHOTO_URL_DEMO}>">
+                    <input type="text" name="gphoto_link" id="gphoto_link_url" class="form-control validate[required , custom[url]]" value="<{$gphoto_link|default:''}>" placeholder="<{$smarty.const._MD_TCW_ACTION_GPHOTO_URL_DEMO}>">
                 </div>
             </div>
 
@@ -136,23 +136,23 @@
 
         <div class="form-group row mb-3">
             <div class="col-md-12">
-                <{$power_form}>
+                <{$power_form|default:''}>
             </div>
         </div>
 
         <div class="form-group row mb-3">
             <div class="col-md-12">
-                <{$tags_form}>
+                <{$tags_form|default:''}>
             </div>
         </div>
 
         <div class="form-group row mb-3">
             <div class="col-md-12 text-center">
                 <!--活動編號-->
-                <input type="hidden" name="ActionID" value="<{$ActionID}>">
+                <input type="hidden" name="ActionID" value="<{$ActionID|default:''}>">
                 <!--所屬團隊-->
-                <input type="hidden" name="WebID" value="<{$WebID}>">
-                <input type="hidden" name="op" value="<{$next_op}>">
+                <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+                <input type="hidden" name="op" value="<{$next_op|default:''}>">
                 <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </div>

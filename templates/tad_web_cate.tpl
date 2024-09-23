@@ -55,7 +55,7 @@
 
 <{if $cate_arr|default:false}>
     <form action="cate.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
-        <{$cate_menu_form}>
+        <{$cate_menu_form|default:''}>
         <hr>
 
         <{if $isMyWeb and $WebID}>
@@ -106,7 +106,7 @@
                             <{/if}>
 
                             <div>
-                                <a href="<{$ColName}>.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>" <{if $cate.ColName=="aboutus"}>style="color: #a0062c;"<{/if}>><{$cate.CateName}></a>
+                                <a href="<{$ColName|default:''}>.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>" <{if $cate.ColName=="aboutus"}>style="color: #a0062c;"<{/if}>><{$cate.CateName}></a>
                             </div>
                         </label>
 
@@ -177,8 +177,8 @@
         <{/if}>
 
         <div class="text-center">
-            <input type="hidden" name="ColName" value="<{$ColName}>">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="ColName" value="<{$ColName|default:''}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="save_cate">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
@@ -196,8 +196,8 @@
                         <input type="text" name="newCateName" id="newCateName" class="validate[required] form-control">
                     </div>
                     <div class="col-md-4">
-                        <input type="hidden" name="ColName" value="<{$ColName}>">
-                        <input type="hidden" name="WebID" value="<{$WebID}>">
+                        <input type="hidden" name="ColName" value="<{$ColName|default:''}>">
+                        <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                         <input type="hidden" name="op" value="save_cate">
                         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
                     </div>

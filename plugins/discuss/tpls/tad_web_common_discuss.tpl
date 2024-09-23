@@ -1,13 +1,13 @@
 <{if $web_display_mode=='index' and $discuss_data}>
     <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
-        <a href="<{$xoops_url}>/modules/tad_web/<{$dirname}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$discuss.PluginTitle}>"></a>
+        <a href="<{$xoops_url}>/modules/tad_web/<{$dirname|default:''}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname|default:''}>.png" alt="<{$discuss.PluginTitle}>"></a>
     <{else}>
         <h3><a href="<{$xoops_url}>/modules/tad_web/discuss.php"><{$discuss.PluginTitle}></a></h3>
     <{/if}>
 <{elseif $web_display_mode=='index_plugin'}>
     <h2><a href="<{$xoops_url}>/modules/tad_web/"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h2>
 <{elseif $web_display_mode=='home_plugin'}>
-    <h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h2>
+    <h2><a href="index.php?WebID=<{$WebID|default:''}>"><i class="fa fa-home"></i></a> <{$discuss.PluginTitle}></h2>
 <{/if}>
 
 <{if $discuss_data|default:false}>
@@ -74,7 +74,7 @@
 
         <{if $discuss_data|default:false}>
             <{if $web_display_mode=='index_plugin' or $web_display_mode=='home_plugin'}>
-                <{$bar}>
+                <{$bar|default:''}>
             <{/if}>
         <{/if}>
 
@@ -82,11 +82,11 @@
             <{if $web_display_mode=='index'}>
                 <a href="discuss.php" class="btn btn-primary <{if $web_display_mode=='index'}>btn-sm btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
             <{elseif $web_display_mode=='home' or $DiscussDefCateID}>
-                <a href="discuss.php?WebID=<{$WebID}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-sm btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
+                <a href="discuss.php?WebID=<{$WebID|default:''}>" class="btn btn-primary <{if $web_display_mode=='index'}>btn-sm btn-xs<{/if}>"><i class="fa fa-info-circle"></i> <{$smarty.const._MD_TCW_MORE}><{$smarty.const._MD_TCW_DISCUSS_SHORT}></a>
             <{/if}>
 
             <{if $isMyWeb or $LoginMemID or $LoginParentID}>
-                <a href="discuss.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info <{if $web_display_mode=='index'}>btn-sm btn-xs<{/if}>"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+                <a href="discuss.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info <{if $web_display_mode=='index'}>btn-sm btn-xs<{/if}>"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
             <{/if}>
         </div>
     <{/if}>

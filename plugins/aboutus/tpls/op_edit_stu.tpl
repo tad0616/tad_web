@@ -1,7 +1,7 @@
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <h3>
-    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
-    <{$setup_stud}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{$setup_stud|default:''}>
 </h3>
 
 <div class="row">
@@ -10,18 +10,18 @@
             <!--學生相片-->
             <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
-                    <{$show_files}>
+                    <{$show_files|default:''}>
                 </label>
                 <div class="col-md-8">
-                    <h2><{$MemName}></h2>
+                    <h2><{$MemName|default:''}></h2>
                     <input type="file" name="upfile[]"  maxlength="1" accept="gif|jpg|png|GIF|JPG|PNG">
                 </div>
             </div>
 
             <{if $LoginMemID|default:false}>
-                <input type="hidden" name="MemName" value="<{$MemName}>">
-                <input type="hidden" name="MemSex" value="<{$MemSex}>">
-                <input type="hidden" name="MemEnable" value="<{$MemEnable}>">
+                <input type="hidden" name="MemName" value="<{$MemName|default:''}>">
+                <input type="hidden" name="MemSex" value="<{$MemSex|default:''}>">
+                <input type="hidden" name="MemEnable" value="<{$MemEnable|default:''}>">
             <{else}>
                 <div class="alert alert-info">
                     <!--學生姓名-->
@@ -30,7 +30,7 @@
                             <{$smarty.const._MD_TCW_MEM_NAME}>
                         </label>
                         <div class="col-md-9">
-                            <input type="text" name="MemName" value="<{$MemName}>" id="MemName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NAME}>">
+                            <input type="text" name="MemName" value="<{$MemName|default:''}>" id="MemName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NAME}>">
                         </div>
                     </div>
 
@@ -70,9 +70,9 @@
                     </label>
                     <div class="col-md-9">
                         <{if $LoginMemID|default:false}>
-                            <input type="hidden" name="MemNum" value="<{$MemNum}>"><{$MemNum}>
+                            <input type="hidden" name="MemNum" value="<{$MemNum|default:''}>"><{$MemNum|default:''}>
                         <{else}>
-                            <input type="text" name="MemNum" value="<{$MemNum}>" id="MemNum" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NUM}>">
+                            <input type="text" name="MemNum" value="<{$MemNum|default:''}>" id="MemNum" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NUM}>">
                         <{/if}>
                     </div>
                 </div>
@@ -86,9 +86,9 @@
                     </label>
                     <div class="col-md-9">
                         <{if $LoginMemID|default:false}>
-                            <input type="hidden" name="MemUnicode" value="<{$MemUnicode}>"><{$MemUnicode}>
+                            <input type="hidden" name="MemUnicode" value="<{$MemUnicode|default:''}>"><{$MemUnicode|default:''}>
                         <{else}>
-                            <input type="text" name="MemUnicode" value="<{$MemUnicode}>" id="MemUnicode" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNICODE}>">
+                            <input type="text" name="MemUnicode" value="<{$MemUnicode|default:''}>" id="MemUnicode" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNICODE}>">
                         <{/if}>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                         <{$smarty.const._MD_TCW_MEM_BIRTHDAY}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemBirthday" value="<{$MemBirthday}>" id="MemBirthday" class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MD_TCW_MEM_BIRTHDAY}>">
+                        <input type="text" name="MemBirthday" value="<{$MemBirthday|default:''}>" id="MemBirthday" class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" placeholder="<{$smarty.const._MD_TCW_MEM_BIRTHDAY}>">
                     </div>
                 </div>
             <{/if}>
@@ -113,7 +113,7 @@
                         <{$smarty.const._MD_TCW_MEM_NICKNAME}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemNickName" value="<{$MemNickName}>" id="MemNickName" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NICKNAME}>">
+                        <input type="text" name="MemNickName" value="<{$MemNickName|default:''}>" id="MemNickName" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_NICKNAME}>">
                     </div>
                 </div>
             <{/if}>
@@ -125,7 +125,7 @@
                         <{$smarty.const._MD_TCW_MEM_EXPERTISES}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemExpertises" value="<{$MemExpertises}>" id="MemExpertises" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_EXPERTISES}>">
+                        <input type="text" name="MemExpertises" value="<{$MemExpertises|default:''}>" id="MemExpertises" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_EXPERTISES}>">
                     </div>
                 </div>
             <{/if}>
@@ -137,7 +137,7 @@
                         <{$smarty.const._MD_TCW_MEM_CLASSORGAN}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemClassOrgan" value="<{$MemClassOrgan}>" id="MemClassOrgan" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_CLASSORGAN}>">
+                        <input type="text" name="MemClassOrgan" value="<{$MemClassOrgan|default:''}>" id="MemClassOrgan" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_CLASSORGAN}>">
                     </div>
                 </div>
             <{/if}>
@@ -149,7 +149,7 @@
                         <{$smarty.const._MD_TCW_MEM_ABOUTME}>
                     </label>
                     <div class="col-md-9">
-                        <textarea name="AboutMem" id="AboutMem" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_ABOUTME}>" style="height:300px;"><{$AboutMem}></textarea>
+                        <textarea name="AboutMem" id="AboutMem" class="form-control" placeholder="<{$smarty.const._MD_TCW_MEM_ABOUTME}>" style="height:300px;"><{$AboutMem|default:''}></textarea>
                     </div>
                 </div>
             <{/if}>
@@ -161,7 +161,7 @@
                         <{$smarty.const._MD_TCW_MEM_UNAME}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemUname" value="<{$MemUname}>" title="<{$smarty.const._MD_TCW_MEM_UNAME}>" id="MemUname" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNAME}>">
+                        <input type="text" name="MemUname" value="<{$MemUname|default:''}>" title="<{$smarty.const._MD_TCW_MEM_UNAME}>" id="MemUname" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_UNAME}>">
                     </div>
                 </div>
 
@@ -171,17 +171,17 @@
                         <{$smarty.const._MD_TCW_MEM_PASSWD}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="MemPasswd" value="<{$MemPasswd}>" title="<{$smarty.const._MD_TCW_MEM_PASSWD}>" id="MemPasswd" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_PASSWD}>">
+                        <input type="text" name="MemPasswd" value="<{$MemPasswd|default:''}>" title="<{$smarty.const._MD_TCW_MEM_PASSWD}>" id="MemPasswd" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_MEM_PASSWD}>">
                     </div>
                 </div>
             </div>
 
             <div class="text-center">
-                <{$del_btn}>
-                <input type="hidden" name="WebID" value="<{$WebID}>">
-                <input type="hidden" name="MemID" value="<{$MemID}>">
+                <{$del_btn|default:''}>
+                <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+                <input type="hidden" name="MemID" value="<{$MemID|default:''}>">
                 <input type="hidden" name="CateID" value="<{$cate.CateID}>">
-                <input type="hidden" name="op" value="<{$next_op}>">
+                <input type="hidden" name="op" value="<{$next_op|default:''}>">
                 <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
@@ -204,11 +204,11 @@
                 <{foreach from=$students item=stud}>
                     <tr>
                         <{if 'MemNum'|in_array:$mem_column}>
-                            <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemNum}></a></td>
+                            <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemNum}></a></td>
                         <{/if}>
-                        <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemName}></a></td>
+                        <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemName}></a></td>
                         <{if 'MemUnicode'|in_array:$mem_column}>
-                            <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemUnicode}></a></td>
+                            <td style="text-align: center;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=edit_stu"><{$stud.MemUnicode}></a></td>
                         <{/if}>
                         <td style="text-align: center; color: <{$stud.color}>;<{if $stud.MemID==$MemID}>background: yellow;<{/if}>"><{$stud.MemSex}></td>
                     </tr>
@@ -216,7 +216,7 @@
             </table>
 
             <div class="text-center">
-                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_stu" class="btn btn-primary"><{$add_stud}></a>
+                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_stu" class="btn btn-primary"><{$add_stud|default:''}></a>
             </div>
         <{/if}>
     </div>

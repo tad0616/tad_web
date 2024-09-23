@@ -16,7 +16,7 @@
                     <ul class="list-group">
                         <{foreach from=$page.content item=content}>
                             <li class="list-group-item">
-                                <{if $content.show_count=='1'}>
+                                <{if $content.show_count|default:false=='1'}>
                                     <span class="badge badge-info bg-info"><{$content.PageCount}></span>
                                 <{/if}>
                                 <a href="page.php?WebID=<{$content.WebID}>&PageID=<{$content.PageID}>" style="color: #333333;"><{$content.PageTitle}></a>

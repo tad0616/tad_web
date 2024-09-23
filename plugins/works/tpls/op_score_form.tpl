@@ -1,15 +1,15 @@
-<h2><a href="works.php?WebID=<{$WebID}>&WorksID=<{$WorksID}>"><{$WorkName}></a> <{$smarty.const._MD_TCW_WORKS_WORKS_SCORE_FORM}></h2>
+<h2><a href="works.php?WebID=<{$WebID|default:''}>&WorksID=<{$WorksID|default:''}>"><{$WorkName|default:''}></a> <{$smarty.const._MD_TCW_WORKS_WORKS_SCORE_FORM}></h2>
 
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="works.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_WORKS}></a></li>
+    <li class="breadcrumb-item"><a href="works.php?WebID=<{$WebID|default:''}>"><{$smarty.const._MD_TCW_WORKS}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName|default:false}><a href="works.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="works.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
         <{/if}>
-    <li class="breadcrumb-item"><{$WorksInfo}></li>
+    <li class="breadcrumb-item"><{$WorksInfo|default:''}></li>
     <{if $hide|default:false}>
-        <li class="breadcrumb-item"><span class="badge badge-danger bg-danger"><{$hide}></span></li>
+        <li class="breadcrumb-item"><span class="badge badge-danger bg-danger"><{$hide|default:''}></span></li>
     <{/if}>
 </ol>
 
@@ -44,9 +44,9 @@
 
     <div class="text-center">
         <!--作品編號-->
-        <input type="hidden" name="WorksID" value="<{$WorksID}>">
+        <input type="hidden" name="WorksID" value="<{$WorksID|default:''}>">
         <!--所屬團隊-->
-        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
         <input type="hidden" name="op" value="save_score">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>

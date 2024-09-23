@@ -3,9 +3,9 @@
     <{assign var="total" value=1}>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php"><{$smarty.const._MD_TCW_ABOUTUS_ALL}></a></li>
-        <li class="breadcrumb-item"><a href="index.php?county=<{$def_county}>"><{$def_county}></a></li>
-        <li class="breadcrumb-item"><a href="index.php?county=<{$def_county}>&city=<{$def_city}>"><{$def_city}></a></li>
-        <li class="breadcrumb-item active"><{$def_SchoolName}> (<{$total_web}>)</li>
+        <li class="breadcrumb-item"><a href="index.php?county=<{$def_county|default:''}>"><{$def_county|default:''}></a></li>
+        <li class="breadcrumb-item"><a href="index.php?county=<{$def_county|default:''}>&city=<{$def_city|default:''}>"><{$def_city|default:''}></a></li>
+        <li class="breadcrumb-item active"><{$def_SchoolName|default:''}> (<{$total_web|default:''}>)</li>
     </ol>
 
     <{foreach from=$data item=webs}>
@@ -29,8 +29,8 @@
     <{assign var="total" value=1}>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php"><{$smarty.const._MD_TCW_ABOUTUS_ALL}></a></li>
-        <li class="breadcrumb-item"><a href="index.php?county=<{$def_county}>"><{$def_county}></a></li>
-        <li class="breadcrumb-item active"><{$def_city}> (<{$total_web}>)</li>
+        <li class="breadcrumb-item"><a href="index.php?county=<{$def_county|default:''}>"><{$def_county|default:''}></a></li>
+        <li class="breadcrumb-item active"><{$def_city|default:''}> (<{$total_web|default:''}>)</li>
     </ol>
     <{foreach from=$data item=webs}>
         <{if $i==0}>
@@ -38,7 +38,7 @@
         <{/if}>
 
         <div class="col-md-2">
-            <a href="index.php?county=<{$def_county}>&city=<{$def_city}>&SchoolName=<{$webs.SchoolName}>"><{$webs.SchoolName}> (<{$webs.counter}>)</a>
+            <a href="index.php?county=<{$def_county|default:''}>&city=<{$def_city|default:''}>&SchoolName=<{$webs.SchoolName}>"><{$webs.SchoolName}> (<{$webs.counter}>)</a>
         </div>
 
         <{assign var="i" value=$i+1}>
@@ -54,7 +54,7 @@
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php"><{$smarty.const._MD_TCW_ABOUTUS_ALL}></a></li>
-        <li class="breadcrumb-item active"><{$def_county}> (<{$total_web}>)</li>
+        <li class="breadcrumb-item active"><{$def_county|default:''}> (<{$total_web|default:''}>)</li>
     </ol>
     <{foreach from=$data item=webs}>
         <{if $i==0}>
@@ -62,7 +62,7 @@
         <{/if}>
 
         <div class="col-md-2">
-            <a href="index.php?county=<{$def_county}>&city=<{$webs.city}>"><{$webs.city}> (<{$webs.counter}>)</a>
+            <a href="index.php?county=<{$def_county|default:''}>&city=<{$webs.city}>"><{$webs.city}> (<{$webs.counter}>)</a>
         </div>
 
         <{assign var="i" value=$i+1}>
@@ -77,7 +77,7 @@
     <{assign var="total" value=1}>
 
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active"><{$smarty.const._MD_TCW_ABOUTUS_ALL}> (<{$total_web}>)</li>
+        <li class="breadcrumb-item active"><{$smarty.const._MD_TCW_ABOUTUS_ALL}> (<{$total_web|default:''}>)</li>
     </ol>
     <{foreach from=$data item=webs}>
         <{if $i==0}>

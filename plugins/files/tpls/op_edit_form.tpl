@@ -29,7 +29,7 @@
     <form action="files.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
 
         <!--分類-->
-        <{$cate_menu_form}>
+        <{$cate_menu_form|default:''}>
 
         <{if $fsn==""}>
             <div class="form-group row mb-3">
@@ -57,7 +57,7 @@
                     <{$smarty.const._MD_TCW_FILES_LINK}>
                 </label>
                 <div class="col-md-10">
-                    <input type="text" name="file_link" class="form-control validate[required , custom[url]]" value="<{$file_link}>" placeholder="<{$smarty.const._MD_TCW_FILES_LINK_DESC}>">
+                    <input type="text" name="file_link" class="form-control validate[required , custom[url]]" value="<{$file_link|default:''}>" placeholder="<{$smarty.const._MD_TCW_FILES_LINK_DESC}>">
                 </div>
             </div>
             <div class="form-group row mb-3">
@@ -65,12 +65,12 @@
                     <{$smarty.const._MD_TCW_FILES_DESC}>
                 </label>
                 <div class="col-md-10">
-                    <input type="text" name="file_description" class="form-control validate[required]" value="<{$file_description}>" placeholder="<{$smarty.const._MD_TCW_FILES_DESC}>">
+                    <input type="text" name="file_description" class="form-control validate[required]" value="<{$file_description|default:''}>" placeholder="<{$smarty.const._MD_TCW_FILES_DESC}>">
                 </div>
             </div>
         </div>
 
-        <{$tags_form}>
+        <{$tags_form|default:''}>
 
         <div id="upload_file" style="display: none;">
             <div class="form-group row mb-3">
@@ -78,17 +78,17 @@
                     <{$smarty.const._MD_TCW_FILES_UPLOAD}>
                 </label>
                 <div class="col-md-8">
-                    <{$upform}>
+                    <{$upform|default:''}>
                 </div>
             </div>
-            <{$list_del_file}>
+            <{$list_del_file|default:''}>
         </div>
 
         <div class="text-center">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <!--檔案流水號-->
-            <input type="hidden" name="fsn" value="<{$fsn}>">
-            <input type="hidden" name="op" value="<{$next_op}>">
+            <input type="hidden" name="fsn" value="<{$fsn|default:''}>">
+            <input type="hidden" name="op" value="<{$next_op|default:''}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>

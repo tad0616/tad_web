@@ -1,5 +1,5 @@
 <h2>
-    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
 </h2>
 
 <div style="font-size: 2em; margin: 30px auto;">
@@ -13,10 +13,10 @@
     <{$smarty.const._MD_TCW_ABOUTUS_S}><{$parent.Reationship}>
 </div>
 
-<form action="aboutus.php?WebID=<{$WebID}>" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
+<form action="aboutus.php?WebID=<{$WebID|default:''}>" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
     <div class="row">
         <div class="col-md-3">
-            <img src="<{$pic}>" alt="<{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_S}><{$parent.Reationship}>" class="img-fluid img-rounded">
+            <img src="<{$pic|default:''}>" alt="<{$mem.MemName}><{$smarty.const._MD_TCW_ABOUTUS_S}><{$parent.Reationship}>" class="img-fluid img-rounded">
             <br>
             <input type="file" name="upfile[]"  maxlength="1" accept="gif|jpg|png|GIF|JPG|PNG">
         </div>
@@ -49,9 +49,9 @@
             </div>
 
             <div class="text-center">
-                <input type="hidden" name="ParentID" value="<{$ParentID}>">
+                <input type="hidden" name="ParentID" value="<{$ParentID|default:''}>">
                 <input type="hidden" name="op" value="save_parent">
-                <input type="hidden" name="WebID" value="<{$WebID}>">
+                <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                 <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </div>
@@ -71,7 +71,7 @@
         </tr>
         <{foreach from=$stud_scores.main_data item=work}>
             <tr>
-                <td><a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a></td>
+                <td><a href="works.php?WebID=<{$WebID|default:''}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a></td>
                 <td><{$work.mem_upload_content.WorkScore}></td>
                 <td><{$work.mem_upload_content.WorkJudgment}></td>
             </tr>

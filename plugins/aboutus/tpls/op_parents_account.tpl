@@ -3,7 +3,7 @@
     $(document).ready(function() {
         $("#list_mems").change(function(event) {
             var mem_name=$("#list_mems option:selected").prop('label');
-            $.post("<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_mems.php", { op: 'chk_unable', MemID: $('#list_mems').val(), WebID: '<{$WebID}>' , MemName:mem_name }, function(data){
+            $.post("<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_mems.php", { op: 'chk_unable', MemID: $('#list_mems').val(), WebID: '<{$WebID|default:''}>' , MemName:mem_name }, function(data){
                 $('#unable').html(data);
             });
 
@@ -18,10 +18,10 @@
 <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
     <div class="form-group row mb-3">
         <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
-            <{$cate_label}>
+            <{$cate_label|default:''}>
         </label>
         <div class="col-md-4">
-            <{$cate_menu}>
+            <{$cate_menu|default:''}>
         </div>
         <div class="col-md-5">
             <select name="MemID" id="list_mems" class="form-control" title="list mems">
@@ -68,7 +68,7 @@
         <div class="text-center">
             <span id="unable"></span>
             <input type="hidden" name="op" value="parents_signup">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_NEXT}></button>
         </div>
     </div>

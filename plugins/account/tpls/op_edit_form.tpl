@@ -5,7 +5,7 @@
     <form action="account.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
 
         <!--分類-->
-        <{$cate_menu_form}>
+        <{$cate_menu_form|default:''}>
 
         <!--帳目日期-->
         <div class="form-group row mb-3">
@@ -13,12 +13,12 @@
                 <{$smarty.const._MD_TCW_ACCOUNT_DATE}>
             </label>
             <div class="col-md-3">
-                <input type="text" name="AccountDate" class="form-control" value="<{$AccountDate}>" id="AccountDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
+                <input type="text" name="AccountDate" class="form-control" value="<{$AccountDate|default:''}>" id="AccountDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
             </div>
 
             <!--帳目名稱-->
             <div class="col-md-7">
-                <input type="text" name="AccountTitle" value="<{$AccountTitle}>" id="AccountTitle" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACCOUNT_TITLE}>">
+                <input type="text" name="AccountTitle" value="<{$AccountTitle|default:''}>" id="AccountTitle" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_ACCOUNT_TITLE}>">
             </div>
         </div>
 
@@ -50,14 +50,14 @@
                     <label class="col-md-5 col-form-label text-sm-right text-sm-end control-label">
                     </label>
                     <div class="col-md-7">
-                        <input type="text" name="AccountMoney" class="validate[required] form-control" value="<{$AccountMoney}>" id="AccountMoney" >
+                        <input type="text" name="AccountMoney" class="validate[required] form-control" value="<{$AccountMoney|default:''}>" id="AccountMoney" >
                     </div>
                 </div>
             </div>
 
             <div class="col-md-7">
                 <!--帳目說明-->
-                <textarea name="AccountDesc"  rows=3 id="AccountDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACCOUNT_DESC}>"><{$AccountDesc}></textarea>
+                <textarea name="AccountDesc"  rows=3 id="AccountDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_ACCOUNT_DESC}>"><{$AccountDesc|default:''}></textarea>
             </div>
         </div>
 
@@ -67,18 +67,18 @@
                 <{$smarty.const._MD_TCW_ACCOUNT_UPLOAD}>
             </label>
             <div class="col-md-10">
-                <{$upform}>
+                <{$upform|default:''}>
             </div>
         </div>
 
-        <{$power_form}>
+        <{$power_form|default:''}>
 
         <div class="text-center">
             <!--帳目編號-->
-            <input type="hidden" name="AccountID" value="<{$AccountID}>">
+            <input type="hidden" name="AccountID" value="<{$AccountID|default:''}>">
             <!--所屬團隊-->
-            <input type="hidden" name="WebID" value="<{$WebID}>">
-            <input type="hidden" name="op" value="<{$next_op}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+            <input type="hidden" name="op" value="<{$next_op|default:''}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>

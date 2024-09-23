@@ -1,24 +1,24 @@
 <div class="row">
     <div class="col-md-4">
         <{if $class_pic_thumb|default:false}>
-            <div class="my-border" style="background-image:url('<{$class_pic_thumb}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb|default:false}>220px<{else}>150px<{/if}>;"></div>
+            <div class="my-border" style="background-image:url('<{$class_pic_thumb|default:''}>');background-repeat:no-repeat;background-size:cover;background-position:center; height:<{if $isMyWeb|default:false}>220px<{else}>150px<{/if}>;"></div>
         <{else}>
-            <div class="my-border" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo}></div>
+            <div class="my-border" style="height: 150px; line-height:  100px; text-align: center;"><{$no_class_photo|default:''}></div>
         <{/if}>
     </div>
     <div class="col-md-8">
-        <{$cate_menu}>
+        <{$cate_menu|default:''}>
 
         <div class="my-border">
-            <div><{$teacher_name}><{$smarty.const._TAD_FOR}><{$WebOwner}></div>
+            <div><{$teacher_name|default:''}><{$smarty.const._TAD_FOR}><{$WebOwner|default:''}></div>
             <div>
-                <{$student_amount}><{$smarty.const._TAD_FOR}> <{$smarty.const._MD_TCW_TOTAL}>
-                <{$class_total}> <{$smarty.const._MD_TCW_PEOPLE}>
+                <{$student_amount|default:''}><{$smarty.const._TAD_FOR}> <{$smarty.const._MD_TCW_TOTAL}>
+                <{$class_total|default:''}> <{$smarty.const._MD_TCW_PEOPLE}>
                 <a href="#" class="btn btn-info btn-sm btn-xs">
-                    <i class="fa fa-male"></i> <{$class_boy}>
+                    <i class="fa fa-male"></i> <{$class_boy|default:''}>
                 </a>
                 <a href="#" class="btn btn-danger btn-sm btn-xs">
-                    <i class="fa fa-female"></i> <{$class_girl}>
+                    <i class="fa fa-female"></i> <{$class_girl|default:''}>
                 </a>
             </div>
         </div>
@@ -37,8 +37,8 @@
                 $(function(){
                     $('#getit').click(function() {
 
-                        var numLow = <{$min}>;
-                        var numHigh = <{$max}>;
+                        var numLow = <{$min|default:''}>;
+                        var numHigh = <{$max|default:''}>;
 
                         var adjustedHigh = (parseFloat(numHigh) - parseFloat(numLow)) + 1;
 
@@ -66,11 +66,11 @@
 
             <{if $isMyWeb|default:false}>
                 <{if 'position'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
-                    <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_position"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
+                    <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&op=edit_position"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
                 <{/if}>
-                <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=edit_class_stu"><{$edit_student}></a>
+                <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&op=edit_class_stu"><{$edit_student|default:''}></a>
                 <{if 'export'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
-                    <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=export_config"><{$smarty.const._MD_TCW_ABOUTUS_EXPORT}></a>
+                    <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&op=export_config"><{$smarty.const._MD_TCW_ABOUTUS_EXPORT}></a>
                 <{/if}>
             <{/if}>
 
@@ -80,7 +80,7 @@
             <{/if}>
 
             <{if 'slot'|in_array:$mem_function and !'all_dont'|in_array:$mem_function}>
-                <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&op=mem_slot"><{$smarty.const._MD_TCW_ABOUTUS_SLOT}></a>
+                <a class="btn btn-warning" href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&op=mem_slot"><{$smarty.const._MD_TCW_ABOUTUS_SLOT}></a>
             <{/if}>
         <{/if}>
     </div>
@@ -127,7 +127,7 @@
                         <{/if}>
                         <div>
                         <{if $isMyWeb|default:false}>
-                            <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
+                            <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
                         <{else}>
                             <{$stud.MemName}>
                         <{/if}>
@@ -154,7 +154,7 @@
                         <{if 'MemBirthday'|in_array:$mem_column}>
                             <td style="text-align: center;"><{$stud.MemBirthday}></td>
                         <{/if}>
-                        <td style="text-align: center;"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a></td>
+                        <td style="text-align: center;"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a></td>
                     <{/if}>
                 </tr>
             <{/foreach}>
@@ -165,7 +165,7 @@
             <div class="my-border">
                 <div class="row">
                     <div class="col-md-2">
-                        <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu">
+                        <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu">
                         <img src="<{$stud.pic}>" alt="<{$stud.MemName}>" class="img-fluid rounded">
                         </a>
                     </div>
@@ -180,8 +180,8 @@
                         <div style="margin: 2px;">
                             <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_NAME}></span>
                             <{if $isMyWeb|default:false}>
-                                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
-                                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$CateID}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+                                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
+                                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
                             <{else}>
                                 <{$stud.MemName}>
                             <{/if}>
@@ -243,20 +243,20 @@
         <{/foreach}>
     <{else}>
         <div class="demo">
-            <div id="snaptarget"><{$students1}></div>
+            <div id="snaptarget"><{$students1|default:''}></div>
             <br style="clear:both;">
-            <{$students2}>
+            <{$students2|default:''}>
             <br style="clear:both;">
         </div>
     <{/if}>
 <{else}>
     <div class="jumbotron bg-light p-5 rounded-lg m-3">
-        <h2><{$no_student}></h2>
+        <h2><{$no_student|default:''}></h2>
 
         <{if $isMyWeb|default:false}>
             <p>
-                <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&op=import_excel_form&CateID=<{$CateID}>"><{$import_excel}></a>
-                <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&op=edit_stu&CateID=<{$CateID}>"><{$add_stud}></a>
+                <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID|default:''}>&op=import_excel_form&CateID=<{$CateID|default:''}>"><{$import_excel|default:''}></a>
+                <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID|default:''}>&op=edit_stu&CateID=<{$CateID|default:''}>"><{$add_stud|default:''}></a>
             </p>
         <{/if}>
     </div>
@@ -265,7 +265,7 @@
 
 <{if $isMyWeb|default:false}>
     <div class="text-right text-end">
-        <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=new_class" class="btn btn-primary"><{$add_class}></a>
-        <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-warning"><{$class_setup}></a>
+        <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=new_class" class="btn btn-primary"><{$add_class|default:''}></a>
+        <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-warning"><{$class_setup|default:''}></a>
     </div>
 <{/if}>

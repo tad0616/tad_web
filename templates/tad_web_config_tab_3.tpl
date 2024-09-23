@@ -2,14 +2,14 @@
     $().ready(function(){
         $(".thumb").click(function(){
             var pic=$(this).attr("id");
-            $("#head_bg").attr("src","<{$xoops_url}>/uploads/tad_web/<{$WebID}>/head/"+pic);
-            $.post("config_ajax.php", {op: "save_head" , filename: pic, WebID: <{$WebID}>});
+            $("#head_bg").attr("src","<{$xoops_url}>/uploads/tad_web/<{$WebID|default:''}>/head/"+pic);
+            $.post("config_ajax.php", {op: "save_head" , filename: pic, WebID: <{$WebID|default:''}>});
         });
 
         $(".def_thumb").click(function(){
             var pic=$(this).attr("id");
             $("#head_bg").attr("src","<{$xoops_url}>/modules/tad_web/images/head/"+pic);
-            $.post("config_ajax.php", {op: "save_head" , filename: pic, WebID: <{$WebID}>});
+            $.post("config_ajax.php", {op: "save_head" , filename: pic, WebID: <{$WebID|default:''}>});
         });
     });
 </script>
@@ -22,11 +22,11 @@
 </h3>
 
 <div class="alert alert-info">
-    <{$bg_desc}>
+    <{$bg_desc|default:''}>
 </div>
 
 <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
-    <{$upform_head}>
+    <{$upform_head|default:''}>
 
     <{if $all_head|default:false}>
         <{foreach from=$all_head item=head}>
@@ -56,7 +56,7 @@
     <{/foreach}>
 
     <div class="text-center">
-        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
         <input type="hidden" name="op" value="upload_head">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>

@@ -2,8 +2,8 @@
     $().ready(function(){
         $(".logo_thumb").click(function(){
             var logo=$(this).attr("id");
-            $("#tad_web_logo").attr("src","<{$xoops_url}>/uploads/tad_web/<{$WebID}>/logo/"+logo);
-            $.post("config_ajax.php", {op: "save_logo_pic" , filename: logo, WebID: <{$WebID}>});
+            $("#tad_web_logo").attr("src","<{$xoops_url}>/uploads/tad_web/<{$WebID|default:''}>/logo/"+logo);
+            $.post("config_ajax.php", {op: "save_logo_pic" , filename: logo, WebID: <{$WebID|default:''}>});
         });
     });
 </script>
@@ -16,12 +16,12 @@
 </h3>
 
 <div class="alert alert-info">
-    <{$logo_desc}>
+    <{$logo_desc|default:''}>
 </div>
 
 <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
 
-    <{$upform_logo}>
+    <{$upform_logo|default:''}>
 
     <{if $all_logo|default:false}>
         <{foreach from=$all_logo item=logo}>
@@ -39,7 +39,7 @@
     <{/if}>
 
     <div class="text-center">
-        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
         <input type="hidden" name="op" value="upload_logo">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>

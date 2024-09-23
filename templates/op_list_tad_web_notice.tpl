@@ -1,6 +1,6 @@
 <{if $all_content|default:false}>
     <{if $isAdmin|default:false}>
-        <{$delete_tad_web_notice_func}>
+        <{$delete_tad_web_notice_func|default:''}>
     <{/if}>
 
     <div id="tad_web_notice_save_msg"></div>
@@ -31,7 +31,7 @@
                 <tr id="tr_<{$data.NoticeID}>">
                     <td>
                         <!--通知標題-->
-                        <a href="<{$action}>?NoticeID=<{$data.NoticeID}>"><{$data.NoticeTitle}></a>
+                        <a href="<{$action|default:''}>?NoticeID=<{$data.NoticeID}>"><{$data.NoticeTitle}></a>
                     </td>
 
                     <td>
@@ -63,7 +63,7 @@
         </div>
     <{/if}>
 
-    <{$bar}>
+    <{$bar|default:''}>
 <{else}>
     <{if $isAdmin|default:false}>
         <div class="jumbotron bg-light p-5 rounded-lg m-3 text-center">

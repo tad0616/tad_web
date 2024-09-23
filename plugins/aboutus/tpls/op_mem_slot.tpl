@@ -19,7 +19,7 @@
         function random_mem(i,max,times){
             // $('#log').html('');
             i=parseInt(i);
-            var max=<{$mem_total}>;
+            var max=<{$mem_total|default:''}>;
             var random=Math.random();
             var max_random=random * max;
             var end = Math.floor(max_random);
@@ -37,9 +37,9 @@
             }
 
             if(all_times > counter){
-                if(counter < <{$speed1}>){
+                if(counter < <{$speed1|default:''}>){
                 speed=100;
-                }else if(counter >= <{$speed1}> && counter < <{$speed2}>){
+                }else if(counter >= <{$speed1|default:''}> && counter < <{$speed2|default:''}>){
                 speed=50;
                 }else if(left<=3){
                 speed=200;
@@ -85,15 +85,15 @@
                         <div>
                             <{if $isMyWeb|default:false}>
                                 <{$stud.MemNum}>
-                                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
+                                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
                             <{else}>
                                 <{$stud.MemName}>
                             <{/if}>
                         </div>
                     </td>
                     <{if $row ==2 and $i==1 and $span_num > 0}>
-                        <td colspan=<{$span_num}> rowspan=<{$span_num}> >
-                            <a href="javascript:random_mem($('.slot_active').attr('title'),<{$mem_total}>,<{$times}>);" class="btn btn-primary"><{$smarty.const._MD_TCW_ABOUTUS_START}></a>
+                        <td colspan=<{$span_num|default:''}> rowspan=<{$span_num|default:''}> >
+                            <a href="javascript:random_mem($('.slot_active').attr('title'),<{$mem_total|default:''}>,<{$times|default:''}>);" class="btn btn-primary"><{$smarty.const._MD_TCW_ABOUTUS_START}></a>
                         </td>
                     <{/if}>
                 <{/foreach}>

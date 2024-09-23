@@ -1,6 +1,6 @@
 <{if $web_display_mode=='index' and $schedule_data}>
     <{if "$xoops_rootpath/uploads/tad_web/0/image/`$dirname`.png"|file_exists}>
-        <a href="<{$xoops_url}>/modules/tad_web/<{$dirname}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname}>.png" alt="<{$schedule.PluginTitle}>"></a>
+        <a href="<{$xoops_url}>/modules/tad_web/<{$dirname|default:''}>.php"><img src="<{$xoops_url}>/uploads/tad_web/0/image/<{$dirname|default:''}>.png" alt="<{$schedule.PluginTitle}>"></a>
     <{else}>
         <h3><a href="<{$xoops_url}>/modules/tad_web/schedule.php"><{$schedule.PluginTitle}></a></h3>
     <{/if}>
@@ -28,12 +28,12 @@
                     <h2>
                         <{if $act.cate.CateName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
                         <{if $act.ScheduleName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
-                        <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
+                        <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID|default:''}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
                         <small>
                             <{*if $act.isCanEdit*}>
                             <{if ($WebID && $isMyWeb) || $isAdmin || (isset($act.cate.CateID) && isset($smarty.session.isAssistant.act) && $act.cate.CateID == $smarty.session.isAssistant.act)}>
                                 <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
-                                <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
+                                <a href="schedule.php?WebID=<{$WebID|default:''}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                             <{/if}>
                         </small>
                     </h2>
@@ -44,12 +44,12 @@
                 <div>
                     <{if $act.cate.CateName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
                     <{if $act.ScheduleName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
-                    <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
+                    <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID|default:''}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
                     <small>
                         <{*if $act.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || (isset($act.cate.CateID) && isset($smarty.session.isAssistant.act) && $act.cate.CateID == $smarty.session.isAssistant.act)}>
                             <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
-                            <a href="schedule.php?WebID=<{$WebID}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
+                            <a href="schedule.php?WebID=<{$WebID|default:''}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>
                     </small>
                 </div>
@@ -60,7 +60,7 @@
 
     <div style="text-align:right; margin: 0px 0px 10px;">
         <{if $isMyWeb and $WebID}>
-            <a href="schedule.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
+            <a href="schedule.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_SCHEDULE_SHORT}></a>
         <{/if}>
     </div>
 <{/if}>

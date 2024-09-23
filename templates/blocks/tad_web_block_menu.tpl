@@ -1,4 +1,4 @@
-<{if $block.op=="login"}>
+<{if $block.op|default:''=="login"}>
     <{if $LoginMemNickName==""}>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -46,7 +46,7 @@
                 <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                 </label>
                 <div class="col-md-8 d-grid gap-2">
-                    <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+                    <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi|default:''}>">
                     <input type="hidden" name="rememberme" value="On">
                     <input type="hidden" name="op" value="login">
                     <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
@@ -77,7 +77,7 @@
                 <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                 </label>
                 <div class="col-md-8 d-grid gap-2">
-                    <input type="hidden" name="WebID" value="<{$WebID}>">
+                    <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                     <input type="hidden" name="op" value="mem_login">
                     <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MB_TCW_LOGIN}></button>
                 </div>
@@ -106,20 +106,20 @@
         </div>
         </div>
     <{/if}>
-<{elseif $block.op=="mem"}>
+<{elseif $block.op|default:''=="mem"}>
 
     <div class="my-border">
 
-        <{$LoginMemName}>
-        <{if $LoginMemNickName!=""}> (<{$LoginMemNickName}>) <{/if}>
+        <{$LoginMemName|default:''}>
+        <{if $LoginMemNickName!=""}> (<{$LoginMemNickName|default:''}>) <{/if}>
         <{$smarty.const._MD_TCW_HELLO}>
 
         <div class="row">
             <div class="col-md-6 d-grid gap-2">
-                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-<{$mini}> btn-warning btn-block"><{$smarty.const._MD_TCW_EXIT}></a>
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID|default:''}>" class="btn btn-<{$mini|default:''}> btn-warning btn-block"><{$smarty.const._MD_TCW_EXIT}></a>
             </div>
             <div class="col-md-6 d-grid gap-2">
-                <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID}>&op=edit_form" class="btn btn-<{$mini}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
+                <a href="<{$xoops_url}>/modules/tad_web/discuss.php?WebID=<{$LoginWebID|default:''}>&op=edit_form" class="btn btn-<{$mini|default:''}> btn-info btn-block"><{$smarty.const._MD_TCW_DISCUSS_ADD}></a>
             </div>
         </div>
 
@@ -139,7 +139,7 @@
         <{if $block.web_num > 1}>
             <select class="form-control" onChange="location.href=this.value" title="Select Web">
                 <{foreach from=$block.webs item=web}>
-                <option value="<{$web.url}>" <{if $web.WebID==$WebID}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
+                <option value="<{$web.url}>" <{if $web.WebID==$WebID|default:''}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
                 <{/foreach}>
             </select>
         <{/if}>
@@ -232,6 +232,6 @@
             <{/foreach}>
         <{/if}>
 
-        <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+        <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID|default:''}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
     </div>
 <{/if}>

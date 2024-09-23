@@ -10,16 +10,16 @@
                 <{foreach from=$plugins item=plugin}>
                     <tr>
                         <td>
-                            <a href="<{$plugin.dirname}>.php?WebID=<{$WebID}>" target="_blank"><{$plugin.PluginTitle}></a>
+                            <a href="<{$plugin.dirname}>.php?WebID=<{$WebID|default:''}>" target="_blank"><{$plugin.PluginTitle}></a>
                         </td>
                         <td style="text-align: center;">
-                            <a href="<{$plugin.dirname}>.php?WebID=<{$WebID}>" target="_blank"><{$plugin.total}></a>
+                            <a href="<{$plugin.dirname}>.php?WebID=<{$WebID|default:''}>" target="_blank"><{$plugin.total}></a>
                         </td>
                     </tr>
                 <{/foreach}>
             </table>
             <input type="hidden" name="op" value="delete_tad_web">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <button type="submit" class="btn btn-danger"><{$smarty.const._MD_TCW_DELETE}></button>
         </form>
     <{else}>
@@ -37,7 +37,7 @@
 
                 $('#sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
                     var order = $(this).sortable('serialize');
-                    $.post('save_sort.php?WebID=<{$WebID}>', order, function(theResponse){
+                    $.post('save_sort.php?WebID=<{$WebID|default:''}>', order, function(theResponse){
                         $('#save_msg').html(theResponse);
                     });
                 }

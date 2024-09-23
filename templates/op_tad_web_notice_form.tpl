@@ -1,12 +1,12 @@
 <div class="container">
-    <form action="<{$action}>" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
+    <form action="<{$action|default:''}>" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <!--通知標題-->
         <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MA_TADWEB_NOTICETITLE}>
             </label>
             <div class="col-md-6">
-                <input type="text" name="NoticeTitle" id="NoticeTitle" class="form-control validate[required]" value="<{$NoticeTitle}>" placeholder="<{$smarty.const._MA_TADWEB_NOTICETITLE}>">
+                <input type="text" name="NoticeTitle" id="NoticeTitle" class="form-control validate[required]" value="<{$NoticeTitle|default:''}>" placeholder="<{$smarty.const._MA_TADWEB_NOTICETITLE}>">
             </div>
         </div>
 
@@ -16,7 +16,7 @@
                 <{$smarty.const._MA_TADWEB_NOTICECONTENT}>
             </label>
             <div class="col-md-6">
-                <{$NoticeContent_editor}>
+                <{$NoticeContent_editor|default:''}>
             </div>
         </div>
 
@@ -26,7 +26,7 @@
                 <{$smarty.const._MA_TADWEB_NOTICEWEB}>
             </label>
             <div class="col-md-6">
-                <textarea name="NoticeWeb" rows=8 id="NoticeWeb" class="form-control " placeholder="<{$smarty.const._MA_TADWEB_NOTICEWEB}>"><{$NoticeWeb}></textarea>
+                <textarea name="NoticeWeb" rows=8 id="NoticeWeb" class="form-control " placeholder="<{$smarty.const._MA_TADWEB_NOTICEWEB}>"><{$NoticeWeb|default:''}></textarea>
             </div>
         </div-->
 
@@ -59,11 +59,11 @@
 
         <div class="text-center">
             <!--通知編號-->
-            <input type='hidden' name="NoticeID" value="<{$NoticeID}>">
+            <input type='hidden' name="NoticeID" value="<{$NoticeID|default:''}>">
 
-            <{$token_form}>
+            <{$token_form|default:''}>
 
-            <input type="hidden" name="op" value="<{$next_op}>">
+            <input type="hidden" name="op" value="<{$next_op|default:''}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>

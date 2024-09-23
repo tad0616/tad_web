@@ -48,24 +48,24 @@
     <{if $marquee_arr|default:false}>
         <div class="marquee">
             <{foreach from=$marquee_arr item=marquee}>
-                <i class="fa fa-chevron-circle-right"></i> <a href="index.php?WebID=<{$WebID}>&op=notice&NoticeID=<{$marquee.NoticeID}>" class="show_notice" data-fancybox-type="iframe"><{$marquee.NoticeShortDate}> <{$marquee.NoticeTitle}></a>
+                <i class="fa fa-chevron-circle-right"></i> <a href="index.php?WebID=<{$WebID|default:''}>&op=notice&NoticeID=<{$marquee.NoticeID}>" class="show_notice" data-fancybox-type="iframe"><{$marquee.NoticeShortDate}> <{$marquee.NoticeTitle}></a>
             <{/foreach}>
         </div>
     <{/if}>
 
     <div style="margin-left:10px;">
-        <h3><{$say_hi}></h3>
+        <h3><{$say_hi|default:''}></h3>
         <{if $smarty.session.tad_web_adm|default:false}>
-        <div style="font-size: 0.7rem; color:rgb(180, 76, 76)"><{$adm_defaltWebName}></div>
+        <div style="font-size: 0.7rem; color:rgb(180, 76, 76)"><{$adm_defaltWebName|default:''}></div>
         <{/if}>
         <div style="margin:10px 0px;">
-            <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$defaltWebID}>">
+            <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$defaltWebID|default:''}>">
                 <i class="fa fa-home" aria-hidden="true"></i>
-                <{$back_home}>
+                <{$back_home|default:''}>
             </a>
         </div>
         <div style="margin:10px 0px;">
-            <a href="<{$xoops_url}>/modules/tad_web/index.php?op=clear_block_cache&WebID=<{$defaltWebID}>">
+            <a href="<{$xoops_url}>/modules/tad_web/index.php?op=clear_block_cache&WebID=<{$defaltWebID|default:''}>">
                 <i class="fa fa-recycle" aria-hidden="true"></i>
                 <{$smarty.const._MD_TCW_RE_GENERATE_SCREEN}>
             </a>
@@ -74,11 +74,11 @@
 
         <{if $user_kind=="mem"}>
             <div class="btn-group">
-                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$LoginCateID}>&MemID=<{$LoginMemID}>&op=show_stu" class="btn btn-info">
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$LoginCateID|default:''}>&MemID=<{$LoginMemID|default:''}>&op=show_stu" class="btn btn-info">
                     <i class="fa fa-check-square-o"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_MY_ACCOUNT}>
                 </a>
-                <a href="aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$default_class}>&MemID=<{$LoginMemID}>&op=edit_stu" class="btn btn-success">
+                <a href="aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$default_class|default:''}>&MemID=<{$LoginMemID|default:''}>&op=edit_stu" class="btn btn-success">
                     <i class="fa fa-pencil-square-o"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_EDIT_ACCOUNT}>
                 </a>
@@ -110,18 +110,18 @@
             </table>
 
             <div class="d-grid gap-2">
-                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID|default:''}>" class="btn btn-danger btn-block">
                     <i class="fa fa-check-square-o"></i>
                     <{$smarty.const._MD_TCW_EXIT}>
                 </a>
             </div>
         <{elseif $user_kind=="parent"}>
             <div class="btn-group">
-                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$LoginCateID}>&ParentID=<{$LoginParentID}>&op=show_parent" class="btn btn-info">
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$LoginCateID|default:''}>&ParentID=<{$LoginParentID|default:''}>&op=show_parent" class="btn btn-info">
                     <i class="fa fa-check-square-o"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_MY_ACCOUNT}>
                 </a>
-                <a href="aboutus.php?WebID=<{$LoginWebID}>&CateID=<{$default_class}>&ParentID=<{$LoginParentID}>&op=show_parent" class="btn btn-success">
+                <a href="aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$default_class|default:''}>&ParentID=<{$LoginParentID|default:''}>&op=show_parent" class="btn btn-success">
                     <i class="fa fa-pencil-square-o"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_EDIT_ACCOUNT}>
                 </a>
@@ -153,7 +153,7 @@
             </table>
 
             <div class="d-grid gap-2">
-                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=parent_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block">
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=parent_logout&WebID=<{$WebID|default:''}>" class="btn btn-danger btn-block">
                     <i class="fa fa-check-square-o"></i>
                     <{$smarty.const._MD_TCW_EXIT}>
                 </a>
@@ -177,15 +177,15 @@
                 <{/if}>
 
                 <div class="btn-group">
-                    <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$defaltWebID}>" class="btn btn-success">
+                    <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$defaltWebID|default:''}>" class="btn btn-success">
                         <i class="fa fa-check-square-o"></i>
                         <{$smarty.const._MD_TCW_WEB_CONFIG}>
                     </a>
-                    <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID}>" class="btn btn-info">
+                    <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID|default:''}>" class="btn btn-info">
                         <i class="fa fa-check-square-o"></i>
                         <{$smarty.const._MD_TCW_WEB_BLOCK_CONFIG}>
                     </a>
-                    <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MD_TCW_BLOCK_ADD}>">
+                    <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID|default:''}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MD_TCW_BLOCK_ADD}>">
                         <i class="fa fa-plus"></i><span class="sr-only visually-hidden"><{$smarty.const._MD_TCW_BLOCK_ADD}></span>
                     </a>
                 </div>
@@ -247,9 +247,9 @@
                 </table>
 
                 <div class="progress progress-striped">
-                    <div class="progress-bar progress-bar-<{$progress_color}>" role="progressbar" data-transitiongoal="<{$percentage}>"></div>
+                    <div class="progress-bar progress-bar-<{$progress_color|default:''}>" role="progressbar" data-transitiongoal="<{$percentage|default:''}>"></div>
                 </div>
-                <span title="<{$defaltWebID}>"><{$defaltWebName}></span><{$smarty.const._MD_TCW_USED_SPACE}><{$size}>MB/<{$quota}>MB (<a href="index.php?op=check_quota&WebID=<{$defaltWebID}>"><{$percentage}>%</a>)
+                <span title="<{$defaltWebID|default:''}>"><{$defaltWebName|default:''}></span><{$smarty.const._MD_TCW_USED_SPACE}><{$size|default:''}>MB/<{$quota|default:''}>MB (<a href="index.php?op=check_quota&WebID=<{$defaltWebID|default:''}>"><{$percentage|default:''}>%</a>)
 
             <{/if}>
 
@@ -260,7 +260,7 @@
                     <{/foreach}>
                 <{/if}>
 
-                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
+                <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID|default:''}>" class="btn btn-danger btn-block"><i class="fa fa-sign-out"></i> <{$smarty.const.TF_USER_EXIT}></a>
             </div>
         <{/if}>
     </div>

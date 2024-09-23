@@ -27,7 +27,7 @@
     <form action="link.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
 
         <!--分類-->
-        <{$cate_menu_form}>
+        <{$cate_menu_form|default:''}>
 
         <!--網站連結-->
         <div class="form-group row mb-3">
@@ -35,7 +35,7 @@
                 <{$smarty.const._MD_TCW_LINKURL}>
             </label>
             <div class="col-md-8">
-                <input type="text" name="LinkUrl" value="<{$LinkUrl}>" id="LinkUrl" class="form-control validate[required]" placeholder="<{$smarty.const._MD_TCW_LINKURL}>">
+                <input type="text" name="LinkUrl" value="<{$LinkUrl|default:''}>" id="LinkUrl" class="form-control validate[required]" placeholder="<{$smarty.const._MD_TCW_LINKURL}>">
             </div>
             <div class="col-md-2">
                 <button type="button" class="btn btn-success" id="LinkGet"><{$smarty.const._MD_TCW_LINK_AUTO_GET}></button>
@@ -48,7 +48,7 @@
                 <{$smarty.const._MD_TCW_LINKTITLE}>
             </label>
             <div class="col-md-10">
-                <input type="text" name="LinkTitle" value="<{$LinkTitle}>" id="LinkTitle" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_LINKTITLE}>">
+                <input type="text" name="LinkTitle" value="<{$LinkTitle|default:''}>" id="LinkTitle" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_LINKTITLE}>">
             </div>
         </div>
 
@@ -58,20 +58,20 @@
                 <{$smarty.const._MD_TCW_LINKDESC}>
             </label>
             <div class="col-md-10">
-                <textarea name="LinkDesc" class="form-control" rows=3 id="LinkDesc" placehold="<{$smarty.const._MD_TCW_LINKDESC}>"><{$LinkDesc}></textarea>
+                <textarea name="LinkDesc" class="form-control" rows=3 id="LinkDesc" placehold="<{$smarty.const._MD_TCW_LINKDESC}>"><{$LinkDesc|default:''}></textarea>
             </div>
         </div>
 
-        <{$tags_form}>
+        <{$tags_form|default:''}>
 
         <div class="text-center">
             <!--排序-->
-            <input type="hidden" name="LinkSort" value="<{$LinkSort}>">
+            <input type="hidden" name="LinkSort" value="<{$LinkSort|default:''}>">
             <!--所屬團隊-->
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <!--編號-->
-            <input type="hidden" name="LinkID" value="<{$LinkID}>">
-            <input type="hidden" name="op" value="<{$next_op}>">
+            <input type="hidden" name="LinkID" value="<{$LinkID|default:''}>">
+            <input type="hidden" name="op" value="<{$next_op|default:''}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>

@@ -12,11 +12,11 @@
             <th><{$smarty.const._MD_TCW_MEM_SEX}></th>
             <th><{$smarty.const._MD_TCW_MEM_NICKNAME}></th>
         </tr>
-        <{$stud_chk_table}>
+        <{$stud_chk_table|default:''}>
     </table>
     <input type="hidden" name="op" value="import2DB">
-    <input type="hidden" name="WebID" value="<{$WebID}>">
-    <input type="hidden" name="CateID" value="<{$CateID}>">
-    <input type="hidden" name="newCateName" value="<{$newCateName}>">
+    <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+    <input type="hidden" name="CateID" value="<{$CateID|default:''}>">
+    <input type="hidden" name="newCateName" value="<{$newCateName|default:''}>">
     <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TCW_IMPORT}></button>
 </form>

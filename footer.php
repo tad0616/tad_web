@@ -381,7 +381,7 @@ function tad_web_login($WebID, $config = [])
             if (is_array($oidc_array) && in_array($method, $oidc_array)) {
                 $tlogin[$i]['text'] = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . ' OIDC ' . _MB_TADLOGIN_LOGIN;
             } elseif (is_array($oidc_array2) && in_array($method, $oidc_array2)) {
-                $tlogin[$i]['text'] = constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . _MB_TADLOGIN_LOGIN;
+                $tlogin[$i]['text'] = isset($all_oidc[$method]['tail']) ? constant('_' . mb_strtoupper($all_oidc[$method]['tail'])) . _MB_TADLOGIN_LOGIN : '';
             } else {
                 $tlogin[$i]['text'] = constant('_' . mb_strtoupper($method)) . ' OpenID ' . _MB_TADLOGIN_LOGIN;
             }

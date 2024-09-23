@@ -22,13 +22,13 @@
             <{elseif $homework.toCal == $today && $homework.HomeworkPostDateTS < $nowTS}>
                 <li class="list-group-item">
                     <h3>
-                        <a href="homework.php?WebID=<{$WebID}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
+                        <a href="homework.php?WebID=<{$WebID|default:''}>&HomeworkID=<{$homework.HomeworkID}>"><{$homework.toCal}> (<{$homework.Week}>) <{$smarty.const._MD_TCW_HOMEWORK}></a>
 
                         <{*if $homework.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $isAdmin || (isset($homework.cate.CateID) && isset($smarty.session.isAssistant.homework) && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
                             <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
 
-                            <a href="homework.php?WebID=<{$WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
+                            <a href="homework.php?WebID=<{$WebID|default:''}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>
                     </h3>
 

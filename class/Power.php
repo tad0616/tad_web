@@ -12,7 +12,7 @@ $this->Power    = new  Power($WebID);
 //權限設定
 $power_form = $this->Power->power_menu('read', "NewsID", $NewsID,'news');
 $xoopsTpl->assign('power_form', $power_form);
-<{$power_form}>
+<{$power_form|default:''}>
 
 //檢查權限（列出全部）
 $power = $this->Power->check_power("read", "NewsID", $NewsID,'');
@@ -171,7 +171,7 @@ class Power
             \file_put_contents($power_cache_file, \json_encode($powers, 256));
         }
 
-        if ($def_col_sn) {
+        if (!empty($def_col_sn)) {
             return $powers[$def_col_name][$def_col_sn];
         } else {
             return $powers[$def_col_name];
