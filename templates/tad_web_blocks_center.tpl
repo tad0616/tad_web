@@ -57,5 +57,5 @@
         <{/if}>
     <{/if}>
 <{else}>
-    <{$xoops_contents}>
+    <{$xoops_contents|default:''}>
 <{/if}>

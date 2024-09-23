@@ -18,19 +18,19 @@
 <div class="my-border">
     <form action="works.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
         <!--分類-->
-        <{$cate_menu_form}>
+        <{$cate_menu_form|default:''}>
 
         <!--作品名稱-->
         <div class="form-group row mb-3">
             <div class="col-md-12">
-                <input type="text" name="WorkName" value="<{$WorkName}>" id="WorkName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_NAME}>">
+                <input type="text" name="WorkName" value="<{$WorkName|default:''}>" id="WorkName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_NAME}>">
             </div>
         </div>
 
         <!--作品說明-->
         <div class="form-group row mb-3">
             <div class="col-md-12">
-                <textarea name="WorkDesc"  rows=4 id="WorkDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_DESC}>"><{$WorkDesc}></textarea>
+                <textarea name="WorkDesc"  rows=4 id="WorkDesc"  class="form-control" placeholder="<{$smarty.const._MD_TCW_WORKS_DESC}>"><{$WorkDesc|default:''}></textarea>
             </div>
         </div>
 
@@ -41,7 +41,7 @@
                 <{$smarty.const._MD_TCW_WORKS_UPLOAD}>
             </label>
             <div class="col-md-10">
-                <{$attachments}>
+                <{$attachments|default:''}>
             </div>
         </div>
 
@@ -88,11 +88,11 @@
                 <{/if}>
             </label>
             <div class="col-md-4">
-                <input type="text" name="WorksDate" class="form-control" value="<{$WorksDate}>" id="WorksDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                <input type="text" name="WorksDate" class="form-control" value="<{$WorksDate|default:''}>" id="WorksDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
             </div>
         </div>
 
-        <{$tags_form}>
+        <{$tags_form|default:''}>
 
         <!--上傳學生作品-->
         <{if $WorksKind==""}>
@@ -101,16 +101,16 @@
                     <{$smarty.const._MD_TCW_WORKS_ADD}>
                 </label>
                 <div class="col-md-10">
-                    <{$upform}>
+                    <{$upform|default:''}>
                 </div>
             </div>
         <{/if}>
         <div class="text-center">
             <!--作品編號-->
-            <input type="hidden" name="WorksID" value="<{$WorksID}>">
+            <input type="hidden" name="WorksID" value="<{$WorksID|default:''}>">
             <!--所屬團隊-->
-            <input type="hidden" name="WebID" value="<{$WebID}>">
-            <input type="hidden" name="op" value="<{$next_op}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+            <input type="hidden" name="op" value="<{$next_op|default:''}>">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>

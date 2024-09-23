@@ -1077,7 +1077,7 @@ function import_img($path = '', $col_name = 'logo', $col_sn = '', $desc = '', $s
 }
 
 //移除預設圖片
-function fixed_img($uploads_path = '', $col_name = 'logo', $col_sn = '', $TadUpFiles)
+function fixed_img($TadUpFiles, $uploads_path = '', $col_name = 'logo', $col_sn = '')
 {
     global $xoopsDB;
 

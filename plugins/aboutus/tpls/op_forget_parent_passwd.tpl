@@ -24,10 +24,10 @@
 <form action="aboutus.php" id="myForm" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
     <div class="form-group row mb-3">
         <label class="col-md-3 col-form-label text-sm-right text-sm-end control-label">
-            <{$cate_label}>
+            <{$cate_label|default:''}>
         </label>
         <div class="col-md-4">
-            <{$cate_menu}>
+            <{$cate_menu|default:''}>
         </div>
         <div class="col-md-5">
             <select name="MemID" id="list_mems" class="form-control" title="list mems">
@@ -46,10 +46,10 @@
         </div>
         <div class="col-md-5">
             <input type="hidden" name="op" value="send_parents_passwd">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <button type="submit" class="btn btn-primary" id="submit_btn"><{$smarty.const._TAD_SUBMIT}></button>
             <div class="alert alert-info" id="no_account" style="display:none;">
-                <a href="aboutus.php?WebID=<{$WebID}>&op=parents_account"><{$smarty.const._MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT}></a>
+                <a href="aboutus.php?WebID=<{$WebID|default:''}>&op=parents_account"><{$smarty.const._MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT}></a>
             </div>
         </div>
     </div>

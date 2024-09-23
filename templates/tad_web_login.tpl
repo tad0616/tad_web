@@ -76,7 +76,7 @@
                     <option value="openid_login"><{$smarty.const._MD_TCW_LOGIN_BY_OPENID}></option>
                     <{/if}>
                     <option value="xoops_login"><{$smarty.const._MD_TCW_LOGIN_BY_XOOPS}></option>
-                    <option value="student_login"><{$student_title}><{$smarty.const._MD_TCW_LOGIN_BY_MEM}></option>
+                    <option value="student_login"><{$student_title|default:''}><{$smarty.const._MD_TCW_LOGIN_BY_MEM}></option>
                     <{if $mem_parents=='1'}>
                     <option value="parent_login"><{$smarty.const._MD_TCW_LOGIN_BY_PARENTS}></option>
                     <{/if}>
@@ -105,7 +105,7 @@
                         <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                         </label>
                         <div class="col-md-8 d-grid gap-2">
-                            <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+                            <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi|default:''}>">
                             <input type="hidden" name="rememberme" value="On">
                             <input type="hidden" name="op" value="login">
                             <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
@@ -117,18 +117,18 @@
                 <form action="aboutus.php" method="post" enctype="multipart/form-data" role="form" id="student_login" style="display: none;">
                     <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
-                            <{$student_title}><{$smarty.const._MD_TCW_ID}>
+                            <{$student_title|default:''}><{$smarty.const._MD_TCW_ID}>
                         </label>
                         <div class="col-md-8 controls">
-                            <input class="form-control" type="text" name="MemUname" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_ID}>">
+                            <input class="form-control" type="text" name="MemUname" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title|default:''}><{$smarty.const._MD_TCW_ID}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title|default:''}><{$smarty.const._MD_TCW_ID}>">
                         </div>
                     </div>
                     <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
-                            <{$student_title}><{$smarty.const._MD_TCW_PASSWD}>
+                            <{$student_title|default:''}><{$smarty.const._MD_TCW_PASSWD}>
                         </label>
                         <div class="col-md-8 controls">
-                            <input class="form-control" type="password" name="MemPasswd" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_PASSWD}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title}><{$smarty.const._MD_TCW_PASSWD}>">
+                            <input class="form-control" type="password" name="MemPasswd" title="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title|default:''}><{$smarty.const._MD_TCW_PASSWD}>" placeholder="<{$smarty.const._MD_TCW_PLEASE_INPUT}><{$student_title|default:''}><{$smarty.const._MD_TCW_PASSWD}>">
                         </div>
                     </div>
 
@@ -136,7 +136,7 @@
                         <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                         </label>
                         <div class="col-md-8 d-grid gap-2">
-                            <input type="hidden" name="WebID" value="<{$WebID}>">
+                            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                             <input type="hidden" name="op" value="mem_login">
                             <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
                         </div>
@@ -148,7 +148,7 @@
                         <label class="sr-only visually-hidden">
                         </label>
                         <div class="col-md-12 controls">
-                            <{$login_cate_menu}>
+                            <{$login_cate_menu|default:''}>
                         </div>
                     </div>
                     <div class="form-group row mb-3">
@@ -173,7 +173,7 @@
                             <label class="sr-only visually-hidden">
                             </label>
                             <div class="col-md-12 d-grid gap-2">
-                                <input type="hidden" name="WebID" value="<{$WebID}>">
+                                <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                                 <input type="hidden" name="op" value="parent_login">
                                 <button type="submit" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_LOGIN}></button>
                             </div>
@@ -182,9 +182,9 @@
 
                     <{if $mem_parents=='1'}>
                         <div class="text-center">
-                            <a href="aboutus.php?WebID=<{$WebID}>&op=forget_parent_passwd"><{$smarty.const._MD_TCW_FORGET_PARENTS_PASSWD}></a>
+                            <a href="aboutus.php?WebID=<{$WebID|default:''}>&op=forget_parent_passwd"><{$smarty.const._MD_TCW_FORGET_PARENTS_PASSWD}></a>
                             |
-                            <a href="aboutus.php?WebID=<{$WebID}>&op=parents_account"><{$smarty.const._MD_TCW_REGIST_BY_PARENTS}></a>
+                            <a href="aboutus.php?WebID=<{$WebID|default:''}>&op=parents_account"><{$smarty.const._MD_TCW_REGIST_BY_PARENTS}></a>
                         </div>
                     <{/if}>
                 </form>

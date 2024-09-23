@@ -11,10 +11,8 @@ if (!class_exists('XoopsModules\Tadtools\Utility')) {
 function tad_web_image()
 {
     global $xoopsDB;
-
-    if (empty($_GET['WebID'])) {
-        $where_webid = '';
-    } else {
+    $and_webid = '';
+    if (!empty($_GET['WebID'])) {
         $WebID = (int) $_GET['WebID'];
         $and_webid = "and a.WebID='{$WebID}'  ";
     }

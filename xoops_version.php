@@ -148,8 +148,8 @@ $modversion['templates'][$i]['description'] = 'tad_web_top.tpl';
 //---區塊設定---//
 $i = 1;
 $modversion['blocks'][$i]['file'] = 'tad_web_menu.php';
-$modversion['blocks'][$i]['name'] = _MI_TCW_BNAME4;
-$modversion['blocks'][$i]['description'] = _MI_TCW_BDESC4;
+$modversion['blocks'][$i]['name'] = _MI_TCW_BNAME2;
+$modversion['blocks'][$i]['description'] = _MI_TCW_BDESC2;
 $modversion['blocks'][$i]['show_func'] = 'tad_web_menu';
 $modversion['blocks'][$i]['template'] = 'tad_web_block_menu.tpl';
 

@@ -1,13 +1,13 @@
 <h3>
-    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
     <{$smarty.const._MD_TCW_STUDENT_POSITION}>
 </h3>
 
 <form role="form">
     <div class="row">
-        <div class="col-md-9"><{$cate_menu}></div>
+        <div class="col-md-9"><{$cate_menu|default:''}></div>
         <div class="col-md-3">
-            <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&op=reset_position" class="btn btn-primary"><{$smarty.const._MD_TCW_ABOUT_RESET}></a>
+            <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=reset_position" class="btn btn-primary"><{$smarty.const._MD_TCW_ABOUT_RESET}></a>
         </div>
     </div>
 </form>
@@ -39,20 +39,20 @@
         </script>
 
         <div id="snaptarget">
-            <{$students1}>
+            <{$students1|default:''}>
         </div>
 
         <br style="clear:both;">
-        <{$students2}>
+        <{$students2|default:''}>
         <div id="save_info"></div>
     <{else}>
         <div class="jumbotron bg-light p-5 rounded-lg m-3">
-            <h2><{$no_student}></h2>
+            <h2><{$no_student|default:''}></h2>
 
             <{if $isMyWeb|default:false}>
                 <p>
-                    <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID}>&op=import_excel_form&CateID=<{$CateID}>"><{$import_excel}></a>
-                    <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID}>&op=edit_stu&CateID=<{$CateID}>"><{$add_stud}></a>
+                    <a class="btn btn-success" href="aboutus.php?WebID=<{$WebID|default:''}>&op=import_excel_form&CateID=<{$CateID|default:''}>"><{$import_excel|default:''}></a>
+                    <a class="btn btn-info" href="aboutus.php?WebID=<{$WebID|default:''}>&op=edit_stu&CateID=<{$CateID|default:''}>"><{$add_stud|default:''}></a>
                 </p>
             <{/if}>
         </div>

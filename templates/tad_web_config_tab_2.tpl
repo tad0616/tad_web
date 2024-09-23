@@ -35,7 +35,7 @@
                             <input type="text" name="plugin_name[<{$plugin.dirname}>]" value="<{if $plugin.db.PluginTitle|default:false}><{$plugin.db.PluginTitle}><{else}><{$plugin.config.name}><{/if}>" class="form-control" style="width: 120px;">
                         </td>
                         <td <{if $plugin.db.PluginEnable=='0'}>style="background-color: #dfdfdf; color: #5f5f5f;"<{/if}>>
-                            <a href="setup.php?WebID=<{$WebID}>&plugin=<{$plugin.dirname}>" class="btn btn-success"><i class="fa fa-wrench"></i> <{$smarty.const._MD_TCW_SETUP}></a>
+                            <a href="setup.php?WebID=<{$WebID|default:''}>&plugin=<{$plugin.dirname}>" class="btn btn-success"><i class="fa fa-wrench"></i> <{$smarty.const._MD_TCW_SETUP}></a>
                         </td>
                     </tr>
                 <{/if}>
@@ -43,7 +43,7 @@
         </tbody>
     </table>
     <div class="text-center">
-        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
         <input type="hidden" name="op" value="save_plugins">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>

@@ -88,11 +88,11 @@
             </div>
         </div>
 
-        <{$power_form}>
+        <{$power_form|default:''}>
 
         <{if $block_config_form|default:false}>
             <hr>
-            <{$block_config_form}>
+            <{$block_config_form|default:''}>
             <hr>
         <{/if}>
 
@@ -112,7 +112,7 @@
             </div>
 
             <div id="html_editor" <{if $block.config.content_type!="html" and $block.config.content_type!=""}>style="display:none;"<{/if}>>
-                <{$editor}>
+                <{$editor|default:''}>
             </div>
 
             <div id="js_editor" <{if $block.config.content_type!="js"}>style="display:none;"<{/if}>>
@@ -132,7 +132,7 @@
                         <{$smarty.const._MD_TCW_BLOCK_IFRAME_DESC}>
                     </label>
                     <div class="col-md-9">
-                        <input type="text" name="BlockContent[iframe]"  class="form-control" placeholder="https://" value="<{$iframeContent}>">
+                        <input type="text" name="BlockContent[iframe]"  class="form-control" placeholder="https://" value="<{$iframeContent|default:''}>">
                     </div>
                 </div>
             </div>
@@ -159,13 +159,13 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" name="shareBlockID" value="<{$shareBlockID}>">
+                <input type="hidden" name="shareBlockID" value="<{$shareBlockID|default:''}>">
             <{/if}>
         <{/if}>
 
 
         <div class="text-center" stye="margin-top: 30px;">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="ShareFrom" value="<{$block.ShareFrom}>">
             <input type="hidden" name="op" value="save_block_config">
             <input type="hidden" name="BlockName" value="<{$block.BlockName}>">
@@ -178,7 +178,7 @@
     </form>
 
     <{if $use_share_web && $use_share_web|is_array}>
-        <h3><{$shareBlockCount}></h3>
+        <h3><{$shareBlockCount|default:''}></h3>
         <div class="alert alert-info">
             <ul>
                 <{foreach from=$use_share_web item=web}>
@@ -231,7 +231,7 @@
 
                     console.log(ui.item);
 
-                    $.post("save_block.php", {op:'save_position', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("data-original-title"), order_arr: order}, function(data) {
+                    $.post("save_block.php", {op:'save_position', WebID: "<{$WebID|default:''}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("data-original-title"), order_arr: order}, function(data) {
                         if(!isNaN(data)){
                             // location.reload();
                             var new_block_id =data;
@@ -244,7 +244,7 @@
 
                         if(position!="uninstall"){
                             $("#"+block_id).css('display','');
-                            $("#"+block_id).append('<span id="blktool_'+block_id+'"><a href="block.php?WebID=<{$WebID}>&op=config&plugin='+new_block_plugin+'&BlockID='+new_block_id+'" class="pull-right float-right pull-end text-danger"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a></span>');
+                            $("#"+block_id).append('<span id="blktool_'+block_id+'"><a href="block.php?WebID=<{$WebID|default:''}>&op=config&plugin='+new_block_plugin+'&BlockID='+new_block_id+'" class="pull-right float-right pull-end text-danger"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a></span>');
                             $("#"+block_id+"_icon").attr('src','images/show1.gif');
 
                             if(chang_id){
@@ -266,7 +266,7 @@
                     var order = $(this).sortable('toArray', {attribute: 'id'});
                     var block_id = ui.item.attr("id");
 
-                    $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("data-original-title"), order_arr: order}, function(data) {
+                    $.post("save_block.php", {op:'save_sort', WebID: "<{$WebID|default:''}>", PositionName: position, BlockID: block_id, plugin: ui.item.attr("data-original-title"), order_arr: order}, function(data) {
                         $("#msg").html(data);
                     });
                 }
@@ -281,7 +281,7 @@
             }else{
                 status=1;
             }
-            $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID}>", BlockEnable: status, BlockID: BlockID}, function(data) {
+            $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID|default:''}>", BlockEnable: status, BlockID: BlockID}, function(data) {
                 $("#msg").html(data);
                 $(img_id).attr("src","images/show"+status+".gif");
                 $(img_id).attr("title",status);
@@ -294,7 +294,7 @@
             <h2><{$smarty.const._MD_TCW_BLOCK_TOOLS}></h2>
         </div>
         <div class="col-md-6 text-right text-end">
-            <a href="block.php?WebID=<{$WebID}>&op=add_block" class="btn btn-primary"><{$smarty.const._MD_TCW_BLOCK_ADD}></a>
+            <a href="block.php?WebID=<{$WebID|default:''}>&op=add_block" class="btn btn-primary"><{$smarty.const._MD_TCW_BLOCK_ADD}></a>
         </div>
     </div>
 
@@ -306,9 +306,9 @@
                     <li id="<{$block.BlockID}>" data-toggle="tooltip" title="<{if $block.BlockShare=="1"}>share<{elseif $block.plugin=="custom"}>custom<{else}><{$block.plugin}><{/if}>" class="ui-state-highlight <{if $block.BlockShare=="1"}>share_block<{elseif $block.plugin=="custom"}>custom_block<{/if}>" style="display: inline-block;">
                         <{$block.icon}>
                         <{if $block.BlockTitle|default:false}>
-                            <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
+                            <a href="block.php?WebID=<{$WebID|default:''}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockTitle}></a>
                         <{else}>
-                            <a href="block.php?WebID=<{$WebID}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
+                            <a href="block.php?WebID=<{$WebID|default:''}>&op=demo&BlockID=<{$block.BlockID}>" class="edit_block" data-fancybox-type="iframe"><{$block.BlockID}></a>
                         <{/if}>
                     </li>
                 <{/foreach}>
@@ -437,13 +437,13 @@
                 <{$smarty.const._MD_TCW_BLOCK_PIC_COLOR}>
             </label>
             <div class="col-md-3">
-                <input type="text" name="block_pic[block_pic_text_color]" value="<{$block_pic_text_color}>" class="form-control color" value="<{$block_pic_text_color}>" id="block_pic_text_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
+                <input type="text" name="block_pic[block_pic_text_color]" value="<{$block_pic_text_color|default:''}>" class="form-control color" value="<{$block_pic_text_color|default:''}>" id="block_pic_text_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
             </div>
             <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_BORDER_COLOR}>
             </label>
             <div class="col-md-3">
-                <input type="text" name="block_pic[block_pic_border_color]" value="<{$block_pic_border_color}>" class="form-control color" value="<{$block_pic_border_color}>" id="block_pic_border_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
+                <input type="text" name="block_pic[block_pic_border_color]" value="<{$block_pic_border_color|default:''}>" class="form-control color" value="<{$block_pic_border_color|default:''}>" id="block_pic_border_color" data-text="true" data-hex="true" style="width:120px; display: inline-block;">
             </div>
         </div>
 
@@ -452,7 +452,7 @@
                 <{$smarty.const._MD_TCW_BLOCK_PIC_SIZE}>
             </label>
             <div class="col-md-3">
-                <input type="text" name="block_pic[block_pic_text_size]" value="<{$block_pic_text_size}>" class="form-control">
+                <input type="text" name="block_pic[block_pic_text_size]" value="<{$block_pic_text_size|default:''}>" class="form-control">
             </div>
             <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label ">
                 <{$smarty.const._MD_TCW_BLOCK_PIC_FONT}>
@@ -475,7 +475,7 @@
         </div>
 
         <div class="text-center" stye="margin-top: 30px;">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="mk_block_pic">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>

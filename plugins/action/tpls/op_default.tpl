@@ -1,6 +1,6 @@
-<h2><a href="index.php?WebID=<{$WebID}>"><i class="fa fa-home"></i></a> <{$action.PluginTitle}></h2>
+<h2><a href="index.php?WebID=<{$WebID|default:''}>"><i class="fa fa-home"></i></a> <{$action.PluginTitle}></h2>
 <{if $isMyWeb or $isCanEdit}>
-    <a href="action.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+    <a href="action.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
 <{else}>
     <div class="text-center">
         <img src="images/empty.png" alt="<{$smarty.const._MD_TCW_EMPTY}>" title="<{$smarty.const._MD_TCW_EMPTY}>">

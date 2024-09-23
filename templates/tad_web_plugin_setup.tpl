@@ -8,7 +8,7 @@
             }else{
                 status=1;
             }
-            $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID}>", BlockEnable: status, BlockID: BlockID}, function(data) {
+            $.post("save_block.php", {op:'save_enable', WebID: "<{$WebID|default:''}>", BlockEnable: status, BlockID: BlockID}, function(data) {
                 $(img_id).attr("src","images/show"+status+".gif");
                 $(img_id).attr("title",status);
             });
@@ -16,7 +16,7 @@
     </script>
 
     <h2>
-        <a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID}>"><{$plugin_arr.PluginTitle}></a>
+        <a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID|default:''}>"><{$plugin_arr.PluginTitle}></a>
         <{$smarty.const._MD_TCW_PLUGIN_TOOLS}>
     </h2>
 
@@ -33,24 +33,24 @@
                         <{elseif $setup.type=="select"}>
                             <select name="<{$setup.name}>" id="<{$setup.name}>" class="form-control" title="Select">
                                 <{foreach from=$setup.options key=title item=value}>
-                                <option value="<{$value}>" <{if $setup.value==$value}>selected<{/if}>><{$title}> <{$value}></option>
+                                <option value="<{$value|default:''}>" <{if $setup.value==$value}>selected<{/if}>><{$title|default:''}> <{$value|default:''}></option>
                                 <{/foreach}>
                             </select>
                         <{elseif $setup.type=="radio"}>
                             <{foreach from=$setup.options key=title item=value}>
                                 <div class="form-check form-check-inline radio-inline">
                                     <label class="form-check-label" for="<{$setup.name}>">
-                                        <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$value}>" <{if $setup.value==$value}>checked<{/if}>>
-                                        <{$title}>
+                                        <input class="form-check-input" type="radio" name="<{$setup.name}>" id="<{$setup.name}>" value="<{$value|default:''}>" <{if $setup.value==$value}>checked<{/if}>>
+                                        <{$title|default:''}>
                                     </label>
                                 </div>
                             <{/foreach}>
                         <{elseif $setup.type=="checkbox"}>
                             <{foreach from=$setup.options key=title item=value}>
                                 <div class="form-check form-check-inline checkbox-inline">
-                                    <label class="form-check-label" for="<{$setup.name}>_<{$value}>">
-                                        <input class="form-check-input" type="checkbox" name="<{$setup.name}>[]" id="<{$setup.name}>_<{$value}>" value="<{$value}>" <{if $value|in_array:$setup.value}>checked<{/if}>>
-                                        <{$title}>
+                                    <label class="form-check-label" for="<{$setup.name}>_<{$value|default:''}>">
+                                        <input class="form-check-input" type="checkbox" name="<{$setup.name}>[]" id="<{$setup.name}>_<{$value|default:''}>" value="<{$value|default:''}>" <{if $value|in_array:$setup.value}>checked<{/if}>>
+                                        <{$title|default:''}>
                                     </label>
                                 </div>
                             <{/foreach}>
@@ -122,8 +122,8 @@
             <{/foreach}>
         <hr>
         <div class="text-center">
-            <input type="hidden" name="plugin" value="<{$plugin}>">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
+            <input type="hidden" name="plugin" value="<{$plugin|default:''}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="save_plugin_setup">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
         </div>
@@ -131,7 +131,7 @@
 <{/if}>
 
 <h2>
-    <a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID}>"><{$plugin_arr.PluginTitle}></a>
+    <a href="<{$plugin_arr.PluginDirname}>.php?WebID=<{$WebID|default:''}>"><{$plugin_arr.PluginTitle}></a>
     <{$smarty.const._MD_TCW_BLOCK_TOOLS}>
 </h2>
 
@@ -157,7 +157,7 @@
         <{assign var="Position" value=$block_arr.BlockPosition}>
         <tr>
             <td style="text-align: center;">
-                <a href="block.php?WebID=<{$WebID}>&op=demo&plugin=<{$plugin}>&BlockID=<{$block_arr.BlockID}>"data-fancybox-type="iframe" class="edit_block"><{$block_arr.BlockTitle}></a>
+                <a href="block.php?WebID=<{$WebID|default:''}>&op=demo&plugin=<{$plugin|default:''}>&BlockID=<{$block_arr.BlockID}>"data-fancybox-type="iframe" class="edit_block"><{$block_arr.BlockTitle}></a>
             </td>
             <td style="text-align: center;">
                 <{if $block_arr.BlockEnable==1}>
@@ -168,10 +168,10 @@
             </td>
             <td style="text-align: center;"><{$BlockPositionTitle.$Position}></td>
             <td style="text-align: center;">
-                <a href="block.php?WebID=<{$WebID}>&op=demo&plugin=<{$plugin}>&BlockID=<{$block_arr.BlockID}>"data-fancybox-type="iframe" class="edit_block"><{$smarty.const._MD_TCW_BLOCK_DEMO}></a>
+                <a href="block.php?WebID=<{$WebID|default:''}>&op=demo&plugin=<{$plugin|default:''}>&BlockID=<{$block_arr.BlockID}>"data-fancybox-type="iframe" class="edit_block"><{$smarty.const._MD_TCW_BLOCK_DEMO}></a>
             </td>
             <td style="text-align: center;">
-                <a href="block.php?WebID=<{$WebID}>&op=config&plugin=<{$plugin}>&BlockID=<{$block_arr.BlockID}>"><{$smarty.const._MD_TCW_TOOLS}></a>
+                <a href="block.php?WebID=<{$WebID|default:''}>&op=config&plugin=<{$plugin|default:''}>&BlockID=<{$block_arr.BlockID}>"><{$smarty.const._MD_TCW_TOOLS}></a>
             </td>
         </tr>
     <{/foreach}>

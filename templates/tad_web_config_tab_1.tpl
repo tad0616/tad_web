@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-md-8">
             <h3><{$smarty.const._MD_TCW_WEB_TOOLS}></h3>
-            <{$cate_menu}>
+            <{$cate_menu|default:''}>
 
             <div class="form-group row mb-3">
                 <label class="col-md-4 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_WEB_NAME_SETUP}>
                 </label>
                 <div class="col-md-8">
-                    <input type="text" name="WebName" value="<{$WebName}>" id="WebName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_CLASS_WEB_NAME}>">
+                    <input type="text" name="WebName" value="<{$WebName|default:''}>" id="WebName" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_CLASS_WEB_NAME}>">
                 </div>
             </div>
 
@@ -18,7 +18,7 @@
                     <{$smarty.const._MD_TCW_UPDATE_MY_NAME}>
                 </label>
                 <div class="col-md-8">
-                    <input type="text" name="WebOwner" value="<{$WebOwner}>" id="WebOwner" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_UPDATE_MY_NAME}>">
+                    <input type="text" name="WebOwner" value="<{$WebOwner|default:''}>" id="WebOwner" class="validate[required] form-control" placeholder="<{$smarty.const._MD_TCW_UPDATE_MY_NAME}>">
                 </div>
             </div>
 
@@ -27,7 +27,7 @@
                     <{$smarty.const._MD_TCW_UPLOAD_MY_PHOTO}>
                 </label>
                 <div class="col-md-8">
-                    <{$upform_teacher}>
+                    <{$upform_teacher|default:''}>
                 </div>
             </div>
 
@@ -36,13 +36,13 @@
                     <{$smarty.const._MD_TCW_OTHER_CLASS_SETUP}>
                 </label>
                 <div class="col-md-8">
-                    <input type="text" name="other_web_url" value="<{$other_web_url}>" id="other_web_url" class="form-control" placeholder="https://">
+                    <input type="text" name="other_web_url" value="<{$other_web_url|default:''}>" id="other_web_url" class="form-control" placeholder="https://">
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <{if $teacher_thumb_pic|default:false}>
-                <img src="<{$teacher_thumb_pic}>" alt="photo" class="img-rounded img-polaroid img-fluid img-responsive img-thumbnail">
+                <img src="<{$teacher_thumb_pic|default:''}>" alt="photo" class="img-rounded img-polaroid img-fluid img-responsive img-thumbnail">
             <{/if}>
         </div>
     </div>
@@ -101,7 +101,7 @@
             <{$smarty.const._MD_TCW_THEME_TOOLS_FONT_SIZE}>
         </label>
         <div class="col-md-4">
-            <input type="text" name="menu_font_size" value="<{$menu_font_size}>" class="form-control">
+            <input type="text" name="menu_font_size" value="<{$menu_font_size|default:''}>" class="form-control">
         </div>
     </div>
 
@@ -118,7 +118,7 @@
             <{/if}>
             <div class="col-md-4">
                 <label class="checkbox">
-                    <input type="checkbox" name="login_method[]" value="<{$openid}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title}>
+                    <input type="checkbox" name="login_method[]" value="<{$openid|default:''}>" <{if $openid|in_array:$login_config}>checked<{/if}>><{$title|default:''}>
                 </label>
             </div>
             <{assign var="i" value=$i+1}>
@@ -131,7 +131,7 @@
     <{/if}>
 
     <div class="text-center">
-        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
         <input type="hidden" name="op" value="save_config">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>
@@ -143,14 +143,14 @@
     <h3><{$smarty.const._MD_TCW_CLOSE_WEB}></h3>
     <div class="alert alert-warning">
         <p><{$smarty.const._MD_TCW_CLOSE_WEB_DESC}></p>
-        <a href="config.php?WebID=<{$WebID}>&op=unable_my_web" class="btn btn-warning"><{$smarty.const._MD_TCW_CLOSE_WEB}></a>
+        <a href="config.php?WebID=<{$WebID|default:''}>&op=unable_my_web" class="btn btn-warning"><{$smarty.const._MD_TCW_CLOSE_WEB}></a>
     </div>
     <hr>
 <{else}>
     <h3><{$smarty.const._MD_TCW_OPEN_WEB}></h3>
     <div class="alert alert-warning">
         <p><{$smarty.const._MD_TCW_OPEN_WEB_DESC}></p>
-        <a href="config.php?WebID=<{$WebID}>&op=enable_my_web" class="btn btn-success"><{$smarty.const._MD_TCW_OPEN_WEB}></a>
+        <a href="config.php?WebID=<{$WebID|default:''}>&op=enable_my_web" class="btn btn-success"><{$smarty.const._MD_TCW_OPEN_WEB}></a>
     </div>
     <hr>
 <{/if}>
@@ -160,6 +160,6 @@
     <h3><{$smarty.const._MD_TCW_DEL_WEB}></h3>
     <div class="alert alert-danger">
         <p><{$smarty.const._MD_TCW_DEL_WEB_DESC}></p>
-        <a href="javascript:delete_my_web('<{$WebID}>')" class="btn btn-danger"><{$smarty.const._MD_TCW_DEL_WEB}></a>
+        <a href="javascript:delete_my_web('<{$WebID|default:''}>')" class="btn btn-danger"><{$smarty.const._MD_TCW_DEL_WEB}></a>
     </div>
 <{/if}>

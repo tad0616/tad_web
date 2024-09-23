@@ -23,8 +23,8 @@ define('_MI_TCW_ADMENU6', '全域通知');
 define('_MI_TCW_BNAME1', '網頁列表選單');
 define('_MI_TCW_BDESC1', '列出所有個人網頁的選單');
 
-define('_MI_TCW_BNAME2', '最新討論');
-define('_MI_TCW_BDESC2', '最新討論');
+define('_MI_TCW_BNAME2', '子網站選單');
+define('_MI_TCW_BDESC2', '子網站選單');
 
 define('_MI_TCW_BNAME3', '活動剪影');
 define('_MI_TCW_BDESC3', '活動剪影');

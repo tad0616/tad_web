@@ -7,7 +7,7 @@
         <script type="text/javascript">
             var word_list = [
             <{foreach from=$bc.tags_arr key=tag item=count}>
-                {text: "<{$tag}>", weight: <{$count}>, link: "<{$xoops_url}>/modules/tad_web/tag.php?WebID=<{$WebID}>&tag=<{$tag}>"},
+                {text: "<{$tag|default:''}>", weight: <{$count|default:''}>, link: "<{$xoops_url}>/modules/tad_web/tag.php?WebID=<{$WebID|default:''}>&tag=<{$tag|default:''}>"},
             <{/foreach}>
             ];
             $(function() {
@@ -19,8 +19,8 @@
         <ul class="list-group">
             <{foreach from=$bc.tags_arr key=tag item=count}>
                 <li class="list-group-item">
-                    <span class="badge badge-info bg-info"><{$count}></span>
-                    <a href="<{$xoops_url}>/modules/tad_web/tag.php?WebID=<{$WebID}>&tag=<{$tag}>"><{$tag}></a>
+                    <span class="badge badge-info bg-info"><{$count|default:''}></span>
+                    <a href="<{$xoops_url}>/modules/tad_web/tag.php?WebID=<{$WebID|default:''}>&tag=<{$tag|default:''}>"><{$tag|default:''}></a>
                 </li>
             <{/foreach}>
         </ul>

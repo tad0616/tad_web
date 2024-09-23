@@ -4,7 +4,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#keyman').change(function(event) {
-            $.post("config_ajax.php", {op: "keyman" , keyman: $('#keyman').val(), WebID: <{$WebID}>}, function(theResponse){
+            $.post("config_ajax.php", {op: "keyman" , keyman: $('#keyman').val(), WebID: <{$WebID|default:''}>}, function(theResponse){
                 $('#adm_repository').html(theResponse);
             });
         });
@@ -43,7 +43,7 @@
             </div>
 
             <select name="adm_repository" id="adm_repository" size="10" multiple="multiple" tmt:linkedselect="true" class="form-control">
-                <{$user_yet}>
+                <{$user_yet|default:''}>
             </select>
         </div>
         <div class="col-md-2 text-center">
@@ -53,15 +53,15 @@
             <img src="<{$xoops_url}>/modules/tad_web/images/up.png" onclick="tmt.spry.linkedselect.util.moveOptionUp('adm_destination');getOptions('adm_destination','web_admins');"><br>
             <img src="<{$xoops_url}>/modules/tad_web/images/down.png" onclick="tmt.spry.linkedselect.util.moveOptionDown('adm_destination');getOptions('adm_destination','web_admins');">
             <div class="text-center" style="margin-top: 30px;">
-                <input type="hidden" name="web_admins" id="web_admins" value="<{$web_admins}>">
+                <input type="hidden" name="web_admins" id="web_admins" value="<{$web_admins|default:''}>">
                 <input type="hidden" name="op" value="save_adm">
-                <input type="hidden" name="WebID" value="<{$WebID}>">
+                <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                 <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </div>
         <div class="col-md-5">
             <select id="adm_destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
-                <{$user_ok}>
+                <{$user_ok|default:''}>
             </select>
         </div>
     </div>

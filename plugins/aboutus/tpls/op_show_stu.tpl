@@ -1,5 +1,5 @@
 <h2>
-    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+    <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
 </h2>
 
 <div style="font-size: 2em; margin: 30px auto;">
@@ -74,7 +74,7 @@
             </div>
 
             <div class="col-md-4 text-center">
-                <img src="<{$pic}>" alt="<{$mem.MemName}>" class="img-fluid rounded">
+                <img src="<{$pic|default:''}>" alt="<{$mem.MemName}>" class="img-fluid rounded">
             </div>
         </div>
 
@@ -90,7 +90,7 @@
 
         <{if $isMyWeb|default:false}>
             <div class="text-center" style="margin: 30px auto;">
-                <a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$mem.MemID}>&op=edit_stu" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$mem.MemID}>&op=edit_stu" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
             </div>
         <{/if}>
 
@@ -113,11 +113,11 @@
                 <{foreach from=$students item=stud}>
                     <tr>
                     <{if 'MemNum'|in_array:$mem_column}>
-                        <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemNum}></a></td>
+                        <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemNum}></a></td>
                     <{/if}>
-                    <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a></td>
+                    <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a></td>
                     <{if 'MemUnicode'|in_array:$mem_column}>
-                        <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemUnicode}></a></td>
+                        <td style="text-align: center;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemUnicode}></a></td>
                     <{/if}>
                     <td style="text-align: center; color: <{$stud.color}>;<{if $stud.MemID==$mem.MemID}>background: yellow;<{/if}>"><{$stud.MemSex}></td>
                     </tr>
@@ -134,15 +134,15 @@
             <div class="row">
                 <div class="col-md-8">
                     <span style="font-size: 2em;">
-                        <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a>
+                        <a href="works.php?WebID=<{$WebID|default:''}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a>
                     </span>
                 </div>
                 <div class="col-md-4">
                     <div class="d-grid gap-2">
                         <{if $work.mem_upload_content.UploadDate!=""}>
-                            <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
+                            <a href="works.php?WebID=<{$WebID|default:''}>&WorksID=<{$work.WorksID}>" target="_blank"class="btn btn-primary btn-block"><{$work.mem_upload_content.mem_upload_date}></a>
                         <{else}>
-                            <a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_NOW}></a>
+                            <a href="works.php?WebID=<{$WebID|default:''}>&WorksID=<{$work.WorksID}>" target="_blank" class="btn btn-success btn-block"><{$smarty.const._MD_TCW_ABOUTUS_UPLOAD_NOW}></a>
                         <{/if}>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
         </tr>
         <{foreach from=$stud_scores.main_data item=work}>
             <tr>
-                <td><a href="works.php?WebID=<{$WebID}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a></td>
+                <td><a href="works.php?WebID=<{$WebID|default:''}>&WorksID=<{$work.WorksID}>" target="_blank"><{$work.WorkName}></a></td>
                 <td><{$work.mem_upload_content.WorkScore}></td>
                 <td><{$work.mem_upload_content.WorkJudgment}></td>
             </tr>

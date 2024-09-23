@@ -23,11 +23,11 @@
 
 //         $bg_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$i}/bg";
 //         $TadUpFilesBg = TadUpFilesBg($i);
-//         fixed_img($bg_user_path, 'bg', $i, $TadUpFilesBg);
+//         fixed_img($TadUpFilesBg, $bg_user_path, 'bg', $i);
 
 //         $head_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$i}/head";
 //         $TadUpFilesHead = TadUpFilesHead($i);
-//         fixed_img($head_user_path, 'head', $i, $TadUpFilesHead);
+//         fixed_img($TadUpFilesHead, $head_user_path, 'head', $i);
 
 //         echo "<div>{$i} 已清除</div>";
 //     } else {

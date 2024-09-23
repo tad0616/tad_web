@@ -18,9 +18,9 @@ $CateID = $WebCate->save_tad_web_cate($CateID, $newCateName);
 $cate = $WebCate->get_tad_web_cate($CateID);
 $xoopsTpl->assign('cate', $cate);
 <ol class="breadcrumb">
-<li><a href="news.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_NEWS}></a> <span class="divider">/</span></li>
-<{if isset($cate.CateID)}><li><a href="news.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <span class="divider">/</span></li><{/if}>
-<li><{$NewsInfo}></li>
+<li><a href="news.php?WebID=<{$WebID|default:''}>"><{$smarty.const._MD_TCW_NEWS}></a> <span class="divider">/</span></li>
+<{if isset($cate.CateID)}><li><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a> <span class="divider">/</span></li><{/if}>
+<li><{$NewsInfo|default:''}></li>
 </ol>
 //取得tad_web_cate所有資料陣列
 $WebCate = new WebCate($WebID, "news","tad_web_news");

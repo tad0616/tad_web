@@ -4,11 +4,11 @@
             var pic=$(this).attr("id");
             if(pic=="none"){
                 $("body").css("background-image","none");
-                $.post("config_ajax.php", {op: "save_bg" , filename: '', WebID: <{$WebID}>});
+                $.post("config_ajax.php", {op: "save_bg" , filename: '', WebID: <{$WebID|default:''}>});
             }else{
-                $("body").css("background-image","url('<{$xoops_url}>/uploads/tad_web/<{$WebID}>/bg/"+pic+"')");
+                $("body").css("background-image","url('<{$xoops_url}>/uploads/tad_web/<{$WebID|default:''}>/bg/"+pic+"')");
                 $(this).css("border","2px solid blue");
-                $.post("config_ajax.php", {op: "save_bg" , filename: pic, WebID: <{$WebID}>});
+                $.post("config_ajax.php", {op: "save_bg" , filename: pic, WebID: <{$WebID|default:''}>});
             }
         });
 
@@ -16,11 +16,11 @@
             var pic=$(this).attr("id");
             if(pic=="none"){
                 $("body").css("background-image","none");
-                $.post("config_ajax.php", {op: "save_bg" , filename: '', WebID: <{$WebID}>});
+                $.post("config_ajax.php", {op: "save_bg" , filename: '', WebID: <{$WebID|default:''}>});
             }else{
                 $("body").css("background-image","url('<{$xoops_url}>/modules/tad_web/images/bg/"+pic+"')");
                 $(this).css("border","2px solid blue");
-                $.post("config_ajax.php", {op: "save_bg" , filename: pic, WebID: <{$WebID}>});
+                $.post("config_ajax.php", {op: "save_bg" , filename: pic, WebID: <{$WebID|default:''}>});
             }
         });
     });
@@ -35,7 +35,7 @@
 
 <form action="config.php" method="post" enctype="multipart/form-data" class="form-horizontal myForm" role="form">
 
-    <{$upform_bg}>
+    <{$upform_bg|default:''}>
 
     <hr>
 
@@ -94,7 +94,7 @@
     <hr>
 
     <div style="width:100px; height:96px; display:inline-block; margin:4px;">
-        <label style="width: 80px; height: 80px; background: <{$bg_color}>; border: 1px solid gray; background-size: contain;" id="none" class="bg_thumb">
+        <label style="width: 80px; height: 80px; background: <{$bg_color|default:''}>; border: 1px solid gray; background-size: contain;" id="none" class="bg_thumb">
         </label>
 
         <label class="del_img_box" style="font-size: 0.65rem; width:100%; overflow: hidden; line-height: 1rem;height: 1rem; white-space: nowrap;" id="del_img<{$bg.files_sn}>">
@@ -127,7 +127,7 @@
     <{/foreach}>
 
     <div class="text-center">
-        <input type="hidden" name="WebID" value="<{$WebID}>">
+        <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
         <input type="hidden" name="op" value="upload_bg">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>

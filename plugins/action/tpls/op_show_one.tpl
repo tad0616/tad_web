@@ -1,25 +1,25 @@
-<h2><{$ActionName}></h2>
+<h2><{$ActionName|default:''}></h2>
 
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="action.php?WebID=<{$WebID}>"><{$smarty.const._MD_TCW_ACTION}></a></li>
+    <li class="breadcrumb-item"><a href="action.php?WebID=<{$WebID|default:''}>"><{$smarty.const._MD_TCW_ACTION}></a></li>
     <{if isset($cate.CateID)}>
         <li class="breadcrumb-item">
-            <{if $cate.CateName|default:false}><a href="action.php?WebID=<{$WebID}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
+            <{if $cate.CateName|default:false}><a href="action.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
         </li>
     <{/if}>
-    <li class="breadcrumb-item"><{$ActionInfo}></li>
+    <li class="breadcrumb-item"><{$ActionInfo|default:''}></li>
     <{if $tags|default:false}>
-        <li class="breadcrumb-item"><{$tags}></li>
+        <li class="breadcrumb-item"><{$tags|default:''}></li>
     <{/if}>
 </ol>
 
 <div class="row" style="margin:10px 0px;">
     <{if $ActionDate|default:false}>
-        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate}></div>
+        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONDATE}><{$smarty.const._TAD_FOR}><{$ActionDate|default:''}></div>
     <{/if}>
 
     <{if $ActionPlace|default:false}>
-        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace}></div>
+        <div class="col-md-6"><{$smarty.const._MD_TCW_ACTIONPLACE}><{$smarty.const._TAD_FOR}><{$ActionPlace|default:''}></div>
     <{/if}>
 </div>
 
@@ -34,20 +34,20 @@
     </ul>
     <div style="clear:both;"></div>
 <{else}>
-    <{$pics}>
+    <{$pics|default:''}>
 <{/if}>
 
 <{if $ActionDesc|default:false}>
-    <div class="my-border"><{$ActionDesc}></div>
+    <div class="my-border"><{$ActionDesc|default:''}></div>
 <{/if}>
 
 
 
 <{if $isMyWeb or $isCanEdit}>
     <div class="text-right text-end" style="margin: 30px 0px;">
-        <a href="javascript:delete_action_func(<{$ActionID}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
-        <a href="action.php?WebID=<{$WebID}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
-        <a href="action.php?WebID=<{$WebID}>&op=edit_form&ActionID=<{$ActionID}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
-        <a href="action.php?WebID=<{$WebID}>&op=re_get&ActionID=<{$ActionID}>" class="btn btn-success"><i class="fa fa-refresh" aria-hidden="true"></i> <{$smarty.const._MD_TCW_ACTION_RE_GET}></a>
+        <a href="javascript:delete_action_func(<{$ActionID|default:''}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+        <a href="action.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+        <a href="action.php?WebID=<{$WebID|default:''}>&op=edit_form&ActionID=<{$ActionID|default:''}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_ACTION_SHORT}></a>
+        <a href="action.php?WebID=<{$WebID|default:''}>&op=re_get&ActionID=<{$ActionID|default:''}>" class="btn btn-success"><i class="fa fa-refresh" aria-hidden="true"></i> <{$smarty.const._MD_TCW_ACTION_RE_GET}></a>
     </div>
 <{/if}>

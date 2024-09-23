@@ -120,7 +120,7 @@ function tad_web_config($WebID, $configs)
     Utility::mk_dir("{$bg_user_path}/thumbs");
     // import_img($bg_path, 'bg', $WebID);
     $TadUpFilesBg = TadUpFilesBg($WebID);
-    fixed_img($bg_user_path, 'bg', $WebID, $TadUpFilesBg);
+    fixed_img($TadUpFilesBg, $bg_user_path, 'bg', $WebID);
     $xoopsTpl->assign('upform_bg', $TadUpFilesBg->upform(false, 'bg', null, false));
     $TadUpFilesBg->set_col('bg', $WebID);
     $xoopsTpl->assign('all_bg', $TadUpFilesBg->get_file_for_smarty(null, null, null, true));
@@ -133,7 +133,7 @@ function tad_web_config($WebID, $configs)
     Utility::mk_dir("{$head_user_path}/thumbs");
     // import_img($head_path, 'head', $WebID);
     $TadUpFilesHead = TadUpFilesHead($WebID);
-    fixed_img($head_user_path, 'head', $WebID, $TadUpFilesHead);
+    fixed_img($TadUpFilesHead, $head_user_path, 'head', $WebID);
     $xoopsTpl->assign('upform_head', $TadUpFilesHead->upform(false, 'head', null, false));
     $TadUpFilesHead->set_col('head', $WebID);
     $xoopsTpl->assign('all_head', $TadUpFilesHead->get_file_for_smarty(null, null, null, true));

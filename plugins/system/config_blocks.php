@@ -11,13 +11,10 @@ $blocksArr['qrcode']['plugin'] = 'system';
 $blocksArr['qrcode']['tpl'] = 'qrcode.tpl';
 $blocksArr['qrcode']['position'] = 'side';
 
-//非全國版
-if (!_IS_EZCLASS) {
-    $blocksArr['web_list']['name'] = _MD_TCW_SYSTEM_BLOCK_WEBLIST;
-    $blocksArr['web_list']['plugin'] = 'system';
-    $blocksArr['web_list']['tpl'] = 'web_list.tpl';
-    $blocksArr['web_list']['position'] = 'side';
-}
+$blocksArr['web_list']['name'] = _MD_TCW_SYSTEM_BLOCK_WEBLIST;
+$blocksArr['web_list']['plugin'] = 'system';
+$blocksArr['web_list']['tpl'] = 'web_list.tpl';
+$blocksArr['web_list']['position'] = 'side';
 
 $blocksArr['rrssb']['name'] = _MD_TCW_SYSTEM_BLOCK_RRSSB;
 $blocksArr['rrssb']['plugin'] = 'system';

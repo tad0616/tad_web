@@ -49,7 +49,7 @@ function tad_web_menu($options)
 
                 $i++;
             }
-            $defaltWebID = ($_SESSION['tad_web_adm'] and !empty($_GET['WebID'])) ? $_GET['WebID'] : $defaltWebID;
+            $defaltWebID = (isset($_SESSION['tad_web_adm']) and !empty($_GET['WebID'])) ? $_GET['WebID'] : $defaltWebID;
 
             $block['web_num'] = $i;
             $block['WebTitle'] = $defaltWebTitle;

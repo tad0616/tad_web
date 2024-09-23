@@ -6,7 +6,7 @@
     <{include file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/op_`$op`.tpl"}>
 <{elseif $schedule_data}>
     <{if $WebID|default:false}>
-        <{$cate_menu}>
+        <{$cate_menu|default:''}>
     <{/if}>
     <{include file="$xoops_rootpath/modules/tad_web/plugins/schedule/tpls/tad_web_common_schedule.tpl"}>
 <{elseif $op=="setup"}>

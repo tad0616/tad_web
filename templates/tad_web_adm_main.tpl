@@ -6,7 +6,7 @@
                     <{$smarty.const._MA_TCW_TEAMNAME}>
                 </label>
                 <div class="col-sm-10">
-                    <input type="text" name="WebName" placeholder="<{$smarty.const.WebName}>" value="<{$WebName}>" id="WebName" class="form-control validate[required]">
+                    <input type="text" name="WebName" placeholder="<{$smarty.const.WebName}>" value="<{$WebName|default:''}>" id="WebName" class="form-control validate[required]">
                 </div>
             </div>
             <{if $cate_menu|default:false}>
@@ -15,7 +15,7 @@
                         <{$smarty.const._MA_TADWEB_CATENAME}>
                     </label>
                     <div class="col-sm-10">
-                        <{$cate_menu}>
+                        <{$cate_menu|default:''}>
                     </div>
                 </div>
             <{/if}>
@@ -27,13 +27,13 @@
                 <div class="col-sm-2">
                     <select name="year" class="form-control">
                         <option value=""></option>
-                        <option value="<{$last_year}>"><{$last_year}></option>
-                        <option value="<{$now_year}>"><{$now_year}></option>
-                        <option value="<{$next_year}>"><{$next_year}></option>
+                        <option value="<{$last_year|default:''}>"><{$last_year|default:''}></option>
+                        <option value="<{$now_year|default:''}>"><{$now_year|default:''}></option>
+                        <option value="<{$next_year|default:''}>"><{$next_year|default:''}></option>
                     </select>
                 </div>
                 <div class="col-sm-8">
-                    <input type="text" name="WebTitle" value="<{$WebTitle}>" id="WebTitle" class="validate[required] form-control">
+                    <input type="text" name="WebTitle" value="<{$WebTitle|default:''}>" id="WebTitle" class="validate[required] form-control">
                 </div>
             </div>
 
@@ -42,7 +42,7 @@
                     <{$smarty.const._MA_TCW_TEAMLEADER}>
                 </label>
                 <div class="col-sm-10">
-                    <{$user_menu}>
+                    <{$user_menu|default:''}>
                 </div>
             </div>
 
@@ -67,17 +67,17 @@
             </div>
 
             <div class="text-center">
-                <input type="hidden" name="WebSort" size="20" value="<{$WebSort}>" id="WebSort">
+                <input type="hidden" name="WebSort" size="20" value="<{$WebSort|default:''}>" id="WebSort">
 
                 <!--編號-->
-                <input type="hidden" name="WebID" value="<{$WebID}>">
-                <input type="hidden" name="op" value="<{$next_op}>">
+                <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+                <input type="hidden" name="op" value="<{$next_op|default:''}>">
                 <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
     <{elseif $op=="batch_creat_class"}>
         <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
-        <{$content}>
+        <{$content|default:''}>
         <input type="hidden" name="op" value="batch_add_class">
         <input type="submit" value="<{$smarty.const._TAD_SAVE}>">
         </form>
@@ -106,7 +106,7 @@
                     <select name="repository" id="repository" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
                         <{if $opt|default:false}>
                             <{foreach from=$opt key=uid item=name}>
-                                <option value="<{$uid}>"><{$name}></option>
+                                <option value="<{$uid|default:''}>"><{$name|default:''}></option>
                             <{/foreach}>
                         <{/if}>
                     </select>
@@ -117,7 +117,7 @@
                     <img src="<{$xoops_url}>/modules/tad_web/images/up.png" onclick="tmt.spry.linkedselect.util.moveOptionUp('destination');getOptions();"><br>
                     <img src="<{$xoops_url}>/modules/tad_web/images/down.png" onclick="tmt.spry.linkedselect.util.moveOptionDown('destination');getOptions();"><br><br>
 
-                    <input type="hidden" name="WebOwnerUid" id="WebOwnerUid" value="<{$WebOwnerUid}>">
+                    <input type="hidden" name="WebOwnerUid" id="WebOwnerUid" value="<{$WebOwnerUid|default:''}>">
                     <input type="hidden" name="op" value="batch_add_class_by_user">
                     <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
                 </div>
@@ -126,7 +126,7 @@
                     <select id="destination" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control">
                         <{if $opt2|default:false}>
                         <{foreach from=$opt2 key=uid item=name}>
-                            <option value="<{$uid}>"><{$name}></option>
+                            <option value="<{$uid|default:''}>"><{$name|default:''}></option>
                         <{/foreach}>
                         <{/if}>
                     </select>
@@ -140,22 +140,22 @@
                 <tr><th><{$smarty.const._MA_TADWEB_PLUGIN_TITLE}></th><th><{$smarty.const._MA_TADWEB_PLUGIN_TOTAL}></th></tr>
                 <{foreach from=$plugins item=plugin}>
                 <tr>
-                    <td><a href="../<{$plugin.dirname}>.php?WebID=<{$WebID}>" target="_blank"><{$plugin.PluginTitle}></a></td>
-                    <td style="text-align: center;"><a href="../<{$plugin.dirname}>.php?WebID=<{$WebID}>" target="_blank"><{$plugin.total}></a></td>
+                    <td><a href="../<{$plugin.dirname}>.php?WebID=<{$WebID|default:''}>" target="_blank"><{$plugin.PluginTitle}></a></td>
+                    <td style="text-align: center;"><a href="../<{$plugin.dirname}>.php?WebID=<{$WebID|default:''}>" target="_blank"><{$plugin.total}></a></td>
                 </tr>
                 <{/foreach}>
             </table>
             <input type="hidden" name="op" value="delete_tad_web">
-            <input type="hidden" name="WebID" value="<{$WebID}>">
-            <input type="hidden" name="g2p" value="<{$g2p}>">
+            <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
+            <input type="hidden" name="g2p" value="<{$g2p|default:''}>">
 
             <button type="submit" class="btn btn-danger"><{$smarty.const._MA_TCW_DELETE}></button>
         </form>
     <{elseif $op=="error"}>
         <{foreach from=$error key=title item=content}>
-        <h2><{$title}></h2>
+        <h2><{$title|default:''}></h2>
         <div class="alert alert-danger">
-            <{$content}>
+            <{$content|default:''}>
         </div>
         <{/foreach}>
     <{else}>
@@ -173,7 +173,7 @@
             function delete_tad_web_func(WebID){
                 var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
                 if (!sure)  return;
-                location.href="main.php?g2p=<{$g2p}>&WebID=" + WebID + "op=delete_tad_web_chk";
+                location.href="main.php?g2p=<{$g2p|default:''}>&WebID=" + WebID + "op=delete_tad_web_chk";
             }
         </script>
 
@@ -199,7 +199,7 @@
             </div>
         <{/if}>
 
-        <{$bar}>
+        <{$bar|default:''}>
         <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
             <div id="save_msg"></div>
             <table class="table table-striped table-hover">
@@ -218,7 +218,7 @@
                 <{foreach from=$data item=class}>
                 <tr id="tr_<{$class.WebID}>">
                     <td>
-                    <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk&g2p=<{$g2p}>" class="btn btn-sm btn-danger"><{$smarty.const._TAD_DEL}></a>
+                    <a href="main.php?WebID=<{$class.WebID}>&op=delete_tad_web_chk&g2p=<{$g2p|default:''}>" class="btn btn-sm btn-danger"><{$smarty.const._TAD_DEL}></a>
                     </td>
                     <td>
 
@@ -263,10 +263,10 @@
             </table>
             <div class="text-center">
                 <input type="hidden" name="op" value="save_webs_title">
-                <input type="hidden" name="g2p" value="<{$g2p}>">
+                <input type="hidden" name="g2p" value="<{$g2p|default:''}>">
                 <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
-        <{$bar}>
+        <{$bar|default:''}>
     <{/if}>
 </div>

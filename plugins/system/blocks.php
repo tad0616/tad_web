@@ -25,32 +25,35 @@ function qrcode($WebID, $config = [])
     return $block;
 }
 
-//非全國版
-if (!_IS_EZCLASS) {
-    function web_list($WebID, $config = [])
-    {
-        global $xoopsDB;
-        $block['DefWebID'] = $DefWebID = $WebID;
-
-        $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $i = 0;
-        while (false !== ($all = $xoopsDB->fetchArray($result))) {
-            foreach ($all as $k => $v) {
-                $$k = $v;
-            }
-
-            $block['webs'][$i]['WebID'] = $WebID;
-            $block['webs'][$i]['title'] = $WebTitle;
-            $block['webs'][$i]['name'] = $WebName;
-            $block['webs'][$i]['url'] = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
-
-            $i++;
+function web_list($WebID, $config = [])
+{
+    global $xoopsDB;
+    $block['DefWebID'] = $DefWebID = $WebID;
+    $andWebID = '';
+    if (_IS_EZCLASS) {
+        if (isset($_SESSION['MyWebs']['all'])) {
+            $andWebID = "and WebID in ('" . implode("','", $_SESSION['MyWebs']['all']) . "')";
         }
-        $block['main_data'] = true;
-
-        return $block;
     }
+
+    $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' $andWebID ORDER BY CateID,WebSort";
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $i = 0;
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
+        foreach ($all as $k => $v) {
+            $$k = $v;
+        }
+
+        $block['webs'][$i]['WebID'] = $WebID;
+        $block['webs'][$i]['title'] = $WebTitle;
+        $block['webs'][$i]['name'] = $WebName;
+        $block['webs'][$i]['url'] = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
+
+        $i++;
+    }
+    $block['main_data'] = true;
+
+    return $block;
 }
 
 //按讚工具

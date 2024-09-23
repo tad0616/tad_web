@@ -7,13 +7,13 @@
         <div class="input-group-append input-group-btn">
             <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SEARCH}></button>
         </div>
-        <input type="hidden" name="op" value="<{$next_op}>">
+        <input type="hidden" name="op" value="<{$next_op|default:''}>">
     </div>
 </form>
 
 <{if $op=="view_file"}>
-    <h2><{$dir}></h2>
-    <{$ztree_code}>
+    <h2><{$dir|default:''}></h2>
+    <{$ztree_code|default:''}>
 <{else}>
     <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/bootstrap-progressbar/bootstrap-progressbar.js"></script>
 
@@ -25,9 +25,9 @@
 
     <div class="container-fluid">
         <h2><{$smarty.const._MA_TCW_DISK_TOTAL_SPACE_STATUS}></h2>
-        <h3><{$smarty.const._MA_TCW_DISK_SPACE_QUOTA}><{$user_space_quota}>MB<{$smarty.const._MA_TCW_DISK_SPACE_TOTAL}><{$total_space}><{$smarty.const._MA_TCW_DISK_AVAILABLE_SPACE}><{$free_space}></h3>
+        <h3><{$smarty.const._MA_TCW_DISK_SPACE_QUOTA}><{$user_space_quota|default:''}>MB<{$smarty.const._MA_TCW_DISK_SPACE_TOTAL}><{$total_space|default:''}><{$smarty.const._MA_TCW_DISK_AVAILABLE_SPACE}><{$free_space|default:''}></h3>
 
-        <{$bar}>
+        <{$bar|default:''}>
 
         <form action="disk.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
             <table class="table table-striped table-hover">
@@ -52,11 +52,11 @@
                             <img src="../images/show0.gif" alt="<{$smarty.const._TAD_UNABLE}>">
                         <{/if}>
 
-                        <a href="../index.php?WebID=<{$WebID}>" target="_blank"><{$class.WebName}></a>
+                        <a href="../index.php?WebID=<{$WebID|default:''}>" target="_blank"><{$class.WebName}></a>
                         </td>
 
                         <td>
-                            <a href="../index.php?WebID=<{$WebID}>" target="_blank"><{$class.WebTitle}></a>
+                            <a href="../index.php?WebID=<{$WebID|default:''}>" target="_blank"><{$class.WebTitle}></a>
                         </td>
 
                         <td>
@@ -96,6 +96,6 @@
                 <button type="submit" class="btn btn-primary" name="op" value="save_disk_setup"><{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
-        <{$bar}>
+        <{$bar|default:''}>
     </div>
 <{/if}>

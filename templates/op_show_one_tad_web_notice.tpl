@@ -1,8 +1,8 @@
 <{if $isAdmin|default:false}>
-    <{$delete_tad_web_notice_func}>
+    <{$delete_tad_web_notice_func|default:''}>
 <{/if}>
 
-<h2 class="text-center"><{$NoticeTitle}></h2>
+<h2 class="text-center"><{$NoticeTitle|default:''}></h2>
 
 <!--通知內容-->
 <div class="row">
@@ -11,7 +11,7 @@
     </label>
     <div class="col-md-9">
         <div class="my-border">
-            <{$NoticeContent}>
+            <{$NoticeContent|default:''}>
         </div>
     </div>
 </div>
@@ -23,7 +23,7 @@
     </label>
     <div class="col-md-9">
         <div class="my-border">
-            <{$NoticeWeb}>
+            <{$NoticeWeb|default:''}>
         </div>
     </div>
 </div-->
@@ -34,7 +34,7 @@
         <{$smarty.const._MA_TADWEB_NOTICEWHO}>
     </label>
     <div class="col-md-9">
-        <{$NoticeWho}>
+        <{$NoticeWho|default:''}>
     </div>
 </div>
 
@@ -44,15 +44,15 @@
         <{$smarty.const._MA_TADWEB_NOTICEDATE}>
     </label>
     <div class="col-md-9">
-        <{$NoticeDate}>
+        <{$NoticeDate|default:''}>
     </div>
 </div>
 
 <div class="text-right text-end">
     <{if $isAdmin|default:false}>
-        <a href="javascript:delete_tad_web_notice_func(<{$NoticeID}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
-        <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form&NoticeID=<{$NoticeID}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
+        <a href="javascript:delete_tad_web_notice_func(<{$NoticeID|default:''}>);" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+        <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form&NoticeID=<{$NoticeID|default:''}>" class="btn btn-warning"><{$smarty.const._TAD_EDIT}></a>
         <a href="<{$xoops_url}>/modules/tad_web/admin/notice.php?op=tad_web_notice_form" class="btn btn-primary"><{$smarty.const._TAD_ADD}></a>
     <{/if}>
-    <a href="<{$action}>" class="btn btn-success"><{$smarty.const._TAD_HOME}></a>
+    <a href="<{$action|default:''}>" class="btn btn-success"><{$smarty.const._TAD_HOME}></a>
 </div>

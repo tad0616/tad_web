@@ -30,7 +30,7 @@
                     <{*if $work.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $isAdmin || (isset($work.cate.CateID) && isset($smarty.session.isAssistant.work) && $work.cate.CateID == $smarty.session.isAssistant.work)}>
                         <a href="javascript:delete_works_func(<{$work.WorksID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
-                        <a href="works.php?WebID=<{$WebID}>&op=edit_form&WorksID=<{$work.WorksID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
+                        <a href="works.php?WebID=<{$WebID|default:''}>&op=edit_form&WorksID=<{$work.WorksID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </td>
                 <td style="text-align:center;">
