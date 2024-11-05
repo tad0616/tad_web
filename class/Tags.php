@@ -137,49 +137,27 @@ class Tags
     {
         global $xoopsDB;
 
-        $sql = 'delete from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID`='{$this->WebID}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_tags') . '` WHERE `WebID`=? AND `col_name`=? AND `col_sn`=?';
+        Utility::query($sql, 'isi', [$this->WebID, $col_name, $col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         if ($tags) {
             foreach ($tags as $tag) {
                 $tag = trim($tag);
-                $tag = $xoopsDB->escape($tag);
                 if (empty($tag)) {
                     continue;
                 }
-                $sql = 'insert into `' . $xoopsDB->prefix('tad_web_tags') . "` (
-                    `WebID`,
-                    `col_name`,
-                    `col_sn`,
-                    `tag_name`
-                ) values(
-                    '{$this->WebID}',
-                    '{$col_name}',
-                    '{$col_sn}',
-                    '{$tag}'
-                )";
-                $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_tags') . '` ( `WebID`, `col_name`, `col_sn`, `tag_name` ) VALUES( ?, ?, ?, ? )';
+                Utility::query($sql, 'isis', [$this->WebID, $col_name, $col_sn, $tag]) or Utility::web_error($sql, __FILE__, __LINE__);
             }
         }
 
         $tags = explode(',', $tag_name);
         foreach ($tags as $tag) {
             $tag = trim($tag);
-            $tag = $xoopsDB->escape($tag);
             if (empty($tag)) {
                 continue;
             }
-            $sql = 'replace into `' . $xoopsDB->prefix('tad_web_tags') . "` (
-              `WebID`,
-              `col_name`,
-              `col_sn`,
-              `tag_name`
-            ) values(
-              '{$this->WebID}',
-              '{$col_name}',
-              '{$col_sn}',
-              '{$tag}'
-            )";
-            $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_tags') . '` ( `WebID`, `col_name`, `col_sn`, `tag_name` ) VALUES ( ?, ?, ?, ? )';
+            Utility::query($sql, 'isis', [$this->WebID, $col_name, $col_sn, $tag]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
 
@@ -202,11 +180,10 @@ class Tags
     {
         global $xoopsDB;
         $tags_arr = [];
-        $and_col_name = empty($col_name) ? '' : "and `col_name`='{$col_name}'";
-        $and_col_sn = empty($col_sn) ? '' : "and `col_sn`='{$col_sn}'";
-        $sql = 'select tag_name , count(*) from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' {$and_col_name} {$and_col_sn}  group by tag_name";
-
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $and_col_name = empty($col_name) ? '' : "AND `col_name`='{$col_name}'";
+        $and_col_sn = empty($col_sn) ? '' : "AND `col_sn`='{$col_sn}'";
+        $sql = 'SELECT `tag_name`, COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_tags') . '` WHERE `WebID` =? ' . $and_col_name . ' ' . $and_col_sn . ' GROUP BY `tag_name`';
+        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($tag_name, $count) = $xoopsDB->fetchRow($result)) {
             $tags_arr[$tag_name] = $count;
         }
@@ -218,9 +195,9 @@ class Tags
     public function delete_tags($col_name = '', $col_sn = '', $tag_name = '')
     {
         global $xoopsDB;
-        $and_tag_name = empty($tag_name) ? '' : "and `tag_name`='{$tag_name}'";
+        $and_tag_name = empty($tag_name) ? '' : "AND `tag_name`='{$tag_name}'";
 
-        $sql = 'delete from `' . $xoopsDB->prefix('tad_web_tags') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' {$and_tag_name}";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_tags') . '` WHERE `WebID` = ? AND `col_name` = ? AND `col_sn` = ?' . $and_tag_name;
+        Utility::query($sql, 'isi', [$this->WebID, $col_name, $col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }

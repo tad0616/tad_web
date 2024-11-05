@@ -28,7 +28,7 @@
                     <a href='account.php?WebID=<{$account.WebID}>&AccountID=<{$account.AccountID}>'><{$account.AccountTitle}></a>
                     <{if $account.hide|default:false}><span class="badge badge-danger bg-danger"><{$account.hide}></span><{/if}>
                     <{*if $account.isCanEdit*}>
-                    <{if ($WebID && $isMyWeb) || $isAdmin || (isset($account.cate.CateID) && isset($smarty.session.isAssistant.account) && $account.cate.CateID == $smarty.session.isAssistant.account)}>
+                    <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($account.cate.CateID) && isset($smarty.session.isAssistant.account) && $account.cate.CateID == $smarty.session.isAssistant.account)}>
                         <a href="javascript:delete_account_func(<{$account.AccountID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                         <a href="account.php?WebID=<{$WebID|default:''}>&op=edit_form&AccountID=<{$account.AccountID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit_form</span></a>
                     <{/if}>

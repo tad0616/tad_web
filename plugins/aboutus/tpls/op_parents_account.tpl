@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#list_mems").change(function(event) {
@@ -24,7 +23,7 @@
             <{$cate_menu|default:''}>
         </div>
         <div class="col-md-5">
-            <select name="MemID" id="list_mems" class="form-control" title="list mems">
+            <select name="MemID" id="list_mems" class="form-select" title="list mems">
                 <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
             </select>
         </div>

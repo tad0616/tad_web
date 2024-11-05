@@ -76,7 +76,7 @@
                 <{$smarty.const._MD_TCW_BLOCK_POSITION}>
             </label>
             <div class="col-md-9">
-                <select name="BlockPosition" id="BlockPosition" class="form-control">
+                <select name="BlockPosition" id="BlockPosition" class="form-select">
                     <option value="block1" <{if $block.BlockPosition=="block1"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_CENTER_BLOCK}></option>
                     <option value="block2" <{if $block.BlockPosition=="block2"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_LEFT_BLOCK}></option>
                     <option value="block3" <{if $block.BlockPosition=="block3"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_RIGHT_BLOCK}></option>
@@ -103,7 +103,7 @@
                     <{$block.config.content_type}>
                 </label>
                 <div class="col-md-9">
-                    <select name="config[content_type]" id="content_type" class="form-control">
+                    <select name="config[content_type]" id="content_type" class="form-select">
                         <option value="html" <{if $block.config.content_type=="html"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_HTML}></option>
                         <option value="js" <{if $block.config.content_type=="js"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_JS}></option>
                         <option value="iframe" <{if $block.config.content_type=="iframe"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_IFRAME}></option>
@@ -171,9 +171,9 @@
             <input type="hidden" name="BlockName" value="<{$block.BlockName}>">
             <input type="hidden" name="BlockID" value="<{$block.BlockID}>">
             <{if $block.plugin=="custom" or $block.BlockCopy!="0"}>
-                <a href="javascript:delete_block_func('<{$block.BlockID}>');" class="btn btn-danger"><{$smarty.const._TAD_DEL}></a>
+                <a href="javascript:delete_block_func('<{$block.BlockID}>');" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
             <{/if}>
-            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 
@@ -458,7 +458,7 @@
                 <{$smarty.const._MD_TCW_BLOCK_PIC_FONT}>
             </label>
             <div class="col-md-3">
-                <select name="block_pic[block_pic_font]" class="form-control">
+                <select name="block_pic[block_pic_font]" class="form-select">
                     <option value="font.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_PIC_FONT1}></option>
                     <option value="DroidSansFallback.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>>DroidSansFallback<{$smarty.const._MD_TCW_BLOCK_PIC_FONT2}></option>
                 </select>
@@ -477,7 +477,7 @@
         <div class="text-center" stye="margin-top: 30px;">
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="mk_block_pic">
-            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 <{/if}>

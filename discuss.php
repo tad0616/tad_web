@@ -5,8 +5,6 @@ require_once __DIR__ . '/header.php';
 $plugin = 'discuss';
 require_once __DIR__ . '/plugin_header.php';
 require_once XOOPS_ROOT_PATH . '/header.php';
-//$xoopsTpl->assign('plugin', $plugin);
-/*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
@@ -63,6 +61,8 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tad_web/plugins/discuss/bubble.css');
+$xoTheme->addStylesheet('modules/tad_web/plugins/discuss/bubble.css');
 require_once __DIR__ . '/footer.php';
 require_once XOOPS_ROOT_PATH . '/footer.php';
+
+/*-----------function區--------------*/

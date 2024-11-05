@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 function chang_title(){
     var new_date = $('#toCal').val();
@@ -28,7 +27,7 @@ function chang_title(){
                 <{$smarty.const._MD_TCW_HOMEWORK_POST_DATE}>
             </label>
             <div class="col-md-3">
-                <select name="HomeworkPostDate" id="HomeworkPostDate" class="form-control">
+                <select name="HomeworkPostDate" id="HomeworkPostDate" class="form-select">
                     <option value="0"><{$smarty.const._MD_TCW_HOMEWORK_POST_NOW}></option>
                     <option value="8" <{if $HomeworkPostDate==8}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_8}></option>
                     <option value="12" <{if $HomeworkPostDate==12}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_12}></option>
@@ -109,7 +108,7 @@ function chang_title(){
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="uid" value="<{$uid|default:''}>">
             <input type="hidden" name="op" value="<{$next_op|default:''}>">
-            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 </div>

@@ -1,7 +1,7 @@
 <?php
 use XoopsModules\Tad_web\Power;
 //搜尋
-function news_search($WebID, $queryarray, $limit = 10)
+function news_search($WebID, $queryarray, $limit = 10, $andor = 'AND')
 {
     global $xoopsDB;
 

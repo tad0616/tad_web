@@ -10,12 +10,60 @@ $xoopsOption['template_main'] = 'tad_web_adm_notice.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
 require_once dirname(__DIR__) . '/class/WebCate.php';
+
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$CateID = Request::getInt('CateID');
+$NoticeID = Request::getInt('NoticeID');
+
+$xoopsTpl->assign('op', $op);
+
+switch ($op) {
+
+    //新增資料
+    case 'insert_tad_web_notice':
+        $NoticeID = insert_tad_web_notice();
+        clear_tad_web_notice();
+        header("location: {$_SERVER['PHP_SELF']}?NoticeID=$NoticeID");
+        exit;
+
+    //更新資料
+    case 'update_tad_web_notice':
+        update_tad_web_notice($NoticeID);
+        clear_tad_web_notice();
+        header("location: {$_SERVER['PHP_SELF']}?NoticeID=$NoticeID");
+        exit;
+
+    case 'tad_web_notice_form':
+        tad_web_notice_form($NoticeID);
+        break;
+
+    case 'delete_tad_web_notice':
+        delete_tad_web_notice($NoticeID);
+        clear_tad_web_notice();
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
+
+    default:
+        if (empty($NoticeID)) {
+            list_tad_web_notice();
+        } else {
+            show_one_tad_web_notice($NoticeID);
+        }
+        break;
+
+}
+
+/*-----------秀出結果區--------------*/
+require_once __DIR__ . '/footer.php';
+
 /*-----------function區--------------*/
 //tad_web_notice編輯表單
 function tad_web_notice_form($NoticeID = '')
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
-    if (!$isAdmin) {
+    global $xoopsDB, $xoopsTpl;
+    if (!$_SESSION['tad_web_adm']) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
 
@@ -72,39 +120,27 @@ function tad_web_notice_form($NoticeID = '')
 //新增資料到tad_web_notice中
 function insert_tad_web_notice()
 {
-    global $xoopsDB, $isAdmin;
-    if (!$isAdmin) {
+    global $xoopsDB;
+    if (!$_SESSION['tad_web_adm']) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
 
     //XOOPS表單安全檢查
-    if (!$GLOBALS['xoopsSecurity']->check()) {
+    if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
         $error = implode('<br>', $GLOBALS['xoopsSecurity']->getErrors());
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
     $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = $xoopsDB->escape($_POST['NoticeTitle']);
-    $NoticeContent = $xoopsDB->escape($_POST['NoticeContent']);
+    $NoticeTitle = $_POST['NoticeTitle'];
+    $NoticeContent = $_POST['NoticeContent'];
     $NoticeContent = Wcag::amend($NoticeContent);
-    $NoticeWeb = $xoopsDB->escape($_POST['NoticeWeb']);
+    $NoticeWeb = $_POST['NoticeWeb'];
     $NoticeWho = implode(';', $_POST['NoticeWho']);
     $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 
-    $sql = 'insert into `' . $xoopsDB->prefix('tad_web_notice') . "` (
-        `NoticeTitle`,
-        `NoticeContent`,
-        `NoticeWeb`,
-        `NoticeWho`,
-        `NoticeDate`
-    ) values(
-        '{$NoticeTitle}',
-        '{$NoticeContent}',
-        '{$NoticeWeb}',
-        '{$NoticeWho}',
-        '{$NoticeDate}'
-    )";
-    $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_notice') . '` ( `NoticeTitle`, `NoticeContent`, `NoticeWeb`, `NoticeWho`, `NoticeDate` ) VALUES ( ?, ?, ?, ?, ? )';
+    Utility::query($sql, 'sssss', [$NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $NoticeID = $xoopsDB->getInsertId();
@@ -115,32 +151,32 @@ function insert_tad_web_notice()
 //更新tad_web_notice某一筆資料
 function update_tad_web_notice($NoticeID = '')
 {
-    global $xoopsDB, $isAdmin;
-    if (!$isAdmin) {
+    global $xoopsDB;
+    if (!$_SESSION['tad_web_adm']) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
 
     //XOOPS表單安全檢查
-    if (!$GLOBALS['xoopsSecurity']->check()) {
+    if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
         $error = implode('<br>', $GLOBALS['xoopsSecurity']->getErrors());
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
     $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = $xoopsDB->escape($_POST['NoticeTitle']);
-    $NoticeContent = $xoopsDB->escape($_POST['NoticeContent']);
-    $NoticeWeb = $xoopsDB->escape($_POST['NoticeWeb']);
+    $NoticeTitle = $_POST['NoticeTitle'];
+    $NoticeContent = $_POST['NoticeContent'];
+    $NoticeWeb = $_POST['NoticeWeb'];
     $NoticeWho = implode(';', $_POST['NoticeWho']);
     $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 
-    $sql = 'update `' . $xoopsDB->prefix('tad_web_notice') . "` set
-       `NoticeTitle` = '{$NoticeTitle}',
-       `NoticeContent` = '{$NoticeContent}',
-       `NoticeWeb` = '{$NoticeWeb}',
-       `NoticeWho` = '{$NoticeWho}',
-       `NoticeDate` = '{$NoticeDate}'
-    where `NoticeID` = '$NoticeID'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_notice') . '` SET
+    `NoticeTitle` = ?,
+    `NoticeContent` = ?,
+    `NoticeWeb` = ?,
+    `NoticeWho` = ?,
+    `NoticeDate` = ?
+    WHERE `NoticeID` = ?';
+    Utility::query($sql, 'sssssi', [$NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate, $NoticeID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return $NoticeID;
 }
@@ -148,8 +184,8 @@ function update_tad_web_notice($NoticeID = '')
 //刪除tad_web_notice某筆資料資料
 function delete_tad_web_notice($NoticeID = '')
 {
-    global $xoopsDB, $isAdmin;
-    if (!$isAdmin) {
+    global $xoopsDB;
+    if (!$_SESSION['tad_web_adm']) {
         redirect_header($_SERVER['PHP_SELF'], 3, _TAD_PERMISSION_DENIED);
     }
 
@@ -157,15 +193,14 @@ function delete_tad_web_notice($NoticeID = '')
         return;
     }
 
-    $sql = 'delete from `' . $xoopsDB->prefix('tad_web_notice') . "`
-    where `NoticeID` = '{$NoticeID}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_notice') . '` WHERE `NoticeID` = ?';
+    Utility::query($sql, 'i', [$NoticeID]) or Utility::web_error($sql, __FILE__, __LINE__);
 }
 
 //以流水號秀出某筆tad_web_notice資料內容
 function show_one_tad_web_notice($NoticeID = '')
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
+    global $xoopsDB, $xoopsTpl;
 
     if (empty($NoticeID)) {
         return;
@@ -174,10 +209,9 @@ function show_one_tad_web_notice($NoticeID = '')
 
     $myts = \MyTextSanitizer::getInstance();
 
-    $sql = 'select * from `' . $xoopsDB->prefix('tad_web_notice') . "`
-    where `NoticeID` = '{$NoticeID}' ";
-    $result = $xoopsDB->query($sql)
-    or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_notice') . '` WHERE `NoticeID` = ?';
+    $result = Utility::query($sql, 'i', [$NoticeID]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate
@@ -208,7 +242,7 @@ function show_one_tad_web_notice($NoticeID = '')
 //列出所有tad_web_notice資料
 function list_tad_web_notice()
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
+    global $xoopsDB, $xoopsTpl;
 
     $myts = \MyTextSanitizer::getInstance();
 
@@ -254,55 +288,7 @@ function list_tad_web_notice()
 
     $xoopsTpl->assign('bar', $bar);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $isAdmin);
+
     $xoopsTpl->assign('all_content', $all_content);
     $xoopsTpl->assign('now_op', 'list_tad_web_notice');
 }
-
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$CateID = Request::getInt('CateID');
-$NoticeID = Request::getInt('NoticeID');
-
-$xoopsTpl->assign('op', $op);
-
-switch ($op) {
-    /*---判斷動作請貼在下方---*/
-
-    //新增資料
-    case 'insert_tad_web_notice':
-        $NoticeID = insert_tad_web_notice();
-        clear_tad_web_notice();
-        header("location: {$_SERVER['PHP_SELF']}?NoticeID=$NoticeID");
-        exit;
-
-    //更新資料
-    case 'update_tad_web_notice':
-        update_tad_web_notice($NoticeID);
-        clear_tad_web_notice();
-        header("location: {$_SERVER['PHP_SELF']}?NoticeID=$NoticeID");
-        exit;
-
-    case 'tad_web_notice_form':
-        tad_web_notice_form($NoticeID);
-        break;
-
-    case 'delete_tad_web_notice':
-        delete_tad_web_notice($NoticeID);
-        clear_tad_web_notice();
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-
-    default:
-        if (empty($NoticeID)) {
-            list_tad_web_notice();
-        } else {
-            show_one_tad_web_notice($NoticeID);
-        }
-        break;
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-require_once __DIR__ . '/footer.php';

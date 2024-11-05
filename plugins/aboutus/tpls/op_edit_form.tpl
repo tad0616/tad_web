@@ -17,7 +17,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <div class="input-group-append input-group-btn ">
-                                <select name="year" class="form-control" style="width:140px;">
+                                <select name="year" class="form-select" style="width:140px;">
                                     <option value="" <{if $op!="new_class"}>selected<{/if}>></option>
                                     <option value="<{$last_year|default:''}>"><{$last_year|default:''}></option>
                                     <option value="<{$now_year|default:''}>" <{if $op=="new_class"}>selected<{/if}>><{$now_year|default:''}></option>
@@ -72,7 +72,7 @@
                             <{$setup_stud|default:''}>
                         </label>
                         <div class="col-md-9">
-                            <select name="form_CateID" class="form-control">
+                            <select name="form_CateID" class="form-select">
                                 <option value=""><{$smarty.const._MD_TCW_STUDENT_NO_COPY}></option>
                                 <{foreach from=$old_cate item=cate}>
                                 <option value="<{$cate.CateID}>"><{$cate.CateNameMem}></option>
@@ -85,7 +85,7 @@
                     <input type="hidden" name="op" value="<{$next_op|default:''}>">
                     <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                     <input type="hidden" name="CateID" value="<{$CateID|default:''}>">
-                    <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
                 </div>
                 <div class="alert alert-warning"><{$smarty.const._MD_TCW_STUDENT_NOTE}></div>
             </div>
@@ -120,7 +120,7 @@
                         <img src="<{$xoops_url}>/modules/tadtools/treeTable/images/updown_s.png" style="cursor: s-resize;margin:0px 4px;" alt="<{$smarty.const._TAD_SORTABLE}>" title="<{$smarty.const._TAD_SORTABLE}>">
                         <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
                         <{if $cate.CateEnable!=1}>
-                        <a href="javascript:del_class(<{$cate.CateID}>)" class="btn btn-sm btn-xs btn-danger"><{$smarty.const._TAD_DEL}></a>
+                        <a href="javascript:del_class(<{$cate.CateID}>)" class="btn btn-sm btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
                         <{/if}>
                     </td>
                     <td style="text-align: center;">
@@ -132,7 +132,7 @@
                         <{else}>
                             <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=class_unable" class="btn btn-sm btn-xs btn-secondary"><{$smarty.const._MD_TCW_UNABLE}></a>
                         <{/if}>
-                        <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a>
+                        <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
                         <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_position" class="btn btn-sm btn-xs btn-success"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
 
                         <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_class_stu" class="btn btn-sm btn-xs btn-info"><{$edit_student|default:''}></a>

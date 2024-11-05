@@ -1,11 +1,13 @@
 <?php
 use XoopsModules\Tadtools\FooTable;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Tools as TadWebTools;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 require_once "langs/{$xoopsConfig['language']}.php";
-
+// 關閉除錯訊息
+$xoopsLogger->activated = false;
 $FooTable = new FooTable();
 $FooTable->render();
 
@@ -18,19 +20,19 @@ $CateID = (int) $_GET['CateID'];
 $today = date('Y-m-d');
 $now = date('Y-m-d H:i:s');
 //我的班級ID（陣列）
-$MyWebs = MyWebID();
+$MyWebs = TadWebTools::MyWebID();
 
 //找出各班最新聯絡簿
-$sql = 'select `WebID`,max(`HomeworkID`),max(`toCal`) from ' . $xoopsDB->prefix('tad_web_homework') . " where HomeworkPostDate <= '$now' group by `WebID`";
-$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+$sql = 'SELECT `WebID`, MAX(`HomeworkID`), MAX(`toCal`) FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkPostDate` <= ? GROUP BY `WebID`';
+$result = Utility::query($sql, 's', [$now]) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $HomeworkID, $toCal) = $xoopsDB->fetchRow($result)) {
     $homework[$WebID] = $HomeworkID;
     $homework_date[$WebID] = substr($toCal, 0, 10);
 }
 
 //找出各班功課表
-$sql = 'SELECT `WebID`,`ScheduleID`,`ScheduleName` FROM ' . $xoopsDB->prefix('tad_web_schedule') . " WHERE `ScheduleDisplay` = '1'";
-$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+$sql = 'SELECT `WebID`, `ScheduleID`, `ScheduleName` FROM `' . $xoopsDB->prefix('tad_web_schedule') . '` WHERE `ScheduleDisplay` = ?';
+$result = Utility::query($sql, 's', ['1']) or Utility::web_error($sql, __FILE__, __LINE__);
 while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule[$WebID] = $ScheduleID;
     $schedule_title[$WebID] = $ScheduleName;
@@ -41,17 +43,17 @@ if (empty($list_web_order)) {
     $list_web_order = 'WebSort';
 }
 
-$sql = 'select * from ' . $xoopsDB->prefix('tad_web') . " where `WebEnable`='1' and CateID='{$CateID}' order by {$list_web_order}";
-$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+$sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebEnable`=? AND `CateID`=? ORDER BY ' . $list_web_order;
+$result = Utility::query($sql, 'si', ['1', $CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
 $web_tr = '';
 while (false !== ($web = $xoopsDB->fetchArray($result))) {
     $WebID = $web['WebID'];
     $isMyWeb = in_array($WebID, $MyWebs);
 
-    $web_plugin_enable_arr = get_web_config('web_plugin_enable_arr', $WebID);
+    $web_plugin_enable_arr = TadWebTools::get_web_config('web_plugin_enable_arr', $WebID);
 
-    $other_web_url = get_web_config('other_web_url', $WebID);
+    $other_web_url = TadWebTools::get_web_config('other_web_url', $WebID);
 
     $web_url = !empty($other_web_url) ? "<a href=\"{$other_web_url}\" target=\"_blank\">{$web['WebTitle']}</a>" : '<a href="' . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}\" target=\"_blank\">{$web['WebTitle']}</a>";
 

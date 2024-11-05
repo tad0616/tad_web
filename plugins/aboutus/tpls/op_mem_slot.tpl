@@ -102,6 +102,6 @@
     </table>
 <{/if}>
 
-<{if $isAdmin|default:false}>
+<{if $smarty.session.tad_web_adm|default:false}>
     <div id="log"></div>
 <{/if}>

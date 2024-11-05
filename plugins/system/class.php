@@ -30,14 +30,11 @@ class tad_web_system
     //以流水號秀出某筆tad_web_works資料內容
     public function show_one()
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $isMyWeb;
     }
 
     //tad_web_works編輯表單
     public function edit_form()
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles;
-
         chk_self_web($this->WebID, $_SESSION['isAssistant']['system']);
         get_quota($this->WebID);
     }

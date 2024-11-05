@@ -113,7 +113,7 @@ class Power
                 ' . $label . '
             </label>
             <div class="col-sm-' . $this->menu_col_md . '">
-                <select name="' . $power_name . '" class="form-control">
+                <select name="' . $power_name . '" class="form-select">
                     <option value="">' . _MD_TCW_POWER_FOR_ALL . '</option>
                     <option value="users" ' . $select_users . '>' . _MD_TCW_POWER_FOR_USERS . '</option>
                     <option value="web_users" ' . $select_web_users . '>' . _MD_TCW_POWER_FOR_WEB_USERS . '</option>
@@ -131,26 +131,10 @@ class Power
     {
         global $xoopsDB;
 
-        $power_name = $xoopsDB->escape($power_name);
-        $power_val = empty($power_val) ? $xoopsDB->escape($_REQUEST[$power_name]) : $xoopsDB->escape($power_val);
-        $plugin = $xoopsDB->escape($plugin);
+        $power_val = empty($power_val) ? $_REQUEST[$power_name] : $power_val;
 
-        $sql = 'replace into `' . $xoopsDB->prefix('tad_web_power') . "` (
-        `WebID`,
-        `col_name`,
-        `col_sn`,
-        `power_name`,
-        `power_val`,
-        `plugin`
-        ) values(
-        '{$this->WebID}',
-        '{$col_name}',
-        '{$col_sn}',
-        '{$power_name}',
-        '{$power_val}',
-        '{$plugin}'
-        )";
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_power') . '` ( `WebID`, `col_name`, `col_sn`, `power_name`, `power_val`, `plugin` ) VALUES( ?, ?, ?, ?, ?, ? )';
+        Utility::query($sql, 'isisss', [$this->WebID, $col_name, $col_sn, $power_name, $power_val, $plugin]) or Utility::web_error($sql, __FILE__, __LINE__);
         clear_power_cache($this->WebID);
     }
 
@@ -162,8 +146,9 @@ class Power
         if (\file_exists($power_cache_file)) {
             $powers = \json_decode(\file_get_contents($power_cache_file), true);
         } else {
-            $sql = 'select col_name, col_sn, power_val from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and `power_name`='$power_name'";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'SELECT `col_name`, `col_sn`, `power_val` FROM `' . $xoopsDB->prefix('tad_web_power') . '` WHERE `WebID` =? AND `power_name` =?';
+            $result = Utility::query($sql, 'is', [$this->WebID, $power_name]) or Utility::web_error($sql, __FILE__, __LINE__);
+
             while (list($col_name, $col_sn, $power_val) = $xoopsDB->fetchRow($result)) {
                 $powers[$col_name][$col_sn] = $power_val;
             }
@@ -171,10 +156,12 @@ class Power
             \file_put_contents($power_cache_file, \json_encode($powers, 256));
         }
 
-        if (!empty($def_col_sn)) {
-            return $powers[$def_col_name][$def_col_sn];
-        } else {
-            return $powers[$def_col_name];
+        if (isset($def_col_sn[$def_col_name])) {
+            if (!empty($def_col_sn)) {
+                return $powers[$def_col_name][$def_col_sn];
+            } else {
+                return $powers[$def_col_name];
+            }
         }
 
     }
@@ -184,9 +171,9 @@ class Power
     {
         global $xoopsDB;
 
-        $and_plugin = $plugin ? "and `plugin`='{$plugin}'" : '';
-        $sql = 'delete from `' . $xoopsDB->prefix('tad_web_power') . "` where `WebID` = '{$this->WebID}' and col_name='{$col_name}' and col_sn='{$col_sn}' and power_name='{$power_name}' $and_plugin";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $and_plugin = $plugin ? "AND `plugin`='{$plugin}'" : '';
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_power') . '` WHERE `WebID` = ? AND `col_name` = ? AND `col_sn` = ? AND `power_name` = ? ' . $and_plugin;
+        Utility::query($sql, 'isis', [$this->WebID, $col_name, $col_sn, $power_name]) or Utility::web_error($sql, __FILE__, __LINE__);
         clear_power_cache($this->WebID);
     }
 

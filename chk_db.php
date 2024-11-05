@@ -6,8 +6,9 @@
 
 // $from = isset($_GET['from']) ? (int) $_GET['from'] : 0;
 
-// $sql = 'select WebID from xx_tad_web';
-// $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+// $sql = 'SELECT `WebID` FROM `' . $xoopsDB->prefix('tad_web') . '`';
+// $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
 // while (list($WebID) = $xoopsDB->fetchRow($result)) {
 //     $web[] = $WebID;
 // }
@@ -31,8 +32,8 @@
 
 //         echo "<div>{$i} 已清除</div>";
 //     } else {
-//         $sql = "delete from xx_tad_web_files_center where `col_sn` = '$i' AND (`col_name` = 'bg' or `col_name` = 'head')";
-//         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+// $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_files_center') . '` WHERE `col_sn` = ? AND (`col_name` = ? OR `col_name` = ?)';
+// Utility::query($sql, 'iss', [$i, 'bg', 'head']) or Utility::web_error($sql, __FILE__, __LINE__);
 //         echo "<div style='color:red;'>{$i} 不存在，已刪除</div>";
 //     }
 // }

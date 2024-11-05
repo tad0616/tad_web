@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <h3>
     <{if $cate.CateName|default:false}><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>"><{$cate.CateName}></a><{/if}>
     <{$setup_stud|default:''}>
@@ -40,7 +39,7 @@
                             <{$smarty.const._MD_TCW_MEM_SEX}>
                         </label>
                         <div class="col-md-9">
-                            <select name="MemSex" class="form-control">
+                            <select name="MemSex" class="form-select">
                                 <option value="1" <{if $MemSex!='0'}>selected<{/if}>><{$smarty.const._MD_TCW_BOY}></option>
                                 <option value="0" <{if $MemSex=='0'}>selected<{/if}>><{$smarty.const._MD_TCW_GIRL}></option>
                             </select>
@@ -53,7 +52,7 @@
                             <{$smarty.const._MD_TCW_MEM_STATUS}>
                         </label>
                         <div class="col-md-9">
-                            <select name="MemEnable" id="MemEnable" class="form-control">
+                            <select name="MemEnable" id="MemEnable" class="form-select">
                                 <option value="1" <{if $MemEnable!='0'}>selected<{/if}>><{$smarty.const._MD_TCW_MEM_ENABLE}></option>
                                 <option value="0" <{if $MemEnable=='0'}>selected<{/if}>><{$smarty.const._MD_TCW_MEM_UNABLE}></option>
                             </select>
@@ -182,7 +181,7 @@
                 <input type="hidden" name="MemID" value="<{$MemID|default:''}>">
                 <input type="hidden" name="CateID" value="<{$cate.CateID}>">
                 <input type="hidden" name="op" value="<{$next_op|default:''}>">
-                <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
     </div>

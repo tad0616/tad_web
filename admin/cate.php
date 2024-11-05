@@ -7,11 +7,59 @@ use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'tad_web_adm_cate.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$CateID = Request::getInt('CateID');
+
+$xoopsTpl->assign('op', $op);
+
+switch ($op) {
+
+    //新增資料
+    case 'save_tad_web_cate':
+        $CateID = save_tad_web_cate();
+        clear_block_cache($WebID);
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
+
+    //更新資料
+    case 'update_tad_web_cate':
+        update_tad_web_cate($CateID);
+        clear_block_cache($WebID);
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
+
+    //更新資料
+    case 'update_tad_web_cate_arr':
+        update_tad_web_cate_arr($CateID);
+        clear_block_cache($WebID);
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
+
+    //刪除資料
+    case 'delete_tad_web_cate':
+        delete_tad_web_cate($CateID);
+        clear_block_cache($WebID);
+        header("location: {$_SERVER['PHP_SELF']}");
+        exit;
+
+    //預設動作
+    default:
+        tad_web_cate_form($CateID);
+        tad_web_list_cate();
+        break;
+
+}
+
+/*-----------秀出結果區--------------*/
+require_once __DIR__ . '/footer.php';
+
 /*-----------function區--------------*/
 //tad_web_cate編輯表單
 function tad_web_cate_form($CateID = '')
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
+    global $xoopsTpl;
 
     //抓取預設值
     if (!empty($CateID) and is_numeric($CateID)) {
@@ -62,8 +110,9 @@ function tad_web_cate_form($CateID = '')
 function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
 {
     global $xoopsDB;
-    $sql = 'select max(`CateSort`) from `' . $xoopsDB->prefix('tad_web_cate') . "` where WebID='{$WebID}' and  ColName='{$ColName}' and ColSN='{$ColSN}'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT MAX(`CateSort`) FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID`=? AND `ColName`=? AND `ColSN`=?';
+    $result = Utility::query($sql, 'isi', [$WebID, $ColName, $ColSN]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     list($sort) = $xoopsDB->fetchRow($result);
 
     return ++$sort;
@@ -76,31 +125,14 @@ function save_tad_web_cate()
 
     $CateID = (int) $_POST['CateID'];
     $WebID = (int) $_POST['WebID'];
-    $CateName = $xoopsDB->escape($_POST['CateName']);
-    $ColName = $xoopsDB->escape($_POST['ColName']);
-    $ColSN = $xoopsDB->escape($_POST['ColSN']);
+    $CateName = $_POST['CateName'];
+    $ColName = $_POST['ColName'];
+    $ColSN = $_POST['ColSN'];
     $CateSort = (int) $_POST['CateSort'];
     $CateEnable = (int) $_POST['CateEnable'];
-    $CateCounter = (int) $_POST['CateCounter'];
-
-    $sql = 'insert into `' . $xoopsDB->prefix('tad_web_cate') . "` (
-        `WebID`,
-        `CateName`,
-        `ColName`,
-        `ColSN`,
-        `CateSort`,
-        `CateEnable`,
-        `CateCounter`
-    ) values(
-        '{$WebID}',
-        '{$CateName}',
-        '{$ColName}',
-        '{$ColSN}',
-        '{$CateSort}',
-        '{$CateEnable}',
-        0
-    )";
-    $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_cate') . '` (`WebID`, `CateName`, `ColName`, `ColSN`, `CateSort`, `CateEnable`, `CateCounter`
+    ) VALUES ( ?, ?, ?, ?, ?, ?, 0)';
+    Utility::query($sql, 'issiis', [$WebID, $CateName, $ColName, $ColSN, $CateSort, $CateEnable]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $CateID = $xoopsDB->getInsertId();
@@ -113,11 +145,10 @@ function update_tad_web_cate($CateID = '')
 {
     global $xoopsDB;
 
-    $CateName = $xoopsDB->escape($_POST['CateName']);
+    $CateName = $_POST['CateName'];
 
-    $sql = 'update `' . $xoopsDB->prefix('tad_web_cate') . "` set
-    `CateName` = '{$CateName}' where `CateID`='{$CateID}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_cate') . '` SET `CateName` = ? WHERE `CateID` = ?';
+    Utility::query($sql, 'si', [$CateName, $CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return $CateID;
 }
@@ -127,22 +158,21 @@ function update_tad_web_cate_arr($CateID = '')
 {
     global $xoopsDB;
 
-    $web_cate_arr = $xoopsDB->escape($_POST['web_cate_arr']);
-    $web_cate_blank_arr = $xoopsDB->escape($_POST['web_cate_blank_arr']);
+    $web_cate_arr = $_POST['web_cate_arr'];
+    $web_cate_blank_arr = $_POST['web_cate_blank_arr'];
 
     $web_cate_array = explode(',', $web_cate_arr);
 
     $i = 1;
     foreach ($web_cate_array as $WebID) {
-        $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set `CateID` = '{$CateID}', WebSort='{$i}' where `WebID` ='{$WebID}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID` = ?, `WebSort` = ? WHERE `WebID` = ?';
+        Utility::query($sql, 'iii', [$CateID, $i, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         $i++;
     }
 
     if ($web_cate_blank_arr) {
-        $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set
-       `CateID` = '0' where `WebID` in($web_cate_blank_arr)";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID` = ? WHERE `WebID` IN (?)';
+        Utility::query($sql, 'is', [0, $web_cate_blank_arr]) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     return $CateID;
@@ -151,19 +181,18 @@ function update_tad_web_cate_arr($CateID = '')
 //刪除tad_web_cate某筆資料資料
 function delete_tad_web_cate($CateID = '')
 {
-    global $xoopsDB, $isAdmin;
+    global $xoopsDB;
 
     if (empty($CateID)) {
         return;
     }
 
-    $sql = 'update `' . $xoopsDB->prefix('tad_web') . "` set
-       `CateID` = '0' where `CateID`='{$CateID}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID` = 0 WHERE `CateID` = ?';
+    Utility::query($sql, 'i', [$CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $sql = 'delete from `' . $xoopsDB->prefix('tad_web_cate') . "`
-    where `CateID` = '{$CateID}'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `CateID` = ?';
+    Utility::query($sql, 'i', [$CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
+
 }
 
 //以流水號取得某筆tad_web_cate資料
@@ -175,9 +204,9 @@ function get_tad_web_cate($CateID = '')
         return;
     }
 
-    $sql = 'select * from `' . $xoopsDB->prefix('tad_web_cate') . "`
-    where `CateID` = '{$CateID}'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `CateID` = ?';
+    $result = Utility::query($sql, 'i', [$CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $data = $xoopsDB->fetchArray($result);
 
     return $data;
@@ -186,12 +215,12 @@ function get_tad_web_cate($CateID = '')
 //列出所有tad_web_cate資料
 function tad_web_list_cate()
 {
-    global $xoopsDB, $xoopsTpl, $isAdmin;
+    global $xoopsDB, $xoopsTpl;
 
     $myts = \MyTextSanitizer::getInstance();
 
-    $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web_cate') . " WHERE `WebID`='0' AND `ColName`='web_cate' AND `ColSN`='0' ORDER BY `CateSort`";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID`=? AND `ColName`=? AND `ColSN`=? ORDER BY `CateSort`';
+    $result = Utility::query($sql, 'isi', [0, 'web_cate', 0]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $all_content = [];
 
@@ -221,10 +250,9 @@ function tad_web_list_cate()
         $all_content[$i]['CateSort'] = $CateSort;
         $all_content[$i]['CateEnable'] = $CateEnable;
         $all_content[$i]['CateCounter'] = $CateCounter;
-        //die(var_export($web_cate[0]));
         if (is_array($web_cate)) {
-            $all_content[$i]['repository'] = isset($web_cate[0]) ? $web_cate[0] : '';
-            $all_content[$i]['destination'] = isset($web_cate[$CateID]) ? $web_cate[$CateID] : '';
+            $all_content[$i]['repository'] = isset($web_cate[0]) ? $web_cate[0] : [];
+            $all_content[$i]['destination'] = isset($web_cate[$CateID]) ? $web_cate[$CateID] : [];
             $all_content[$i]['web_cate_arr_str'] = isset($web_cate[$CateID]) ? implode(',', $web_cate[$CateID]['WebID']) : '';
             $all_content[$i]['web_cate_blank_arr'] = isset($web_cate[0]) ? implode(',', $web_cate[0]['WebID']) : '';
         }
@@ -240,7 +268,7 @@ function tad_web_list_cate()
 
     $xoopsTpl->assign('tad_web_cate_jquery_ui', Utility::get_jquery(true));
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
-    $xoopsTpl->assign('isAdmin', $isAdmin);
+
     $xoopsTpl->assign('all_content', $all_content);
 }
 
@@ -250,58 +278,10 @@ function update_tad_web_cate_sort()
     global $xoopsDB;
     $sort = 1;
     foreach ($_POST['tr'] as $CateID) {
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_cate') . " set `CateSort`='{$sort}' where `CateID`='{$CateID}'";
-        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')');
+        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_cate') . '` SET `CateSort`=? WHERE `CateID`=?';
+        Utility::query($sql, 'ii', [$sort, $CateID]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')');
         $sort++;
     }
 
     return _TAD_SORTED . ' (' . date('Y-m-d H:i:s') . ')';
 }
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$CateID = Request::getInt('CateID');
-
-$xoopsTpl->assign('op', $op);
-
-switch ($op) {
-    /*---判斷動作請貼在下方---*/
-
-    //新增資料
-    case 'save_tad_web_cate':
-        $CateID = save_tad_web_cate();
-        clear_block_cache($WebID);
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-
-    //更新資料
-    case 'update_tad_web_cate':
-        update_tad_web_cate($CateID);
-        clear_block_cache($WebID);
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-
-    //更新資料
-    case 'update_tad_web_cate_arr':
-        update_tad_web_cate_arr($CateID);
-        clear_block_cache($WebID);
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-
-    //刪除資料
-    case 'delete_tad_web_cate':
-        delete_tad_web_cate($CateID);
-        clear_block_cache($WebID);
-        header("location: {$_SERVER['PHP_SELF']}");
-        exit;
-
-    //預設動作
-    default:
-        tad_web_cate_form($CateID);
-        tad_web_list_cate();
-        break;
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-require_once __DIR__ . '/footer.php';

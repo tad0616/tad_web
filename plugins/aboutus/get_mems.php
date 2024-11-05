@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/aboutus/langs/{$xoopsConfig['language']}.php";
@@ -11,18 +12,18 @@ $MemID = Request::getInt('MemID');
 $MemName = Request::getString('MemName');
 header('HTTP/1.1 200 OK');
 if ('get_reationship' === $op) {
-    $sql = 'select Reationship from ' . $xoopsDB->prefix('tad_web_mem_parents') . " where  `MemID`='{$MemID}' and `ParentEnable`='1'";
-    // die('<option>' . $sql . '</option>');
-    $result = $xoopsDB->query($sql) or die($sql);
+    $sql = 'SELECT `Reationship` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` WHERE `MemID`=? AND `ParentEnable`=?';
+    $result = Utility::query($sql, 'is', [$MemID, '1']) or die($sql);
+
     $option = '';
     while (list($Reationship) = $xoopsDB->fetchRow($result)) {
         $option .= "<option vlaue='{$Reationship}'>{$Reationship}</option>";
     }
     die($option);
 } elseif ('chk_unable' === $op) {
-    $sql = 'select `ParentID`, `Reationship` ,`code` from ' . $xoopsDB->prefix('tad_web_mem_parents') . " where  `MemID`='{$MemID}' and `ParentEnable`='0'";
-    // die('<option>' . $sql . '</option>');
-    $result = $xoopsDB->query($sql) or die($sql);
+    $sql = 'SELECT `ParentID`, `Reationship`, `code` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` WHERE `MemID`=? AND `ParentEnable`=?';
+    $result = Utility::query($sql, 'is', [$MemID, '0']) or die($sql);
+
     $option = '';
     list($ParentID, $Reationship, $code) = $xoopsDB->fetchRow($result);
     die("<a href='" . XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$WebID}&op=send_signup_mail&ParentID={$ParentID}&chk_code={$code}' class='btn btn-success'>" . _MD_TCW_ABOUTUS_RE_SENDMAIL_TO . (string) ($MemName) . _MD_TCW_ABOUTUS_S . "{$Reationship}</a>");
@@ -31,8 +32,9 @@ if ('get_reationship' === $op) {
         die(_MD_TCW_ABOUTUS_SELECT_CLASS);
     }
 
-    $sql = 'select a.MemID, a.Reationship, b.MemNum, c.MemName,c.MemNickName from ' . $xoopsDB->prefix('tad_web_mem_parents') . ' as a join ' . $xoopsDB->prefix('tad_web_link_mems') . ' as b on a.MemID=b.MemID join ' . $xoopsDB->prefix('tad_web_mems') . " as c on a.MemID=c.MemID where b.WebID ='{$WebID}' and b.CateID='{$CateID}' ";
-    $result = $xoopsDB->query($sql) or die($sql);
+    $sql = 'SELECT a.`MemID`, a.`Reationship`, b.`MemNum`, c.`MemName`, c.`MemNickName` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` AS a JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS c ON a.`MemID`=c.`MemID` WHERE b.`WebID`=? AND b.`CateID`=?';
+    $result = Utility::query($sql, 'ii', [$WebID, $CateID]) or die($sql);
+
     $i = 0;
     $stud = "<option value=''>" . _MD_TCW_ABOUTUS_SELECT_MEM . '</option>';
 
@@ -52,14 +54,15 @@ if (empty($CateID)) {
     die(_MD_TCW_ABOUTUS_SELECT_CLASS);
 }
 
-$sql = 'select a.MemID,count(*) from ' . $xoopsDB->prefix('tad_web_mem_parents') . ' as a left join ' . $xoopsDB->prefix('tad_web_link_mems') . " as b on a.MemID=b.MemID where b.WebID ='{$WebID}' and b.CateID='{$CateID}' group by a.MemID";
-$result = $xoopsDB->query($sql) or die($sql);
+$sql = 'SELECT a.`MemID`, COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE b.`WebID`=? AND b.`CateID`=? GROUP BY a.`MemID`';
+$result = Utility::query($sql, 'ii', [$WebID, $CateID]) or die($sql);
+
 while (list($MemID, $count) = $xoopsDB->fetchRow($result)) {
     $count_arr[$MemID] = $count;
 }
 
-$sql = 'select a.*,b.* from ' . $xoopsDB->prefix('tad_web_link_mems') . ' as a left join ' . $xoopsDB->prefix('tad_web_mems') . " as b on a.MemID=b.MemID where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$CateID}'";
-$result = $xoopsDB->query($sql) or die($sql);
+$sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID` = b.`MemID` WHERE a.`WebID` = ? AND a.`MemEnable` = ? AND a.`CateID` = ?';
+$result = Utility::query($sql, 'isi', [$WebID, '1', $CateID]) or die($sql);
 $i = 0;
 $stud = "<option value=''>" . _MD_TCW_ABOUTUS_SELECT_MEM . '</option>';
 while (false !== ($all = $xoopsDB->fetchArray($result))) {

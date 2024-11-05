@@ -35,7 +35,6 @@ switch ($op) {
         output_head_file($WebID);
         output_head_file_480($WebID);
         exit;
-        break;
 
     //logo設定
     case 'save_logo':
@@ -74,10 +73,14 @@ function keyman($WebID, $keyman)
     global $xoopsDB;
     $web_admin_arr = get_web_roles($WebID, 'admin');
     $web_admins = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
-    $where = !empty($keyman) ? "where name like '%{$keyman}%' or uname like '%{$keyman}%'" : '';
+    $where = !empty($keyman) ? "WHERE `name` LIKE ? OR `uname` LIKE ?" : '';
+    $sql = "SELECT `uid`, `uname`, `name`
+    FROM `" . $xoopsDB->prefix('users') . "` $where
+    ORDER BY `uname`";
 
-    $sql = 'select uid,uname,name from ' . $xoopsDB->prefix('users') . " $where order by uname";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $params = !empty($keyman) ? ["%{$keyman}%", "%{$keyman}%"] : [];
+
+    $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $myts = \MyTextSanitizer::getInstance();
     $user_ok = $user_yet = '';

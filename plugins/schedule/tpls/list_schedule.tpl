@@ -37,7 +37,7 @@
                         <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID|default:''}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
                         <small>
                         <{*if $act.isCanEdit*}>
-                        <{if ($WebID && $isMyWeb) || $isAdmin || (isset($act.cate.CateID) && isset($smarty.session.isAssistant.act) && $act.cate.CateID == $smarty.session.isAssistant.act)}>
+                        <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($act.cate.CateID) && isset($smarty.session.isAssistant.act) && $act.cate.CateID == $smarty.session.isAssistant.act)}>
                             <a href="javascript:delete_schedule_func(<{$act.ScheduleID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                             <a href="schedule.php?WebID=<{$WebID|default:''}>&op=edit_form&ScheduleID=<{$act.ScheduleID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>

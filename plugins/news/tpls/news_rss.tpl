@@ -44,7 +44,7 @@
             <{foreach from=$bc.main_data.items key=i item=news}>
                 <span class="marquee-item">
                     <a href="<{$news.url}>" target="_blank">
-                        <{$news.pubDate}><i class="fa fa-caret-right" aria-hidden="true"></i>
+                        <{$news.pubDate|default:''}><i class="fa fa-caret-right" aria-hidden="true"></i>
                         <{$news.title}>
                     </a>
                     <{if $bc.config.display_rss!='title_only'}>

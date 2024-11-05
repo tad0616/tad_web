@@ -1,6 +1,6 @@
 <?php
 //搜尋
-function discuss_search($WebID, $queryarray, $limit = 10)
+function discuss_search($WebID, $queryarray, $limit = 10, $andor = 'AND')
 {
     global $xoopsDB;
 

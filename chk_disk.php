@@ -4,8 +4,9 @@ use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/header.php';
 $all_web = [];
-$sql = 'select WebID from xx_tad_web';
-$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+$sql = 'SELECT `WebID` FROM `' . $xoopsDB->prefix('tad_web') . '`';
+$result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
 while (list($WebID) = $xoopsDB->fetchRow($result)) {
     $all_web[$WebID] = $WebID;
 }

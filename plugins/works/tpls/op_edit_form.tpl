@@ -13,7 +13,6 @@
     });
 </script>
 
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <h2><{$smarty.const._MD_TCW_WORKS_ADD}></h2>
 <div class="my-border">
     <form action="works.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
@@ -51,7 +50,7 @@
                 <{$smarty.const._MD_TCW_WORKS_KIND}>
             </label>
             <div class="col-md-4">
-                <select name="WorksKind" class="form-control" id="WorksKind">
+                <select name="WorksKind" class="form-select" id="WorksKind">
                     <option value=""><{$smarty.const._MD_TCW_WORKS_KIND_DEFAULT}></option>
                     <option value="mem_now" <{if $WorksKind=="mem_now"}>selected<{/if}>><{$smarty.const._MD_TCW_WORKS_KIND_MEM_NOW}></option>
                     <option value="mem_after_end" <{if $WorksKind=="mem_after_end"}>selected<{/if}>><{$smarty.const._MD_TCW_WORKS_KIND_MEM_AFTER_END}></option>
@@ -111,7 +110,7 @@
             <!--所屬團隊-->
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="<{$next_op|default:''}>">
-            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 </div>

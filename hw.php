@@ -2,9 +2,9 @@
 use XoopsModules\Tadtools\Utility;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-$sql = 'SELECT HomeworkID,HomeworkContent FROM ' . $xoopsDB->prefix('tad_web_homework') . ' ORDER BY HomeworkID DESC LIMIT 0,150';
-$result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-// $main   = "<table border=1>";
+$sql = 'SELECT `HomeworkID`, `HomeworkContent` FROM `' . $xoopsDB->prefix('tad_web_homework') . '` ORDER BY `HomeworkID` DESC LIMIT 0, 150';
+$result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
 $r_start = '<table class="table"><tbody><tr>';
 
 $r_end = '</td></tr></tbody></table>';

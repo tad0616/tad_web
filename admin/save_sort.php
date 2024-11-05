@@ -1,8 +1,9 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
-
+$xoopsLogger->activated = false;
 $op = Request::getString('op');
 
 $sort = 1;
@@ -10,8 +11,9 @@ $sort = 1;
 $display_plugins = [];
 if ('plugin' === $op) {
     foreach ($_POST['tr'] as $dirname) {
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_plugins') . " set `PluginSort`='{$sort}' where `PluginDirname`='{$dirname}' and WebID='{$WebID}'";
-        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_plugins') . '` SET `PluginSort`=? WHERE `PluginDirname`=? AND `WebID`=?';
+        Utility::query($sql, 'isi', [$sort, $dirname, $WebID]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+
         $display_plugins[] = $dirname;
         $sort++;
     }
@@ -19,8 +21,8 @@ if ('plugin' === $op) {
     mk_menu_var_file(0);
 } else {
     foreach ($_POST['tr'] as $WebID) {
-        $sql = 'update ' . $xoopsDB->prefix('tad_web') . " set `WebSort`='{$sort}' where `WebID`='{$WebID}'";
-        $xoopsDB->queryF($sql) or die(_MA_TCW_UPDATE_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `WebSort`=? WHERE `WebID`=?';
+        Utility::query($sql, 'ii', [$sort, $WebID]) or die(_MA_TCW_UPDATE_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
         $sort++;
     }
 }
