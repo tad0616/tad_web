@@ -8,6 +8,7 @@ include_once 'preloads/autoloader.php';
 $WebID = Request::getInt('WebID');
 
 require_once __DIR__ . '/function.php';
+require_once __DIR__ . '/interface.php';
 
 //目前觀看的班級
 $WebName = $WebTitle = $WebOwner = $WebOwnerUid = '';
@@ -132,9 +133,6 @@ if ($isMyWeb) {
     $menu_var[$i]['submenu'] = $sub_menu_var;
     $i++;
 }
-
-$interface_menu[_MD_TCW_ALL_WEB] = 'index.php';
-$interface_icon[_MD_TCW_ALL_WEB] = "fa-sitemap";
 
 $menu_var[$i]['id'] = $i;
 $menu_var[$i]['title'] = _MD_TCW_LINKTO;
