@@ -14,12 +14,11 @@ function tad_web_image()
     $and_webid = '';
     if (!empty($_GET['WebID'])) {
         $WebID = (int) $_GET['WebID'];
-        $and_webid = "and a.WebID='{$WebID}'  ";
+        $and_webid = "AND a.`WebID`='{$WebID}'  ";
     }
 
-    $sql = 'select a.ActionName,a.ActionID,b.WebTitle,a.WebID from ' . $xoopsDB->prefix('tad_web_action') . ' as a join ' . $xoopsDB->prefix('tad_web') . " as b on a.WebID=b.WebID where b.`WebEnable`='1' $and_webid order by rand() limit 0,1";
-
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT a.`ActionName`, a.`ActionID`, b.`WebTitle`, a.`WebID` FROM `' . $xoopsDB->prefix('tad_web_action') . '` AS a JOIN `' . $xoopsDB->prefix('tad_web') . '` AS b ON a.`WebID`=b.`WebID` WHERE b.`WebEnable`=? ' . $and_webid . ' ORDER BY RAND() LIMIT 0,1';
+    $result = Utility::query($sql, 's', ['1']) or Utility::web_error($sql, __FILE__, __LINE__);
 
     list($ActionName, $ActionID, $WebTitle, $WebID) = $xoopsDB->fetchRow($result);
 

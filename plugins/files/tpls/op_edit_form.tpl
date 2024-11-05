@@ -37,7 +37,7 @@
                     <{$smarty.const._MD_TCW_FILES_METHOD}>
                 </label>
                 <div class="col-md-4">
-                    <select name="file_method" id="file_method" class="form-control">
+                    <select name="file_method" id="file_method" class="form-select">
                         <option value="link_file"><{$smarty.const._MD_TCW_FILES_LINK}></option>
                         <option value="upload_file"><{$smarty.const._MD_TCW_FILES_UPLOAD}></option>
                     </select>
@@ -89,7 +89,7 @@
             <!--檔案流水號-->
             <input type="hidden" name="fsn" value="<{$fsn|default:''}>">
             <input type="hidden" name="op" value="<{$next_op|default:''}>">
-            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 </div>

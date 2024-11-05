@@ -3,7 +3,7 @@
 <{if $op=="notice"}>
     <h3><{$Notice.NoticeTitle}></h3>
     <{$Notice.NoticeContent}>
-<{elseif $show_arr|default:[]}>
+<{elseif $show_arr|default:false}>
     <h3 class="sr-only visually-hidden">Over View</h3>
     <{foreach from=$show_arr item=dirname}>
         <{if "$xoops_rootpath/modules/tad_web/plugins/`$dirname`/tpls/tad_web_common_`$dirname`.tpl"|file_exists}>

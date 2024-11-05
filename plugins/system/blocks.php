@@ -32,12 +32,13 @@ function web_list($WebID, $config = [])
     $andWebID = '';
     if (_IS_EZCLASS) {
         if (isset($_SESSION['MyWebs']['all'])) {
-            $andWebID = "and WebID in ('" . implode("','", $_SESSION['MyWebs']['all']) . "')";
+            $andWebID = "AND `WebID` IN ('" . implode("','", $_SESSION['MyWebs']['all']) . "')";
         }
     }
 
-    $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' $andWebID ORDER BY CateID,WebSort";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebEnable`=? ' . $andWebID . ' ORDER BY `CateID`,`WebSort`';
+    $result = Utility::query($sql, 's', ['1']) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $i = 0;
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {

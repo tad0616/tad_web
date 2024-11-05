@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tad_web\Tools as TadWebTools;
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $plugin = 'aboutus';
@@ -136,7 +137,7 @@ switch ($op) {
         // clear entry from online users table
         if (is_object($xoopsUser)) {
             $onlineHandler = xoops_getHandler('online');
-            $onlineHandler->destroy($xoopsUser->getVar('uid'));
+            $onlineHandler->destroy($xoopsUser->uid());
         }
         header("location: " . XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}");
         exit;
@@ -215,7 +216,7 @@ switch ($op) {
         // clear entry from online users table
         if (is_object($xoopsUser)) {
             $onlineHandler = xoops_getHandler('online');
-            $onlineHandler->destroy($xoopsUser->getVar('uid'));
+            $onlineHandler->destroy($xoopsUser->uid());
         }
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
@@ -231,7 +232,7 @@ switch ($op) {
         break;
     //小瑪莉
     case 'mem_slot':
-        $default_class = empty($CateID) ? get_web_config('default_class', $WebID) : $CateID;
+        $default_class = empty($CateID) ? TadWebTools::get_web_config('default_class', $WebID) : $CateID;
         $tad_web_aboutus->mem_slot($default_class);
         break;
     //預設動作
@@ -244,7 +245,7 @@ switch ($op) {
                 $tad_web_aboutus->show_stu($MemID);
                 $op = 'show_stu';
             } else {
-                $default_class = empty($CateID) ? get_web_config('default_class', $WebID) : $CateID;
+                $default_class = empty($CateID) ? TadWebTools::get_web_config('default_class', $WebID) : $CateID;
                 $tad_web_aboutus->show_one($default_class);
                 $op = 'show_one';
             }

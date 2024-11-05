@@ -30,16 +30,15 @@ function action_slide($WebID, $config = [])
     $tad_web_action = new tad_web_action($WebID);
 
     if ($config['action_id'] == 'latest') {
-        $order = "order by ActionDate desc";
+        $order = "ORDER BY `ActionDate` DESC";
     } elseif (is_numeric($config['action_id'])) {
-        $order = "and ActionID='{$config['action_id']}'";
+        $order = "AND `ActionID`='{$config['action_id']}'";
     } else {
-        $order = "order by rand()";
+        $order = "ORDER BY RAND()";
     }
 
-    $sql = 'select ActionName, ActionID, gphoto_link from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$WebID}' $order";
-
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `ActionName`, `ActionID`, `gphoto_link` FROM `' . $xoopsDB->prefix('tad_web_action') . '` WHERE `WebID`= ? ' . $order;
+    $result = Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
     while (list($ActionName, $ActionID, $gphoto_link) = $xoopsDB->fetchRow($result)) {
         //檢查權限
         $the_power = $power->check_power('read', 'ActionID', $ActionID);
@@ -99,16 +98,16 @@ function action_photos($WebID, $config = [])
     // Utility::dd($config);
 
     if ($config['action_id'] == 'latest') {
-        $order = "order by ActionDate desc";
+        $order = "ORDER BY `ActionDate` DESC";
     } elseif (is_numeric($config['action_id'])) {
-        $order = "and ActionID='{$config['action_id']}'";
+        $order = "AND `ActionID`='{$config['action_id']}'";
     } else {
-        $order = "order by rand()";
+        $order = "ORDER BY RAND()";
     }
 
-    $sql = 'select ActionName, ActionID, gphoto_link from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='{$WebID}' $order";
+    $sql = 'SELECT `ActionName`, `ActionID`, `gphoto_link` FROM `' . $xoopsDB->prefix('tad_web_action') . '` WHERE `WebID` =? ' . $order;
+    $result = Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     while (list($ActionName, $ActionID, $gphoto_link) = $xoopsDB->fetchRow($result)) {
         //檢查權限
         $the_power = $power->check_power('read', 'ActionID', $ActionID);

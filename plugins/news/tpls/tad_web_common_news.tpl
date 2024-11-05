@@ -13,7 +13,7 @@
                     <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
                     <{*if $news.isCanEdit*}>
-                    <{if ($WebID && $isMyWeb) || $isAdmin || (isset($news.cate.CateID) && isset($smarty.session.isAssistant.news) && $news.cate.CateID == $smarty.session.isAssistant.news)}>
+                    <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($news.cate.CateID) && isset($smarty.session.isAssistant.news) && $news.cate.CateID == $smarty.session.isAssistant.news)}>
                         <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                         <a href="news.php?WebID=<{$WebID|default:''}>&op=edit_form&NewsID=<{$news.NewsID}>"class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
@@ -35,7 +35,7 @@
                     <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
                     <{*if $news.isCanEdit*}>
-                    <{if ($WebID && $isMyWeb) || $isAdmin || (isset($news.cate.CateID) && isset($smarty.session.isAssistant.news) && $news.cate.CateID == $smarty.session.isAssistant.news)}>
+                    <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($news.cate.CateID) && isset($smarty.session.isAssistant.news) && $news.cate.CateID == $smarty.session.isAssistant.news)}>
                     <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                     <a href="news.php?WebID=<{$WebID|default:''}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
@@ -84,7 +84,7 @@
                         <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
 
                         <{*if $news.isCanEdit*}>
-                        <{if ($WebID && $isMyWeb) || $isAdmin || (isset($news.cate.CateID) && isset($smarty.session.isAssistant.news) && $news.cate.CateID == $smarty.session.isAssistant.news)}>
+                        <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($news.cate.CateID) && isset($smarty.session.isAssistant.news) && $news.cate.CateID == $smarty.session.isAssistant.news)}>
                             <a href="javascript:delete_news_func(<{$news.NewsID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
                             <a href="news.php?WebID=<{$news.WebID}>&op=edit_form&NewsID=<{$news.NewsID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>

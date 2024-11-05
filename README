@@ -1,10 +1,11 @@
 Tad Web 2.0 (尚未釋出)
 ====================================
 1.支援XOOPS 2.5.11
-2.支援PHP8.3
+2.支援PHP8.1.x
 3.用$xoopsDB->escape()取代$myts->addSlashes()
 4.修改權限無法重設的問題
 5.修正空氣品質區塊 airtw.epa.gov.tw 為 airtw.moenv.gov.tw
+6.資料庫語法參數化
 
 
 Tad Web 1.9.5 (2023-07-19 釋出)

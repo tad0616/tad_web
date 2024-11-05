@@ -5,6 +5,25 @@ use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'tad_web_search.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
+
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$search_keyword = Request::getString('search_keyword');
+
+common_template($WebID, $web_all_config);
+
+switch ($op) {
+    //預設動作
+    default:
+        search_web($WebID, $search_keyword);
+        break;
+}
+
+/*-----------秀出結果區--------------*/
+require_once __DIR__ . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';
+
 /*-----------function區--------------*/
 
 //搜尋
@@ -30,21 +49,3 @@ function search_web($WebID = '', $search_keyword = '')
     $xoopsTpl->assign('WebID', $WebID);
     $xoopsTpl->assign('search_keyword', $search_keyword);
 }
-
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$search_keyword = Request::getString('search_keyword');
-
-common_template($WebID, $web_all_config);
-
-switch ($op) {
-    //預設動作
-    default:
-        search_web($WebID, $search_keyword);
-        break;
-}
-
-/*-----------秀出結果區--------------*/
-require_once __DIR__ . '/footer.php';
-require_once XOOPS_ROOT_PATH . '/footer.php';

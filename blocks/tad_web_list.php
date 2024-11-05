@@ -15,8 +15,8 @@ function tad_web_list($options)
 
     $block['DefWebID'] = $DefWebID;
 
-    $sql = 'SELECT * FROM ' . $xoopsDB->prefix('tad_web') . " WHERE WebEnable='1' ORDER BY CateID,WebSort";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebEnable`=1 ORDER BY `CateID`, `WebSort`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {

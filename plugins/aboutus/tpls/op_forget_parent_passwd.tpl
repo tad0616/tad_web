@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#list_mems").change(function(event) {
@@ -30,7 +29,7 @@
             <{$cate_menu|default:''}>
         </div>
         <div class="col-md-5">
-            <select name="MemID" id="list_mems" class="form-control" title="list mems">
+            <select name="MemID" id="list_mems" class="form-select" title="list mems">
                 <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
             </select>
         </div>
@@ -41,13 +40,13 @@
             <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
         </label>
         <div class="col-md-4">
-            <select name="Reationship" id="Reationship" class="form-control" title="Reationship">
+            <select name="Reationship" id="Reationship" class="form-select" title="Reationship">
             </select>
         </div>
         <div class="col-md-5">
             <input type="hidden" name="op" value="send_parents_passwd">
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
-            <button type="submit" class="btn btn-primary" id="submit_btn"><{$smarty.const._TAD_SUBMIT}></button>
+            <button type="submit" class="btn btn-primary" id="submit_btn"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SUBMIT}></button>
             <div class="alert alert-info" id="no_account" style="display:none;">
                 <a href="aboutus.php?WebID=<{$WebID|default:''}>&op=parents_account"><{$smarty.const._MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT}></a>
             </div>

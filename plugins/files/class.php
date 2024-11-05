@@ -201,8 +201,9 @@ class tad_web_files
     //tad_web_files編輯表單
     public function edit_form($fsn = '', $WebID = '')
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
+        global $xoTheme, $xoopsUser, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
+        $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         chk_self_web($this->WebID, $_SESSION['isAssistant']['files']);
         get_quota($this->WebID);
 
@@ -220,7 +221,7 @@ class tad_web_files
         $xoopsTpl->assign('fsn', $fsn);
 
         //設定「uid」欄位預設值
-        $user_uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
+        $user_uid = ($xoopsUser) ? $xoopsUser->uid() : '';
 
         $uid = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
         $xoopsTpl->assign('uid', $uid);
@@ -278,24 +279,21 @@ class tad_web_files
 
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-        $file_link = $xoopsDB->escape($_POST['file_link']);
-        $file_description = $xoopsDB->escape($_POST['file_description']);
-        $newCateName = $xoopsDB->escape($_POST['newCateName']);
-        $file_method = $xoopsDB->escape($_POST['file_method']);
-        $tag_name = $xoopsDB->escape($_POST['tag_name']);
+        $file_link = $_POST['file_link'];
+        $file_description = $_POST['file_description'];
+        $newCateName = $_POST['newCateName'];
+        $file_method = $_POST['file_method'];
+        $tag_name = $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        $sql = 'insert into ' . $xoopsDB->prefix('tad_web_files') . "
-          (`uid` , `CateID` , `file_date`  , `WebID` , `file_link` , `file_description`)
-          values('{$uid}' , '{$CateID}' , now()  , '{$WebID}' , '{$file_link}' , '{$file_description}')";
-
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_files') . '` (`uid`, `CateID`, `file_date`, `WebID`, `file_link`, `file_description`) VALUES (?, ?, NOW(), ?, ?, ?)';
+        Utility::query($sql, 'iiiss', [$uid, $CateID, $WebID, $file_link, $file_description]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $fsn = $xoopsDB->getInsertId();
-        save_assistant_post('files', $CateID, 'fsn', $fsn);
+        save_assistant_post($WebID, 'files', $CateID, 'fsn', $fsn);
 
         if ('upload_file' === $file_method) {
             $TadUpFiles->set_col('fsn', $fsn);
@@ -316,28 +314,22 @@ class tad_web_files
 
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-        $file_link = $xoopsDB->escape($_POST['file_link']);
-        $file_description = $xoopsDB->escape($_POST['file_description']);
-        $newCateName = $xoopsDB->escape($_POST['newCateName']);
-        $file_method = $xoopsDB->escape($_POST['file_method']);
-        $tag_name = $xoopsDB->escape($_POST['tag_name']);
+        $file_link = $_POST['file_link'];
+        $file_description = $_POST['file_description'];
+        $newCateName = $_POST['newCateName'];
+        $file_method = $_POST['file_method'];
+        $tag_name = $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
+        $and_uid = '';
         if (!is_assistant($this->WebID, 'files', $CateID, 'fsn', $fsn)) {
-            $anduid = onlyMine();
+            $and_uid = onlyMine();
         }
 
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_files') . " set
-        `CateID` = '{$CateID}' ,
-        `file_date` = now() ,
-        `WebID` = '{$WebID}' ,
-        `file_link` = '{$file_link}' ,
-        `file_description` = '{$file_description}'
-        where fsn='$fsn' $anduid";
-        // die($sql);
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_files') . '` SET `CateID` = ? , `file_date` = NOW() , `WebID` = ? , `file_link` = ? , `file_description` = ? WHERE `fsn`=? ' . $and_uid;
+        Utility::query($sql, 'iissi', [$CateID, $WebID, $file_link, $file_description, $fsn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ('upload_file' === $file_method) {
             $TadUpFiles->set_col('fsn', $fsn);
@@ -355,20 +347,21 @@ class tad_web_files
     public function delete($fsn = '', $files_sn = '')
     {
         global $xoopsDB, $TadUpFiles;
-        $sql = 'select CateID from ' . $xoopsDB->prefix('tad_web_files') . " where fsn='$fsn'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=?';
+        $result = Utility::query($sql, 'i', [$fsn]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
+
+        $and_uid = '';
         if (!is_assistant($this->WebID, 'files', $CateID, 'fsn', $fsn)) {
-            $anduid = onlyMine();
+            $and_uid = onlyMine();
         }
         if (empty($fsn) and !empty($files_sn)) {
             $file = $TadUpFiles->get_one_file($files_sn);
-            // die(var_export($file));
             $fsn = $file['col_sn'];
         }
 
-        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_files') . " where fsn='$fsn' $anduid";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=? ' . $and_uid;
+        Utility::query($sql, 's', [$fsn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('fsn', $fsn);
 
@@ -381,10 +374,10 @@ class tad_web_files
     //刪除所有資料
     public function delete_all()
     {
-        global $xoopsDB, $TadUpFiles;
+        global $xoopsDB;
         $allCateID = [];
-        $sql = 'select fsn,CateID from ' . $xoopsDB->prefix('tad_web_files') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT `fsn`,`CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID`=?';
+        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($fsn, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($fsn);
             $allCateID[$CateID] = $CateID;
@@ -399,8 +392,8 @@ class tad_web_files
     public function get_total()
     {
         global $xoopsDB;
-        $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_files') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID` =?';
+        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
 
         return $count;
@@ -414,8 +407,8 @@ class tad_web_files
             return;
         }
 
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_files') . " where fsn='$fsn'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=?';
+        $result = Utility::query($sql, 'i', [$fsn]) or Utility::web_error($sql, __FILE__, __LINE__);
         $data = $xoopsDB->fetchArray($result);
 
         return $data;
@@ -424,13 +417,13 @@ class tad_web_files
     //匯出資料
     public function export_data($start_date, $end_date, $CateID = '')
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
-        $andCateID = empty($CateID) ? '' : "and `CateID`='$CateID'";
-        $andStart = empty($start_date) ? '' : "and file_date >= '{$start_date}'";
-        $andEnd = empty($end_date) ? '' : "and file_date <= '{$end_date}'";
+        global $xoopsDB;
+        $andCateID = empty($CateID) ? '' : "AND `CateID`='$CateID'";
+        $andStart = empty($start_date) ? '' : "AND `file_date` >= '{$start_date}'";
+        $andEnd = empty($end_date) ? '' : "AND `file_date` <= '{$end_date}'";
 
-        $sql = 'select fsn,file_description,file_date,CateID from ' . $xoopsDB->prefix('tad_web_files') . " where WebID='{$this->WebID}' {$andStart} {$andEnd} {$andCateID} order by file_date";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT `fsn`, `file_description`, `file_date`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID`= ? ' . $andStart . ' ' . $andEnd . ' ' . $andCateID . ' ORDER BY `file_date`';
+        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i = 0;
         $main_data = [];

@@ -28,7 +28,7 @@
                 <td><{$stud.MemNickName}></td>
                 <td><{$stud.MemUname}></td>
                 <td><{$stud.MemPasswd}></td>
-                <td style="text-align: center;"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><{$smarty.const._TAD_EDIT}></a></td>
+                <td style="text-align: center;"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a></td>
             </tr>
         <{/foreach}>
     </table>

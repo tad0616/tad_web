@@ -1,8 +1,6 @@
 <?php
 xoops_loadLanguage('main', 'tadtools');
-if (!defined('_TAD_NEED_TADTOOLS')) {
-    define('_TAD_NEED_TADTOOLS', '需要 tadtools 模組，可至<a href="https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1" target="_blank">XOOPS輕鬆架</a>下載。');
-}
+
 define('_MD_TCW_HOME', '回總覽');
 define('_MD_TCW_CLASS_HOME', '首頁');
 define('_MD_TCW_ADMIN', '管理');

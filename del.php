@@ -12,8 +12,8 @@ require_once __DIR__ . '/header.php';
 // $cols['VideoID'] = 'video';
 // $cols['WorksID'] = 'works';
 // foreach ($cols as $ColName => $plugin) {
-//     $sql = "update " . $xoopsDB->prefix('tad_web_assistant_post') . " set `plugin`='$plugin' where `ColName` = '$ColName'";
-//     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+// $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_assistant_post') . '` SET `plugin`=? WHERE `ColName` =?';
+// Utility::query($sql, 'ss', [$plugin, $ColName]) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 // }
 
 echo date('Y-m-d H:i:s', 1622016000);

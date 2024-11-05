@@ -133,7 +133,9 @@ if ($isMyWeb) {
     $i++;
 }
 
-$interface_menu[_TAD_TO_MOD] = 'index.php';
+$interface_menu[_MD_TCW_ALL_WEB] = 'index.php';
+$interface_icon[_MD_TCW_ALL_WEB] = "fa-sitemap";
+
 $menu_var[$i]['id'] = $i;
 $menu_var[$i]['title'] = _MD_TCW_LINKTO;
 $menu_var[$i]['url'] = 'index.php';
@@ -181,7 +183,7 @@ $j++;
 $menu_var[$i]['submenu'] = $sub_menu_var;
 $i++;
 
-if ($isAdmin) {
+if ($_SESSION['tad_web_adm']) {
     $menu_var[$i]['id'] = $i;
     $menu_var[$i]['title'] = _MD_TCW_ADMIN;
     $menu_var[$i]['url'] = 'admin/index.php';

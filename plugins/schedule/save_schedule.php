@@ -2,7 +2,7 @@
 use Xmf\Request;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
-
+$xoopsLogger->activated = false;
 $op = Request::getString('op');
 $WebID = Request::getInt('WebID');
 $ScheduleID = Request::getInt('ScheduleID');
@@ -12,7 +12,9 @@ $Subject = Request::getString('Subject');
 list($SDWeek, $SDSort) = explode('-', $tag);
 
 if ('delete' === $op) {
-    $sql = 'delete from ' . $xoopsDB->prefix('tad_web_schedule_data') . " where `ScheduleID`='{$ScheduleID}'and `SDWeek`='{$SDWeek}' and `SDSort`='{$SDSort}' ";
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_schedule_data') . '` WHERE `ScheduleID`=? AND `SDWeek`=? AND `SDSort`=?';
+    Utility::query($sql, 'iii', [$ScheduleID, $SDWeek, $SDSort]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+
 } else {
     $my_subject_file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/my_subject.json";
     if (file_exists($my_subject_file)) {
@@ -29,6 +31,6 @@ if ('delete' === $op) {
         $color = '#000000';
         $bg_color = '#FFFFFF';
     }
-    $sql = 'replace into ' . $xoopsDB->prefix('tad_web_schedule_data') . " (`ScheduleID`, `SDWeek`, `SDSort`, `Subject`, `Teacher`, `Link`, `color`, `bg_color`) values('{$ScheduleID}', '{$SDWeek}', '{$SDSort}', '{$Subject}', '{$Teacher}', '{$Link}', '{$color}', '{$bg_color}') ";
+    $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_schedule_data') . '` (`ScheduleID`, `SDWeek`, `SDSort`, `Subject`, `Teacher`, `Link`, `color`, `bg_color`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    Utility::query($sql, 'iiisssss', [$ScheduleID, $SDWeek, $SDSort, $Subject, $Teacher, $Link, $color, $bg_color]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 }
-$xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);

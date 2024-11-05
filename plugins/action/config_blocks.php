@@ -1,8 +1,8 @@
 <?php
-
+use XoopsModules\Tadtools\Utility;
 global $xoopsDB;
-$sql = 'select ActionID, ActionName, ActionDate from ' . $xoopsDB->prefix('tad_web_action') . " where WebID='$WebID' order by ActionDate desc";
-$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+$sql = 'SELECT `ActionID`, `ActionName`, `ActionDate` FROM `' . $xoopsDB->prefix('tad_web_action') . '` WHERE `WebID`=? ORDER BY `ActionDate` DESC';
+$result = Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 $action_id_arr[_MD_TCW_ACTION_BLOCK_SLIDE_RAND] = '';
 $action_id_arr[_MD_TCW_ACTION_BLOCK_SLIDE_LATEST] = 'latest';
 while (list($ActionID, $ActionName, $ActionDate) = $xoopsDB->fetchRow($result)) {

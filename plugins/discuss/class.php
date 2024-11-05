@@ -179,15 +179,15 @@ class tad_web_discuss
     //以流水號秀出某筆tad_web_discuss資料內容
     public function show_one($DiscussID = '')
     {
-        global $xoopsDB, $xoopsUser, $isAdmin, $xoopsTpl, $TadUpFiles, $isMyWeb;
+        global $xoopsDB, $xoopsUser, $xoopsTpl, $TadUpFiles, $isMyWeb;
         if (empty($DiscussID)) {
             return;
         }
 
         $DiscussID = (int) $DiscussID;
 
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='{$DiscussID}' ";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `DiscussID`=?';
+        $result = Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $DiscussID , $ReDiscussID, $CateID , $uid , $DiscussTitle , $DiscussContent , $DiscussDate , $WebID , $LastTime , $DiscussCounter
@@ -313,11 +313,12 @@ class tad_web_discuss
     //tad_web_discuss編輯表單
     public function edit_form($DiscussID = '')
     {
-        global $xoopsDB, $xoopsUser, $MyWebs, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
+        global $xoTheme, $xoopsUser, $isMyWeb, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
-        if (!$isAdmin and !$isMyWeb and empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID'])) {
+        if (!$_SESSION['tad_web_adm'] and !$isMyWeb and empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID'])) {
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);
         }
+        $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         get_quota($this->WebID);
 
         //抓取預設值
@@ -452,16 +453,16 @@ class tad_web_discuss
     //新增資料到tad_web_discuss中
     public function insert()
     {
-        global $xoopsDB, $xoopsUser, $WebID, $isMyWeb, $isAdmin, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $WebID, $isMyWeb, $TadUpFiles;
 
-        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $isAdmin) {
+        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $_SESSION['tad_web_adm']) {
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);
         }
 
-        $DiscussTitle = $xoopsDB->escape($_POST['DiscussTitle']);
-        $DiscussContent = $xoopsDB->escape($_POST['DiscussContent']);
-        $newCateName = $xoopsDB->escape($_POST['newCateName']);
-        $tag_name = $xoopsDB->escape($_POST['tag_name']);
+        $DiscussTitle = $_POST['DiscussTitle'];
+        $DiscussContent = $_POST['DiscussContent'];
+        $newCateName = $_POST['newCateName'];
+        $tag_name = $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ReDiscussID = (int) $_POST['ReDiscussID'];
@@ -488,9 +489,8 @@ class tad_web_discuss
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        $sql = 'insert into ' . $xoopsDB->prefix('tad_web_discuss') . "  (`CateID`,`ReDiscussID` , `uid` , `MemID` , `ParentID`, `MemName` , `DiscussTitle` , `DiscussContent` , `DiscussDate` , `WebID` , `LastTime` , `DiscussCounter`)
-        values('{$CateID}'  ,'{$ReDiscussID}'  , '{$uid}' , '{$MemID}' , '{$ParentID}', '{$MemName}' , '{$DiscussTitle}' , '{$DiscussContent}' , now() , '{$WebID}' , now() , 0)";
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_discuss') . '` (`CateID`, `ReDiscussID`, `uid`, `MemID`, `ParentID`, `MemName`, `DiscussTitle`, `DiscussContent`, `DiscussDate`, `WebID`, `LastTime`, `DiscussCounter`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), 0)';
+        Utility::query($sql, 'iiiiisssi', [$CateID, $ReDiscussID, $uid, $MemID, $ParentID, $MemName, $DiscussTitle, $DiscussContent, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $DiscussID = $xoopsDB->getInsertId();
@@ -499,9 +499,8 @@ class tad_web_discuss
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
 
         if (!empty($ReDiscussID)) {
-            $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set `LastTime` = now()
-            where `DiscussID` = '{$ReDiscussID}' or `ReDiscussID` = '{$ReDiscussID}'";
-            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_discuss') . '` SET `LastTime` = NOW() WHERE `DiscussID` = ? OR `ReDiscussID` = ?';
+            Utility::query($sql, 'ii', [$ReDiscussID, $ReDiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
 
         if (!empty($ReDiscussID)) {
@@ -517,35 +516,36 @@ class tad_web_discuss
     //更新tad_web_discuss某一筆資料
     public function update($DiscussID = '')
     {
-        global $xoopsDB, $xoopsUser, $isAdmin, $isMyWeb, $TadUpFiles;
+        global $xoopsDB, $xoopsUser, $isMyWeb, $TadUpFiles;
 
-        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $isAdmin) {
+        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $_SESSION['tad_web_adm']) {
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);
         }
 
+        $and_uid = '';
         if ($isMyWeb) {
             $uid = $xoopsUser->uid();
             $MemID = $ParentID = 0;
             $MemName = $xoopsUser->name();
-            $anduid = ($isAdmin) ? '' : "and `WebID`='{$this->WebID}'";
+            $and_uid = ($_SESSION['tad_web_adm']) ? '' : "and `WebID`='{$this->WebID}'";
         } elseif ($_SESSION['LoginMemID']) {
             $uid = $ParentID = 0;
             $MemID = $_SESSION['LoginMemID'];
             $MemName = $_SESSION['LoginMemName'];
             $WebID = $_SESSION['LoginWebID'];
-            $anduid = "and `MemID`='{$MemID}'";
+            $and_uid = "and `MemID`='{$MemID}'";
         } elseif ($_SESSION['LoginParentID']) {
             $uid = $MemID = 0;
             $ParentID = $_SESSION['LoginParentID'];
             $MemName = $_SESSION['LoginParentName'];
             $WebID = $_SESSION['LoginWebID'];
-            $anduid = "and `ParentID`='{$ParentID}'";
+            $and_uid = "and `ParentID`='{$ParentID}'";
         }
 
-        $DiscussTitle = $xoopsDB->escape($_POST['DiscussTitle']);
-        $DiscussContent = $xoopsDB->escape($_POST['DiscussContent']);
-        $newCateName = $xoopsDB->escape($_POST['newCateName']);
-        $tag_name = $xoopsDB->escape($_POST['tag_name']);
+        $DiscussTitle = $_POST['DiscussTitle'];
+        $DiscussContent = $_POST['DiscussContent'];
+        $newCateName = $_POST['newCateName'];
+        $tag_name = $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ReDiscussID = (int) $_POST['ReDiscussID'];
@@ -553,14 +553,8 @@ class tad_web_discuss
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
 
-        $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set
-        `CateID` = '{$CateID}' ,
-        `ReDiscussID` = '{$ReDiscussID}' ,
-        `DiscussTitle` = '{$DiscussTitle}' ,
-        `DiscussContent` = '{$DiscussContent}' ,
-        `LastTime` = now()
-        where DiscussID='{$DiscussID}' {$anduid}";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_discuss') . '` SET `CateID` = ?, `ReDiscussID` = ?, `DiscussTitle` = ?, `DiscussContent` = ?, `LastTime` = NOW() WHERE `DiscussID` = ? ' . $and_uid;
+        Utility::query($sql, 'iissi', [$CateID, $ReDiscussID, $DiscussTitle, $DiscussContent, $DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('DiscussID', $DiscussID);
         $TadUpFiles->upload_file('upfile', 640, null, null, null, true);
@@ -574,27 +568,28 @@ class tad_web_discuss
     //刪除tad_web_discuss某筆資料資料
     public function delete($DiscussID = '')
     {
-        global $xoopsDB, $isAdmin, $isMyWeb, $TadUpFiles;
+        global $xoopsDB, $isMyWeb, $TadUpFiles;
 
-        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $isAdmin) {
+        if (empty($_SESSION['LoginMemID']) and empty($_SESSION['LoginParentID']) and !$isMyWeb and $_SESSION['tad_web_adm']) {
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);
         }
 
+        $and_uid = '';
         if ($isMyWeb) {
-            $anduid = ($isAdmin) ? '' : "and `WebID`='{$this->WebID}'";
+            $and_uid = ($_SESSION['tad_web_adm']) ? '' : "AND `WebID`='{$this->WebID}'";
         } elseif ($_SESSION['LoginMemID']) {
-            $anduid = "and `MemID`='{$_SESSION['LoginMemID']}'";
+            $and_uid = "AND `MemID`='{$_SESSION['LoginMemID']}'";
         } elseif ($_SESSION['LoginParentID']) {
-            $anduid = "and `ParentID`='{$_SESSION['LoginParentID']}'";
+            $and_uid = "AND `ParentID`='{$_SESSION['LoginParentID']}'";
         } else {
             return;
         }
 
-        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_discuss') . " where `DiscussID`='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `DiscussID`=? ' . $and_uid;
+        Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $sql = 'delete from ' . $xoopsDB->prefix('tad_web_discuss') . " where `ReDiscussID`='$DiscussID' $anduid";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `ReDiscussID`=? ' . $and_uid;
+        Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $TadUpFiles->set_col('DiscussID', $DiscussID);
         $TadUpFiles->del_files();
@@ -606,10 +601,11 @@ class tad_web_discuss
     //刪除所有資料
     public function delete_all()
     {
-        global $xoopsDB, $TadUpFiles;
+        global $xoopsDB;
         $allCateID = [];
-        $sql = 'select DiscussID,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID='0'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT `DiscussID`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `WebID`=? AND `ReDiscussID`=?';
+        $result = Utility::query($sql, 'is', [$this->WebID, '0']) or Utility::web_error($sql, __FILE__, __LINE__);
+
         while (list($DiscussID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($DiscussID);
             $allCateID[$CateID] = $CateID;
@@ -624,8 +620,9 @@ class tad_web_discuss
     public function get_total()
     {
         global $xoopsDB;
-        $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `WebID`=?';
+        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -638,15 +635,15 @@ class tad_web_discuss
         if (_IS_EZCLASS) {
             $DiscussCounter = redis_do($this->WebID, 'get', 'discuss', "DiscussCounter:$DiscussID");
             if (empty($DiscussCounter)) {
-                $sql = 'select DiscussCounter from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='$DiscussID'";
-                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql = 'SELECT `DiscussCounter` FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `DiscussID`=?';
+                $result = Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
                 list($DiscussCounter) = $xoopsDB->fetchRow($result);
                 redis_do($this->WebID, 'set', 'discuss', "DiscussCounter:$DiscussID", $DiscussCounter);
             }
             return redis_do($this->WebID, 'incr', 'discuss', "DiscussCounter:$DiscussID");
         } else {
-            $sql = 'update ' . $xoopsDB->prefix('tad_web_discuss') . " set `DiscussCounter`=`DiscussCounter`+1 where `DiscussID`='{$DiscussID}'";
-            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_discuss') . '` SET `DiscussCounter`=`DiscussCounter`+1 WHERE `DiscussID`=?';
+            Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
 
@@ -658,8 +655,9 @@ class tad_web_discuss
             return;
         }
 
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where DiscussID='$DiscussID'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `DiscussID` = ?';
+        $result = Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
+
         $data = $xoopsDB->fetchArray($result);
 
         if (_IS_EZCLASS) {
@@ -671,13 +669,13 @@ class tad_web_discuss
     //是否有管理權（或由自己發布的），判斷是否要秀出管理工具
     public function isMineDiscuss($col_name = '', $col_sn = '', $DiscussWebID = null)
     {
-        global $isMyWeb, $isAdmin;
+        global $isMyWeb;
 
         if (!empty($col_name) and $_SESSION[$col_name] == $col_sn) {
             return true;
         } elseif (!empty($DiscussWebID) and $isMyWeb) {
             return true;
-        } elseif ($isAdmin) {
+        } elseif ($_SESSION['tad_web_adm']) {
             return true;
         }
 
@@ -694,8 +692,8 @@ class tad_web_discuss
 
         $desc = ('1' == $this->discuss_setup['new2old']) ? 'desc' : '';
 
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_web_discuss') . " where ReDiscussID='$DiscussID' order by DiscussDate $desc";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `ReDiscussID`=? ORDER BY `DiscussDate` ?';
+        $result = Utility::query($sql, 'is', [$DiscussID, $desc]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $re_data = '';
 
@@ -789,9 +787,8 @@ class tad_web_discuss
             return 0;
         }
 
-        $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_web_discuss') . " where ReDiscussID='$DiscussID'";
-
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `ReDiscussID`=?';
+        $result = Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($counter) = $xoopsDB->fetchRow($result);
         return $counter;
     }
@@ -808,13 +805,13 @@ class tad_web_discuss
     //匯出資料
     public function export_data($start_date, $end_date, $CateID = '')
     {
-        global $xoopsDB, $xoopsTpl, $TadUpFiles, $MyWebs;
-        $andCateID = empty($CateID) ? '' : "and `CateID`='$CateID'";
-        $andStart = empty($start_date) ? '' : "and DiscussDate >= '{$start_date}'";
-        $andEnd = empty($end_date) ? '' : "and DiscussDate <= '{$end_date}'";
+        global $xoopsDB;
+        $andCateID = empty($CateID) ? '' : "AND `CateID`='$CateID'";
+        $andStart = empty($start_date) ? '' : "AND `DiscussDate` >= '{$start_date}'";
+        $andEnd = empty($end_date) ? '' : "AND `DiscussDate` <= '{$end_date}'";
 
-        $sql = 'select DiscussID,DiscussTitle,DiscussDate,CateID from ' . $xoopsDB->prefix('tad_web_discuss') . " where WebID='{$this->WebID}' and ReDiscussID=0 {$andStart} {$andEnd} {$andCateID} order by DiscussDate";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT `DiscussID`, `DiscussTitle`, `DiscussDate`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `WebID`=? AND `ReDiscussID`=? ' . $andStart . ' ' . $andEnd . ' ' . $andCateID . ' ORDER BY `DiscussDate`';
+        $result = Utility::query($sql, 'is', [$this->WebID, '0']) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i = 0;
         $main_data = [];

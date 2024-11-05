@@ -92,8 +92,8 @@
             </table>
 
             <div class="text-center">
-                <input type="hidden" name="g2p" value="<{$smarty.get.g2p}>">
-                <button type="submit" class="btn btn-primary" name="op" value="save_disk_setup"><{$smarty.const._TAD_SAVE}></button>
+                <input type="hidden" name="g2p" value="<{$smarty.get.g2p|intval}>">
+                <button type="submit" class="btn btn-primary" name="op" value="save_disk_setup"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
         <{$bar|default:''}>

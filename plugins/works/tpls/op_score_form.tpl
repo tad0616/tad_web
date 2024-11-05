@@ -48,6 +48,6 @@
         <!--所屬團隊-->
         <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
         <input type="hidden" name="op" value="save_score">
-        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
     </div>
 </form>

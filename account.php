@@ -5,8 +5,6 @@ require_once __DIR__ . '/header.php';
 $plugin = 'account';
 require_once __DIR__ . '/plugin_header.php';
 require_once XOOPS_ROOT_PATH . '/header.php';
-//$xoopsTpl->assign('plugin', $plugin);
-/*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
 $op = Request::getString('op');
@@ -26,14 +24,14 @@ switch ($op) {
         clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&AccountID=$AccountID");
         exit;
-        break;
+
     //更新資料
     case 'update':
         $AccountID = $tad_web_account->update($AccountID);
         clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}&AccountID=$AccountID");
         exit;
-        break;
+
     //輸入表格
     case 'edit_form':
         $tad_web_account->edit_form($AccountID);
@@ -44,7 +42,7 @@ switch ($op) {
         clear_block_cache($WebID);
         header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
         exit;
-        break;
+
     //預設動作
     default:
         if (empty($AccountID)) {
@@ -64,3 +62,5 @@ switch ($op) {
 /*-----------秀出結果區--------------*/
 require_once __DIR__ . '/footer.php';
 require_once XOOPS_ROOT_PATH . '/footer.php';
+
+/*-----------function區--------------*/

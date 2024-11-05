@@ -1,6 +1,6 @@
 <?php
 //搜尋
-function link_search($WebID, $queryarray, $limit = 10)
+function link_search($WebID, $queryarray, $limit = 10, $andor = 'AND')
 {
     global $xoopsDB;
 

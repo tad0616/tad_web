@@ -1,12 +1,14 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
-
+$xoopsLogger->activated = false;
 $sort = 1;
 
 foreach ($_POST['CateID'] as $CateID) {
-    $sql = 'update ' . $xoopsDB->prefix('tad_web_cate') . " set `CateSort`='{$sort}' where `CateID`='{$CateID}'";
-    $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_cate') . '` SET `CateSort`=? WHERE `CateID`=?';
+    Utility::query($sql, 'ii', [$sort, $CateID]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+
     $sort++;
 }
 

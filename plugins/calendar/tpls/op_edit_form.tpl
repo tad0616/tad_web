@@ -1,5 +1,3 @@
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-
 <h2><{$smarty.const._MD_TCW_CALENDAR_ADD}></h2>
 <div class="my-border">
     <form action="calendar.php" method="post" id="myForm" enctype="multipart/form-data" role="form" class="form-horizontal">
@@ -38,7 +36,7 @@
                 <input type="hidden" name="CalendarID" value="<{$CalendarID|default:''}>">
                 <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                 <input type="hidden" name="op" value="<{$next_op|default:''}>">
-                <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
             </div>
         </div>
     </form>

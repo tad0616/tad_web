@@ -1,5 +1,5 @@
 <{if $block.op|default:''=="login"}>
-    <{if $LoginMemNickName==""}>
+    <{if $LoginMemNickName|default:''==""}>
         <script type="text/javascript">
             $(document).ready(function() {
                 $("#tad_web_login").hide();
@@ -111,7 +111,7 @@
     <div class="my-border">
 
         <{$LoginMemName|default:''}>
-        <{if $LoginMemNickName!=""}> (<{$LoginMemNickName|default:''}>) <{/if}>
+        <{if $LoginMemNickName|default:''!=""}> (<{$LoginMemNickName|default:''}>) <{/if}>
         <{$smarty.const._MD_TCW_HELLO}>
 
         <div class="row">
@@ -125,7 +125,6 @@
 
     </div>
 <{else}>
-    <script type="text/javascript" src="<{$xoops_url}>/modules/tad_web/class/bootstrap-progressbar/bootstrap-progressbar.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.progress .progress-bar').progressbar({display_text: 'fill'});
@@ -137,7 +136,7 @@
     <{if $block.defaltWebID|default:false}>
 
         <{if $block.web_num > 1}>
-            <select class="form-control" onChange="location.href=this.value" title="Select Web">
+            <select class="form-select" onChange="location.href=this.value" title="Select Web">
                 <{foreach from=$block.webs item=web}>
                 <option value="<{$web.url}>" <{if $web.WebID==$WebID|default:''}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
                 <{/foreach}>

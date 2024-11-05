@@ -18,30 +18,28 @@ function list_page($WebID, $config = [])
 
 function page_menu($WebID, $config = [])
 {
-    global $xoopsDB, $xoopsTpl;
+    global $xoopsDB;
     if (empty($WebID)) {
         return;
     }
 
-    $limit = (isset($config['limit']) and !empty($config['limit'])) ? "limit 0,{$config['limit']}" : '';
+    $limit = (isset($config['limit']) and !empty($config['limit'])) ? "LIMIT 0, {$config['limit']}" : '';
     $show_count = isset($config['show_count']) ? $config['show_count'] : '';
 
     $sql = 'SELECT `CateName`, `CateID`
-    FROM `' . $xoopsDB->prefix('tad_web_cate') . "`
-    WHERE `WebID` = '$WebID' AND `ColName` = 'page' AND `CateEnable` = '1'
-    ORDER BY `CateSort` {$limit}";
+    FROM `' . $xoopsDB->prefix('tad_web_cate') . '`
+    WHERE `WebID` =? AND `ColName` = ? AND `CateEnable` = ?
+    ORDER BY `CateSort` ' . $limit;
 
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $result = Utility::query($sql, 'iss', [$WebID, 'page', '1']) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $main = [];
 
     $i = 0;
 
     while (list($CateName, $CateID) = $xoopsDB->fetchRow($result)) {
-        $sql2 = 'SELECT `PageID`, `PageTitle`, `PageCount`
-        FROM `' . $xoopsDB->prefix('tad_web_page') . "` WHERE `CateID` = '$CateID'
-        ORDER BY `PageSort`";
-        $result2 = $xoopsDB->query($sql2) or Utility::web_error($sql2);
+        $sql2 = 'SELECT `PageID`, `PageTitle`, `PageCount` FROM `' . $xoopsDB->prefix('tad_web_page') . '` WHERE `CateID` = ? ORDER BY `PageSort`';
+        $result2 = Utility::query($sql2, 'i', [$CateID]) or Utility::web_error($sql2);
         $content = [];
         $j = 0;
         while (list($PageID, $PageTitle, $PageCount) = $xoopsDB->fetchRow($result2)) {

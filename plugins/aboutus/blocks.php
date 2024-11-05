@@ -1,6 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\WebCate;
+use XoopsModules\Tad_web\Tools as TadWebTools;
 
 function list_web_adm($WebID, $config = [])
 {
@@ -9,22 +10,25 @@ function list_web_adm($WebID, $config = [])
         return;
     }
 
-    $sql = 'SELECT `WebOwnerUid` FROM `' . $xoopsDB->prefix('tad_web') . "` WHERE `WebID` = '$WebID'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `WebOwnerUid` FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebID` = ?';
+    $result = Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         $admin[$uid] = $uid;
     }
 
-    $sql = 'SELECT `uid` FROM `' . $xoopsDB->prefix('tad_web_roles') . "` WHERE `WebID` = '$WebID' and `role` = 'admin'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `uid` FROM `' . $xoopsDB->prefix('tad_web_roles') . '` WHERE `WebID` = ? AND `role` = ?';
+    $result = Utility::query($sql, 'is', [$WebID, 'admin']) or Utility::web_error($sql, __FILE__, __LINE__);
+
     while (list($uid) = $xoopsDB->fetchRow($result)) {
         $admin[$uid] = $uid;
     }
 
-    $admin_str = implode("','", $admin);
+    $admin_str = implode(',', $admin);
 
-    $sql = 'SELECT `uid`,`name`,`uname`,`email` FROM `' . $xoopsDB->prefix('users') . "` WHERE `uid` in('{$admin_str}')";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `uid`,`name`,`uname`,`email` FROM `' . $xoopsDB->prefix('users') . '` WHERE `uid` IN (?)';
+    $result = Utility::query($sql, 's', [$admin_str]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $i = 0;
     while (list($uid, $name, $uname, $email) = $xoopsDB->fetchRow($result)) {
         $admin_arr[$i]['uid'] = $uid;
@@ -49,7 +53,7 @@ function list_web_student($WebID, $config = [])
     require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/WebCate.php';
     $WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
 
-    $DefCateID = get_web_config('default_class', $WebID);
+    $DefCateID = TadWebTools::get_web_config('default_class', $WebID);
     if (empty($DefCateID)) {
         $DefCateID = $WebCate->tad_web_cate_max_id();
     }
@@ -68,8 +72,8 @@ function list_web_student($WebID, $config = [])
     $ys = get_seme();
     $block['ys'] = $ys;
 
-    $sql = 'select a.*,b.* from ' . $xoopsDB->prefix('tad_web_link_mems') . ' as a left join ' . $xoopsDB->prefix('tad_web_mems') . " as b on a.MemID=b.MemID where a.WebID ='{$WebID}' and a.MemEnable='1' and a.CateID='{$DefCateID}'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.MemID = b.MemID WHERE a.WebID =? AND a.MemEnable = ? AND a.CateID = ?';
+    $result = Utility::query($sql, 'isi', [$WebID, '1', $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
 
     $class_total = $class_boy = $class_girl = 0;

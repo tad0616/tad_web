@@ -66,7 +66,7 @@
         <input type="hidden" name="op" value="save_subject">
 
         <a id="add_item" class="btn btn-success"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_SCHEDULE_ADD_ITEM}></a>
-        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
       </div>
     </div>
   </form>

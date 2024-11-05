@@ -1,10 +1,12 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
+$xoopsLogger->activated = false;
 $sort = 1;
 foreach ($_POST['LinkID'] as $LinkID) {
-    $sql = 'update ' . $xoopsDB->prefix('tad_web_link') . " set `LinkSort`='{$sort}' where LinkID='{$LinkID}'";
-    $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_link') . '` SET `LinkSort`=? WHERE `LinkID`=?';
+    Utility::query($sql, 'ii', [$sort, $LinkID]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
     $sort++;
 }
 header('HTTP/1.1 200 OK');

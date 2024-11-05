@@ -73,6 +73,11 @@ table.common_table {
   max-width: 100%;
 }
 
+.color-picker {
+  width: 80%;
+  display: inline-block;
+}
+
 @media (min-width: 600px) {
   .parent-container .custom-row > .col {
     flex: 0 0 50%;

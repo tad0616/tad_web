@@ -2,12 +2,49 @@
 use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tadtools\Ztree;
+use XoopsModules\Tad_web\Tools as TadWebTools;
 
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_disk.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
 require_once dirname(__DIR__) . '/class/WebCate.php';
+
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$WebID = Request::getInt('WebID');
+$CateID = Request::getInt('CateID');
+$g2p = Request::getInt('g2p', 1);
+
+$xoopsTpl->assign('op', $op);
+
+switch ($op) {
+
+    //重新計算空間
+    case 'check_quota':
+        check_quota($WebID);
+        header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&g2p=$g2p");
+        exit;
+
+    case 'view_file':
+        view_file($WebID);
+        break;
+
+    case 'save_disk_setup':
+        save_disk_setup();
+        header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
+        exit;
+
+    //預設動作
+    default:
+        list_all_web($WebID);
+        break;
+
+}
+
+/*-----------秀出結果區--------------*/
+require_once __DIR__ . '/footer.php';
+
 /*-----------function區--------------*/
 
 //取得所有班級
@@ -47,7 +84,7 @@ function list_all_web($defWebID = '')
         $data[$WebID] = $all;
         $size = size2mb($dir_size);
 
-        $space_quota = get_web_config('space_quota', $WebID);
+        $space_quota = TadWebTools::get_web_config('space_quota', $WebID);
         $user_space_quota = (empty($space_quota) or 'default' === $space_quota) ? $user_default_quota : (int) $space_quota;
 
         $data[$WebID]['space_quota'] = $user_space_quota;
@@ -82,8 +119,8 @@ function list_all_web($defWebID = '')
 function get_all_dir_size()
 {
     global $xoopsDB;
-    $sql = 'SELECT sum(`used_size`) FROM ' . $xoopsDB->prefix('tad_web') . ' ';
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT SUM(`used_size`) FROM `' . $xoopsDB->prefix('tad_web') . '`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     list($used_size) = $xoopsDB->fetchRow($result);
 
     return $used_size;
@@ -199,39 +236,3 @@ function save_disk_setup()
         save_web_config('space_quota', $space_quota, $WebID);
     }
 }
-
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$CateID = Request::getInt('CateID');
-$g2p = Request::getInt('g2p', 1);
-
-$xoopsTpl->assign('op', $op);
-
-switch ($op) {
-    /*---判斷動作請貼在下方---*/
-
-    //重新計算空間
-    case 'check_quota':
-        check_quota($WebID);
-        header("location: {$_SERVER['PHP_SELF']}?WebID=$WebID&g2p=$g2p");
-        exit;
-
-    case 'view_file':
-        view_file($WebID);
-        break;
-
-    case 'save_disk_setup':
-        save_disk_setup();
-        header("location: {$_SERVER['PHP_SELF']}?g2p=$g2p");
-        exit;
-
-    //預設動作
-    default:
-        list_all_web($WebID);
-        break;
-        /*---判斷動作請貼在上方---*/
-}
-
-/*-----------秀出結果區--------------*/
-require_once __DIR__ . '/footer.php';
