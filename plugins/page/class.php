@@ -385,7 +385,7 @@ class tad_web_page
         $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_page') . '`
         (`CateID`, `PageTitle`, `PageContent`, `PageDate`, `PageSort`, `uid`, `WebID`, `PageCount`, `PageCSS`)
         VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)';
-        Utility::query($sql, 'isssiis', [$CateID, $PageTitle, $PageContent, $PageDate, $PageSort, $uid, $WebID, $PageCSS]) or Utility::web_error($sql, __FILE__, __LINE__);
+        Utility::query($sql, 'isssiiis', [$CateID, $PageTitle, $PageContent, $PageDate, $PageSort, $uid, $WebID, $PageCSS]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $PageID = $xoopsDB->getInsertId();

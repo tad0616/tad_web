@@ -10,7 +10,7 @@ $WebID = Request::getInt('WebID');
 $CateID = Request::getInt('CateID');
 $MemID = Request::getInt('MemID');
 $MemName = Request::getString('MemName');
-header('HTTP/1.1 200 OK');
+
 if ('get_reationship' === $op) {
     $sql = 'SELECT `Reationship` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` WHERE `MemID`=? AND `ParentEnable`=?';
     $result = Utility::query($sql, 'is', [$MemID, '1']) or die($sql);

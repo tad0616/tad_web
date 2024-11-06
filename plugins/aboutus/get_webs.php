@@ -130,7 +130,7 @@ body{
 </table>
 </body>
 </html>';
-header('HTTP/1.1 200 OK');
+
 die($content);
 
 // Utility::html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)

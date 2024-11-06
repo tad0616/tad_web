@@ -427,7 +427,7 @@ function save_adm($web_admins, $WebID)
         $web_admin_arr = explode(',', $web_admins);
         foreach ($web_admin_arr as $uid) {
             $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_roles') . '` (`uid`, `role`, `term`, `enable`, `WebID`) VALUES (?, ?, ?, ?, ?)';
-            Utility::query($sql, 'is', [$uid, 'admin', '0000-00-00', '1', $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+            Utility::query($sql, 'isssi', [$uid, 'admin', '0000-00-00', '1', $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
     clear_my_webs_data($WebID);

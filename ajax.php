@@ -10,7 +10,7 @@ $op = Request::getString('op');
 $plugin = Request::getString('plugin');
 $WebID = Request::getInt('WebID');
 $default_class = Request::getInt('default_class');
-header('HTTP/1.1 200 OK');
+
 switch ($op) {
 
     case 'get_cate_options':
