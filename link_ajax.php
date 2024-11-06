@@ -2,7 +2,7 @@
 require_once __DIR__ . '/header.php';
 
 //$_POST['url'] = "https://www.youtube.com/watch?v=ioKB53osad8";
-header('HTTP/1.1 200 OK');
+
 $date['metaTags']['description']['value'] = $date['title'] = '';
 if (!empty($_POST['url'])) {
     $date = getUrlData($_POST['url']);

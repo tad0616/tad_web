@@ -20,7 +20,7 @@ $col_val = Request::getString('col_val');
 $display_blocks = Request::getString('display_blocks');
 $other_web_url = Request::getString('other_web_url');
 $keyman = Request::getString('keyman');
-header('HTTP/1.1 200 OK');
+
 switch ($op) {
     //標題設定
     case 'save_head':

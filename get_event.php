@@ -66,7 +66,7 @@ if ('homework' === $_REQUEST['CalKind']) {
     }
 }
 //die(var_export($myEvents));
-header('HTTP/1.1 200 OK');
+
 // echo json_encode($myEvents, 256);
 if ($myEvents) {
     Utility::dd($myEvents);

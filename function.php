@@ -333,9 +333,11 @@ function get_web_all_config($WebID = '')
     }
 
     $tad_web_config_file = XOOPS_VAR_PATH . "/tad_web/$WebID/tad_web_config.json";
+    Utility::test($tad_web_config_file, 'tad_web_config_file', 'dd');
 
     if (file_exists($tad_web_config_file)) {
         $tad_web_config = json_decode(file_get_contents($tad_web_config_file), true);
+        Utility::test($tad_web_config, 'tad_web_config', 'dd');
     } else {
         if (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php') or file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2/theme_config.php')) {
             if (file_exists(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme/theme_config.php')) {
@@ -380,13 +382,14 @@ function get_web_all_config($WebID = '')
 function save_web_config($ConfigName, $ConfigValue, $WebID)
 {
     global $xoopsDB;
-    $ConfigValue = '';
+
     if (is_array($ConfigValue)) {
         $ConfigValue = implode(';', $ConfigValue);
     }
 
     $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_config') . '` (`ConfigName`, `ConfigValue`, `WebID`) VALUES (?, ?, ?)';
     Utility::query($sql, 'ssi', [$ConfigName, $ConfigValue, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
     clear_tad_web_config($WebID);
@@ -558,12 +561,13 @@ function mk_menu_var_file($WebID = null)
         return;
     }
 
+    $myts = \MyTextSanitizer::getInstance();
     $all_plugins = get_plugins($WebID, 'show');
+    Utility::test($all_plugins, 'all_plugins', 'dd');
 
     $current = "<?php\n";
     $i = 1;
     foreach ($all_plugins as $plugin) {
-        // die(var_export($plugin));
         $dirname = $plugin['dirname'];
 
         if ('system' === $dirname) {
@@ -574,7 +578,7 @@ function mk_menu_var_file($WebID = null)
             $current .= "if(defined('_SHOW_UNABLE') and _SHOW_UNABLE=='1'){\n";
         }
 
-        $plugin['db']['PluginTitle'] = $xoopsDB->escape($plugin['db']['PluginTitle']);
+        $plugin['db']['PluginTitle'] = $myts->addSlashes($plugin['db']['PluginTitle']);
 
         $current .= "\$menu_var['{$dirname}']['id']     = $i;\n";
         $current .= "\$menu_var['{$dirname}']['title']  = '{$plugin['db']['PluginTitle']}';\n";
@@ -610,6 +614,7 @@ function mk_menu_var_file($WebID = null)
 
     if (!empty($WebID)) {
         $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/menu_var.php";
+        Utility::test($plugin_enable_arr, 'plugin_enable_arr', 'dd');
         save_web_config('web_plugin_enable_arr', implode(',', $plugin_enable_arr), $WebID);
     }
 

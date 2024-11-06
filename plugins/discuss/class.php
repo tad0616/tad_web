@@ -692,8 +692,8 @@ class tad_web_discuss
 
         $desc = ('1' == $this->discuss_setup['new2old']) ? 'desc' : '';
 
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `ReDiscussID`=? ORDER BY `DiscussDate` ?';
-        $result = Utility::query($sql, 'is', [$DiscussID, $desc]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_discuss') . '` WHERE `ReDiscussID`=? ORDER BY `DiscussDate` ' . $desc;
+        $result = Utility::query($sql, 'i', [$DiscussID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $re_data = '';
 
