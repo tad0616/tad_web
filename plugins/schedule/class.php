@@ -136,7 +136,7 @@ class tad_web_schedule
     //以流水號秀出某筆tad_web_schedule資料內容
     public function show_one($ScheduleID = '')
     {
-        global $xoopsDB, $xoopsTpl, $isMyWeb, $xoopsModuleConfig;
+        global $xoopsDB, $xoopsTpl;
 
         if (empty($ScheduleID)) {
             redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
@@ -206,6 +206,7 @@ class tad_web_schedule
     {
         global $xoopsDB, $xoopsUser, $xoTheme, $xoopsTpl, $WebName, $xoopsModuleConfig, $plugin_menu_var;
 
+        $TadWebModuleConfig = !isset($xoopsModuleConfig) ? Utility::getXoopsModuleConfig('tad_web') : $xoopsModuleConfig;
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
 
@@ -282,7 +283,7 @@ class tad_web_schedule
             $bg_colortArr[$key] = $bg_color;
         }
 
-        $schedule_template = $xoopsModuleConfig['schedule_template'];
+        $schedule_template = $TadWebModuleConfig['schedule_template'];
 
         preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
@@ -458,12 +459,7 @@ class tad_web_schedule
     public function get_one_schedule($ScheduleID)
     {
         global $xoopsDB, $xoopsModuleConfig;
-        if (!isset($xoopsModuleConfig)) {
-            $moduleHandler = xoops_getHandler('module');
-            $xoopsModule = $moduleHandler->getByDirname('tad_web');
-            $configHandler = xoops_getHandler('config');
-            $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
-        }
+        $TadWebModuleConfig = !isset($xoopsModuleConfig) ? Utility::getXoopsModuleConfig('tad_web') : $xoopsModuleConfig;
 
         $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_schedule_data') . '` WHERE `ScheduleID`=?';
         $result = Utility::query($sql, 'i', [$ScheduleID]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -479,7 +475,7 @@ class tad_web_schedule
             $SubjectArr[$key] = "<div style='padding:8px; margin:0px; color: {$color}; background-color: {$bg_color};'><div>{$Subject}</div><div style='font-size: 80%;'>{$Teacher}</div></div>";
         }
 
-        $schedule_template = $xoopsModuleConfig['schedule_template'];
+        $schedule_template = $TadWebModuleConfig['schedule_template'];
 
         preg_match_all('/{([0-9]+)-([0-9]+)}/', $schedule_template, $opt);
 
@@ -498,11 +494,13 @@ class tad_web_schedule
     public function get_subjects()
     {
         global $xoopsModuleConfig;
+
+        $TadWebModuleConfig = !isset($xoopsModuleConfig) ? Utility::getXoopsModuleConfig('tad_web') : $xoopsModuleConfig;
         $my_subject_file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/my_subject.json";
         if (file_exists($my_subject_file)) {
             $schedule_subjects_arr = json_decode(file_get_contents($my_subject_file), true);
         } else {
-            $schedule_subjects = explode(';', $xoopsModuleConfig['schedule_subjects']);
+            $schedule_subjects = explode(';', $TadWebModuleConfig['schedule_subjects']);
             $schedule_subjects_arr = [];
 
             $i = 0;

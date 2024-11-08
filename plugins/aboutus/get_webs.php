@@ -11,10 +11,7 @@ $xoopsLogger->activated = false;
 $FooTable = new FooTable();
 $FooTable->render();
 
-$moduleHandler = xoops_getHandler('module');
-$xoopsModule = $moduleHandler->getByDirname('tad_web');
-$configHandler = xoops_getHandler('config');
-$xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+$TadWebModuleConfig = !isset($xoopsModuleConfig) ? Utility::getXoopsModuleConfig('tad_web') : $xoopsModuleConfig;
 
 $CateID = (int) $_GET['CateID'];
 $today = date('Y-m-d');
@@ -38,7 +35,7 @@ while (list($WebID, $ScheduleID, $ScheduleName) = $xoopsDB->fetchRow($result)) {
     $schedule_title[$WebID] = $ScheduleName;
 }
 
-$list_web_order = $xoopsModuleConfig['list_web_order'];
+$list_web_order = $TadWebModuleConfig['list_web_order'];
 if (empty($list_web_order)) {
     $list_web_order = 'WebSort';
 }
@@ -82,9 +79,9 @@ while (false !== ($web = $xoopsDB->fetchArray($result))) {
     }
     $show_title = ($web_url == $web_name) ? $web_url : $web_name . ' ( ' . $web_url . ' ) ';
 
-    $td1 = in_array('counter', $xoopsModuleConfig['aboutus_cols']) ? "<td>{$web_counter}</td>" : '';
-    $td3 = in_array('schedule', $xoopsModuleConfig['aboutus_cols']) ? "<td>{$have_schedule}</td>" : '';
-    $td4 = in_array('homework', $xoopsModuleConfig['aboutus_cols']) ? "<td>{$have_homework}</td>" : '';
+    $td1 = in_array('counter', $TadWebModuleConfig['aboutus_cols']) ? "<td>{$web_counter}</td>" : '';
+    $td3 = in_array('schedule', $TadWebModuleConfig['aboutus_cols']) ? "<td>{$have_schedule}</td>" : '';
+    $td4 = in_array('homework', $TadWebModuleConfig['aboutus_cols']) ? "<td>{$have_homework}</td>" : '';
 
     $web_tr .= "
       <tr>
@@ -98,9 +95,9 @@ while (false !== ($web = $xoopsDB->fetchArray($result))) {
       ";
 }
 
-$th1 = in_array('counter', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ALL_WEB_COUNTER . '</th>' : '';
-$th3 = in_array('schedule', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ABOUTUS_SCHEDULE . '</th>' : '';
-$th4 = in_array('homework', $xoopsModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ABOUTUS_HOMEWORK . '</th>' : '';
+$th1 = in_array('counter', $TadWebModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ALL_WEB_COUNTER . '</th>' : '';
+$th3 = in_array('schedule', $TadWebModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ABOUTUS_SCHEDULE . '</th>' : '';
+$th4 = in_array('homework', $TadWebModuleConfig['aboutus_cols']) ? '<th data-hide="phone">' . _MD_TCW_ABOUTUS_HOMEWORK . '</th>' : '';
 
 $content = $FooTableJS . '
 <html lang="zh-TW">

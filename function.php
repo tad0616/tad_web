@@ -1795,17 +1795,10 @@ function get_tad_web_notice($NoticeID = '')
 //取得系統預設的OpenID登入方式
 function get_sys_openid()
 {
-    global $xoopsConfig;
     $auth_method = [];
-    $moduleHandler = xoops_getHandler('module');
-    $configHandler = xoops_getHandler('config');
-    $TadLoginXoopsModule = $moduleHandler->getByDirname('tad_login');
-    if ($TadLoginXoopsModule) {
-
-        $configHandler = xoops_getHandler('config');
-        $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
-
-        $auth_method = $modConfig['auth_method'];
+    $TadLoginModuleConfig = Utility::getXoopsModuleConfig('tad_login');
+    if ($TadLoginModuleConfig) {
+        $auth_method = $TadLoginModuleConfig['auth_method'];
     }
 
     return $auth_method;
