@@ -33,7 +33,6 @@ Tad Web 1.9.1 (Released on 2021-08-22)
 2. Do not show empty category links if there is no category name.
 3. Add accessibility 2.1 AA auto-correction function.
 
-
 Tad Web 1.9.0 (released on 2021-07-31)
 ================================================
 1. Add block caching mechanism
@@ -49,7 +48,6 @@ Tad Web 1.8.9 (released on 2021-05-05)
 3. Fix the problem that backend editing website data cannot be brought out
 4. Fix the problem that the custom block cannot bring out the setting tool.
 5. Fix the problem of incorrect line feed in custom block.
-
 
 Tad Web 1.8.8 (Released on 2020-10-28)
 ================================================
@@ -129,7 +127,6 @@ Tad Web 1.7.7 (2019-01-01 released)
  11. Support MySQL database strict mode
  12. Set the class name as the default category
 
-
 Tad Web 1.7.6 (2017-01-26 released)
 ================================================== ==
   1. Fix block json file content is not correct
@@ -141,13 +138,11 @@ Tad Web 1.7.5 (2017-11-21 released)
   3. Support PHP7.1
   4. Correct "small helper" function related permissions
 
-
 Tad Web 1.7.4 (2017-10-06 released)
 ====================================================
   1. Modify some link
   2. Accelerate the backspace management page
   3. Fix the calendar can not display the problem
-
 
 Tad Web 1.7.3 (2017-09-27 released)
 ================================================== ==
@@ -166,15 +161,12 @@ Tad Web 1.7.3 (2017-09-27 released)
 13. If you do not set the schedule, you will not be able to display the problem
 14. Solve the income limit of the Account books
 
-
-
 Tad Web 1.7.2 (2017-01-08 released)
 ====================================================
 1. Account books open to parents to watch
 2. Modify schedule for security
 3. Correct the incorrect calculation of spatial statistics
 4. Change the col-md of boootstrap to col-sm
-
 
 Tad Web 1.7.1 (2016-10-12 released)
 ====================================================
@@ -196,8 +188,6 @@ Tad Web 1.7.1 (2016-10-12 released)
 16. Add slot function
 17. Settings that are enabled or disabled in the About Us feature
 
-
-
 Tad Web 1.7 (2016-05-27 released)
 ====================================================
 1. Corrected issues related to tag is repeatedly displayed and can not be canceled
@@ -208,8 +198,6 @@ Tad Web 1.7 (2016-05-27 released)
 6. Remove BootStrap2
 7. Support PHP7
 8. Fixed countdown block repeated installation will have abnormal problems
-
-
 
 Tad Web 1.6.9 (2016-04-08 released)
 ====================================================
@@ -228,7 +216,6 @@ Tad Web 1.6.9 (2016-04-08 released)
 13. Add Global notifications
 14. New Assistant feature
 
-
 Tad Web 1.6.8 (2016-02-23 released)
 ====================================================
 1. Add account book plugin
@@ -239,8 +226,6 @@ Tad Web 1.6.8 (2016-02-23 released)
 6. Fixed administrators can not manage the common website problems
 7. Fixed works display is not normal block problem
 8. Fixed PHP Hosting 5.3 or less can not set the correct block
-
-
 
 Tad Web 1.6.7 (2016-01-20 released)
 ====================================================
@@ -255,9 +240,6 @@ Tad Web 1.6.7 (2016-01-20 released)
 9. The works share new students upload function works
 10. Fixed problem site can not be deleted
 11. Fixed module not properly uninstall problems
-
-
-
 
 Tad Web 1.6.6 (2016-01-04 released)
 ====================================================
@@ -283,8 +265,6 @@ Tad Web 1.6.6 (2016-01-04 released)
 20. Fixed the "File Download" to remove the incorrect question
 21. New tab features
 
-
-
 Tad Web 1.6.5 (2015-12-17 released)
 ====================================================
 1. The new free block function
@@ -295,8 +275,6 @@ Tad Web 1.6.5 (2015-12-17 released)
 6. Adjust the login block
 7. The new class and student management function
 8. Add the delete function on their own website
-
-
 
 Tad Web 1.6.4 (2015-12-01 released)
 ====================================================
@@ -309,7 +287,6 @@ Tad Web 1.6.4 (2015-12-01 released)
 7. Fixed the problem of data can not be deleted
 8. When you delete a site, you can completely delete all website content
 9. Add some new method for each plug
-
 
 Tad Web 1.6.3 (2015-11-04 released)
 ====================================================
@@ -326,7 +303,6 @@ Tad Web 1.6.2 (2015-11-02 released)
 4. Adjust the homework list title
 5. Fixed some display bug of homework in bootstrap2
 
-
 Tad Web 1.6.1 (2015-10-30 released)
 ====================================================
  1. Add the function of the preset contact book contents
@@ -338,7 +314,6 @@ Tad Web 1.6.1 (2015-10-30 released)
  7. Display attached file name in page plugin
  8. Fixed problem that change the tile of the site is not automatically updated logo
 
-
 Tad Web 1.6 (2015-10-26 released)
 ====================================================
  1. Add new calendar functions and blocks
@@ -348,13 +323,10 @@ Tad Web 1.6 (2015-10-26 released)
  5. Fixed the bug that can not manually add members
  6. New co-administrator functions
 
-
 Tad Web 1.5.1 (2015-10-16 released)
 ====================================================
  1.Fixed GuestBook English language
  2.Fixed problem of disappearing blocks
-
-
 
 Tad Web 1.5 (2015-10-16 released)
 ====================================================
@@ -368,12 +340,10 @@ Tad Web 1.5 (2015-10-16 released)
 8. The capture site URL, name, webmaster mailbox, multiplayer version of the page, the number of sub-sites and other information for statistical or later update notification
 9. Fixed the external classes can not be used in bootstrap2
 
-
 Tad Web 1.4.1 (2015-10-08 released)
 ====================================================
 1. Fixed a person has two or more sites, the menu can not switch the site.
 2. Fixed external class website can not automatically link
-
 
 Tad Web 1.4 (2015-10-02 released)
 ====================================================
@@ -384,7 +354,6 @@ Tad Web 1.4 (2015-10-02 released)
 5. The site owner can adjust Home and Menu functions order
 6. Add new management plug-in page
 
-
 Tad Web 1.3 (2015-09-21 released)
 ====================================================
 1. Fixed the issue that sites categories menu does not work.
@@ -392,7 +361,6 @@ Tad Web 1.3 (2015-09-21 released)
 3. Fixed the issue that can not download files in works page.
 4. New category management function.
 5. Fixed the issue that students guestbook messages can not be deleted
-
 
 Tad Web 1.2 (2015-09-17 released)
 ====================================================
@@ -412,7 +380,6 @@ Tad Web 1.2 (2015-09-17 released)
 14. Added Categories function.
 15. The logon block can be login to XOOPS or personal web site.
 
-
 Tad Web 1.1 (2015-09-05 released)
 ====================================================
  1.Optimization news display
@@ -421,13 +388,11 @@ Tad Web 1.1 (2015-09-05 released)
  4.New login block, you can no longer log in from the original site
  5.All using BootStrap3, except module index, as the original site bootstrap version is automatically adjusted.
 
-
 Tad Web 1.0.1 (2015-09-02 released)
 ====================================================
  1.Fixed some language
  2.Added blocks setup function.
  3.Fixed logo bug when web in bootstrap2
-
 
 Tad Web 1.0 (2015-09-02 released)
 ====================================================
@@ -439,20 +404,17 @@ Tad Web 1.0 (2015-09-02 released)
 6. Add bootstrap3 support
 7. The album changed to a sliding block way to display pictures
 
-
 Tad Web 1.0 RC6 (2014-10-23 released)
 ================================================== ==
  1. Fixed contact book can not be edited problem of old data
  2. Modify the home page list for the table
  3. Fix file subdirectory is not the right questions, and join the program update fixes
 
-
 Tad Web 1.0 RC5 (2014-09-25 released)
 ================================================== ==
  1. Modify the program so that it conforms with WCAG
  2. For MySQL strict mode is corrected
  3. Fix any upload problem
-
 
 Tad Web 1.0 RC4 (2014-01-27 released)
 ================================================== ==
@@ -470,14 +432,12 @@ Tad Web 1.0 RC3 (2013-07-30 released)
  6. Fixed an album you can not edit or upload a second (or can not store photos specified) bug
  7. Message restrictions only teachers and students (or website members) can see.
 
-
 Tad Web 1.0 RC2 (2013-07-29 released)
 ================================================== ==
  1. Increase the message function
  2. Increase the site members related functions
  3. Add Big5 Chinese language
  The package hills sea of ​​small bug fixes
-
 
 Tad Web 1.0 RC1 (2013-07-01 released)
 ================================================== ==
