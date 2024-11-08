@@ -1,13 +1,20 @@
+Tad Web 2.0 (released on 2024-11-11)
+====================================
+1. Support XOOPS 2.5.11
+2. Support PHP8.1.x
+3. Use $xoopsDB->escape() instead of $myts->addSlashes()
+4. The problem that modification permissions cannot be reset
+5. Correct the air quality block airtw.epa.gov.tw to airtw.moenv.gov.tw
+6. Database syntax parameterization
+
 Tad Web 1.9.5 (released 2023-07-19)
 ====================================
 1. Fixed the problem of not being able to retrieve Google Albums.
-
 
 Tad Web 1.9.4 (Released on 2023-01-29)
 ====================================
 1. Fix the situation that the website may not be deleted when it is deleted.
 2.Fix the problem that visitors will see the draft news in the block when the news is set as draft.
-
 
 Tad Web 1.9.3 (Released on 2022-08-29)
 ====================================

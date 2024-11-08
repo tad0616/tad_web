@@ -66,12 +66,13 @@ function tad_web_menu($options)
                 $block['plugins'] = $menu_var;
             }
 
-            $moduleHandler = xoops_getHandler('module');
-            $tad_web_Module = $moduleHandler->getByDirname('tad_web');
-            $configHandler = xoops_getHandler('config');
-            $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $tad_web_Module->mid());
+            if (!isset($xoopsModuleConfig)) {
+                $TadWebModuleConfig = Utility::getXoopsModuleConfig('tad_login');
+            } else {
+                $TadWebModuleConfig = $xoopsModuleConfig;
+            }
 
-            $quota = empty($xoopsModuleConfig['user_space_quota']) ? 1 : TadWebTools::get_web_config('space_quota', $defaltWebID);
+            $quota = empty($TadWebModuleConfig['user_space_quota']) ? 1 : TadWebTools::get_web_config('space_quota', $defaltWebID);
 
             $block['size'] = size2mb($defalt_used_size);
             $size = $quota > 0 ? (int) $block['size'] / (int) $quota : 0;
@@ -126,18 +127,13 @@ function tad_web_menu($options)
         return $block;
     }
 
-    $moduleHandler = xoops_getHandler('module');
-    $configHandler = xoops_getHandler('config');
+    $TadLoginModuleConfig = Utility::getXoopsModuleConfig('tad_login');
 
-    $TadLoginXoopsModule = $moduleHandler->getByDirname('tad_login');
-    if ($TadLoginXoopsModule) {
+    if ($TadLoginModuleConfig) {
         xoops_loadLanguage('county', 'tad_login');
         xoops_loadLanguage('blocks', 'tad_login');
 
-        $configHandler = xoops_getHandler('config');
-        $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
-
-        $auth_method = $modConfig['auth_method'];
+        $auth_method = $TadLoginModuleConfig['auth_method'];
         $i = 0;
         $oidc_array = array_keys(TadLoginTools::$all_oidc);
         $oidc_array2 = array_keys(TadLoginTools::$all_oidc2);
@@ -167,7 +163,7 @@ function tad_web_menu($options)
 
             $i++;
         }
-        //die(var_export($tlogin));
+
         $block['tlogin'] = $tlogin;
     }
 

@@ -11,17 +11,9 @@ $d = date('t');
 $end = Request::getString('end', date("Y-m-01"), date("Y-m-$d"));
 $WebID = Request::getInt('WebID');
 
-// $start = empty($_REQUEST['start']) ? date('Y-m-01') : date('Y-m-d', strtotime($_REQUEST['start']));
-// $end = empty($_REQUEST['end']) ? date('Y-m-t') : date('Y-m-d', strtotime($_REQUEST['end']));
+$TadWebModuleConfig = !isset($xoopsModuleConfig) ? Utility::getXoopsModuleConfig('tad_web') : $xoopsModuleConfig;
 
-if (!isset($xoopsModuleConfig)) {
-    $moduleHandler = xoops_getHandler('module');
-    $xoopsModule = $moduleHandler->getByDirname('tad_web');
-    $configHandler = xoops_getHandler('config');
-    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
-}
-
-$cal_cols = $xoopsModuleConfig['cal_cols'];
+$cal_cols = $TadWebModuleConfig['cal_cols'];
 
 if ('homework' === $_REQUEST['CalKind']) {
     //抓取聯絡簿

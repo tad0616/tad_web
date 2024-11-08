@@ -249,25 +249,17 @@ function tad_web_config($WebID, $configs)
     $FormValidator->render();
 
     //登入設定
-    // $login_method   = '';
-    $moduleHandler = xoops_getHandler('module');
-    $configHandler = xoops_getHandler('config');
-
-    $TadLoginXoopsModule = $moduleHandler->getByDirname('tad_login');
     $login_method = $login_defval = [];
-    if ($TadLoginXoopsModule) {
-
+    $TadLoginModuleConfig = Utility::getXoopsModuleConfig('tad_login');
+    if ($TadLoginModuleConfig) {
         xoops_loadLanguage('county', 'tad_login');
         xoops_loadLanguage('blocks', 'tad_login');
 
         $oidc_array = array_keys(TadLoginTools::$all_oidc);
         $oidc_array2 = array_keys(TadLoginTools::$all_oidc2);
-        $configHandler = xoops_getHandler('config');
-        $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
-        $auth_method = $modConfig['auth_method'];
+        $auth_method = $TadLoginModuleConfig['auth_method'];
         foreach ($auth_method as $method) {
-            $method_const = '_' . mb_strtoupper($method);
             if (in_array($method, $oidc_array)) {
                 $loginTitle = constant('_' . mb_strtoupper(TadLoginTools::$all_oidc[$method]['tail'])) . ' OIDC ' . _MB_TADLOGIN_LOGIN;
             } elseif (in_array($method, $oidc_array2)) {
@@ -427,7 +419,7 @@ function save_adm($web_admins, $WebID)
         $web_admin_arr = explode(',', $web_admins);
         foreach ($web_admin_arr as $uid) {
             $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_roles') . '` (`uid`, `role`, `term`, `enable`, `WebID`) VALUES (?, ?, ?, ?, ?)';
-            Utility::query($sql, 'isssi', [$uid, 'admin', '0000-00-00', '1', $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+            Utility::query($sql, 'issssi', [$uid, 'admin', '0000-00-00', '1', $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
     clear_my_webs_data($WebID);
