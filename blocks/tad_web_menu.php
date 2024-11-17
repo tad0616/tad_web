@@ -141,9 +141,7 @@ function tad_web_menu($options)
             // $method_const = '_' . mb_strtoupper($method);
             // $loginTitle = sprintf(_MB_TCW_OPENID_LOGIN, constant($method_const));
 
-            if ('facebook' === $method) {
-                $tlogin[$i]['link'] = TadLoginTools::facebook_login('return');
-            } elseif ('line' === $method) {
+            if ('line' === $method) {
                 $tlogin[$i]['link'] = TadLoginTools::line_login('return');
             } elseif ('google' === $method) {
                 $tlogin[$i]['link'] = TadLoginTools::google_login('return');

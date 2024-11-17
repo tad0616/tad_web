@@ -3,8 +3,8 @@ use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_web\WebCate;
 use XoopsModules\Tad_web\Tools as TadWebTools;
+use XoopsModules\Tad_web\WebCate;
 
 class tad_web_aboutus
 {
@@ -806,17 +806,17 @@ class tad_web_aboutus
 
         chk_self_web($this->WebID);
 
-        $MemExpertises = $_POST['MemExpertises'];
-        $AboutMem = $_POST['AboutMem'];
-        $MemClassOrgan = $_POST['MemClassOrgan'];
-        $MemName = $_POST['MemName'];
-        $MemNickName = $_POST['MemNickName'];
-        $MemSex = $_POST['MemSex'];
-        $MemUnicode = $_POST['MemUnicode'];
-        $MemBirthday = $_POST['MemBirthday'];
-        $MemUname = $_POST['MemUname'];
-        $MemPasswd = $_POST['MemPasswd'];
-        $MemNum = $_POST['MemNum'];
+        $MemExpertises = (string) $_POST['MemExpertises'];
+        $AboutMem = (string) $_POST['AboutMem'];
+        $MemClassOrgan = (string) $_POST['MemClassOrgan'];
+        $MemName = (string) $_POST['MemName'];
+        $MemNickName = (string) $_POST['MemNickName'];
+        $MemSex = (string) $_POST['MemSex'];
+        $MemUnicode = (string) $_POST['MemUnicode'];
+        $MemBirthday = (string) $_POST['MemBirthday'];
+        $MemUname = (string) $_POST['MemUname'];
+        $MemPasswd = (string) $_POST['MemPasswd'];
+        $MemNum = (int) $_POST['MemNum'];
 
         $CateID = (int) $_POST['CateID'];
 

@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 $sort = 1;

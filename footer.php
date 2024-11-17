@@ -4,8 +4,8 @@ use XoopsModules\Tadtools\FooTable;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_login\Tools as TadLoginTools;
 use XoopsModules\Tad_web\Power;
-use XoopsModules\Tad_web\WebCate;
 use XoopsModules\Tad_web\Tools as TadWebTools;
+use XoopsModules\Tad_web\WebCate;
 
 $xoTheme->addStylesheet('modules/tad_web/css/module.css');
 $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
@@ -344,9 +344,7 @@ function tad_web_login($WebID, $config = [])
                 continue;
             }
 
-            if ('facebook' === $method) {
-                $tlogin[$i]['link'] = TadLoginTools::facebook_login('return');
-            } elseif ('line' === $method) {
+            if ('line' === $method) {
                 $tlogin[$i]['link'] = TadLoginTools::line_login('return');
             } elseif ('google' === $method) {
                 $tlogin[$i]['link'] = TadLoginTools::google_login('return');

@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 $xoopsLogger->activated = false;
@@ -32,5 +33,5 @@ if ('delete' === $op) {
         $bg_color = '#FFFFFF';
     }
     $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_schedule_data') . '` (`ScheduleID`, `SDWeek`, `SDSort`, `Subject`, `Teacher`, `Link`, `color`, `bg_color`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    Utility::query($sql, 'iiisssss', [$ScheduleID, $SDWeek, $SDSort, $Subject, $Teacher, $Link, $color, $bg_color]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+    Utility::query($sql, 'iiisssss', [$ScheduleID, $SDWeek, $SDSort, $Subject, $Teacher, (string) $Link, $color, $bg_color]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 }

@@ -307,7 +307,10 @@ class tad_web_news
         global $xoTheme, $xoopsUser, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
-        chk_self_web($this->WebID, $_SESSION['isAssistant']['news']);
+        if (isset($_SESSION['isAssistant']['news'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['news']);
+        }
+
         get_quota($this->WebID);
 
         //抓取預設值
@@ -591,7 +594,7 @@ class tad_web_news
     public function get_prev_next($DefNewsID)
     {
         global $xoopsDB, $isMyWeb;
-        $DefNewsSort = '';
+        $DefNewsSort = 0;
         $all = $main = [];
         $andEnable = $isMyWeb ? '' : "and `NewsEnable`='1'";
         $sql = 'SELECT `NewsID`,`NewsTitle` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID`=? ' . $andEnable . ' ORDER BY `NewsDate` DESC';

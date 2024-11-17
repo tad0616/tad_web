@@ -580,7 +580,7 @@ function chk_newblock($WebID)
 
     $block_plugin = get_all_blocks('plugin');
     $block_config = get_all_blocks('config');
-
+    $db_blocks = [];
     //找出目前已安裝的區塊
     $sql = 'SELECT `BlockID`,`BlockName`,`BlockConfig` FROM `' . $xoopsDB->prefix('tad_web_blocks') . '` WHERE `WebID`=? AND `plugin`!=? AND `plugin`!=?';
     $result = Utility::query($sql, 'iss', [$WebID, 'custom', 'share']) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -609,7 +609,7 @@ function chk_newblock($WebID)
             }
             $config = str_replace('{{WebID}}', $WebID, $config);
             $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_blocks') . '` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            Utility::query($sql, 'sisssssiisi', [$BlockName, 0, $BlockTitle, '', '1', $config, 'uninstall', 0, $WebID, $block_plugin[$BlockName]], 0) or Utility::web_error($sql, __FILE__, __LINE__);
+            Utility::query($sql, 'sisssssiisi', [$BlockName, 0, $BlockTitle, '', '1', $config, 'uninstall', 0, $WebID, $block_plugin[$BlockName], 0], 0) or Utility::web_error($sql, __FILE__, __LINE__);
         } else {
             //檢查區塊設定值是否需要更新
 
