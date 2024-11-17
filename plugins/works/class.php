@@ -299,7 +299,10 @@ class tad_web_works
     {
         global $xoTheme, $xoopsUser, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
-        chk_self_web($this->WebID, $_SESSION['isAssistant']['works']);
+        if (isset($_SESSION['isAssistant']['works'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['works']);
+        }
+
         get_quota($this->WebID);
 
         //抓取預設值

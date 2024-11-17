@@ -239,7 +239,10 @@ class tad_web_video
     {
         global $xoTheme, $xoopsUser, $xoopsTpl, $plugin_menu_var;
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
-        chk_self_web($this->WebID, $_SESSION['isAssistant']['video']);
+        if (isset($_SESSION['isAssistant']['video'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['video']);
+        }
+
         get_quota($this->WebID);
 
         //抓取預設值

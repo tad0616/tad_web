@@ -82,7 +82,7 @@ $modversion['templates'] = [
 
 //---區塊設定---//
 $modversion['blocks'] = [
-    ['file' => 'tad_web_menu.php', 'name' => _MI_TCW_BNAME2, 'description' => _MI_TCW_BDESC2, 'show_func' => 'tad_web_menu', 'template' => 'tad_web_block_menu.tpl'],
+    1 => ['file' => 'tad_web_menu.php', 'name' => _MI_TCW_BNAME2, 'description' => _MI_TCW_BDESC2, 'show_func' => 'tad_web_menu', 'template' => 'tad_web_block_menu.tpl'],
     ['file' => 'tad_web_list.php', 'name' => _MI_TCW_BNAME1, 'description' => _MI_TCW_BDESC1, 'show_func' => 'tad_web_list', 'template' => 'tad_web_block_list.tpl'],
     ['file' => 'tad_web_image.php', 'name' => _MI_TCW_BNAME3, 'description' => _MI_TCW_BDESC3, 'show_func' => 'tad_web_image', 'template' => 'tad_web_block_image.tpl'],
     ['file' => 'tad_web_news.php', 'name' => _MI_TCW_BNAME4, 'description' => _MI_TCW_BDESC4, 'show_func' => 'tad_web_news', 'template' => 'tad_web_block_news.tpl'],

@@ -302,7 +302,10 @@ class tad_web_homework
         global $xoTheme, $xoopsUser, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
 
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
-        chk_self_web($this->WebID, $_SESSION['isAssistant']['homework']);
+        if (isset($_SESSION['isAssistant']['homework'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['homework']);
+        }
+
         get_quota($this->WebID);
 
         $Class = get_tad_web($this->WebID);

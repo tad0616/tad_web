@@ -35,7 +35,10 @@ class tad_web_system
     //tad_web_works編輯表單
     public function edit_form()
     {
-        chk_self_web($this->WebID, $_SESSION['isAssistant']['system']);
+        if (isset($_SESSION['isAssistant']['system'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['system']);
+        }
+
         get_quota($this->WebID);
     }
 

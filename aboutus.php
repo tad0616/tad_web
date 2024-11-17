@@ -132,8 +132,11 @@ switch ($op) {
         $_SESSION['LoginMemID'] = $_SESSION['LoginMemName'] = $_SESSION['LoginMemNickName'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = '';
         $GLOBALS['sess_handler']->regenerate_id(true);
         $_SESSION = [];
-        setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
-        setcookie($xoopsConfig['usercookie'], 0, -1, '/');
+        if (!empty($xoopsConfig['usercookie'])) {
+            setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
+            setcookie($xoopsConfig['usercookie'], 0, -1, '/');
+        }
+
         // clear entry from online users table
         if (is_object($xoopsUser)) {
             $onlineHandler = xoops_getHandler('online');
@@ -211,8 +214,10 @@ switch ($op) {
         $_SESSION['LoginParentID'] = $_SESSION['LoginParentName'] = $_SESSION['LoginParentMemID'] = $_SESSION['LoginWebID'] = $_SESSION['LoginCateID'] = '';
         $GLOBALS['sess_handler']->regenerate_id(true);
         $_SESSION = [];
-        setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
-        setcookie($xoopsConfig['usercookie'], 0, -1, '/');
+        if (!empty($xoopsConfig['usercookie'])) {
+            setcookie($xoopsConfig['usercookie'], 0, -1, '/', XOOPS_COOKIE_DOMAIN, 0);
+            setcookie($xoopsConfig['usercookie'], 0, -1, '/');
+        }
         // clear entry from online users table
         if (is_object($xoopsUser)) {
             $onlineHandler = xoops_getHandler('online');

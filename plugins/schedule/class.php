@@ -208,7 +208,9 @@ class tad_web_schedule
 
         $TadWebModuleConfig = !isset($xoopsModuleConfig) ? Utility::getXoopsModuleConfig('tad_web') : $xoopsModuleConfig;
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
-        chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
+        if (isset($_SESSION['isAssistant']['schedule'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
+        }
 
         //抓取預設值
         if (!empty($ScheduleID)) {
@@ -290,10 +292,13 @@ class tad_web_schedule
         foreach ($opt[0] as $tag) {
             $new_tag = str_replace('{', '', $tag);
             $new_tag = str_replace('}', '', $new_tag);
+            $tag_color = isset($colorArr[$new_tag]) ? $colorArr[$new_tag] : '#000000';
+            $tag_bg_color = isset($bg_colortArr[$new_tag]) ? $bg_colortArr[$new_tag] : '#fcfcfc';
+
             $val = empty($SubjectArr[$new_tag]) ? _MD_TCW_SCHEDULE_BLANK : $SubjectArr[$new_tag];
             $val = empty($LinkArr[$new_tag]) ? $val : "<a href='{$LinkArr[$new_tag]}' target='_blank'><i class='fa fa-link'></i> $val</a>";
             $dropped = empty($SubjectArr[$new_tag]) ? '' : 'dropped';
-            $new_input = '<div id="' . $new_tag . '" class="droppable ' . $dropped . '" style="padding: 8px; margin: 0px; color: ' . $colorArr[$new_tag] . '; background-color: ' . $bg_colortArr[$new_tag] . ';"><div>' . $val . '</div></div>';
+            $new_input = '<div id="' . $new_tag . '" class="droppable ' . $dropped . '" style="padding: 8px; margin: 0px; color: ' . $tag_color . '; background-color: ' . $tag_bg_color . ';"><div>' . $val . '</div></div>';
 
             $schedule_template = str_replace($tag, $new_input, $schedule_template);
         }
@@ -521,7 +526,10 @@ class tad_web_schedule
     {
         global $xoopsTpl;
 
-        chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
+        if (isset($_SESSION['isAssistant']['schedule'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
+        }
+
         get_quota($this->WebID);
 
         $xoopsTpl->assign('ScheduleID', $ScheduleID);

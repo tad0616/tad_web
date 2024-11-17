@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <{if $ActionID==""}>
+        <{if !$ActionID|default:0}>
             <div class="form-group row mb-3">
                 <label class="col-md-2 col-form-label text-sm-right text-sm-end control-label">
                     <{$smarty.const._MD_TCW_ACTION_UPLOAD_METHOD}>
