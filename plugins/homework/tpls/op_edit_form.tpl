@@ -27,7 +27,7 @@ function chang_title(){
                 <{$smarty.const._MD_TCW_HOMEWORK_POST_DATE}>
             </label>
             <div class="col-md-3">
-                <select name="HomeworkPostDate" id="HomeworkPostDate" class="form-select">
+                <select name="HomeworkPostDate" id="HomeworkPostDate" class="form-control form-select">
                     <option value="0"><{$smarty.const._MD_TCW_HOMEWORK_POST_NOW}></option>
                     <option value="8" <{if $HomeworkPostDate==8}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_8}></option>
                     <option value="12" <{if $HomeworkPostDate==12}>selected<{/if}>><{$smarty.const._MD_TCW_HOMEWORK_POST_12}></option>

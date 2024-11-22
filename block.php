@@ -207,7 +207,7 @@ function array2form($form_arr = [], $config = [])
         <div class="col-sm-9">';
         switch ($form['type']) {
             case 'select':
-                $form_code .= '<select name="config[' . $config_name . ']" class="form-select">';
+                $form_code .= '<select name="config[' . $config_name . ']" class="form-control form-select">';
                 foreach ($form['options'] as $title => $value) {
                     $selected = $value == $config[$config_name] ? 'selected' : '';
                     $form_code .= '<option value="' . $value . '" ' . $selected . '>' . $title . '</option>';

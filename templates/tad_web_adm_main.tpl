@@ -25,7 +25,7 @@
                     <{$smarty.const._MA_TCW_TEAMTITLE}>
                 </label>
                 <div class="col-sm-2">
-                    <select name="year" class="form-select">
+                    <select name="year" class="form-control form-select">
                         <option value=""></option>
                         <option value="<{$last_year|default:''}>"><{$last_year|default:''}></option>
                         <option value="<{$now_year|default:''}>"><{$now_year|default:''}></option>
@@ -139,7 +139,7 @@
         <{if $cate|default:false}>
             <div class="row">
                 <div class="col-md-3">
-                <select name="CateID" id="CateID" title="Select Cate" class="form-select" onchange="location.href='main.php?CateID='+this.value">
+                <select name="CateID" id="CateID" title="Select Cate" class="form-control form-select" onchange="location.href='main.php?CateID='+this.value">
                     <option value="" <{if $CateID==""}>selected="selected"<{/if}>><{$smarty.const._MA_TCW_SELECT_CATE}></option>
                     <{foreach from=$cate item=the_cate}>
                     <option value="<{$the_cate.CateID}>" <{if $CateID==$the_cate.CateID}>selected="selected"<{/if}>><{$the_cate.CateName}></option>

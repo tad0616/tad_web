@@ -76,7 +76,7 @@
                 <{$smarty.const._MD_TCW_BLOCK_POSITION}>
             </label>
             <div class="col-md-9">
-                <select name="BlockPosition" id="BlockPosition" class="form-select">
+                <select name="BlockPosition" id="BlockPosition" class="form-control form-select">
                     <option value="block1" <{if $block.BlockPosition=="block1"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_CENTER_BLOCK}></option>
                     <option value="block2" <{if $block.BlockPosition=="block2"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_LEFT_BLOCK}></option>
                     <option value="block3" <{if $block.BlockPosition=="block3"}>selected<{/if}>><{$smarty.const._MD_TCW_TOP_RIGHT_BLOCK}></option>
@@ -103,7 +103,7 @@
                     <{$block.config.content_type}>
                 </label>
                 <div class="col-md-9">
-                    <select name="config[content_type]" id="content_type" class="form-select">
+                    <select name="config[content_type]" id="content_type" class="form-control form-select">
                         <option value="html" <{if $block.config.content_type=="html"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_HTML}></option>
                         <option value="js" <{if $block.config.content_type=="js"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_JS}></option>
                         <option value="iframe" <{if $block.config.content_type=="iframe"}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_IFRAME}></option>
@@ -458,7 +458,7 @@
                 <{$smarty.const._MD_TCW_BLOCK_PIC_FONT}>
             </label>
             <div class="col-md-3">
-                <select name="block_pic[block_pic_font]" class="form-select">
+                <select name="block_pic[block_pic_font]" class="form-control form-select">
                     <option value="font.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>><{$smarty.const._MD_TCW_BLOCK_PIC_FONT1}></option>
                     <option value="DroidSansFallback.ttf" <{if $block_pic_font!='font.ttf'}>selected<{/if}>>DroidSansFallback<{$smarty.const._MD_TCW_BLOCK_PIC_FONT2}></option>
                 </select>

@@ -424,11 +424,8 @@ function get_tad_web_blocks($WebID = null)
                 $$k = $v;
             }
 
-            //檢查權限（改到樣板去檢查）
+            //檢查權限（改到樣板去檢查）誰可以看得見區塊
             $all['who_can_read'] = $block_read_power[$BlockID];
-            // if ($BlockName == 'share_212_8315') {
-            //     Utility::dd($block_read_power);
-            // }
 
             if ('1' != $Web['WebEnable']) {
                 $all['BlockPosition'] = $BlockPosition = 'side';
@@ -463,6 +460,15 @@ function get_tad_web_blocks($WebID = null)
     } else {
         $block = json_decode(file_get_contents($web_blocks_file), true);
     }
+
+    Utility::test($block, 'block', 'dd');
+    $power_cache_file = XOOPS_VAR_PATH . "/tad_web/{$WebID}/web_power.json";
+    if (\file_exists($power_cache_file)) {
+        $powers = \json_decode(\file_get_contents($power_cache_file), true);
+        $xoopsTpl->assign('powers', $powers);
+    }
+
+    Utility::test($powers, 'powers', 'dd');
 
     $xoopsTpl->assign('center_block1', $block['block1']);
     $xoopsTpl->assign('center_block2', $block['block2']);

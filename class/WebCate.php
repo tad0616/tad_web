@@ -168,7 +168,7 @@ class WebCate
 
         $def_opt = $default_opt ? "<option value=''>$default_option_text</option>" : '';
 
-        $menu = "<select name='{$this->menu_name}' id='{$this->menu_id}' title='Select cate' class='{$validate} form-select' >
+        $menu = "<select name='{$this->menu_name}' id='{$this->menu_id}' title='Select cate' class='{$validate} form-control form-select' >
         {$def_opt}
         {$option}
         </select>";

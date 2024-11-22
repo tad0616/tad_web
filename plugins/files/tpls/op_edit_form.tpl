@@ -37,7 +37,7 @@
                     <{$smarty.const._MD_TCW_FILES_METHOD}>
                 </label>
                 <div class="col-md-4">
-                    <select name="file_method" id="file_method" class="form-select">
+                    <select name="file_method" id="file_method" class="form-control form-select">
                         <option value="link_file"><{$smarty.const._MD_TCW_FILES_LINK}></option>
                         <option value="upload_file"><{$smarty.const._MD_TCW_FILES_UPLOAD}></option>
                     </select>

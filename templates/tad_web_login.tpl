@@ -71,7 +71,7 @@
             </script>
 
             <div class="my-border">
-                <select id="login_method" class="form-select" style="margin-bottom: 10px;" title="search">
+                <select id="login_method" class="form-control form-select" style="margin-bottom: 10px;" title="search">
                     <{if $openid=='1'}>
                     <option value="openid_login"><{$smarty.const._MD_TCW_LOGIN_BY_OPENID}></option>
                     <{/if}>
@@ -155,7 +155,7 @@
                         <label class="sr-only visually-hidden">
                         </label>
                         <div class="col-md-12 controls">
-                            <select name='MemID' id='select_mems' title='select mems' class='form-select' style="display:none;"></select>
+                            <select name='MemID' id='select_mems' title='select mems' class='form-control form-select' style="display:none;"></select>
                         </div>
                     </div>
 

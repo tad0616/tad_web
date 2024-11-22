@@ -210,6 +210,8 @@ class tad_web_schedule
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         if (isset($_SESSION['isAssistant']['schedule'])) {
             chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
+        } else {
+            chk_self_web($this->WebID);
         }
 
         //抓取預設值
@@ -528,6 +530,8 @@ class tad_web_schedule
 
         if (isset($_SESSION['isAssistant']['schedule'])) {
             chk_self_web($this->WebID, $_SESSION['isAssistant']['schedule']);
+        } else {
+            chk_self_web($this->WebID);
         }
 
         get_quota($this->WebID);

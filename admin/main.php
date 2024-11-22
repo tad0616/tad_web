@@ -362,7 +362,7 @@ function tad_web_form($WebID = null)
     $sql = 'SELECT `uid`, `uname`, `name` FROM `' . $xoopsDB->prefix('users') . '` ORDER BY `uname`';
     $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $user_menu = "<select name='WebOwnerUid' class='form-select'>";
+    $user_menu = "<select name='WebOwnerUid' class='form-control form-select'>";
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
