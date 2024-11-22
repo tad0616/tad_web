@@ -95,7 +95,6 @@ class Power
     //權限選單
     public function power_menu($power_name = 'read', $col_name = '', $col_sn = '', $plugin = '')
     {
-        global $xoopsDB;
         if ('read' === $power_name) {
             $label = _MD_TCW_POWER_FOR;
         }
@@ -113,7 +112,7 @@ class Power
                 ' . $label . '
             </label>
             <div class="col-sm-' . $this->menu_col_md . '">
-                <select name="' . $power_name . '" class="form-select">
+                <select name="' . $power_name . '" class="form-control form-select">
                     <option value="">' . _MD_TCW_POWER_FOR_ALL . '</option>
                     <option value="users" ' . $select_users . '>' . _MD_TCW_POWER_FOR_USERS . '</option>
                     <option value="web_users" ' . $select_web_users . '>' . _MD_TCW_POWER_FOR_WEB_USERS . '</option>
@@ -156,7 +155,7 @@ class Power
             \file_put_contents($power_cache_file, \json_encode($powers, 256));
         }
 
-        if (isset($def_col_sn[$def_col_name])) {
+        if (isset($def_col_name)) {
             if (!empty($def_col_sn)) {
                 return $powers[$def_col_name][$def_col_sn];
             } else {
@@ -181,28 +180,28 @@ class Power
     public function check_power($power_name = '', $col_name = '', $col_sn = '', $plugin = '')
     {
         global $isMyWeb, $LoginWebID, $xoopsUser;
-        // if ($col_sn == 58505) {
+        // if ($col_sn == 68459) {
         //     Utility::test("$power_name, $col_name, $col_sn, $plugin", 'power', 'dd');
         // }
 
         $power = $this->get_power($power_name, $col_name, $col_sn, $plugin);
-        // if ($col_sn == 58505) {
+        // if ($col_sn == 68459) {
         //     Utility::test($power, 'power', 'dd');
         // }
         if ('users' === $power and !$xoopsUser and empty($LoginWebID)) {
-            // if ($col_sn == 58505) {
+            // if ($col_sn == 68459) {
             //     Utility::test('users', 'power', 'die');
             // }
 
             return false;
         } elseif ('web_users' === $power and $LoginWebID != $this->WebID and !$isMyWeb) {
-            // if ($col_sn == 58505) {
+            // if ($col_sn == 68459) {
             //     Utility::test('web_users', 'power', 'die');
             // }
 
             return false;
         } elseif ('web_admin' === $power and !$isMyWeb) {
-            // if ($col_sn == 58505) {
+            // if ($col_sn == 68459) {
             //     Utility::test('web_admin', 'power', 'die');
             // }
 

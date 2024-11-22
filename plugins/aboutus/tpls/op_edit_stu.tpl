@@ -39,7 +39,7 @@
                             <{$smarty.const._MD_TCW_MEM_SEX}>
                         </label>
                         <div class="col-md-9">
-                            <select name="MemSex" class="form-select">
+                            <select name="MemSex" class="form-control form-select">
                                 <option value="1" <{if $MemSex!='0'}>selected<{/if}>><{$smarty.const._MD_TCW_BOY}></option>
                                 <option value="0" <{if $MemSex=='0'}>selected<{/if}>><{$smarty.const._MD_TCW_GIRL}></option>
                             </select>
@@ -52,7 +52,7 @@
                             <{$smarty.const._MD_TCW_MEM_STATUS}>
                         </label>
                         <div class="col-md-9">
-                            <select name="MemEnable" id="MemEnable" class="form-select">
+                            <select name="MemEnable" id="MemEnable" class="form-control form-select">
                                 <option value="1" <{if $MemEnable!='0'}>selected<{/if}>><{$smarty.const._MD_TCW_MEM_ENABLE}></option>
                                 <option value="0" <{if $MemEnable=='0'}>selected<{/if}>><{$smarty.const._MD_TCW_MEM_UNABLE}></option>
                             </select>

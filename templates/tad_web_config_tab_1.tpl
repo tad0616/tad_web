@@ -53,7 +53,7 @@
             <{$smarty.const._MD_TCW_THEME_TOOLS_DEFAULT_THEME}>
         </label>
         <div class="col-md-4">
-            <select name="defalut_theme" id="defalut_theme" class="form-select">
+            <select name="defalut_theme" id="defalut_theme" class="form-control form-select">
                 <option value="for_tad_web_theme" <{if $defalut_theme=="for_tad_web_theme"}>selected<{/if}>>for_tad_web_theme</option>
                 <option value="for_tad_web_theme_2" <{if $defalut_theme=="for_tad_web_theme_2"}>selected<{/if}>>for_tad_web_theme_2</option>
             </select>

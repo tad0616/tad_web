@@ -17,7 +17,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <div class="input-group-append input-group-btn ">
-                                <select name="year" class="form-select" style="width:140px;">
+                                <select name="year" class="form-control form-select" style="width:140px;">
                                     <option value="" <{if $op!="new_class"}>selected<{/if}>></option>
                                     <option value="<{$last_year|default:''}>"><{$last_year|default:''}></option>
                                     <option value="<{$now_year|default:''}>" <{if $op=="new_class"}>selected<{/if}>><{$now_year|default:''}></option>
@@ -72,7 +72,7 @@
                             <{$setup_stud|default:''}>
                         </label>
                         <div class="col-md-9">
-                            <select name="form_CateID" class="form-select">
+                            <select name="form_CateID" class="form-control form-select">
                                 <option value=""><{$smarty.const._MD_TCW_STUDENT_NO_COPY}></option>
                                 <{foreach from=$old_cate item=cate}>
                                 <option value="<{$cate.CateID}>"><{$cate.CateNameMem}></option>

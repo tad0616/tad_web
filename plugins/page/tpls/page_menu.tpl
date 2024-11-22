@@ -1,30 +1,32 @@
 <{assign var="bc" value=$block.BlockContent}>
 <{if $bc.main_data|default:false}>
     <{include file="$xoops_rootpath/modules/tad_web/templates/tad_web_block_title.tpl"}>
-    <div id="accordion" role="tablist" aria-multiselectable="true">
-        <{foreach from=$bc.page_list item=page}>
-            <div class="card panel">
-                <div class="card-header panel-heading" role="tab" id="heading<{$page.CateID}>" style="background: rgb(114, 185, 218);">
-                    <div style="font-size: 1.5rem;">
-                        <span class="badge badge-info bg-info pull-right float-right pull-end"><{$page.CateAmount}></span>
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse<{$page.CateID}>" aria-expanded="true" aria-controls="collapse<{$page.CateID}>" style="color: #ffffff;">
+    <{if $bc.page_list|default:false}>
+        <div class="accordion" id="pageAccordion">
+            <{foreach from=$bc.page_list item=page}>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading<{$page.CateID}>">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<{$page.CateID}>" aria-expanded="false" aria-controls="heading<{$page.CateID}>">
+                            <span class="badge bg-info"><{$page.CateAmount}></span>
                             <{$page.CateName}>
-                        </a>
+                        </button>
+                    </h2>
+
+                    <div id="collapse<{$page.CateID}>" class="accordion-collapse collapse" aria-labelledby="heading<{$page.CateID}>" data-bs-parent="#pageAccordion">
+                        <div class="accordion-body">
+                            <{foreach from=$page.content item=content}>
+                            <div>
+                                <a href="page.php?WebID=<{$content.WebID}>&PageID=<{$content.PageID}>">
+                                    <{if $content.show_count|default:false=='1'}>
+                                        <span class="badge badge-info bg-info"><{$content.PageCount}></span>
+                                    <{/if}><{$content.PageTitle}>
+                                </a>
+                            </div>
+                            <{/foreach}>
+                        </div>
                     </div>
                 </div>
-                <div id="collapse<{$page.CateID}>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<{$page.CateID}>">
-                    <ul class="list-group">
-                        <{foreach from=$page.content item=content}>
-                            <li class="list-group-item">
-                                <{if $content.show_count|default:false=='1'}>
-                                    <span class="badge badge-info bg-info"><{$content.PageCount}></span>
-                                <{/if}>
-                                <a href="page.php?WebID=<{$content.WebID}>&PageID=<{$content.PageID}>" style="color: #333333;"><{$content.PageTitle}></a>
-                            </li>
-                        <{/foreach}>
-                    </ul>
-                </div>
-            </div>
-        <{/foreach}>
-    </div>
+            <{/foreach}>
+        </div>
+    <{/if}>
 <{/if}>

@@ -50,7 +50,7 @@
                 <{$smarty.const._MD_TCW_WORKS_KIND}>
             </label>
             <div class="col-md-4">
-                <select name="WorksKind" class="form-select" id="WorksKind">
+                <select name="WorksKind" class="form-control form-select" id="WorksKind">
                     <option value=""><{$smarty.const._MD_TCW_WORKS_KIND_DEFAULT}></option>
                     <option value="mem_now" <{if $WorksKind=="mem_now"}>selected<{/if}>><{$smarty.const._MD_TCW_WORKS_KIND_MEM_NOW}></option>
                     <option value="mem_after_end" <{if $WorksKind=="mem_after_end"}>selected<{/if}>><{$smarty.const._MD_TCW_WORKS_KIND_MEM_AFTER_END}></option>

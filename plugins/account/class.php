@@ -260,6 +260,8 @@ class tad_web_account
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         if (isset($_SESSION['isAssistant']['account'])) {
             chk_self_web($this->WebID, $_SESSION['isAssistant']['account']);
+        } else {
+            chk_self_web($this->WebID);
         }
 
         get_quota($this->WebID);

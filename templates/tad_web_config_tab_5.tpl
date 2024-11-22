@@ -16,7 +16,7 @@
             <{$smarty.const._MD_TCW_BG_REPEAT}>
         </label>
         <div class="col-md-4">
-            <select name="bg_repeat" id="bg_repeat" class="form-select">
+            <select name="bg_repeat" id="bg_repeat" class="form-control form-select">
                 <option value="" <{if $bg_repeat==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_NORMAL}></option>
                 <option value="repeat-x" <{if $bg_repeat=="repeat-x"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_X}></option>
                 <option value="repeat-y" <{if $bg_repeat=="repeat-y"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_REPEAT_Y}></option>
@@ -28,7 +28,7 @@
             <{$smarty.const._MD_TCW_BG_ATTACHMENT}>
         </label>
         <div class="col-md-4">
-            <select name="bg_attachment" id="bg_attachment" class="form-select">
+            <select name="bg_attachment" id="bg_attachment" class="form-control form-select">
                 <option value="" <{if $bg_attachment==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_ATTACHMENT_SCROLL}></option>
                 <option value="fixed" <{if $bg_attachment=="fixed"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_ATTACHMENT_FIXED}></option>
             </select>
@@ -40,7 +40,7 @@
             <{$smarty.const._MD_TCW_BG_POSITION}>
         </label>
         <div class="col-md-4">
-            <select name="bg_postiton" id="bg_postiton" class="form-select">
+            <select name="bg_postiton" id="bg_postiton" class="form-control form-select">
                 <option value="left top" <{if $bg_postiton=="left top"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_LT}></option>
                 <option value="right top" <{if $bg_postiton=="right top"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_RT}></option>
                 <option value="left bottom" <{if $bg_postiton=="left bottom"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_POSITION_LB}></option>
@@ -55,7 +55,7 @@
             <{$smarty.const._MD_TCW_BG_SIZE}>
         </label>
         <div class="col-md-4">
-            <select name="bg_size" id="bg_size" class="form-select">
+            <select name="bg_size" id="bg_size" class="form-control form-select">
                 <option value="" <{if $bg_size==""}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_NONE}></option>
                 <option value="cover" <{if $bg_size=="cover"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_COVER}></option>
                 <option value="contain" <{if $bg_size=="contain"}>selected<{/if}>><{$smarty.const._MD_TCW_BG_SIZE_CONTAIN}></option>

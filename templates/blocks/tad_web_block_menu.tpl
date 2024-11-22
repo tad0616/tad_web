@@ -136,7 +136,7 @@
     <{if $block.defaltWebID|default:false}>
 
         <{if $block.web_num > 1}>
-            <select class="form-select" onChange="location.href=this.value" title="Select Web">
+            <select class="form-control form-select" onChange="location.href=this.value" title="Select Web">
                 <{foreach from=$block.webs item=web}>
                 <option value="<{$web.url}>" <{if $web.WebID==$WebID|default:''}>selected<{/if}>><{$web.title}> (<{$web.name}>)</option>
                 <{/foreach}>

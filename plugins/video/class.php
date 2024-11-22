@@ -241,6 +241,8 @@ class tad_web_video
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         if (isset($_SESSION['isAssistant']['video'])) {
             chk_self_web($this->WebID, $_SESSION['isAssistant']['video']);
+        } else {
+            chk_self_web($this->WebID);
         }
 
         get_quota($this->WebID);

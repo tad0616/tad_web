@@ -250,7 +250,11 @@ class tad_web_homework
                 $ColsNum++;
             }
         }
+        if (empty($ColsNum)) {
+            $ColsNum = 1;
+        }
         $ColWidth = 12 / $ColsNum;
+
         $xoopsTpl->assign('ColsNum', $ColsNum);
         $xoopsTpl->assign('ColWidth', $ColWidth);
 
@@ -299,11 +303,13 @@ class tad_web_homework
     //tad_web_homework編輯表單
     public function edit_form($HomeworkID = '')
     {
-        global $xoTheme, $xoopsUser, $xoopsTpl, $TadUpFiles, $plugin_menu_var;
+        global $xoTheme, $xoopsUser, $xoopsTpl, $TadUpFiles, $plugin_menu_var, $WebOwnerUid;
 
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         if (isset($_SESSION['isAssistant']['homework'])) {
             chk_self_web($this->WebID, $_SESSION['isAssistant']['homework']);
+        } else {
+            chk_self_web($this->WebID);
         }
 
         get_quota($this->WebID);
@@ -726,6 +732,9 @@ class tad_web_homework
             if ('other' !== $HomeworkCol) {
                 $ColsNum++;
             }
+        }
+        if (empty($ColsNum)) {
+            $ColsNum = 1;
         }
         $ColWidth = 12 / $ColsNum;
         $data['ColsNum'] = $ColsNum;

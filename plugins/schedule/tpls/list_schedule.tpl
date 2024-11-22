@@ -32,7 +32,7 @@
             <{if $act.ScheduleDisplay=='1'}>
                 <div style="margin: 8px auto;">
                     <h2>
-                        <{if $act.cate.CateName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
+                        <{if $act.cate|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
                         <{if $act.ScheduleName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
                         <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID|default:''}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
                         <small>

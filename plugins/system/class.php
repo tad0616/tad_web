@@ -37,6 +37,8 @@ class tad_web_system
     {
         if (isset($_SESSION['isAssistant']['system'])) {
             chk_self_web($this->WebID, $_SESSION['isAssistant']['system']);
+        } else {
+            chk_self_web($this->WebID);
         }
 
         get_quota($this->WebID);

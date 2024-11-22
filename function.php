@@ -1912,6 +1912,7 @@ function isCanEdit($WebID = null, $plugin = '', $CateID = '', $ColName = '', $Co
 function chk_self_web($WebID, $other = null)
 {
     global $isMyWeb, $MyWebs;
+
     if (!$isMyWeb and $MyWebs) {
         redirect_header($_SERVER['PHP_SELF'] . "?op=WebID={$MyWebs[0]}&op=edit_form", 3, _MD_TCW_AUTO_TO_HOME);
     } elseif (!$isMyWeb) {

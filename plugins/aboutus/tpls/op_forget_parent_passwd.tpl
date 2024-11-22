@@ -29,7 +29,7 @@
             <{$cate_menu|default:''}>
         </div>
         <div class="col-md-5">
-            <select name="MemID" id="list_mems" class="form-select" title="list mems">
+            <select name="MemID" id="list_mems" class="form-control form-select" title="list mems">
                 <option value=""><{$smarty.const._MD_TCW_ABOUTUS_SELECT_CLASS}></option>
             </select>
         </div>
@@ -40,7 +40,7 @@
             <{$smarty.const._MD_TCW_ABOUTUS_YOUR_ARE}><span class="mem_name"><$smarty.const._MD_TCW_ABOUTUS_THE_STUDENT></span><{$smarty.const._MD_TCW_ABOUTUS_S}>
         </label>
         <div class="col-md-4">
-            <select name="Reationship" id="Reationship" class="form-select" title="Reationship">
+            <select name="Reationship" id="Reationship" class="form-control form-select" title="Reationship">
             </select>
         </div>
         <div class="col-md-5">

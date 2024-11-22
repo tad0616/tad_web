@@ -88,7 +88,6 @@ class tad_web_news
             left join " . $xoopsDB->prefix('tad_web_cate') . " as d on a.CateID=d.CateID
             where b.`WebEnable`='1' and (d.CateEnable='1' or a.CateID='0') and c.`tag_name`='{$tag}' {$andEnable} $andWebID $andCateID
             order by a.NewsDate desc";
-            // die($sql);
         } else {
             if (empty($this->WebID)) {
                 return;
@@ -119,7 +118,7 @@ class tad_web_news
 
         $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'news');
 
-        while (false !== ($all = $xoopsDB->fetchArray($result))) {
+        while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal  , $NewsUrl , $WebID  , $NewsCounter , $NewsEnable
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -309,6 +308,8 @@ class tad_web_news
         $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         if (isset($_SESSION['isAssistant']['news'])) {
             chk_self_web($this->WebID, $_SESSION['isAssistant']['news']);
+        } else {
+            chk_self_web($this->WebID);
         }
 
         get_quota($this->WebID);
@@ -405,6 +406,12 @@ class tad_web_news
     {
         global $xoopsDB, $xoopsUser, $TadUpFiles, $WebOwnerUid;
         if (isset($_SESSION['isAssistant']['news'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['news']);
+        } else {
+            chk_self_web($this->WebID);
+        }
+
+        if (isset($_SESSION['isAssistant']['news'])) {
             $uid = $WebOwnerUid;
         } elseif (!empty($_POST['uid'])) {
             $uid = (int) $_POST['uid'];
@@ -454,6 +461,11 @@ class tad_web_news
     public function update($NewsID = '')
     {
         global $xoopsDB, $TadUpFiles;
+        if (isset($_SESSION['isAssistant']['news'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['news']);
+        } else {
+            chk_self_web($this->WebID);
+        }
 
         $NewsTitle = $_POST['NewsTitle'];
         $NewsUrl = $_POST['NewsUrl'];
@@ -505,6 +517,11 @@ class tad_web_news
     public function delete($NewsID = '')
     {
         global $xoopsDB, $TadUpFiles;
+        if (isset($_SESSION['isAssistant']['news'])) {
+            chk_self_web($this->WebID, $_SESSION['isAssistant']['news']);
+        } else {
+            chk_self_web($this->WebID);
+        }
         $sql = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID`=?';
         $result = Utility::query($sql, 'i', [$NewsID]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
