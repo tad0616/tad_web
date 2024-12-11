@@ -1,10 +1,10 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#LinkUrl').change(function() {
+        $('#LinkUrl').on('change', function() {
         $('#LinkTitle').val($('#LinkUrl').val());
         $.post("link_ajax.php", { url: $('#LinkUrl').val()},
             function(data) {
-                var obj = $.parseJSON(data);
+                var obj = JSON.parse(data);
                 $('#LinkTitle').val(obj.title);
                 $('#LinkDesc').val(obj.description);
             });
@@ -14,7 +14,7 @@
         $('#LinkGet').click(function() {
         $.post("link_ajax.php", { url: $('#LinkUrl').val()},
             function(data) {
-                var obj = $.parseJSON(data);
+                var obj = JSON.parse(data);
                 $('#LinkTitle').val(obj.title);
                 $('#LinkDesc').val(obj.description);
             });
@@ -72,7 +72,7 @@
             <!--編號-->
             <input type="hidden" name="LinkID" value="<{$LinkID|default:''}>">
             <input type="hidden" name="op" value="<{$next_op|default:''}>">
-            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 </div>

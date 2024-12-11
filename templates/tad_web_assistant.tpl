@@ -10,7 +10,7 @@
                 $('#CateID').show();
             }
 
-            $("#plugin").change(function(event) {
+            $("#plugin").on('change', function(event) {
                 $.post("<{$xoops_url}>/modules/tad_web/ajax.php", { op: 'get_cate_options', plugin: $('#plugin').val(), WebID: '<{$WebID|default:''}>'}, function(data){
                     $('#CateID').html(data);
                 });
@@ -24,7 +24,7 @@
                 }
             });
 
-            $("#CateID").change(function(event) {
+            $("#CateID").on('change', function(event) {
                 if($("#CateID").val()!=''){
                     $('#submit').show();
                 }else{

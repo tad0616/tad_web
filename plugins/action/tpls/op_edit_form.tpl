@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#gphoto_link_url').change(function(){
+        $('#gphoto_link_url').on('change', function(){
             var p=/^https:\/\/photos.app.goo.gl/gi;
             var url=$('#gphoto_link_url').val();
             if(p.test(url)){
@@ -18,7 +18,7 @@
                 $("#upload_photo").hide();
             <{/if}>
         <{else}>
-            $("input[name='upload_method']").change(function(event) {
+            $("input[name='upload_method']").on('change', function(event) {
                 var up_method = $("input[name='upload_method']:checked").val();
                 if(up_method=="gphoto_link"){
                     $("#gphoto_link").show();
@@ -152,7 +152,7 @@
                 <!--所屬團隊-->
                 <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                 <input type="hidden" name="op" value="<{$next_op|default:''}>">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
             </div>
         </div>
     </form>

@@ -66,7 +66,7 @@ function save_plugins()
     $display_plugins = [];
     foreach ($plugins as $plugin) {
         $dirname = $plugin['dirname'];
-        $PluginTitle = $_POST['plugin_name'][$dirname];
+        $PluginTitle = (string) $_POST['plugin_name'][$dirname];
 
         $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_plugins') . '` (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) VALUES (?, ?, ?, ?, ?)';
         Utility::query($sql, 'ssisi', [$dirname, $PluginTitle, $i, $_POST['plugin_display'][$dirname], 0]) or Utility::web_error($sql, __FILE__, __LINE__);

@@ -452,8 +452,8 @@ function update_tad_web($WebID = '')
 {
     global $xoopsDB;
 
-    $WebName = $_POST['WebName'];
-    $WebTitle = $_POST['WebTitle'];
+    $WebName = (string) $_POST['WebName'];
+    $WebTitle = (string) $_POST['WebTitle'];
     $CateID = (int) $_POST['CateID'];
     $WebSort = (int) $_POST['WebSort'];
     $WebEnable = (int) $_POST['WebEnable'];

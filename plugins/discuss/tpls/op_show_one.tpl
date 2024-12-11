@@ -43,7 +43,7 @@
             <div style="float: right;">
                 <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || ($smarty.session.LoginMemID && $MemID == $smarty.session.LoginMemID) || ($smarty.session.LoginParentID && $ParentID == $smarty.session.LoginParentID)}>
                     <a href="javascript:delete_discuss_func(<{$DiscussID|default:''}>);" class="btn btn-sm btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
-                    <a href="discuss.php?WebID=<{$WebID|default:''}>&op=edit_form&DiscussID=<{$DiscussID|default:''}>" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
+                    <a href="discuss.php?WebID=<{$WebID|default:''}>&op=edit_form&DiscussID=<{$DiscussID|default:''}>" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
                 <{/if}>
             </div>
         </div>

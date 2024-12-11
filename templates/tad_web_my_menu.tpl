@@ -75,11 +75,11 @@
         <{if $user_kind=="mem"}>
             <div class="btn-group">
                 <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$LoginCateID|default:''}>&MemID=<{$LoginMemID|default:''}>&op=show_stu" class="btn btn-info">
-                    <i class="fa fa-check-square-o"></i>
+                    <i class="fa fa-check-square"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_MY_ACCOUNT}>
                 </a>
                 <a href="aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$default_class|default:''}>&MemID=<{$LoginMemID|default:''}>&op=edit_stu" class="btn btn-success">
-                    <i class="fa fa-pencil-square-o"></i>
+                    <i class="fa fa-pencil"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_EDIT_ACCOUNT}>
                 </a>
             </div>
@@ -91,7 +91,7 @@
                             <tr>
                                 <td>
                                     <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
-                                        <i class="fa <{$plugin.icon}>"></i>
+                                        <i class="<{if $plugin.icon|substr:0:3=='fa-'}>fa <{/if}><{$plugin.icon}>"></i>
                                         <{$plugin.title}>
                                     </a>
                                 </td>
@@ -111,18 +111,18 @@
 
             <div class="d-grid gap-2">
                 <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=mem_logout&WebID=<{$WebID|default:''}>" class="btn btn-danger btn-block">
-                    <i class="fa fa-check-square-o"></i>
+                    <i class="fa fa-check-square"></i>
                     <{$smarty.const._MD_TCW_EXIT}>
                 </a>
             </div>
         <{elseif $user_kind=="parent"}>
             <div class="btn-group">
                 <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$LoginCateID|default:''}>&ParentID=<{$LoginParentID|default:''}>&op=show_parent" class="btn btn-info">
-                    <i class="fa fa-check-square-o"></i>
+                    <i class="fa fa-check-square"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_MY_ACCOUNT}>
                 </a>
                 <a href="aboutus.php?WebID=<{$LoginWebID|default:''}>&CateID=<{$default_class|default:''}>&ParentID=<{$LoginParentID|default:''}>&op=show_parent" class="btn btn-success">
-                    <i class="fa fa-pencil-square-o"></i>
+                    <i class="fa fa-pencil"></i>
                     <{$smarty.const._MD_TCW_ABOUTUS_EDIT_ACCOUNT}>
                 </a>
             </div>
@@ -134,7 +134,7 @@
                             <tr>
                                 <td>
                                     <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
-                                        <i class="fa <{$plugin.icon}>"></i>
+                                        <i class="<{if $plugin.icon|substr:0:3=='fa-'}>fa <{/if}><{$plugin.icon}>"></i>
                                         <{$plugin.title}>
                                     </a>
                                 </td>
@@ -154,7 +154,7 @@
 
             <div class="d-grid gap-2">
                 <a href="<{$xoops_url}>/modules/tad_web/aboutus.php?op=parent_logout&WebID=<{$WebID|default:''}>" class="btn btn-danger btn-block">
-                    <i class="fa fa-check-square-o"></i>
+                    <i class="fa fa-check-square"></i>
                     <{$smarty.const._MD_TCW_EXIT}>
                 </a>
             </div>
@@ -178,11 +178,11 @@
 
                 <div class="btn-group">
                     <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$defaltWebID|default:''}>" class="btn btn-success">
-                        <i class="fa fa-check-square-o"></i>
+                        <i class="fa fa-check-square"></i>
                         <{$smarty.const._MD_TCW_WEB_CONFIG}>
                     </a>
                     <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID|default:''}>" class="btn btn-info">
-                        <i class="fa fa-check-square-o"></i>
+                        <i class="fa fa-check-square"></i>
                         <{$smarty.const._MD_TCW_WEB_BLOCK_CONFIG}>
                     </a>
                     <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$defaltWebID|default:''}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MD_TCW_BLOCK_ADD}>">
@@ -197,7 +197,7 @@
                                 <tr>
                                     <td>
                                         <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
-                                        <i class="fa <{$plugin.icon}>"></i>
+                                        <i class="<{if $plugin.icon|substr:0:3=='fa-'}>fa <{/if}><{$plugin.icon}>"></i>
                                         <{$plugin.title}>
                                         </a>
                                     </td>
@@ -234,7 +234,7 @@
                             <{else}>
                                 <tr style="background-color: #dfdfdf;">
                                     <td style="background-color: #dfdfdf; color:#5f5f5f;">
-                                        <i class="fa <{$plugin.icon}>"></i>
+                                        <i class="<{if $plugin.icon|substr:0:3=='fa-'}>fa <{/if}><{$plugin.icon}>"></i>
                                         <{$plugin.title}>
                                     </td>
                                     <td colspan=4 style="background-color: #dfdfdf;">

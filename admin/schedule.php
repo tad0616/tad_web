@@ -61,7 +61,7 @@ function save_schedule_template()
     global $xoopsModule, $xoopsDB;
     $conf_modid = $xoopsModule->getVar('mid');
 
-    $conf_value = $_POST['schedule_template'];
+    $conf_value = (string) $_POST['schedule_template'];
 
     $sql = "UPDATE `" . $xoopsDB->prefix('config') . "`
     SET conf_value = ?
@@ -76,7 +76,7 @@ function save_schedule_subjects()
     global $xoopsModule, $xoopsDB;
     $conf_modid = $xoopsModule->getVar('mid');
 
-    $conf_value = $_POST['schedule_subjects'];
+    $conf_value = (string) $_POST['schedule_subjects'];
 
     $sql = "UPDATE " . $xoopsDB->prefix('config') . "
     SET conf_value = ?

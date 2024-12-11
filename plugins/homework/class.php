@@ -455,28 +455,28 @@ class tad_web_homework
     {
         global $xoopsDB, $TadUpFiles;
 
-        $HomeworkTitle = $_POST['HomeworkTitle'];
+        $HomeworkTitle = (string) $_POST['HomeworkTitle'];
         $HomeworkContent = Wcag::amend($_POST['HomeworkContent']);
-        $toCal = $_POST['toCal'];
-        $HomeworkPostDate = $_POST['HomeworkPostDate'];
+        $toCal = (string) $_POST['toCal'];
+        $HomeworkPostDate = (string) $_POST['HomeworkPostDate'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $uid = (int) $_POST['uid'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
-        $today_homework = $_POST['today_homework'];
+        $today_homework = (string) $_POST['today_homework'];
         $today_homework = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
-        $bring = $_POST['bring'];
+        $bring = (string) $_POST['bring'];
         $bring = Wcag::amend($bring);
         $bring_remove_html = $this->remove_html($bring);
-        $teacher_say = $_POST['teacher_say'];
+        $teacher_say = (string) $_POST['teacher_say'];
         $teacher_say = Wcag::amend($teacher_say);
         $teacher_say_remove_html = $this->remove_html($teacher_say);
-        $other = $_POST['other'];
+        $other = (string) $_POST['other'];
         $other = Wcag::amend($other);
         $other_remove_html = $this->remove_html($other);
-        $newCateName = $_POST['newCateName'];
+        $newCateName = (string) $_POST['newCateName'];
 
         if (empty($toCal)) {
             $toCal = '0000-00-00';
@@ -539,28 +539,28 @@ class tad_web_homework
     {
         global $xoopsDB, $TadUpFiles;
 
-        $HomeworkTitle = $_POST['HomeworkTitle'];
-        $HomeworkContent = $_POST['HomeworkContent'];
+        $HomeworkTitle = (string) $_POST['HomeworkTitle'];
+        $HomeworkContent = (string) $_POST['HomeworkContent'];
         $HomeworkContent = Wcag::amend($HomeworkContent);
-        $toCal = $_POST['toCal'];
-        $HomeworkPostDate = $_POST['HomeworkPostDate'];
+        $toCal = (string) $_POST['toCal'];
+        $HomeworkPostDate = (string) $_POST['HomeworkPostDate'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $HomeworkDate = date('Y-m-d H:i:s');
 
-        $today_homework = $_POST['today_homework'];
+        $today_homework = (string) $_POST['today_homework'];
         $today_homework = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
-        $bring = $_POST['bring'];
+        $bring = (string) $_POST['bring'];
         $bring = Wcag::amend($bring);
         $bring_remove_html = $this->remove_html($bring);
-        $teacher_say = $_POST['teacher_say'];
+        $teacher_say = (string) $_POST['teacher_say'];
         $teacher_say = Wcag::amend($teacher_say);
         $teacher_say_remove_html = $this->remove_html($teacher_say);
-        $other = $_POST['other'];
+        $other = (string) $_POST['other'];
         $other = Wcag::amend($other);
         $other_remove_html = $this->remove_html($other);
-        $newCateName = $_POST['newCateName'];
+        $newCateName = (string) $_POST['newCateName'];
         // die($bring);
         if (empty($toCal)) {
             $toCal = '0000-00-00';

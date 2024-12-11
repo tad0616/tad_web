@@ -72,7 +72,7 @@
                 <!--編號-->
                 <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                 <input type="hidden" name="op" value="<{$next_op|default:''}>">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
     <{elseif $op=="batch_creat_class"}>
@@ -86,7 +86,7 @@
         <a href="main.php?op=create_by_user" class="btn btn-large btn-info"><{$smarty.const._MA_TCW_CREATE_BY_USER}></a>
     <{elseif $op=="create_by_user"}>
         <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
-            <{$tmt_box}>
+            <{$tmt_box|default:''}>
         </form>
     <{elseif $op=="delete_tad_web_chk"}>
         <h2><{$smarty.const._MA_TCW_WILL_DEL}></h2>
@@ -204,7 +204,7 @@
                     <{$class.last_accessed}>
                     </td>
                     <td>
-                    <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-sm btn-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
+                    <a href="main.php?WebID=<{$class.WebID}>&op=tad_web_form" class="btn btn-sm btn-info"><i class="fa fa-pencil" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
 
                     </td>
                 </tr>
@@ -214,7 +214,7 @@
             <div class="text-center">
                 <input type="hidden" name="op" value="save_webs_title">
                 <input type="hidden" name="g2p" value="<{$g2p|default:''}>">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
         <{$bar|default:''}>

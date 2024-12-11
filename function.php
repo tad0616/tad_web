@@ -651,7 +651,7 @@ function mk_menu_var_file($WebID = null)
 
             $BlockConfig = str_replace('{{WebID}}', $WebID, $BlockConfig);
             $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_blocks') . '` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            Utility::query($sql, 'sisssssiisi', [$func, 0, $name, '', $BlockEnable, $BlockConfig, $block_position[$func], $sort, $WebID, $block_plugin[$func]], 0) or Utility::web_error($sql, __FILE__, __LINE__);
+            Utility::query($sql, 'sisssssiisi', [$func, 0, $name, '', $BlockEnable, $BlockConfig, (string) $block_position[$func], $sort, $WebID, (string) $block_plugin[$func]], 0) or Utility::web_error($sql, __FILE__, __LINE__);
             $sort++;
         }
     }

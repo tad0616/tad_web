@@ -90,7 +90,7 @@
 
         <{if $isMyWeb|default:false}>
             <div class="text-center" style="margin: 30px auto;">
-                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$mem.MemID}>&op=edit_stu" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
+                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$mem.MemID}>&op=edit_stu" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
             </div>
         <{/if}>
 

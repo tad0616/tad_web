@@ -64,7 +64,7 @@
             <input type="hidden" name="WorksID" value="<{$WorksID|default:''}>">
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="mem_upload">
-            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 <{/if}>
@@ -72,11 +72,11 @@
 
 <{if $isMyWeb|default:false}>
     <div class="text-right text-end" style="margin: 30px 0px;">
-        <a href="javascript:delete_works_func(<{$WorksID|default:''}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
+        <a href="javascript:delete_works_func(<{$WorksID|default:''}>);" class="btn btn-danger"><i class="fa fa-trash"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
         <a href="works.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
         <a href="works.php?WebID=<{$WebID|default:''}>&op=edit_form&WorksID=<{$WorksID|default:''}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_WORKS_SHORT}></a>
         <{if $WorksKind!==''}>
-            <a href="works.php?WebID=<{$WebID|default:''}>&op=score_form&WorksID=<{$WorksID|default:''}>" class="btn btn-primary"><i class="fa fa-star-half-o"></i> <{$smarty.const._MD_TCW_WORKS_WORKS_SCORE_FORM}></a>
+            <a href="works.php?WebID=<{$WebID|default:''}>&op=score_form&WorksID=<{$WorksID|default:''}>" class="btn btn-primary"><i class="fa  fa-star-half-stroke"></i> <{$smarty.const._MD_TCW_WORKS_WORKS_SCORE_FORM}></a>
         <{/if}>
     </div>
 <{/if}>

@@ -153,11 +153,11 @@
         <div class="text-center">
             <div class="btn-group">
                 <a href="<{$xoops_url}>/modules/tad_web/config.php?WebID=<{$block.defaltWebID}>" class="btn btn-success">
-                    <i class="fa fa-check-square-o"></i>
+                    <i class="fa fa-check-square"></i>
                     <{$smarty.const._MB_TCW_WEB_CONFIG}>
                 </a>
                 <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$block.defaltWebID}>" class="btn btn-info">
-                    <i class="fa fa-check-square-o"></i>
+                    <i class="fa fa-check-square"></i>
                     <{$smarty.const._MB_TCW_WEB_BLOCK_CONFIG}>
                 </a>
                 <a href="<{$xoops_url}>/modules/tad_web/block.php?WebID=<{$block.defaltWebID}>&op=add_block" class="btn btn-info" title="<{$smarty.const._MB_TCW_BLOCK_ADD}>">
@@ -173,7 +173,7 @@
                         <tr>
                             <td>
                                 <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.url}>">
-                                    <i class="fa <{$plugin.icon}>"></i>
+                                    <i class="<{if $plugin.icon|substr:0:3=='fa-'}>fa <{/if}><{$plugin.icon}>"></i>
                                     <{$plugin.title}>
                                 </a>
                             </td>
@@ -205,7 +205,7 @@
                     <{else}>
                         <tr style="background-color: #dfdfdf;">
                             <td style="background-color: #dfdfdf; color:#5f5f5f;">
-                                <i class="fa <{$plugin.icon}>"></i>
+                                <i class="<{if $plugin.icon|substr:0:3=='fa-'}>fa <{/if}><{$plugin.icon}>"></i>
                                 <{$plugin.title}>
                             </td>
                             <td colspan=3 style="background-color: #dfdfdf;">

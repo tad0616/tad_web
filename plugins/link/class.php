@@ -276,11 +276,11 @@ class tad_web_link
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $LinkTitle = $_POST['LinkTitle'];
-        $LinkDesc = $_POST['LinkDesc'];
-        $LinkUrl = $_POST['LinkUrl'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $LinkTitle = (string) $_POST['LinkTitle'];
+        $LinkDesc = (string) $_POST['LinkDesc'];
+        $LinkUrl = (string) $_POST['LinkUrl'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $LinkCounter = (int) $_POST['LinkCounter'];
         $LinkSort = (int) $_POST['LinkSort'];
         $CateID = (int) $_POST['CateID'];
@@ -306,11 +306,11 @@ class tad_web_link
     {
         global $xoopsDB;
 
-        $LinkTitle = $_POST['LinkTitle'];
-        $LinkDesc = $_POST['LinkDesc'];
-        $LinkUrl = $_POST['LinkUrl'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $LinkTitle = (string) $_POST['LinkTitle'];
+        $LinkDesc = (string) $_POST['LinkDesc'];
+        $LinkUrl = (string) $_POST['LinkUrl'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
 
@@ -347,7 +347,7 @@ class tad_web_link
         Utility::query($sql, 'i', [$LinkID]) or Utility::web_error($sql, __FILE__, __LINE__);
         check_quota($this->WebID);
 
-        $tag_name = $_POST['tag_name'];
+        $tag_name = (string) $_POST['tag_name'];
         //儲存標籤
         $this->tags->save_tags('LinkID', $LinkID, $tag_name, $_POST['tags']);
     }

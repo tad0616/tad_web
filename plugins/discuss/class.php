@@ -459,10 +459,10 @@ class tad_web_discuss
             redirect_header('index.php', 3, _MD_TCW_LOGIN_TO_POST);
         }
 
-        $DiscussTitle = $_POST['DiscussTitle'];
-        $DiscussContent = $_POST['DiscussContent'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $DiscussTitle = (string) $_POST['DiscussTitle'];
+        $DiscussContent = (string) $_POST['DiscussContent'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ReDiscussID = (int) $_POST['ReDiscussID'];
@@ -542,10 +542,10 @@ class tad_web_discuss
             $and_uid = "and `ParentID`='{$ParentID}'";
         }
 
-        $DiscussTitle = $_POST['DiscussTitle'];
-        $DiscussContent = $_POST['DiscussContent'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $DiscussTitle = (string) $_POST['DiscussTitle'];
+        $DiscussContent = (string) $_POST['DiscussContent'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ReDiscussID = (int) $_POST['ReDiscussID'];

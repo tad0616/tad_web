@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#list_mems").change(function(event) {
+        $("#list_mems").on('change', function(event) {
             var mem_name=$("#list_mems option:selected").prop('label');
             $('.mem_name').html(mem_name);
             $('#step3').show();
@@ -46,7 +46,7 @@
         <div class="col-md-5">
             <input type="hidden" name="op" value="send_parents_passwd">
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
-            <button type="submit" class="btn btn-primary" id="submit_btn"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SUBMIT}></button>
+            <button type="submit" class="btn btn-primary" id="submit_btn"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SUBMIT}></button>
             <div class="alert alert-info" id="no_account" style="display:none;">
                 <a href="aboutus.php?WebID=<{$WebID|default:''}>&op=parents_account"><{$smarty.const._MD_TCW_ABOUTUS_NO_PARENT_ACCOUNT}></a>
             </div>

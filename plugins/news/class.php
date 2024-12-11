@@ -419,14 +419,14 @@ class tad_web_news
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $NewsTitle = $_POST['NewsTitle'];
-        $NewsUrl = $_POST['NewsUrl'];
-        $NewsContent = $_POST['NewsContent'];
+        $NewsTitle = (string) $_POST['NewsTitle'];
+        $NewsUrl = (string) $_POST['NewsUrl'];
+        $NewsContent = (string) $_POST['NewsContent'];
         $NewsContent = Wcag::amend($NewsContent);
-        $NewsDate = $_POST['NewsDate'];
-        $toCal = $_POST['toCal'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $NewsDate = (string) $_POST['NewsDate'];
+        $toCal = (string) $_POST['toCal'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $NewsEnable = (int) $_POST['NewsEnable'];
@@ -467,14 +467,14 @@ class tad_web_news
             chk_self_web($this->WebID);
         }
 
-        $NewsTitle = $_POST['NewsTitle'];
-        $NewsUrl = $_POST['NewsUrl'];
-        $NewsContent = $_POST['NewsContent'];
+        $NewsTitle = (string) $_POST['NewsTitle'];
+        $NewsUrl = (string) $_POST['NewsUrl'];
+        $NewsContent = (string) $_POST['NewsContent'];
         $NewsContent = Wcag::amend($NewsContent);
-        $NewsDate = $_POST['NewsDate'];
-        $toCal = $_POST['toCal'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $NewsDate = (string) $_POST['NewsDate'];
+        $toCal = (string) $_POST['toCal'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $NewsEnable = (int) $_POST['NewsEnable'];

@@ -19,7 +19,7 @@
                     <input type="hidden" name="CateSort" id="CateSort" value="<{$CateSort|default:''}>">
                     <input type="hidden" name="CateEnable" id="CateEnable" value="<{$CateEnable|default:''}>">
                     <input type="hidden" name="op" value="<{$next_op|default:''}>">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
                 </div>
             </div>
         </form>
@@ -70,7 +70,7 @@
                 <div id="tabs-<{$i|default:''}>">
                     <{$cate.CateName}>
                     <a href="javascript:delete_tad_web_cate_func(<{$cate.CateID}>);" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
-                    <a href="<{$xoops_url}>/modules/tad_web/admin/cate.php?op=tad_web_cate_form&CateID=<{$cate.CateID}>" class="btn btn-sm btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
+                    <a href="<{$xoops_url}>/modules/tad_web/admin/cate.php?op=tad_web_cate_form&CateID=<{$cate.CateID}>" class="btn btn-sm btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
 
                     <form action="cate.php" method="post" id="myForm<{$i|default:''}>" role="form" class="form-horizontal">
                         <div class="row">
@@ -94,7 +94,7 @@
                                 <input type='hidden' name='web_cate_blank_arr' id='web_cate_blank_arr_<{$i|default:''}>' value='<{$cate.web_cate_blank_arr}>'>
                                 <input type='hidden' name="CateID" value="<{$cate.CateID}>">
                                 <input type="hidden" name="op" value="update_tad_web_cate_arr">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
                             </div>
                             <div class="col-md-5">
                                 <select id="destination<{$i|default:''}>" size="12" multiple="multiple" tmt:linkedselect="true" class="form-control" style="height: 200px;">

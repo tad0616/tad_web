@@ -142,6 +142,7 @@ class Power
     {
         global $xoopsDB;
         $power_cache_file = XOOPS_VAR_PATH . "/tad_web/{$this->WebID}/web_power.json";
+
         if (\file_exists($power_cache_file)) {
             $powers = \json_decode(\file_get_contents($power_cache_file), true);
         } else {
@@ -155,14 +156,14 @@ class Power
             \file_put_contents($power_cache_file, \json_encode($powers, 256));
         }
 
-        if (isset($def_col_name)) {
+        if (isset($powers[$def_col_name])) {
             if (!empty($def_col_sn)) {
                 return $powers[$def_col_name][$def_col_sn];
             } else {
                 return $powers[$def_col_name];
             }
         }
-
+        return [];
     }
 
     //刪除tad_web_power某筆資料資料
