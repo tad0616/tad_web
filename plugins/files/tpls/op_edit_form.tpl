@@ -9,7 +9,7 @@
                 $("#upload_file").hide();
             <{/if}>
         <{else}>
-            $("#file_method").change(function(event) {
+            $("#file_method").on('change', function(event) {
                 var up_method=$("#file_method").val();
                 if(up_method=="link_file"){
                 $("#link_file").show();
@@ -89,7 +89,7 @@
             <!--檔案流水號-->
             <input type="hidden" name="fsn" value="<{$fsn|default:''}>">
             <input type="hidden" name="op" value="<{$next_op|default:''}>">
-            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 </div>

@@ -2,6 +2,7 @@
 use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 $op = Request::getString('op');
 
@@ -15,8 +16,8 @@ if ('save_sort' === $op) {
 
     echo _MA_TCW_SAVE_SORT_OK . ' (' . date('Y-m-d H:i:s') . ')';
 } elseif ('save_teacher' === $op) {
-    $WebOwnerUid = $_POST['value'];
-    $WebID = $_POST['WebID'];
+    $WebOwnerUid = (int) $_POST['value'];
+    $WebID = (int) $_POST['WebID'];
 
     //以uid取得使用者名稱
     $uid_name = \XoopsUser::getUnameFromId($WebOwnerUid, 1);

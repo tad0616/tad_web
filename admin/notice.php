@@ -132,10 +132,10 @@ function insert_tad_web_notice()
     }
 
     $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = $_POST['NoticeTitle'];
-    $NoticeContent = $_POST['NoticeContent'];
+    $NoticeTitle = (string) $_POST['NoticeTitle'];
+    $NoticeContent = (string) $_POST['NoticeContent'];
     $NoticeContent = Wcag::amend($NoticeContent);
-    $NoticeWeb = $_POST['NoticeWeb'];
+    $NoticeWeb = (string) $_POST['NoticeWeb'];
     $NoticeWho = implode(';', $_POST['NoticeWho']);
     $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 
@@ -163,9 +163,9 @@ function update_tad_web_notice($NoticeID = '')
     }
 
     $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = $_POST['NoticeTitle'];
-    $NoticeContent = $_POST['NoticeContent'];
-    $NoticeWeb = $_POST['NoticeWeb'];
+    $NoticeTitle = (string) $_POST['NoticeTitle'];
+    $NoticeContent = (string) $_POST['NoticeContent'];
+    $NoticeWeb = (string) $_POST['NoticeWeb'];
     $NoticeWho = implode(';', $_POST['NoticeWho']);
     $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 

@@ -48,7 +48,7 @@
 
 <div id="adm_bar" class="text-right text-end" style="margin: 30px 0px;">
     <{if $isMyWeb or $isCanEdit}>
-        <a href="javascript:delete_news_func(<{$NewsID|default:''}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
+        <a href="javascript:delete_news_func(<{$NewsID|default:''}>);" class="btn btn-danger"><i class="fa fa-trash"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
         <a href="news.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
         <a href="news.php?WebID=<{$WebID|default:''}>&op=edit_form&NewsID=<{$NewsID|default:''}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_NEWS_SHORT}></a>
     <{/if}>

@@ -319,9 +319,9 @@ class tad_web_schedule
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $ScheduleName = $_POST['ScheduleName'];
-        $ScheduleDisplay = $_POST['ScheduleDisplay'];
-        $newCateName = $_POST['newCateName'];
+        $ScheduleName = (string) $_POST['ScheduleName'];
+        $ScheduleDisplay = (string) $_POST['ScheduleDisplay'];
+        $newCateName = (string) $_POST['newCateName'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ScheduleTime = date('Y-m-d H:i:s');
@@ -345,9 +345,9 @@ class tad_web_schedule
     {
         global $xoopsDB;
 
-        $ScheduleName = $_POST['ScheduleName'];
-        $ScheduleDisplay = $_POST['ScheduleDisplay'];
-        $newCateName = $_POST['newCateName'];
+        $ScheduleName = (string) $_POST['ScheduleName'];
+        $ScheduleDisplay = (string) $_POST['ScheduleDisplay'];
+        $newCateName = (string) $_POST['newCateName'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $ScheduleTime = date('Y-m-d H:i:s');
@@ -555,22 +555,22 @@ class tad_web_schedule
         global $xoopsDB;
         $my_subject_file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/my_subject.json";
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
-            $schedule_subjects_arr[$k]['Subject'] = $_POST['Subject'][$k];
-            $schedule_subjects_arr[$k]['Teacher'] = $_POST['Teacher'][$k];
-            $schedule_subjects_arr[$k]['Link'] = $_POST['Link'][$k];
-            $schedule_subjects_arr[$k]['color'] = $_POST['color'][$k];
-            $schedule_subjects_arr[$k]['bg_color'] = $_POST['bg_color'][$k];
+            $schedule_subjects_arr[$k]['Subject'] = (string) $_POST['Subject'][$k];
+            $schedule_subjects_arr[$k]['Teacher'] = (string) $_POST['Teacher'][$k];
+            $schedule_subjects_arr[$k]['Link'] = (string) $_POST['Link'][$k];
+            $schedule_subjects_arr[$k]['color'] = (string) $_POST['color'][$k];
+            $schedule_subjects_arr[$k]['bg_color'] = (string) $_POST['bg_color'][$k];
         }
         $schedule_subjects = json_encode($schedule_subjects_arr);
         file_put_contents($my_subject_file, $schedule_subjects);
 
         foreach ($_POST['old_Subject'] as $k => $old_Subject) {
             $old_Subject = $old_Subject;
-            $Subject = $_POST['Subject'][$k];
-            $Teacher = $_POST['Teacher'][$k];
-            $Link = $_POST['Link'][$k];
-            $color = $_POST['color'][$k];
-            $bg_color = $_POST['bg_color'][$k];
+            $Subject = (string) $_POST['Subject'][$k];
+            $Teacher = (string) $_POST['Teacher'][$k];
+            $Link = (string) $_POST['Link'][$k];
+            $color = (string) $_POST['color'][$k];
+            $bg_color = (string) $_POST['bg_color'][$k];
 
             $sql2 = 'UPDATE `' . $xoopsDB->prefix('tad_web_schedule_data') . '` SET `Subject`=?, `Teacher`=?, `Link`=?, `color`=?, `bg_color`=? WHERE `ScheduleID`=? AND `Subject`=?';
             Utility::query($sql2, 'sssssis', [$Subject, $Teacher, $Link, $color, $bg_color, $ScheduleID, $old_Subject]) or Utility::web_error($sql2);

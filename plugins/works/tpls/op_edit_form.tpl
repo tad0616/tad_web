@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#WorksKind').change(function() {
+        $('#WorksKind').on('change', function() {
             var WorksKind=$('#WorksKind').val();
             if(WorksKind!=""){
                 $('#works_date_label').html('<{$smarty.const._MD_TCW_WORKS_END_DATE}>');
@@ -110,7 +110,7 @@
             <!--所屬團隊-->
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="<{$next_op|default:''}>">
-            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 </div>

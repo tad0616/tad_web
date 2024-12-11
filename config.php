@@ -364,8 +364,8 @@ function update_tad_web()
 {
     global $xoopsDB, $WebID;
 
-    $WebName = $_POST['WebName'];
-    $WebOwner = $_POST['WebOwner'];
+    $WebName = (string) $_POST['WebName'];
+    $WebOwner = (string) $_POST['WebOwner'];
     $CateID = (int) $_POST['CateID'];
 
     $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID`=?, `WebName`=?, `WebOwner`=? WHERE `WebID`=?';
@@ -394,7 +394,7 @@ function save_plugins($WebID)
     Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
     foreach ($plugins as $plugin) {
         $dirname = $plugin['dirname'];
-        $PluginTitle = $_POST['plugin_name'][$dirname];
+        $PluginTitle = (string) $_POST['plugin_name'][$dirname];
         $PluginEnable = ('1' == $_POST['plugin_enable'][$dirname]) ? '1' : '0';
 
         $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_plugins') . '` (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) VALUES (?, ?, ?, ?, ?)';

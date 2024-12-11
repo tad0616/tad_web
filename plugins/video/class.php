@@ -326,11 +326,11 @@ class tad_web_video
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $VideoName = $_POST['VideoName'];
-        $VideoDesc = $_POST['VideoDesc'];
-        $Youtube = $_POST['Youtube'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $VideoName = (string) $_POST['VideoName'];
+        $VideoDesc = (string) $_POST['VideoDesc'];
+        $Youtube = (string) $_POST['Youtube'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
 
@@ -372,11 +372,11 @@ class tad_web_video
     {
         global $xoopsDB;
 
-        $VideoName = $_POST['VideoName'];
-        $VideoDesc = $_POST['VideoDesc'];
-        $Youtube = $_POST['Youtube'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $VideoName = (string) $_POST['VideoName'];
+        $VideoDesc = (string) $_POST['VideoDesc'];
+        $Youtube = (string) $_POST['Youtube'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
 

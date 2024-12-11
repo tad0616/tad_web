@@ -357,11 +357,11 @@ class tad_web_account
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $AccountTitle = $_POST['AccountTitle'];
-        $AccountDesc = $_POST['AccountDesc'];
-        $AccountKind = $_POST['AccountKind'];
-        $AccountDate = $_POST['AccountDate'];
-        $newCateName = $_POST['newCateName'];
+        $AccountTitle = (string) $_POST['AccountTitle'];
+        $AccountDesc = (string) $_POST['AccountDesc'];
+        $AccountKind = (string) $_POST['AccountKind'];
+        $AccountDate = (string) $_POST['AccountDate'];
+        $newCateName = (string) $_POST['newCateName'];
         $AccountMoney = (int) $_POST['AccountMoney'];
         $AccountCount = (int) $_POST['AccountCount'];
         $CateID = (int) $_POST['CateID'];
@@ -403,11 +403,11 @@ class tad_web_account
     {
         global $xoopsDB, $TadUpFiles;
 
-        $AccountTitle = $_POST['AccountTitle'];
-        $AccountDesc = $_POST['AccountDesc'];
-        $AccountKind = $_POST['AccountKind'];
-        $newCateName = $_POST['newCateName'];
-        $AccountDate = $_POST['AccountDate'];
+        $AccountTitle = (string) $_POST['AccountTitle'];
+        $AccountDesc = (string) $_POST['AccountDesc'];
+        $AccountKind = (string) $_POST['AccountKind'];
+        $newCateName = (string) $_POST['newCateName'];
+        $AccountDate = (string) $_POST['AccountDate'];
         $AccountMoney = (int) $_POST['AccountMoney'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];

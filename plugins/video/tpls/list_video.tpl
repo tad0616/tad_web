@@ -17,7 +17,7 @@
                     <{*if $video.isMyWeb or $video.isAssistant*}>
                     <{*if $video.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($video.cate.CateID) && isset($smarty.session.isAssistant.video) && $video.cate.CateID == $smarty.session.isAssistant.video)}>
-                        <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash"></i><span class="sr-only visually-hidden">delete</span></a>
                         <a href="video.php?WebID=<{$WebID|default:''}>&op=edit_form&VideoID=<{$video.VideoID}>"  class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </div>
@@ -54,7 +54,7 @@
                             <{*if $video.isMyWeb or $video.isAssistant*}>
                             <{*if $video.isCanEdit*}>
                             <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($video.cate.CateID) && isset($smarty.session.isAssistant.video) && $video.cate.CateID == $smarty.session.isAssistant.video)}>
-                                <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                                <a href="javascript:delete_video_func(<{$video.VideoID}>);" class="text-danger"><i class="fa fa-trash"></i><span class="sr-only visually-hidden">delete</span></a>
                                 <a href="video.php?WebID=<{$video.WebID}>&op=edit_form&VideoID=<{$video.VideoID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                             <{/if}>
                         </p>

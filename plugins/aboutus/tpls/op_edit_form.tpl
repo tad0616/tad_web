@@ -85,7 +85,7 @@
                     <input type="hidden" name="op" value="<{$next_op|default:''}>">
                     <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
                     <input type="hidden" name="CateID" value="<{$CateID|default:''}>">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
                 </div>
                 <div class="alert alert-warning"><{$smarty.const._MD_TCW_STUDENT_NOTE}></div>
             </div>
@@ -132,7 +132,7 @@
                         <{else}>
                             <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=class_unable" class="btn btn-sm btn-xs btn-secondary"><{$smarty.const._MD_TCW_UNABLE}></a>
                         <{/if}>
-                        <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
+                        <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_form" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
                         <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_position" class="btn btn-sm btn-xs btn-success"><{$smarty.const._MD_TCW_STUDENT_POSITION}></a>
 
                         <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&op=edit_class_stu" class="btn btn-sm btn-xs btn-info"><{$edit_student|default:''}></a>

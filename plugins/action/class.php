@@ -399,14 +399,14 @@ class tad_web_action
             $uid = $xoopsUser->uid();
         }
 
-        $ActionName = $_POST['ActionName'];
-        $ActionDesc = $_POST['ActionDesc'];
-        $ActionPlace = $_POST['ActionPlace'];
-        $ActionDate = $_POST['ActionDate'];
-        $tag_name = $_POST['tag_name'];
-        $newCateName = $_POST['newCateName'];
+        $ActionName = (string) $_POST['ActionName'];
+        $ActionDesc = (string) $_POST['ActionDesc'];
+        $ActionPlace = (string) $_POST['ActionPlace'];
+        $ActionDate = (string) $_POST['ActionDate'];
+        $tag_name = (string) $_POST['tag_name'];
+        $newCateName = (string) $_POST['newCateName'];
         $ActionCount = (int) $_POST['ActionCount'];
-        $gphoto_link = $_POST['gphoto_link'];
+        $gphoto_link = (string) $_POST['gphoto_link'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         if ($newCateName != '') {
@@ -462,14 +462,14 @@ class tad_web_action
     {
         global $xoopsDB, $TadUpFiles;
 
-        $ActionName = $_POST['ActionName'];
-        $ActionDesc = $_POST['ActionDesc'];
-        $ActionPlace = $_POST['ActionPlace'];
-        $ActionDate = $_POST['ActionDate'];
-        $gphoto_link = $_POST['gphoto_link'];
-        $tag_name = $_POST['tag_name'];
-        $newCateName = $_POST['newCateName'];
-        $read = $_POST['read'];
+        $ActionName = (string) $_POST['ActionName'];
+        $ActionDesc = (string) $_POST['ActionDesc'];
+        $ActionPlace = (string) $_POST['ActionPlace'];
+        $ActionDate = (string) $_POST['ActionDate'];
+        $gphoto_link = (string) $_POST['gphoto_link'];
+        $tag_name = (string) $_POST['tag_name'];
+        $newCateName = (string) $_POST['newCateName'];
+        $read = (string) $_POST['read'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         if ($newCateName != '') {

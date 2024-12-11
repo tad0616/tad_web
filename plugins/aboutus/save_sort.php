@@ -2,6 +2,7 @@
 use XoopsModules\Tadtools\Utility;
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 $sort = 1;
 

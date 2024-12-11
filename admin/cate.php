@@ -125,9 +125,9 @@ function save_tad_web_cate()
 
     $CateID = (int) $_POST['CateID'];
     $WebID = (int) $_POST['WebID'];
-    $CateName = $_POST['CateName'];
-    $ColName = $_POST['ColName'];
-    $ColSN = $_POST['ColSN'];
+    $CateName = (string) $_POST['CateName'];
+    $ColName = (string) $_POST['ColName'];
+    $ColSN = (int) $_POST['ColSN'];
     $CateSort = (int) $_POST['CateSort'];
     $CateEnable = (int) $_POST['CateEnable'];
     $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_cate') . '` (`WebID`, `CateName`, `ColName`, `ColSN`, `CateSort`, `CateEnable`, `CateCounter`
@@ -145,7 +145,7 @@ function update_tad_web_cate($CateID = '')
 {
     global $xoopsDB;
 
-    $CateName = $_POST['CateName'];
+    $CateName = (string) $_POST['CateName'];
 
     $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_cate') . '` SET `CateName` = ? WHERE `CateID` = ?';
     Utility::query($sql, 'si', [$CateName, $CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -158,10 +158,8 @@ function update_tad_web_cate_arr($CateID = '')
 {
     global $xoopsDB;
 
-    $web_cate_arr = $_POST['web_cate_arr'];
-    $web_cate_blank_arr = $_POST['web_cate_blank_arr'];
-
-    $web_cate_array = explode(',', $web_cate_arr);
+    $web_cate_blank_arr = (string) $_POST['web_cate_blank_arr'];
+    $web_cate_array = explode(',', $_POST['web_cate_arr']);
 
     $i = 1;
     foreach ($web_cate_array as $WebID) {

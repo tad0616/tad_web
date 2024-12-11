@@ -106,12 +106,12 @@ if (!empty($WebID)) {
 }
 $i = count($menu_var);
 
-if ($isMyWeb) {
+if (!empty($WebID) and $isMyWeb) {
     $menu_var[$i]['id'] = $i;
     $menu_var[$i]['title'] = _MD_TCW_TOOLS;
     $menu_var[$i]['url'] = "config.php?WebID={$WebID}";
     $menu_var[$i]['target'] = '_self';
-    $menu_var[$i]['icon'] = 'fa-check-square-o';
+    $menu_var[$i]['icon'] = 'fa-check-square';
 
     $j = 0;
     $sub_menu_var = [];
@@ -120,73 +120,75 @@ if ($isMyWeb) {
     $sub_menu_var[$j]['title'] = _MD_TCW_WEB_TOOLS;
     $sub_menu_var[$j]['url'] = "config.php?WebID={$WebID}";
     $sub_menu_var[$j]['target'] = '_self';
-    $sub_menu_var[$j]['icon'] = 'fa-check-square-o';
+    $sub_menu_var[$j]['icon'] = 'fa-check-square';
     $j++;
 
     $sub_menu_var[$j]['id'] = $j;
     $sub_menu_var[$j]['title'] = _MD_TCW_BLOCK_TOOLS;
     $sub_menu_var[$j]['url'] = "block.php?WebID={$WebID}";
     $sub_menu_var[$j]['target'] = '_self';
-    $sub_menu_var[$j]['icon'] = 'fa-check-square-o';
+    $sub_menu_var[$j]['icon'] = 'fa-check-square';
     $j++;
 
     $menu_var[$i]['submenu'] = $sub_menu_var;
     $i++;
 }
 
-$menu_var[$i]['id'] = $i;
-$menu_var[$i]['title'] = _MD_TCW_LINKTO;
-$menu_var[$i]['url'] = 'index.php';
-$menu_var[$i]['target'] = '_blank';
-$menu_var[$i]['icon'] = 'fa-share-square-o';
+if ($is_ezclass) {
+    $menu_var[$i]['id'] = $i;
+    $menu_var[$i]['title'] = _MD_TCW_LINKTO;
+    $menu_var[$i]['url'] = 'index.php';
+    $menu_var[$i]['target'] = '_blank';
+    $menu_var[$i]['icon'] = 'fa-share-from-square';
 
-$j = 0;
-$sub_menu_var = [];
+    $j = 0;
+    $sub_menu_var = [];
 
-$sub_menu_var[$j]['id'] = $j;
-$sub_menu_var[$j]['title'] = _MD_TCW_HOME;
-$sub_menu_var[$j]['url'] = $is_ezclass ? XOOPS_URL : 'index.php';
-$sub_menu_var[$j]['target'] = '_blank';
-$sub_menu_var[$j]['icon'] = 'fa-share-square-o';
-$j++;
+    $sub_menu_var[$j]['id'] = $j;
+    $sub_menu_var[$j]['title'] = _MD_TCW_HOME;
+    $sub_menu_var[$j]['url'] = $is_ezclass ? XOOPS_URL : 'index.php';
+    $sub_menu_var[$j]['target'] = '_blank';
+    $sub_menu_var[$j]['icon'] = 'fa-share-from-square';
+    $j++;
 
-$sub_menu_var[$j]['id'] = $j;
-$sub_menu_var[$j]['title'] = _MD_TCW_LEADERBOARD;
-$sub_menu_var[$j]['url'] = 'top.php';
-$sub_menu_var[$j]['target'] = '_blank';
-$sub_menu_var[$j]['icon'] = 'fa-bar-chart';
-$j++;
+    $sub_menu_var[$j]['id'] = $j;
+    $sub_menu_var[$j]['title'] = _MD_TCW_LEADERBOARD;
+    $sub_menu_var[$j]['url'] = 'top.php';
+    $sub_menu_var[$j]['target'] = '_blank';
+    $sub_menu_var[$j]['icon'] = 'fa-chart-column';
+    $j++;
 
-$sub_menu_var[$j]['id'] = $j;
-$sub_menu_var[$j]['title'] = _MD_TCW_MENU_DISCUSS;
-$sub_menu_var[$j]['url'] = _EZCLASS . '/modules/tad_discuss/discuss.php?BoardID=1';
-$sub_menu_var[$j]['target'] = '_blank';
-$sub_menu_var[$j]['icon'] = 'fa-share-square-o';
-$j++;
+    $sub_menu_var[$j]['id'] = $j;
+    $sub_menu_var[$j]['title'] = _MD_TCW_MENU_DISCUSS;
+    $sub_menu_var[$j]['url'] = _EZCLASS . '/modules/tad_discuss/discuss.php?BoardID=1';
+    $sub_menu_var[$j]['target'] = '_blank';
+    $sub_menu_var[$j]['icon'] = 'fa-share-from-square';
+    $j++;
 
-$sub_menu_var[$j]['id'] = $j;
-$sub_menu_var[$j]['title'] = _MD_TCW_MENU_SUGGEST;
-$sub_menu_var[$j]['url'] = _EZCLASS . '/modules/tad_discuss/discuss.php?BoardID=2';
-$sub_menu_var[$j]['target'] = '_blank';
-$sub_menu_var[$j]['icon'] = 'fa-share-square-o';
-$j++;
+    $sub_menu_var[$j]['id'] = $j;
+    $sub_menu_var[$j]['title'] = _MD_TCW_MENU_SUGGEST;
+    $sub_menu_var[$j]['url'] = _EZCLASS . '/modules/tad_discuss/discuss.php?BoardID=2';
+    $sub_menu_var[$j]['target'] = '_blank';
+    $sub_menu_var[$j]['icon'] = 'fa-share-from-square';
+    $j++;
 
-$sub_menu_var[$j]['id'] = $j;
-$sub_menu_var[$j]['title'] = _MD_TCW_MENU_BOOKS;
-$sub_menu_var[$j]['url'] = _EZCLASS . '/modules/tad_book3/index.php';
-$sub_menu_var[$j]['target'] = '_blank';
-$sub_menu_var[$j]['icon'] = 'fa-share-square-o';
-$j++;
+    $sub_menu_var[$j]['id'] = $j;
+    $sub_menu_var[$j]['title'] = _MD_TCW_MENU_BOOKS;
+    $sub_menu_var[$j]['url'] = _EZCLASS . '/modules/tad_book3/index.php';
+    $sub_menu_var[$j]['target'] = '_blank';
+    $sub_menu_var[$j]['icon'] = 'fa-share-from-square';
+    $j++;
 
-$menu_var[$i]['submenu'] = $sub_menu_var;
-$i++;
+    $menu_var[$i]['submenu'] = $sub_menu_var;
+    $i++;
+}
 
 if ($_SESSION['tad_web_adm']) {
     $menu_var[$i]['id'] = $i;
     $menu_var[$i]['title'] = _MD_TCW_ADMIN;
     $menu_var[$i]['url'] = 'admin/index.php';
     $menu_var[$i]['target'] = '_blank';
-    $menu_var[$i]['icon'] = 'fa-check-square-o';
+    $menu_var[$i]['icon'] = 'fa-check-square';
 
     $j = 0;
     $sub_menu_var = [];
@@ -195,14 +197,14 @@ if ($_SESSION['tad_web_adm']) {
     $sub_menu_var[$j]['title'] = _MD_TCW_ADMINPAGE;
     $sub_menu_var[$j]['url'] = 'admin/index.php';
     $sub_menu_var[$j]['target'] = '_blank';
-    $sub_menu_var[$j]['icon'] = 'fa-check-square-o';
+    $sub_menu_var[$j]['icon'] = 'fa-check-square';
     $j++;
 
     $sub_menu_var[$j]['id'] = $j;
     $sub_menu_var[$j]['title'] = _MD_TCW_ADMINER;
     $sub_menu_var[$j]['url'] = XOOPS_URL . '/modules/tad_adm/pma.php';
     $sub_menu_var[$j]['target'] = '_blank';
-    $sub_menu_var[$j]['icon'] = 'fa-check-square-o';
+    $sub_menu_var[$j]['icon'] = 'fa-check-square';
     $j++;
 
     $menu_var[$i]['submenu'] = $sub_menu_var;

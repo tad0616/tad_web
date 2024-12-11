@@ -18,7 +18,7 @@
 
 <{if $isMyWeb|default:false}>
     <div class="text-right text-end" style="margin: 30px 0px;">
-        <a href="javascript:delete_calendar_func(<{$CalendarID|default:''}>);" class="btn btn-danger"><i class="fa fa-trash-o"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
+        <a href="javascript:delete_calendar_func(<{$CalendarID|default:''}>);" class="btn btn-danger"><i class="fa fa-trash"></i> <{$smarty.const._TAD_DEL}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
         <a href="setup.php?WebID=<{$WebID|default:''}>&plugin=calendar" class="btn btn-success"><i class="fa fa-wrench"></i> <{$smarty.const._MD_TCW_SETUP}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
         <a href="calendar.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info"><i class="fa fa-plus"></i> <{$smarty.const._MD_TCW_ADD}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>
         <a href="calendar.php?WebID=<{$WebID|default:''}>&op=edit_form&CalendarID=<{$CalendarID|default:''}>" class="btn btn-warning"><i class="fa fa-pencil"></i> <{$smarty.const._TAD_EDIT}><{$smarty.const._MD_TCW_CALENDAR_SHORT}></a>

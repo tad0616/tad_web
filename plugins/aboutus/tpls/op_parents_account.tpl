@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#list_mems").change(function(event) {
+        $("#list_mems").on('change', function(event) {
             var mem_name=$("#list_mems option:selected").prop('label');
             $.post("<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_mems.php", { op: 'chk_unable', MemID: $('#list_mems').val(), WebID: '<{$WebID|default:''}>' , MemName:mem_name }, function(data){
                 $('#unable').html(data);

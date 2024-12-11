@@ -15,7 +15,7 @@
             });
         </script>
 
-        <div id="tad_web_cate_tabs">
+        <div id="tad_web_cate_tabs" class="mb-3">
             <ul>
                 <{foreach from=$tad_web_cate key=i item=cate}>
                     <li><a href="<{$xoops_url}>/modules/tad_web/plugins/aboutus/get_webs.php?CateID=<{$cate.CateID}>"><{$cate.CateName}></a></li>

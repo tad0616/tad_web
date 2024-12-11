@@ -32,7 +32,7 @@
             <script type="text/javascript">
                 $(document).ready(function() {
 
-                    $("#login_method").change(function(event) {
+                    $("#login_method").on('change', function(event) {
                     var opt=$("#login_method").val();
                     if(opt=="openid_login"){
                         $("#openid_login").show();
@@ -60,7 +60,7 @@
                     }
                     });
 
-                    $("#select_mems").change(function(event) {
+                    $("#select_mems").on('change', function(event) {
                     if($("#select_mems").val()!=''){
                         $('#parent_login_div').show();
                     }else{

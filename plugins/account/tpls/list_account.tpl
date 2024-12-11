@@ -4,7 +4,7 @@
     <ul class="list-group">
         <{foreach from=$bc.cate_menu item=account}>
             <li  class="list-group-item">
-                <span class="badge badge-info bg-info"><{$account.PageCount}></span>
+                <span class="badge badge-info bg-info"><{$account.PageCount|default:0}></span>
                 <a href='account.php?WebID=<{$account.WebID}>&CateID=<{$account.CateID}>'><{$account.CateName}></a>
             </li>
         <{/foreach}>

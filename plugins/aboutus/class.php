@@ -852,17 +852,17 @@ class tad_web_aboutus
             redirect_header("index.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
-        $MemExpertises = $_POST['MemExpertises'];
-        $AboutMem = $_POST['AboutMem'];
-        $MemClassOrgan = $_POST['MemClassOrgan'];
-        $MemName = $_POST['MemName'];
-        $MemNickName = $_POST['MemNickName'];
-        $MemSex = $_POST['MemSex'];
-        $MemUnicode = $_POST['MemUnicode'];
-        $MemBirthday = $_POST['MemBirthday'];
-        $MemUname = $_POST['MemUname'];
-        $MemPasswd = $_POST['MemPasswd'];
-        $MemNum = $_POST['MemNum'];
+        $MemExpertises = (string) $_POST['MemExpertises'];
+        $AboutMem = (string) $_POST['AboutMem'];
+        $MemClassOrgan = (string) $_POST['MemClassOrgan'];
+        $MemName = (string) $_POST['MemName'];
+        $MemNickName = (string) $_POST['MemNickName'];
+        $MemSex = (string) $_POST['MemSex'];
+        $MemUnicode = (string) $_POST['MemUnicode'];
+        $MemBirthday = (string) $_POST['MemBirthday'];
+        $MemUname = (string) $_POST['MemUname'];
+        $MemPasswd = (string) $_POST['MemPasswd'];
+        $MemNum = (string) $_POST['MemNum'];
         $MemSort = (int) $_POST['MemSort'];
 
         $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_mems') . '` SET
@@ -1284,9 +1284,9 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}&op=parents_account", 3, _MD_TCW_ABOUTUS_WRONG_BIRTHDAY);
         }
 
-        $Reationship = $_POST['Reationship'];
-        $ParentEmail = $_POST['ParentEmail'];
-        $ParentPasswd = $_POST['ParentPasswd'];
+        $Reationship = (string) $_POST['Reationship'];
+        $ParentEmail = (string) $_POST['ParentEmail'];
+        $ParentPasswd = (string) $_POST['ParentPasswd'];
         $code = Utility::randStr(16);
 
         $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_mem_parents') . '` (`MemID`, `Reationship`, `ParentEmail`, `ParentPasswd`, `ParentEnable`, `code`) VALUES (?, ?, ?, ?, ?, ?)';
@@ -1486,8 +1486,8 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
-        $Reationship = $_POST['Reationship'];
-        $ParentEmail = $_POST['ParentEmail'];
+        $Reationship = (string) $_POST['Reationship'];
+        $ParentEmail = (string) $_POST['ParentEmail'];
 
         $and_passwd = '';
         if (!empty($_POST['ParentPasswd'])) {

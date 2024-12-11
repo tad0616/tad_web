@@ -284,11 +284,11 @@ class tad_web_files
 
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-        $file_link = $_POST['file_link'];
-        $file_description = $_POST['file_description'];
-        $newCateName = $_POST['newCateName'];
-        $file_method = $_POST['file_method'];
-        $tag_name = $_POST['tag_name'];
+        $file_link = (string) $_POST['file_link'];
+        $file_description = (string) $_POST['file_description'];
+        $newCateName = (string) $_POST['newCateName'];
+        $file_method = (string) $_POST['file_method'];
+        $tag_name = (string) $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
@@ -319,11 +319,11 @@ class tad_web_files
 
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
-        $file_link = $_POST['file_link'];
-        $file_description = $_POST['file_description'];
-        $newCateName = $_POST['newCateName'];
-        $file_method = $_POST['file_method'];
-        $tag_name = $_POST['tag_name'];
+        $file_link = (string) $_POST['file_link'];
+        $file_description = (string) $_POST['file_description'];
+        $newCateName = (string) $_POST['newCateName'];
+        $file_method = (string) $_POST['file_method'];
+        $tag_name = (string) $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }

@@ -208,11 +208,11 @@ class tad_web_calendar
     {
         global $xoopsDB;
 
-        $CalendarName = $_POST['CalendarName'];
-        $CalendarType = $_POST['CalendarType'];
-        $CalendarDesc = $_POST['CalendarDesc'];
-        $CalendarDate = $_POST['CalendarDate'];
-        $newCateName = $_POST['newCateName'];
+        $CalendarName = (string) $_POST['CalendarName'];
+        $CalendarType = (string) $_POST['CalendarType'];
+        $CalendarDesc = (string) $_POST['CalendarDesc'];
+        $CalendarDate = (string) $_POST['CalendarDate'];
+        $newCateName = (string) $_POST['newCateName'];
         $CateID = (int) $_POST['CateID'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);

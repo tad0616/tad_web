@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
 
 // 關閉除錯訊息
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 
 $start = Request::getString('start', date("Y-m-01"));

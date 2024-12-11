@@ -373,16 +373,16 @@ class tad_web_page
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $PageTitle = $_POST['PageTitle'];
-        $PageContent = $_POST['PageContent'];
+        $PageTitle = (string) $_POST['PageTitle'];
+        $PageContent = (string) $_POST['PageContent'];
         $PageContent = Wcag::amend($PageContent);
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $PageSort = $this->max_sort($WebID, $CateID);
         $PageDate = date('Y-m-d H:i:s');
-        $PageCSS = $_POST['PageCSS'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $PageCSS = (string) $_POST['PageCSS'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
@@ -410,14 +410,14 @@ class tad_web_page
     {
         global $xoopsDB, $TadUpFiles;
 
-        $PageTitle = $_POST['PageTitle'];
-        $PageContent = $_POST['PageContent'];
+        $PageTitle = (string) $_POST['PageTitle'];
+        $PageContent = (string) $_POST['PageContent'];
         $PageContent = Wcag::amend($PageContent);
         $CateID = (int) $_POST['CateID'];
         $PageDate = date('Y-m-d H:i:s');
-        $PageCSS = $_POST['PageCSS'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $PageCSS = (string) $_POST['PageCSS'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }

@@ -154,7 +154,7 @@
                         <{if 'MemBirthday'|in_array:$mem_column}>
                             <td style="text-align: center;"><{$stud.MemBirthday}></td>
                         <{/if}>
-                        <td style="text-align: center;"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a></td>
+                        <td style="text-align: center;"><a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a></td>
                     <{/if}>
                 </tr>
             <{/foreach}>
@@ -181,7 +181,7 @@
                             <span class="badge badge-secondary bg-secondary"><{$smarty.const._MD_TCW_MEM_NAME}></span>
                             <{if $isMyWeb|default:false}>
                                 <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$cate.CateID}>&MemID=<{$stud.MemID}>&op=show_stu"><{$stud.MemName}></a>
-                                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
+                                <a href="aboutus.php?WebID=<{$WebID|default:''}>&CateID=<{$CateID|default:''}>&MemID=<{$stud.MemID}>&op=edit_stu" class="btn btn-sm btn-xs btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i>  <{$smarty.const._TAD_EDIT}></a>
                             <{else}>
                                 <{$stud.MemName}>
                             <{/if}>

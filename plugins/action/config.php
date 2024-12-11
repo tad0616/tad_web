@@ -3,7 +3,7 @@ global $xoopsConfig;
 require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/action/langs/{$xoopsConfig['language']}.php";
 $pluginConfig['name'] = _MD_TCW_ACTION;
 $pluginConfig['short'] = _MD_TCW_ACTION_SHORT;
-$pluginConfig['icon'] = 'fa-picture-o';
+$pluginConfig['icon'] = 'fa-image';
 $pluginConfig['limit'] = '10';
 $pluginConfig['cate'] = true;
 $pluginConfig['cate_table'] = 'tad_web_action';

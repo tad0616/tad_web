@@ -14,7 +14,7 @@
 
                     <{*if $homework.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($homework.cate.CateID) && isset($smarty.session.isAssistant.homework) && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
-                        <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash"></i><span class="sr-only visually-hidden">delete</span></a>
                         <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                     <span style="color: #840707;"><{$homework.display_at}></span>
@@ -26,7 +26,7 @@
 
                         <{*if $homework.isCanEdit*}>
                         <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($homework.cate.CateID) && isset($smarty.session.isAssistant.homework) && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
-                            <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                            <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash"></i><span class="sr-only visually-hidden">delete</span></a>
 
                             <a href="homework.php?WebID=<{$WebID|default:''}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                         <{/if}>
@@ -78,7 +78,7 @@
 
                     <{*if $homework.isCanEdit*}>
                     <{if ($WebID && $isMyWeb) || $smarty.session.tad_web_adm|default:false || (isset($homework.cate.CateID) && isset($smarty.session.isAssistant.homework) && $homework.cate.CateID == $smarty.session.isAssistant.homework)}>
-                        <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash-o"></i><span class="sr-only visually-hidden">delete</span></a>
+                        <a href="javascript:delete_homework_func(<{$homework.HomeworkID}>);" class="text-danger"><i class="fa fa-trash"></i><span class="sr-only visually-hidden">delete</span></a>
                         <a href="homework.php?WebID=<{$homework.WebID}>&op=edit_form&HomeworkID=<{$homework.HomeworkID}>" class="text-warning"><i class="fa fa-pencil"></i><span class="sr-only visually-hidden">edit</span></a>
                     <{/if}>
                 </li>

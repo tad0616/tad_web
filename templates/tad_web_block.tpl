@@ -1,7 +1,7 @@
 <{if $op=="config" or $op=="add_block"}>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#content_type').change(function(event) {
+            $('#content_type').on('change', function(event) {
                 var content_type=$('#content_type').val();
                 if(content_type=="js"){
                     $('#html_editor').hide();
@@ -173,7 +173,7 @@
             <{if $block.plugin=="custom" or $block.BlockCopy!="0"}>
                 <a href="javascript:delete_block_func('<{$block.BlockID}>');" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> <{$smarty.const._TAD_DEL}></a>
             <{/if}>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 
@@ -477,7 +477,7 @@
         <div class="text-center" stye="margin-top: 30px;">
             <input type="hidden" name="WebID" value="<{$WebID|default:''}>">
             <input type="hidden" name="op" value="mk_block_pic">
-            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
         </div>
     </form>
 <{/if}>

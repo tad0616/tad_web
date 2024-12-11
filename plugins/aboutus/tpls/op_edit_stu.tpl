@@ -181,7 +181,7 @@
                 <input type="hidden" name="MemID" value="<{$MemID|default:''}>">
                 <input type="hidden" name="CateID" value="<{$cate.CateID}>">
                 <input type="hidden" name="op" value="<{$next_op|default:''}>">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
             </div>
         </form>
     </div>

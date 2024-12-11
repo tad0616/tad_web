@@ -389,12 +389,12 @@ class tad_web_works
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $WorkName = $_POST['WorkName'];
-        $WorkDesc = $_POST['WorkDesc'];
-        $WorksKind = $_POST['WorksKind'];
-        $WorksDate = $_POST['WorksDate'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $WorkName = (string) $_POST['WorkName'];
+        $WorkDesc = (string) $_POST['WorkDesc'];
+        $WorksKind = (string) $_POST['WorksKind'];
+        $WorksDate = (string) $_POST['WorksDate'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $WorksEnable = (int) $_POST['WorksEnable'];
@@ -426,12 +426,12 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-        $WorkName = $_POST['WorkName'];
-        $WorkDesc = $_POST['WorkDesc'];
-        $WorksKind = $_POST['WorksKind'];
-        $WorksDate = $_POST['WorksDate'];
-        $newCateName = $_POST['newCateName'];
-        $tag_name = $_POST['tag_name'];
+        $WorkName = (string) $_POST['WorkName'];
+        $WorkDesc = (string) $_POST['WorkDesc'];
+        $WorksKind = (string) $_POST['WorksKind'];
+        $WorksDate = (string) $_POST['WorksDate'];
+        $newCateName = (string) $_POST['newCateName'];
+        $tag_name = (string) $_POST['tag_name'];
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
         $WorksEnable = (int) $_POST['WorksEnable'];
@@ -461,7 +461,7 @@ class tad_web_works
     {
         global $xoopsDB, $TadUpFiles;
 
-        $WorkDesc = $_POST['WorkDesc'];
+        $WorkDesc = (string) $_POST['WorkDesc'];
 
         //讀出原有分數及評語
         $sql = 'SELECT `WorkScore`, `WorkJudgment` FROM `' . $xoopsDB->prefix('tad_web_works_content') . '` WHERE `WorksID` =? AND `MemID` =? AND `WebID` =?';

@@ -231,7 +231,7 @@ class WebCate
         <script>
         $(function() {
             {$hide_newCate_js}
-            $('#{$this->menu_id}').change(function(){
+            $('#{$this->menu_id}').on('change', function(){
                 {$change_page_js}
                 {$newCate_js}
                 {$this->custom_change_js}

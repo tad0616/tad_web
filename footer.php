@@ -45,7 +45,9 @@ if (!empty($plugin)) {
 // 從 menu_var.php 讀出來的檔，較原始
 $xoopsTpl->assign('plugin_menu_var', $plugin_menu_var);
 // 整理後的檔，會隨著簡化選單而架構有所不同
-$xoopsTpl->assign('menu_var', $menu_var);
+if (!empty($Web)) {
+    $xoopsTpl->assign('menu_var', $menu_var);
+}
 
 $xoopsTpl->assign('isMyWeb', $isMyWeb);
 $xoopsTpl->assign('your_version', $xoopsModule->version());

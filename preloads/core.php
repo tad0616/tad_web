@@ -1,8 +1,8 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
 use XoopsModules\Tad_web\Tools as TadWebTools;
+
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class to allow <{if $homepage|default:false}>Your code here<{/if}> in templates
