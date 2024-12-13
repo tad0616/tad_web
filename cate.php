@@ -3,8 +3,8 @@ use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\Power;
-use XoopsModules\Tad_web\WebCate;
 use XoopsModules\Tad_web\Tools as TadWebTools;
+use XoopsModules\Tad_web\WebCate;
 /*-----------引入檔案區--------------*/
 include_once 'header.php';
 $WebID = Request::getInt('WebID');
@@ -58,9 +58,9 @@ function list_all_cate($WebID = '', $ColName = '', $table = '')
 
     $WebCate = new WebCate($WebID, $ColName, $table);
     $WebCate->set_WebID($WebID);
-    $cate = $WebCate->get_tad_web_cate_arr(null, null, $ColName);
-
-    $cate_menu_form = $WebCate->cate_menu($CateID, 'form', true, false, true, false, false);
+    $cate = $WebCate->get_tad_web_cate_arr(true, null, $ColName);
+    // Utility::test($cate, 'cate', 'dd');
+    $cate_menu_form = $WebCate->cate_menu($cate['CateID'], 'form', true, false, true, false, false);
     $xoopsTpl->assign('cate_menu_form', $cate_menu_form);
 
     // Utility::dd($cate);

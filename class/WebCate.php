@@ -342,6 +342,7 @@ class WebCate
         global $xoopsDB;
         require_once XOOPS_ROOT_PATH . '/modules/tad_web/function.php';
         $counter = $counter ? $this->tad_web_cate_data_counter() : '';
+        Utility::test($counter, 'counter', 'dd');
         $arr = [];
 
         $andCateEnable = $onlyEnable ? "AND `CateEnable`='1'" : '';
@@ -434,9 +435,11 @@ class WebCate
         $result = Utility::query($sql, 'i', [$CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         while (list($WebID, $ColName) = $xoopsDB->fetchRow($result)) {
-            require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$ColName}/class.php";
             $plugin_name = "tad_web_{$ColName}";
-            $$plugin_name = new $plugin_name($WebID);
+            if (!class_exists($$plugin_name)) {
+                require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$ColName}/class.php";
+                $$plugin_name = new $plugin_name($WebID);
+            }
             $$plugin_name->delete_all();
         }
     }
@@ -452,8 +455,8 @@ class WebCate
         }
         $counter = [];
         $sql = 'SELECT COUNT(*), `CateID` FROM `' . $xoopsDB->prefix($table) . '` WHERE `WebID` = ? GROUP BY `CateID`';
+        Utility::test($sql, 'counter_sql', 'die');
         $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
-
         while (list($count, $CateID) = $xoopsDB->fetchRow($result)) {
             $counter[$CateID] = $count;
         }

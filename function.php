@@ -1636,10 +1636,11 @@ function delete_tad_web_chk($WebID = '', $g2p = 0)
     foreach ($pluginsVal as $dirname => $plugin) {
         $plugins[$i]['dirname'] = $dirname;
         $plugins[$i]['PluginTitle'] = $plugin['PluginTitle'];
-
-        require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
         $plugin_name = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name($WebID);
+        if (!class_exists($$plugin_name)) {
+            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
+            $$plugin_name = new $plugin_name($WebID);
+        }
         $plugins[$i]['total'] = $$plugin_name->get_total();
 
         $i++;
@@ -1663,10 +1664,11 @@ function delete_tad_web($WebID = '')
     foreach ($pluginsVal as $dirname => $plugin) {
         $plugins[$i]['dirname'] = $dirname;
         $plugins[$i]['PluginTitle'] = $plugin['PluginTitle'];
-
-        require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
         $plugin_name = "tad_web_{$dirname}";
-        $$plugin_name = new $plugin_name($WebID);
+        if (!class_exists($$plugin_name)) {
+            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
+            $$plugin_name = new $plugin_name($WebID);
+        }
         $$plugin_name->delete_all();
 
         $i++;
