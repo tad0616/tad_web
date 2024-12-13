@@ -1220,10 +1220,11 @@ class tad_web_aboutus
             }
             $plugin['cates'] = $cates[$dirname];
 
-            require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
-
             $plugin_name = "tad_web_{$dirname}";
-            $$plugin_name = new $plugin_name($this->WebID);
+            if (!class_exists($$plugin_name)) {
+                require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
+                $$plugin_name = new $plugin_name($this->WebID);
+            }
             $content[$dirname][0] = $$plugin_name->export_data($start_date, $end_date, 0);
             foreach ($cates[$dirname] as $CateID => $Cate) {
                 $content[$dirname][$CateID] = $$plugin_name->export_data($start_date, $end_date, $CateID);

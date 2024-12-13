@@ -58,9 +58,12 @@ function search_tag($WebID = '', $tag = '')
             if (true !== $pluginConfig['tag']) {
                 continue;
             }
-            require_once "plugins/{$dirname}/class.php";
+
             $plugin_name = "tad_web_{$dirname}";
-            $$plugin_name = new $plugin_name($WebID);
+            if (!class_exists($$plugin_name)) {
+                require_once XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$dirname}/class.php";
+                $$plugin_name = new $plugin_name($WebID);
+            }
             $data_count[$dirname] = $$plugin_name->list_all('', 50, 'assign', $tag);
             $plugin_data_total += $$plugin_name->get_total();
             $show_arr[] = $dirname;
