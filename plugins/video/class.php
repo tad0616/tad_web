@@ -334,7 +334,7 @@ class tad_web_video
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
 
-        $VideoPlace = $this->tad_web_getYTid($Youtube);
+        $VideoPlace = (string) $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
@@ -380,7 +380,7 @@ class tad_web_video
         $CateID = (int) $_POST['CateID'];
         $WebID = (int) $_POST['WebID'];
 
-        $VideoPlace = $this->tad_web_getYTid($Youtube);
+        $VideoPlace = (string) $this->tad_web_getYTid($Youtube);
         $VideoCount = (int) $_POST['VideoCount'];
         $VideoSort = (int) $_POST['VideoSort'];
         if ($newCateName != '') {
