@@ -1044,7 +1044,7 @@ class tad_web_aboutus
                     $val = "0{$val}";
                 }
 
-                $val = $myts->addSlashes($val);
+                $val = addslashes($val);
 
                 $all .= "
                 <td>

@@ -38,8 +38,6 @@ define('_MA_TCW_NEED_IMAGECREATETURECOLOR', 'PHP不支援 imagecreatetruecolor()
 define('_MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT', "請參考以下連結以安裝之：<a href='https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbdsn=216' target='_blank'>https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbdsn=216</a>");
 define('_MA_TCW_NEED_THEME', '缺少 for_tad_web_theme 佈景');
 define('_MA_TCW_NEED_THEME_CONTENT', "<a href='https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=77' target='_blank'>for_tad_web_theme</a> 佈景只需要解壓縮放到 themes 目錄底下即可，無須至偏好設定選用。亦可<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱直接安裝</a>");
-define('_MA_TCW_NEED_TADTOOLS', 'TadTools版本需要 2.7.4 以上');
-define('_MA_TCW_NEED_TADTOOLS_CONTENT', "請<a href='" . XOOPS_URL . "/modules/tad_adm/admin/main.php'>從站長工具箱</a>更新 TadTools 至最新版。");
 
 define('_MA_TADWEB_CATEID', '編號');
 define('_MA_TADWEB_WEBID', '所屬班級');

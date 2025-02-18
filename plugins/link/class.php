@@ -1,4 +1,5 @@
 <?php
+
 use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
@@ -128,7 +129,7 @@ class tad_web_link
             $main_data[$i]['id_name'] = 'LinkID';
             $main_data[$i]['title'] = $LinkTitle;
             if (_IS_EZCLASS) {
-                $main_data[$i]['LinkCounter'] = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
+                // $main_data[$i]['LinkCounter'] = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
             }
 
             $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'link', $CateID, 'LinkID', $LinkID);
@@ -182,9 +183,9 @@ class tad_web_link
         }
 
         if (_IS_EZCLASS) {
-            $LinkCounter = $data['LinkCounter'] = $this->add_counter($LinkID);
+            // $LinkCounter = $data['LinkCounter'] = $this->add_counter($LinkID);
         } else {
-            $this->add_counter($LinkID);
+            // $this->add_counter($LinkID);
         }
 
         header("location: {$LinkUrl}");
@@ -395,20 +396,19 @@ class tad_web_link
     {
         global $xoopsDB;
 
-        if (_IS_EZCLASS) {
-            $LinkCounter = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
-            if (empty($LinkCounter)) {
-                $sql = 'SELECT `LinkCounter` FROM `' . $xoopsDB->prefix('tad_web_link') . '` WHERE `LinkID`=?';
-                $result = Utility::query($sql, 'i', [$LinkID]) or Utility::web_error($sql, __FILE__, __LINE__);
-                list($LinkCounter) = $xoopsDB->fetchRow($result);
-                redis_do($this->WebID, 'set', 'link', "LinkCounter:$LinkID", $LinkCounter);
-            }
-            return redis_do($this->WebID, 'incr', 'link', "LinkCounter:$LinkID");
-        } else {
-            $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_link') . '` SET `LinkCounter`=`LinkCounter`+1 WHERE `LinkID`=?';
-            Utility::query($sql, 'i', [$LinkID]) or Utility::web_error($sql, __FILE__, __LINE__);
-
-        }
+        // if (_IS_EZCLASS) {
+        //     $LinkCounter = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
+        //     if (empty($LinkCounter)) {
+        //         $sql = 'SELECT `LinkCounter` FROM `' . $xoopsDB->prefix('tad_web_link') . '` WHERE `LinkID`=?';
+        //         $result = Utility::query($sql, 'i', [$LinkID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        //         list($LinkCounter) = $xoopsDB->fetchRow($result);
+        //         redis_do($this->WebID, 'set', 'link', "LinkCounter:$LinkID", $LinkCounter);
+        //     }
+        //     return redis_do($this->WebID, 'incr', 'link', "LinkCounter:$LinkID");
+        // } else {
+        //     $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_link') . '` SET `LinkCounter`=`LinkCounter`+1 WHERE `LinkID`=?';
+        //     Utility::query($sql, 'i', [$LinkID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        // }
     }
 
     //以流水號取得某筆tad_web_link資料
@@ -425,7 +425,7 @@ class tad_web_link
         $data = $xoopsDB->fetchArray($result);
 
         if (_IS_EZCLASS) {
-            $data['LinkCounter'] = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
+            // $data['LinkCounter'] = redis_do($this->WebID, 'get', 'link', "LinkCounter:$LinkID");
         }
         return $data;
     }

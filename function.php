@@ -1,4 +1,5 @@
 <?php
+
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\Tools as TadWebTools;
@@ -388,7 +389,7 @@ function save_web_config($ConfigName, $ConfigValue, $WebID)
     }
 
     $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_config') . '` (`ConfigName`, `ConfigValue`, `WebID`) VALUES (?, ?, ?)';
-    Utility::query($sql, 'ssi', [$ConfigName, $ConfigValue, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+    Utility::query($sql, 'ssi', [(string) $ConfigName, (string) $ConfigValue, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $file = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/web_config.php";
     unlink($file);
@@ -478,7 +479,6 @@ function get_plugins($WebID = '', $mode = 'show', $only_enable = false)
             $sort = plugins_max_sort($WebID, $file);
             $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_plugins') . '` (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) VALUES (?, ?, ?, ?, ?)';
             Utility::query($sql, 'ssisi', [$file, $pluginConfig['name'], $sort, '1', $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
-
         }
 
         $pluginConfigs[$file] = $pluginConfig;
@@ -578,7 +578,7 @@ function mk_menu_var_file($WebID = null)
             $current .= "if(defined('_SHOW_UNABLE') and _SHOW_UNABLE=='1'){\n";
         }
 
-        $plugin['db']['PluginTitle'] = $myts->addSlashes($plugin['db']['PluginTitle']);
+        $plugin['db']['PluginTitle'] = addslashes($plugin['db']['PluginTitle']);
 
         $current .= "\$menu_var['{$dirname}']['id']     = $i;\n";
         $current .= "\$menu_var['{$dirname}']['title']  = '{$plugin['db']['PluginTitle']}';\n";
@@ -651,7 +651,7 @@ function mk_menu_var_file($WebID = null)
 
             $BlockConfig = str_replace('{{WebID}}', $WebID, $BlockConfig);
             $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_blocks') . '` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            Utility::query($sql, 'sisssssiisi', [$func, 0, $name, '', $BlockEnable, $BlockConfig, (string) $block_position[$func], $sort, $WebID, (string) $block_plugin[$func]], 0) or Utility::web_error($sql, __FILE__, __LINE__);
+            Utility::query($sql, 'sisssssiisi', [$func, 0, $name, '', $BlockEnable, $BlockConfig, (string) $block_position[$func], $sort, $WebID, (string) $block_plugin[$func], 0]) or Utility::web_error($sql, __FILE__, __LINE__);
             $sort++;
         }
     }
@@ -912,7 +912,7 @@ function mklogoPic($WebID = '')
         $white,
         XOOPS_ROOT_PATH . '/modules/tad_web/class/font.ttf',
         $WebName, // pattern
-        2// outline width
+        2 // outline width
     );
 
     imagettftext($im, $size2, 0, 0, $y, $text_color, XOOPS_ROOT_PATH . '/modules/tad_web/class/font.ttf', $WebTitle);
@@ -926,7 +926,7 @@ function mklogoPic($WebID = '')
         $white,
         XOOPS_ROOT_PATH . '/modules/tad_web/class/font.ttf',
         $WebTitle, // pattern
-        1// outline width
+        1 // outline width
     );
 
     Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
@@ -987,7 +987,7 @@ function mkTitleImg($WebID = '', $filename = '', $title = '', $color = '#ABBF6B'
             $text_border_color,
             XOOPS_ROOT_PATH . "/modules/tad_web/class/{$font}",
             $title, // pattern
-            2// outline width
+            2 // outline width
         );
     }
     Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/");
@@ -1133,7 +1133,6 @@ function fixed_img($TadUpFiles, $uploads_path = '', $col_name = 'logo', $col_sn 
         delete_tad_web_directory($uploads_path . '/thumbs');
         Utility::mk_dir($uploads_path . '/thumbs');
     }
-
 }
 
 // 取得背景或標題圖的預設圖片
@@ -1311,7 +1310,8 @@ function output_head_file($WebID)
         case 'png':
             $bg_im = imagecreatefrompng($bg_filename);
             break;
-        default:return 'Unsupported picture type!';
+        default:
+            return 'Unsupported picture type!';
     }
 
     if ($width != $bg_width) {
@@ -1342,18 +1342,23 @@ function output_head_file($WebID)
         }
 
         switch ($type) {
-            case 'bmp':$logo_im = imagecreatefromwbmp($logo_filename);
+            case 'bmp':
+                $logo_im = imagecreatefromwbmp($logo_filename);
                 break;
-            case 'gif':$logo_im = imagecreatefromgif($logo_filename);
+            case 'gif':
+                $logo_im = imagecreatefromgif($logo_filename);
                 break;
-            case 'jpg':$logo_im = imagecreatefromjpeg($logo_filename);
+            case 'jpg':
+                $logo_im = imagecreatefromjpeg($logo_filename);
                 break;
-            case 'png':$logo_im = imagecreatefrompng($logo_filename);
+            case 'png':
+                $logo_im = imagecreatefrompng($logo_filename);
                 imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
                 imagealphablending($logo_im, true);
                 imagesavealpha($logo_im, true);
                 break;
-            default:return 'Unsupported picture type!';
+            default:
+                return 'Unsupported picture type!';
         }
 
         //logo圖
@@ -1399,6 +1404,7 @@ function output_head_file_480($WebID)
         list($bg_width, $bg_height) = getimagesize($bg_filename);
 
         //縮放比例
+        $bg_width = empty($bg_width) ? 1 : $bg_width;
         $rate = round($width / $bg_width, 2);
         $new_bg_height = round($bg_height * $rate, 0);
         $bg_top = round($head_top * $rate, 0);
@@ -1410,15 +1416,20 @@ function output_head_file_480($WebID)
         }
 
         switch ($type) {
-            case 'bmp':$bg_im = imagecreatefromwbmp($bg_filename);
+            case 'bmp':
+                $bg_im = imagecreatefromwbmp($bg_filename);
                 break;
-            case 'gif':$bg_im = imagecreatefromgif($bg_filename);
+            case 'gif':
+                $bg_im = imagecreatefromgif($bg_filename);
                 break;
-            case 'jpg':$bg_im = imagecreatefromjpeg($bg_filename);
+            case 'jpg':
+                $bg_im = imagecreatefromjpeg($bg_filename);
                 break;
-            case 'png':$bg_im = imagecreatefrompng($bg_filename);
+            case 'png':
+                $bg_im = imagecreatefrompng($bg_filename);
                 break;
-            default:return 'Unsupported picture type!';
+            default:
+                return 'Unsupported picture type!';
         }
 
         // $head_top = abs($head_top);
@@ -1432,7 +1443,7 @@ function output_head_file_480($WebID)
     $logo_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$web_logo}";
     if (file_exists($logo_filename)) {
         list($logo_width, $logo_height) = getimagesize($logo_filename);
-
+        $logo_width = empty($logo_width) ? 1 : $logo_width;
         $new_logo_height = round($logo_height * (380 / $logo_width), 0);
         $new_logo_width = 380;
 
@@ -1442,18 +1453,23 @@ function output_head_file_480($WebID)
         }
 
         switch ($type) {
-            case 'bmp':$logo_im = imagecreatefromwbmp($logo_filename);
+            case 'bmp':
+                $logo_im = imagecreatefromwbmp($logo_filename);
                 break;
-            case 'gif':$logo_im = imagecreatefromgif($logo_filename);
+            case 'gif':
+                $logo_im = imagecreatefromgif($logo_filename);
                 break;
-            case 'jpg':$logo_im = imagecreatefromjpeg($logo_filename);
+            case 'jpg':
+                $logo_im = imagecreatefromjpeg($logo_filename);
                 break;
-            case 'png':$logo_im = imagecreatefrompng($logo_filename);
+            case 'png':
+                $logo_im = imagecreatefrompng($logo_filename);
                 imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
                 imagealphablending($logo_im, true);
                 imagesavealpha($logo_im, true);
                 break;
-            default:return 'Unsupported picture type!';
+            default:
+                return 'Unsupported picture type!';
         }
 
         $logo_left = ($width - $new_logo_width) / 2;
@@ -1730,7 +1746,6 @@ function update_last_accessed($WebID = '')
         $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `last_accessed`=? WHERE `WebID`=?';
         Utility::query($sql, 'si', [$last_accessed, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
     }
-
 }
 
 function redis_do($WebID, $act = 'set', $plugin = '', $key = '', $value = '')
@@ -1761,7 +1776,7 @@ function get_article_content($content, $page = 1)
 {
     $page = $page ? (int) $page :
 
-    $article = ['info' => [], 'pages' => 1];
+        $article = ['info' => [], 'pages' => 1];
 
     if (!empty($content)) {
         $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
@@ -1862,7 +1877,6 @@ function is_assistant($WebID, $plugin = '', $DefCateID = '', $DefColName = '', $
     if (isset($mems[$DefCateID][$DefColName][$DefColSN])) {
         return $mems[$DefCateID][$DefColName][$DefColSN];
     }
-
 }
 
 //是否有管理權（或由自己發布的），判斷是否要秀出管理工具
