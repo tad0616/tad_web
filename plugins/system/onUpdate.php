@@ -39,7 +39,7 @@ function system_onUpdate1_go()
         $sql2 = 'select BlockID,BlockTitle,BlockEnable,BlockPosition,BlockSort,WebID from ' . $xoopsDB->prefix('tad_web_blocks') . " where `plugin`='xoops' and BlockName='{$bid}'";
         $result2 = $xoopsDB->queryF($sql2) or Utility::web_error($sql2);
         while (list($BlockID, $BlockTitle, $BlockEnable, $BlockPosition, $BlockSort, $WebID) = $xoopsDB->fetchRow($result2)) {
-            $BlockTitle = $myts->addSlashes($BlockTitle);
+            $BlockTitle = addslashes($BlockTitle);
 
             if ('tad_web_menu' === $show_func) {
                 $sql3 = 'update ' . $xoopsDB->prefix('tad_web_blocks') . " set `BlockTitle`='{$BlockTitle}',BlockEnable='1',BlockPosition='{$BlockPosition}' ,BlockSort='{$BlockSort}'  where `plugin`='system' and BlockName='my_menu' and WebID='{$WebID}'";
