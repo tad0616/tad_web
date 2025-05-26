@@ -38,13 +38,13 @@
             <div class="col-md-9">
                 <div class="form-check form-check-inline radio-inline">
                     <label class="form-check-label" for="show_title1">
-                        <input class="form-check-input" id="show_title1" type="radio" name="config[show_title]" value="1" <{if $block.config.show_title!='0'}>checked<{/if}>>
+                        <input class="form-check-input" id="show_title1" type="radio" name="config[show_title]" value="1" <{if isset($block.config.show_title) && $block.config.show_title!='0'}>checked<{/if}>>
                         <{$smarty.const._YES}>
                     </label>
                 </div>
                 <div class="form-check form-check-inline radio-inline">
                     <label class="form-check-label" for="show_title0">
-                        <input class="form-check-input" id="show_title0" type="radio" name="config[show_title]" value="0" <{if $block.config.show_title=='0'}>checked<{/if}>>
+                        <input class="form-check-input" id="show_title0" type="radio" name="config[show_title]" value="0" <{if isset($block.config.show_title) && $block.config.show_title=='0'}>checked<{/if}>>
                         <{$smarty.const._NO}>
                     </label>
                 </div>

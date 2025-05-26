@@ -42,8 +42,8 @@
             <{else}>
                 <h2><{$smarty.const._MD_TCW_SCHEDULE_OTHER_LIST}></h2>
                 <div>
-                    <{if $act.cate.CateName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
-                    <{if $act.ScheduleName|default:false}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
+                    <{if $act.cate}><a href='schedule.php?WebID=<{$act.WebID}>&CateID=<{$act.CateID}>'><{$act.cate.CateName}></a><{/if}>
+                    <{if $act.ScheduleName}><a href='schedule.php?WebID=<{$act.WebID}>&ScheduleID=<{$act.ScheduleID}>'><{$act.ScheduleName}></a><{/if}>
                     <a href="<{$xoops_url}>/modules/tad_web/plugins/schedule/pdf.php?WebID=<{$WebID|default:''}>&ScheduleID=<{$act.ScheduleID}>"  class="text-success"><i class="fa fa-download "></i><span class="sr-only visually-hidden">download pdf</span></a>
                     <small>
                         <{*if $act.isCanEdit*}>

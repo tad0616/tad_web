@@ -26,18 +26,22 @@ function action_slide($WebID, $config = [])
 {
     global $xoopsDB;
     require_once __DIR__ . '/class.php';
-    $power = new Power($WebID);
+    $power          = new Power($WebID);
     $tad_web_action = new tad_web_action($WebID);
 
-    if ($config['action_id'] == 'latest') {
-        $order = "ORDER BY `ActionDate` DESC";
-    } elseif (is_numeric($config['action_id'])) {
-        $order = "AND `ActionID`='{$config['action_id']}'";
+    if (is_array($config)) {
+        if ($config['action_id'] == 'latest') {
+            $order = "ORDER BY `ActionDate` DESC";
+        } elseif (is_numeric($config['action_id'])) {
+            $order = "AND `ActionID`='{$config['action_id']}'";
+        } else {
+            $order = "ORDER BY RAND()";
+        }
     } else {
         $order = "ORDER BY RAND()";
     }
 
-    $sql = 'SELECT `ActionName`, `ActionID`, `gphoto_link` FROM `' . $xoopsDB->prefix('tad_web_action') . '` WHERE `WebID`= ? ' . $order;
+    $sql    = 'SELECT `ActionName`, `ActionID`, `gphoto_link` FROM `' . $xoopsDB->prefix('tad_web_action') . '` WHERE `WebID`= ? ' . $order;
     $result = Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
     while (list($ActionName, $ActionID, $gphoto_link) = $xoopsDB->fetchRow($result)) {
         //檢查權限
@@ -56,10 +60,10 @@ function action_slide($WebID, $config = [])
     $slide_images = '';
 
     $ResponsiveSlides = new ResponsiveSlides(120, false);
-    $i = 1;
+    $i                = 1;
     if ($gphoto_link != '') {
         list($url, $key) = explode('?key=', $gphoto_link);
-        $photos = $tad_web_action->tad_gphotos_list($ActionID, $url, $key);
+        $photos          = $tad_web_action->tad_gphotos_list($ActionID, $url, $key);
         foreach ($photos as $pic) {
             $ResponsiveSlides->add_content($i, '', '', $pic['image_url'], '', XOOPS_URL . "/modules/tad_web/action.php?WebID=$WebID&ActionID={$ActionID}");
             $i++;
@@ -81,8 +85,8 @@ function action_slide($WebID, $config = [])
 
     $slide_images = $ResponsiveSlides->render();
 
-    $block['main_data'] = $slide_images;
-    $block['ActionID'] = $ActionID;
+    $block['main_data']  = $slide_images;
+    $block['ActionID']   = $ActionID;
     $block['ActionName'] = $ActionName;
 
     return $block;
@@ -93,7 +97,7 @@ function action_photos($WebID, $config = [])
 {
     global $xoopsDB;
     require_once __DIR__ . '/class.php';
-    $power = new Power($WebID);
+    $power          = new Power($WebID);
     $tad_web_action = new tad_web_action($WebID);
     // Utility::dd($config);
 
@@ -105,7 +109,7 @@ function action_photos($WebID, $config = [])
         $order = "ORDER BY RAND()";
     }
 
-    $sql = 'SELECT `ActionName`, `ActionID`, `gphoto_link` FROM `' . $xoopsDB->prefix('tad_web_action') . '` WHERE `WebID` =? ' . $order;
+    $sql    = 'SELECT `ActionName`, `ActionID`, `gphoto_link` FROM `' . $xoopsDB->prefix('tad_web_action') . '` WHERE `WebID` =? ' . $order;
     $result = Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (list($ActionName, $ActionID, $gphoto_link) = $xoopsDB->fetchRow($result)) {
@@ -128,7 +132,7 @@ function action_photos($WebID, $config = [])
     $i = 1;
     if ($gphoto_link != '') {
         list($url, $key) = explode('?key=', $gphoto_link);
-        $photos = $tad_web_action->tad_gphotos_list($ActionID, $url, $key);
+        $photos          = $tad_web_action->tad_gphotos_list($ActionID, $url, $key);
     } else {
         $tad_web_action_image = new TadUpFiles('tad_web');
         $tad_web_action_image->set_dir('subdir', "/{$WebID}");
@@ -145,10 +149,10 @@ function action_photos($WebID, $config = [])
     $action_photos = '<ul>';
     foreach ($photos as $pic) {
         if ($gphoto_link != '') {
-            $image_url = $pic['image_url'];
+            $image_url  = $pic['image_url'];
             $image_link = '<a href="' . $pic['image_link'] . '" target="_blank">' . _MD_TCW_ACTION_VIEW_ORIGINAL_IMAGE . '</a>';
         } else {
-            $image_url = $pic['path'];
+            $image_url  = $pic['path'];
             $image_link = '';
         }
         $action_photos .= '
@@ -164,8 +168,8 @@ function action_photos($WebID, $config = [])
     $action_photos .= '</ul>
     <div style="clear:both;"></div>';
 
-    $block['main_data'] = $action_photos;
-    $block['ActionID'] = $ActionID;
+    $block['main_data']  = $action_photos;
+    $block['ActionID']   = $ActionID;
     $block['ActionName'] = $ActionName;
 
     return $block;

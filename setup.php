@@ -15,8 +15,8 @@ if (!empty($WebID) and ($isMyWeb or $_SESSION['tad_web_adm'])) {
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
+$op     = Request::getString('op');
+$WebID  = Request::getInt('WebID');
 $plugin = Request::getString('plugin');
 
 common_template($WebID, $web_all_config);
@@ -56,7 +56,7 @@ function plugin_setup($WebID, $plugin)
     }
 
     $pluginSetup = [];
-    $setup_file = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
+    $setup_file  = XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/setup.php";
     if (file_exists($setup_file)) {
         require XOOPS_ROOT_PATH . "/modules/tad_web/plugins/{$plugin}/langs/{$xoopsConfig['language']}.php";
         require $setup_file;
@@ -67,11 +67,11 @@ function plugin_setup($WebID, $plugin)
     foreach ($plugin_setup as $k => $setup) {
         $value = $setup_db_values[$setup['name']];
 
-        $pluginSetup[$k]['name'] = $setup['name'];
-        $pluginSetup[$k]['text'] = $setup['text'];
-        $pluginSetup[$k]['desc'] = $setup['desc'];
-        $pluginSetup[$k]['type'] = $setup['type'];
-        $pluginSetup[$k]['value'] = $value;
+        $pluginSetup[$k]['name']    = (String) $setup['name'];
+        $pluginSetup[$k]['text']    = (String) $setup['text'];
+        $pluginSetup[$k]['desc']    = (String) $setup['desc'];
+        $pluginSetup[$k]['type']    = (String) $setup['type'];
+        $pluginSetup[$k]['value']   = $value;
         $pluginSetup[$k]['default'] = $setup['default'];
         $pluginSetup[$k]['options'] = $setup['options'];
 
