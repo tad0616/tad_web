@@ -1309,7 +1309,7 @@ function output_head_file($WebID)
     imagecolortransparent($im, imagecolorallocatealpha($im, 0, 0, 0, 127));
     imagealphablending($im, true);
     imagesavealpha($im, true);
-    if (file_exists($bg_filename)) {
+    if (file_exists($bg_filename) && $bg_im !== false) {
         //縮放比例
         $rate     = round($bg_width / $width, 4);
         $head_top = abs($head_top);
@@ -1424,7 +1424,10 @@ function output_head_file_480($WebID)
 
         //背景圖
         // die("$rate, $bg_top, $bg_width, $bg_height, $bg_width, $bg_height");
-        imagecopyresampled($im, $bg_im, 0, 0, 0, 0, $new_bg_width, $new_bg_height, $bg_width, $bg_height);
+        if ($bg_im !== false) {
+            imagecopyresampled($im, $bg_im, 0, 0, 0, 0, $new_bg_width, $new_bg_height, $bg_width, $bg_height);
+        }
+
     }
 
     $logo_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$web_logo}";
