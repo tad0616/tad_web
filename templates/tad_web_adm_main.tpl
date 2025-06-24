@@ -53,13 +53,13 @@
                 <div class="col-sm-10" style="padding-top: 8px;">
                     <div class="form-check-inline radio-inline">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="WebEnable" value="1" <{if $WebEnable=='1'}>checked<{/if}>>
+                            <input class="form-check-input" type="radio" name="WebEnable" value="1" <{if $WebEnable}>checked<{/if}>>
                             <{$smarty.const._TAD_ENABLE}>
                         </label>
                     </div>
                     <div class="form-check-inline radio-inline">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="WebEnable" value="0" <{if $WebEnable=='0'}>checked<{/if}>>
+                            <input class="form-check-input" type="radio" name="WebEnable" value="0" <{if !$WebEnable}>checked<{/if}>>
                             <{$smarty.const._TAD_UNABLE}>
                         </label>
                     </div>

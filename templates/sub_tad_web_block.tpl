@@ -7,11 +7,7 @@
             <{if $xoops_version < 20511}>
                 <{include file="$xoops_rootpath/modules/tad_web/templates/block.tpl"}>
             <{else}>
-                <{if isset($block.options)}>
-                    <{xoBlock id=$block.BlockName options=$block.options}>
-                <{else}>
-                    <{xoBlock id=$block.BlockName}>
-                <{/if}>
+                <{include file="$xoops_rootpath/modules/tad_web/templates/xoblock.tpl"}>
             <{/if}>
 
         <{elseif $block.plugin=="custom" || $block.plugin=="share"}>

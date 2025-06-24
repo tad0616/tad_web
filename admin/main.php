@@ -98,11 +98,11 @@ require_once __DIR__ . '/footer.php';
 function chk_evn()
 {
     $error = [];
-    if (! function_exists('imagecreatetruecolor')) {
+    if (!function_exists('imagecreatetruecolor')) {
         $error[_MA_TCW_NEED_IMAGECREATETURECOLOR] = _MA_TCW_NEED_IMAGECREATETURECOLOR_CONTENT;
     }
 
-    if (! is_dir(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme') and ! is_dir(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2')) {
+    if (!is_dir(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme') and !is_dir(XOOPS_ROOT_PATH . '/themes/for_tad_web_theme_2')) {
         $error[_MA_TCW_NEED_THEME] = _MA_TCW_NEED_THEME_CONTENT;
     }
 
@@ -207,7 +207,7 @@ function create_by_user()
     $result  = Utility::query($sql, 'i', [$groupid]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (list($uid) = $xoopsDB->fetchRow($result)) {
-        if (! empty($uid)) {
+        if (!empty($uid)) {
             $ok_uid[$uid] = $uid;
         }
     }
@@ -310,7 +310,7 @@ function tad_web_form($WebID = null)
     global $xoopsDB, $xoopsUser, $xoopsTpl, $TadUpFiles;
     $pic = '';
     //抓取預設值
-    if (! empty($WebID)) {
+    if (!empty($WebID)) {
         $DBV = get_tad_web($WebID);
     } else {
         $DBV = [];
@@ -319,39 +319,39 @@ function tad_web_form($WebID = null)
     //預設值設定
 
     //設定「WebID」欄位預設值
-    $WebID = (! isset($DBV['WebID'])) ? $WebID : $DBV['WebID'];
+    $WebID = (!isset($DBV['WebID'])) ? $WebID : $DBV['WebID'];
     $xoopsTpl->assign('WebID', $WebID);
 
     //設定「WebName」欄位預設值
-    $WebName = (! isset($DBV['WebName'])) ? '' : $DBV['WebName'];
+    $WebName = (!isset($DBV['WebName'])) ? '' : $DBV['WebName'];
     $xoopsTpl->assign('WebName', $WebName);
 
     //設定「WebSort」欄位預設值
-    $WebSort = (! isset($DBV['WebSort'])) ? tad_web_max_sort() : $DBV['WebSort'];
+    $WebSort = (!isset($DBV['WebSort'])) ? tad_web_max_sort() : $DBV['WebSort'];
     $xoopsTpl->assign('WebSort', $WebSort);
 
     //設定「WebEnable」欄位預設值
-    $WebEnable = (! isset($DBV['WebEnable'])) ? '' : $DBV['WebEnable'];
-    $xoopsTpl->assign('WebEnable', $WWebEnableebID);
+    $WebEnable = (!isset($DBV['WebEnable'])) ? '' : $DBV['WebEnable'];
+    $xoopsTpl->assign('WebEnable', $WebEnable);
 
     //設定「WebCounter」欄位預設值
-    $WebCounter = (! isset($DBV['WebCounter'])) ? '' : $DBV['WebCounter'];
+    $WebCounter = (!isset($DBV['WebCounter'])) ? '' : $DBV['WebCounter'];
     $xoopsTpl->assign('WebCounter', $WebCounter);
 
     //設定「WebOwner」欄位預設值
-    $WebOwner = (! isset($DBV['WebOwner'])) ? '' : $DBV['WebOwner'];
+    $WebOwner = (!isset($DBV['WebOwner'])) ? '' : $DBV['WebOwner'];
     $xoopsTpl->assign('WebOwner', $WebOwner);
 
     //設定「WebOwnerUid」欄位預設值
-    $WebOwnerUid = (! isset($DBV['WebOwnerUid'])) ? '' : $DBV['WebOwnerUid'];
+    $WebOwnerUid = (!isset($DBV['WebOwnerUid'])) ? '' : $DBV['WebOwnerUid'];
     $xoopsTpl->assign('WebOwnerUid', $WebOwnerUid);
 
     //設定「WebTitle」欄位預設值
-    $WebTitle = (! isset($DBV['WebTitle'])) ? '' : $DBV['WebTitle'];
+    $WebTitle = (!isset($DBV['WebTitle'])) ? '' : $DBV['WebTitle'];
     $xoopsTpl->assign('WebTitle', $WebTitle);
 
     //設定「CateID」欄位預設值
-    $CateID = (! isset($DBV['CateID'])) ? '' : $DBV['CateID'];
+    $CateID = (!isset($DBV['CateID'])) ? '' : $DBV['CateID'];
     $xoopsTpl->assign('CateID', $CateID);
 
     $op = (empty($WebID)) ? 'insert_tad_web' : 'update_tad_web';
@@ -393,7 +393,7 @@ function tad_web_form($WebID = null)
     $WebCate = new WebCate(0, 'web_cate', 'tad_web');
     $WebCate->set_col_md(3, 3);
     //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false, $default_opt = true)
-    $cate_menu = $WebCate->cate_menu($CateID, 'page', false, false, false, false, true, true, false);
+    $cate_menu = $WebCate->cate_menu($CateID, 'page', false, false, false, false, true, false, true);
     $xoopsTpl->assign('cate_menu', $cate_menu);
 }
 
@@ -496,7 +496,7 @@ function save_one_web_title($WebID = '', $WebTitle = '')
 
     //修改班級名稱
     $default_class = TadWebTools::get_web_config('default_class', $WebID);
-    if (! empty($WebID) and ! empty($default_class)) {
+    if (!empty($WebID) and !empty($default_class)) {
         $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_cate') . '` SET `CateName` = ? WHERE `CateID` = ?';
         Utility::query($sql, 'si', [$WebTitle, $default_class]) or Utility::web_error($sql, __FILE__, __LINE__);
     }

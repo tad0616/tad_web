@@ -8,8 +8,8 @@ $xoopsOption['template_main'] = 'tad_web_adm_cate.tpl';
 require_once __DIR__ . '/header.php';
 require_once dirname(__DIR__) . '/function.php';
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
+$op     = Request::getString('op');
+$WebID  = Request::getInt('WebID');
 $CateID = Request::getInt('CateID');
 
 $xoopsTpl->assign('op', $op);
@@ -110,7 +110,7 @@ function tad_web_cate_form($CateID = '')
 function tad_web_cate_max_sort($WebID = '', $ColName = '', $ColSN = '')
 {
     global $xoopsDB;
-    $sql = 'SELECT MAX(`CateSort`) FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID`=? AND `ColName`=? AND `ColSN`=?';
+    $sql    = 'SELECT MAX(`CateSort`) FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID`=? AND `ColName`=? AND `ColSN`=?';
     $result = Utility::query($sql, 'isi', [$WebID, $ColName, $ColSN]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     list($sort) = $xoopsDB->fetchRow($result);
@@ -123,14 +123,14 @@ function save_tad_web_cate()
 {
     global $xoopsDB;
 
-    $CateID = (int) $_POST['CateID'];
-    $WebID = (int) $_POST['WebID'];
-    $CateName = (string) $_POST['CateName'];
-    $ColName = (string) $_POST['ColName'];
-    $ColSN = (int) $_POST['ColSN'];
-    $CateSort = (int) $_POST['CateSort'];
+    $CateID     = (int) $_POST['CateID'];
+    $WebID      = (int) $_POST['WebID'];
+    $CateName   = (string) $_POST['CateName'];
+    $ColName    = (string) $_POST['ColName'];
+    $ColSN      = (int) $_POST['ColSN'];
+    $CateSort   = (int) $_POST['CateSort'];
     $CateEnable = (int) $_POST['CateEnable'];
-    $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_cate') . '` (`WebID`, `CateName`, `ColName`, `ColSN`, `CateSort`, `CateEnable`, `CateCounter`
+    $sql        = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_cate') . '` (`WebID`, `CateName`, `ColName`, `ColSN`, `CateSort`, `CateEnable`, `CateCounter`
     ) VALUES ( ?, ?, ?, ?, ?, ?, 0)';
     Utility::query($sql, 'issiis', [$WebID, $CateName, $ColName, $ColSN, $CateSort, $CateEnable]) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -158,19 +158,23 @@ function update_tad_web_cate_arr($CateID = '')
 {
     global $xoopsDB;
 
-    $web_cate_blank_arr = (string) $_POST['web_cate_blank_arr'];
-    $web_cate_array = explode(',', $_POST['web_cate_arr']);
+    $web_cate_blank_arr = explode(',', (string) $_POST['web_cate_blank_arr']);
+    $web_cate_array     = explode(',', (string) $_POST['web_cate_arr']);
 
-    $i = 1;
-    foreach ($web_cate_array as $WebID) {
-        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID` = ?, `WebSort` = ? WHERE `WebID` = ?';
-        Utility::query($sql, 'iii', [$CateID, $i, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
-        $i++;
+    if ($web_cate_array) {
+        $i = 1;
+        foreach ($web_cate_array as $WebID) {
+            $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID` = ?, `WebSort` = ? WHERE `WebID` = ?';
+            Utility::query($sql, 'iii', [$CateID, $i, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+            $i++;
+        }
     }
 
     if ($web_cate_blank_arr) {
-        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID` = ? WHERE `WebID` IN (?)';
-        Utility::query($sql, 'is', [0, $web_cate_blank_arr]) or Utility::web_error($sql, __FILE__, __LINE__);
+        foreach ($web_cate_blank_arr as $WebID) {
+            $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID` = ? WHERE `WebID`= ?';
+            Utility::query($sql, 'ii', [0, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
     return $CateID;
@@ -202,7 +206,7 @@ function get_tad_web_cate($CateID = '')
         return;
     }
 
-    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `CateID` = ?';
+    $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `CateID` = ?';
     $result = Utility::query($sql, 'i', [$CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $data = $xoopsDB->fetchArray($result);
@@ -217,7 +221,7 @@ function tad_web_list_cate()
 
     $myts = \MyTextSanitizer::getInstance();
 
-    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID`=? AND `ColName`=? AND `ColSN`=? ORDER BY `CateSort`';
+    $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID`=? AND `ColName`=? AND `ColSN`=? ORDER BY `CateSort`';
     $result = Utility::query($sql, 'isi', [0, 'web_cate', 0]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $all_content = [];
@@ -237,21 +241,21 @@ function tad_web_list_cate()
 
         //過濾讀出的變數值
         $CateName = $myts->htmlSpecialChars($CateName);
-        $ColName = $myts->htmlSpecialChars($ColName);
-        $ColSN = $myts->htmlSpecialChars($ColSN);
+        $ColName  = $myts->htmlSpecialChars($ColName);
+        $ColSN    = $myts->htmlSpecialChars($ColSN);
 
-        $all_content[$i]['CateID'] = $CateID;
-        $all_content[$i]['WebID'] = $WebID;
-        $all_content[$i]['CateName'] = $CateName;
-        $all_content[$i]['ColName'] = $ColName;
-        $all_content[$i]['ColSN'] = $ColSN;
-        $all_content[$i]['CateSort'] = $CateSort;
-        $all_content[$i]['CateEnable'] = $CateEnable;
+        $all_content[$i]['CateID']      = $CateID;
+        $all_content[$i]['WebID']       = $WebID;
+        $all_content[$i]['CateName']    = $CateName;
+        $all_content[$i]['ColName']     = $ColName;
+        $all_content[$i]['ColSN']       = $ColSN;
+        $all_content[$i]['CateSort']    = $CateSort;
+        $all_content[$i]['CateEnable']  = $CateEnable;
         $all_content[$i]['CateCounter'] = $CateCounter;
         if (is_array($web_cate)) {
-            $all_content[$i]['repository'] = isset($web_cate[0]) ? $web_cate[0] : [];
-            $all_content[$i]['destination'] = isset($web_cate[$CateID]) ? $web_cate[$CateID] : [];
-            $all_content[$i]['web_cate_arr_str'] = isset($web_cate[$CateID]) ? implode(',', $web_cate[$CateID]['WebID']) : '';
+            $all_content[$i]['repository']         = isset($web_cate[0]) ? $web_cate[0] : [];
+            $all_content[$i]['destination']        = isset($web_cate[$CateID]) ? $web_cate[$CateID] : [];
+            $all_content[$i]['web_cate_arr_str']   = isset($web_cate[$CateID]) ? implode(',', $web_cate[$CateID]['WebID']) : '';
             $all_content[$i]['web_cate_blank_arr'] = isset($web_cate[0]) ? implode(',', $web_cate[0]['WebID']) : '';
         }
         $i++;
