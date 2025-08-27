@@ -3,27 +3,26 @@ $modversion = [];
 global $xoopsConfig;
 
 //---模組基本資訊---//
-$modversion['name'] = _MI_TCW_NAME;
-// $modversion['version'] = 1.95;
-$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '2.0.0-Stable' : '2.0';
+$modversion['name']        = _MI_TCW_NAME;
+$modversion['version']     = $_SESSION['xoops_version'] >= 20511 ? '2.1.0-Stable' : '2.1';
 $modversion['description'] = _MI_TCW_DESC;
-$modversion['author'] = _MI_TCW_AUTHOR;
-$modversion['credits'] = _MI_TCW_CREDITS;
-$modversion['help'] = 'page=help';
-$modversion['license'] = 'GNU GPL 2.0';
+$modversion['author']      = _MI_TCW_AUTHOR;
+$modversion['credits']     = _MI_TCW_CREDITS;
+$modversion['help']        = 'page=help';
+$modversion['license']     = 'GNU GPL 2.0';
 $modversion['license_url'] = 'www.gnu.org/licenses/gpl-2.0.html/';
-$modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
-$modversion['dirname'] = basename(__DIR__);
+$modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
+$modversion['dirname']     = basename(__DIR__);
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2024-12-12';
-$modversion['module_website_url'] = 'https://tad0616.net/';
+$modversion['release_date']        = '2025-08-27';
+$modversion['module_website_url']  = 'https://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
-$modversion['module_status'] = 'release';
-$modversion['author_website_url'] = 'https://tad0616.net/';
+$modversion['module_status']       = 'release';
+$modversion['author_website_url']  = 'https://tad0616.net/';
 $modversion['author_website_name'] = _MI_TAD_WEB;
-$modversion['min_php'] = 5.4;
-$modversion['min_xoops'] = '2.5.10';
+$modversion['min_php']             = 5.4;
+$modversion['min_xoops']           = '2.5.10';
 
 //---paypal資訊---//
 $modversion['paypal'] = [
@@ -38,7 +37,7 @@ $modversion['system_menu'] = 1;
 
 //---資料表架構---//
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
-$modversion['tables'] = [
+$modversion['tables']           = [
     'tad_web', 'tad_web_cate', 'tad_web_files_center', 'tad_web_config',
     'tad_web_plugins', 'tad_web_roles', 'tad_web_blocks', 'tad_web_plugins_setup',
     'tad_web_power', 'tad_web_tags', 'tad_web_notice', 'tad_web_mail_log',
@@ -46,12 +45,12 @@ $modversion['tables'] = [
 ];
 
 //---管理介面設定---//
-$modversion['hasAdmin'] = 1;
+$modversion['hasAdmin']   = 1;
 $modversion['adminindex'] = 'admin/index.php';
-$modversion['adminmenu'] = 'admin/menu.php';
+$modversion['adminmenu']  = 'admin/menu.php';
 
-$modversion['onInstall'] = 'include/onInstall.php';
-$modversion['onUpdate'] = 'include/onUpdate.php';
+$modversion['onInstall']   = 'include/onInstall.php';
+$modversion['onUpdate']    = 'include/onUpdate.php';
 $modversion['onUninstall'] = 'include/onUninstall.php';
 
 //---使用者主選單設定---//
