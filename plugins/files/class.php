@@ -16,10 +16,10 @@ class tad_web_files
 
     public function __construct($WebID)
     {
-        $this->WebID = $WebID;
+        $this->WebID   = $WebID;
         $this->WebCate = new WebCate($WebID, 'files', 'tad_web_files');
-        $this->tags = new Tags($WebID);
-        $this->Power = new Power($WebID);
+        $this->tags    = new Tags($WebID);
+        $this->Power   = new Power($WebID);
     }
 
     //檔案下載
@@ -62,11 +62,11 @@ class tad_web_files
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
 
-            $county = Request::getString('county');
-            $city = Request::getString('city');
-            $SchoolName = Request::getString('SchoolName');
-            $andCounty = !empty($county) ? "and d.county='{$county}'" : '';
-            $andCity = !empty($city) ? "and d.city='{$city}'" : '';
+            $county        = Request::getString('county');
+            $city          = Request::getString('city');
+            $SchoolName    = Request::getString('SchoolName');
+            $andCounty     = !empty($county) ? "and d.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and d.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and d.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* , b.files_sn, b.col_name, b.col_sn, b.sort, b.kind, b.file_name, b.file_type, b.file_size, b.description, b.counter, b.original_filename, b.hash_filename, b.sub_dir from ' . $xoopsDB->prefix('tad_web_files') . '  as a
@@ -98,15 +98,15 @@ class tad_web_files
         // }
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
         $PageBar = Utility::getPageBar($sql, $to_limit, 10);
-        $bar = $PageBar['bar'];
-        $sql = $PageBar['sql'];
-        $total = $PageBar['total'];
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $main_data = $data = [];
 
-        $i = 0;
+        $i        = 0;
         $need_del = $no_need_del = [];
 
         $Webs = getAllWebInfo();
@@ -132,15 +132,15 @@ class tad_web_files
                 $no_need_del[$fsn] = $fsn;
             }
 
-            $main_data[$i] = $all;
-            $main_data[$i]['id'] = $fsn;
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $fsn;
             $main_data[$i]['id_name'] = 'fsn';
-            $main_data[$i]['title'] = $file_description;
+            $main_data[$i]['title']   = $file_description;
             // $main_data[$i]['isAssistant'] = is_assistant($this->WebID, 'files', $CateID, 'fsn', $fsn);
 
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'files', $CateID, 'fsn', $fsn);
 
-            $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb'] = $isMyWeb;
@@ -151,16 +151,17 @@ class tad_web_files
             }
 
             $file_date = mb_substr($file_date, 0, 10);
-            $showurl = '';
+            $showurl   = '';
             if (!empty($file_link)) {
                 $file_description = empty($file_description) ? $file_link : $file_description;
-                $showurl = "<a href='{$file_link}' class='iconize'>{$file_description}</a>";
+                $showurl          = "<a href='{$file_link}' class='iconize'>{$file_description}</a>";
             } elseif (!empty($files_sn)) {
-                $description = empty($description) ? $original_filename : $description;
-                $showurl = "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn#{$original_filename}' class='iconize'>{$description}</a>";
+                $description       = empty($description) ? $original_filename : $description;
+                $original_filename = urlencode($original_filename);
+                $showurl           = "<a href='" . XOOPS_URL . "/modules/tad_web/files.php?WebID={$WebID}&op=tufdl&files_sn=$files_sn&fn={$original_filename}' class='iconize'>{$description}</a>";
             }
 
-            $main_data[$i]['showurl'] = $showurl;
+            $main_data[$i]['showurl']  = $showurl;
             $main_data[$i]['uid_name'] = $uid_name;
             $main_data[$i]['files_sn'] = $files_sn;
             $i++;
@@ -180,7 +181,7 @@ class tad_web_files
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
-            $data['total'] = $total;
+            $data['total']     = $total;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'files', $CateID, 'fsn', $fsn);
 
             return $data;
@@ -240,7 +241,7 @@ class tad_web_files
 
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['files']) ? $_SESSION['isAssistant']['files'] : '';
-        $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->WebCate->set_button_value($plugin_menu_var['files']['short'] . _MD_TCW_CATE_TOOLS);
         $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['files']['short']));
         $cate_menu = isset($_SESSION['isAssistant']['files']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
@@ -282,13 +283,13 @@ class tad_web_files
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
-        $file_link = (string) $_POST['file_link'];
+        $CateID           = (int) $_POST['CateID'];
+        $WebID            = (int) $_POST['WebID'];
+        $file_link        = (string) $_POST['file_link'];
         $file_description = (string) $_POST['file_description'];
-        $newCateName = (string) $_POST['newCateName'];
-        $file_method = (string) $_POST['file_method'];
-        $tag_name = (string) $_POST['tag_name'];
+        $newCateName      = (string) $_POST['newCateName'];
+        $file_method      = (string) $_POST['file_method'];
+        $tag_name         = (string) $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
@@ -317,13 +318,13 @@ class tad_web_files
     {
         global $xoopsDB, $TadUpFiles;
 
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
-        $file_link = (string) $_POST['file_link'];
+        $CateID           = (int) $_POST['CateID'];
+        $WebID            = (int) $_POST['WebID'];
+        $file_link        = (string) $_POST['file_link'];
         $file_description = (string) $_POST['file_description'];
-        $newCateName = (string) $_POST['newCateName'];
-        $file_method = (string) $_POST['file_method'];
-        $tag_name = (string) $_POST['tag_name'];
+        $newCateName      = (string) $_POST['newCateName'];
+        $file_method      = (string) $_POST['file_method'];
+        $tag_name         = (string) $_POST['tag_name'];
         if ($newCateName != '') {
             $CateID = $this->WebCate->save_tad_web_cate($CateID, $newCateName);
         }
@@ -352,8 +353,8 @@ class tad_web_files
     public function delete($fsn = '', $files_sn = '')
     {
         global $xoopsDB, $TadUpFiles;
-        $sql = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=?';
-        $result = Utility::query($sql, 'i', [$fsn]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql          = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=?';
+        $result       = Utility::query($sql, 'i', [$fsn]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
 
         $and_uid = '';
@@ -362,7 +363,7 @@ class tad_web_files
         }
         if (empty($fsn) and !empty($files_sn)) {
             $file = $TadUpFiles->get_one_file($files_sn);
-            $fsn = $file['col_sn'];
+            $fsn  = $file['col_sn'];
         }
 
         $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=? ' . $and_uid;
@@ -381,8 +382,8 @@ class tad_web_files
     {
         global $xoopsDB;
         $allCateID = [];
-        $sql = 'SELECT `fsn`,`CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID`=?';
-        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql       = 'SELECT `fsn`,`CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID`=?';
+        $result    = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($fsn, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($fsn);
             $allCateID[$CateID] = $CateID;
@@ -397,8 +398,8 @@ class tad_web_files
     public function get_total()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID` =?';
-        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql         = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID` =?';
+        $result      = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
 
         return $count;
@@ -412,9 +413,9 @@ class tad_web_files
             return;
         }
 
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=?';
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `fsn`=?';
         $result = Utility::query($sql, 'i', [$fsn]) or Utility::web_error($sql, __FILE__, __LINE__);
-        $data = $xoopsDB->fetchArray($result);
+        $data   = $xoopsDB->fetchArray($result);
 
         return $data;
     }
@@ -424,19 +425,19 @@ class tad_web_files
     {
         global $xoopsDB;
         $andCateID = empty($CateID) ? '' : "AND `CateID`='$CateID'";
-        $andStart = empty($start_date) ? '' : "AND `file_date` >= '{$start_date}'";
-        $andEnd = empty($end_date) ? '' : "AND `file_date` <= '{$end_date}'";
+        $andStart  = empty($start_date) ? '' : "AND `file_date` >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? '' : "AND `file_date` <= '{$end_date}'";
 
-        $sql = 'SELECT `fsn`, `file_description`, `file_date`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID`= ? ' . $andStart . ' ' . $andEnd . ' ' . $andCateID . ' ORDER BY `file_date`';
+        $sql    = 'SELECT `fsn`, `file_description`, `file_date`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_files') . '` WHERE `WebID`= ? ' . $andStart . ' ' . $andEnd . ' ' . $andCateID . ' ORDER BY `file_date`';
         $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $i = 0;
+        $i         = 0;
         $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
-            $main_data[$i]['ID'] = $ID;
+            $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
-            $main_data[$i]['title'] = $title;
-            $main_data[$i]['date'] = $date;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
 
             $i++;
         }

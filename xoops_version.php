@@ -4,7 +4,7 @@ global $xoopsConfig;
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TCW_NAME;
-$modversion['version']     = $_SESSION['xoops_version'] >= 20511 ? '2.1.0-Stable' : '2.1';
+$modversion['version']     = $_SESSION['xoops_version'] >= 20511 ? '2.2.0-Stable' : '2.2';
 $modversion['description'] = _MI_TCW_DESC;
 $modversion['author']      = _MI_TCW_AUTHOR;
 $modversion['credits']     = _MI_TCW_CREDITS;
@@ -15,7 +15,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(__DIR__);
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2025-08-27';
+$modversion['release_date']        = '2025-12-05';
 $modversion['module_website_url']  = 'https://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -26,9 +26,9 @@ $modversion['min_xoops']           = '2.5.10';
 
 //---paypal資訊---//
 $modversion['paypal'] = [
-    'business' => 'tad0616@gmail.com',
-    'item_name' => 'Donation : ' . _MI_TAD_WEB,
-    'amount' => 0,
+    'business'      => 'tad0616@gmail.com',
+    'item_name'     => 'Donation : ' . _MI_TAD_WEB,
+    'amount'        => 0,
     'currency_code' => 'USD',
 ];
 
@@ -41,7 +41,7 @@ $modversion['tables']           = [
     'tad_web', 'tad_web_cate', 'tad_web_files_center', 'tad_web_config',
     'tad_web_plugins', 'tad_web_roles', 'tad_web_blocks', 'tad_web_plugins_setup',
     'tad_web_power', 'tad_web_tags', 'tad_web_notice', 'tad_web_mail_log',
-    'tad_web_cate_assistant', 'tad_web_assistant_post',
+    'tad_web_cate_assistant', 'tad_web_assistant_post', 'tad_web_link_mems', 'tad_web_mems', 'tad_web_mem_parents', 'tad_web_account', 'tad_web_action', 'tad_web_action_gphotos', 'tad_web_calendar', 'tad_web_discuss', 'tad_web_files', 'tad_web_homework', 'tad_web_homework_content', 'tad_web_link', 'tad_web_news', 'tad_web_page', 'tad_web_schedule', 'tad_web_schedule_data', 'tad_web_video', 'tad_web_works', 'tad_web_works_content',
 ];
 
 //---管理介面設定---//

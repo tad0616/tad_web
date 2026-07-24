@@ -385,7 +385,7 @@ class tad_web_schedule
         }
         $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_schedule') . '` WHERE `ScheduleID`=? ' . $and_uid;
 
-        if (Utility::query($sql, 'i', [$ScheduleID])) {
+        if (Utility::query($sql, 'i', [$ScheduleID], true, false, null, true)) {
             $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_schedule_data') . '` WHERE `ScheduleID`=?';
             Utility::query($sql, 'i', [$ScheduleID]) or Utility::web_error($sql, __FILE__, __LINE__);
 

@@ -1,3 +1,7 @@
+Tad Web 2.2 (Released 2025-12-05)
+====================================
+1. Fixed an issue where files could not be downloaded
+
 Tad Web 2.1 (released 2025-08-27)
 ====================================
 1. Fixed the problem that website categories cannot be saved correctly in the backend.

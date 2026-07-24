@@ -87,7 +87,9 @@ function clear_my_webs_data($WebID)
 {
     global $xoopsUser;
     if ($xoopsUser) {
-        $uid               = $xoopsUser->uid();
+
+        $uid = ($_SESSION['tad_web_adm'] && isset($_SESSION['tad_web'][$WebID]['WebOwnerUid'])) ? $_SESSION['tad_web'][$WebID]['WebOwnerUid'] : $xoopsUser->uid();
+
         $my_webs_data_file = XOOPS_VAR_PATH . "/tad_web/my_webs_data/$uid.json";
         unlink($my_webs_data_file);
         unset($_SESSION['tad_web'][$WebID]);
@@ -734,6 +736,8 @@ function onlyMine($uid_col = 'uid')
         return;
     } elseif (in_array($WebID, $MyWebs)) {
         return;
+    } elseif ($WebID == $_SESSION['LoginWebID']) {
+        return;
     }
     $uid = $xoopsUser->uid();
 
@@ -889,30 +893,30 @@ function mklogoPic($WebID = '')
 
         imagettftext($im, $size, 0, 0, $x, $text_color, XOOPS_ROOT_PATH . '/modules/tad_web/class/font.ttf', $WebName);
         imagettftextoutline(
-            $im, // image location ( you should use a variable )
+            $im,   // image location ( you should use a variable )
             $size, // font size
-            0, // angle in °
-            0, // x
-            $x, // y
+            0,     // angle in °
+            0,     // x
+            $x,    // y
             $text_color,
             $white,
             XOOPS_ROOT_PATH . '/modules/tad_web/class/font.ttf',
             $WebName, // pattern
-            2// outline width
+            2         // outline width
         );
 
         imagettftext($im, $size2, 0, 0, $y, $text_color, XOOPS_ROOT_PATH . '/modules/tad_web/class/font.ttf', $WebTitle);
         imagettftextoutline(
-            $im, // image location ( you should use a variable )
+            $im,    // image location ( you should use a variable )
             $size2, // font size
-            0, // angle in °
-            0, // x
-            $y, // y
+            0,      // angle in °
+            0,      // x
+            $y,     // y
             $text_color,
             $white,
             XOOPS_ROOT_PATH . '/modules/tad_web/class/font.ttf',
             $WebTitle, // pattern
-            1// outline width
+            1          // outline width
         );
 
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}");
@@ -965,16 +969,16 @@ function mkTitleImg($WebID = '', $filename = '', $title = '', $color = '#ABBF6B'
     imagettftext($im, $size, 0, $x, $y, $text_color, XOOPS_ROOT_PATH . "/modules/tad_web/class/{$font}", $title);
     if ('transparent' !== $border_color) {
         imagettftextoutline(
-            $im, // image location ( you should use a variable )
+            $im,   // image location ( you should use a variable )
             $size, // font size
-            0, // angle in °
-            $x, // x
-            $y, // y
+            0,     // angle in °
+            $x,    // x
+            $y,    // y
             $text_color,
             $text_border_color,
             XOOPS_ROOT_PATH . "/modules/tad_web/class/{$font}",
             $title, // pattern
-            2// outline width
+            2       // outline width
         );
     }
     Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/");
@@ -986,6 +990,7 @@ function mkTitleImg($WebID = '', $filename = '', $title = '', $color = '#ABBF6B'
 
 function imagettftextoutline(&$im, $size, $angle, $x, $y, &$col, &$outlinecol, $fontfile, $text, $width)
 {
+    $width = (int) $width;
     // For every X pixel to the left and the right
     for ($xc = $x - abs($width); $xc <= $x + abs($width); $xc++) {
         // For every Y pixel to the top and the bottom
@@ -1277,6 +1282,15 @@ function output_head_file($WebID)
 
     $bg_filename = strpos($web_head, "head_{$WebID}_") !== false ? XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}" : XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$web_head}";
 
+    // 檢查檔案是否存在及可讀取
+    if (!file_exists($bg_filename) || !is_readable($bg_filename)) {
+        // 使用預設圖片或記錄錯誤
+        $bg_filename = XOOPS_ROOT_PATH . "/modules/tad_web/images/head/default.png";
+        if (!file_exists($bg_filename)) {
+            return;
+        }
+    }
+
     list($bg_width, $bg_height) = getimagesize($bg_filename);
 
     $type = mb_strtolower(mb_substr(mb_strrchr($bg_filename, '.'), 1));
@@ -1286,19 +1300,24 @@ function output_head_file($WebID)
 
     switch ($type) {
         case 'bmp':
-            $bg_im = imagecreatefromwbmp($bg_filename);
+            $bg_im = @imagecreatefromwbmp($bg_filename);
             break;
         case 'gif':
-            $bg_im = imagecreatefromgif($bg_filename);
+            $bg_im = @imagecreatefromgif($bg_filename);
             break;
         case 'jpg':
-            $bg_im = imagecreatefromjpeg($bg_filename);
+            $bg_im = @imagecreatefromjpeg($bg_filename);
             break;
         case 'png':
-            $bg_im = imagecreatefrompng($bg_filename);
+            $bg_im = @imagecreatefrompng($bg_filename);
             break;
         default:
             return 'Unsupported picture type!';
+    }
+
+    // 檢查圖片是否成功載入
+    if ($bg_im === false) {
+        return;
     }
 
     if ($width != $bg_width) {
@@ -1312,7 +1331,7 @@ function output_head_file($WebID)
     if (file_exists($bg_filename) && $bg_im !== false) {
         //縮放比例
         $rate     = round($bg_width / $width, 4);
-        $head_top = abs($head_top);
+        $head_top = abs((int) $head_top);
         $bg_top   = round($head_top * $rate, 0);
 
         //背景圖
@@ -1320,7 +1339,7 @@ function output_head_file($WebID)
     }
 
     $logo_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$web_logo}";
-    if (file_exists($logo_filename)) {
+    if (file_exists($logo_filename) && is_readable($logo_filename)) {
         list($logo_width, $logo_height) = getimagesize($logo_filename);
 
         $type = mb_strtolower(mb_substr(mb_strrchr($logo_filename, '.'), 1));
@@ -1328,36 +1347,43 @@ function output_head_file($WebID)
             $type = 'jpg';
         }
 
+        $logo_im = false;
         switch ($type) {
             case 'bmp':
-                $logo_im = imagecreatefromwbmp($logo_filename);
+                $logo_im = @imagecreatefromwbmp($logo_filename);
                 break;
             case 'gif':
-                $logo_im = imagecreatefromgif($logo_filename);
+                $logo_im = @imagecreatefromgif($logo_filename);
                 break;
             case 'jpg':
-                $logo_im = imagecreatefromjpeg($logo_filename);
+                $logo_im = @imagecreatefromjpeg($logo_filename);
                 break;
             case 'png':
-                $logo_im = imagecreatefrompng($logo_filename);
-                imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
-                imagealphablending($logo_im, true);
-                imagesavealpha($logo_im, true);
+                $logo_im = @imagecreatefrompng($logo_filename);
+                if ($logo_im !== false) {
+                    imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
+                    imagealphablending($logo_im, true);
+                    imagesavealpha($logo_im, true);
+                }
                 break;
             default:
-                return 'Unsupported picture type!';
+                $logo_im = false;
         }
 
         //logo圖
-        imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $logo_width, $logo_height, $logo_width, $logo_height);
+        if ($logo_im !== false) {
+            imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $logo_width, $logo_height, $logo_width, $logo_height);
+            imagedestroy($logo_im);
+        }
     }
 
     // header('Content-type: image/png');
     $save = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png";
     imagepng($im, $save);
-
-    // imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header.png");
     imagedestroy($im);
+    if ($bg_im !== false) {
+        imagedestroy($bg_im);
+    }
 }
 
 //製作文字圖片
@@ -1387,15 +1413,19 @@ function output_head_file_480($WebID)
     imagesavealpha($im, true);
 
     $bg_filename = strpos($web_head, "head_{$WebID}_") !== false ? XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head/{$web_head}" : XOOPS_ROOT_PATH . "/modules/tad_web/images/head/{$web_head}";
-    if (file_exists($bg_filename)) {
+    $bg_im       = false;
+
+    if (file_exists($bg_filename) && is_readable($bg_filename)) {
         list($bg_width, $bg_height) = getimagesize($bg_filename);
 
         //縮放比例
         $bg_width      = empty($bg_width) ? 1 : $bg_width;
         $rate          = round($width / $bg_width, 2);
         $new_bg_height = round($bg_height * $rate, 0);
-        $bg_top        = round($head_top * $rate, 0);
-        $new_bg_width  = $width;
+
+        $head_top     = abs((int) $head_top);
+        $bg_top       = round($head_top * $rate, 0);
+        $new_bg_width = $width;
 
         $type = mb_strtolower(mb_substr(mb_strrchr($bg_filename, '.'), 1));
         if ('jpeg' === $type) {
@@ -1404,34 +1434,32 @@ function output_head_file_480($WebID)
 
         switch ($type) {
             case 'bmp':
-                $bg_im = imagecreatefromwbmp($bg_filename);
+                $bg_im = @imagecreatefromwbmp($bg_filename);
                 break;
             case 'gif':
-                $bg_im = imagecreatefromgif($bg_filename);
+                $bg_im = @imagecreatefromgif($bg_filename);
                 break;
             case 'jpg':
-                $bg_im = imagecreatefromjpeg($bg_filename);
+                $bg_im = @imagecreatefromjpeg($bg_filename);
                 break;
             case 'png':
-                $bg_im = imagecreatefrompng($bg_filename);
+                $bg_im = @imagecreatefrompng($bg_filename);
                 break;
             default:
-                return 'Unsupported picture type!';
+                $bg_im = false;
         }
-
-        // $head_top = abs($head_top);
-        // $bg_top   = round($head_top * $rate, 0);
 
         //背景圖
-        // die("$rate, $bg_top, $bg_width, $bg_height, $bg_width, $bg_height");
         if ($bg_im !== false) {
             imagecopyresampled($im, $bg_im, 0, 0, 0, 0, $new_bg_width, $new_bg_height, $bg_width, $bg_height);
+            imagedestroy($bg_im);
         }
-
     }
 
     $logo_filename = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/logo/{$web_logo}";
-    if (file_exists($logo_filename)) {
+    $logo_im       = false;
+
+    if (file_exists($logo_filename) && is_readable($logo_filename)) {
         list($logo_width, $logo_height) = getimagesize($logo_filename);
         $logo_width                     = empty($logo_width) ? 1 : $logo_width;
         $new_logo_height                = round($logo_height * (380 / $logo_width), 0);
@@ -1444,38 +1472,40 @@ function output_head_file_480($WebID)
 
         switch ($type) {
             case 'bmp':
-                $logo_im = imagecreatefromwbmp($logo_filename);
+                $logo_im = @imagecreatefromwbmp($logo_filename);
                 break;
             case 'gif':
-                $logo_im = imagecreatefromgif($logo_filename);
+                $logo_im = @imagecreatefromgif($logo_filename);
                 break;
             case 'jpg':
-                $logo_im = imagecreatefromjpeg($logo_filename);
+                $logo_im = @imagecreatefromjpeg($logo_filename);
                 break;
             case 'png':
-                $logo_im = imagecreatefrompng($logo_filename);
-                imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
-                imagealphablending($logo_im, true);
-                imagesavealpha($logo_im, true);
+                $logo_im = @imagecreatefrompng($logo_filename);
+                if ($logo_im !== false) {
+                    imagecolortransparent($logo_im, imagecolorallocatealpha($logo_im, 0, 0, 0, 127));
+                    imagealphablending($logo_im, true);
+                    imagesavealpha($logo_im, true);
+                }
                 break;
             default:
-                return 'Unsupported picture type!';
+                $logo_im = false;
         }
 
-        $logo_left = ($width - $new_logo_width) / 2;
-        $logo_top  = ($height - $new_logo_height) / 2;
+        if ($logo_im !== false) {
+            $logo_left = ($width - $new_logo_width) / 2;
+            $logo_top  = ($height - $new_logo_height) / 2;
 
-        //logo圖
-        imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $new_logo_width, $new_logo_height, $logo_width, $logo_height);
+            //logo圖
+            imagecopyresampled($im, $logo_im, $logo_left, $logo_top, 0, 0, $new_logo_width, $new_logo_height, $logo_width, $logo_height);
+            imagedestroy($logo_im);
+        }
     }
 
     // header('Content-type: image/png');
-
-    // imagepng($im, XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png");
     $save = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/header_480.png";
     imagepng($im, $save);
     chmod($save, 0777);
-
     imagedestroy($im);
 }
 
@@ -1507,7 +1537,7 @@ function delete_tad_web_directory($dirname)
 //寫入已使用空間
 function check_quota($WebID = '')
 {
-    global $xoopsDB;
+    global $xoopsDB, $xoopsUser;
     $data = '';
     $dir  = XOOPS_ROOT_PATH . '/uploads/tad_web/';
 
@@ -1517,12 +1547,12 @@ function check_quota($WebID = '')
 
     if (_IS_EZCLASS) {
         redis_do($WebID, 'set', '', 'used_size', $dir_size);
-    } else {
-        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `used_size`=? WHERE `WebID`=?';
-        Utility::query($sql, 'ii', [$dir_size, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
     }
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `used_size`=? WHERE `WebID`=?';
+    Utility::query($sql, 'ii', [$dir_size, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $_SESSION['tad_web'][$WebID]['used_size'] = $dir_size;
+
     clear_my_webs_data($WebID);
 }
 

@@ -9,8 +9,8 @@ require_once dirname(__DIR__) . '/function.php';
 require_once dirname(__DIR__) . '/class/WebCate.php';
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
+$op     = Request::getString('op');
+$WebID  = Request::getInt('WebID');
 $CateID = Request::getInt('CateID');
 
 $xoopsTpl->assign('op', $op);
@@ -48,7 +48,7 @@ function schedule_template()
     Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tad_web/schedule/file');
     $schedule_template = $xoopsModuleConfig['schedule_template'];
 
-    $CkEditor = new CkEditor('tad_web/schedule', 'schedule_template', $schedule_template);
+    $CkEditor = new CkEditor('tad_web', 'schedule_template', $schedule_template, 'schedule');
     $CkEditor->setHeight(300);
     $CkEditor->setContentCss(XOOPS_URL . '/modules/tad_web/plugins/schedule/schedule.css');
     $schedule_template = $CkEditor->render();

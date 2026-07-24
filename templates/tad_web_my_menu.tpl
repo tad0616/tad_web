@@ -250,7 +250,9 @@
                     <div class="progress-bar progress-bar-<{$progress_color|default:''}>" role="progressbar" data-transitiongoal="<{$percentage|default:''}>"></div>
                 </div>
                 <span title="<{$defaltWebID|default:''}>"><{$defaltWebName|default:''}></span><{$smarty.const._MD_TCW_USED_SPACE}><{$size|default:''}>MB/<{$quota|default:''}>MB (<a href="index.php?op=check_quota&WebID=<{$defaltWebID|default:''}>"><{$percentage|default:''}>%</a>)
-
+                <{if $_IS_EZCLASS|default:false && $percentage|default: 0 > 95}>
+                    <div style="font-size: 0.7rem; color:rgb(180, 76, 76)">若空間已滿，請來信 tad@tn.edu.tw 並附上班網網址 <{$xoops_url}>/<{$WebID|default:''}>，我們將為您擴充空間。</div>
+                <{/if}>
             <{/if}>
 
             <div class="d-grid gap-2">
