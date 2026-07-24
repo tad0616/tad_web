@@ -19,10 +19,10 @@ class tad_web_homework
 
     public function __construct($WebID)
     {
-        $this->WebID = $WebID;
-        $this->WebCate = new WebCate($WebID, 'homework', 'tad_web_homework');
-        $this->Power = new Power($WebID);
-        $this->setup = get_plugin_setup_values($WebID, 'homework');
+        $this->WebID          = $WebID;
+        $this->WebCate        = new WebCate($WebID, 'homework', 'tad_web_homework');
+        $this->Power          = new Power($WebID);
+        $this->setup          = get_plugin_setup_values($WebID, 'homework');
         $this->calendar_setup = get_plugin_setup_values($WebID, 'calendar');
     }
 
@@ -36,7 +36,7 @@ class tad_web_homework
             redirect_header("homework.php?WebID={$this->WebID}", 3, _MD_TCW_NOW_READ_POWER);
         }
 
-        $myts = \MyTextSanitizer::getInstance();
+        $myts     = \MyTextSanitizer::getInstance();
         $andWebID = (empty($this->WebID)) ? '' : "and a.WebID='{$this->WebID}'";
 
         $andCateID = '';
@@ -67,11 +67,11 @@ class tad_web_homework
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
 
-            $county = Request::getString('county');
-            $city = Request::getString('city');
-            $SchoolName = Request::getString('SchoolName');
-            $andCounty = !empty($county) ? "and c.county='{$county}'" : '';
-            $andCity = !empty($city) ? "and c.city='{$city}'" : '';
+            $county        = Request::getString('county');
+            $city          = Request::getString('city');
+            $SchoolName    = Request::getString('SchoolName');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_homework') . ' as a
@@ -95,9 +95,9 @@ class tad_web_homework
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
         $PageBar = Utility::getPageBar($sql, $to_limit, 10);
-        $bar = $PageBar['bar'];
-        $sql = $PageBar['sql'];
-        $total = $PageBar['total'];
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -105,9 +105,9 @@ class tad_web_homework
 
         $i = 0;
 
-        $Webs = getAllWebInfo();
+        $Webs     = getAllWebInfo();
         $WebNames = getAllWebInfo('WebName');
-        $cweek = [0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT];
+        $cweek    = [0 => _MD_TCW_SUN, _MD_TCW_MON, _MD_TCW_TUE, _MD_TCW_WED, _MD_TCW_THU, _MD_TCW_FRI, _MD_TCW_SAT];
 
         $cate = $this->WebCate->get_tad_web_cate_arr(null, null, 'homework');
 
@@ -122,12 +122,12 @@ class tad_web_homework
                 continue;
             }
 
-            $main_data[$i] = $all;
-            $main_data[$i]['id'] = $HomeworkID;
-            $main_data[$i]['id_name'] = 'HomeworkID';
-            $main_data[$i]['title'] = $HomeworkTitle;
+            $main_data[$i]                       = $all;
+            $main_data[$i]['id']                 = $HomeworkID;
+            $main_data[$i]['id_name']            = 'HomeworkID';
+            $main_data[$i]['title']              = $HomeworkTitle;
             $main_data[$i]['HomeworkPostDateTS'] = strtotime($HomeworkPostDate);
-            $main_data[$i]['display_at'] = sprintf(_MD_TCW_HOMEWORK_POST_AT, $HomeworkPostDate);
+            $main_data[$i]['display_at']         = sprintf(_MD_TCW_HOMEWORK_POST_AT, $HomeworkPostDate);
             if (_IS_EZCLASS) {
                 $main_data[$i]['HomeworkCounter'] = redis_do($this->WebID, 'get', 'homework', "HomeworkCounter:$HomeworkID");
             }
@@ -135,25 +135,25 @@ class tad_web_homework
             $main_data[$i]['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
 
             //找出聯絡簿內容
-            $sql = 'SELECT `HomeworkCol`, `Content` FROM `' . $xoopsDB->prefix('tad_web_homework_content') . '` WHERE `HomeworkID`=?';
+            $sql     = 'SELECT `HomeworkCol`, `Content` FROM `' . $xoopsDB->prefix('tad_web_homework_content') . '` WHERE `HomeworkID`=?';
             $result2 = Utility::query($sql, 'i', [$HomeworkID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $ColsNum = 0;
             while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result2)) {
-                $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
+                $Content                     = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
                 $main_data[$i][$HomeworkCol] = $Content;
                 if ('other' !== $HomeworkCol) {
                     $ColsNum++;
                 }
             }
 
-            $ColWidth = empty($ColsNum) ? 1 : 12 / $ColsNum;
-            $main_data[$i]['ColsNum'] = $ColsNum;
+            $ColWidth                  = empty($ColsNum) ? 1 : 12 / $ColsNum;
+            $main_data[$i]['ColsNum']  = $ColsNum;
             $main_data[$i]['ColWidth'] = $ColWidth;
             $this->WebCate->set_WebID($WebID);
 
-            $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
-            $main_data[$i]['WebName'] = $WebNames[$WebID];
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
+            $main_data[$i]['WebName']  = $WebNames[$WebID];
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
 
@@ -162,9 +162,9 @@ class tad_web_homework
             }
 
             $main_data[$i]['HomeworkTitle'] = $HomeworkTitle;
-            $main_data[$i]['HomeworkDate'] = $HomeworkDate;
-            $w = date('w', strtotime($toCal));
-            $main_data[$i]['Week'] = $cweek[$w];
+            $main_data[$i]['HomeworkDate']  = $HomeworkDate;
+            $w                              = date('w', strtotime($toCal));
+            $main_data[$i]['Week']          = $cweek[$w];
             $i++;
         }
 
@@ -184,8 +184,8 @@ class tad_web_homework
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
             // $data['yet_data'] = $yet_data;
-            $data['total'] = $total;
-            $data['now'] = $now;
+            $data['total']     = $total;
+            $data['now']       = $now;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $AccountID);
 
             return $data;
@@ -211,13 +211,13 @@ class tad_web_homework
             redirect_header("{$_SERVER['PHP_SELF']}?WebID={$this->WebID}", 3, _MD_TCW_DATA_NOT_EXIST);
         }
 
-        $myts = \MyTextSanitizer::getInstance();
+        $myts       = \MyTextSanitizer::getInstance();
         $HomeworkID = (int) $HomeworkID;
 
-        $now = date('Y-m-d H:i:s');
+        $now     = date('Y-m-d H:i:s');
         $andTime = $isMyWeb ? '' : "AND `HomeworkPostDate` <= '{$now}'";
 
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID`=? ' . $andTime;
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID`=? ' . $andTime;
         $result = Utility::query($sql, 'i', [$HomeworkID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $all = $xoopsDB->fetchArray($result);
@@ -239,7 +239,7 @@ class tad_web_homework
         }
 
         //找出聯絡簿內容
-        $sql = 'SELECT `HomeworkCol`, `Content` FROM `' . $xoopsDB->prefix('tad_web_homework_content') . '` WHERE `HomeworkID` =?';
+        $sql    = 'SELECT `HomeworkCol`, `Content` FROM `' . $xoopsDB->prefix('tad_web_homework_content') . '` WHERE `HomeworkID` =?';
         $result = Utility::query($sql, 'i', [$HomeworkID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $ColsNum = 0;
@@ -276,9 +276,9 @@ class tad_web_homework
         $xoopsTpl->assign('HomeworkCounter', $HomeworkCounter);
         $xoopsTpl->assign('HomeworkPostDate', $HomeworkPostDate);
         $xoopsTpl->assign('HomeworkID', $HomeworkID);
-        $assistant = is_assistant($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
+        $assistant   = is_assistant($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID);
         $isAssistant = !empty($assistant) ? true : false;
-        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
 
         $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID));
@@ -388,7 +388,7 @@ class tad_web_homework
 
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['homework']) ? $_SESSION['isAssistant']['homework'] : '';
-        $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->WebCate->set_button_value($plugin_menu_var['homework']['short'] . _MD_TCW_CATE_TOOLS);
         $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['homework']['short']));
         $this->WebCate->set_col_md(3, 6);
@@ -405,30 +405,30 @@ class tad_web_homework
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/homework/file");
 
         if (!empty($DBV['HomeworkContent'])) {
-            $ck = new CkEditor("tad_web/{$this->WebID}/homework", 'HomeworkContent', $HomeworkContent);
+            $ck = new CkEditor("tad_web", 'HomeworkContent', $HomeworkContent, "{$this->WebID}/homework");
             $ck->setHeight(300);
             $editor = $ck->render();
             $xoopsTpl->assign('HomeworkContent_editor', $editor);
         } else {
-            $ck1 = new CkEditor("tad_web/{$this->WebID}/homework", 'today_homework', $today_homework);
+            $ck1 = new CkEditor("tad_web", 'today_homework', $today_homework, "{$this->WebID}/homework");
             $ck1->setToolbarSet('mySimple');
             $ck1->setHeight(150);
             $editor1 = $ck1->render();
             $xoopsTpl->assign('HomeworkContent_editor1', $editor1);
 
-            $ck2 = new CkEditor("tad_web/{$this->WebID}/homework", 'bring', $bring);
+            $ck2 = new CkEditor("tad_web", 'bring', $bring, "{$this->WebID}/homework");
             $ck2->setToolbarSet('mySimple');
             $ck2->setHeight(150);
             $editor2 = $ck2->render();
             $xoopsTpl->assign('HomeworkContent_editor2', $editor2);
 
-            $ck3 = new CkEditor("tad_web/{$this->WebID}/homework", 'teacher_say', $teacher_say);
+            $ck3 = new CkEditor("tad_web", 'teacher_say', $teacher_say, "{$this->WebID}/homework");
             $ck3->setToolbarSet('mySimple');
             $ck3->setHeight(150);
             $editor3 = $ck3->render();
             $xoopsTpl->assign('HomeworkContent_editor3', $editor3);
 
-            $ck4 = new CkEditor("tad_web/{$this->WebID}/homework", 'other', $other);
+            $ck4 = new CkEditor("tad_web", 'other', $other, "{$this->WebID}/homework");
             $ck4->setToolbarSet('mySimple');
             $ck4->setHeight(100);
             $editor4 = $ck4->render();
@@ -439,7 +439,7 @@ class tad_web_homework
 
         $TadUpFiles->set_col('HomeworkID', $HomeworkID);
         $TadUpFiles->set_var("show_tip", false); //不顯示提示
-        $upform = $TadUpFiles->upform();
+        $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
         if (isset($_SESSION['isAssistant']['homework'])) {
@@ -455,28 +455,28 @@ class tad_web_homework
     {
         global $xoopsDB, $TadUpFiles;
 
-        $HomeworkTitle = (string) $_POST['HomeworkTitle'];
-        $HomeworkContent = Wcag::amend($_POST['HomeworkContent']);
-        $toCal = (string) $_POST['toCal'];
+        $HomeworkTitle    = (string) $_POST['HomeworkTitle'];
+        $HomeworkContent  = Wcag::amend($_POST['HomeworkContent']);
+        $toCal            = (string) $_POST['toCal'];
         $HomeworkPostDate = (string) $_POST['HomeworkPostDate'];
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
-        $uid = (int) $_POST['uid'];
-        $HomeworkDate = date('Y-m-d H:i:s');
+        $CateID           = (int) $_POST['CateID'];
+        $WebID            = (int) $_POST['WebID'];
+        $uid              = (int) $_POST['uid'];
+        $HomeworkDate     = date('Y-m-d H:i:s');
 
-        $today_homework = (string) $_POST['today_homework'];
-        $today_homework = Wcag::amend($today_homework);
+        $today_homework             = (string) $_POST['today_homework'];
+        $today_homework             = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
-        $bring = (string) $_POST['bring'];
-        $bring = Wcag::amend($bring);
-        $bring_remove_html = $this->remove_html($bring);
-        $teacher_say = (string) $_POST['teacher_say'];
-        $teacher_say = Wcag::amend($teacher_say);
-        $teacher_say_remove_html = $this->remove_html($teacher_say);
-        $other = (string) $_POST['other'];
-        $other = Wcag::amend($other);
-        $other_remove_html = $this->remove_html($other);
-        $newCateName = (string) $_POST['newCateName'];
+        $bring                      = (string) $_POST['bring'];
+        $bring                      = Wcag::amend($bring);
+        $bring_remove_html          = $this->remove_html($bring);
+        $teacher_say                = (string) $_POST['teacher_say'];
+        $teacher_say                = Wcag::amend($teacher_say);
+        $teacher_say_remove_html    = $this->remove_html($teacher_say);
+        $other                      = (string) $_POST['other'];
+        $other                      = Wcag::amend($other);
+        $other_remove_html          = $this->remove_html($other);
+        $newCateName                = (string) $_POST['newCateName'];
 
         if (empty($toCal)) {
             $toCal = '0000-00-00';
@@ -489,7 +489,7 @@ class tad_web_homework
         } elseif (16 == $HomeworkPostDate) {
             $HomeworkPostDate = $toCal . ' 16:00:00';
         } elseif (18 == $HomeworkPostDate) {
-            $toCal = date('Y-m-d', strtotime("$toCal -1 day"));
+            $toCal            = date('Y-m-d', strtotime("$toCal -1 day"));
             $HomeworkPostDate = $toCal . ' 18:00:00';
         } else {
             $HomeworkPostDate = $HomeworkDate;
@@ -539,28 +539,28 @@ class tad_web_homework
     {
         global $xoopsDB, $TadUpFiles;
 
-        $HomeworkTitle = (string) $_POST['HomeworkTitle'];
-        $HomeworkContent = (string) $_POST['HomeworkContent'];
-        $HomeworkContent = Wcag::amend($HomeworkContent);
-        $toCal = (string) $_POST['toCal'];
+        $HomeworkTitle    = (string) $_POST['HomeworkTitle'];
+        $HomeworkContent  = (string) $_POST['HomeworkContent'];
+        $HomeworkContent  = Wcag::amend($HomeworkContent);
+        $toCal            = (string) $_POST['toCal'];
         $HomeworkPostDate = (string) $_POST['HomeworkPostDate'];
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
-        $HomeworkDate = date('Y-m-d H:i:s');
+        $CateID           = (int) $_POST['CateID'];
+        $WebID            = (int) $_POST['WebID'];
+        $HomeworkDate     = date('Y-m-d H:i:s');
 
-        $today_homework = (string) $_POST['today_homework'];
-        $today_homework = Wcag::amend($today_homework);
+        $today_homework             = (string) $_POST['today_homework'];
+        $today_homework             = Wcag::amend($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
-        $bring = (string) $_POST['bring'];
-        $bring = Wcag::amend($bring);
-        $bring_remove_html = $this->remove_html($bring);
-        $teacher_say = (string) $_POST['teacher_say'];
-        $teacher_say = Wcag::amend($teacher_say);
-        $teacher_say_remove_html = $this->remove_html($teacher_say);
-        $other = (string) $_POST['other'];
-        $other = Wcag::amend($other);
-        $other_remove_html = $this->remove_html($other);
-        $newCateName = (string) $_POST['newCateName'];
+        $bring                      = (string) $_POST['bring'];
+        $bring                      = Wcag::amend($bring);
+        $bring_remove_html          = $this->remove_html($bring);
+        $teacher_say                = (string) $_POST['teacher_say'];
+        $teacher_say                = Wcag::amend($teacher_say);
+        $teacher_say_remove_html    = $this->remove_html($teacher_say);
+        $other                      = (string) $_POST['other'];
+        $other                      = Wcag::amend($other);
+        $other_remove_html          = $this->remove_html($other);
+        $newCateName                = (string) $_POST['newCateName'];
         // die($bring);
         if (empty($toCal)) {
             $toCal = '0000-00-00';
@@ -573,7 +573,7 @@ class tad_web_homework
         } elseif (16 == $HomeworkPostDate) {
             $HomeworkPostDate = $toCal . ' 16:00:00';
         } elseif (18 == $HomeworkPostDate) {
-            $toCal = date('Y-m-d', strtotime("$toCal -1 day"));
+            $toCal            = date('Y-m-d', strtotime("$toCal -1 day"));
             $HomeworkPostDate = $toCal . ' 18:00:00';
         } else {
             // $HomeworkPostDate = $toCal . " 00:00:00";
@@ -636,11 +636,11 @@ class tad_web_homework
     {
         global $xoopsDB, $TadUpFiles;
 
-        $sql = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID`=?';
+        $sql    = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID`=?';
         $result = Utility::query($sql, 'i', [$HomeworkID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($CateID) = $xoopsDB->fetchRow($result);
-        $and_uid = '';
+        $and_uid      = '';
         if (!is_assistant($this->WebID, 'homework', $CateID, 'HomeworkID', $HomeworkID)) {
             $and_uid = onlyMine();
         }
@@ -660,8 +660,8 @@ class tad_web_homework
     {
         global $xoopsDB;
         $allCateID = [];
-        $sql = 'SELECT `HomeworkID`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `WebID` = ?';
-        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql       = 'SELECT `HomeworkID`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `WebID` = ?';
+        $result    = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($HomeworkID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($HomeworkID);
             $allCateID[$CateID] = $CateID;
@@ -676,8 +676,8 @@ class tad_web_homework
     public function get_total()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `WebID`=?';
-        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql         = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `WebID`=?';
+        $result      = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
 
         return $count;
@@ -691,8 +691,8 @@ class tad_web_homework
         if (_IS_EZCLASS) {
             $HomeworkCounter = redis_do($this->WebID, 'get', 'homework', "HomeworkCounter:$HomeworkID");
             if (empty($HomeworkCounter)) {
-                $sql = 'SELECT `HomeworkCounter` FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID` = ?';
-                $result = Utility::query($sql, 'i', [$HomeworkID]) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql                   = 'SELECT `HomeworkCounter` FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID` = ?';
+                $result                = Utility::query($sql, 'i', [$HomeworkID]) or Utility::web_error($sql, __FILE__, __LINE__);
                 list($HomeworkCounter) = $xoopsDB->fetchRow($result);
                 redis_do($this->WebID, 'set', 'homework', "HomeworkCounter:$HomeworkID", $HomeworkCounter);
             }
@@ -711,8 +711,8 @@ class tad_web_homework
             return;
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID`=?';
+        $myts   = \MyTextSanitizer::getInstance();
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_homework') . '` WHERE `HomeworkID`=?';
         $result = Utility::query($sql, 'i', [$HomeworkID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $data = $xoopsDB->fetchArray($result);
@@ -722,12 +722,12 @@ class tad_web_homework
         }
 
         //找出聯絡簿內容
-        $sql = 'SELECT `HomeworkCol`, `Content` FROM `' . $xoopsDB->prefix('tad_web_homework_content') . '` WHERE `HomeworkID` =?';
+        $sql    = 'SELECT `HomeworkCol`, `Content` FROM `' . $xoopsDB->prefix('tad_web_homework_content') . '` WHERE `HomeworkID` =?';
         $result = Utility::query($sql, 'i', [$data['HomeworkID']]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $ColsNum = 0;
         while (list($HomeworkCol, $Content) = $xoopsDB->fetchRow($result)) {
-            $Content = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
+            $Content            = $myts->displayTarea($Content, 1, 0, 0, 1, 0);
             $data[$HomeworkCol] = $Content;
             if ('other' !== $HomeworkCol) {
                 $ColsNum++;
@@ -736,8 +736,8 @@ class tad_web_homework
         if (empty($ColsNum)) {
             $ColsNum = 1;
         }
-        $ColWidth = 12 / $ColsNum;
-        $data['ColsNum'] = $ColsNum;
+        $ColWidth         = 12 / $ColsNum;
+        $data['ColsNum']  = $ColsNum;
         $data['ColWidth'] = $ColWidth;
 
         return $data;

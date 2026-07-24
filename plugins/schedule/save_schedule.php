@@ -5,11 +5,11 @@ require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 require_once dirname(dirname(__DIR__)) . '/function.php';
 header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$ScheduleID = Request::getInt('ScheduleID');
-$tag = Request::getString('tag');
-$Subject = Request::getString('Subject');
+$op                     = Request::getString('op');
+$WebID                  = Request::getInt('WebID');
+$ScheduleID             = Request::getInt('ScheduleID');
+$tag                    = Request::getString('tag');
+$Subject                = Request::getString('Subject');
 
 list($SDWeek, $SDSort) = explode('-', $tag);
 
@@ -23,16 +23,16 @@ if ('delete' === $op) {
         $subjects = json_decode(file_get_contents($my_subject_file), true);
         foreach ($subjects as $key => $subject) {
             if ($subject['Subject'] == $Subject) {
-                $Teacher = $subject['Teacher'];
-                $color = $subject['color'];
+                $Teacher  = $subject['Teacher'];
+                $color    = $subject['color'];
                 $bg_color = $subject['bg_color'];
                 break;
             }
         }
     } else {
-        $color = '#000000';
+        $color    = '#000000';
         $bg_color = '#FFFFFF';
     }
     $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_schedule_data') . '` (`ScheduleID`, `SDWeek`, `SDSort`, `Subject`, `Teacher`, `Link`, `color`, `bg_color`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    Utility::query($sql, 'iiisssss', [$ScheduleID, $SDWeek, $SDSort, $Subject, $Teacher, (string) $Link, $color, $bg_color]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+    Utility::query($sql, 'iiisssss', [$ScheduleID, $SDWeek, $SDSort, $Subject, (string) $Teacher, (string) $Link, $color, $bg_color]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 }

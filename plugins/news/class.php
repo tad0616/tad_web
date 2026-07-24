@@ -20,11 +20,11 @@ class tad_web_news
 
     public function __construct($WebID)
     {
-        $this->WebID = $WebID;
+        $this->WebID   = $WebID;
         $this->WebCate = new WebCate($WebID, 'news', 'tad_web_news');
-        $this->Power = new Power($WebID);
-        $this->tags = new Tags($WebID);
-        $this->setup = get_plugin_setup_values($WebID, 'news');
+        $this->Power   = new Power($WebID);
+        $this->tags    = new Tags($WebID);
+        $this->setup   = get_plugin_setup_values($WebID, 'news');
     }
 
     //最新消息
@@ -68,11 +68,11 @@ class tad_web_news
         if (_IS_EZCLASS and !empty($_GET['county'])) {
             //https://class.tn.edu.tw/modules/tad_web/index.php?county=臺南市&city=永康區&SchoolName=XX國小
 
-            $county = Request::getString('county');
-            $city = Request::getString('city');
-            $SchoolName = Request::getString('SchoolName');
-            $andCounty = !empty($county) ? "and c.county='{$county}'" : '';
-            $andCity = !empty($city) ? "and c.city='{$city}'" : '';
+            $county        = Request::getString('county');
+            $city          = Request::getString('city');
+            $SchoolName    = Request::getString('SchoolName');
+            $andCounty     = !empty($county) ? "and c.county='{$county}'" : '';
+            $andCity       = !empty($city) ? "and c.city='{$city}'" : '';
             $andSchoolName = !empty($SchoolName) ? "and c.SchoolName='{$SchoolName}'" : '';
 
             $sql = 'select a.* from ' . $xoopsDB->prefix('tad_web_news') . ' as a
@@ -104,9 +104,9 @@ class tad_web_news
 
         //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
         $PageBar = Utility::getPageBar($sql, $to_limit, 10);
-        $bar = $PageBar['bar'];
-        $sql = $PageBar['sql'];
-        $total = $PageBar['total'];
+        $bar     = $PageBar['bar'];
+        $sql     = $PageBar['sql'];
+        $total   = $PageBar['total'];
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -135,10 +135,10 @@ class tad_web_news
                 continue;
             }
 
-            $main_data[$i] = $all;
-            $main_data[$i]['id'] = $NewsID;
+            $main_data[$i]            = $all;
+            $main_data[$i]['id']      = $NewsID;
             $main_data[$i]['id_name'] = 'NewsID';
-            $main_data[$i]['title'] = $NewsTitle;
+            $main_data[$i]['title']   = $NewsTitle;
             if (_IS_EZCLASS) {
                 $main_data[$i]['NewsCounter'] = redis_do($this->WebID, 'get', 'news', "NewsCounter:$NewsID");
             }
@@ -152,11 +152,11 @@ class tad_web_news
 
             if ($Content['pages'] > 1) {
                 $main_data[$i]['NewsContent'] = $Content['info'];
-                $main_data[$i]['more'] = true;
+                $main_data[$i]['more']        = true;
             } else {
                 $main_data[$i]['more'] = false;
             }
-            $main_data[$i]['cate'] = isset($cate[$CateID]) ? $cate[$CateID] : '';
+            $main_data[$i]['cate']     = isset($cate[$CateID]) ? $cate[$CateID] : '';
             $main_data[$i]['WebTitle'] = "<a href='index.php?WebID={$WebID}'>{$Webs[$WebID]}</a>";
 
             $Date = substr($NewsDate, 0, 10);
@@ -167,7 +167,7 @@ class tad_web_news
             $main_data[$i]['NewsTitle'] = $NewsTitle;
             // $main_data[$i]['isMyWeb']  = in_array($WebID, $MyWebs) ? 1 : 0;
             $main_data[$i]['isMyWeb'] = $isMyWeb;
-            $main_data[$i]['Date'] = $Date;
+            $main_data[$i]['Date']    = $Date;
             $i++;
         }
 
@@ -176,7 +176,7 @@ class tad_web_news
 
         if ('return' === $mode) {
             $data['main_data'] = $main_data;
-            $data['total'] = $total;
+            $data['total']     = $total;
             $data['isCanEdit'] = isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
             return $data;
         } else {
@@ -201,10 +201,10 @@ class tad_web_news
 
         $andEnable = $isMyWeb ? '' : "AND `NewsEnable`='1'";
 
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID`=? ' . $andEnable;
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID`=? ' . $andEnable;
         $result = Utility::query($sql, 'i', [$NewsID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $all = $xoopsDB->fetchArray($result);
+        $all  = $xoopsDB->fetchArray($result);
         $data = $all;
 
         //以下會產生這些變數： $NewsID , $NewsTitle , $NewsContent , $NewsDate , $toCal  , $NewsUrl , $WebID , $NewsCounter ,$uid, $NewsEnable
@@ -246,22 +246,22 @@ class tad_web_news
         $NewsFiles = $TadUpFiles->show_files('upfile', true, '', true, false, null, null, false, '');
 
         //取消換頁符號
-        $pattern = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
+        $pattern     = "/<div style=\"page-break-after: always;?\">\s*<span style=\"display: none;?\">&nbsp;<\/span>\s*<\/div>/";
         $NewsContent = preg_replace($pattern, '', $NewsContent);
 
-        $assistant = is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
+        $assistant   = is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID);
         $isAssistant = !empty($assistant) ? true : false;
-        $uid_name = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
+        $uid_name    = $isAssistant ? "{$uid_name} <a href='#' title='由{$assistant['MemName']}代理發布'><i class='fa fa-male'></i></a>" : $uid_name;
         $xoopsTpl->assign('isAssistant', $isAssistant);
 
         $xoopsTpl->assign('isCanEdit', isCanEdit($this->WebID, 'news', $CateID, 'NewsID', $NewsID));
 
         if ('return' === $mode) {
-            $data['uid_name'] = $uid_name;
-            $data['NewsUrlTxt'] = $NewsUrlTxt;
-            $data['NewsFiles'] = $NewsFiles;
+            $data['uid_name']    = $uid_name;
+            $data['NewsUrlTxt']  = $NewsUrlTxt;
+            $data['NewsFiles']   = $NewsFiles;
             $data['NewsContent'] = $NewsContent;
-            $data['NewsInfo'] = sprintf(_MD_TCW_INFO, $uid_name, $NewsDate, $NewsCounter);
+            $data['NewsInfo']    = sprintf(_MD_TCW_INFO, $uid_name, $NewsDate, $NewsCounter);
             return $data;
         } else {
             $xoopsTpl->assign('NewsTitle', $NewsTitle);
@@ -359,7 +359,7 @@ class tad_web_news
 
         //設定「CateID」欄位預設值
         $DefCateID = isset($_SESSION['isAssistant']['news']) ? $_SESSION['isAssistant']['news'] : '';
-        $CateID = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
+        $CateID    = (!isset($DBV['CateID'])) ? $DefCateID : $DBV['CateID'];
         $this->WebCate->set_button_value($plugin_menu_var['news']['short'] . _MD_TCW_CATE_TOOLS);
         $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_PLUGIN_CATE, $plugin_menu_var['news']['short']));
         $cate_menu = isset($_SESSION['isAssistant']['news']) ? $this->WebCate->hidden_cate_menu($CateID) : $this->WebCate->cate_menu($CateID);
@@ -371,7 +371,7 @@ class tad_web_news
 
         //設定「uid」欄位預設值
         $user_uid = ($xoopsUser) ? $xoopsUser->uid() : '';
-        $uid = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
+        $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
         $xoopsTpl->assign('uid', $uid);
 
         $op = (empty($NewsID)) ? 'insert' : 'update';
@@ -382,7 +382,7 @@ class tad_web_news
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/image");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$this->WebID}/news/file");
-        $CkEditor = new CkEditor("tad_web/{$this->WebID}/news", 'NewsContent', $NewsContent);
+        $CkEditor = new CkEditor("tad_web", 'NewsContent', $NewsContent, "{$this->WebID}/news");
         $CkEditor->setHeight(300);
         $NewsContent_editor = $CkEditor->render();
         $xoopsTpl->assign('NewsContent_editor', $NewsContent_editor);
@@ -390,7 +390,7 @@ class tad_web_news
         $xoopsTpl->assign('next_op', $op);
 
         $TadUpFiles->set_col('NewsID', $NewsID);
-        $upform = $TadUpFiles->upform();
+        $upform = $TadUpFiles->upform(true, 'upfile');
         $xoopsTpl->assign('upform', $upform);
 
         //權限設定
@@ -419,17 +419,17 @@ class tad_web_news
             $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
         }
 
-        $NewsTitle = (string) $_POST['NewsTitle'];
-        $NewsUrl = (string) $_POST['NewsUrl'];
+        $NewsTitle   = (string) $_POST['NewsTitle'];
+        $NewsUrl     = (string) $_POST['NewsUrl'];
         $NewsContent = (string) $_POST['NewsContent'];
         $NewsContent = Wcag::amend($NewsContent);
-        $NewsDate = (string) $_POST['NewsDate'];
-        $toCal = (string) $_POST['toCal'];
+        $NewsDate    = (string) $_POST['NewsDate'];
+        $toCal       = (string) $_POST['toCal'];
         $newCateName = (string) $_POST['newCateName'];
-        $tag_name = (string) $_POST['tag_name'];
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
-        $NewsEnable = (int) $_POST['NewsEnable'];
+        $tag_name    = (string) $_POST['tag_name'];
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
+        $NewsEnable  = (int) $_POST['NewsEnable'];
 
         if (empty($toCal)) {
             $toCal = '0000-00-00 00:00:00';
@@ -467,17 +467,17 @@ class tad_web_news
             chk_self_web($this->WebID);
         }
 
-        $NewsTitle = (string) $_POST['NewsTitle'];
-        $NewsUrl = (string) $_POST['NewsUrl'];
+        $NewsTitle   = (string) $_POST['NewsTitle'];
+        $NewsUrl     = (string) $_POST['NewsUrl'];
         $NewsContent = (string) $_POST['NewsContent'];
         $NewsContent = Wcag::amend($NewsContent);
-        $NewsDate = (string) $_POST['NewsDate'];
-        $toCal = (string) $_POST['toCal'];
+        $NewsDate    = (string) $_POST['NewsDate'];
+        $toCal       = (string) $_POST['toCal'];
         $newCateName = (string) $_POST['newCateName'];
-        $tag_name = (string) $_POST['tag_name'];
-        $CateID = (int) $_POST['CateID'];
-        $WebID = (int) $_POST['WebID'];
-        $NewsEnable = (int) $_POST['NewsEnable'];
+        $tag_name    = (string) $_POST['tag_name'];
+        $CateID      = (int) $_POST['CateID'];
+        $WebID       = (int) $_POST['WebID'];
+        $NewsEnable  = (int) $_POST['NewsEnable'];
 
         if (empty($toCal)) {
             $toCal = '0000-00-00 00:00:00';
@@ -522,10 +522,10 @@ class tad_web_news
         } else {
             chk_self_web($this->WebID);
         }
-        $sql = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID`=?';
-        $result = Utility::query($sql, 'i', [$NewsID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql          = 'SELECT `CateID` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID`=?';
+        $result       = Utility::query($sql, 'i', [$NewsID]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($CateID) = $xoopsDB->fetchRow($result);
-        $and_uid = '';
+        $and_uid      = '';
         if (!is_assistant($this->WebID, 'news', $CateID, 'NewsID', $NewsID)) {
             $and_uid = onlyMine();
         }
@@ -546,8 +546,8 @@ class tad_web_news
     {
         global $xoopsDB;
         $allCateID = [];
-        $sql = 'SELECT `NewsID`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID`=?';
-        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql       = 'SELECT `NewsID`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID`=?';
+        $result    = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($NewsID, $CateID) = $xoopsDB->fetchRow($result)) {
             $this->delete($NewsID);
             $allCateID[$CateID] = $CateID;
@@ -562,8 +562,8 @@ class tad_web_news
     public function get_total()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID`=? AND `NewsEnable`=?';
-        $result = Utility::query($sql, 'is', [$this->WebID, '1']) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql         = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID`=? AND `NewsEnable`=?';
+        $result      = Utility::query($sql, 'is', [$this->WebID, '1']) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
         return $count;
     }
@@ -576,8 +576,8 @@ class tad_web_news
         if (_IS_EZCLASS) {
             $NewsCounter = redis_do($this->WebID, 'get', 'news', "NewsCounter:$NewsID");
             if (empty($NewsCounter)) {
-                $sql = 'SELECT `NewsCounter` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID` =?';
-                $result = Utility::query($sql, 'i', [$NewsID]) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql               = 'SELECT `NewsCounter` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID` =?';
+                $result            = Utility::query($sql, 'i', [$NewsID]) or Utility::web_error($sql, __FILE__, __LINE__);
                 list($NewsCounter) = $xoopsDB->fetchRow($result);
                 redis_do($this->WebID, 'set', 'news', "NewsCounter:$NewsID", $NewsCounter);
             }
@@ -596,7 +596,7 @@ class tad_web_news
             return;
         }
 
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID` =?';
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `NewsID` =?';
         $result = Utility::query($sql, 'i', [$NewsID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $data = $xoopsDB->fetchArray($result);
@@ -612,11 +612,11 @@ class tad_web_news
     {
         global $xoopsDB, $isMyWeb;
         $DefNewsSort = 0;
-        $all = $main = [];
-        $andEnable = $isMyWeb ? '' : "and `NewsEnable`='1'";
-        $sql = 'SELECT `NewsID`,`NewsTitle` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID`=? ' . $andEnable . ' ORDER BY `NewsDate` DESC';
-        $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
-        $i = 0;
+        $all         = $main         = [];
+        $andEnable   = $isMyWeb ? '' : "and `NewsEnable`='1'";
+        $sql         = 'SELECT `NewsID`,`NewsTitle` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID`=? ' . $andEnable . ' ORDER BY `NewsDate` DESC';
+        $result      = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $i           = 0;
         while (list($NewsID, $NewsTitle) = $xoopsDB->fetchRow($result)) {
 
             //檢查權限
@@ -625,7 +625,7 @@ class tad_web_news
                 continue;
             }
 
-            $all[$i]['NewsID'] = $NewsID;
+            $all[$i]['NewsID']    = $NewsID;
             $all[$i]['NewsTitle'] = xoops_substr($NewsTitle, 0, 60);
             if ($NewsID == $DefNewsID) {
                 $DefNewsSort = $i;
@@ -646,19 +646,19 @@ class tad_web_news
     {
         global $xoopsDB;
         $andCateID = empty($CateID) ? '' : "AND `CateID`='$CateID'";
-        $andStart = empty($start_date) ? '' : "AND `NewsDate` >= '{$start_date}'";
-        $andEnd = empty($end_date) ? '' : "AND `NewsDate` <= '{$end_date}'";
+        $andStart  = empty($start_date) ? '' : "AND `NewsDate` >= '{$start_date}'";
+        $andEnd    = empty($end_date) ? '' : "AND `NewsDate` <= '{$end_date}'";
 
-        $sql = 'SELECT `NewsID`, `NewsTitle`, `NewsDate`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID` = ? ' . $andStart . ' ' . $andEnd . ' ' . $andCateID . ' ORDER BY `NewsDate`';
+        $sql    = 'SELECT `NewsID`, `NewsTitle`, `NewsDate`, `CateID` FROM `' . $xoopsDB->prefix('tad_web_news') . '` WHERE `WebID` = ? ' . $andStart . ' ' . $andEnd . ' ' . $andCateID . ' ORDER BY `NewsDate`';
         $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $i = 0;
+        $i         = 0;
         $main_data = [];
         while (list($ID, $title, $date, $CateID) = $xoopsDB->fetchRow($result)) {
-            $main_data[$i]['ID'] = $ID;
+            $main_data[$i]['ID']     = $ID;
             $main_data[$i]['CateID'] = $CateID;
-            $main_data[$i]['title'] = $title;
-            $main_data[$i]['date'] = $date;
+            $main_data[$i]['title']  = $title;
+            $main_data[$i]['date']   = $date;
 
             $i++;
         }

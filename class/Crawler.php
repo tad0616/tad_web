@@ -10,7 +10,7 @@ class Crawler
     /**
      * @var Client
      */
-    private $client;
+    private Client $client;
 
     /**
      * @var array
@@ -21,13 +21,10 @@ class Crawler
      * Crawler constructor.
      * @param Client $client
      */
-    public function __construct(Client $client = null)
+
+    public function __construct(?Client $client = null)
     {
-        if ($client === null) {
-            $this->client = new Client();
-        } else {
-            $this->client = $client;
-        }
+        $this->client = $client ?? new Client();
     }
 
     /**
@@ -56,9 +53,9 @@ class Crawler
         $re = '/<script class="ds:1" nonce="[^"]+">AF_initDataCallback\(\{[^<]+, data:([^<]+)\}\);<\/script>/m';
         preg_match_all($re, $html, $matches, PREG_SET_ORDER, 0);
 
-        $json = $matches[0][1];
-        $json = str_replace(", sideChannel: {}", '', $json);
-        $data = json_decode($json, true);
+        $json   = $matches[0][1];
+        $json   = str_replace(", sideChannel: {}", '', $json);
+        $data   = json_decode($json, true);
         $images = array_map(function ($image) {
             return [
                 'id' => $image[0],

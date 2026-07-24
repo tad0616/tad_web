@@ -7,12 +7,14 @@ require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'tad_web_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 Utility::test($_COOKIE, 'cookie', 'dd');
+Utility::test($_SESSION, 'session', 'dd');
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
+$op       = Request::getString('op');
+$WebID    = Request::getInt('WebID');
 $NoticeID = Request::getInt('NoticeID');
 
+Utility::test($web_all_config, 'web_all_config', 'dd');
 common_template($WebID, $web_all_config);
 
 switch ($op) {
@@ -55,7 +57,7 @@ function ClassHome($WebID = '')
 {
     global $xoopsDB, $xoopsTpl, $MyWebs, $web_all_config;
 
-    $web = get_tad_web($WebID);
+    // $web = get_tad_web($WebID);
 
     define('_DISPLAY_MODE', 'home');
     $web_plugin_enable_arr = $web_all_config['web_plugin_enable_arr'];
@@ -71,7 +73,7 @@ function ClassHome($WebID = '')
         }
         if (file_exists("plugins/{$dirname}/class.php")) {
             require_once "plugins/{$dirname}/class.php";
-            $plugin_name = "tad_web_{$dirname}";
+            $plugin_name  = "tad_web_{$dirname}";
             $$plugin_name = new $plugin_name($WebID);
         }
     }
@@ -112,9 +114,9 @@ function list_all_class()
         }
         if (file_exists("plugins/{$dirname}/class.php")) {
             require_once "plugins/{$dirname}/class.php";
-            $limit = TadWebTools::get_web_config("{$dirname}_limit", 0);
-            $plugin_name = "tad_web_{$dirname}";
-            $$plugin_name = new $plugin_name(0);
+            $limit                = TadWebTools::get_web_config("{$dirname}_limit", 0);
+            $plugin_name          = "tad_web_{$dirname}";
+            $$plugin_name         = new $plugin_name(0);
             $data_count[$dirname] = $$plugin_name->list_all('', $limit);
         }
     }

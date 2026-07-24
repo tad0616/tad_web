@@ -27,32 +27,32 @@ if ('enable_my_web' === $_REQUEST['op']) {
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$MemID = Request::getInt('MemID');
-$color_setup = Request::getArray('color_setup');
-$filename = Request::getString('filename');
-$ConfigValue = Request::getArray('ConfigValue');
-$head_top = Request::getString('head_top');
-$head_left = Request::getString('head_left');
-$logo_top = Request::getString('logo_top');
-$logo_left = Request::getString('logo_left');
-$col_name = Request::getString('col_name');
-$col_val = Request::getString('col_val');
-$display_blocks = Request::getString('display_blocks');
-$other_web_url = Request::getString('other_web_url');
-$web_admins = Request::getString('web_admins');
-$menu_font_size = Request::getString('menu_font_size', '100%');
-$theme_side = Request::getString('theme_side', 'right');
-$dirname = Request::getString('dirname');
-$delWebID = Request::getInt('delWebID');
-$defalut_theme = Request::getString('defalut_theme');
-$bg_repeat = Request::getString('bg_repeat');
-$bg_attachment = Request::getString('bg_attachment');
-$bg_postiton = Request::getString('bg_postiton');
-$bg_size = Request::getString('bg_size');
+$op              = Request::getString('op');
+$WebID           = Request::getInt('WebID');
+$MemID           = Request::getInt('MemID');
+$color_setup     = Request::getArray('color_setup');
+$filename        = Request::getString('filename');
+$ConfigValue     = Request::getArray('ConfigValue');
+$head_top        = Request::getString('head_top');
+$head_left       = Request::getString('head_left');
+$logo_top        = Request::getString('logo_top');
+$logo_left       = Request::getString('logo_left');
+$col_name        = Request::getString('col_name');
+$col_val         = Request::getString('col_val');
+$display_blocks  = Request::getString('display_blocks');
+$other_web_url   = Request::getString('other_web_url');
+$web_admins      = Request::getString('web_admins');
+$menu_font_size  = Request::getString('menu_font_size', '100%');
+$theme_side      = Request::getString('theme_side', 'right');
+$dirname         = Request::getString('dirname');
+$delWebID        = Request::getInt('delWebID');
+$defalut_theme   = Request::getString('defalut_theme');
+$bg_repeat       = Request::getString('bg_repeat');
+$bg_attachment   = Request::getString('bg_attachment');
+$bg_postiton     = Request::getString('bg_postiton');
+$bg_size         = Request::getString('bg_size');
 $use_simple_menu = Request::getInt('use_simple_menu');
-$login_method = Request::getArray('login_method');
+$login_method    = Request::getArray('login_method');
 
 switch ($op) {
     //儲存設定值
@@ -249,13 +249,13 @@ function tad_web_config($WebID, $configs)
     $FormValidator->render();
 
     //登入設定
-    $login_method = $login_defval = [];
+    $login_method         = $login_defval         = [];
     $TadLoginModuleConfig = Utility::getXoopsModuleConfig('tad_login');
     if ($TadLoginModuleConfig) {
         xoops_loadLanguage('county', 'tad_login');
         xoops_loadLanguage('blocks', 'tad_login');
 
-        $oidc_array = array_keys(TadLoginTools::$all_oidc);
+        $oidc_array  = array_keys(TadLoginTools::$all_oidc);
         $oidc_array2 = array_keys(TadLoginTools::$all_oidc2);
 
         $auth_method = $TadLoginModuleConfig['auth_method'];
@@ -269,7 +269,7 @@ function tad_web_config($WebID, $configs)
 
             }
 
-            $login_defval[] = $method;
+            $login_defval[]            = $method;
             $login_method[$loginTitle] = $method;
         }
 
@@ -284,7 +284,7 @@ function tad_web_config($WebID, $configs)
     $xoopsTpl->assign('plugins', $plugins);
 
     //背景圖設定
-    $bg_path = XOOPS_ROOT_PATH . '/modules/tad_web/images/bg';
+    $bg_path      = XOOPS_ROOT_PATH . '/modules/tad_web/images/bg';
     $bg_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/bg";
     Utility::mk_dir($bg_user_path);
     Utility::mk_dir("{$bg_user_path}/thumbs");
@@ -297,7 +297,7 @@ function tad_web_config($WebID, $configs)
     $xoopsTpl->assign('all_default_bg', get_default_img($bg_path));
 
     //標題設定
-    $head_path = XOOPS_ROOT_PATH . '/modules/tad_web/images/head';
+    $head_path      = XOOPS_ROOT_PATH . '/modules/tad_web/images/head';
     $head_user_path = XOOPS_ROOT_PATH . "/uploads/tad_web/{$WebID}/head";
     Utility::mk_dir($head_user_path);
     Utility::mk_dir("{$head_user_path}/thumbs");
@@ -323,19 +323,19 @@ function tad_web_config($WebID, $configs)
 
     //管理員設定
     $web_admin_arr = get_web_roles($WebID, 'admin');
-    $web_admins = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
-    $sql = 'SELECT `uid`, `uname`, `name` FROM `' . $xoopsDB->prefix('users') . '` ORDER BY `uname`';
-    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $web_admins    = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
+    $sql           = 'SELECT `uid`, `uname`, `name` FROM `' . $xoopsDB->prefix('users') . '` ORDER BY `uname`';
+    $result        = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $myts = \MyTextSanitizer::getInstance();
+    $myts    = \MyTextSanitizer::getInstance();
     $user_ok = $user_yet = [];
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
-        $name = $myts->htmlSpecialChars($name);
+        $name  = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
-        $name = empty($name) ? '' : " ({$name})";
+        $name  = empty($name) ? '' : " ({$name})";
         if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr)) {
             $user_ok[$uid] = "{$uid} {$name} {$uname}";
         } else {
@@ -347,9 +347,9 @@ function tad_web_config($WebID, $configs)
     foreach ($web_admin_arr as $uid) {
         $new_user_ok[$uid] = $user_ok[$uid];
     }
-    $hidden_arr['op'] = 'save_adm';
+    $hidden_arr['op']    = 'save_adm';
     $hidden_arr['WebID'] = $WebID;
-    $tmt_box = Tmt::render('web_admins', $user_yet, $new_user_ok, $hidden_arr, false, true, '15rem', 'adm_repository', 'adm_destination', ',', 'config_ajax.php', ['WebID' => $WebID], '', '<h3>' . _MD_TCW_USER_LIST . '</h3>', '<h3>' . _MD_TCW_USER_SELECTED . '</h3>');
+    $tmt_box             = Tmt::render('web_admins', $user_yet, $new_user_ok, $hidden_arr, false, true, '15rem', 'adm_repository', 'adm_destination', ',', 'config_ajax.php', ['WebID' => $WebID], '', '<h3>' . _MD_TCW_USER_LIST . '</h3>', '<h3>' . _MD_TCW_USER_SELECTED . '</h3>');
     $xoopsTpl->assign('tmt_box', $tmt_box);
 
     $xoopsTpl->assign('logo_desc', sprintf(_MD_TCW_GOOD_LOGO_SITE, $WebID));
@@ -364,9 +364,9 @@ function update_tad_web()
 {
     global $xoopsDB, $WebID;
 
-    $WebName = (string) $_POST['WebName'];
+    $WebName  = (string) $_POST['WebName'];
     $WebOwner = (string) $_POST['WebOwner'];
-    $CateID = (int) $_POST['CateID'];
+    $CateID   = (int) $_POST['CateID'];
 
     $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web') . '` SET `CateID`=?, `WebName`=?, `WebOwner`=? WHERE `WebID`=?';
     Utility::query($sql, 'issi', [$CateID, $WebName, $WebOwner, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -393,8 +393,8 @@ function save_plugins($WebID)
     $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_web_plugins') . '` WHERE `WebID`=?';
     Utility::query($sql, 'i', [$WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
     foreach ($plugins as $plugin) {
-        $dirname = $plugin['dirname'];
-        $PluginTitle = (string) $_POST['plugin_name'][$dirname];
+        $dirname      = $plugin['dirname'];
+        $PluginTitle  = (string) $_POST['plugin_name'][$dirname];
         $PluginEnable = ('1' == $_POST['plugin_enable'][$dirname]) ? '1' : '0';
 
         $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tad_web_plugins') . '` (`PluginDirname`, `PluginTitle`, `PluginSort`, `PluginEnable`, `WebID`) VALUES (?, ?, ?, ?, ?)';
@@ -422,6 +422,7 @@ function save_adm($web_admins, $WebID)
             Utility::query($sql, 'isssi', [$uid, 'admin', '0000-00-00', '1', $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }
+
     clear_my_webs_data($WebID);
 }
 
@@ -483,7 +484,7 @@ function unable_my_web($WebID)
 function enable_my_web($WebID)
 {
     global $xoopsDB;
-    $MyWebs = TadWebTools::MyWebID('0');
+    $MyWebs  = TadWebTools::MyWebID('0');
     $isMyWeb = ($_SESSION['tad_web_adm']) ? true : in_array($WebID, $MyWebs);
     if (empty($WebID) or !$isMyWeb) {
         redirect_header("index.php?WebID={$WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);

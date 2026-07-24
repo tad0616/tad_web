@@ -151,7 +151,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
             $block['BlockContent'] = '';
             $config['show_title']  = '1';
         }
-        $CkEditor = new CkEditor("tad_web/{$WebID}/block", 'BlockContent[html]', $block['BlockContent']);
+        $CkEditor = new CkEditor("tad_web", 'BlockContent[html]', $block['BlockContent'], "{$WebID}/block");
         $CkEditor->setHeight(250);
         $editor = $CkEditor->render();
     } else {
@@ -160,7 +160,7 @@ function config_block($WebID, $BlockID, $plugin, $mode = 'config')
         $config       = isset($block['plugin']) ? json_decode($block['BlockConfig'], true) : [];
 
         if ('custom' === $block_plugin || 'share' === $block_plugin) {
-            $CkEditor = new CkEditor("tad_web/{$WebID}/block", 'BlockContent[html]', $block['BlockContent']);
+            $CkEditor = new CkEditor("tad_web", 'BlockContent[html]', $block['BlockContent'], "{$WebID}/block");
             $CkEditor->setHeight(250);
             $editor        = $CkEditor->render();
             $iframeContent = strip_tags($block['BlockContent']);
