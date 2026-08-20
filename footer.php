@@ -201,7 +201,7 @@ function tad_web_my_menu($defaltWebID)
                 if (file_exists($my_webs_data_file)) {
                     $webs = get_json_file($my_webs_data_file);
                     Utility::test($webs, 'webs', 'dd');
-                } else {
+                } elseif (!empty($AllMyWebID)) {
                     $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebID` IN (' . $AllMyWebID . ') ORDER BY `WebSort`';
                     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     $i      = $defalt_used_size      = 0;

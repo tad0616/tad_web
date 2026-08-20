@@ -13,8 +13,8 @@ class Tools
         $ConfigValues = [];
         if (null !== $defWebID) {
             if ('file' !== $from) {
-                $sql = 'SELECT `ConfigValue` FROM `' . $xoopsDB->prefix('tad_web_config') . '` WHERE `ConfigName` =? AND `WebID` =?';
-                $result = Utility::query($sql, 'si', [$ConfigName, $defWebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql               = 'SELECT `ConfigValue` FROM `' . $xoopsDB->prefix('tad_web_config') . '` WHERE `ConfigName` =? AND `WebID` =?';
+                $result            = Utility::query($sql, 'si', [$ConfigName, $defWebID]) or Utility::web_error($sql, __FILE__, __LINE__);
                 list($ConfigValue) = $xoopsDB->fetchRow($result);
                 return $ConfigValue;
             }
@@ -24,11 +24,13 @@ class Tools
                 require $file;
             } else {
                 $content = "<?php\n";
-                $sql = 'SELECT `ConfigName`,`ConfigValue` FROM `' . $xoopsDB->prefix('tad_web_config') . '` WHERE `WebID`=?';
-                $result = Utility::query($sql, 'i', [$defWebID]) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql     = 'SELECT `ConfigName`,`ConfigValue` FROM `' . $xoopsDB->prefix('tad_web_config') . '` WHERE `WebID`=?';
+                $result  = Utility::query($sql, 'i', [$defWebID]) or Utility::web_error($sql, __FILE__, __LINE__);
                 while (list($ConfigName, $ConfigValue) = $xoopsDB->fetchRow($result)) {
                     $web_config[$ConfigName] = $ConfigValue;
-                    $content .= "\$web_config['$ConfigName'] = '$ConfigValue';\n";
+                    $configName              = var_export((string) $ConfigName, true);
+                    $configValue             = var_export((string) $ConfigValue, true);
+                    $content .= "\$web_config[$configName] = $configValue;\n";
                 }
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_web/{$defWebID}/");
                 file_put_contents($file, $content);
@@ -38,7 +40,7 @@ class Tools
                 return $web_config[$ConfigName];
             }
         } else {
-            $sql = 'SELECT `WebID`,`ConfigValue` FROM `' . $xoopsDB->prefix('tad_web_config') . '` WHERE `ConfigName`=?';
+            $sql    = 'SELECT `WebID`,`ConfigValue` FROM `' . $xoopsDB->prefix('tad_web_config') . '` WHERE `ConfigName`=?';
             $result = Utility::query($sql, 's', [$ConfigName]) or Utility::web_error($sql, __FILE__, __LINE__);
 
             while (list($WebID, $ConfigValue) = $xoopsDB->fetchRow($result)) {
@@ -55,18 +57,18 @@ class Tools
         $MyWebs = [];
         if ($xoopsUser) {
             if (!isset($_SESSION['MyWebs'][$WebEnable])) {
-                $uid = $xoopsUser->uid();
+                $uid          = $xoopsUser->uid();
                 $andWebEnable = 'all' === $WebEnable ? '' : "AND `WebEnable`='{$WebEnable}'";
-                $sql = 'SELECT `WebID` FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebOwnerUid` =? ' . $andWebEnable;
-                $result = Utility::query($sql, 'i', [$uid]) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql          = 'SELECT `WebID` FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebOwnerUid` =? ' . $andWebEnable;
+                $result       = Utility::query($sql, 'i', [$uid]) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 while (list($WebID) = $xoopsDB->fetchRow($result)) {
                     $MyWebs[$WebID] = (int) $WebID;
                 }
 
                 $andWebEnable = 'all' === $WebEnable ? '' : "and b.`WebEnable`='{$WebEnable}'";
-                $sql = 'SELECT a.`WebID` FROM `' . $xoopsDB->prefix('tad_web_roles') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web') . '` AS b ON a.`WebID`=b.`WebID` WHERE a.`uid`=? ' . $andWebEnable;
-                $result = Utility::query($sql, 'i', [$uid]) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql          = 'SELECT a.`WebID` FROM `' . $xoopsDB->prefix('tad_web_roles') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web') . '` AS b ON a.`WebID`=b.`WebID` WHERE a.`uid`=? ' . $andWebEnable;
+                $result       = Utility::query($sql, 'i', [$uid]) or Utility::web_error($sql, __FILE__, __LINE__);
                 while (list($WebID) = $xoopsDB->fetchRow($result)) {
                     $MyWebs[$WebID] = (int) $WebID;
                 }
