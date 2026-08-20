@@ -5,21 +5,26 @@ use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$MemID = Request::getInt('MemID');
-$color_setup = Request::getArray('color_setup');
-$filename = Request::getString('filename');
-$ConfigValue = Request::getArray('ConfigValue');
-$head_top = Request::getString('head_top');
-$head_left = Request::getString('head_left');
-$logo_top = Request::getString('logo_top');
-$logo_left = Request::getString('logo_left');
-$col_name = Request::getString('col_name');
-$col_val = Request::getString('col_val');
+$op             = Request::getString('op');
+$WebID          = Request::getInt('WebID');
+$MemID          = Request::getInt('MemID');
+$color_setup    = Request::getArray('color_setup');
+$filename       = Request::getString('filename');
+$ConfigValue    = Request::getArray('ConfigValue');
+$head_top       = Request::getString('head_top');
+$head_left      = Request::getString('head_left');
+$logo_top       = Request::getString('logo_top');
+$logo_left      = Request::getString('logo_left');
+$col_name       = Request::getString('col_name');
+$col_val        = Request::getString('col_val');
 $display_blocks = Request::getString('display_blocks');
-$other_web_url = Request::getString('other_web_url');
-$keyman = Request::getString('keyman');
+$other_web_url  = Request::getString('other_web_url');
+$keyman         = Request::getString('keyman');
+
+if (!$isMyWeb) {
+    http_response_code(403);
+    exit;
+}
 
 switch ($op) {
     //標題設定
@@ -72,9 +77,9 @@ function keyman($WebID, $keyman)
 {
     global $xoopsDB;
     $web_admin_arr = get_web_roles($WebID, 'admin');
-    $web_admins = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
-    $where = !empty($keyman) ? "WHERE `name` LIKE ? OR `uname` LIKE ?" : '';
-    $sql = "SELECT `uid`, `uname`, `name`
+    $web_admins    = !empty($web_admin_arr) ? implode(',', $web_admin_arr) : '';
+    $where         = !empty($keyman) ? "WHERE `name` LIKE ? OR `uname` LIKE ?" : '';
+    $sql           = "SELECT `uid`, `uname`, `name`
     FROM `" . $xoopsDB->prefix('users') . "` $where
     ORDER BY `uname`";
 
@@ -82,15 +87,15 @@ function keyman($WebID, $keyman)
 
     $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $myts = \MyTextSanitizer::getInstance();
+    $myts    = \MyTextSanitizer::getInstance();
     $user_ok = $user_yet = '';
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         foreach ($all as $k => $v) {
             $$k = $v;
         }
-        $name = $myts->htmlSpecialChars($name);
+        $name  = $myts->htmlSpecialChars($name);
         $uname = $myts->htmlSpecialChars($uname);
-        $name = empty($name) ? '' : " ({$name})";
+        $name  = empty($name) ? '' : " ({$name})";
         if (!empty($web_admin_arr) and in_array($uid, $web_admin_arr) or $uid == $WebOwnerUid) {
             $user_ok .= "<option value=\"$uid\">{$uid} {$name} {$uname} </option>";
         } else {
