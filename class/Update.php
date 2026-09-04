@@ -32,6 +32,109 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 class Update
 {
+
+    public static function fix_sql_tables()
+    {
+        global $xoopsDB;
+
+        $table  = $xoopsDB->prefix('tad_web');
+        $sql    = "SHOW TABLE STATUS LIKE '{$table}'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $status = $xoopsDB->fetchArray($result);
+        if (!$status) {
+            return;
+        }
+
+        $sql           = "SHOW COLUMNS FROM {$table} LIKE 'CateID'";
+        $result        = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $cate          = $xoopsDB->fetchArray($result);
+        $sql           = "SHOW INDEX FROM {$table} WHERE Key_name = 'WebOwnerUid'";
+        $result        = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $ownerIndex    = $xoopsDB->fetchArray($result);
+        $hasOwnerIndex = is_array($ownerIndex) && 0 == $ownerIndex['Non_unique'];
+
+        if ('InnoDB' === $status['Engine'] && 'mediumint' === strtolower($cate['Type']) && $hasOwnerIndex) {
+            return;
+        }
+
+        $alter = static function ($name, $definition) use ($xoopsDB) {
+            $fullTable = $xoopsDB->prefix($name);
+            $sql       = "ALTER TABLE {$fullTable} {$definition}";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        };
+        $addIndex = static function ($name, $indexName, $columns, $unique = false) use ($xoopsDB) {
+            $fullTable = $xoopsDB->prefix($name);
+            $sql       = "SHOW INDEX FROM {$fullTable} WHERE Key_name = '{$indexName}'";
+            $result    = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            if (false === $xoopsDB->fetchArray($result)) {
+                $indexType = $unique ? 'UNIQUE INDEX' : 'INDEX';
+                $sql       = "ALTER TABLE {$fullTable} ADD {$indexType} `{$indexName}` ({$columns})";
+                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            }
+        };
+        $convert = static function ($name) use ($xoopsDB) {
+            $sql = 'ALTER TABLE ' . $xoopsDB->prefix($name) . ' ENGINE=InnoDB';
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        };
+
+        $alter('tad_web', "MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `WebCounter` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `CreatDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', MODIFY `last_accessed` DATETIME NOT NULL");
+        $alter('tad_web_account', "MODIFY `AccountID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `AccountDate` DATE NOT NULL DEFAULT '0000-00-00'");
+        $alter('tad_web_action', "MODIFY `ActionID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `ActionDate` DATE NOT NULL DEFAULT '0000-00-00'");
+        $alter('tad_web_action_gphotos', "MODIFY `ActionID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `image_id` VARCHAR(80) NOT NULL DEFAULT ''");
+        $alter('tad_web_assistant_post', "MODIFY `plugin` VARCHAR(100) NOT NULL, MODIFY `ColSN` INT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL");
+        $alter('tad_web_blocks', "MODIFY `plugin` VARCHAR(100) NOT NULL");
+        $alter('tad_web_calendar', "MODIFY `CalendarID` INT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `CalendarDate` DATE NOT NULL DEFAULT '0000-00-00'");
+        $alter('tad_web_cate', "MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT");
+        $alter('tad_web_cate_assistant', "MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL, MODIFY `plugin` VARCHAR(100) NOT NULL DEFAULT ''");
+        $alter('tad_web_config', "MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0");
+        $alter('tad_web_discuss', "MODIFY `DiscussID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `ReDiscussID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `MemID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `ParentID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `DiscussDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', MODIFY `LastTime` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_files', "MODIFY `fsn` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `file_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_files_center', "MODIFY `col_name` VARCHAR(100) NOT NULL DEFAULT '', MODIFY `col_sn` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `upload_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_homework', "MODIFY `HomeworkID` INT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `HomeworkDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', MODIFY `toCal` DATE NOT NULL DEFAULT '0000-00-00', MODIFY `HomeworkPostDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_homework_content', "MODIFY `HomeworkID` INT UNSIGNED NOT NULL");
+        $alter('tad_web_link', "MODIFY `LinkID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0");
+        $alter('tad_web_link_mems', "MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0");
+        $alter('tad_web_mail_log', "MODIFY `MailDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_mem_parents', "MODIFY `Reationship` VARCHAR(50) NOT NULL DEFAULT '', MODIFY `ParentEmail` VARCHAR(80) NOT NULL DEFAULT ''");
+        $alter('tad_web_mems', "MODIFY `MemBirthday` DATE NOT NULL DEFAULT '0000-00-00'");
+        $alter('tad_web_news', "MODIFY `NewsID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `NewsDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', MODIFY `toCal` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_notice', "MODIFY `NoticeDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_page', "MODIFY `PageID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `PageDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', MODIFY `PageSort` SMALLINT NOT NULL DEFAULT 0");
+        $alter('tad_web_plugins_setup', "MODIFY `plugin` VARCHAR(100) NOT NULL DEFAULT ''");
+        $alter('tad_web_roles', "MODIFY `role` VARCHAR(50) NOT NULL, MODIFY `term` DATE NOT NULL DEFAULT '0000-00-00'");
+        $alter('tad_web_schedule', "MODIFY `ScheduleID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `ScheduleTime` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_schedule_data', "MODIFY `ScheduleID` MEDIUMINT UNSIGNED NOT NULL, MODIFY `Link` VARCHAR(1000) NOT NULL");
+        $alter('tad_web_tags', "MODIFY `col_name` VARCHAR(100) NOT NULL DEFAULT '', MODIFY `tag_name` VARCHAR(100) NOT NULL DEFAULT ''");
+        $alter('tad_web_video', "MODIFY `VideoID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `VideoDate` DATE NOT NULL DEFAULT '0000-00-00'");
+        $alter('tad_web_works', "MODIFY `WorksID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT, MODIFY `CateID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `WorksDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+        $alter('tad_web_works_content', "MODIFY `WorksID` MEDIUMINT UNSIGNED NOT NULL, MODIFY `MemID` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0, MODIFY `UploadDate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'");
+
+        $indexes = [
+            ['tad_web', 'WebOwnerUid', '`WebOwnerUid`', true],
+            ['tad_web', 'WebEnable', '`WebEnable`'], ['tad_web', 'CreatDate', '`CreatDate`'],
+            ['tad_web_account', 'CateID', '`CateID`'], ['tad_web_account', 'WebID', '`WebID`'],
+            ['tad_web_action', 'CateID', '`CateID`'], ['tad_web_action', 'WebID', '`WebID`'], ['tad_web_action', 'WebID_ActionDate', '`WebID`,`ActionDate`'],
+            ['tad_web_action_gphotos', 'ActionID', '`ActionID`'], ['tad_web_assistant_post', 'ColSN', '`ColSN`'],
+            ['tad_web_blocks', 'WebID', '`WebID`'], ['tad_web_blocks', 'ShareFrom', '`ShareFrom`'],
+            ['tad_web_calendar', 'CateID', '`CateID`'], ['tad_web_calendar', 'WebID', '`WebID`'], ['tad_web_calendar', 'WebID_CalendarDate', '`WebID`,`CalendarDate`'],
+            ['tad_web_cate', 'WebID', '`WebID`'], ['tad_web_cate', 'WebID_Enable', '`WebID`,`CateEnable`'], ['tad_web_config', 'WebID', '`WebID`'],
+            ['tad_web_discuss', 'CateID', '`CateID`'], ['tad_web_discuss', 'WebID', '`WebID`'], ['tad_web_discuss', 'ParentID', '`ParentID`'], ['tad_web_discuss', 'ReDiscussID', '`ReDiscussID`'],
+            ['tad_web_files', 'CateID', '`CateID`'], ['tad_web_files', 'WebID', '`WebID`'], ['tad_web_files_center', 'uid', '`uid`'], ['tad_web_files_center', 'kind', '`kind`'], ['tad_web_files_center', 'upload_date', '`upload_date`'],
+            ['tad_web_homework', 'WebID', '`WebID`'], ['tad_web_homework', 'CateID', '`CateID`'], ['tad_web_homework', 'WebID_PostDate', '`WebID`,`HomeworkPostDate`'], ['tad_web_homework_content', 'WebID', '`WebID`'],
+            ['tad_web_link', 'CateID', '`CateID`'], ['tad_web_link', 'WebID', '`WebID`'], ['tad_web_link_mems', 'WebID', '`WebID`'], ['tad_web_link_mems', 'CateID', '`CateID`'], ['tad_web_mail_log', 'ColSN', '`ColSN`'],
+            ['tad_web_news', 'CateID', '`CateID`'], ['tad_web_news', 'WebID', '`WebID`'], ['tad_web_news', 'WebID_Enable_Date', '`WebID`,`NewsEnable`,`NewsDate`'], ['tad_web_page', 'CateID', '`CateID`'], ['tad_web_page', 'WebID', '`WebID`'],
+            ['tad_web_plugins', 'WebID', '`WebID`'], ['tad_web_power', 'WebID', '`WebID`'], ['tad_web_schedule', 'CateID', '`CateID`'], ['tad_web_schedule', 'WebID', '`WebID`'],
+            ['tad_web_video', 'CateID', '`CateID`'], ['tad_web_video', 'WebID', '`WebID`'], ['tad_web_works', 'CateID', '`CateID`'], ['tad_web_works', 'WebID', '`WebID`'],
+        ];
+        foreach ($indexes as $definition) {
+            $addIndex($definition[0], $definition[1], $definition[2], $definition[3] ?? false);
+        }
+
+        foreach (['tad_web', 'tad_web_account', 'tad_web_action', 'tad_web_action_gphotos', 'tad_web_assistant_post', 'tad_web_blocks', 'tad_web_calendar', 'tad_web_cate', 'tad_web_cate_assistant', 'tad_web_config', 'tad_web_discuss', 'tad_web_files', 'tad_web_files_center', 'tad_web_homework', 'tad_web_homework_content', 'tad_web_link', 'tad_web_link_mems', 'tad_web_mail_log', 'tad_web_mem_parents', 'tad_web_mems', 'tad_web_news', 'tad_web_notice', 'tad_web_page', 'tad_web_plugins', 'tad_web_plugins_setup', 'tad_web_power', 'tad_web_roles', 'tad_web_schedule', 'tad_web_schedule_data', 'tad_web_tags', 'tad_web_video', 'tad_web_works', 'tad_web_works_content'] as $name) {
+            $convert($name);
+        }
+    }
+
     // 檢查欄位是否存在
     public static function chk_col($table, $col)
     {
