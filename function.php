@@ -13,6 +13,10 @@ $TadUpFiles = new TadUpFiles('tad_web');
 $subdir = isset($WebID) ? "/{$WebID}" : '';
 $TadUpFiles->set_dir('subdir', $subdir);
 
+if (isset($_SESSION['isAssistant']) && $_SESSION['isAssistant'] && isset($_SESSION['LoginWebID']) && $WebID == $_SESSION['LoginWebID']) {
+    $TadUpFiles->set_var('allow_guest', true);
+}
+
 require_once XOOPS_ROOT_PATH . '/modules/tad_web/class/WebCate.php';
 
 //判斷是否對該模組有管理權限
@@ -65,21 +69,28 @@ function clear_plugin_setup($WebID, $plugin)
 function clear_assistant_cache($WebID, $plugin)
 {
     $assistant_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/$plugin/assistants.json";
-    unlink($assistant_cache_file);
+    if (file_exists($assistant_cache_file)) {
+        unlink($assistant_cache_file);
+    }
+
 }
 
 // 清除所有網站設定值
 function clear_tad_web_config($WebID)
 {
     $tad_web_config_file = XOOPS_VAR_PATH . "/tad_web/$WebID/tad_web_config.json";
-    unlink($tad_web_config_file);
+    if (file_exists($tad_web_config_file)) {
+        unlink($tad_web_config_file);
+    }
 }
 
 // 清除通知
 function clear_tad_web_notice()
 {
     $tad_web_notice_file = XOOPS_VAR_PATH . "/tad_web/tad_web_notice.json";
-    unlink($tad_web_notice_file);
+    if (file_exists($tad_web_notice_file)) {
+        unlink($tad_web_notice_file);
+    }
 }
 
 // 清除我的網站資料
@@ -91,7 +102,9 @@ function clear_my_webs_data($WebID)
         $uid = ($_SESSION['tad_web_adm'] && isset($_SESSION['tad_web'][$WebID]['WebOwnerUid'])) ? $_SESSION['tad_web'][$WebID]['WebOwnerUid'] : $xoopsUser->uid();
 
         $my_webs_data_file = XOOPS_VAR_PATH . "/tad_web/my_webs_data/$uid.json";
-        unlink($my_webs_data_file);
+        if (file_exists($my_webs_data_file)) {
+            unlink($my_webs_data_file);
+        }
         unset($_SESSION['tad_web'][$WebID]);
     }
 }
@@ -100,7 +113,9 @@ function clear_my_webs_data($WebID)
 function clear_power_cache($WebID)
 {
     $power_cache_file = XOOPS_VAR_PATH . "/tad_web/$WebID/web_power.json";
-    unlink($power_cache_file);
+    if (file_exists($power_cache_file)) {
+        unlink($power_cache_file);
+    }
 }
 
 //取得已安裝的區塊
@@ -732,11 +747,13 @@ function getAllCateName($ColName = '', $WebID = '', $CateID = '')
 function onlyMine($uid_col = 'uid')
 {
     global $xoopsUser, $MyWebs, $WebID;
-    if ($_SESSION['tad_web_adm']) {
+    if (isset($_SESSION['tad_web_adm']) && $_SESSION['tad_web_adm']) {
         return;
     } elseif (in_array($WebID, $MyWebs)) {
         return;
-    } elseif ($WebID == $_SESSION['LoginWebID']) {
+    } elseif (isset($_SESSION['LoginWebID']) && $WebID == $_SESSION['LoginWebID']) {
+        return;
+    } elseif (!is_object($xoopsUser)) {
         return;
     }
     $uid = $xoopsUser->uid();
@@ -1553,7 +1570,9 @@ function check_quota($WebID = '')
 
     $_SESSION['tad_web'][$WebID]['used_size'] = $dir_size;
 
-    clear_my_webs_data($WebID);
+    if ($xoopsUser) {
+        clear_my_webs_data($WebID);
+    }
 }
 
 //檢查已使用空間

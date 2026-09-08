@@ -7,11 +7,11 @@ require_once __DIR__ . '/plugin_header.php';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$HomeworkID = Request::getInt('HomeworkID');
-$CateID = Request::getInt('CateID');
+$op            = Request::getString('op');
+$HomeworkID    = Request::getInt('HomeworkID');
+$CateID        = Request::getInt('CateID');
 $fb_action_ids = Request::getInt('fb_action_ids');
-$comment_id = Request::getInt('comment_id');
+$comment_id    = Request::getInt('comment_id');
 $fb_comment_id = Request::getString('fb_comment_id');
 
 common_template($WebID, $web_all_config);
@@ -40,8 +40,10 @@ switch ($op) {
     case 'delete':
         $tad_web_homework->delete($HomeworkID);
         clear_block_cache($WebID);
-        header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
-        exit;
+        redirect_header("{$_SERVER['PHP_SELF']}?WebID={$WebID}", 3, "已成功執行！");
+        break;
+    // header("location: {$_SERVER['PHP_SELF']}?WebID={$WebID}");
+    // exit;
 
     //下載檔案
     case 'tufdl':

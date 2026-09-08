@@ -10,19 +10,19 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$MemID = Request::getInt('MemID');
-$year = Request::getString('year');
-$newCateName = Request::getString('newCateName');
-$CateID = Request::getInt('CateID');
-$chk_code = Request::getString('chk_code');
-$ParentID = Request::getInt('ParentID');
-$Reationship = Request::getString('Reationship');
-$result = Request::getInt('result');
-$MemUname = Request::getString('MemUname');
-$MemPasswd = Request::getString('MemPasswd');
+$op           = Request::getString('op');
+$MemID        = Request::getInt('MemID');
+$year         = Request::getString('year');
+$newCateName  = Request::getString('newCateName');
+$CateID       = Request::getInt('CateID');
+$chk_code     = Request::getString('chk_code');
+$ParentID     = Request::getInt('ParentID');
+$Reationship  = Request::getString('Reationship');
+$result       = Request::getInt('result');
+$MemUname     = Request::getString('MemUname');
+$MemPasswd    = Request::getString('MemPasswd');
 $ParentPasswd = Request::getString('ParentPasswd');
-$hide_class = Request::getInt('hide_class');
+$hide_class   = Request::getInt('hide_class');
 
 common_template($WebID, $web_all_config);
 

@@ -23,8 +23,8 @@ function account_update_module()
         if ($row['Type'] == 'smallint(6)') {
             // 將 AccountIncome 和 AccountOutgoings 欄位從 smallint 修改為 mediumint
             $sql = "ALTER TABLE {$table_name}
-                   CHANGE `AccountIncome` `AccountIncome` mediumint NOT NULL DEFAULT '0' COMMENT '收入' AFTER `AccountDate`,
-                   CHANGE `AccountOutgoings` `AccountOutgoings` mediumint NOT NULL DEFAULT '0' COMMENT '支出' AFTER `AccountIncome`";
+                CHANGE `AccountIncome` `AccountIncome` mediumint NOT NULL DEFAULT '0' COMMENT '收入' AFTER `AccountDate`,
+                CHANGE `AccountOutgoings` `AccountOutgoings` mediumint NOT NULL DEFAULT '0' COMMENT '支出' AFTER `AccountIncome`";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             $updates_performed = true;
             echo "<p>已將 AccountIncome 和 AccountOutgoings 欄位從 smallint 修改為 mediumint</p>";

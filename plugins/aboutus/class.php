@@ -14,9 +14,9 @@ class tad_web_aboutus
 
     public function __construct($WebID)
     {
-        $this->WebID = $WebID;
+        $this->WebID   = $WebID;
         $this->WebCate = new WebCate($WebID, 'aboutus', 'tad_web_link_mems');
-        $this->setup = get_plugin_setup_values($WebID, 'aboutus');
+        $this->setup   = get_plugin_setup_values($WebID, 'aboutus');
     }
 
     //所有網站列表
@@ -30,19 +30,19 @@ class tad_web_aboutus
         //全國版
         if (_IS_EZCLASS) {
 
-            $def_county = Request::getString('county');
-            $def_city = Request::getString('city');
+            $def_county     = Request::getString('county');
+            $def_city       = Request::getString('city');
             $def_SchoolName = Request::getString('SchoolName');
 
-            $and_county = empty($def_county) ? '' : "AND b.`county`='{$def_county}'";
-            $and_city = empty($def_city) ? '' : "AND b.`city`='{$def_city}'";
+            $and_county     = empty($def_county) ? '' : "AND b.`county`='{$def_county}'";
+            $and_city       = empty($def_city) ? '' : "AND b.`city`='{$def_city}'";
             $and_SchoolName = empty($def_SchoolName) ? '' : "AND b.`SchoolName`='{$def_SchoolName}'";
 
-            $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web') . '` AS a JOIN `' . $xoopsDB->prefix('apply') . '` AS b ON a.`WebOwnerUid` = b.`uid` WHERE a.`WebEnable` = ? ' . $and_county . ' ' . $and_city . ' ' . $and_SchoolName . ' ORDER BY b.`zip`, ' . $list_web_order;
+            $sql    = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web') . '` AS a JOIN `' . $xoopsDB->prefix('apply') . '` AS b ON a.`WebOwnerUid` = b.`uid` WHERE a.`WebEnable` = ? ' . $and_county . ' ' . $and_city . ' ' . $and_SchoolName . ' ORDER BY b.`zip`, ' . $list_web_order;
             $result = Utility::query($sql, 's', ['1']) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $total_web = 0;
-            $all_webs = [];
+            $all_webs  = [];
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
                 foreach ($all as $k => $v) {
@@ -66,12 +66,12 @@ class tad_web_aboutus
             }
 
             $data = [];
-            $i = 0;
+            $i    = 0;
             if (!empty($def_SchoolName)) {
                 foreach ($all_webs as $key => $item) {
-                    $data[$i]['WebID'] = $key;
+                    $data[$i]['WebID']    = $key;
                     $data[$i]['WebTitle'] = $item;
-                    $data[$i]['counter'] = $county_counter[$key];
+                    $data[$i]['counter']  = $county_counter[$key];
                     $i++;
                 }
                 $xoopsTpl->assign('get_mode', 'web');
@@ -81,7 +81,7 @@ class tad_web_aboutus
             } elseif (!empty($def_city)) {
                 foreach ($all_webs as $key => $item) {
                     $data[$i]['SchoolName'] = $item;
-                    $data[$i]['counter'] = $county_counter[$key];
+                    $data[$i]['counter']    = $county_counter[$key];
                     $i++;
                 }
                 $xoopsTpl->assign('get_mode', 'school');
@@ -89,7 +89,7 @@ class tad_web_aboutus
                 $xoopsTpl->assign('def_county', $def_county);
             } elseif (!empty($def_county)) {
                 foreach ($all_webs as $key => $item) {
-                    $data[$i]['city'] = $item;
+                    $data[$i]['city']    = $item;
                     $data[$i]['counter'] = $county_counter[$key];
                     $i++;
                 }
@@ -98,7 +98,7 @@ class tad_web_aboutus
                 $xoopsTpl->assign('def_county', $def_county);
             } else {
                 foreach ($all_webs as $key => $item) {
-                    $data[$i]['county'] = $item;
+                    $data[$i]['county']  = $item;
                     $data[$i]['counter'] = $county_counter[$key];
                     $i++;
                 }
@@ -111,11 +111,11 @@ class tad_web_aboutus
             $xoopsTpl->assign('MyWebs', $MyWebs);
             $xoopsTpl->assign('total_web', $total_web);
         } else {
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebEnable`=1 ORDER BY ' . $list_web_order;
+            $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebEnable`=1 ORDER BY ' . $list_web_order;
             $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $data = [];
-            $i = 0;
+            $i    = 0;
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 //以下會產生這些變數： $WebID , $WebName , $WebSort , $WebEnable , $WebCounter
                 foreach ($all as $k => $v) {
@@ -159,16 +159,16 @@ class tad_web_aboutus
         $this->WebCate->set_col_md(3, 12);
         //cate_menu($defCateID = "", $mode = "form", $newCate = true, $change_page = false, $show_label = true, $show_tools = false, $show_select = true, $required = false)
         $cate_menu = $this->WebCate->cate_menu($DefCateID, 'page', false, true, false, false);
-        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
+        $cate      = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate_menu', $cate_menu);
         $xoopsTpl->assign('cate', $cate);
 
-        $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID` = b.`MemID` WHERE a.`WebID` = ? AND a.`MemEnable` = ? AND a.`CateID` = ? ORDER BY a.`MemNum`';
+        $sql    = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID` = b.`MemID` WHERE a.`WebID` = ? AND a.`MemEnable` = ? AND a.`CateID` = ? ORDER BY a.`MemNum`';
         $result = Utility::query($sql, 'isi', [$this->WebID, '1', $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i = 0;
 
-        $students1 = $students2 = '';
+        $students1   = $students2   = '';
         $class_total = $class_boy = $class_girl = 0;
 
         // $subdir = isset($this->WebID) ? "/{$this->WebID}" : "";
@@ -176,7 +176,7 @@ class tad_web_aboutus
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
-                $$k = $v;
+                $$k               = $v;
                 $all_main[$i][$k] = $v;
             }
 
@@ -184,21 +184,21 @@ class tad_web_aboutus
             $pic_url = $TadUpFiles->get_pic_file('thumb');
 
             if ($pic_url and ($isMyWeb or $WebID == $_SESSION['LoginWebID'] or '1' == $this->setup['mem_fullname'])) {
-                $pic = $pic_url;
+                $pic   = $pic_url;
                 $cover = 'background-size: contain;';
             } else {
-                $pic = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
+                $pic   = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
                 $cover = '';
             }
-            $all_main[$i]['pic'] = $pic;
-            $all_main[$i]['cover'] = $cover;
+            $all_main[$i]['pic']      = $pic;
+            $all_main[$i]['cover']    = $cover;
             $all_main[$i]['AboutMem'] = nl2br($AboutMem);
 
             if (!$isMyWeb and '1' != $this->setup['mem_fullname']) {
                 $MemName = empty($MemNickName) ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemNickName;
             }
 
-            $color = ('1' == $MemSex) ? '#006699' : '#CC3300';
+            $color  = ('1' == $MemSex) ? '#006699' : '#CC3300';
             $color2 = ('1' == $MemSex) ? '#000066' : '#660000';
             if ('1' == $MemSex) {
                 $class_boy++;
@@ -210,7 +210,7 @@ class tad_web_aboutus
 
             $MemName = empty($MemName) ? '---' : $MemName;
 
-            $all_main[$i]['MemName'] = $MemName;
+            $all_main[$i]['MemName']     = $MemName;
             $all_main[$i]['MemSexTitle'] = ('1' == $MemSex) ? _MD_TCW_BOY : _MD_TCW_GIRL;
 
             $StuUrl = ('mem_adm' === $mode) ? "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu" : '#';
@@ -241,8 +241,8 @@ class tad_web_aboutus
         $xoopsTpl->assign('students1', $students1);
         $xoopsTpl->assign('students2', $students2);
 
-        $sql = 'SELECT MIN(`MemNum`) AS min, MAX(`MemNum`) AS max FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID` = ? AND `MemEnable` = 1 AND `MemNum` > 0 ORDER BY `MemNum`';
-        $result = Utility::query($sql, 'i', [$DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql             = 'SELECT MIN(`MemNum`) AS min, MAX(`MemNum`) AS max FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID` = ? AND `MemEnable` = 1 AND `MemNum` > 0 ORDER BY `MemNum`';
+        $result          = Utility::query($sql, 'i', [$DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($min, $max) = $xoopsDB->fetchRow($result);
 
         $xoopsTpl->assign('min', $min);
@@ -290,7 +290,7 @@ class tad_web_aboutus
         $class_pic_thumb = $TadUpFiles->get_pic_file('thumb');
         $xoopsTpl->assign('class_pic_thumb', $class_pic_thumb);
 
-        $ys = get_seme();
+        $ys        = get_seme();
         $last_year = $ys[0] - 1;
         $next_year = $ys[0] + 1;
         $xoopsTpl->assign('now_year', sprintf(_MD_TCW_SEME_CATE, $ys[0]));
@@ -302,8 +302,8 @@ class tad_web_aboutus
         // die(var_export($cate));
         foreach ($cate as $key => $value) {
             // _MD_TCW_STUDENT_COPY
-            $old_cate[$key] = $value;
-            $old_cate[$key]['CateNameMem'] = sprintf(_MD_TCW_STUDENT_COPY, $value['CateName'], $this->setup['student_title']);
+            $old_cate[$key]                 = $value;
+            $old_cate[$key]['CateNameMem']  = sprintf(_MD_TCW_STUDENT_COPY, $value['CateName'], $this->setup['student_title']);
             $old_cate[$key]['CateMemCount'] = $this->get_total($value['CateID']);
         }
         $xoopsTpl->assign('old_cate', $old_cate);
@@ -342,9 +342,9 @@ class tad_web_aboutus
     {
         global $xoopsDB, $TadUpFiles;
 
-        $and_year = empty($year) ? '' : "{$year} ";
+        $and_year    = empty($year) ? '' : "{$year} ";
         $newCateName = $and_year . $newCateName;
-        $CateID = $this->WebCate->save_tad_web_cate('', $newCateName);
+        $CateID      = $this->WebCate->save_tad_web_cate('', $newCateName);
         $TadUpFiles->set_col('ClassPic', $CateID, 1);
         $TadUpFiles->upload_file('upfile', 1280, 300, null, null, true);
 
@@ -355,8 +355,8 @@ class tad_web_aboutus
 
         if (!empty($_POST['form_CateID'])) {
             $form_CateID = (int) $_POST['form_CateID'];
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID` =? ORDER BY `MemNum`';
-            $result = Utility::query($sql, 'i', [$form_CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql         = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID` =? ORDER BY `MemNum`';
+            $result      = Utility::query($sql, 'i', [$form_CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
                 $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_link_mems') . '` (`MemID`, `WebID`, `CateID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
                 Utility::query($sql, 'iiiiisii', [$all['MemID'], $this->WebID, $CateID, $all['MemNum'], $all['MemSort'], $all['MemEnable'], $all['top'], $all['left']]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -371,7 +371,7 @@ class tad_web_aboutus
     {
         global $TadUpFiles;
 
-        $and_year = empty($year) ? '' : "{$year} ";
+        $and_year    = empty($year) ? '' : "{$year} ";
         $newCateName = $and_year . $newCateName;
         $TadUpFiles->set_col('ClassPic', $CateID, 1);
         $TadUpFiles->upload_file('upfile', 1280, 300, null, null, true);
@@ -420,17 +420,17 @@ class tad_web_aboutus
         $xoopsTpl->assign('CateID', $DefCateID);
         $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
 
-        $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`WebID`=? AND a.`MemEnable`=1 AND a.`CateID`=? ORDER BY a.`MemNum`';
+        $sql    = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`WebID`=? AND a.`MemEnable`=1 AND a.`CateID`=? ORDER BY a.`MemNum`';
         $result = Utility::query($sql, 'ii', [$this->WebID, $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
-        $i = 0;
+        $i      = 0;
 
-        $students1 = $students2 = '';
+        $students1   = $students2   = '';
         $class_total = $class_boy = $class_girl = 0;
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
-                $$k = $v;
+                $$k               = $v;
                 $all_main[$i][$k] = $v;
             }
 
@@ -438,13 +438,13 @@ class tad_web_aboutus
             $pic_url = $TadUpFiles->get_pic_file('thumb');
 
             if ('1' == $this->setup['mem_fullname']) {
-                $pic = $pic_url;
+                $pic   = $pic_url;
                 $cover = 'background-size: contain;';
             } elseif (empty($pic_url) or !$isMyWeb) {
-                $pic = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
+                $pic   = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
                 $cover = '';
             } else {
-                $pic = $pic_url;
+                $pic   = $pic_url;
                 $cover = 'background-size: contain;';
             }
 
@@ -452,14 +452,14 @@ class tad_web_aboutus
                 $MemName = empty($MemNickName) ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemNickName;
             }
 
-            $color = ('1' == $MemSex) ? '#006699' : '#CC3300';
+            $color  = ('1' == $MemSex) ? '#006699' : '#CC3300';
             $color2 = ('1' == $MemSex) ? '#000066' : '#660000';
 
             $style = (empty($top) and empty($left)) ? 'float:left;' : "top:{$top}px;left:{$left}px;";
 
             $MemName = empty($MemName) ? '---' : $MemName;
 
-            $StuID = $MemID;
+            $StuID  = $MemID;
             $StuUrl = "aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$MemID}&op=edit_stu";
 
             $students = "<div id='{$StuID}' class='draggable' style='width:60px;height:60px;background:transparent url($pic) top center no-repeat;{$style};{$cover}padding:0px;'><p style='width:100%;line-height:1;text-align:center;margin:50px 0px 0px 0px;font-size: 0.7rem;padding:3px 1px;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF'>{$MemNum} <a href='{$StuUrl}' style='font-weight:normal;color:{$color2};text-shadow: 1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 0px -1px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 1px 0px 0 #FFFFFF;'>{$MemName}</a></p></div>";
@@ -487,7 +487,7 @@ class tad_web_aboutus
         $this->WebCate->set_default_option_text(sprintf(_MD_TCW_SELECT_SEME, $this->setup['class_title']));
         $this->WebCate->set_col_md(2, 10);
         $cate_menu = $this->WebCate->cate_menu($DefCateID, 'page', false, true, true, false, true, false, false);
-        $cate = $this->WebCate->get_tad_web_cate($DefCateID);
+        $cate      = $this->WebCate->get_tad_web_cate($DefCateID);
         $xoopsTpl->assign('cate_menu', $cate_menu);
         $xoopsTpl->assign('cate', $cate);
     }
@@ -502,16 +502,16 @@ class tad_web_aboutus
         $xoopsTpl->assign('CateID', $DefCateID);
         $xoopsTpl->assign('setup_stud', sprintf(_MD_TCW_STUDENT_SETUP, $this->setup['student_title']));
 
-        $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID` = b.`MemID` WHERE a.`WebID` = ? AND a.`MemEnable` = 1 AND a.`CateID` = ? ORDER BY a.`MemNum`';
+        $sql    = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID` = b.`MemID` WHERE a.`WebID` = ? AND a.`MemEnable` = 1 AND a.`CateID` = ? ORDER BY a.`MemNum`';
         $result = Utility::query($sql, 'ii', [$this->WebID, $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
-        $i = 0;
+        $i      = 0;
 
         $students = [];
 
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
-                $$k = $v;
+                $$k               = $v;
                 $students[$i][$k] = $v;
             }
 
@@ -552,8 +552,8 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&MemID={$_SESSION['LoginMemID']}&op=show_stu", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
-        $mem = get_tad_web_mems($MemID);
-        $class_mem = get_tad_web_link_mems($MemID, $DefCateID);
+        $mem                   = get_tad_web_mems($MemID);
+        $class_mem             = get_tad_web_link_mems($MemID, $DefCateID);
         $class_mem['AboutMem'] = nl2br($class_mem['AboutMem']);
 
         // die(var_export($class_mem));
@@ -577,15 +577,15 @@ class tad_web_aboutus
 
         if ($isMyWeb) {
             //所有學生
-            $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`WebID`=? AND a.`MemEnable`=? AND a.`CateID`=? ORDER BY a.`MemNum`';
+            $sql    = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`WebID`=? AND a.`MemEnable`=? AND a.`CateID`=? ORDER BY a.`MemNum`';
             $result = Utility::query($sql, 'isi', [$this->WebID, '1', $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $i = 0;
 
             $students = [];
             while (false !== ($all = $xoopsDB->fetchArray($result))) {
-                $students[$i] = $all;
-                $students[$i]['color'] = ('1' == $all['MemSex']) ? 'blue' : 'red';
+                $students[$i]           = $all;
+                $students[$i]['color']  = ('1' == $all['MemSex']) ? 'blue' : 'red';
                 $students[$i]['MemSex'] = ('1' == $all['MemSex']) ? _MD_TCW_BOY : _MD_TCW_GIRL;
                 $i++;
             }
@@ -614,7 +614,7 @@ class tad_web_aboutus
                 if ($mem_upload_content['UploadDate']) {
                     $mem_upload_date = sprintf(_MD_TCW_ABOUTUS_UPLOADED, $mem_upload_content['UploadDate']);
                 }
-                $mem_upload_content['mem_upload_date'] = $mem_upload_date;
+                $mem_upload_content['mem_upload_date']               = $mem_upload_date;
                 $stud_works['main_data'][$key]['mem_upload_content'] = $mem_upload_content;
             }
             $xoopsTpl->assign('stud_works', $stud_works);
@@ -630,7 +630,7 @@ class tad_web_aboutus
                 if ($mem_upload_content['UploadDate']) {
                     $mem_upload_date = sprintf(_MD_TCW_ABOUTUS_UPLOADED, $mem_upload_content['UploadDate']);
                 }
-                $mem_upload_content['mem_upload_date'] = $mem_upload_date;
+                $mem_upload_content['mem_upload_date']                = $mem_upload_date;
                 $stud_scores['main_data'][$key]['mem_upload_content'] = $mem_upload_content;
             }
             // Utility::dd($stud_scores);
@@ -653,7 +653,7 @@ class tad_web_aboutus
 
         //抓取預設值
         if (!empty($MemID)) {
-            $DBV = get_tad_web_mems($MemID);
+            $DBV  = get_tad_web_mems($MemID);
             $DBV2 = get_tad_web_link_mems($MemID, $DefCateID);
         } else {
             $DBV = $DBV2 = [];
@@ -731,10 +731,10 @@ class tad_web_aboutus
         $xoopsTpl->assign('show_files', $show_files);
 
         if (empty($pic_url)) {
-            $pic = ('1' == $MemSex) ? XOOPS_URL . '/modules/tad_web/images/boy.gif' : XOOPS_URL . '/modules/tad_web/images/girl.gif';
+            $pic   = ('1' == $MemSex) ? XOOPS_URL . '/modules/tad_web/images/boy.gif' : XOOPS_URL . '/modules/tad_web/images/girl.gif';
             $cover = '';
         } else {
-            $pic = $pic_url;
+            $pic   = $pic_url;
             $cover = 'background-size: contain;';
         }
 
@@ -772,15 +772,15 @@ class tad_web_aboutus
         $xoopsTpl->assign('add_stud', sprintf(_MD_TCW_ADD_MEM, $this->setup['student_title']));
 
         //所有學生
-        $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`WebID` =? AND a.`MemEnable`=? AND a.`CateID`=? ORDER BY a.`MemNum`';
+        $sql    = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`WebID` =? AND a.`MemEnable`=? AND a.`CateID`=? ORDER BY a.`MemNum`';
         $result = Utility::query($sql, 'isi', [$this->WebID, '1', $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i = 0;
 
         $students = [];
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
-            $students[$i] = $all;
-            $students[$i]['color'] = ('1' == $all['MemSex']) ? 'blue' : 'red';
+            $students[$i]           = $all;
+            $students[$i]['color']  = ('1' == $all['MemSex']) ? 'blue' : 'red';
             $students[$i]['MemSex'] = ('1' == $all['MemSex']) ? _MD_TCW_BOY : _MD_TCW_GIRL;
             $i++;
         }
@@ -807,16 +807,16 @@ class tad_web_aboutus
         chk_self_web($this->WebID);
 
         $MemExpertises = (string) $_POST['MemExpertises'];
-        $AboutMem = (string) $_POST['AboutMem'];
+        $AboutMem      = (string) $_POST['AboutMem'];
         $MemClassOrgan = (string) $_POST['MemClassOrgan'];
-        $MemName = (string) $_POST['MemName'];
-        $MemNickName = (string) $_POST['MemNickName'];
-        $MemSex = (string) $_POST['MemSex'];
-        $MemUnicode = (string) $_POST['MemUnicode'];
-        $MemBirthday = (string) $_POST['MemBirthday'];
-        $MemUname = (string) $_POST['MemUname'];
-        $MemPasswd = (string) $_POST['MemPasswd'];
-        $MemNum = (int) $_POST['MemNum'];
+        $MemName       = (string) $_POST['MemName'];
+        $MemNickName   = (string) $_POST['MemNickName'];
+        $MemSex        = (string) $_POST['MemSex'];
+        $MemUnicode    = (string) $_POST['MemUnicode'];
+        $MemBirthday   = (string) $_POST['MemBirthday'];
+        $MemUname      = (string) $_POST['MemUname'];
+        $MemPasswd     = (string) $_POST['MemPasswd'];
+        $MemNum        = (int) $_POST['MemNum'];
 
         $CateID = (int) $_POST['CateID'];
 
@@ -853,17 +853,17 @@ class tad_web_aboutus
         }
 
         $MemExpertises = (string) $_POST['MemExpertises'];
-        $AboutMem = (string) $_POST['AboutMem'];
+        $AboutMem      = (string) $_POST['AboutMem'];
         $MemClassOrgan = (string) $_POST['MemClassOrgan'];
-        $MemName = (string) $_POST['MemName'];
-        $MemNickName = (string) $_POST['MemNickName'];
-        $MemSex = (string) $_POST['MemSex'];
-        $MemUnicode = (string) $_POST['MemUnicode'];
-        $MemBirthday = (string) $_POST['MemBirthday'];
-        $MemUname = (string) $_POST['MemUname'];
-        $MemPasswd = (string) $_POST['MemPasswd'];
-        $MemNum = (string) $_POST['MemNum'];
-        $MemSort = (int) $_POST['MemSort'];
+        $MemName       = (string) $_POST['MemName'];
+        $MemNickName   = (string) $_POST['MemNickName'];
+        $MemSex        = (string) $_POST['MemSex'];
+        $MemUnicode    = (string) $_POST['MemUnicode'];
+        $MemBirthday   = (string) $_POST['MemBirthday'];
+        $MemUname      = (string) $_POST['MemUname'];
+        $MemPasswd     = (string) $_POST['MemPasswd'];
+        $MemNum        = (string) $_POST['MemNum'];
+        $MemSort       = (int) $_POST['MemSort'];
 
         $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_mems') . '` SET
         `MemName` = ?,
@@ -932,7 +932,7 @@ class tad_web_aboutus
     {
         global $xoopsDB, $TadUpFiles;
 
-        $sql = 'SELECT `MemID` FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `WebID`=? ORDER BY `MemNum`';
+        $sql    = 'SELECT `MemID` FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `WebID`=? ORDER BY `MemNum`';
         $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         while (list($MemID) = $xoopsDB->fetchRow($result)) {
@@ -948,7 +948,7 @@ class tad_web_aboutus
         global $xoopsDB;
 
         $andCateID = !empty($CateID) ? "AND `CateID` = ?" : '';
-        $sql = "SELECT COUNT(*)
+        $sql       = "SELECT COUNT(*)
         FROM `" . $xoopsDB->prefix('tad_web_link_mems') . "`
         WHERE `WebID` = ? {$andCateID}
         ORDER BY MemNum";
@@ -969,7 +969,7 @@ class tad_web_aboutus
     public function max_sort($CateID)
     {
         global $xoopsDB;
-        $sql = 'SELECT MAX(`MemSort`) FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID`=? ORDER BY `MemNum`';
+        $sql    = 'SELECT MAX(`MemSort`) FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID`=? ORDER BY `MemNum`';
         $result = Utility::query($sql, 'i', [$CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($sort) = $xoopsDB->fetchRow($result);
@@ -1000,19 +1000,19 @@ class tad_web_aboutus
         $myts = \MyTextSanitizer::getInstance();
 
         require XOOPS_ROOT_PATH . '/modules/tadtools/vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
-        $reader = \PHPExcel_IOFactory::createReader('Excel2007');
+        $reader   = \PHPExcel_IOFactory::createReader('Excel2007');
         $PHPExcel = $reader->load($file); // 檔案名稱
 
-        $sheet = $PHPExcel->getSheet(0); // 讀取第一個工作表(編號從 0 開始)
-        $highestRow = $sheet->getHighestRow(); // 取得總列數
-        $colString = $sheet->getHighestDataColumn();
+        $sheet         = $PHPExcel->getSheet(0);  // 讀取第一個工作表(編號從 0 開始)
+        $highestRow    = $sheet->getHighestRow(); // 取得總列數
+        $colString     = $sheet->getHighestDataColumn();
         $highestColumn = \PHPExcel_Cell::columnIndexFromString($colString);
 
         $main = '';
 
         // 一次讀取一列
         for ($row = 1; $row <= $highestRow; $row++) {
-            $all = '';
+            $all      = '';
             $continue = false;
             for ($column = 0; $column <= 5; $column++) {
                 if (PHPExcel_Shared_Date::isDateTime($sheet->getCellByColumnAndRow($column, $row))) {
@@ -1034,9 +1034,9 @@ class tad_web_aboutus
                 }
 
                 if (3 == $column and 6 == mb_strlen($val)) {
-                    $y = mb_substr($val, 0, 2) + 1911;
-                    $m = mb_substr($val, 2, 2);
-                    $d = mb_substr($val, 4, 2);
+                    $y   = mb_substr($val, 0, 2) + 1911;
+                    $m   = mb_substr($val, 2, 2);
+                    $d   = mb_substr($val, 4, 2);
                     $val = "{$y}-{$m}-{$d}";
                 }
 
@@ -1072,7 +1072,7 @@ class tad_web_aboutus
         $j = 6;
 
         foreach ($_POST['c'] as $row => $col) {
-            $top = 80 + $i * 90;
+            $top  = 80 + $i * 90;
             $left = 65 + ($j % 6) * 90;
 
             $sex = (_MD_TCW_BOY == trim($col[4])) ? 1 : 0;
@@ -1103,12 +1103,12 @@ class tad_web_aboutus
         $i = 0;
         $j = 6;
 
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID`=? ORDER BY `MemNum`';
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` WHERE `CateID`=? ORDER BY `MemNum`';
         $result = Utility::query($sql, 'i', [$CateID]) or Utility::web_error($sql, __FILE__, __LINE__);
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
-            $top = 80 + $i * 90;
+            $top  = 80 + $i * 90;
             $left = 65 + ($j % 6) * 90;
-            $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_link_mems') . '` SET `top`=?, `left`=? WHERE `MemID`=? AND `WebID`=? AND `CateID`=?';
+            $sql  = 'UPDATE `' . $xoopsDB->prefix('tad_web_link_mems') . '` SET `top`=?, `left`=? WHERE `MemID`=? AND `WebID`=? AND `CateID`=?';
             Utility::query($sql, 'iiiii', [$top, $left, $all['MemID'], $this->WebID, $CateID]);
 
             $j++;
@@ -1123,7 +1123,7 @@ class tad_web_aboutus
     {
         global $xoopsDB;
 
-        $top = (int) $_POST['top'];
+        $top  = (int) $_POST['top'];
         $left = (int) $_POST['left'];
 
         $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_link_mems') . '` SET `top` = ?, `left` = ? WHERE `MemID` = ?';
@@ -1135,13 +1135,13 @@ class tad_web_aboutus
     //取得tad_web_cate所有資料陣列
     public function get_tad_web_cate_all($table)
     {
-        $WebCate = new WebCate('0', 'web_cate', $table);
-        $cate = $WebCate->get_tad_web_cate_arr();
-        $webs = get_web_cate_arr();
+        $WebCate  = new WebCate('0', 'web_cate', $table);
+        $cate     = $WebCate->get_tad_web_cate_arr();
+        $webs     = get_web_cate_arr();
         $data_arr = [];
         if (is_array($cate)) {
             foreach ($cate as $CateID => $data) {
-                $data_arr[$CateID] = $data;
+                $data_arr[$CateID]         = $data;
                 $data_arr[$CateID]['webs'] = $webs[$CateID];
             }
         }
@@ -1157,17 +1157,17 @@ class tad_web_aboutus
             return false;
         }
 
-        $sql = 'SELECT a.`MemID`, a.`MemName`, a.`MemNickName`, b.`WebID`, b.`CateID` FROM `' . $xoopsDB->prefix('tad_web_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`MemUname`=? AND a.`MemPasswd`=? AND b.`MemEnable`=? AND b.`WebID`=? ORDER BY b.`MemNum`';
+        $sql    = 'SELECT a.`MemID`, a.`MemName`, a.`MemNickName`, b.`WebID`, b.`CateID` FROM `' . $xoopsDB->prefix('tad_web_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` WHERE a.`MemUname`=? AND a.`MemPasswd`=? AND b.`MemEnable`=? AND b.`WebID`=? ORDER BY b.`MemNum`';
         $result = Utility::query($sql, 'sssi', [$MemUname, $MemPasswd, '1', $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($MemID, $MemName, $MemNickName, $WebID, $CateID) = $xoopsDB->fetchRow($result);
 
         if (!empty($MemID)) {
-            $_SESSION['LoginMemID'] = $MemID;
-            $_SESSION['LoginMemName'] = $MemName;
+            $_SESSION['LoginMemID']       = $MemID;
+            $_SESSION['LoginMemName']     = $MemName;
             $_SESSION['LoginMemNickName'] = $MemNickName;
-            $_SESSION['LoginWebID'] = $WebID;
-            $_SESSION['LoginCateID'] = $CateID;
+            $_SESSION['LoginWebID']       = $WebID;
+            $_SESSION['LoginCateID']      = $CateID;
 
             return true;
         }
@@ -1199,15 +1199,15 @@ class tad_web_aboutus
         }
 
         //取得所有分類
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID` =? AND `CateEnable`=? ORDER BY `CateSort`';
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_cate') . '` WHERE `WebID` =? AND `CateEnable`=? ORDER BY `CateSort`';
         $result = Utility::query($sql, 'is', [$this->WebID, '1']) or Utility::web_error($sql, __FILE__, __LINE__);
         while (false !== ($data = $xoopsDB->fetchArray($result))) {
-            $plugin_name = $data['ColName'];
-            $CateID = $data['CateID'];
+            $plugin_name                  = $data['ColName'];
+            $CateID                       = $data['CateID'];
             $cates[$plugin_name][$CateID] = $data;
         }
 
-        $i = 0;
+        $i                 = 0;
         $config_plugin_arr = [];
         foreach ($menu_var as $k => $plugin) {
             // die(var_export($plugin));
@@ -1279,16 +1279,16 @@ class tad_web_aboutus
         }
 
         $MemID = (int) $_POST['MemID'];
-        $mem = get_tad_web_mems($MemID);
+        $mem   = get_tad_web_mems($MemID);
 
         if ($_POST['MemBirthday'] != $mem['MemBirthday']) {
             redirect_header("aboutus.php?WebID={$this->WebID}&op=parents_account", 3, _MD_TCW_ABOUTUS_WRONG_BIRTHDAY);
         }
 
-        $Reationship = (string) $_POST['Reationship'];
-        $ParentEmail = (string) $_POST['ParentEmail'];
+        $Reationship  = (string) $_POST['Reationship'];
+        $ParentEmail  = (string) $_POST['ParentEmail'];
         $ParentPasswd = (string) $_POST['ParentPasswd'];
-        $code = Utility::randStr(16);
+        $code         = Utility::randStr(16);
 
         $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_mem_parents') . '` (`MemID`, `Reationship`, `ParentEmail`, `ParentPasswd`, `ParentEnable`, `code`) VALUES (?, ?, ?, ?, ?, ?)';
         Utility::query($sql, 'isssss', [$MemID, $Reationship, $ParentEmail, $ParentPasswd, '0', $code]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -1312,9 +1312,9 @@ class tad_web_aboutus
         if (empty($parent['ParentID'])) {
             redirect_header("aboutus.php?WebID={$this->WebID}", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
-        $mem = get_tad_web_mems($parent['MemID']);
-        $today = date('Y-m-d H:i:s');
-        $title = $WebName . _MD_TCW_ABOUTUS_ENABLE_PARENT_ACCOUNT;
+        $mem     = get_tad_web_mems($parent['MemID']);
+        $today   = date('Y-m-d H:i:s');
+        $title   = $WebName . _MD_TCW_ABOUTUS_ENABLE_PARENT_ACCOUNT;
         $content = sprintf(_MD_TCW_ABOUTUS_ENABLE_PARENT_EMAIL, $mem['MemName'], $parent['Reationship'], $today, XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$this->WebID}&op=enable_parent&ParentID={$ParentID}&chk_code={$parent['code']}", XOOPS_URL . "/modules/tad_web/index.php?WebID={$this->WebID}", $WebName);
 
         send_now($parent['ParentEmail'], $title, $content);
@@ -1332,7 +1332,7 @@ class tad_web_aboutus
         }
         $mem = get_tad_web_mems($parent['MemID']);
         $xoopsTpl->assign('parent', $parent);
-        $today = date('Y-m-d H:i:s');
+        $today        = date('Y-m-d H:i:s');
         $mail_content = sprintf(_MD_TCW_ABOUTUS_PARENT_ENABLE_MAIL_CONTENT, $mem['MemName'], $parent['Reationship'], $today, $parent['ParentEmail'], XOOPS_URL . "/modules/tad_web/aboutus.php?WebID={$this->WebID}&op=send_signup_mail&ParentID={$ParentID}&chk_code={$code}");
         $xoopsTpl->assign('mail_content', $mail_content);
     }
@@ -1349,16 +1349,16 @@ class tad_web_aboutus
 
         $AffectedRows = $xoopsDB->getAffectedRows();
         if ($AffectedRows > 0) {
-            $today = date('Y-m-d H:i:s');
+            $today  = date('Y-m-d H:i:s');
             $parent = get_tad_web_parent($ParentID);
-            $mem = get_tad_web_mems($parent['MemID']);
+            $mem    = get_tad_web_mems($parent['MemID']);
 
-            $sql = 'SELECT b.`name`,b.`email` FROM `' . $xoopsDB->prefix('tad_web') . '` as a JOIN `' . $xoopsDB->prefix('users') . '` as b ON a.`WebOwnerUid`=b.`uid` WHERE a.`WebID` = ?';
+            $sql    = 'SELECT b.`name`,b.`email` FROM `' . $xoopsDB->prefix('tad_web') . '` as a JOIN `' . $xoopsDB->prefix('users') . '` as b ON a.`WebOwnerUid`=b.`uid` WHERE a.`WebID` = ?';
             $result = Utility::query($sql, 'i', [$this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
             list($name, $email) = $xoopsDB->fetchRow($result);
 
-            $title = $WebName . _MD_TCW_ABOUTUS_PARENT_ENABLE;
+            $title   = $WebName . _MD_TCW_ABOUTUS_PARENT_ENABLE;
             $content = sprintf(_MD_TCW_ABOUTUS_PARENT_ENABLE_CONTENT, $name, $mem['MemName'], $parent['Reationship'], $today);
 
             send_now($email, $title, $content);
@@ -1391,17 +1391,17 @@ class tad_web_aboutus
             return false;
         }
 
-        $sql = 'SELECT a.`ParentID`, a.`MemID`, a.`Reationship`, a.`ParentEnable`, a.`code`, b.`WebID`, b.`CateID`, c.`MemName` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS c ON a.`MemID`=c.`MemID` WHERE a.`MemID`=? AND a.`ParentPasswd`=? AND b.`WebID`=? ORDER BY b.`MemNum`';
+        $sql    = 'SELECT a.`ParentID`, a.`MemID`, a.`Reationship`, a.`ParentEnable`, a.`code`, b.`WebID`, b.`CateID`, c.`MemName` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS c ON a.`MemID`=c.`MemID` WHERE a.`MemID`=? AND a.`ParentPasswd`=? AND b.`WebID`=? ORDER BY b.`MemNum`';
         $result = Utility::query($sql, 'isi', [$MemID, $ParentPasswd, $WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($ParentID, $MemID, $Reationship, $ParentEnable, $code, $WebID, $CateID, $MemName) = $xoopsDB->fetchRow($result);
 
         if (!empty($ParentID) and '1' == $ParentEnable) {
-            $_SESSION['LoginParentID'] = $ParentID;
-            $_SESSION['LoginParentName'] = $MemName . _MD_TCW_ABOUTUS_S . $Reationship;
+            $_SESSION['LoginParentID']    = $ParentID;
+            $_SESSION['LoginParentName']  = $MemName . _MD_TCW_ABOUTUS_S . $Reationship;
             $_SESSION['LoginParentMemID'] = $MemID;
-            $_SESSION['LoginWebID'] = $WebID;
-            $_SESSION['LoginCateID'] = $CateID;
+            $_SESSION['LoginWebID']       = $WebID;
+            $_SESSION['LoginCateID']      = $CateID;
 
             return true;
         } elseif (!empty($ParentID) and '0' == $ParentEnable) {
@@ -1426,9 +1426,9 @@ class tad_web_aboutus
             redirect_header("aboutus.php?WebID={$this->WebID}&CateID={$DefCateID}&ParentID={$_SESSION['LoginParentID']}&op=show_parent", 3, _MD_TCW_NOT_OWNER . '<br>' . __FILE__ . ' : ' . __LINE__);
         }
 
-        $mem = get_tad_web_mems($_SESSION['LoginParentMemID']);
-        $parent = get_tad_web_parent($ParentID);
-        $class_mem = get_tad_web_link_mems($_SESSION['LoginParentMemID'], $DefCateID);
+        $mem                   = get_tad_web_mems($_SESSION['LoginParentMemID']);
+        $parent                = get_tad_web_parent($ParentID);
+        $class_mem             = get_tad_web_link_mems($_SESSION['LoginParentMemID'], $DefCateID);
         $class_mem['AboutMem'] = nl2br($class_mem['AboutMem']);
 
         // die(var_export($class_mem));
@@ -1466,7 +1466,7 @@ class tad_web_aboutus
                 if ($mem_upload_content['UploadDate']) {
                     $mem_upload_date = sprintf(_MD_TCW_ABOUTUS_UPLOADED, $mem_upload_content['UploadDate']);
                 }
-                $mem_upload_content['mem_upload_date'] = $mem_upload_date;
+                $mem_upload_content['mem_upload_date']                = $mem_upload_date;
                 $stud_scores['main_data'][$key]['mem_upload_content'] = $mem_upload_content;
             }
             // Utility::dd($stud_scores);
@@ -1493,7 +1493,7 @@ class tad_web_aboutus
         $and_passwd = '';
         if (!empty($_POST['ParentPasswd'])) {
             $ParentPasswd = $xoopsDB->escape($_POST['ParentPasswd']);
-            $and_passwd = ", `ParentPasswd` ='{$ParentPasswd}'";
+            $and_passwd   = ", `ParentPasswd` ='{$ParentPasswd}'";
         }
 
         $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_mem_parents') . '` SET `Reationship` =?, `ParentEmail` =? ' . $and_passwd . ' WHERE `ParentID`=?';
@@ -1543,13 +1543,13 @@ class tad_web_aboutus
             return false;
         }
 
-        $sql = 'SELECT a.`ParentID`, a.`MemID`, a.`Reationship`, a.`ParentPasswd`, a.`ParentEmail`, b.`WebID`, b.`CateID`, c.`MemName` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS c ON a.`MemID`=c.`MemID` WHERE a.`MemID`=? AND a.`Reationship`=? AND a.`ParentEnable`=? AND b.`WebID`=? ORDER BY b.`MemNum`';
+        $sql    = 'SELECT a.`ParentID`, a.`MemID`, a.`Reationship`, a.`ParentPasswd`, a.`ParentEmail`, b.`WebID`, b.`CateID`, c.`MemName` FROM `' . $xoopsDB->prefix('tad_web_mem_parents') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS b ON a.`MemID`=b.`MemID` LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS c ON a.`MemID`=c.`MemID` WHERE a.`MemID`=? AND a.`Reationship`=? AND a.`ParentEnable`=? AND b.`WebID`=? ORDER BY b.`MemNum`';
         $result = Utility::query($sql, 'issi', [$MemID, $Reationship, '1', $this->WebID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($ParentID, $MemID, $Reationship, $ParentPasswd, $ParentEmail, $WebID, $CateID, $MemName) = $xoopsDB->fetchRow($result);
 
-        $today = date('Y-m-d H:i:s');
-        $title = $WebName . _MD_TCW_ABOUTUS_YOUR_PASSWD;
+        $today   = date('Y-m-d H:i:s');
+        $title   = $WebName . _MD_TCW_ABOUTUS_YOUR_PASSWD;
         $content = sprintf(_MD_TCW_ABOUTUS_YOUR_PASSWD_EMAIL, $MemName, $Reationship, $today, $ParentPasswd, XOOPS_URL . "/modules/tad_web/index.php?WebID={$this->WebID}", $WebName);
 
         send_now($ParentEmail, $title, $content);
@@ -1566,47 +1566,47 @@ class tad_web_aboutus
         $xoopsTpl->assign('CateID', $DefCateID);
         $xoopsTpl->assign('cate', $this->WebCate->get_tad_web_cate($DefCateID));
 
-        $sql = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.MemID = b.MemID WHERE a.WebID = ? AND a.MemEnable = ? AND a.CateID = ? ORDER BY RAND()';
-        $result = Utility::query($sql, 'isi', [$this->WebID, '1', $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql       = 'SELECT a.*, b.* FROM `' . $xoopsDB->prefix('tad_web_link_mems') . '` AS a LEFT JOIN `' . $xoopsDB->prefix('tad_web_mems') . '` AS b ON a.MemID = b.MemID WHERE a.WebID = ? AND a.MemEnable = ? AND a.CateID = ? ORDER BY RAND()';
+        $result    = Utility::query($sql, 'isi', [$this->WebID, '1', $DefCateID]) or Utility::web_error($sql, __FILE__, __LINE__);
         $mem_total = $xoopsDB->getRowsNum($result);
-        $row_num = ceil($mem_total / 4) + 1;
+        $row_num   = ceil($mem_total / 4) + 1;
 
-        $i = 1;
-        $sort = 1;
+        $i         = 1;
+        $sort      = 1;
         $slot_sort = 1;
-        $row = 1;
-        $real_num = ($row_num * 4) - 4;
-        $more_num = $real_num - $mem_total;
-        $all_mems = [];
+        $row       = 1;
+        $real_num  = ($row_num * 4) - 4;
+        $more_num  = $real_num - $mem_total;
+        $all_mems  = [];
 
         if ($more_num) {
-            $sql2 = $sql . " LIMIT 0, ?";
+            $sql2    = $sql . " LIMIT 0, ?";
             $result2 = Utility::query($sql2, 'isii', [$this->WebID, '1', $DefCateID, $more_num]) or Utility::web_error($sql2, __FILE__, __LINE__);
             while (false !== ($all = $xoopsDB->fetchArray($result2))) {
                 foreach ($all as $k => $v) {
-                    $$k = $v;
+                    $$k               = $v;
                     $all_main[$i][$k] = $v;
                 }
                 $TadUpFiles->set_col('MemID', $MemID, 1);
                 $pic_url = $TadUpFiles->get_pic_file('thumb');
 
                 if ($pic_url and ($isMyWeb or $WebID == $_SESSION['LoginWebID'] or '1' == $this->setup['mem_fullname'])) {
-                    $pic = $pic_url;
+                    $pic   = $pic_url;
                     $cover = 'background-size: contain;';
                 } else {
-                    $pic = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
+                    $pic   = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
                     $cover = '';
                 }
 
-                $all_main[$i]['pic'] = $pic;
+                $all_main[$i]['pic']   = $pic;
                 $all_main[$i]['cover'] = $cover;
 
                 if (!$isMyWeb and '1' != $this->setup['mem_fullname']) {
                     $MemName = empty($MemNickName) ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemNickName;
                 }
-                $MemName = empty($MemName) ? '---' : $MemName;
-                $all_main[$i]['MemName'] = $MemName;
-                $all_main[$i]['sort'] = $sort;
+                $MemName                   = empty($MemName) ? '---' : $MemName;
+                $all_main[$i]['MemName']   = $MemName;
+                $all_main[$i]['sort']      = $sort;
                 $all_main[$i]['slot_sort'] = $slot_sort;
                 $i++;
                 $sort++;
@@ -1616,7 +1616,7 @@ class tad_web_aboutus
         while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： `MemID`, `MemName`, `MemNickName`, `MemSex`, `MemUnicode`, `MemBirthday`, `MemUrl`, `MemClassOrgan`, `MemExpertises`, `uid`, `MemUname`, `MemPasswd`,`WebID`, `MemNum`, `MemSort`, `MemEnable`, `top`, `left`
             foreach ($all as $k => $v) {
-                $$k = $v;
+                $$k               = $v;
                 $all_main[$i][$k] = $v;
             }
 
@@ -1624,22 +1624,22 @@ class tad_web_aboutus
             $pic_url = $TadUpFiles->get_pic_file('thumb');
 
             if ($pic_url and ($isMyWeb or $WebID == $_SESSION['LoginWebID'] or '1' == $this->setup['mem_fullname'])) {
-                $pic = $pic_url;
+                $pic   = $pic_url;
                 $cover = 'background-size: contain;';
             } else {
-                $pic = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
+                $pic   = ('1' == $MemSex) ? 'images/boy.gif' : 'images/girl.gif';
                 $cover = '';
             }
 
-            $all_main[$i]['pic'] = $pic;
+            $all_main[$i]['pic']   = $pic;
             $all_main[$i]['cover'] = $cover;
 
             if (!$isMyWeb and '1' != $this->setup['mem_fullname']) {
                 $MemName = empty($MemNickName) ? mb_substr($MemName, 0, 1, _CHARSET) . _MD_TCW_SOMEBODY : $MemNickName;
             }
-            $MemName = empty($MemName) ? '---' : $MemName;
+            $MemName                 = empty($MemName) ? '---' : $MemName;
             $all_main[$i]['MemName'] = $MemName;
-            $all_main[$i]['sort'] = $sort;
+            $all_main[$i]['sort']    = $sort;
 
             if (1 == $row) {
                 $slot_sort = $sort;
@@ -1659,11 +1659,11 @@ class tad_web_aboutus
             // echo "<div>$row $i $MemNum $MemName</div>";
             if ((1 == $row or $row == $row_num) and $i >= $row_num) {
                 $row++;
-                $i = 1;
+                $i        = 1;
                 $all_main = [];
             } elseif ($row > 1 and $row < $row_num and $i >= 2) {
                 $row++;
-                $i = 1;
+                $i        = 1;
                 $all_main = [];
             } else {
                 $i++;

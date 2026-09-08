@@ -1,11 +1,11 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\AccessibilityFixer;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\JqueryPrintPreview;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
@@ -375,7 +375,7 @@ class tad_web_page
 
         $PageTitle   = (string) $_POST['PageTitle'];
         $PageContent = (string) $_POST['PageContent'];
-        $PageContent = Wcag::amend($PageContent);
+        $PageContent = AccessibilityFixer::of($PageContent);
         $CateID      = (int) $_POST['CateID'];
         $WebID       = (int) $_POST['WebID'];
         $PageSort    = $this->max_sort($WebID, $CateID);
@@ -412,7 +412,7 @@ class tad_web_page
 
         $PageTitle   = (string) $_POST['PageTitle'];
         $PageContent = (string) $_POST['PageContent'];
-        $PageContent = Wcag::amend($PageContent);
+        $PageContent = AccessibilityFixer::of($PageContent);
         $CateID      = (int) $_POST['CateID'];
         $PageDate    = date('Y-m-d H:i:s');
         $PageCSS     = (string) $_POST['PageCSS'];

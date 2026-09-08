@@ -1,11 +1,11 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\AccessibilityFixer;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tools as TadWebTools;
 /*-----------引入檔案區--------------*/
@@ -252,7 +252,7 @@ function save_block_config($WebID = '', $BlockID = '', $BlockName = '', $BlockTi
     global $xoopsDB, $power;
 
     $content_type = $config['content_type'];
-    $BlockContent = Wcag::amend($_POST['BlockContent'][$content_type]);
+    $BlockContent = AccessibilityFixer::of($_POST['BlockContent'][$content_type]);
 
     $new_block_config = json_encode($config, JSON_UNESCAPED_UNICODE);
     $text_color       = TadWebTools::get_web_config('block_pic_text_color', $WebID);
@@ -485,7 +485,7 @@ function copy_block($BlockID, $plugin, $WebID)
 
     $block = $xoopsDB->fetchArray($result);
 
-    $block['BlockContent'] = Wcag::amend($block['BlockContent']);
+    $block['BlockContent'] = AccessibilityFixer::of($block['BlockContent']);
 
     $BlockCopy = max_blocks_copy($WebID, $block['BlockName']);
     $BlockSort = max_blocks_sort($WebID, $block['BlockPosition']);

@@ -1,10 +1,10 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\AccessibilityFixer;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\Wcag;
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_web_adm_notice.tpl';
 require_once __DIR__ . '/header.php';
@@ -12,9 +12,9 @@ require_once dirname(__DIR__) . '/function.php';
 require_once dirname(__DIR__) . '/class/WebCate.php';
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$WebID = Request::getInt('WebID');
-$CateID = Request::getInt('CateID');
+$op       = Request::getString('op');
+$WebID    = Request::getInt('WebID');
+$CateID   = Request::getInt('CateID');
 $NoticeID = Request::getInt('NoticeID');
 
 $xoopsTpl->assign('op', $op);
@@ -108,7 +108,7 @@ function tad_web_notice_form($NoticeID = '')
 
     //加入Token安全機制
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-    $token = new \XoopsFormHiddenToken();
+    $token      = new \XoopsFormHiddenToken();
     $token_form = $token->render();
     $xoopsTpl->assign('token_form', $token_form);
     $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
@@ -131,13 +131,13 @@ function insert_tad_web_notice()
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = (string) $_POST['NoticeTitle'];
+    $NoticeID      = (int) $_POST['NoticeID'];
+    $NoticeTitle   = (string) $_POST['NoticeTitle'];
     $NoticeContent = (string) $_POST['NoticeContent'];
-    $NoticeContent = Wcag::amend($NoticeContent);
-    $NoticeWeb = (string) $_POST['NoticeWeb'];
-    $NoticeWho = implode(';', $_POST['NoticeWho']);
-    $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
+    $NoticeContent = AccessibilityFixer::of($NoticeContent);
+    $NoticeWeb     = (string) $_POST['NoticeWeb'];
+    $NoticeWho     = implode(';', $_POST['NoticeWho']);
+    $NoticeDate    = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 
     $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_notice') . '` ( `NoticeTitle`, `NoticeContent`, `NoticeWeb`, `NoticeWho`, `NoticeDate` ) VALUES ( ?, ?, ?, ?, ? )';
     Utility::query($sql, 'sssss', [$NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -162,12 +162,12 @@ function update_tad_web_notice($NoticeID = '')
         redirect_header($_SERVER['PHP_SELF'], 3, $error);
     }
 
-    $NoticeID = (int) $_POST['NoticeID'];
-    $NoticeTitle = (string) $_POST['NoticeTitle'];
+    $NoticeID      = (int) $_POST['NoticeID'];
+    $NoticeTitle   = (string) $_POST['NoticeTitle'];
     $NoticeContent = (string) $_POST['NoticeContent'];
-    $NoticeWeb = (string) $_POST['NoticeWeb'];
-    $NoticeWho = implode(';', $_POST['NoticeWho']);
-    $NoticeDate = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
+    $NoticeWeb     = (string) $_POST['NoticeWeb'];
+    $NoticeWho     = implode(';', $_POST['NoticeWho']);
+    $NoticeDate    = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 
     $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_notice') . '` SET
     `NoticeTitle` = ?,
@@ -209,7 +209,7 @@ function show_one_tad_web_notice($NoticeID = '')
 
     $myts = \MyTextSanitizer::getInstance();
 
-    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_notice') . '` WHERE `NoticeID` = ?';
+    $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web_notice') . '` WHERE `NoticeID` = ?';
     $result = Utility::query($sql, 'i', [$NoticeID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $all = $xoopsDB->fetchArray($result);
@@ -220,9 +220,9 @@ function show_one_tad_web_notice($NoticeID = '')
     }
 
     //過濾讀出的變數值
-    $NoticeTitle = $myts->htmlSpecialChars($NoticeTitle);
+    $NoticeTitle   = $myts->htmlSpecialChars($NoticeTitle);
     $NoticeContent = $myts->displayTarea($NoticeContent, 1, 1, 0, 1, 0);
-    $NoticeWeb = $myts->displayTarea($NoticeWeb, 0, 1, 0, 1, 1);
+    $NoticeWeb     = $myts->displayTarea($NoticeWeb, 0, 1, 0, 1, 1);
     $NoticeWho_arr = explode(';', $NoticeWho);
 
     $xoopsTpl->assign('NoticeID', $NoticeID);
@@ -250,14 +250,14 @@ function list_tad_web_notice()
 
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
     $PageBar = Utility::getPageBar($sql, 20, 10, null, null, 3);
-    $bar = $PageBar['bar'];
-    $sql = $PageBar['sql'];
-    $total = $PageBar['total'];
+    $bar     = $PageBar['bar'];
+    $sql     = $PageBar['sql'];
+    $total   = $PageBar['total'];
 
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $all_content = [];
-    $i = 0;
+    $i           = 0;
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $NoticeID, $NoticeTitle, $NoticeContent, $NoticeWeb, $NoticeWho, $NoticeDate
         foreach ($all as $k => $v) {
@@ -265,17 +265,17 @@ function list_tad_web_notice()
         }
 
         //過濾讀出的變數值
-        $NoticeTitle = $myts->htmlSpecialChars($NoticeTitle);
+        $NoticeTitle   = $myts->htmlSpecialChars($NoticeTitle);
         $NoticeContent = $myts->displayTarea($NoticeContent, 1, 1, 0, 1, 0);
-        $NoticeWeb = $myts->displayTarea($NoticeWeb, 0, 1, 0, 1, 1);
+        $NoticeWeb     = $myts->displayTarea($NoticeWeb, 0, 1, 0, 1, 1);
         $NoticeWho_arr = explode(';', $NoticeWho);
 
-        $all_content[$i]['NoticeID'] = $NoticeID;
-        $all_content[$i]['NoticeTitle'] = $NoticeTitle;
+        $all_content[$i]['NoticeID']      = $NoticeID;
+        $all_content[$i]['NoticeTitle']   = $NoticeTitle;
         $all_content[$i]['NoticeContent'] = $NoticeContent;
-        $all_content[$i]['NoticeWeb'] = $NoticeWeb;
-        $all_content[$i]['NoticeWho'] = $NoticeWho;
-        $all_content[$i]['NoticeDate'] = $NoticeDate;
+        $all_content[$i]['NoticeWeb']     = $NoticeWeb;
+        $all_content[$i]['NoticeWho']     = $NoticeWho;
+        $all_content[$i]['NoticeDate']    = $NoticeDate;
         $i++;
     }
 

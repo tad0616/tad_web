@@ -1,11 +1,11 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\AccessibilityFixer;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\JqueryPrintPreview;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\Tags;
 use XoopsModules\Tad_web\WebCate;
@@ -422,7 +422,7 @@ class tad_web_news
         $NewsTitle   = (string) $_POST['NewsTitle'];
         $NewsUrl     = (string) $_POST['NewsUrl'];
         $NewsContent = (string) $_POST['NewsContent'];
-        $NewsContent = Wcag::amend($NewsContent);
+        $NewsContent = AccessibilityFixer::of($NewsContent);
         $NewsDate    = (string) $_POST['NewsDate'];
         $toCal       = (string) $_POST['toCal'];
         $newCateName = (string) $_POST['newCateName'];
@@ -470,7 +470,7 @@ class tad_web_news
         $NewsTitle   = (string) $_POST['NewsTitle'];
         $NewsUrl     = (string) $_POST['NewsUrl'];
         $NewsContent = (string) $_POST['NewsContent'];
-        $NewsContent = Wcag::amend($NewsContent);
+        $NewsContent = AccessibilityFixer::of($NewsContent);
         $NewsDate    = (string) $_POST['NewsDate'];
         $toCal       = (string) $_POST['toCal'];
         $newCateName = (string) $_POST['newCateName'];

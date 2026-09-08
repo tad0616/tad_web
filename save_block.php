@@ -1,8 +1,8 @@
 <?php
 
 use Xmf\Request;
+use XoopsModules\Tadtools\AccessibilityFixer;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Tools as TadWebTools;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
@@ -10,13 +10,13 @@ require_once __DIR__ . '/function.php';
 header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 
-$op = Request::getString('op');
+$op           = Request::getString('op');
 $PositionName = Request::getString('PositionName');
-$BlockID = Request::getInt('BlockID');
-$BlockEnable = Request::getString('BlockEnable');
-$order_arr = Request::getArray('order_arr');
-$plugin = Request::getString('plugin');
-$WebID = Request::getInt('WebID');
+$BlockID      = Request::getInt('BlockID');
+$BlockEnable  = Request::getString('BlockEnable');
+$order_arr    = Request::getArray('order_arr');
+$plugin       = Request::getString('plugin');
+$WebID        = Request::getInt('WebID');
 
 switch ($op) {
     case 'save_position':
@@ -29,18 +29,18 @@ switch ($op) {
             //複製一份給目前網站
             $BlockSort = max_blocks_sort($WebID, $PositionName);
 
-            $BlockTitle = $block['BlockTitle'];
+            $BlockTitle   = $block['BlockTitle'];
             $BlockContent = $block['BlockContent'];
-            $BlockContent = Wcag::amend($BlockContent);
-            $BlockConfig = $block['BlockConfig'];
-            $BlockName = $block['BlockName'];
-            $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_blocks') . '` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $BlockContent = AccessibilityFixer::of($BlockContent);
+            $BlockConfig  = $block['BlockConfig'];
+            $BlockName    = $block['BlockName'];
+            $sql          = 'INSERT INTO `' . $xoopsDB->prefix('tad_web_blocks') . '` (`BlockName`, `BlockCopy`, `BlockTitle`, `BlockContent`, `BlockEnable`, `BlockConfig`, `BlockPosition`, `BlockSort`, `WebID`, `plugin`, `ShareFrom`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             Utility::query($sql, 'sisssssiisi', [$BlockName, 0, $BlockTitle, $BlockContent, '1', $BlockConfig, $PositionName, $BlockSort, $WebID, 'custom', $block['BlockID']]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-            $text_color = TadWebTools::get_web_config('block_pic_text_color', $WebID);
+            $text_color   = TadWebTools::get_web_config('block_pic_text_color', $WebID);
             $border_color = TadWebTools::get_web_config('block_pic_border_color', $WebID);
-            $text_size = TadWebTools::get_web_config('block_pic_text_size', $WebID);
-            $font = TadWebTools::get_web_config('block_pic_font', $WebID);
+            $text_size    = TadWebTools::get_web_config('block_pic_text_size', $WebID);
+            $font         = TadWebTools::get_web_config('block_pic_font', $WebID);
             mkTitleImg($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
             //取得最後新增資料的流水編號
             $newBlockID = $xoopsDB->getInsertId();
@@ -49,11 +49,11 @@ switch ($op) {
             Utility::query($sql, 'si', [$PositionName, $BlockID]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
 
-        $sort = 1;
+        $sort         = 1;
         $shareBlockID = '';
         if ('share' === $plugin) {
             $shareBlockID = $BlockID;
-            $copyBlockID = get_share_to_custom_blockid($BlockID, $WebID);
+            $copyBlockID  = get_share_to_custom_blockid($BlockID, $WebID);
         }
         foreach ($order_arr as $BlockID) {
             if ($BlockID == $shareBlockID) {
@@ -85,12 +85,12 @@ switch ($op) {
     case 'save_enable':
         $sql = 'UPDATE `' . $xoopsDB->prefix('tad_web_blocks') . '` SET `BlockEnable`=? WHERE `BlockID`=?';
         Utility::query($sql, 'si', [$BlockEnable, $BlockID]) or Utility::web_error($sql, __FILE__, __LINE__);
-        $text_color = TadWebTools::get_web_config('block_pic_text_color', $WebID);
+        $text_color   = TadWebTools::get_web_config('block_pic_text_color', $WebID);
         $border_color = TadWebTools::get_web_config('block_pic_border_color', $WebID);
-        $text_size = TadWebTools::get_web_config('block_pic_text_size', $WebID);
-        $font = TadWebTools::get_web_config('block_pic_font', $WebID);
-        $sql = 'SELECT `BlockTitle` FROM `' . $xoopsDB->prefix('tad_web_blocks') . '` WHERE `BlockID` = ?';
-        $result = Utility::query($sql, 'i', [$BlockID]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $text_size    = TadWebTools::get_web_config('block_pic_text_size', $WebID);
+        $font         = TadWebTools::get_web_config('block_pic_font', $WebID);
+        $sql          = 'SELECT `BlockTitle` FROM `' . $xoopsDB->prefix('tad_web_blocks') . '` WHERE `BlockID` = ?';
+        $result       = Utility::query($sql, 'i', [$BlockID]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($BlockTitle) = $xoopsDB->fetchRow($result);
         mkTitleImg($WebID, "block_{$BlockID}", $BlockTitle, $text_color, $border_color, $text_size, $font);
@@ -104,7 +104,7 @@ clear_block_cache($WebID);
 function get_share_to_custom_blockid($BlockID, $WebID)
 {
     global $xoopsDB;
-    $sql = 'SELECT `BlockID` FROM `' . $xoopsDB->prefix('tad_web_blocks') . '` WHERE `ShareFrom`=? AND `WebID`=? AND `plugin`=?';
+    $sql    = 'SELECT `BlockID` FROM `' . $xoopsDB->prefix('tad_web_blocks') . '` WHERE `ShareFrom`=? AND `WebID`=? AND `plugin`=?';
     $result = Utility::query($sql, 'iis', [$BlockID, $WebID, 'custom']) or Utility::web_error($sql, __FILE__, __LINE__);
 
     list($BlockID) = $xoopsDB->fetchRow($result);

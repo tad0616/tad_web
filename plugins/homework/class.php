@@ -1,11 +1,11 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\AccessibilityFixer;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\FullCalendar6;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\Wcag;
 use XoopsModules\Tad_web\Power;
 use XoopsModules\Tad_web\WebCate;
 
@@ -453,10 +453,10 @@ class tad_web_homework
     //新增資料到tad_web_homework中
     public function insert()
     {
-        global $xoopsDB, $TadUpFiles;
+        global $xoopsDB, $TadUpFiles, $xoopsUser;
 
         $HomeworkTitle    = (string) $_POST['HomeworkTitle'];
-        $HomeworkContent  = Wcag::amend($_POST['HomeworkContent']);
+        $HomeworkContent  = AccessibilityFixer::of($_POST['HomeworkContent']);
         $toCal            = (string) $_POST['toCal'];
         $HomeworkPostDate = (string) $_POST['HomeworkPostDate'];
         $CateID           = (int) $_POST['CateID'];
@@ -465,16 +465,16 @@ class tad_web_homework
         $HomeworkDate     = date('Y-m-d H:i:s');
 
         $today_homework             = (string) $_POST['today_homework'];
-        $today_homework             = Wcag::amend($today_homework);
+        $today_homework             = AccessibilityFixer::of($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
         $bring                      = (string) $_POST['bring'];
-        $bring                      = Wcag::amend($bring);
+        $bring                      = AccessibilityFixer::of($bring);
         $bring_remove_html          = $this->remove_html($bring);
         $teacher_say                = (string) $_POST['teacher_say'];
-        $teacher_say                = Wcag::amend($teacher_say);
+        $teacher_say                = AccessibilityFixer::of($teacher_say);
         $teacher_say_remove_html    = $this->remove_html($teacher_say);
         $other                      = (string) $_POST['other'];
-        $other                      = Wcag::amend($other);
+        $other                      = AccessibilityFixer::of($other);
         $other_remove_html          = $this->remove_html($other);
         $newCateName                = (string) $_POST['newCateName'];
 
@@ -541,7 +541,7 @@ class tad_web_homework
 
         $HomeworkTitle    = (string) $_POST['HomeworkTitle'];
         $HomeworkContent  = (string) $_POST['HomeworkContent'];
-        $HomeworkContent  = Wcag::amend($HomeworkContent);
+        $HomeworkContent  = AccessibilityFixer::of($HomeworkContent);
         $toCal            = (string) $_POST['toCal'];
         $HomeworkPostDate = (string) $_POST['HomeworkPostDate'];
         $CateID           = (int) $_POST['CateID'];
@@ -549,16 +549,16 @@ class tad_web_homework
         $HomeworkDate     = date('Y-m-d H:i:s');
 
         $today_homework             = (string) $_POST['today_homework'];
-        $today_homework             = Wcag::amend($today_homework);
+        $today_homework             = AccessibilityFixer::of($today_homework);
         $today_homework_remove_html = $this->remove_html($today_homework);
         $bring                      = (string) $_POST['bring'];
-        $bring                      = Wcag::amend($bring);
+        $bring                      = AccessibilityFixer::of($bring);
         $bring_remove_html          = $this->remove_html($bring);
         $teacher_say                = (string) $_POST['teacher_say'];
-        $teacher_say                = Wcag::amend($teacher_say);
+        $teacher_say                = AccessibilityFixer::of($teacher_say);
         $teacher_say_remove_html    = $this->remove_html($teacher_say);
         $other                      = (string) $_POST['other'];
-        $other                      = Wcag::amend($other);
+        $other                      = AccessibilityFixer::of($other);
         $other_remove_html          = $this->remove_html($other);
         $newCateName                = (string) $_POST['newCateName'];
         // die($bring);

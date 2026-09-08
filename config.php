@@ -423,7 +423,9 @@ function save_adm($web_admins, $WebID)
         }
     }
 
-    clear_my_webs_data($WebID);
+    if ($xoopsUser) {
+        clear_my_webs_data($WebID);
+    }
 }
 
 //重置logo圖位置
