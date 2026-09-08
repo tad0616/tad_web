@@ -2,10 +2,15 @@
 use XoopsModules\Tadtools\ColorBox;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_web\Tags;
+use XoopsModules\Tadtools\ColorBox;
+use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_web\Tags;
 
+function search($WebID, $config = [])
 function search($WebID, $config = [])
 {
     $block['main_data'] = true;
+
 
     return $block;
 }
@@ -22,9 +27,22 @@ function qrcode($WebID, $config = [])
     }
     $block['main_data'] = urlencode($http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
+function qrcode($WebID, $config = [])
+{
+    $http = 'http://';
+    if (!empty($_SERVER['HTTPS'])) {
+        $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
+    }
+
+    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+        $http = $_SERVER['HTTP_X_FORWARDED_PROTO'] . '://';
+    }
+    $block['main_data'] = urlencode($http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
     return $block;
 }
 
+function web_list($WebID, $config = [])
 function web_list($WebID, $config = [])
 {
     global $xoopsDB;
@@ -59,6 +77,7 @@ function web_list($WebID, $config = [])
 
 //按讚工具
 function rrssb($WebID, $config = [])
+function rrssb($WebID, $config = [])
 {
     $block['main_data'] = Utility::push_url(1, 'embed');
 
@@ -67,37 +86,49 @@ function rrssb($WebID, $config = [])
 
 //萌典查生字
 function moedict($WebID, $config = [])
+function moedict($WebID, $config = [])
 {
 
     $ColorBox = new ColorBox('#get_moedict');
     $ColorBox->render();
     $block['main_data'] = true;
 
+
     return $block;
 }
 
 //Dr.eye 英文字典
 function dreye($WebID, $config = [])
+function dreye($WebID, $config = [])
 {
 
     $ColorBox = new ColorBox('#get_dreyedict', '640');
     $ColorBox->render();
+
+    $ColorBox = new ColorBox('#get_dreyedict', '640');
+    $ColorBox->render();
     $block['main_data'] = true;
+
 
     return $block;
 }
 
 //WIKI維基百科查詢
 function wiki($WebID, $config = [])
+function wiki($WebID, $config = [])
 {
     $ColorBox = new ColorBox('#get_wiki');
     $ColorBox->render();
+    $ColorBox = new ColorBox('#get_wiki');
+    $ColorBox->render();
     $block['main_data'] = true;
+
 
     return $block;
 }
 
 //即時細懸浮微粒預測
+function pm25($WebID, $config = [])
 function pm25($WebID, $config = [])
 {
     $block['main_data'] = true;
@@ -108,6 +139,7 @@ function pm25($WebID, $config = [])
 
 //空氣品質 (PSI) 預報
 function psi($WebID, $config = [])
+function psi($WebID, $config = [])
 {
     $block['main_data'] = true;
     $block['config']    = $config;
@@ -116,6 +148,7 @@ function psi($WebID, $config = [])
 }
 
 //聊天室
+function tlkio($WebID, $config = [])
 function tlkio($WebID, $config = [])
 {
     $block['main_data'] = true;
@@ -127,6 +160,7 @@ function tlkio($WebID, $config = [])
 
 //倒數計時
 function countdown($WebID, $config = [])
+function countdown($WebID, $config = [])
 {
     $block['main_data'] = true;
     $block['config']    = $config;
@@ -136,6 +170,7 @@ function countdown($WebID, $config = [])
 }
 
 //標籤
+function tags($WebID, $config = [])
 function tags($WebID, $config = [])
 {
     $tags     = new Tags($WebID);
