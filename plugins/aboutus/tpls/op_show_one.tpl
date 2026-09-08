@@ -14,7 +14,7 @@
             <div>
                 <{$student_amount|default:''}><{$smarty.const._TAD_FOR}> <{$smarty.const._MD_TCW_TOTAL}>
                 <{$class_total|default:''}> <{$smarty.const._MD_TCW_PEOPLE}>
-                <a href="#" class="btn btn-info btn-sm btn-xs">
+                <a href="#" class="btn btn-primary btn-sm btn-xs">
                     <i class="fa fa-male"></i> <{$class_boy|default:''}>
                 </a>
                 <a href="#" class="btn btn-danger btn-sm btn-xs">

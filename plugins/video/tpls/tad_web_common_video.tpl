@@ -55,7 +55,7 @@
                             <span class="badge badge-warning bg-warning"><{$smarty.foreach.v.iteration}></span>
                             <{$video.VideoDate}>
                             <{if isset($video.cate.CateID)}>
-                                <span class="badge badge-info bg-info"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
+                                <span class="badge badge-success bg-success"><a href="video.php?WebID=<{$video.WebID}>&CateID=<{$video.cate.CateID}>" style="color: #FFFFFF;"><{$video.cate.CateName}></a></span>
                             <{/if}>
                             <a href="video.php?WebID=<{$video.WebID}>&VideoID=<{$video.VideoID}>" style="font-size: 120%; margin-bottom: 10px;"><{$video.VideoName}></a>
                             <{*if $video.isMyWeb or $video.isAssistant*}>

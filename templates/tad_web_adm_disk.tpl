@@ -4,9 +4,7 @@
             <span class="input-group-text">WebID</span>
         </div>
         <input type="text" name="WebID" class="form-control" placeholder="WebID">
-        <div class="input-group-append input-group-btn">
-            <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SEARCH}></button>
-        </div>
+        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SEARCH}></button>
         <input type="hidden" name="op" value="<{$next_op|default:''}>">
     </div>
 </form>

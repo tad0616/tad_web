@@ -22,7 +22,5 @@
 <div class="input-group">
     <label for="search_wiki" class="sr-only visually-hidden"><{$smarty.const._MD_TCW_SEARCH_WIKI_KEYWORD}></label>
     <input type="text" id="search_wiki" class="form-control" placeholder="<{$smarty.const._MD_TCW_SEARCH_WIKI_KEYWORD}>">
-    <div class="input-group-append input-group-btn">
-        <a href="#" class="btn btn-primary" id="get_wiki"><{$smarty.const._MD_TCW_SEARCH_WIKI}></a>
-    </div>
+    <a href="#" class="btn btn-primary" id="get_wiki"><{$smarty.const._MD_TCW_SEARCH_WIKI}></a>
 </div>

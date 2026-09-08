@@ -6,7 +6,7 @@
 
         <{if $block_plugin!='custom'}>
             <{if $plugin_menu_var.$block_plugin.add|default:false=='1'}>
-                <a href="<{$block_plugin|default:''}>.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-info btn-sm btn-xs" title="<{$smarty.const._MD_TCW_ADD}>"><i class="fa fa-plus"></i></a>
+                <a href="<{$block_plugin|default:''}>.php?WebID=<{$WebID|default:''}>&op=edit_form" class="btn btn-primary btn-sm btn-xs" title="<{$smarty.const._MD_TCW_ADD}>"><i class="fa fa-plus"></i></a>
             <{/if}>
             <{if $plugin_menu_var.$block_plugin.menu|default:false=='1'}>
                 <a href="<{$block_plugin|default:''}>.php?WebID=<{$WebID|default:''}>" class="btn btn-success btn-sm btn-xs" title="<{$smarty.const._MD_TCW_MORE}>"><i class="fa fa-ellipsis-h"></i></a>

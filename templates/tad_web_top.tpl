@@ -4,8 +4,8 @@
     <{foreach from=$king_rank key=WebID item=rank}>
         <{if $i <= 10}>
             <li class="list-group-item">
-                <span class="badge badge-info bg-info"><{$rank|default:''}></span>
-                <span class="badge badge-info bg-info"><{$i|default:''}></span>
+                <span class="badge badge-success bg-success"><{$rank|default:''}></span>
+                <span class="badge badge-success bg-success"><{$i|default:''}></span>
                 <a href="<{$xoops_url}>/modules/tad_web/index.php?WebID=<{$WebID|default:''}>" target="_blank"><{$WebNames.$WebID}> (<{$WebTitles.$WebID}>)</a>
             </li>
         <{/if}>
@@ -19,8 +19,8 @@
     <ul class="list-group">
         <{foreach from=$plugin.top key=rank item=top}>
             <li class="list-group-item">
-                <span class="badge badge-info bg-info"><{$top.count}></span>
-                <span class="badge badge-info bg-info"><{$rank|default:''}></span>
+                <span class="badge badge-success bg-success"><{$top.count}></span>
+                <span class="badge badge-success bg-success"><{$rank|default:''}></span>
                 <a href="<{$xoops_url}>/modules/tad_web/<{$plugin.dirname}>.php?WebID=<{$top.WebID}>" target="_blank"><{$top.WebName}> (<{$top.WebTitle}>)</a>
             </li>
         <{/foreach}>

@@ -11,7 +11,7 @@
     <ul class="list-group">
         <{foreach from=$tags_arr key=tag item=count}>
             <li class="list-group-item">
-                <span class="badge badge-info bg-info"><{$count|default:''}></span>
+                <span class="badge badge-success bg-success"><{$count|default:''}></span>
                 <a href="<{$xoops_url}>/modules/tad_web/tag.php?WebID=<{$WebID|default:''}>&tag=<{$tag|default:''}>"><{$tag|default:''}></a>
             </li>
         <{/foreach}>

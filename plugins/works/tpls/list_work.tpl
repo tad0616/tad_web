@@ -22,7 +22,7 @@
                 </td>
                 <td>
                     <{if isset($work.cate.CateID)}>
-                        <span class="badge badge-info bg-info"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
+                        <span class="badge badge-success bg-success"><a href="works.php?WebID=<{$work.WebID}>&CateID=<{$work.cate.CateID}>" style="color: #FFFFFF;"><{$work.cate.CateName}></a></span>
                     <{/if}>
                     <a href='works.php?WebID=<{$work.WebID}>&WorksID=<{$work.WorksID}>'><{$work.WorkName}></a>
                     <{if $work.hide|default:false}><span class="badge badge-danger bg-danger"><{$work.hide}></span><{/if}>

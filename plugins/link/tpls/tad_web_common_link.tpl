@@ -43,7 +43,7 @@
                         <i class="fa fa-external-link"></i>
                         <span class="badge badge-warning bg-warning"><{$smarty.foreach.l.iteration}></span>
                         <{if isset($link.cate.CateID)}>
-                            <span class="badge badge-info bg-info"><a href="link.php?WebID=<{$link.WebID}>&CateID=<{$link.cate.CateID}>" style="color: #FFFFFF;"><{$link.cate.CateName}></a></span>
+                            <span class="badge badge-success bg-success"><a href="link.php?WebID=<{$link.WebID}>&CateID=<{$link.cate.CateID}>" style="color: #FFFFFF;"><{$link.cate.CateName}></a></span>
                         <{/if}>
                         <a href="<{$link.LinkUrl}>" target="_blank"><{$link.LinkTitle}></a>
 

@@ -16,14 +16,12 @@
                     </label>
                     <div class="col-md-9">
                         <div class="input-group">
-                            <div class="input-group-append input-group-btn ">
-                                <select name="year" class="form-control form-select" style="width:140px;">
-                                    <option value="" <{if $op!="new_class"}>selected<{/if}>></option>
-                                    <option value="<{$last_year|default:''}>"><{$last_year|default:''}></option>
-                                    <option value="<{$now_year|default:''}>" <{if $op=="new_class"}>selected<{/if}>><{$now_year|default:''}></option>
-                                    <option value="<{$next_year|default:''}>"><{$next_year|default:''}></option>
-                                </select>
-                            </div>
+                            <select name="year" class="form-control form-select" style="width:140px;">
+                                <option value="" <{if $op!="new_class"}>selected<{/if}>></option>
+                                <option value="<{$last_year|default:''}>"><{$last_year|default:''}></option>
+                                <option value="<{$now_year|default:''}>" <{if $op=="new_class"}>selected<{/if}>><{$now_year|default:''}></option>
+                                <option value="<{$next_year|default:''}>"><{$next_year|default:''}></option>
+                            </select>
                             <input type="text" name="newCateName" value="<{$now_cate.CateName}>" class="form-control">
                         </div>
                     </div>

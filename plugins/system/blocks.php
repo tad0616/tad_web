@@ -29,14 +29,14 @@ function web_list($WebID, $config = [])
 {
     global $xoopsDB;
     $block['DefWebID'] = $DefWebID = $WebID;
-    $andWebID = '';
+    $andWebID          = '';
     if (_IS_EZCLASS) {
         if (isset($_SESSION['MyWebs']['all'])) {
             $andWebID = "AND `WebID` IN ('" . implode("','", $_SESSION['MyWebs']['all']) . "')";
         }
     }
 
-    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebEnable`=? ' . $andWebID . ' ORDER BY `CateID`,`WebSort`';
+    $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_web') . '` WHERE `WebEnable`=? ' . $andWebID . ' ORDER BY `CateID`,`WebSort`';
     $result = Utility::query($sql, 's', ['1']) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $i = 0;
@@ -47,8 +47,8 @@ function web_list($WebID, $config = [])
 
         $block['webs'][$i]['WebID'] = $WebID;
         $block['webs'][$i]['title'] = $WebTitle;
-        $block['webs'][$i]['name'] = $WebName;
-        $block['webs'][$i]['url'] = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
+        $block['webs'][$i]['name']  = $WebName;
+        $block['webs'][$i]['url']   = preg_match('/modules\/tad_web/', $_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] . "?WebID={$WebID}" : XOOPS_URL . "/modules/tad_web/index.php?WebID={$WebID}";
 
         $i++;
     }
@@ -60,7 +60,7 @@ function web_list($WebID, $config = [])
 //按讚工具
 function rrssb($WebID, $config = [])
 {
-    $block['main_data'] = Utility::push_url();
+    $block['main_data'] = Utility::push_url(1, 'embed');
 
     return $block;
 }
@@ -101,7 +101,7 @@ function wiki($WebID, $config = [])
 function pm25($WebID, $config = [])
 {
     $block['main_data'] = true;
-    $block['config'] = $config;
+    $block['config']    = $config;
 
     return $block;
 }
@@ -110,7 +110,7 @@ function pm25($WebID, $config = [])
 function psi($WebID, $config = [])
 {
     $block['main_data'] = true;
-    $block['config'] = $config;
+    $block['config']    = $config;
 
     return $block;
 }
@@ -119,8 +119,8 @@ function psi($WebID, $config = [])
 function tlkio($WebID, $config = [])
 {
     $block['main_data'] = true;
-    $block['config'] = $config;
-    $block['WebID'] = $WebID;
+    $block['config']    = $config;
+    $block['WebID']     = $WebID;
 
     return $block;
 }
@@ -129,8 +129,8 @@ function tlkio($WebID, $config = [])
 function countdown($WebID, $config = [])
 {
     $block['main_data'] = true;
-    $block['config'] = $config;
-    $block['randStr'] = Utility::randStr(4);
+    $block['config']    = $config;
+    $block['randStr']   = Utility::randStr(4);
 
     return $block;
 }
@@ -138,12 +138,12 @@ function countdown($WebID, $config = [])
 //標籤
 function tags($WebID, $config = [])
 {
-    $tags = new Tags($WebID);
+    $tags     = new Tags($WebID);
     $tags_arr = $tags->get_tags();
     arsort($tags_arr);
     $block['main_data'] = true;
-    $block['config'] = $config;
-    $block['tags_arr'] = $tags_arr;
+    $block['config']    = $config;
+    $block['tags_arr']  = $tags_arr;
 
     return $block;
 }

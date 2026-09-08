@@ -18,7 +18,7 @@
                             <div>
                                 <a href="page.php?WebID=<{$content.WebID}>&PageID=<{$content.PageID}>">
                                     <{if $content.show_count|default:false=='1'}>
-                                        <span class="badge badge-info bg-info"><{$content.PageCount}></span>
+                                        <span class="badge badge-success bg-success"><{$content.PageCount}></span>
                                     <{/if}><{$content.PageTitle}>
                                 </a>
                             </div>

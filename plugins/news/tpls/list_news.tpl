@@ -10,7 +10,7 @@
                     <li class="list-group-item">
                         <{$news.Date}>
                         <{if isset($news.cate.CateID)}>
-                            <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+                            <span class="badge badge-success bg-success"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
                         <{/if}>
                         <a href="news.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
                         <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
@@ -48,7 +48,7 @@
                     </h3>
                     <div class="my-border" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
                         <{if isset($news.cate.CateID)}>
-                            <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+                            <span class="badge badge-success bg-success"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
                         <{/if}>
                         <{$news.NewsContent}>
                         <{if $news.more|default:false}>
@@ -92,7 +92,7 @@
             </h3>
             <div class="my-border" id="list_new" style="min-height: 100px; overflow: auto; line-height: 1.8; ">
                 <{if isset($bc.main_data.0.cate.CateID)}>
-                    <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$bc.main_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$bc.main_data.0.cate.CateName}></a></span>
+                    <span class="badge badge-success bg-success"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$bc.main_data.0.cate.CateID}>" style="color: #FFFFFF;"><{$bc.main_data.0.cate.CateName}></a></span>
                 <{/if}>
                 <{$bc.main_data.0.NewsContent}>
                 <{if $bc.main_data.0.more}>
@@ -125,7 +125,7 @@
                         <li class="list-group-item">
                             <{$news.Date}>
                             <{if isset($news.cate.CateID)}>
-                                <span class="badge badge-info bg-info"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
+                                <span class="badge badge-success bg-success"><a href="news.php?WebID=<{$WebID|default:''}>&CateID=<{$news.cate.CateID}>" style="color: #FFFFFF;"><{$news.cate.CateName}></a></span>
                             <{/if}>
                             <a href="news.php?WebID=<{$news.WebID}>&NewsID=<{$news.NewsID}>"><{$news.NewsTitle}></a>
                             <{if $news.NewsEnable!=1}>[<{$smarty.const._MD_TCW_NEWS_DRAFT}>]<{/if}>
